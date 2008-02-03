@@ -1,0 +1,20 @@
+# -*- makefile -*-
+#
+# $Id$
+
+all: ChangeLog aclocal.m4 configure config.h.in Makefile.in
+
+ChangeLog:
+	touch ChangeLog
+
+aclocal.m4: configure.ac
+	aclocal
+
+configure: configure.ac
+	autoconf
+
+config.h.in: configure.ac
+	autoheader
+
+Makefile.in: gpsafe/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am Makefile.am
+	automake -a -c -f --gnu

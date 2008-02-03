@@ -1,0 +1,183 @@
+// $Id$
+
+#include <string.h>
+
+#include "key.h"
+
+using namespace GPSAFE;
+
+void
+Key::cleanup() {
+    memset(key, 0, KEYLENGTH);
+    memset(IVec, 0, IVECLENGTH);
+}
+
+Key::Key(const char* password) throw(GPSException) {
+    // Sentinel variable to check the size of the key
+    uint8_t eff_keylength;
+	    
+    //
+    // First run (sha1)
+    //
+    const EVP_MD* md = EVP_sha1();
+    if (md == NULL)
+	throw GPSException("Run 1: Unable to initialize the EVP_MD structure");
+
+    EVP_MD_CTX mdctx;
+    EVP_MD_CTX_init(&mdctx);
+
+    int retval = EVP_DigestInit_ex(&mdctx, md, NULL);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	throw GPSException("Run 1: Unable to initialize the digest");
+    }
+
+    retval = EVP_DigestUpdate(&mdctx, password, strlen(password));
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	throw GPSException("Run 1: Unable to update the digest");
+    }
+
+    unsigned int tmplen;
+    retval = EVP_DigestFinal_ex(&mdctx, key, &tmplen);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	throw GPSException("Run 1: Unable to finalize the digest");
+    }
+
+    if (tmplen != SHA1_LEN) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 1: Digest does not have expected length");
+    }
+
+    eff_keylength = tmplen;
+    EVP_MD_CTX_cleanup(&mdctx);
+
+    //
+    // Second run (md5)
+    //
+    md = EVP_md5();
+    if (md == NULL)
+	throw GPSException("Run 2: Unable to initialize the EVP_MD structure");
+
+    EVP_MD_CTX_init(&mdctx);
+    retval = EVP_DigestInit_ex(&mdctx, md, NULL);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 2: Unable to initialize the digest");
+    }
+
+    retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 2: Unable to update the digest");
+    }
+
+    retval = EVP_DigestFinal_ex(&mdctx, key + SHA1_LEN, &tmplen);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 2: Unable to finalize the digest");
+    }
+
+    if (tmplen != MD5_LEN) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 2: Digest does not have expected length");
+    }
+
+    eff_keylength += tmplen;
+    EVP_MD_CTX_cleanup(&mdctx);
+
+    //
+    // Third run (sha1)
+    //
+    md = EVP_sha1();
+    if (md == NULL)
+	throw GPSException("Run 3: Unable to initialize the EVP_MD structure");
+
+    EVP_MD_CTX_init(&mdctx);
+    retval = EVP_DigestInit_ex(&mdctx, md, NULL);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 3: Unable to initialize the digest");
+    }
+
+    retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN + MD5_LEN);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 3: Unable to update the digest");
+    }
+
+    retval = EVP_DigestFinal_ex(&mdctx, key + SHA1_LEN + MD5_LEN, &tmplen);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 3: Unable to finalize the digest");
+    }
+
+    if (tmplen != SHA1_LEN) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("Run 3: Digest does not have expected length");
+    }
+
+    eff_keylength += tmplen;
+    EVP_MD_CTX_cleanup(&mdctx);
+    
+    if (eff_keylength != KEYLENGTH) {
+	cleanup();
+	char tmp[100];
+	snprintf(tmp,
+		 100,
+		 "Effective key length of %d does not match expected key length %d",
+		 eff_keylength,
+		 KEYLENGTH);
+	throw GPSException(tmp);
+    }
+
+    memcpy(IVec, "1A2B3C4D", IVECLENGTH);
+}
+
+Key::Key(const Key& k) {
+    memcpy(key, k.key, KEYLENGTH);
+    memcpy(IVec, k.IVec, IVECLENGTH);
+}
+
+Key::~Key() {
+    cleanup();
+}
+
+const Key&
+Key::operator=(const Key& k) {
+    if (this == &k) return *this;
+
+    cleanup();
+
+    memcpy(key, k.key, KEYLENGTH);
+    memcpy(IVec, k.IVec, IVECLENGTH);
+
+    return *this;
+}
+
+bool
+Key::operator==(const Key& k) const {
+    if (k.size() != size()) return false;
+    if (k.ivec_size() != ivec_size()) return false;
+
+    int retval = memcmp(k.key, key, size());
+    if (retval != 0)
+	return false;
+
+    retval = memcmp(k.IVec, IVec, ivec_size());
+    if (retval != 0)
+	return false;
+
+    return true;
+}
+
