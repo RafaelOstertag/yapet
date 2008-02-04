@@ -273,7 +273,7 @@ MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
     if (retval == -1 && errno == ENOENT) {
 	// Ask user whether or not he wants to create a new file
 	GPSUI::DialogBox* question = new GPSUI::DialogBox("Question",
-							  filename + " does not exist. Create?");
+							  "The file does not exist. Do you want to create it?");
 	question->run();
 	GPSUI::ANSWER a = question->getAnswer();
 	delete question;

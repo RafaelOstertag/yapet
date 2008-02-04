@@ -294,15 +294,19 @@ namespace GPSUI {
 			scrollDown();
 			break;
 		    case KEY_HOME:
+                    case KEY_A1:
 			scrollHome();
 			break;
 		    case KEY_END:
+                    case KEY_C1:
 			scrollEnd();
 			break;
 		    case KEY_NPAGE:
+                    case KEY_C3:
 			scrollPageDown();
 			break;
 		    case KEY_PPAGE:
+                    case KEY_A3:
 			scrollPageUp();
 			break;
 		    default:

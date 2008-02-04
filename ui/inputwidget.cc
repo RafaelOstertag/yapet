@@ -159,18 +159,22 @@ InputWidget::focus() throw(UIException) {
 	    moveForward();
 	    break;
 	case KEY_END:
+        case KEY_A1:
 	    moveEnd();
 	    break;
 	case KEY_HOME:
+        case KEY_C1:
 	    moveHome();
 	    break;
 	case KEY_ENTER:
 	    ungetch('\n');
 	    break;
 	case KEY_DC:
+        case 127:
 	    processDelete();
 	    break;
 	case KEY_BACKSPACE:
+        case 8:
 	    processBackspace();
 	    break;
 #ifdef HAVE_WRESIZE
@@ -194,7 +198,7 @@ InputWidget::focus() throw(UIException) {
 
 void
 InputWidget::refresh() throw(UIException) {
-    int retval = wclear(window);
+    int retval = werase(window);
     if (retval == ERR)
 	throw UIException("Error clearing input widget");
 

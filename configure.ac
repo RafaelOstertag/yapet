@@ -8,8 +8,8 @@ AC_CONFIG_HEADERS([config.h])
 
 # Progs
 AC_MSG_NOTICE([Checking required programs])
-AC_PROG_CC
-AC_PROG_CXX
+AC_PROG_CC([cc gcc])
+AC_PROG_CXX([CC g++])
 AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
