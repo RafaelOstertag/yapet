@@ -7,11 +7,14 @@ AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 # Progs
+AC_MSG_NOTICE([Checking required programs])
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
+AC_ARG_VAR([DOXYGEN],[path of doxygen])
+AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
 
 AC_LANG([C++])
 
@@ -35,10 +38,12 @@ AC_ARG_WITH([openssl-lib],
 	
 
 # Libs
+AC_MSG_NOTICE([Searching for required libraries])
 AC_SEARCH_LIBS([initscr],[ncurses curses],[],AC_MSG_ERROR([curses not found]))
 AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found]))
 
 # Headers
+AC_MSG_NOTICE([Checking headers])
 AC_INCLUDES_DEFAULT
 AC_CHECK_HEADERS([fcntl.h string.h unistd.h])
 AC_HEADER_TIME
@@ -51,6 +56,7 @@ AC_CHECK_HEADER([ncurses.h],
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 # Types
+AC_MSG_NOTICE([Checking types])
 AC_TYPE_INT32_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
@@ -58,8 +64,11 @@ AC_TYPE_SSIZE_T
 AC_TYPE_UINT8_T
 
 # library functions
+AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS([memset strerror getcwd pathconf])
+
+AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat],[],[])
 
 # Some custom tests
@@ -102,9 +111,19 @@ AC_COMPILE_IFELSE(
 	[AC_MSG_RESULT([yes])],
 	[AC_MSG_RESULT([no]) AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
 
+AC_MSG_NOTICE([Checking encryption functions])
+AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
+	[],
+	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
+
+
+# Some conditionals for the makefileS
+AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
+
 AC_CONFIG_FILES([Makefile
 	gpsafe/Makefile
 	ui/Makefile
 	crypt/Makefile
-	tests/Makefile])
+	tests/Makefile
+	doc/Makefile])
 AC_OUTPUT

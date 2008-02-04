@@ -42,6 +42,7 @@ Key::Key(const char* password) throw(GPSException) {
     retval = EVP_DigestFinal_ex(&mdctx, key, &tmplen);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
 	throw GPSException("Run 1: Unable to finalize the digest");
     }
 
@@ -58,8 +59,10 @@ Key::Key(const char* password) throw(GPSException) {
     // Second run (md5)
     //
     md = EVP_md5();
-    if (md == NULL)
+    if (md == NULL) {
+	cleanup();
 	throw GPSException("Run 2: Unable to initialize the EVP_MD structure");
+    }
 
     EVP_MD_CTX_init(&mdctx);
     retval = EVP_DigestInit_ex(&mdctx, md, NULL);
@@ -93,11 +96,13 @@ Key::Key(const char* password) throw(GPSException) {
     EVP_MD_CTX_cleanup(&mdctx);
 
     //
-    // Third run (sha1)
+    // Third run (ripemd160)
     //
-    md = EVP_sha1();
-    if (md == NULL)
+    md = EVP_ripemd160();
+    if (md == NULL) {
+	cleanup();
 	throw GPSException("Run 3: Unable to initialize the EVP_MD structure");
+    }
 
     EVP_MD_CTX_init(&mdctx);
     retval = EVP_DigestInit_ex(&mdctx, md, NULL);
@@ -121,7 +126,7 @@ Key::Key(const char* password) throw(GPSException) {
 	throw GPSException("Run 3: Unable to finalize the digest");
     }
 
-    if (tmplen != SHA1_LEN) {
+    if (tmplen != RIPEMD160_LEN) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
 	throw GPSException("Run 3: Digest does not have expected length");
@@ -141,7 +146,48 @@ Key::Key(const char* password) throw(GPSException) {
 	throw GPSException(tmp);
     }
 
-    memcpy(IVec, "1A2B3C4D", IVECLENGTH);
+    //
+    // The initialization vector
+    //
+    uint8_t ivec_hash_buf[MD5_LEN];
+    md = EVP_md5();
+    if (md == NULL) {
+	cleanup();
+	throw GPSException("IVec: Unable to initialize the EVP_MD structure");
+    }
+
+    EVP_MD_CTX_init(&mdctx);
+    retval = EVP_DigestInit_ex(&mdctx, md, NULL);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("IVec: Unable to initialize the digest");
+    }
+
+    retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN + MD5_LEN + RIPEMD160_LEN);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("IVec: Unable to update the digest");
+    }
+
+    retval = EVP_DigestFinal_ex(&mdctx, ivec_hash_buf, &tmplen);
+    if (retval == 0) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("IVec: Unable to finalize the digest");
+    }
+
+    if (tmplen != MD5_LEN) {
+	EVP_MD_CTX_cleanup(&mdctx);
+	cleanup();
+	throw GPSException("IVec: Digest does not have expected length");
+    }
+
+    EVP_MD_CTX_cleanup(&mdctx);
+
+    memcpy(IVec, ivec_hash_buf, IVECLENGTH);
+    memset(ivec_hash_buf, 0, MD5_LEN);
 }
 
 Key::Key(const Key& k) {
