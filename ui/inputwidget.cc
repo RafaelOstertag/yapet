@@ -65,7 +65,6 @@ InputWidget::processInput(int ch) throw(UIException) {
 	buffer.insert(start_pos+pos, 1, ch);
 
     moveForward();
-    refresh();
 
     // Mark the text as changed
     text_changed = true;
@@ -130,8 +129,9 @@ InputWidget::InputWidget(int sx, int sy, int w, int ml)
 }
 
 InputWidget::~InputWidget() {
+	clearText();
+	wrefresh(window);
     delwin(window);
-    clearText();
 }
 
 int
@@ -261,4 +261,5 @@ InputWidget::clearText() {
 	buffer[i]=0;
 
     buffer.clear();
+	wclear(window);
 }

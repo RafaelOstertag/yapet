@@ -28,6 +28,8 @@ StatusBar::StatusBar() throw (GPSUI::UIException) : Resizeable(),
 }
 
 StatusBar::~StatusBar() {
+	wclear(statusbar);
+	wrefresh(statusbar);
     delwin (statusbar);
 }
 

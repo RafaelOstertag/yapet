@@ -32,7 +32,7 @@ class FileOpen : protected GPSUI::Resizeable,
 
     private:
 	enum {
-	    FALLBACK_PATH_MAX=256
+	    FALLBACK_PATH_MAX=255
 	};
 
 	std::string title;

@@ -35,7 +35,7 @@ AC_ARG_WITH([openssl-lib],
 	[AS_HELP_STRING([--with-openssl-lib],[directory for openssl libraries])],
 	[LDFLAGS="-L$withval $LDFLAGS"],
 	[])
-	
+
 
 # Libs
 AC_MSG_NOTICE([Searching for required libraries])
@@ -44,8 +44,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking headers])
-AC_INCLUDES_DEFAULT
-AC_CHECK_HEADERS([fcntl.h string.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h string.h unistd.h limits.h sys/param])
 AC_HEADER_TIME
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h])],

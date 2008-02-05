@@ -37,32 +37,32 @@ namespace GPSUI {
 	    };
 	    WINDOW* window;
 	    Button* okbutton;
-	    
+
 	    std::string title;
 	    std::string message;
-	    
+
 	    void createWindow() throw(UIException);
-	    
+
 	protected:
 	    inline int getBaseHeight() const { return BASE_HEIGHT; }
-	    
+
 	    inline int getWidth() const {
 		return BASE_WIDTH + message.length();
 	    }
-	    
+
 	    inline int getStartX() const {
 		return maxX()/2 - getWidth()/2;
 	    }
-	    
+
 	    inline int getStartY() const {
 		return maxY()/2 - BASE_HEIGHT/2;
 	    }
-	    
+
 	    inline int getOkButtonLength() const {
 		if (okbutton == NULL) return -1;
 		return okbutton->getLength();
 	    }
-	    
+
 	public:
 	    MessageBox(std::string t, std::string m) throw(UIException);
 	    virtual ~MessageBox();

@@ -238,7 +238,9 @@ namespace GPSUI {
 	    }
 	    
 	    virtual ~ListWidget() {
-		delwin(window);
+			wclear(window);
+			wrefresh(window);
+			delwin(window);
 	    }
 	    
 	    void setList(typename std::list<T>& l) {

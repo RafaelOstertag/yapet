@@ -9,12 +9,30 @@
 #include <unistd.h>
 #include <dirent.h>
 
+#ifndef HAVE_PATHCONF
+#if HAVE_LIMITS_H
+# include <limits.h>
+#elif HAVE_SYS_PARAM_H
+# include <sys/param.h>
+#endif
+#ifndef PATH_MAX
+# if defined(_POSIX_PATH_MAX)
+#  define PATH_MAX _POSIX_PATH_MAX
+# elif defined(MAXPATHLEN)
+#  define PATH_MAX MAXPATHLEN
+# else
+#  define PATH_MAX 255/* the Posix minimum path-size */
+# endif
+#endif
+#endif // HAVE_PATHCONF
+
 #include <algorithm>
 
 #include <messagebox.h>
 #include <colors.h>
 
 #include "fileopen.h"
+
 
 
 void
@@ -81,7 +99,7 @@ FileOpen::getEntries(std::list<GPSUI::secstring>& d,
 	if (retval != 0) {
 	    continue;
 	}
-	
+
 	if (S_ISDIR(st.st_mode)) {
 	    d.push_back(de->d_name);
 	} else if (S_ISREG(st.st_mode)) {
@@ -117,8 +135,13 @@ FileOpen::printCWD() throw(GPSUI::UIException) {
 
 void
 FileOpen::getcwd() throw (GPSUI::UIException) {
-    long size = pathconf (".", _PC_PATH_MAX);
+    long size = 0;
+#ifdef HAVE_PATHCONF
+	size = pathconf (".", _PC_PATH_MAX);
     size = size < 1 ? FALLBACK_PATH_MAX : size;
+#else
+	size = MAX_PATH;
+#endif
     char* buf = (char *) malloc ( (size_t) size);
     if (buf == NULL)
         throw GPSUI::UIException ("Error allocating memory");
@@ -157,9 +180,11 @@ FileOpen::FileOpen(std::string t) throw(GPSUI::UIException) : Resizeable(),
 }
 
 FileOpen::~FileOpen() {
-        delwin (window);
-        delete dir;
-        delete files;
+	wclear(window);
+	wrefresh(window);
+	delwin (window);
+	delete dir;
+	delete files;
 	delete input;
 	delete okbutton;
 	delete cancelbutton;

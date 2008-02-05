@@ -70,6 +70,8 @@ PasswordRecord::PasswordRecord(GPSAFE::Key& k, GPSAFE::PartDec* pe)
 			 }
 
 PasswordRecord::~PasswordRecord() {
+	wclear(window);
+	wrefresh(window);
     delwin(window);
     delete name;
     delete host;

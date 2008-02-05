@@ -22,6 +22,8 @@ Button::Button (std::string l, int x, int y) : window (NULL),
 }
 
 Button::~Button() {
+	wclear(window);
+	wrefresh(window);
     delwin (window);
 }
 
