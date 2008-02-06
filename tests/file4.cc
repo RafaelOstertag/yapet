@@ -14,13 +14,13 @@
 #include <partdec.h>
 #include <file.h>
 
-void print_record(GPSAFE::PartDec& pd, const GPSAFE::Key& key, const uint8_t* iv) {
-    GPSAFE::Crypt crypt(iv, GPSAFE::IV_SIZE);
+void print_record(GPSAFE::PartDec& pd, const GPSAFE::Key& key) {
+    GPSAFE::Crypt crypt(key);
 
     std::cout << "PartDec Name:\t" << pd.getName() << std::endl;
     
     const GPSAFE::BDBuffer& enc_rec = pd.getEncRecord();
-    GPSAFE::Record<GPSAFE::PasswordRecord>* ptr_dec_rec = crypt.decrypt<GPSAFE::PasswordRecord>(enc_rec, key);
+    GPSAFE::Record<GPSAFE::PasswordRecord>* ptr_dec_rec = crypt.decrypt<GPSAFE::PasswordRecord>(enc_rec);
     GPSAFE::PasswordRecord* ptr_pw = *ptr_dec_rec;
 
     std::cout << "\tName:\t" << ptr_pw->name << std::endl;
@@ -43,7 +43,7 @@ int main(int, char**) {
 	std::list<GPSAFE::PartDec>::iterator it = list.begin();
 
 	while(it != list.end()) {
-	    print_record(*it, key, file.getStoredIV());
+	    print_record(*it, key);
 	    it++;
 	}
 	

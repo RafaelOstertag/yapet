@@ -155,25 +155,7 @@ MainWindow::createWindow() throw(GPSUI::UIException) {
 
 void
 MainWindow::resize() throw (GPSUI::UIException) {
-    int retval = wclear (stdscr);
-    if (retval == ERR)
-	throw GPSUI::UIException("Clearing stdscr failed");
-    
-    retval = wclear (toprightwin);
-    if (retval == ERR)
-        throw GPSUI::UIException ("wclear() blew it");
-    retval = wclear (bottomrightwin);
-    if (retval == ERR)
-        throw GPSUI::UIException ("wclear() blew it");
-
-    retval = wrefresh(toprightwin);
-    if (retval == ERR)
-	throw GPSUI::UIException("wrefresh() blew it");
-    retval = wrefresh(bottomrightwin);
-    if (retval == ERR)
-	throw GPSUI::UIException("wrefresh() blew it");
-
-    retval = delwin(toprightwin);
+    int retval = delwin(toprightwin);
     if (retval == ERR)
 	throw GPSUI::UIException("delwin() blew it");
 
@@ -188,8 +170,6 @@ MainWindow::resize() throw (GPSUI::UIException) {
     createWindow();
 
     recordlist->resize (0, 1, maxX()/2, maxY() - 2);
-
-    refresh();
 }
 
 void
@@ -622,6 +602,10 @@ MainWindow::MainWindow() throw (GPSUI::UIException) : Resizeable(),
 
 MainWindow::~MainWindow() {
     delete recordlist;
+    wclear(toprightwin);
+    wclear(bottomrightwin);
+    wrefresh(toprightwin);
+    wrefresh(bottomrightwin);
     delwin (toprightwin);
     delwin (bottomrightwin);
     if (key != NULL)
@@ -653,7 +637,7 @@ MainWindow::run() throw (GPSUI::UIException) {
 		    GPSUI::Resizeable::resizeAll();
 		    break;
 #endif // HAVE_WRESIZE
-		case 12:
+		case KEY_REFRESH:
 #ifdef HAVE_WRESIZE
 		    GPSUI::Resizeable::resizeAll();
 #endif // HAVE_WRESIZE

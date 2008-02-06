@@ -25,6 +25,7 @@
 
 #include "uiexception.h"
 #include "colors.h"
+#include "resizeable.h"
 
 namespace GPSUI {
 
@@ -217,7 +218,7 @@ namespace GPSUI {
 		width = w;
 		height = h;
 		
-		refresh();
+		//refresh();
 	    }
 	    
 	public:
@@ -310,6 +311,9 @@ namespace GPSUI {
 		    case KEY_PPAGE:
                     case KEY_A3:
 			scrollPageUp();
+			break;
+		    case KEY_REFRESH:
+			Resizeable::refreshAll();
 			break;
 		    default:
 			stay_in_loop = false;

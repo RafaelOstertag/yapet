@@ -43,19 +43,6 @@ FileOpen::createWindows() throw (GPSUI::UIException) {
     if (window == NULL)
         throw GPSUI::UIException ("Error creating file open window");
 
-    GPSUI::Colors::setcolor(window, GPSUI::MESSAGEBOX);
-
-    int retval = box(window, 0, 0);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error drawing box");
-
-    printTitle();
-    printCWD();
-
-    retval = wrefresh(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing window");
-
     std::list<GPSUI::secstring> dir_list;
     std::list<GPSUI::secstring> file_list;
     getEntries(dir_list, file_list);
@@ -195,6 +182,8 @@ FileOpen::run() throw (GPSUI::UIException) {
     std::list<GPSUI::secstring> file_list;
     std::list<GPSUI::secstring> dir_list;
 
+    refresh();
+
     int ch;
     // The big loop
     while(true){
@@ -204,7 +193,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
-		Resizeable::resizeAll();
+		GPSUI::Resizeable::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
 	    case KEY_ENTER:
@@ -222,7 +211,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 		    tmp->run();
 		    delete tmp;
 		}
-		refresh();
+		//refresh();
 	    }
 		break;	    
 	    }
@@ -244,18 +233,34 @@ FileOpen::run() throw (GPSUI::UIException) {
 	    }
 	}
 
+#ifdef HAVE_WRESIZE
+	while ( (ch = input->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = input->focus();
+#endif // HAVE_WRESIZE
 	filename = input->getText();
 
+
 	// The ok button
+#ifdef HAVE_WRESIZE
+	while ( (ch = okbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = okbutton->focus();
+#endif // HAVE_WRESIZE
 	if (ch == '\n' || ch == KEY_ENTER) {
 	    canceled = false;
 	    return;
 	}
 
 	// The cancel button
+#ifdef HAVE_WRESIZE
+	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
+#endif // HAVE_WRESIZE
 	if (ch == '\n' || ch == KEY_ENTER) {
 	    canceled = true;
 	    return;
@@ -265,10 +270,18 @@ FileOpen::run() throw (GPSUI::UIException) {
 
 void
 FileOpen::refresh() throw (GPSUI::UIException) {
+    GPSUI::Colors::setcolor(window, GPSUI::MESSAGEBOX);
+
+
+
+    int retval = box(window, 0, 0);
+    if (retval == ERR)
+	throw GPSUI::UIException("Error drawing box");
+
     printTitle();
     printCWD();
 
-    int retval = wrefresh (window);
+    retval = wrefresh (window);
     if (retval == ERR)
         throw GPSUI::UIException ("Error refreshing window");
 
@@ -286,15 +299,8 @@ FileOpen::resize() throw (GPSUI::UIException) {
     delete input;
     delete okbutton;
     delete cancelbutton;
-    int retval = wclear(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error clearing window");
-
-    retval = wrefresh(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing window");
     
-    retval = delwin(window);
+    int retval = delwin(window);
     if (retval == ERR)
 	throw GPSUI::UIException("Error deleting window");
 

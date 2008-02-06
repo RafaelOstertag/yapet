@@ -44,7 +44,7 @@ namespace GPSUI {
 	    
 	protected:
 	    inline virtual void onClick() {};
-	    void show() throw(UIException);
+	    void createWindow() throw(UIException);
 	    
 	public:
 	    Button(std::string l, int x, int y);

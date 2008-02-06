@@ -115,7 +115,7 @@ InputWidget::createWindow(int sx, int sy, int w) throw(UIException) {
     if (retval == ERR)
 	throw UIException("Error setting keypad on input widget");
 
-    refresh();
+    //refresh();
 }
 
 InputWidget::InputWidget(int sx, int sy, int w, int ml) 
@@ -129,8 +129,8 @@ InputWidget::InputWidget(int sx, int sy, int w, int ml)
 }
 
 InputWidget::~InputWidget() {
-	clearText();
-	wrefresh(window);
+    clearText();
+    wrefresh(window);
     delwin(window);
 }
 
@@ -179,13 +179,18 @@ InputWidget::focus() throw(UIException) {
 	    break;
 #ifdef HAVE_WRESIZE
 	case KEY_RESIZE:
+	    goto BAILOUT;
 	    break;
 #endif // HAVE_WRESIZE
+	case KEY_REFRESH:
+	    Resizeable::refreshAll();
+	    break;
 	default:
 	    processInput(ch);
 	    break;
 	}
     }
+ BAILOUT:
     curs_set(0);
 
     Colors::setcolor(window, INPUTWIDGET_NOFOCUS);

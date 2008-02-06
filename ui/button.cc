@@ -2,28 +2,29 @@
 
 #include "button.h"
 #include "colors.h"
+#include "resizeable.h"
 
 using namespace GPSUI;
 
 void
-Button::show() throw(UIException) {
+Button::createWindow() throw(UIException) {
     window = newwin (1, BASE_SIZE + label.length(), start_y, start_x);
     if (window == NULL)
         throw UIException ("Error creating button");
 
-    refresh();
+    //refresh();
 }
 
 Button::Button (std::string l, int x, int y) : window (NULL),
         label (l),
         start_x (x),
         start_y (y) {
-    show();
+    createWindow();
 }
 
 Button::~Button() {
-	wclear(window);
-	wrefresh(window);
+    wclear(window);
+    wrefresh(window);
     delwin (window);
 }
 
@@ -76,8 +77,7 @@ Button::focus() throw (UIException) {
         throw UIException ("Error setting keypad");
 
     int ch;
-    bool stay_in_loop = true;
-    while (stay_in_loop) {
+    while (true) {
         ch = wgetch (window);
 
         switch (ch) {
@@ -85,18 +85,28 @@ Button::focus() throw (UIException) {
         case KEY_ENTER:
 	    ch = '\n';
             onClick();
-            stay_in_loop = false;
+	    goto BAILOUT;
             break;
         case '\t':
         case KEY_LEFT:
         case KEY_RIGHT:
         case KEY_UP:
         case KEY_DOWN:
-            stay_in_loop = false;
+	    ch = '\t';
+            goto BAILOUT;
             break;
+	case KEY_REFRESH:
+	    Resizeable::refreshAll();
+	    break;
+#ifdef HAVE_WRESIZE
+	case KEY_RESIZE:
+	    goto BAILOUT;
+	    break;
+#endif // HAVE_WRESIZE
         }
     }
 
+ BAILOUT:
     Colors::setcolor(window, BUTTON_NOFOCUS);
 
     mvwprintw (window, 0, 0, "[ %s ]", label.c_str());

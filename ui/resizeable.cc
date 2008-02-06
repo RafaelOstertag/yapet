@@ -59,6 +59,7 @@ Resizeable::resizeAll() {
     std::for_each(resizeable_list.begin(),
 		  resizeable_list.end(),
 		  ResizeIt());
+    refreshAll();
 }
 
 void

@@ -25,6 +25,15 @@
 #include <config.h>
 #endif
 
+#ifdef KEY_REFRESH
+#undef KEY_REFRESH
+enum {
+    KEY_REFRESH = 12
+};
+#endif // KEY_REFRESH
+
+
+
 #ifdef HAVE_CURSES_H
 
 #ifdef box

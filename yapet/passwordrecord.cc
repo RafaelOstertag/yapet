@@ -85,13 +85,54 @@ PasswordRecord::~PasswordRecord() {
 void
 PasswordRecord::run() throw(GPSUI::UIException) {
     while (true) {
-	int ch = name->focus();
-	ch = host->focus();
-	ch = username->focus();
-	ch = password->focus();
-	ch = comment->focus();
+	int ch = 0;
+#ifdef HAVE_WRESIZE
+	while ( (ch = name->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = name->focus();
+#endif // HAVE_WRESIZE
 
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = host->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = host->focus();
+#endif // HAVE_WRESIZE
+
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = username->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = username->focus();
+#endif // HAVE_WRESIZE
+
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = password->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = password->focus();
+#endif // HAVE_WRESIZE
+
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = comment->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = comment->focus();
+#endif // HAVE_WRESIZE
+
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = okbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = okbutton->focus();
+#endif // HAVE_WRESIZE
+
 	if (ch == '\n') {
 	    if (!entryChanged()) {
 		encentry = NULL;
@@ -127,7 +168,13 @@ PasswordRecord::run() throw(GPSUI::UIException) {
 	    }
 	    return;
 	}
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
+#endif // HAVE_WRESIZE
 	if (ch == '\n') {
 	    encentry = NULL;
 	    return;
@@ -137,13 +184,7 @@ PasswordRecord::run() throw(GPSUI::UIException) {
 
 void
 PasswordRecord::resize() throw(GPSUI::UIException) {
-    int retval = wclear(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error clearing window");
-    retval = wrefresh(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing window");
-    retval = delwin(window);
+    int retval = delwin(window);
     if (retval == ERR)
 	throw GPSUI::UIException("Error deleting password entry window");
 

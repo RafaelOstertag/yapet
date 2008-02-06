@@ -28,7 +28,6 @@ PasswordDialog::createWindow() throw(GPSUI::UIException) {
 				     getStartX() + okbutton->getLength() + 2,
 				     getStartY() + getHeight() - 2);
 
-    refresh();
 }
 
 PasswordDialog::PasswordDialog(PWTYPE pt, std::string fn)
@@ -56,12 +55,32 @@ PasswordDialog::~PasswordDialog() {
 
 void
 PasswordDialog::run() throw(GPSUI::UIException) {
+    refresh();
     while (true) {
+	int ch = 0;
+#ifdef HAVE_WRESIZE
+	while ( (ch = pwidget1->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	pwidget1->focus();
-	if (pwtype == NEW_PW)
-	    pwidget2->focus();
+#endif // HAVE_WRESIZE
 
-	int ch = okbutton->focus();
+	// Password input widget 2 only if we prompt for a new password
+	if (pwtype == NEW_PW) {
+#ifdef HAVE_WRESIZE
+	    while ( (ch = pwidget2->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	    pwidget2->focus();
+#endif // HAVE_WRESIZE
+	}
+
+#ifdef HAVE_WRESIZE
+	while ( (ch = okbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
+	ch = okbutton->focus();
+#endif // HAVE_WRESIZE
 	if (ch == '\n') {
 	    if (pwtype == NEW_PW) {
 		if (pwidget1->getText() == pwidget2->getText()) {
@@ -88,8 +107,12 @@ PasswordDialog::run() throw(GPSUI::UIException) {
 		return;
 	    }
 	}
-
+#ifdef HAVE_WRESIZE
+	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
+	    GPSUI::Resizeable::resizeAll();
+#else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
+#endif // HAVE_WRESIZE
 	if (ch == '\n')
 	    return;
     }
@@ -98,13 +121,7 @@ PasswordDialog::run() throw(GPSUI::UIException) {
 
 void
 PasswordDialog::resize() throw(GPSUI::UIException) {
-    int retval = wclear(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error clearing window");
-    retval = wrefresh(window);
-    if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing window");
-    retval = delwin(window);
+    int retval = delwin(window);
     if (retval == ERR)
 	throw GPSUI::UIException("Error deleting password dialog window");
 
@@ -135,7 +152,7 @@ PasswordDialog::refresh() throw(GPSUI::UIException) {
 
     retval = box(window, 0, 0);
     if (retval == ERR)
-	throw GPSUI::UIException("Error adding box");
+    throw GPSUI::UIException("Error adding box");
 
     retval = mymvwaddstr(window, 0, 2, "P A S S W O R D");
     if (retval == ERR)

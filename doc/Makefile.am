@@ -2,7 +2,7 @@
 
 sgml_files = README.sgml.in INSTALL.sgml.in preamble.sgml.in
 
-EXTRA_DIST = Doxyfile.in html/ $(sgml_files)
+EXTRA_DIST = Doxyfile.in html/ 
 
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \

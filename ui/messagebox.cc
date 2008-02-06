@@ -20,8 +20,6 @@ MessageBox::createWindow() throw(UIException) {
 	throw UIException("Error creating message window");
 
     okbutton = new Button("Ok", getStartX() + 1, getStartY() + BASE_HEIGHT -2);
-
-    refresh();
 }
 
 MessageBox::MessageBox(std::string t, std::string m) throw(UIException) : window(NULL),
@@ -33,26 +31,25 @@ MessageBox::MessageBox(std::string t, std::string m) throw(UIException) : window
 
 MessageBox::~MessageBox() {
     delete okbutton;
-	wclear(window);
-	wrefresh(window);
+    wclear(window);
+    wrefresh(window);
     delwin(window);
 }
 
 int
 MessageBox::run() throw(UIException) {
-    return okbutton->focus();
+    refresh();
+    int ch;
+    while ( (ch = okbutton->focus()) == KEY_REFRESH )
+	Resizeable::refreshAll();
+    return ch;
 }
 
 void
 MessageBox::resize() throw(UIException) {
     delete okbutton;
-    int retval = wclear(window);
-    if (retval == ERR)
-	throw UIException("Error clearing message box");
-    retval = wrefresh(window);
-    if (retval == ERR)
-	throw UIException("Error refreshing message box");
-    retval = delwin(window);
+
+    int retval = delwin(window);
     if (retval == ERR)
 	throw UIException("Error deleting message box");
 
@@ -72,12 +69,12 @@ MessageBox::refresh() throw(UIException) {
 
     retval = box(window, 0, 0);
     if (retval == ERR)
-	throw UIException("Error creating box around message window");
+    throw UIException("Error creating box around message window");
 
     Colors::setcolor(window, MESSAGEBOX);
     retval = mymvwaddstr(window, 2, 2, message.c_str());
     if (retval == ERR)
-	throw UIException("Error printing message");
+    throw UIException("Error printing message");
 
     // Title
     Colors::setcolor(window, MESSAGEBOX_TITLE);
@@ -92,4 +89,3 @@ MessageBox::refresh() throw(UIException) {
 
     okbutton->refresh();
 }
-

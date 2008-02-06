@@ -38,6 +38,6 @@ file3_SOURCES = file3.cc
 
 file4_CXXFLAGS = -I$(top_srcdir)/crypt
 file4_LDADD = $(top_builddir)/crypt/libgpcrypt.a
-file4_SOURCES = file3.cc
+file4_SOURCES = file4.cc
 
 

@@ -55,18 +55,7 @@ StatusBar::refresh() {
 
 void
 StatusBar::resize() {
-    int retval = wattroff(statusbar, A_REVERSE);
-    if (retval == ERR)
-	throw GPSUI::UIException("attribute on status bar could not be set");
-    
-    retval = wclear(statusbar);
-    if (retval == ERR)
-        throw GPSUI::UIException ("status bar could not be cleared");
-    retval = wrefresh(statusbar);
-    if (retval == ERR)
-        throw GPSUI::UIException ("status bar could not be refreshed");
-
-    retval = delwin(statusbar);
+    int retval = delwin(statusbar);
     if (retval == ERR)
 	throw GPSUI::UIException("status bar could not be deleted");
 

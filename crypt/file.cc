@@ -1,5 +1,10 @@
 // $Id$
 
+#include "crypt.h"
+#include "record.h"
+#include "structs.h"
+#include "file.h"
+
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
 # include <time.h>
@@ -19,18 +24,33 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "crypt.h"
-#include "record.h"
-#include "structs.h"
-#include "file.h"
+#ifdef HAVE_ALLOCA_H
+# include <alloca.h>
+#elif defined __GNUC__
+# define alloca __builtin_alloca
+#elif defined _AIX
+# define alloca __alloca
+#elif defined _MSC_VER
+# include <malloc.h>
+# define alloca _alloca
+#else
+# include <stddef.h>
+# ifdef  __cplusplus
+extern "C"
+# endif
+void *alloca (size_t);
+#endif
 
 using namespace GPSAFE;
 
 #define CONTROL_STR "ABCDEFGHIJKLMNOPQRSTUVW"
 
+char recog_string[] = "GPS1.0";
+
 void
 File::openCreate() throw(GPSException) {
-    fd = ::open(filename.c_str(), O_RDWR | O_CREAT | O_TRUNC | O_APPEND, S_IRUSR | S_IWUSR);
+    fd = ::open(filename.c_str(),
+		O_RDWR | O_CREAT | O_TRUNC | O_APPEND, S_IRUSR | S_IWUSR);
     if (fd == -1)
 	throw GPSException(strerror(errno));
 }
@@ -94,7 +114,7 @@ File::preparePWSave() throw(GPSException) {
 
 void
 File::seekDataSection() const throw(GPSException) {
-    seekAbs(0);
+    seekAbs(strlen(recog_string));
     size_t len;
     int retval = ::read(fd, &len, sizeof(size_t));
     if (retval == -1)
@@ -138,7 +158,8 @@ File::read() const throw(GPSException) {
 }
 
 void
-File::write(const BDBuffer& buff, bool append, bool force) throw(GPSException, GPSRetryException) {
+File::write(const BDBuffer& buff, bool append, bool force) 
+    throw(GPSException, GPSRetryException) {
     if ( (mtime != lastModified()) && !force)
 	throw GPSRetryException("File has been modified");
 
@@ -190,7 +211,6 @@ File::initFile(const Key& key) throw(GPSException) {
     mtime = lastModified();
 
     writeHeader(header, key);
-    
 
     // Sanity checks
     BDBuffer* buff = readHeader();
@@ -210,14 +230,14 @@ File::initFile(const Key& key) throw(GPSException) {
 }
 
 void
-File::writeHeader(const Record<FileHeader>& header, const Key& key) throw(GPSException) {
-    seekAbs(0);
+File::writeHeader(const Record<FileHeader>& header, const Key& key) 
+    throw(GPSException) {
 
     Crypt crypt(key);
     BDBuffer* buff = NULL;
     try {
 	buff = crypt.encrypt(header);
-	write(*buff);
+	writeHeader(*buff);
     } catch (GPSException& ex) {
 	if (buff != NULL)
 	    delete buff;
@@ -236,12 +256,36 @@ void
 File::writeHeader(const BDBuffer& enc_header) throw(GPSException) {
     seekAbs(0);
 
+    // Write the recognition string
+    ssize_t retval = ::write(fd, recog_string, strlen(recog_string));
+    if (retval != strlen(recog_string) )
+	throw GPSException("Short write on file " + filename);
+
+    if (retval == -1)
+	throw GPSException(strerror(errno));
+
     write(enc_header);
 }
 
 BDBuffer*
 File::readHeader() const throw(GPSException) {
     seekAbs(0);
+
+    char* buff = (char*) alloca(strlen(recog_string));
+    if (buff == NULL)
+	throw GPSException("Memory exhausted");
+
+    int retval = ::read(fd, buff, strlen(recog_string));
+    if (retval != strlen(recog_string) )
+	throw GPSException("File type not recognized");
+
+    if (retval == -1)
+	throw GPSException(strerror(errno));
+
+    retval = memcmp(recog_string, buff, strlen(recog_string));
+    if (retval != 0)
+	throw GPSException("File type not recognized");
+    
     return read();
 }
 
