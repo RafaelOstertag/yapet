@@ -1,7 +1,24 @@
 // $Id$
+//
+// @@REPLACE@@
+// Copyright (C) 2008  Rafael Ostertag
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 
 #ifdef HAVE_NCURSES_H
@@ -26,22 +43,48 @@
 # endif
 #endif
 
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
 #ifdef HAVE_SYS_RESOURCE_H
 # include <sys/resource.h>
 #endif
 
-#include <string.h>
-#include <errno.h>
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
 
-#include <stdio.h>
-#include <iostream>
+#ifdef HAVE_ERRNO_H
+# include <errno.h>
+#endif
+
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#endif
+
+#ifdef HAVE_STRING
+# include <string>
+#endif
 
 #include "colors.h"
 #include "mainwindow.h"
 
-void print_rlimit_err() {
-    
-}
+const char COPYRIGHT[] = "@@REPLACE@@\n" \
+    "Copyright (C) 2008  Rafael Ostertag\n"				\
+    "\n"								\
+    "This program is free software: you can redistribute it and/or modify\n" \
+    "it under the terms of the GNU General Public License as published by\n" \
+    "the Free Software Foundation, either version 3 of the License, or\n" \
+    "(at your option) any later version.\n"				\
+    "\n"								\
+    "This program is distributed in the hope that it will be useful,\n" \
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"	\
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"	\
+    "GNU General Public License for more details.\n"			\
+    "\n"								\
+    "You should have received a copy of the GNU General Public License\n" \
+    "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
 
 void set_rlimit() {
 #if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
@@ -56,21 +99,68 @@ void set_rlimit() {
 		  << "In case a core file is created, it may contain clear text passwords." << std::endl
 		  << std::endl 
 		  << "Press <ENTER> to continue" << std::endl;
-	getchar();
+	char tmp;
+	std::cin >> tmp;
     }
 #else
-	std::cerr << "Cannot suppress the creation of core file." << std::endl 
-		  << "In case a core file is created, it may contain clear text passwords." << std::endl
-		  << std::endl 
-		  << "Press <ENTER> to continue" << std::endl;
-	getchar();
+    std::cerr << "Cannot suppress the creation of core file." << std::endl 
+	      << "In case a core file is created, it may contain clear text passwords." << std::endl
+	      << std::endl 
+	      << "Press <ENTER> to continue" << std::endl;
+    char tmp;
+    std::cin >> tmp;
 #endif
 }
 
-int main (int argc, char** argv) {
-    MainWindow* mainwin = NULL;
+void show_version() {
+    std::cout << PACKAGE_STRING << std::endl;
+}
 
+void show_copyright() {
+    std::cout << COPYRIGHT << std::endl;
+}
+
+void show_help() {
+    show_version();
+    std::cout << std::endl;
+    std::cout << "-c, --copyright\tshow copyright information" << std::endl << std::endl;
+    std::cout << "-f, --file\topen the specified file" << std::endl << std::endl;
+    std::cout << "-h, --help\tshow this help text" << std::endl << std::endl;
+    std::cout << "-V, --version\tshow the version of " PACKAGE_NAME << std::endl << std::endl;
+    std::cout << PACKAGE_NAME " stores passwords encrypted on disk using the blowfish algorithm." << std::endl;
+    std::cout << "The encryption key is computed from the master password using md5, sha1, and" << std::endl;
+    std::cout << "ripemd-160 digest algorithms producing a 448bit (56Bytes) key." << std::endl << std::endl;
+}
+
+int main (int argc, char** argv) {
     set_rlimit();
+
+    int c;
+    std::string filename;
+    
+    while ( (c = getopt(argc, argv, ":c(copyright)h(help)V(version)f:(file)")) != -1) {
+	switch (c) {
+	case 'c':
+	    show_copyright();
+	    return 0;
+	case 'h':
+	    show_help();
+	    return 0;
+	case 'V':
+	    show_version();
+	    return 0;
+	case 'f':
+	    filename = optarg;
+	    break;
+	case ':':
+	    std::cerr << "-" << optopt << " without filename" << std::endl;
+	    return 1;
+	case '?':
+	    std::cerr << "unknown argument " << optopt << std::endl;
+	    return 1;
+	}
+    }
+
 
     initscr();
     raw();
@@ -81,9 +171,11 @@ int main (int argc, char** argv) {
 
     GPSUI::Colors::initColors();
 
+    MainWindow* mainwin = NULL;
     try {
 	mainwin = new MainWindow();
-	mainwin->run();
+	// filename may be empty
+	mainwin->run(filename);
 	delete mainwin;
     } catch (std::exception& ex) {
 	if (mainwin != NULL)

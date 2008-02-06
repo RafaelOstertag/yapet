@@ -1,4 +1,21 @@
 // $Id$
+//
+// @@REPLACE@@
+// Copyright (C) 2008  Rafael Ostertag
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 #include "crypt.h"
 #include "record.h"
@@ -14,15 +31,35 @@
 # else
 #  include <time.h>
 # endif
+#endif // TIME_WITH_SYS_TIME
+
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
 #endif
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <string.h>
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
+
+#ifdef HAVE_ERRNO_H
+# include <errno.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
@@ -35,10 +72,6 @@
 # define alloca _alloca
 #else
 # include <stddef.h>
-# ifdef  __cplusplus
-extern "C"
-# endif
-void *alloca (size_t);
 #endif
 
 using namespace GPSAFE;
@@ -115,29 +148,60 @@ File::preparePWSave() throw(GPSException) {
 void
 File::seekDataSection() const throw(GPSException) {
     seekAbs(strlen(recog_string));
-    size_t len;
-    int retval = ::read(fd, &len, sizeof(size_t));
+    uint32_t len;
+    int retval = ::read(fd, &len, sizeof(uint32_t));
     if (retval == -1)
 	throw GPSException(strerror(errno));
 
-    if (retval < sizeof(size_t))
+    if (retval < sizeof(uint32_t))
 	throw GPSException("Unable to seek to data section");
+
+    len = uint32_from_disk(len);
 
     seekCurr(len);
 }
 
+#ifndef WORDS_BIGENDIAN
+uint32_t
+File::uint32_to_disk(uint32_t i) const {
+    ENDIAN endian;
+    endian.abcd = i;
+
+    uint8_t tmp = endian.dword.b.b;
+    endian.dword.b.b = endian.dword.a.a;
+    endian.dword.a.a = tmp;
+
+    tmp = endian.dword.b.a;
+    endian.dword.b.a = endian.dword.a.b;
+    endian.dword.a.b = tmp;
+    
+    return endian.abcd;
+}
+
+/**
+ * The same swapping as \c uint32_to_disk().
+ */
+uint32_t
+File::uint32_from_disk(uint32_t i) const {
+    return uint32_to_disk(i);
+}
+#endif // WORDS_BIGENDIAN
+
 BDBuffer*
 File::read() const throw(GPSException) {
-    size_t len;
-    int retval = ::read(fd, &len, sizeof(size_t));
+    uint32_t len;
+    int retval = ::read(fd, &len, sizeof(uint32_t));
     if (retval == -1)
 	throw GPSException(strerror(errno));
 
     if (retval == 0)
 	return NULL;
 
-    if (retval < sizeof(size_t) )
+    if (retval < sizeof(uint32_t) )
 	throw GPSException("Short read on file: " + filename);
+
+    // Convert len to the endianess of the architecture
+    len = uint32_from_disk(len);
 
     BDBuffer* buf = new BDBuffer(len);
     retval = ::read(fd, *buf, len);
@@ -168,11 +232,15 @@ File::write(const BDBuffer& buff, bool append, bool force)
 	if ( ((off_t)-1) == pos)
 	    throw GPSException(strerror(errno));
     }
-    size_t s = buff.size();
-    int retval = ::write(fd, &s, sizeof(size_t));
+    uint32_t s = buff.size();
+
+    // Convert s to the on-disk structure
+    s = uint32_to_disk(s);
+
+    int retval = ::write(fd, &s, sizeof(uint32_t));
     if (retval == -1)
 	throw GPSException(strerror(errno));
-    if (retval != sizeof(size_t) )
+    if (retval != sizeof(uint32_t) )
 	throw GPSException("Short write on file: " + filename);
 
     retval = ::write(fd, buff, buff.size());

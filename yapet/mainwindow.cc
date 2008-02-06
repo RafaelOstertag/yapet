@@ -1,10 +1,45 @@
 // $Id$
+//
+// @@REPLACE@@
+// Copyright (C) 2008  Rafael Ostertag
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_ERRNO_H
+# include <errno.h>
+#endif
+
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
 
 #include <button.h>
 #include <dialogbox.h>
@@ -88,15 +123,17 @@ MainWindow::topRightWinContent() throw (GPSUI::UIException) {
 void
 MainWindow::bottomRightWinContent() throw(GPSUI::UIException) {
     if (key == NULL || recordlist == NULL) return;
-    int retval = mymvwaddstr(bottomrightwin, 1, 1, "Cipher: Blowfish");
+
+    int retval = mymvwaddstr(bottomrightwin, 1, 2, "Cipher: Blowfish");
     if (retval == ERR)
 	throw GPSUI::UIException ("waddstr() blew it");
-    retval = mvwprintw(bottomrightwin, 2, 1, "Key: %d bytes (%d bits)", key->size(), key->size()*8);
+    retval = mvwprintw(bottomrightwin, 2, 2, "Key: %d bytes (%d bits)", key->size(), key->size()*8);
     if (retval == ERR)
 	throw GPSUI::UIException ("mvprintw() blew it");
-    retval = mvwprintw(bottomrightwin, 3, 1, "%d entries", recordlist->size());
+    retval = mvwprintw(bottomrightwin, 3, 2, "%d entries ", recordlist->size());
     if (retval == ERR)
 	throw GPSUI::UIException ("mvprintw() blew it");
+
 }
 
 void
@@ -617,7 +654,12 @@ MainWindow::~MainWindow() {
 void
 MainWindow::run() throw (GPSUI::UIException) {
 
-    statusbar.putMsg ("No file loaded");
+    if (file == NULL || key == NULL)
+	statusbar.putMsg ("No file loaded");
+
+    if (file != NULL && key != NULL)
+	statusbar.putMsg(file->getFilename() + " loaded");
+
     refresh();
 
     int ch;
@@ -654,11 +696,17 @@ MainWindow::run() throw (GPSUI::UIException) {
 			tmp = new FileOpen("O P E N  F I L E");
 			tmp->run();
 			if (!tmp->isCanceled()) {
-			    statusbar.putMsg(tmp->getFilepath());
 			    openFile(tmp->getFilepath());
+			    statusbar.putMsg(tmp->getFilepath());
 			}
 		    } catch (std::exception& ex2) {
 			statusbar.putMsg(ex2.what());
+			if (file != NULL)
+			    delete file;
+			if (key != NULL)
+			    delete key;
+			file = NULL;
+			key = NULL;
 		    }
 		    delete tmp;
 		    ::refresh();
@@ -688,3 +736,29 @@ MainWindow::run() throw (GPSUI::UIException) {
 	}
     }
 }
+
+void
+MainWindow::run(std::string fn) {
+    if (fn.empty()) {
+	run();
+	return;
+    }
+
+    refresh();
+
+    try {
+	openFile(fn);
+    } catch (std::exception& ex2) {
+	statusbar.putMsg(ex2.what());
+	if (file != NULL)
+	    delete file;
+	if (key != NULL)
+	    delete key;
+	file = NULL;
+	key = NULL;
+    }
+    ::refresh();
+
+    run();
+}
+

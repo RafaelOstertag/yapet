@@ -1,11 +1,28 @@
 // $Id$
+//
+// @@REPLACE@@
+// Copyright (C) 2008  Rafael Ostertag
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 #include "bdbuffer.h"
 
 using namespace GPSAFE;
 
 uint8_t*
-BDBuffer::alloc_mem(size_t s) throw(GPSException) {
+BDBuffer::alloc_mem(uint32_t s) throw(GPSException) {
     uint8_t* tmp = (uint8_t*) malloc(s);
     if (tmp == NULL)
 	throw GPSException("Memory exhausted");
@@ -14,12 +31,12 @@ BDBuffer::alloc_mem(size_t s) throw(GPSException) {
 }
 
 void
-BDBuffer::free_mem(uint8_t* d, size_t s) {
+BDBuffer::free_mem(uint8_t* d, uint32_t s) {
     memset(d, 0, s);
     free(d);
 }
 
-BDBuffer::BDBuffer(size_t is) throw(GPSException) : _size(is) {
+BDBuffer::BDBuffer(uint32_t is) throw(GPSException) : _size(is) {
     data = alloc_mem(_size);
 }
 
@@ -43,7 +60,7 @@ BDBuffer::~BDBuffer() {
 }
 
 void
-BDBuffer::resize(size_t ns) throw(GPSException) {
+BDBuffer::resize(uint32_t ns) throw(GPSException) {
     if (data == NULL) {
 	data = alloc_mem(ns);
 	_size = ns;
@@ -65,7 +82,7 @@ BDBuffer::resize(size_t ns) throw(GPSException) {
 
 
 uint8_t*
-BDBuffer::at(size_t pos) throw(std::out_of_range) {
+BDBuffer::at(uint32_t pos) throw(std::out_of_range) {
     if (pos > _size)
 	throw std::out_of_range("Position out of range");
 
@@ -73,7 +90,7 @@ BDBuffer::at(size_t pos) throw(std::out_of_range) {
 }
 
 const uint8_t*
-BDBuffer::at(size_t pos) const throw(std::out_of_range) {
+BDBuffer::at(uint32_t pos) const throw(std::out_of_range) {
     if (pos > _size)
 	throw std::out_of_range("Position out of range");
 
