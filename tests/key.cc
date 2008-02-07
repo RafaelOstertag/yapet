@@ -8,7 +8,7 @@
 
 int main() {
     try {
-	GPSAFE::Key key("JustATestPasswordForKeepingSecret");
+	YAPET::Key key("JustATestPasswordForKeepingSecret");
 
     for(unsigned int i=0; i < key.size(); i++)
 	printf("%02x", key()[i]);

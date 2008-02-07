@@ -10,14 +10,14 @@ struct tmp {
 int main(int argc, char** argv) {
 
     tmp t;
-    GPSAFE::Record<tmp> record(t);
+    YAPET::Record<tmp> record(t);
     if (record.size() != 25) {
 	return 1;
     }
 
-    GPSAFE::Record<tmp> record2(record);
+    YAPET::Record<tmp> record2(record);
 
-    GPSAFE::Record<tmp> record3(t);
+    YAPET::Record<tmp> record3(t);
 
     record3 = record2 = record;
 

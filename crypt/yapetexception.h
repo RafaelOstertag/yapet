@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _GPSEXCEPTION_H
-#define _GPSEXCEPTION_H
+#ifndef _YAPETEXCEPTION_H
+#define _YAPETEXCEPTION_H
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -34,14 +34,14 @@
 # include <string>
 #endif
 
-namespace GPSAFE {
+namespace YAPET {
 
     /**
      * @brief The exception class used for cryptographic classes.
      *
      * The exception base class used for cryptographic classes.
      */
-    class GPSException : public std::exception {
+    class YAPETException : public std::exception {
 	private:
 	    std::string message;
 	    
@@ -51,7 +51,7 @@ namespace GPSAFE {
 	     *
 	     * Initializes a default exception message
 	     */
-	    inline GPSException() 
+	    inline YAPETException() 
 		throw() : exception(),
 			  message("Generic exception message") {}
 	    /**
@@ -61,14 +61,14 @@ namespace GPSAFE {
 	     *
 	     * @param msg the message of the exception
 	     */
-	    inline GPSException(std::string msg) 
+	    inline YAPETException(std::string msg) 
 		throw() : exception(),
 			  message(msg) {}
-	    inline GPSException(const GPSException& ex) throw() {
+	    inline YAPETException(const YAPETException& ex) throw() {
 		message = ex.message;
 	    }
-	    inline virtual ~GPSException() throw() { /* empty */ }
-	    inline const GPSException& operator=(const GPSException& ex)
+	    inline virtual ~YAPETException() throw() { /* empty */ }
+	    inline const YAPETException& operator=(const YAPETException& ex)
 		throw() {
 		if (this == &ex) return *this;
 		message = ex.message;
@@ -87,20 +87,20 @@ namespace GPSAFE {
      *
      * @sa File
      */
-    class GPSRetryException : public GPSException {
+    class YAPETRetryException : public YAPETException {
 	public:
-	    inline GPSRetryException() 
-		throw() : GPSException("Retry") {}
-	    inline GPSRetryException(std::string msg)
-		throw() : GPSException(msg) {}
-	    inline GPSRetryException(const GPSRetryException& ex)
-		throw() : GPSException(ex) {}
-	    inline virtual ~GPSRetryException() throw() { /* Empty */ }
+	    inline YAPETRetryException() 
+		throw() : YAPETException("Retry") {}
+	    inline YAPETRetryException(std::string msg)
+		throw() : YAPETException(msg) {}
+	    inline YAPETRetryException(const YAPETRetryException& ex)
+		throw() : YAPETException(ex) {}
+	    inline virtual ~YAPETRetryException() throw() { /* Empty */ }
 
-	    inline const GPSRetryException
-	    operator=(const GPSRetryException& ex) throw() {
+	    inline const YAPETRetryException
+	    operator=(const YAPETRetryException& ex) throw() {
 		if (this == &ex) return *this;
-		GPSException::operator=(ex);
+		YAPETException::operator=(ex);
 		return *this;
 	    }
     };
@@ -111,20 +111,20 @@ namespace GPSAFE {
      * This function indicates an error while encrypting/decrypting
      * data.
      */
-    class GPSEncryptionException : public GPSException {
+    class YAPETEncryptionException : public YAPETException {
 	public:
-	    inline GPSEncryptionException()
-		throw() : GPSException("Encryption error") {}
-	    inline GPSEncryptionException(std::string msg)
-		throw() : GPSException(msg) {}
-	    inline GPSEncryptionException(const GPSEncryptionException& ex)
-		throw() : GPSException(ex) {}
-	    inline virtual ~GPSEncryptionException() throw() { /* Empty */ }
+	    inline YAPETEncryptionException()
+		throw() : YAPETException("Encryption error") {}
+	    inline YAPETEncryptionException(std::string msg)
+		throw() : YAPETException(msg) {}
+	    inline YAPETEncryptionException(const YAPETEncryptionException& ex)
+		throw() : YAPETException(ex) {}
+	    inline virtual ~YAPETEncryptionException() throw() { /* Empty */ }
 
-	    inline const GPSEncryptionException
-	    operator=(const GPSEncryptionException& ex) throw() {
+	    inline const YAPETEncryptionException
+	    operator=(const YAPETEncryptionException& ex) throw() {
 		if (this == &ex) return *this;
-		GPSException::operator=(ex);
+		YAPETException::operator=(ex);
 		return *this;
 	    }
     };
@@ -137,27 +137,27 @@ namespace GPSAFE {
      *
      * @sa File
      */
-    class GPSInvalidPasswordException : public GPSException {
+    class YAPETInvalidPasswordException : public YAPETException {
 	public:
-	    inline GPSInvalidPasswordException()
-		throw() : GPSException("Invalid password") {}
-	    inline GPSInvalidPasswordException(std::string msg)
-		throw() : GPSException(msg) {}
+	    inline YAPETInvalidPasswordException()
+		throw() : YAPETException("Invalid password") {}
+	    inline YAPETInvalidPasswordException(std::string msg)
+		throw() : YAPETException(msg) {}
 
 	    inline
-	    GPSInvalidPasswordException(const GPSInvalidPasswordException& ex)
-		throw() : GPSException(ex) {}
-	    inline virtual ~GPSInvalidPasswordException()
+	    YAPETInvalidPasswordException(const YAPETInvalidPasswordException& ex)
+		throw() : YAPETException(ex) {}
+	    inline virtual ~YAPETInvalidPasswordException()
 		throw() { /* Empty */ }
 
-	    inline const GPSInvalidPasswordException
-	    operator=(const GPSInvalidPasswordException& ex) throw() {
+	    inline const YAPETInvalidPasswordException
+	    operator=(const YAPETInvalidPasswordException& ex) throw() {
 		if (this == &ex) return *this;
-		GPSException::operator=(ex);
+		YAPETException::operator=(ex);
 		return *this;
 	    }
     };
 						 
 }
 
-#endif // _GPSEXCEPTION_H
+#endif // _YAPETEXCEPTION_H

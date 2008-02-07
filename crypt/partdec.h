@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -32,11 +32,11 @@
 
 #include "record.h"
 #include "key.h"
-#include "gpsexception.h"
+#include "yapetexception.h"
 #include "bdbuffer.h"
 #include "structs.h"
 
-namespace GPSAFE {
+namespace YAPET {
     /** Holds a partially decrypted record
      * 
      * Partially decrypted records have their name stored plaintext.
@@ -50,17 +50,17 @@ namespace GPSAFE {
 	    PartDec();
 
 	    PartDec(BDBuffer& bd,
-		    const Key& key) throw(GPSException);
+		    const Key& key) throw(YAPETException);
 
 	    PartDec(Record<PasswordRecord>& pr,
-		    const Key& key) throw(GPSException);
+		    const Key& key) throw(YAPETException);
 
 	    PartDec(const PartDec& pd);
 
 	    ~PartDec();
 
 	    void setRecord(Record<PasswordRecord>& pr,
-			   const Key& key) throw(GPSException);
+			   const Key& key) throw(YAPETException);
 	    const BDBuffer& getEncRecord() const { return enc_data; }
 	    const uint8_t* getName() const { return name; }
 	    const char* c_str() const { return (char*)name; }

@@ -1,6 +1,6 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([GPSafe],[0.1],[rafi@guengel.ch])
+AC_INIT([YAPET],[0.1],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE
 AC_REVISION([$Rev$])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -71,7 +71,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt])
+AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt rename])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat],[],[])
@@ -128,7 +128,7 @@ AC_C_BIGENDIAN
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
 
 AC_CONFIG_FILES([Makefile
-	gpsafe/Makefile
+	yapet/Makefile
 	ui/Makefile
 	crypt/Makefile
 	tests/Makefile

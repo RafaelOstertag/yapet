@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -34,31 +34,30 @@
 # include <list>
 #endif
 
-#include "gpsexception.h"
+#include "yapetexception.h"
 
 #include "bdbuffer.h"
 #include "structs.h"
 #include "key.h"
 #include "partdec.h"
 
-namespace GPSAFE {
+namespace YAPET {
 
     class File {
 	private:
 	    int fd;
-	    bool isopen;
 	    std::string filename;
 	    time_t mtime;
 
-	    void openCreate() throw(GPSException);
-	    void openNoCreate() throw(GPSException);
+	    void openCreate() throw(YAPETException);
+	    void openNoCreate() throw(YAPETException);
 
-	    time_t lastModified() const throw(GPSException);
+	    time_t lastModified() const throw(YAPETException);
 
-	    void seekCurr(off_t offset) const throw(GPSException);
-	    void seekAbs(off_t offset) const throw(GPSException);
+	    void seekCurr(off_t offset) const throw(YAPETException);
+	    void seekAbs(off_t offset) const throw(YAPETException);
 
-	    void preparePWSave() throw(GPSException);
+	    void preparePWSave() throw(YAPETException);
 	    
 	protected:
 	    struct WORD {
@@ -87,32 +86,44 @@ namespace GPSAFE {
 	    inline uint32_t uint32_from_disk(uint32_t i) const { return i; }
 #endif // WORDS_BIGENDIAN
 
-	    void seekDataSection() const throw(GPSException);
+	    void seekDataSection() const throw(YAPETException);
 
-	    BDBuffer* read() const throw(GPSException);
+	    BDBuffer* read() const throw(YAPETException);
 
-	    void write(const BDBuffer& buff, bool append=false, bool force=false) throw(GPSException, GPSRetryException);
+	    void write(const BDBuffer& buff,
+		       bool forceappend=false,
+		       bool forcewrite=false)
+		throw(YAPETException, YAPETRetryException);
 
-	    bool isempty() const throw(GPSException);
+	    bool isempty() const throw(YAPETException);
 
-	    void initFile(const Key& key) throw(GPSException);
+	    void initFile(const Key& key) throw(YAPETException);
 	    
-	    void writeHeader(const Record<FileHeader>& header, const Key& key) throw(GPSException);
-	    void writeHeader(const BDBuffer& enc_header) throw(GPSException);
-	    BDBuffer* readHeader() const throw(GPSException);
+	    void writeHeader(const Record<FileHeader>& header,
+			     const Key& key)
+		throw(YAPETException);
 
-	    void validateKey(const Key& key) throw(GPSException,GPSInvalidPasswordException);
+	    void writeHeader(const BDBuffer& enc_header) throw(YAPETException);
+	    BDBuffer* readHeader() const throw(YAPETException);
+
+	    void validateKey(const Key& key)
+		throw(YAPETException,YAPETInvalidPasswordException);
 
 	public:
-	    File(const std::string& fn, const Key& key, bool create=false) throw(GPSException);
-	    File(const File& f) throw(GPSException);
+	    File(const std::string& fn,
+		 const Key& key,
+		 bool create=false)
+		throw(YAPETException);
+	    File(const File& f) throw(YAPETException);
 	    ~File();
 
-	    void save(std::list<PartDec>& records) throw(GPSException);
-	    std::list<PartDec> read(const Key& key) const throw(GPSException);
+	    void save(std::list<PartDec>& records) throw(YAPETException);
+	    std::list<PartDec> read(const Key& key) const throw(YAPETException);
 	    std::string getFilename() const { return filename; }
+	    void setNewKey(const Key& oldkey, const Key& newkey)
+		throw(YAPETException);
 	    
-	    const File& operator=(const File& f) throw(GPSException);
+	    const File& operator=(const File& f) throw(YAPETException);
     };
 }
 #endif // _FILE_H

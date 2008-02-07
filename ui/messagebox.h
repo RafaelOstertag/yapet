@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@
 #include "resizeable.h"
 #include "button.h"
 
-namespace GPSUI {
+namespace YAPETUI {
 
     class MessageBox : protected Resizeable {
 	private:

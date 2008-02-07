@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 
 #include "passwordwidget.h"
 
-using namespace GPSUI;
+using namespace YAPETUI;
 
 PasswordWidget::PasswordWidget(int sx, int sy, int w, int ml) 
     throw(UIException) : InputWidget(sx, sy, w, ml) {}

@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@
 #include "colors.h"
 #include "mainwindow.h"
 
-const char COPYRIGHT[] = "@@REPLACE@@\n" \
+const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
     "Copyright (C) 2008  Rafael Ostertag\n"				\
     "\n"								\
     "This program is free software: you can redistribute it and/or modify\n" \
@@ -94,19 +94,26 @@ void set_rlimit() {
     rl.rlim_max = 0;
     int retval = setrlimit(RLIMIT_CORE, &rl);
     if (retval != 0) {
-	std::cerr << "Failed to suppress the creation of core file." << std::endl 
-		  << "The error message is: " << strerror(errno) << std::endl
-		  << "In case a core file is created, it may contain clear text passwords." << std::endl
+	std::cerr << "Failed to suppress the creation of core file." 
 		  << std::endl 
-		  << "Press <ENTER> to continue" << std::endl;
+		  << "The error message is: " << strerror(errno) 
+		  << std::endl
+		  << "In case a core file is created, it may contain clear text passwords."
+		  << std::endl
+		  << std::endl 
+		  << "Press <ENTER> to continue"
+		  << std::endl;
 	char tmp;
 	std::cin >> tmp;
     }
 #else
-    std::cerr << "Cannot suppress the creation of core file." << std::endl 
-	      << "In case a core file is created, it may contain clear text passwords." << std::endl
+    std::cerr << "Cannot suppress the creation of core file."
 	      << std::endl 
-	      << "Press <ENTER> to continue" << std::endl;
+	      << "In case a core file is created, it may contain clear text passwords."
+	      << std::endl
+	      << std::endl 
+	      << "Press <ENTER> to continue"
+	      << std::endl;
     char tmp;
     std::cin >> tmp;
 #endif
@@ -120,16 +127,32 @@ void show_copyright() {
     std::cout << COPYRIGHT << std::endl;
 }
 
-void show_help() {
+void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
-    std::cout << "-c, --copyright\tshow copyright information" << std::endl << std::endl;
-    std::cout << "-f, --file\topen the specified file" << std::endl << std::endl;
-    std::cout << "-h, --help\tshow this help text" << std::endl << std::endl;
-    std::cout << "-V, --version\tshow the version of " PACKAGE_NAME << std::endl << std::endl;
-    std::cout << PACKAGE_NAME " stores passwords encrypted on disk using the blowfish algorithm." << std::endl;
-    std::cout << "The encryption key is computed from the master password using md5, sha1, and" << std::endl;
-    std::cout << "ripemd-160 digest algorithms producing a 448bit (56Bytes) key." << std::endl << std::endl;
+    std::cout << prgname
+	      << " [-c, -h, -V, -f <filename>]"
+	      << std::endl
+	      << std::endl;
+    std::cout << "-c, --copyright\tshow copyright information"
+	      << std::endl
+	      << std::endl;
+    std::cout << "-f, --file\topen the specified file <filename>"
+	      << std::endl
+	      << std::endl;
+    std::cout << "-h, --help\tshow this help text"
+	      << std::endl
+	      << std::endl;
+    std::cout << "-V, --version\tshow the version of " PACKAGE_NAME
+	      << std::endl
+	      << std::endl;
+    std::cout << PACKAGE_NAME " stores passwords encrypted on disk using the blowfish algorithm."
+	      << std::endl;
+    std::cout << "The encryption key is computed from the master password using md5, sha1, and"
+	      << std::endl;
+    std::cout << "ripemd-160 digest algorithms producing a 448 bit (56 bytes) key."
+	      << std::endl
+	      << std::endl;
 }
 
 int main (int argc, char** argv) {
@@ -144,7 +167,7 @@ int main (int argc, char** argv) {
 	    show_copyright();
 	    return 0;
 	case 'h':
-	    show_help();
+	    show_help(argv[0]);
 	    return 0;
 	case 'V':
 	    show_version();
@@ -153,10 +176,12 @@ int main (int argc, char** argv) {
 	    filename = optarg;
 	    break;
 	case ':':
-	    std::cerr << "-" << optopt << " without filename" << std::endl;
+	    std::cerr << "-" << (char)optopt << " without filename"
+		      << std::endl;
 	    return 1;
 	case '?':
-	    std::cerr << "unknown argument " << optopt << std::endl;
+	    std::cerr << "unknown argument " << (char)optopt
+		      << std::endl;
 	    return 1;
 	}
     }
@@ -169,7 +194,7 @@ int main (int argc, char** argv) {
     curs_set(0);
     keypad (stdscr, TRUE);
 
-    GPSUI::Colors::initColors();
+    YAPETUI::Colors::initColors();
 
     MainWindow* mainwin = NULL;
     try {

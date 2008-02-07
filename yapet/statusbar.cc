@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,26 +20,26 @@
 #include "statusbar.h"
 
 void
-StatusBar::createWindow() throw(GPSUI::UIException){
+StatusBar::createWindow() throw(YAPETUI::UIException){
     if (statusbar != NULL)
-	throw GPSUI::UIException("May you consider deleting the window before allocating");
+	throw YAPETUI::UIException("May you consider deleting the window before allocating");
 
     statusbar = newwin (1, maxX(), maxY() - 1, minX());
     if (statusbar == NULL)
-        throw GPSUI::UIException ("statusbar could not be initialized");
+        throw YAPETUI::UIException ("statusbar could not be initialized");
 
     int retval = wattron (statusbar, A_REVERSE);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error setting attribute");
+        throw YAPETUI::UIException ("Error setting attribute");
 
     retval = wbkgd (statusbar, ' ' | A_REVERSE);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error setting the statusbar background");
+        throw YAPETUI::UIException ("Error setting the statusbar background");
 
     refresh();
 }
 
-StatusBar::StatusBar() throw (GPSUI::UIException) : Resizeable(),
+StatusBar::StatusBar() throw (YAPETUI::UIException) : Resizeable(),
 						    statusbar(NULL) {
     createWindow();
 }
@@ -50,17 +50,17 @@ StatusBar::~StatusBar() {
 }
 
 void
-StatusBar::putMsg (std::string msg) throw (GPSUI::UIException) {
+StatusBar::putMsg (std::string msg) throw (YAPETUI::UIException) {
     message = msg;
     int retval = wclear (statusbar);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error erasing status bar");
+        throw YAPETUI::UIException ("Error erasing status bar");
     retval = mywaddstr (statusbar, message.c_str());
     if (retval == ERR)
-        throw GPSUI::UIException ("Error adding status message");
+        throw YAPETUI::UIException ("Error adding status message");
     retval = wrefresh(statusbar);
     if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing status bar");
+	throw YAPETUI::UIException("Error refreshing status bar");
 }
 
 void
@@ -73,7 +73,7 @@ void
 StatusBar::resize() {
     int retval = delwin(statusbar);
     if (retval == ERR)
-	throw GPSUI::UIException("status bar could not be deleted");
+	throw YAPETUI::UIException("status bar could not be deleted");
 
     statusbar = NULL;
 

@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ enum PWTYPE {
     EXISTING_PW
 };
 
-class PasswordDialog : protected GPSUI::Resizeable {
+class PasswordDialog : protected YAPETUI::Resizeable {
     private:
 	enum {
 	    HEIGHT_NEW = 9,
@@ -60,12 +60,12 @@ class PasswordDialog : protected GPSUI::Resizeable {
 	};
 
 	WINDOW* window;
-	GPSUI::PasswordWidget* pwidget1;
-	GPSUI::PasswordWidget* pwidget2;
-	GPSUI::Button* okbutton;
-	GPSUI::Button* cancelbutton;
+	YAPETUI::PasswordWidget* pwidget1;
+	YAPETUI::PasswordWidget* pwidget2;
+	YAPETUI::Button* okbutton;
+	YAPETUI::Button* cancelbutton;
 	PWTYPE pwtype;
-	GPSAFE::Key* key;
+	YAPET::Key* key;
 
 	std::string filename;
 
@@ -91,19 +91,19 @@ class PasswordDialog : protected GPSUI::Resizeable {
 	    return maxY()/2 - getHeight()/2;
 	}
 	    
-	void createWindow() throw(GPSUI::UIException);
+	void createWindow() throw(YAPETUI::UIException);
 
     public:
-	PasswordDialog(PWTYPE pt, std::string fn) throw(GPSUI::UIException);
+	PasswordDialog(PWTYPE pt, std::string fn) throw(YAPETUI::UIException);
 	~PasswordDialog();
 
-	void run() throw(GPSUI::UIException);
+	void run() throw(YAPETUI::UIException);
 	/**
 	 * Caller is responsible for freeing the key
 	 */
-	GPSAFE::Key* getKey() const { return key; }
-	void resize() throw(GPSUI::UIException);
-	void refresh() throw(GPSUI::UIException);
+	YAPET::Key* getKey() const { return key; }
+	void resize() throw(YAPETUI::UIException);
+	void refresh() throw(YAPETUI::UIException);
 };
 
 #endif // _PASSWORDDIALOG_H

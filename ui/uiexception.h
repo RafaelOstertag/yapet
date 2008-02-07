@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@
 # include <string>
 #endif
 
-namespace GPSUI {
+namespace YAPETUI {
 
     class UIException : public std::exception {
 	private:

@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,14 +22,14 @@
 #include "record.h"
 #include "crypt.h"
 
-using namespace GPSAFE;
+using namespace YAPET;
 
 PartDec::PartDec() {
     memset(name, 0, NAME_SIZE);
 }
 
 PartDec::PartDec(BDBuffer& bd, const Key& key)
-    throw(GPSException) : enc_data(bd) {
+    throw(YAPETException) : enc_data(bd) {
    
     Crypt crypt(key);
     Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord>(bd);
@@ -39,7 +39,7 @@ PartDec::PartDec(BDBuffer& bd, const Key& key)
     delete dec_pw_rec;
 }
 
-PartDec::PartDec(Record<PasswordRecord>& pr, const Key& key) throw(GPSException) {
+PartDec::PartDec(Record<PasswordRecord>& pr, const Key& key) throw(YAPETException) {
     setRecord(pr, key);
 }
 
@@ -52,7 +52,7 @@ PartDec::~PartDec() {
 }
 
 void
-PartDec::setRecord(Record<PasswordRecord>& pr, const Key& key) throw(GPSException) {
+PartDec::setRecord(Record<PasswordRecord>& pr, const Key& key) throw(YAPETException) {
 
     PasswordRecord* ptr_pr = pr;
     memcpy(name, ptr_pr->name, NAME_SIZE);

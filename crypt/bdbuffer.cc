@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 
 #include "bdbuffer.h"
 
-using namespace GPSAFE;
+using namespace YAPET;
 
 /**
  * Allocates \c s bytes of memory on the heap.
@@ -28,13 +28,13 @@ using namespace GPSAFE;
  *
  * @return the pointer to the start of the allocated memory.
  *
- * @throw GPSException if the memory could not be allocated.
+ * @throw YAPETException if the memory could not be allocated.
  */
 uint8_t*
-BDBuffer::alloc_mem(uint32_t s) throw(GPSException) {
+BDBuffer::alloc_mem(uint32_t s) throw(YAPETException) {
     uint8_t* tmp = (uint8_t*) malloc(s);
     if (tmp == NULL)
-	throw GPSException("Memory exhausted");
+	throw YAPETException("Memory exhausted");
 
     return tmp;
 }
@@ -59,7 +59,7 @@ BDBuffer::free_mem(uint8_t* d, uint32_t s) {
  *
  * @param is number of bytes to be allocated.
  */
-BDBuffer::BDBuffer(uint32_t is) throw(GPSException) : _size(is) {
+BDBuffer::BDBuffer(uint32_t is) throw(YAPETException) : _size(is) {
     data = alloc_mem(_size);
 }
 
@@ -71,7 +71,7 @@ BDBuffer::BDBuffer(uint32_t is) throw(GPSException) : _size(is) {
  */
 BDBuffer::BDBuffer() : _size(0), data(NULL) { }
 
-BDBuffer::BDBuffer(const BDBuffer& ed) throw(GPSException) {
+BDBuffer::BDBuffer(const BDBuffer& ed) throw(YAPETException) {
     if (ed.data == NULL) {
 	data = NULL;
 	_size = 0;
@@ -108,7 +108,7 @@ BDBuffer::~BDBuffer() {
  * @param ns the new size of the memory chunk serving as buffer
  */
 void
-BDBuffer::resize(uint32_t ns) throw(GPSException) {
+BDBuffer::resize(uint32_t ns) throw(YAPETException) {
     if (data == NULL) {
 	data = alloc_mem(ns);
 	_size = ns;

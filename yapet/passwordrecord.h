@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -48,22 +48,22 @@
 #include <button.h>
 #include <passwordwidget.h>
 
-class PasswordRecord : protected GPSUI::Resizeable {
+class PasswordRecord : protected YAPETUI::Resizeable {
     private:
 	enum {
 	    HEIGHT = 14
 	};
 
 	WINDOW* window;
-	GPSUI::InputWidget* name;
-	GPSUI::InputWidget* host;
-	GPSUI::InputWidget* username;
-	GPSUI::InputWidget* password;
-	GPSUI::InputWidget* comment;
-	GPSUI::Button* okbutton;
-	GPSUI::Button* cancelbutton;
-	GPSAFE::Key* key;
-	GPSAFE::PartDec* encentry;
+	YAPETUI::InputWidget* name;
+	YAPETUI::InputWidget* host;
+	YAPETUI::InputWidget* username;
+	YAPETUI::InputWidget* password;
+	YAPETUI::InputWidget* comment;
+	YAPETUI::Button* okbutton;
+	YAPETUI::Button* cancelbutton;
+	YAPET::Key* key;
+	YAPET::PartDec* encentry;
 
 	inline PasswordRecord(const PasswordRecord&) {}
 	inline const PasswordRecord& operator=(const PasswordRecord&) { return *this; }
@@ -84,19 +84,19 @@ class PasswordRecord : protected GPSUI::Resizeable {
 	    return maxY()/2 - getHeight()/2;
 	}
 	    
-	void createWindow() throw(GPSUI::UIException);
+	void createWindow() throw(YAPETUI::UIException);
 
     public:
-	PasswordRecord(GPSAFE::Key& k, GPSAFE::PartDec* pe) throw(GPSUI::UIException);
+	PasswordRecord(YAPET::Key& k, YAPET::PartDec* pe) throw(YAPETUI::UIException);
 	~PasswordRecord();
 
-	void run() throw(GPSUI::UIException);
-	void resize() throw(GPSUI::UIException);
-	void refresh() throw(GPSUI::UIException);
+	void run() throw(YAPETUI::UIException);
+	void resize() throw(YAPETUI::UIException);
+	void refresh() throw(YAPETUI::UIException);
 	/**
 	 * Caller is responsible for freeing the pointer returned
 	 */
-	inline GPSAFE::PartDec* getEncEntry() const { return encentry; }
+	inline YAPET::PartDec* getEncEntry() const { return encentry; }
 	inline bool entryChanged() const {
 	    return name->isTextChanged() ||
 		host->isTextChanged() ||

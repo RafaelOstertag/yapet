@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -38,9 +38,9 @@
 # include <stdexcept>
 #endif
 
-#include "gpsexception.h"
+#include "yapetexception.h"
 
-namespace GPSAFE {
+namespace YAPET {
     /**
      * @brief A wrapper-class for allocating and securely dellocating
      * memory
@@ -75,20 +75,20 @@ namespace GPSAFE {
 
 	protected:
 	    //! Allocates memory of a given size
-	    uint8_t* alloc_mem(uint32_t s) throw(GPSException);
+	    uint8_t* alloc_mem(uint32_t s) throw(YAPETException);
 	    //! Clears and frees memory
 	    void free_mem(uint8_t* d, uint32_t s);
 
 	public:
 	    //! Initializes the object with a given size of memory
-	    BDBuffer(uint32_t is) throw(GPSException);
+	    BDBuffer(uint32_t is) throw(YAPETException);
 	    BDBuffer();
-	    BDBuffer(const BDBuffer& ed) throw(GPSException);
+	    BDBuffer(const BDBuffer& ed) throw(YAPETException);
 	    //! Destructor
 	    ~BDBuffer();
 
 	    //! Resize the memory to a given size
-	    void resize(uint32_t ns) throw(GPSException);
+	    void resize(uint32_t ns) throw(YAPETException);
 	    /**
 	     * @brief Get the size of the buffer
 	     *

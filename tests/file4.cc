@@ -14,36 +14,21 @@
 #include <partdec.h>
 #include <file.h>
 
-void print_record(GPSAFE::PartDec& pd, const GPSAFE::Key& key) {
-    GPSAFE::Crypt crypt(key);
+#include "tests.h"
 
-    std::cout << "PartDec Name:\t" << pd.getName() << std::endl;
-    
-    const GPSAFE::BDBuffer& enc_rec = pd.getEncRecord();
-    GPSAFE::Record<GPSAFE::PasswordRecord>* ptr_dec_rec = crypt.decrypt<GPSAFE::PasswordRecord>(enc_rec);
-    GPSAFE::PasswordRecord* ptr_pw = *ptr_dec_rec;
-
-    std::cout << "\tName:\t" << ptr_pw->name << std::endl;
-    std::cout << "\tHost:\t" << ptr_pw->host << std::endl;
-    std::cout << "\tUname:\t" << ptr_pw->username << std::endl;
-    std::cout << "\tPW:\t" << ptr_pw->password << std::endl;
-    std::cout << "\tCMT:\t" << ptr_pw->comment << std::endl;
-    std::cout << std::endl;
-
-    delete ptr_dec_rec;
-}
-
-#define FN "encryptiontest.gps"
 int main(int, char**) {
+    std::cout << "Be patient, this test may take a few minutes ..." << std::endl;
     try {
-	GPSAFE::Key key("JustAPassword");
-	GPSAFE::File file(FN, key, false);
-	std::list<GPSAFE::PartDec> list = file.read(key);
+	YAPET::Key key("JustAPassword");
+	YAPET::File file(FN, key, false);
+	std::list<YAPET::PartDec> list = file.read(key);
+	if (list.size() != ROUNDS)
+	    return 1;
 
-	std::list<GPSAFE::PartDec>::iterator it = list.begin();
+	std::list<YAPET::PartDec>::iterator it = list.begin();
 
-	while(it != list.end()) {
-	    print_record(*it, key);
+	for(int i=0; it != list.end(); i++) {
+	    check_record(*it, key, i);
 	    it++;
 	}
 	

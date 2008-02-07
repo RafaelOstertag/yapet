@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -43,63 +43,89 @@
 #endif
 #endif // HAVE_PATHCONF
 
-#include <algorithm>
+#ifdef HAVE_ALGORITHM
+# include <algorithm>
+#endif
 
 #include <messagebox.h>
 #include <colors.h>
-
 #include "fileopen.h"
 
+inline 
+bool endswith(YAPETUI::secstring h, YAPETUI::secstring n) {
+    if (n.length() > h.length())
+	return false;
+
+    if ( h.substr(h.length()-n.length(),n.length()) == n)
+	return true;
+
+    return false;
+}
+
+inline
+bool endswith(std::string h, std::string n) {
+    if (n.length() > h.length())
+	return false;
+
+    if ( h.substr(h.length()-n.length(),n.length()) == n)
+	return true;
+
+    return false;
+}
+    
 
 
 void
-FileOpen::createWindows() throw (GPSUI::UIException) {
+FileOpen::createWindows() throw (YAPETUI::UIException) {
     if (window != NULL) return;
 
     window = newwin (windowHeight(), windowWidth(), startY(), startX());
     if (window == NULL)
-        throw GPSUI::UIException ("Error creating file open window");
+        throw YAPETUI::UIException ("Error creating file open window");
 
-    std::list<GPSUI::secstring> dir_list;
-    std::list<GPSUI::secstring> file_list;
+    std::list<YAPETUI::secstring> dir_list;
+    std::list<YAPETUI::secstring> file_list;
     getEntries(dir_list, file_list);
-    dir = new GPSUI::ListWidget<GPSUI::secstring>(dir_list,
+    dir = new YAPETUI::ListWidget<YAPETUI::secstring>(dir_list,
 						  startX()+1,
 						  startY()+2,
 						  windowWidth()/2-1,
 						  windowHeight()-6);
 
-    files = new GPSUI::ListWidget<GPSUI::secstring>(file_list,
+    files = new YAPETUI::ListWidget<YAPETUI::secstring>(file_list,
 						    startX() + windowWidth()/2 ,
 						    startY() + 2,
 						    windowWidth()/2-1,
 						    windowHeight()-6);
 
-    input = new GPSUI::InputWidget(startX()+1,
+    input = new YAPETUI::InputWidget(startX()+1,
 				   startY()+windowHeight()-3,
 				   windowWidth()-2);
 
-    okbutton = new GPSUI::Button("OK",
+    okbutton = new YAPETUI::Button("OK",
 				 startX()+1,
 				 startY()+windowHeight()-2);
 
-    cancelbutton = new GPSUI::Button("Cancel",
+    cancelbutton = new YAPETUI::Button("Cancel",
 				     startX()+8,
 				     startY()+windowHeight()-2);
 
 }
 
 void
-FileOpen::getEntries(std::list<GPSUI::secstring>& d, 
-		     std::list<GPSUI::secstring>& f) throw(GPSUI::UIException) {
+FileOpen::getEntries(std::list<YAPETUI::secstring>& d, 
+		     std::list<YAPETUI::secstring>& f)
+    throw(YAPETUI::UIException) {
+
     DIR* dir_ptr = opendir(directory.c_str());
     if (dir_ptr == NULL)
-	throw GPSUI::UIException(strerror(errno));
+	throw YAPETUI::UIException(strerror(errno));
 
     struct dirent* de;
     struct stat st;
+
     while ( (de = readdir(dir_ptr)) != NULL) {
-	int retval = stat( GPSUI::secstring(directory +"/"+de->d_name).c_str(), &st);
+	int retval = stat( YAPETUI::secstring(directory +"/"+de->d_name).c_str(), &st);
 	if (retval != 0) {
 	    continue;
 	}
@@ -107,7 +133,9 @@ FileOpen::getEntries(std::list<GPSUI::secstring>& d,
 	if (S_ISDIR(st.st_mode)) {
 	    d.push_back(de->d_name);
 	} else if (S_ISREG(st.st_mode)) {
-	    f.push_back(de->d_name);
+	    std::string tmp(de->d_name);
+	    if (endswith(tmp, ".pet") )
+		f.push_back(de->d_name);
 	}
     }
     closedir(dir_ptr);
@@ -117,28 +145,28 @@ FileOpen::getEntries(std::list<GPSUI::secstring>& d,
 }
 
 void
-FileOpen::printTitle() throw(GPSUI::UIException) {
+FileOpen::printTitle() throw(YAPETUI::UIException) {
     int retval = mymvwaddstr(window, 0, 2, title.c_str());
     if (retval == ERR)
-	throw GPSUI::UIException("Error printing title");
+	throw YAPETUI::UIException("Error printing title");
 }
 
 void
-FileOpen::printCWD() throw(GPSUI::UIException) {
+FileOpen::printCWD() throw(YAPETUI::UIException) {
     char format[50];
     snprintf(format, 50, "%%-%ds", (windowWidth()-2));
 
     int retval = mvwprintw(window, 1, 1, format, " ");
     if (retval == ERR)
-	throw GPSUI::UIException("Error touching line");
+	throw YAPETUI::UIException("Error touching line");
 
     retval = mymvwaddstr(window, 1, 1, directory.c_str());
     if (retval == ERR)
-	throw GPSUI::UIException("Error printing cwd");
+	throw YAPETUI::UIException("Error printing cwd");
 }
 
 void
-FileOpen::getcwd() throw (GPSUI::UIException) {
+FileOpen::getcwd() throw (YAPETUI::UIException) {
     long size = 0;
 #ifdef HAVE_PATHCONF
 	size = pathconf (".", _PC_PATH_MAX);
@@ -148,12 +176,12 @@ FileOpen::getcwd() throw (GPSUI::UIException) {
 #endif
     char* buf = (char *) malloc ( (size_t) size);
     if (buf == NULL)
-        throw GPSUI::UIException ("Error allocating memory");
+        throw YAPETUI::UIException ("Error allocating memory");
 
     char* ptr = ::getcwd (buf, (size_t) size);
     if (ptr == NULL) {
         free (buf);
-        throw GPSUI::UIException (strerror (errno));
+        throw YAPETUI::UIException (strerror (errno));
     }
 
     directory = ptr;
@@ -161,15 +189,15 @@ FileOpen::getcwd() throw (GPSUI::UIException) {
 }
 
 void
-FileOpen::cd (const GPSUI::secstring d) throw (GPSUI::UIException) {
+FileOpen::cd (const YAPETUI::secstring d) throw (YAPETUI::UIException) {
     int retval = chdir (d.c_str());
     if (retval != 0)
-        throw GPSUI::UIException (strerror (errno));
+        throw YAPETUI::UIException (strerror (errno));
 
     getcwd();
 }
 
-FileOpen::FileOpen(std::string t) throw(GPSUI::UIException) : Resizeable(),
+FileOpen::FileOpen(std::string t) throw(YAPETUI::UIException) : Resizeable(),
 						       title(t),
 						       window (NULL),
 						       dir (NULL),
@@ -194,9 +222,9 @@ FileOpen::~FileOpen() {
 }
 
 void
-FileOpen::run() throw (GPSUI::UIException) {
-    std::list<GPSUI::secstring> file_list;
-    std::list<GPSUI::secstring> dir_list;
+FileOpen::run() throw (YAPETUI::UIException) {
+    std::list<YAPETUI::secstring> file_list;
+    std::list<YAPETUI::secstring> dir_list;
 
     refresh();
 
@@ -209,7 +237,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
-		GPSUI::Resizeable::resizeAll();
+		YAPETUI::Resizeable::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
 	    case KEY_ENTER:
@@ -221,13 +249,12 @@ FileOpen::run() throw (GPSUI::UIException) {
 		    getEntries(dir_list, file_list);
 		    files->setList(file_list);
 		    dir->setList(dir_list);
-		} catch (GPSUI::UIException& ex) {
-		    GPSUI::MessageBox* tmp = new GPSUI::MessageBox("Error",
-						     ex.what());
+		} catch (YAPETUI::UIException& ex) {
+		    YAPETUI::MessageBox* tmp = 
+			new YAPETUI::MessageBox("Error", ex.what());
 		    tmp->run();
 		    delete tmp;
 		}
-		//refresh();
 	    }
 		break;	    
 	    }
@@ -238,7 +265,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
-		GPSUI::Resizeable::resizeAll();
+		YAPETUI::Resizeable::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
 	    case KEY_ENTER:
@@ -251,7 +278,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = input->focus()) == KEY_RESIZE)
-	    GPSUI::Resizeable::resizeAll();
+	    YAPETUI::Resizeable::resizeAll();
 #else // HAVE_WRESIZE
 	ch = input->focus();
 #endif // HAVE_WRESIZE
@@ -261,7 +288,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 	// The ok button
 #ifdef HAVE_WRESIZE
 	while ( (ch = okbutton->focus()) == KEY_RESIZE)
-	    GPSUI::Resizeable::resizeAll();
+	    YAPETUI::Resizeable::resizeAll();
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
@@ -273,7 +300,7 @@ FileOpen::run() throw (GPSUI::UIException) {
 	// The cancel button
 #ifdef HAVE_WRESIZE
 	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
-	    GPSUI::Resizeable::resizeAll();
+	    YAPETUI::Resizeable::resizeAll();
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
@@ -285,21 +312,21 @@ FileOpen::run() throw (GPSUI::UIException) {
 }
 
 void
-FileOpen::refresh() throw (GPSUI::UIException) {
-    GPSUI::Colors::setcolor(window, GPSUI::MESSAGEBOX);
+FileOpen::refresh() throw (YAPETUI::UIException) {
+    YAPETUI::Colors::setcolor(window, YAPETUI::MESSAGEBOX);
 
 
 
     int retval = box(window, 0, 0);
     if (retval == ERR)
-	throw GPSUI::UIException("Error drawing box");
+	throw YAPETUI::UIException("Error drawing box");
 
     printTitle();
     printCWD();
 
     retval = wrefresh (window);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error refreshing window");
+        throw YAPETUI::UIException ("Error refreshing window");
 
     dir->refresh();
     files->refresh();
@@ -309,7 +336,7 @@ FileOpen::refresh() throw (GPSUI::UIException) {
 }
 
 void
-FileOpen::resize() throw (GPSUI::UIException) {
+FileOpen::resize() throw (YAPETUI::UIException) {
     delete dir;
     delete files;
     delete input;
@@ -318,7 +345,7 @@ FileOpen::resize() throw (GPSUI::UIException) {
     
     int retval = delwin(window);
     if (retval == ERR)
-	throw GPSUI::UIException("Error deleting window");
+	throw YAPETUI::UIException("Error deleting window");
 
     window = NULL;
     dir = NULL;
@@ -332,6 +359,9 @@ FileOpen::resize() throw (GPSUI::UIException) {
 
 std::string
 FileOpen::getFilepath() {
+    if (!endswith(filename, ".pet"))
+	filename+=".pet";
+
     std::string tmp_filename(filename.c_str());
     std::string tmp_directory(directory.c_str());
     if (tmp_directory == "/")

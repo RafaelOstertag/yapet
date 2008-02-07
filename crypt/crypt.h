@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -32,12 +32,12 @@
 
 #include <openssl/evp.h>
 
-#include "gpsexception.h"
+#include "yapetexception.h"
 #include "key.h"
 #include "bdbuffer.h"
 #include "record.h"
 
-namespace GPSAFE {
+namespace YAPET {
     /**
      * @brief Encrypts and decrypts data
      *
@@ -88,7 +88,7 @@ namespace GPSAFE {
 
 	public:
 	    //! Constructor
-	    Crypt(const Key& k) throw(GPSException);
+	    Crypt(const Key& k) throw(YAPETException);
 	    Crypt(const Crypt& c);
 	    inline ~Crypt() {}
 
@@ -129,17 +129,17 @@ namespace GPSAFE {
 	     * data. The caller is responsible for freeing the memory
 	     * occupied by the object returned.
 	     *
-	     * @throw GPSException
+	     * @throw YAPETException
 	     *
-	     * @throw GPSEncryptionException
+	     * @throw YAPETEncryptionException
 	     *
 	     * @sa Record, BDBuffer
 	     */
 	    template<class T>
 	    BDBuffer* encrypt(const Record<T>& data) 
-		throw(GPSException, GPSEncryptionException) {
+		throw(YAPETException, YAPETEncryptionException) {
 		if (key.ivec_size() != iv_length) 
-		    throw GPSException("IVec length missmatch");
+		    throw YAPETException("IVec length missmatch");
 
 		EVP_CIPHER_CTX ctx;
 		EVP_CIPHER_CTX_init(&ctx);
@@ -151,13 +151,13 @@ namespace GPSAFE {
 						key.getIVec());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw GPSEncryptionException("Error initializing encryption engine");
+		    throw YAPETEncryptionException("Error initializing encryption engine");
 		}
 
 		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw GPSException("Error setting the key length");
+		    throw YAPETException("Error setting the key length");
 		}
 		
 		BDBuffer* encdata =
@@ -171,7 +171,7 @@ namespace GPSAFE {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete encdata;
-		    throw GPSEncryptionException("Error encrypting data");
+		    throw YAPETEncryptionException("Error encrypting data");
 		}
 		
 		int tmplen;
@@ -181,7 +181,7 @@ namespace GPSAFE {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete encdata;
-		    throw GPSEncryptionException("Error finalizing encryption");
+		    throw YAPETEncryptionException("Error finalizing encryption");
 		}
 
 		encdata->resize(outlen+tmplen);
@@ -198,9 +198,9 @@ namespace GPSAFE {
 	     */
 	    template<class T>
 	    Record<T>* decrypt(const BDBuffer& data)
-		throw(GPSException, GPSEncryptionException) {
+		throw(YAPETException, YAPETEncryptionException) {
 		if ( ((unsigned int)key.ivec_size()) != iv_length)
-		    throw GPSException("IVec length missmatch");
+		    throw YAPETException("IVec length missmatch");
 
 		EVP_CIPHER_CTX ctx;
 		EVP_CIPHER_CTX_init(&ctx);
@@ -212,13 +212,13 @@ namespace GPSAFE {
 						key.getIVec());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw GPSEncryptionException("Error initializing encryption engine");
+		    throw YAPETEncryptionException("Error initializing encryption engine");
 		}
 
 		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw GPSException("Error setting the key length");
+		    throw YAPETException("Error setting the key length");
 		}
 
 		BDBuffer* decdata = new BDBuffer(data.size());
@@ -231,7 +231,7 @@ namespace GPSAFE {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete decdata;
-		    throw GPSEncryptionException("Error decrypting data");
+		    throw YAPETEncryptionException("Error decrypting data");
 		}
 
 		int tmplen;
@@ -241,7 +241,7 @@ namespace GPSAFE {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete decdata;
-		    throw GPSEncryptionException("Error finalizing decryption");
+		    throw YAPETEncryptionException("Error finalizing decryption");
 		}
 		
 		decdata->resize(outlen+tmplen);

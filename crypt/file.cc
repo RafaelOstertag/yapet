@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -74,67 +74,68 @@
 # include <stddef.h>
 #endif
 
-using namespace GPSAFE;
+using namespace YAPET;
 
 #define CONTROL_STR "ABCDEFGHIJKLMNOPQRSTUVW"
 
-char recog_string[] = "GPS1.0";
+char recog_string[] = "YAPET1.0";
 
 void
-File::openCreate() throw(GPSException) {
+File::openCreate() throw(YAPETException) {
     fd = ::open(filename.c_str(),
 		O_RDWR | O_CREAT | O_TRUNC | O_APPEND, S_IRUSR | S_IWUSR);
     if (fd == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 }
 
 void
-File::openNoCreate() throw(GPSException) {
+File::openNoCreate() throw(YAPETException) {
     fd = ::open(filename.c_str(), O_RDWR | O_APPEND);
     if (fd == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 }
 
 time_t
-File::lastModified() const throw(GPSException){
+File::lastModified() const throw(YAPETException){
     struct stat st_buf;
     int retval = fstat(fd, &st_buf);
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
     
     return st_buf.st_mtime;
 }
 
 void
-File::seekCurr(off_t offset) const throw(GPSException) {
+File::seekCurr(off_t offset) const throw(YAPETException) {
     off_t pos = lseek(fd, offset, SEEK_CUR);
     if ( ((off_t)-1) == pos)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 }
 
 void
-File::seekAbs(off_t offset) const throw(GPSException) {
+File::seekAbs(off_t offset) const throw(YAPETException) {
     off_t pos = lseek(fd, offset, SEEK_SET);
     if ( ((off_t)-1) == pos)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (pos != offset)
-	throw GPSException("Error seeking within file: " + filename);
+	throw YAPETException("Error seeking within file: " + filename);
 }
 
-/** Truncates the file up to the header
+/**
+ * @brief Truncates the file up to the header
  *
  * Truncates the file up to the header by creating a new empty file
  * copying over the existing header.
  */
 void
-File::preparePWSave() throw(GPSException) {
+File::preparePWSave() throw(YAPETException) {
     BDBuffer* curr_header = readHeader();
 
     ::close(fd);
     try {
 	openCreate();
-    } catch (GPSException& ex) {
+    } catch (YAPETException& ex) {
 	if (curr_header != NULL)
 	    delete curr_header;
 	throw;
@@ -146,15 +147,15 @@ File::preparePWSave() throw(GPSException) {
 }
 
 void
-File::seekDataSection() const throw(GPSException) {
+File::seekDataSection() const throw(YAPETException) {
     seekAbs(strlen(recog_string));
     uint32_t len;
     int retval = ::read(fd, &len, sizeof(uint32_t));
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if ( ((size_t)retval) != sizeof(uint32_t))
-	throw GPSException("Unable to seek to data section");
+	throw YAPETException("Unable to seek to data section");
 
     len = uint32_from_disk(len);
 
@@ -188,17 +189,17 @@ File::uint32_from_disk(uint32_t i) const {
 #endif // WORDS_BIGENDIAN
 
 BDBuffer*
-File::read() const throw(GPSException) {
+File::read() const throw(YAPETException) {
     uint32_t len;
     int retval = ::read(fd, &len, sizeof(uint32_t));
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (retval == 0)
 	return NULL;
 
     if ( ((size_t)retval) < sizeof(uint32_t) )
-	throw GPSException("Short read on file: " + filename);
+	throw YAPETException("Short read on file: " + filename);
 
     // Convert len to the endianess of the architecture
     len = uint32_from_disk(len);
@@ -206,7 +207,7 @@ File::read() const throw(GPSException) {
     BDBuffer* buf = new BDBuffer(len);
     retval = ::read(fd, *buf, len);
     if (retval == -1) 
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (retval == 0) {
 	delete buf;
@@ -215,22 +216,22 @@ File::read() const throw(GPSException) {
 
     if (((uint32_t)retval) < len) {
 	delete buf;
-	throw GPSException("Short read on file: " + filename);
+	throw YAPETException("Short read on file: " + filename);
     }
 
     return buf;
 }
 
 void
-File::write(const BDBuffer& buff, bool append, bool force) 
-    throw(GPSException, GPSRetryException) {
-    if ( (mtime != lastModified()) && !force)
-	throw GPSRetryException("File has been modified");
+File::write(const BDBuffer& buff, bool forceappend, bool forcewrite) 
+    throw(YAPETException, YAPETRetryException) {
+    if ( (mtime != lastModified()) && !forcewrite)
+	throw YAPETRetryException("File has been modified");
 
-    if (append) {
+    if (forceappend) {
 	off_t pos = lseek(fd, 0, SEEK_END);
 	if ( ((off_t)-1) == pos)
-	    throw GPSException(strerror(errno));
+	    throw YAPETException(strerror(errno));
     }
     uint32_t s = buff.size();
 
@@ -239,26 +240,26 @@ File::write(const BDBuffer& buff, bool append, bool force)
 
     int retval = ::write(fd, &s, sizeof(uint32_t));
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
     if (retval != sizeof(uint32_t) )
-	throw GPSException("Short write on file: " + filename);
+	throw YAPETException("Short write on file: " + filename);
 
     retval = ::write(fd, buff, buff.size());
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
     
     if (((size_t)retval) < buff.size()) 
-	throw GPSException("Short write on file: " + filename);
+	throw YAPETException("Short write on file: " + filename);
 
     mtime = lastModified();
 }
 
 bool
-File::isempty() const throw(GPSException){
+File::isempty() const throw(YAPETException){
     struct stat st_buf;
     int retval = fstat(fd, &st_buf);
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (st_buf.st_size == 0) 
 	return true;
@@ -267,7 +268,7 @@ File::isempty() const throw(GPSException){
 }
 
 void
-File::initFile(const Key& key) throw(GPSException) {
+File::initFile(const Key& key) throw(YAPETException) {
     Crypt crypt(key);
 
     Record<FileHeader> header;
@@ -283,7 +284,7 @@ File::initFile(const Key& key) throw(GPSException) {
     // Sanity checks
     BDBuffer* buff = readHeader();
     if (buff == NULL)
-	throw GPSException("EOF encountered while reading header");
+	throw YAPETException("EOF encountered while reading header");
 
     Record<FileHeader>* dec_hdr = crypt.decrypt<FileHeader>(*buff);
 
@@ -291,7 +292,7 @@ File::initFile(const Key& key) throw(GPSException) {
 
     int retval = memcmp(ptr_dec_hdr->control, ptr->control, HEADER_CONTROL_SIZE);
     if (retval != 0)
-	throw GPSException("Sanity check for control field failed");
+	throw YAPETException("Sanity check for control field failed");
 
     delete buff;
     delete dec_hdr;
@@ -299,14 +300,14 @@ File::initFile(const Key& key) throw(GPSException) {
 
 void
 File::writeHeader(const Record<FileHeader>& header, const Key& key) 
-    throw(GPSException) {
+    throw(YAPETException) {
 
     Crypt crypt(key);
     BDBuffer* buff = NULL;
     try {
 	buff = crypt.encrypt(header);
 	writeHeader(*buff);
-    } catch (GPSException& ex) {
+    } catch (YAPETException& ex) {
 	if (buff != NULL)
 	    delete buff;
 	throw;
@@ -314,51 +315,55 @@ File::writeHeader(const Record<FileHeader>& header, const Key& key)
 	if (buff != NULL)
 	    delete buff;
 
-	throw GPSException("Unknown exception catched");
+	throw YAPETException("Unknown exception catched");
     }
 
     delete buff;
 }
 
 void
-File::writeHeader(const BDBuffer& enc_header) throw(GPSException) {
+File::writeHeader(const BDBuffer& enc_header) throw(YAPETException) {
     seekAbs(0);
 
     // Write the recognition string
     ssize_t retval = ::write(fd, recog_string, strlen(recog_string));
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (((size_t)retval) != strlen(recog_string) )
-	throw GPSException("Short write on file " + filename);
+	throw YAPETException("Short write on file " + filename);
+
+    mtime = lastModified();
 
     write(enc_header);
 }
 
 BDBuffer*
-File::readHeader() const throw(GPSException) {
+File::readHeader() const throw(YAPETException) {
     seekAbs(0);
 
     char* buff = (char*) alloca(strlen(recog_string));
     if (buff == NULL)
-	throw GPSException("Memory exhausted");
+	throw YAPETException("Memory exhausted");
 
     int retval = ::read(fd, buff, strlen(recog_string));
     if (retval == -1)
-	throw GPSException(strerror(errno));
+	throw YAPETException(strerror(errno));
 
     if (((size_t)retval) != strlen(recog_string) )
-	throw GPSException("File type not recognized");
+	throw YAPETException("File type not recognized");
 
     retval = memcmp(recog_string, buff, strlen(recog_string));
     if (retval != 0)
-	throw GPSException("File type not recognized");
+	throw YAPETException("File type not recognized");
     
     return read();
 }
 
 void
-File::validateKey(const Key& key) throw(GPSException,GPSInvalidPasswordException) {
+File::validateKey(const Key& key)
+    throw(YAPETException,YAPETInvalidPasswordException) {
+
     Crypt crypt(key);
     BDBuffer* enc_header = NULL;
     Record<FileHeader>* dec_header = NULL;
@@ -368,26 +373,27 @@ File::validateKey(const Key& key) throw(GPSException,GPSInvalidPasswordException
 	enc_header = readHeader();
 	dec_header = crypt.decrypt<FileHeader>(*enc_header);
 	ptr_dec_header = *dec_header;
-    } catch (GPSEncryptionException& ex) {
+    } catch (YAPETEncryptionException& ex) {
 	if (enc_header != NULL) delete enc_header;
 	if (dec_header != NULL) delete dec_header;
-	throw GPSInvalidPasswordException();
-    } catch (GPSException& ex) {
+	throw YAPETInvalidPasswordException();
+    } catch (YAPETException& ex) {
 	if (enc_header != NULL) delete enc_header;
 	if (dec_header != NULL) delete dec_header;
 	throw;
     }
 
-    int retval = memcmp(ptr_dec_header->control, CONTROL_STR, HEADER_CONTROL_SIZE);
+    int retval = memcmp(ptr_dec_header->control,
+			CONTROL_STR,
+			HEADER_CONTROL_SIZE);
     delete enc_header;
     delete dec_header;
     if (retval != 0)
-	throw GPSInvalidPasswordException();
+	throw YAPETInvalidPasswordException();
 }
 
 File::File(const std::string& fn, const Key& key, bool create) 
-    throw(GPSException) : isopen(true),
-			  filename(fn) {
+    throw(YAPETException) : filename(fn) {
     if (create)
 	openCreate();
     else
@@ -400,27 +406,21 @@ File::File(const std::string& fn, const Key& key, bool create)
     }
 }
 
-File::File(const File& f) throw(GPSException) {
-    if (f.isopen) {
-	fd = dup(f.fd);
-	if (fd == -1)
-	    throw GPSException(strerror(errno));
-    } else {
-	fd = -1;
-    }
-
-    isopen = f.isopen;
+File::File(const File& f) throw(YAPETException) {
+    fd = dup(f.fd);
+    if (fd == -1)
+	throw YAPETException(strerror(errno));
+    
     filename = f.filename;
     mtime = f.mtime;
 }
 
 File::~File() {
-    if (isopen)
-	close(fd);
+    close(fd);
 }
 
 void
-File::save(std::list<PartDec>& records) throw(GPSException) {
+File::save(std::list<PartDec>& records) throw(YAPETException) {
     preparePWSave();
     std::list<PartDec>::iterator it = records.begin();
     while (it != records.end() ) {
@@ -430,7 +430,7 @@ File::save(std::list<PartDec>& records) throw(GPSException) {
 }
 
 std::list<PartDec>
-File::read(const Key& key) const throw(GPSException) {
+File::read(const Key& key) const throw(YAPETException) {
     seekDataSection();
 
     BDBuffer* buff = NULL;
@@ -443,7 +443,7 @@ File::read(const Key& key) const throw(GPSException) {
 	    delete buff;
 	    buff = read();
 	}
-    } catch (GPSException& ex) {
+    } catch (YAPETException& ex) {
 	if (buff != NULL)
 	    delete buff;
 	throw;
@@ -452,23 +452,73 @@ File::read(const Key& key) const throw(GPSException) {
     return retval;
 }
 
-
-const File&
-File::operator=(const File& f) throw(GPSException) {
-    if (this == &f) return *this;
-
-    if (isopen)
-	close(fd);
-
-    if (f.isopen) {
-	fd = dup(f.fd);
-	if (fd == -1)
-	    throw GPSException(strerror(errno));
-    } else {
-	fd = -1;
+void
+File::setNewKey(const Key& oldkey,
+		const Key& newkey) throw (YAPETException) {
+    close(fd);
+    std::string backupfilename(filename + ".bak");
+    int retval = rename(filename.c_str(), backupfilename.c_str());
+    if (retval == -1) {
+	// Reopen the old file
+	openNoCreate();
+	throw YAPETException(strerror(errno));
     }
 
-    isopen = f.isopen;
+
+    File* oldfile = NULL;
+    try {
+	// Reopen the old (backup) file
+	oldfile = new File(backupfilename, oldkey, false);
+	// Initialize the (this) file with the new key
+	openCreate();
+	initFile(newkey);
+
+	// Retrieve the records encrypted with the old key
+	std::list<PartDec> entries = oldfile->read(oldkey);
+	std::list<PartDec>::iterator it = entries.begin();
+	Crypt oldcrypt(oldkey);
+	Crypt newcrypt(newkey);
+	while (it != entries.end() ) {
+	    Record<PasswordRecord>* dec_rec_ptr = NULL;
+	    BDBuffer* new_enc_rec = NULL;
+	    try {
+		// Decrypt with the old key
+		const BDBuffer old_enc_rec = (*it).getEncRecord();
+		dec_rec_ptr =
+		    oldcrypt.decrypt<PasswordRecord>(old_enc_rec);
+		new_enc_rec = 
+		    newcrypt.encrypt(*dec_rec_ptr);
+		write(*new_enc_rec);
+		delete dec_rec_ptr;
+		delete new_enc_rec;
+	    } catch (YAPETException& ex) {
+		if (dec_rec_ptr != NULL)
+		    delete dec_rec_ptr;
+		if (new_enc_rec != NULL)
+		    delete new_enc_rec;
+		throw;
+	    }
+	    it++;
+	}
+    } catch (YAPETException& ex) {
+	if (oldfile != NULL)
+	    delete oldfile;
+	throw;
+    }
+    delete oldfile;
+}
+
+
+const File&
+File::operator=(const File& f) throw(YAPETException) {
+    if (this == &f) return *this;
+
+    close(fd);
+
+    fd = dup(f.fd);
+    if (fd == -1)
+	throw YAPETException(strerror(errno));
+
     filename = f.filename;
 
     return *this;

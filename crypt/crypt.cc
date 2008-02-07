@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,28 +19,28 @@
 
 #include "crypt.h"
 
-using namespace GPSAFE;
+using namespace YAPET;
 
 /**
  * Initializes the class with the given key, which is used for
  * encryption and decryption.
  *
  * The constructor tries to set the key length of the cipher used to
- * the length of the key provided. If this fails, a \c GPSException is
+ * the length of the key provided. If this fails, a \c YAPETException is
  * thrown.
  *
  * @param k the key used for encryption/decryption.
  *
- * @throw GPSException in case the key length of the cipher cannot be
+ * @throw YAPETException in case the key length of the cipher cannot be
  * set to the length of the key provided.
  */
-Crypt::Crypt(const Key& k) throw(GPSException) : cipher(NULL),
+Crypt::Crypt(const Key& k) throw(YAPETException) : cipher(NULL),
 						 iv_length(0),
 						 key_length(0),
 						 key(k){
     cipher = EVP_bf_cbc();
     if (cipher == NULL)
-	throw GPSException("Unable to get cipher");
+	throw YAPETException("Unable to get cipher");
 
     // Test if key length is ok
     EVP_CIPHER_CTX ctx;
@@ -49,13 +49,13 @@ Crypt::Crypt(const Key& k) throw(GPSException) : cipher(NULL),
     int retval = EVP_CipherInit_ex(&ctx, cipher, NULL, NULL, NULL, 0);
     if (retval == 0) {
 	EVP_CIPHER_CTX_cleanup(&ctx);
-	throw GPSException("Error initializing cipher");
+	throw YAPETException("Error initializing cipher");
     }
 
     retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
     if (retval == 0) {
 	EVP_CIPHER_CTX_cleanup(&ctx);
-	throw GPSException("Error setting the key length");
+	throw YAPETException("Error setting the key length");
     }
     
     iv_length = EVP_CIPHER_CTX_iv_length(&ctx);

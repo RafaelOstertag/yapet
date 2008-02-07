@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -69,21 +69,21 @@ KeyDesc keys[] = { {4, 2, "S", "Save File"},
 };
 
 void
-MainWindow::printTitle() throw(GPSUI::UIException) {
-    GPSUI::Colors::setcolor(stdscr, GPSUI::DEFAULT);
+MainWindow::printTitle() throw(YAPETUI::UIException) {
+    YAPETUI::Colors::setcolor(stdscr, YAPETUI::DEFAULT);
     // Title
     char title[100];
     snprintf(title,100, "..::|| %s ||::..", PACKAGE_STRING);
     int retval = wmove(stdscr, 0, maxX()/2 - strlen(title)/2);
     if (retval == ERR)
-	throw GPSUI::UIException("Error moving cursor");
+	throw YAPETUI::UIException("Error moving cursor");
     retval = mywaddstr(stdscr, title);
     if (retval == ERR)
-	throw GPSUI::UIException("Error printing title");
+	throw YAPETUI::UIException("Error printing title");
 }
 
 void
-MainWindow::topRightWinContent() throw (GPSUI::UIException) {
+MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
     int max_y, max_x;
     getmaxyx (toprightwin, max_y, max_x);
 
@@ -92,14 +92,14 @@ MainWindow::topRightWinContent() throw (GPSUI::UIException) {
 
     int retval = mymvwaddstr (toprightwin, 1, start_title_x, win_title);
     if (retval == ERR)
-        throw GPSUI::UIException ("mvwaddstr() blew it");
+        throw YAPETUI::UIException ("mvwaddstr() blew it");
     retval = wmove (toprightwin, 2, 1);
     if (retval == ERR)
-        throw GPSUI::UIException ("wmove() blew it");
+        throw YAPETUI::UIException ("wmove() blew it");
 
     retval = whline (toprightwin, 0, max_x - 2);
     if (retval == ERR)
-        throw GPSUI::UIException ("whline() blew it");
+        throw YAPETUI::UIException ("whline() blew it");
 
 
     KeyDesc* ptr = keys;
@@ -109,11 +109,11 @@ MainWindow::topRightWinContent() throw (GPSUI::UIException) {
         wattron (toprightwin, A_REVERSE);
         retval = mvwprintw (toprightwin, ptr->y, ptr->x, "  %0-2s  ", ptr->key);
         if (retval == ERR)
-            throw GPSUI::UIException ("mvprintw() blew it");
+            throw YAPETUI::UIException ("mvprintw() blew it");
         wattroff (toprightwin, A_REVERSE);
         retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, ptr->desc);
         if (retval == ERR)
-            throw GPSUI::UIException ("waddstr() blew it");
+            throw YAPETUI::UIException ("waddstr() blew it");
 
         ptr++;
     }
@@ -121,25 +121,25 @@ MainWindow::topRightWinContent() throw (GPSUI::UIException) {
 }
 
 void
-MainWindow::bottomRightWinContent() throw(GPSUI::UIException) {
+MainWindow::bottomRightWinContent() throw(YAPETUI::UIException) {
     if (key == NULL || recordlist == NULL) return;
 
     int retval = mymvwaddstr(bottomrightwin, 1, 2, "Cipher: Blowfish");
     if (retval == ERR)
-	throw GPSUI::UIException ("waddstr() blew it");
+	throw YAPETUI::UIException ("waddstr() blew it");
     retval = mvwprintw(bottomrightwin, 2, 2, "Key: %d bytes (%d bits)", key->size(), key->size()*8);
     if (retval == ERR)
-	throw GPSUI::UIException ("mvprintw() blew it");
+	throw YAPETUI::UIException ("mvprintw() blew it");
     retval = mvwprintw(bottomrightwin, 3, 2, "%d entries ", recordlist->size());
     if (retval == ERR)
-	throw GPSUI::UIException ("mvprintw() blew it");
+	throw YAPETUI::UIException ("mvprintw() blew it");
 
 }
 
 void
-MainWindow::createWindow() throw(GPSUI::UIException) {
+MainWindow::createWindow() throw(YAPETUI::UIException) {
     if (toprightwin != NULL || bottomrightwin != NULL)
-	throw GPSUI::UIException("May you consider deleting the window before reallocating");
+	throw YAPETUI::UIException("May you consider deleting the window before reallocating");
     int middleX = maxX() / 2;
     int thirdY = maxY() / 3 - 1;
 
@@ -150,12 +150,12 @@ MainWindow::createWindow() throw(GPSUI::UIException) {
     //
     toprightwin = newwin (maxY() - thirdY - 1 , maxX() - middleX, 1, middleX);
     if (toprightwin == NULL)
-        throw GPSUI::UIException ("newwin() returned NULL");
+        throw YAPETUI::UIException ("newwin() returned NULL");
 
-    GPSUI::Colors::setcolor(toprightwin, GPSUI::DEFAULT);
+    YAPETUI::Colors::setcolor(toprightwin, YAPETUI::DEFAULT);
     int retval = box (toprightwin, 0, 0);
     if (retval == ERR)
-        throw GPSUI::UIException ("box() blew it");
+        throw YAPETUI::UIException ("box() blew it");
 
     topRightWinContent();
 
@@ -164,23 +164,23 @@ MainWindow::createWindow() throw(GPSUI::UIException) {
     //
     bottomrightwin = newwin (thirdY - 1 , maxX() - middleX, maxY()-thirdY, middleX);
     if (bottomrightwin == NULL)
-        throw GPSUI::UIException ("newwin() returned NULL");
+        throw YAPETUI::UIException ("newwin() returned NULL");
 
-    GPSUI::Colors::setcolor(bottomrightwin, GPSUI::DEFAULT);
+    YAPETUI::Colors::setcolor(bottomrightwin, YAPETUI::DEFAULT);
     retval = werase (bottomrightwin);
     if (retval == ERR)
-	throw GPSUI::UIException("werase() blew it");
+	throw YAPETUI::UIException("werase() blew it");
     retval = box (bottomrightwin, 0, 0);
     if (retval == ERR)
-        throw GPSUI::UIException ("box() blew it");
+        throw YAPETUI::UIException ("box() blew it");
 
 
     //
     // List widget on the left
     //
     if (recordlist == NULL) {
-	std::list<GPSAFE::PartDec> emptylist;
-	recordlist = new GPSUI::ListWidget<GPSAFE::PartDec> (emptylist,
+	std::list<YAPET::PartDec> emptylist;
+	recordlist = new YAPETUI::ListWidget<YAPET::PartDec> (emptylist,
 							     0,
 							     1,
 							     maxX() / 2,
@@ -191,14 +191,14 @@ MainWindow::createWindow() throw(GPSUI::UIException) {
 }
 
 void
-MainWindow::resize() throw (GPSUI::UIException) {
+MainWindow::resize() throw (YAPETUI::UIException) {
     int retval = delwin(toprightwin);
     if (retval == ERR)
-	throw GPSUI::UIException("delwin() blew it");
+	throw YAPETUI::UIException("delwin() blew it");
 
     retval = delwin(bottomrightwin);
     if (retval == ERR)
-	throw GPSUI::UIException("delwin() blew it");
+	throw YAPETUI::UIException("delwin() blew it");
 
     toprightwin = NULL;
     bottomrightwin = NULL;
@@ -210,39 +210,39 @@ MainWindow::resize() throw (GPSUI::UIException) {
 }
 
 void
-MainWindow::refresh() throw (GPSUI::UIException) {
+MainWindow::refresh() throw (YAPETUI::UIException) {
     printTitle();
 
     int retval = wrefresh(stdscr);
     if (retval == ERR)
-	throw GPSUI::UIException("Error refreshing stdscr");
+	throw YAPETUI::UIException("Error refreshing stdscr");
 
     topRightWinContent();
     bottomRightWinContent();
 
     retval = box(toprightwin, 0, 0);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error setting border");
+        throw YAPETUI::UIException ("Error setting border");
 
     retval = box(bottomrightwin, 0, 0);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error setting border");
+        throw YAPETUI::UIException ("Error setting border");
 
 
     retval = wrefresh (toprightwin);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error refreshing top right window");
+        throw YAPETUI::UIException ("Error refreshing top right window");
 
     retval = wrefresh (bottomrightwin);
     if (retval == ERR)
-        throw GPSUI::UIException ("Error refreshing bottom right window");
+        throw YAPETUI::UIException ("Error refreshing bottom right window");
 
     recordlist->refresh();
     statusbar.refresh();
 }
 
 void
-MainWindow::createFile(std::string& filename) throw(GPSUI::UIException) {
+MainWindow::createFile(std::string& filename) throw(YAPETUI::UIException) {
     closeFile();
 
     PasswordDialog* pwdia = NULL;
@@ -251,7 +251,7 @@ MainWindow::createFile(std::string& filename) throw(GPSUI::UIException) {
 	pwdia->run();
 	key = pwdia->getKey();
 	delete pwdia;
-    } catch(GPSUI::UIException&) {
+    } catch(YAPETUI::UIException&) {
 	if (pwdia != NULL)
 	    delete pwdia;
 
@@ -265,15 +265,16 @@ MainWindow::createFile(std::string& filename) throw(GPSUI::UIException) {
     }
 
     try {
-	file = new GPSAFE::File(filename, *key, true);
+	file = new YAPET::File(filename, *key, true);
+	statusbar.putMsg(filename + " created");
 	records_changed = false;
-    } catch(GPSAFE::GPSException& ex) {
-	GPSUI::MessageBox* msgbox = NULL;
+    } catch(YAPET::YAPETException& ex) {
+	YAPETUI::MessageBox* msgbox = NULL;
 	try{
-	    msgbox = new GPSUI::MessageBox("E R R O R", ex.what());
+	    msgbox = new YAPETUI::MessageBox("E R R O R", ex.what());
 	    msgbox->run();
 	    delete msgbox;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
 
@@ -284,17 +285,17 @@ MainWindow::createFile(std::string& filename) throw(GPSUI::UIException) {
 } 
 
 void
-MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
+MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
     struct stat st;
     int retval = stat(filename.c_str(), &st);
     if (retval == -1 && errno == ENOENT) {
 	// Ask user whether or not he wants to create a new file
-	GPSUI::DialogBox* question = new GPSUI::DialogBox("Question",
+	YAPETUI::DialogBox* question = new YAPETUI::DialogBox("Question",
 							  "The file does not exist. Do you want to create it?");
 	question->run();
-	GPSUI::ANSWER a = question->getAnswer();
+	YAPETUI::ANSWER a = question->getAnswer();
 	delete question;
-	if ( a == GPSUI::ANSWER_OK) {
+	if ( a == YAPETUI::ANSWER_OK) {
 	    createFile(filename);
 	    return;
 	} else {
@@ -303,12 +304,12 @@ MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
 	}
     } else if (retval == -1) {
 	// Inform user about other error
-	GPSUI::MessageBox* errmsg = NULL;
+	YAPETUI::MessageBox* errmsg = NULL;
 	try {
-	    errmsg = new GPSUI::MessageBox("Error", strerror(errno));
+	    errmsg = new YAPETUI::MessageBox("Error", strerror(errno));
 	    errmsg->run();
 	    delete errmsg;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (errmsg != NULL)
 		delete errmsg;
 	}
@@ -319,12 +320,12 @@ MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
     // We were able to stat the file, no make sure it is a file and open it
     // using the password
     if (!S_ISREG(st.st_mode)) {
-	GPSUI::MessageBox* errmsg = NULL;
+	YAPETUI::MessageBox* errmsg = NULL;
 	try {
-	    errmsg = new GPSUI::MessageBox("Error", "The specified file is not a regular file");
+	    errmsg = new YAPETUI::MessageBox("Error", "The specified file is not a regular file");
 	    errmsg->run();
 	    delete errmsg;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (errmsg != NULL)
 		delete errmsg;
 	}
@@ -340,7 +341,7 @@ MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
 	pwdia->run();
 	key = pwdia->getKey();
 	delete pwdia;
-    } catch (GPSUI::UIException&) {
+    } catch (YAPETUI::UIException&) {
 	if (pwdia != NULL)
 	    delete pwdia;
 	statusbar.putMsg("UI error while asking for password");
@@ -349,20 +350,20 @@ MainWindow::openFile(std::string filename) throw(GPSUI::UIException) {
     // Open file
     if (key != NULL) {
 	try {
-	    file = new GPSAFE::File(filename, *key, false);
-	    std::list<GPSAFE::PartDec> tmp_list = file->read(*key);
+	    file = new YAPET::File(filename, *key, false);
+	    std::list<YAPET::PartDec> tmp_list = file->read(*key);
 	    recordlist->setList(tmp_list);
 	    return;
-	} catch(GPSAFE::GPSException& e) {
+	} catch(YAPET::YAPETException& e) {
 	    if (file != NULL)
 		delete file;
 
-	    GPSUI::MessageBox* msgbox = NULL;
+	    YAPETUI::MessageBox* msgbox = NULL;
 	    try {
-		msgbox = new GPSUI::MessageBox("Error", e.what());
+		msgbox = new YAPETUI::MessageBox("Error", e.what());
 		msgbox->run();
 		delete msgbox;
-	    } catch (GPSUI::UIException&) {
+	    } catch (YAPETUI::UIException&) {
 		if (msgbox != NULL)
 		    delete msgbox;
 		statusbar.putMsg("Error while trying to show error");
@@ -385,13 +386,13 @@ MainWindow::saveFile() {
 	file->save(recordlist->getList());
 	records_changed = false;
 	statusbar.putMsg(file->getFilename() + " saved");
-    } catch (GPSAFE::GPSException& ex) {
-	GPSUI::MessageBox* msgbox = NULL;
+    } catch (YAPET::YAPETException& ex) {
+	YAPETUI::MessageBox* msgbox = NULL;
 	try {
-	    msgbox = new GPSUI::MessageBox("Error", ex.what());
+	    msgbox = new YAPETUI::MessageBox("Error", ex.what());
 	    msgbox->run();
 	    delete msgbox;
-	} catch (GPSUI::UIException) {
+	} catch (YAPETUI::UIException) {
 	    if (msgbox != NULL)
 		delete msgbox;
 	    statusbar.putMsg("Error showing error message");
@@ -432,19 +433,19 @@ MainWindow::addNewRecord() {
 	    statusbar.putMsg("Record addition canceled");
 	}
 	delete pwentry;
-    } catch (GPSUI::UIException& ex) {
+    } catch (YAPETUI::UIException& ex) {
 	if (pwentry != NULL) {
 	    if (pwentry->getEncEntry() != NULL)
 		delete pwentry->getEncEntry();
 	    delete pwentry;
 	}
 	
-	GPSUI::MessageBox* msgbox = NULL;
+	YAPETUI::MessageBox* msgbox = NULL;
 	try {
-	    msgbox = new GPSUI::MessageBox("Error", "Error adding password entry");
+	    msgbox = new YAPETUI::MessageBox("Error", "Error adding password entry");
 	    msgbox->run();
 	    delete msgbox;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
 	    
@@ -461,7 +462,7 @@ MainWindow::editSelectedRecord() {
     if (key == NULL || file == NULL) return;
     PasswordRecord* pwentry = NULL;
     try {
-	GPSAFE::PartDec pd = recordlist->getSelectedItem();
+	YAPET::PartDec pd = recordlist->getSelectedItem();
 	pwentry = new PasswordRecord(*key, &pd);
 	pwentry->run();
 	if (pwentry->entryChanged() &&
@@ -473,19 +474,19 @@ MainWindow::editSelectedRecord() {
 	    statusbar.putMsg("Record edition canceled");
 	}
 	delete pwentry;
-    } catch (GPSUI::UIException& ex) {
+    } catch (YAPETUI::UIException& ex) {
 	if (pwentry != NULL) {
 	    if (pwentry->getEncEntry() != NULL)
 		delete pwentry->getEncEntry();
 	    delete pwentry;
 	}
 	
-	GPSUI::MessageBox* msgbox = NULL;
+	YAPETUI::MessageBox* msgbox = NULL;
 	try {
-	    msgbox = new GPSUI::MessageBox("Error", "Error adding password entry");
+	    msgbox = new YAPETUI::MessageBox("Error", "Error adding password entry");
 	    msgbox->run();
 	    delete msgbox;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
 	    
@@ -497,29 +498,29 @@ MainWindow::editSelectedRecord() {
 }
 
 void
-MainWindow::deleteSelectedRecord() throw(GPSUI::UIException){
-    GPSUI::DialogBox* dialog = NULL;
+MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
+    YAPETUI::DialogBox* dialog = NULL;
     try {
-	dialog = new GPSUI::DialogBox("Question", "Delete selected record?");
+	dialog = new YAPETUI::DialogBox("Question", "Delete selected record?");
 	dialog->run();
-	GPSUI::ANSWER a = dialog->getAnswer();
-	if (a == GPSUI::ANSWER_OK) {
+	YAPETUI::ANSWER a = dialog->getAnswer();
+	if (a == YAPETUI::ANSWER_OK) {
 	    recordlist->deleteSelectedItem();
 	    records_changed = true;
 	    recordlist->refresh();
 	    records_changed = true;
 	}
 	delete dialog;
-    } catch(GPSUI::UIException&) {
+    } catch(YAPETUI::UIException&) {
 	if (dialog != NULL)
 	    delete dialog;
 
-	GPSUI::MessageBox* msgbox = NULL;
+	YAPETUI::MessageBox* msgbox = NULL;
 	try {
-	    msgbox = new GPSUI::MessageBox("Error", "Error showing dialog");
+	    msgbox = new YAPETUI::MessageBox("Error", "Error showing dialog");
 	    msgbox->run();
 	    delete msgbox;
-	} catch (GPSUI::UIException&) {
+	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
 	    
@@ -533,19 +534,19 @@ bool
 MainWindow::quit() {
     if (!records_changed) return true;
 
-    GPSUI::DialogBox* dialogbox = NULL;
+    YAPETUI::DialogBox* dialogbox = NULL;
     try {
-	dialogbox = new GPSUI::DialogBox("Question", "Save before quitting?");
+	dialogbox = new YAPETUI::DialogBox("Question", "Save before quitting?");
 	dialogbox->run();
-	GPSUI::ANSWER a = dialogbox->getAnswer();
+	YAPETUI::ANSWER a = dialogbox->getAnswer();
 	delete dialogbox;
-	if (a == GPSUI::ANSWER_OK) {
+	if (a == YAPETUI::ANSWER_OK) {
 	    saveFile();
 	    return true;
 	}
 
 	return true;
-    } catch (GPSUI::UIException&) {
+    } catch (YAPETUI::UIException&) {
 	if (dialogbox != NULL)
 	    delete dialogbox;
 	statusbar.putMsg("Error showing error message");
@@ -555,43 +556,43 @@ MainWindow::quit() {
 }
 
 void
-MainWindow::lockScreen() const throw(GPSUI::UIException){
+MainWindow::lockScreen() const throw(YAPETUI::UIException){
     if (key == NULL) return;
     int ch;
     while (true) {
 	WINDOW* lockwin = newwin(0,0,0,0);
 	if (lockwin == NULL)
-	    throw GPSUI::UIException("Error creating lock window");
+	    throw YAPETUI::UIException("Error creating lock window");
 	
 	int retval = werase(lockwin);
 	if (retval == ERR) {
 	    delwin(lockwin);
-	    throw GPSUI::UIException("Error erasing window");
+	    throw YAPETUI::UIException("Error erasing window");
 	}
 	
 	
 	retval = wrefresh(lockwin);
 	if (retval == ERR) {
 	    delwin(lockwin);
-	    throw GPSUI::UIException("Error refreshing window");
+	    throw YAPETUI::UIException("Error refreshing window");
 	}
 	
 	ch = wgetch(lockwin);
 #ifdef HAVE_WRESIZE
 	if (ch == KEY_RESIZE) {
 	    delwin(lockwin);
-	    GPSUI::Resizeable::resizeAll();
+	    YAPETUI::Resizeable::resizeAll();
 	    continue;
 	}
 #endif
 	PasswordDialog* pwdia = NULL;
-	GPSAFE::Key* testkey = NULL;
+	YAPET::Key* testkey = NULL;
 	try {
 	    pwdia = new PasswordDialog(EXISTING_PW, file->getFilename());
 	    pwdia->run();
 	    testkey = pwdia->getKey();
 	    delete pwdia;
-	} catch(GPSUI::UIException&) {
+	} catch(YAPETUI::UIException&) {
 	    if (pwdia != NULL)
 		delete pwdia;
 	    if (testkey != NULL)
@@ -606,12 +607,12 @@ MainWindow::lockScreen() const throw(GPSUI::UIException){
 	}
 
 	if (*testkey != *key) {
-	    GPSUI::MessageBox* msgbox = NULL;
+	    YAPETUI::MessageBox* msgbox = NULL;
 	    try {
-		msgbox = new GPSUI::MessageBox("Error", "Wrong password");
+		msgbox = new YAPETUI::MessageBox("Error", "Wrong password");
 		msgbox->run();
 		delete msgbox;
-	    } catch (GPSUI::UIException&) {
+	    } catch (YAPETUI::UIException&) {
 		if (msgbox != NULL)
 		    delete msgbox;
 	    }
@@ -626,7 +627,7 @@ MainWindow::lockScreen() const throw(GPSUI::UIException){
     }
 }
 
-MainWindow::MainWindow() throw (GPSUI::UIException) : Resizeable(),
+MainWindow::MainWindow() throw (YAPETUI::UIException) : Resizeable(),
 						      toprightwin (NULL),
 						      bottomrightwin (NULL),
 						      recordlist (NULL),
@@ -650,7 +651,7 @@ MainWindow::~MainWindow() {
 }
 
 void
-MainWindow::run() throw (GPSUI::UIException) {
+MainWindow::run() throw (YAPETUI::UIException) {
 
     if (file == NULL || key == NULL)
 	statusbar.putMsg ("No file loaded");
@@ -674,14 +675,14 @@ MainWindow::run() throw (GPSUI::UIException) {
 		    break;
 #ifdef HAVE_WRESIZE
 		case KEY_RESIZE:
-		    GPSUI::Resizeable::resizeAll();
+		    YAPETUI::Resizeable::resizeAll();
 		    break;
 #endif // HAVE_WRESIZE
 		case KEY_REFRESH:
 #ifdef HAVE_WRESIZE
-		    GPSUI::Resizeable::resizeAll();
+		    YAPETUI::Resizeable::resizeAll();
 #endif // HAVE_WRESIZE
-		    GPSUI::Resizeable::refreshAll();
+		    YAPETUI::Resizeable::refreshAll();
 		    break;
 		case 'S':
 		case 's':
@@ -695,7 +696,6 @@ MainWindow::run() throw (GPSUI::UIException) {
 			tmp->run();
 			if (!tmp->isCanceled()) {
 			    openFile(tmp->getFilepath());
-			    statusbar.putMsg(tmp->getFilepath());
 			}
 		    } catch (std::exception& ex2) {
 			statusbar.putMsg(ex2.what());
@@ -708,14 +708,14 @@ MainWindow::run() throw (GPSUI::UIException) {
 		    }
 		    delete tmp;
 		    ::refresh();
-		    GPSUI::Resizeable::refreshAll();
+		    YAPETUI::Resizeable::refreshAll();
 		}
 		    break;
 		case 'L':
 		case 'l':
 		    lockScreen();
 		    ::refresh();
-		    GPSUI::Resizeable::refreshAll();
+		    YAPETUI::Resizeable::refreshAll();
 		    break;
 
 		case 'A':

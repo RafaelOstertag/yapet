@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -44,49 +44,49 @@
 #include <statusbar.h>
 #include <listwidget.h>
 
-class MainWindow : protected GPSUI::Resizeable {
+class MainWindow : protected YAPETUI::Resizeable {
     private:
 	WINDOW* toprightwin;
 	WINDOW* bottomrightwin;
-	GPSUI::ListWidget<GPSAFE::PartDec>* recordlist;
+	YAPETUI::ListWidget<YAPET::PartDec>* recordlist;
 	StatusBar statusbar;
 	bool records_changed;
 
-	GPSAFE::Key* key;
-	GPSAFE::File* file;
+	YAPET::Key* key;
+	YAPET::File* file;
 
 	inline MainWindow(const MainWindow&) {}
 	inline const MainWindow& operator=(const MainWindow&) { return *this;}
 
     protected:
-	void printTitle() throw (GPSUI::UIException);
+	void printTitle() throw (YAPETUI::UIException);
 
-	void topRightWinContent() throw(GPSUI::UIException);
+	void topRightWinContent() throw(YAPETUI::UIException);
 
-	void bottomRightWinContent() throw(GPSUI::UIException);
+	void bottomRightWinContent() throw(YAPETUI::UIException);
 
-	void createWindow() throw(GPSUI::UIException);
+	void createWindow() throw(YAPETUI::UIException);
 
-	void refresh() throw(GPSUI::UIException);
+	void refresh() throw(YAPETUI::UIException);
 
-	void createFile(std::string& filename) throw(GPSUI::UIException);
-	void openFile(std::string filename) throw(GPSUI::UIException);
+	void createFile(std::string& filename) throw(YAPETUI::UIException);
+	void openFile(std::string filename) throw(YAPETUI::UIException);
 	void saveFile();
 	void closeFile();
 
 	void addNewRecord();
 	void editSelectedRecord();
-	void deleteSelectedRecord() throw(GPSUI::UIException);
+	void deleteSelectedRecord() throw(YAPETUI::UIException);
 	bool quit();
-	void lockScreen() const throw(GPSUI::UIException);
+	void lockScreen() const throw(YAPETUI::UIException);
 
     public:
-	MainWindow() throw(GPSUI::UIException);
+	MainWindow() throw(YAPETUI::UIException);
 	virtual ~MainWindow();
 
-	void run() throw(GPSUI::UIException);
+	void run() throw(YAPETUI::UIException);
 	void run(std::string fn);
-	void resize() throw(GPSUI::UIException);
+	void resize() throw(YAPETUI::UIException);
 };
 
 #endif // _MAINWINDOW_H

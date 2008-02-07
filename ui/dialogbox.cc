@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 
 #include "dialogbox.h"
 
-using namespace GPSUI;
+using namespace YAPETUI;
 
 DialogBox::DialogBox(std::string t, std::string m) throw(UIException) : MessageBox(t, m),
 									cancelbutton(NULL),

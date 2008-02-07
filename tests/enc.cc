@@ -12,26 +12,27 @@
 
 int main(int argc, char** argv) {
     try {
-	GPSAFE::Key key("TEST");
-	GPSAFE::Crypt crypt(key);
+	YAPET::Key key("TEST");
+	YAPET::Crypt crypt(key);
 
-	GPSAFE::FileHeader header;
+	YAPET::FileHeader header;
 	header.version = 1;
-	memcpy(header.control, CONTROL_STR, GPSAFE::HEADER_CONTROL_SIZE);
+	memcpy(header.control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE);
 
 
-	GPSAFE::Record<GPSAFE::FileHeader> record(header);
+	YAPET::Record<YAPET::FileHeader> record(header);
 
 
-	GPSAFE::BDBuffer* data = crypt.encrypt(record);
+	YAPET::BDBuffer* data = crypt.encrypt(record);
 
-	GPSAFE::Record<GPSAFE::FileHeader>* dec_header;
+	YAPET::Record<YAPET::FileHeader>* dec_header;
 
-	dec_header=crypt.decrypt<GPSAFE::FileHeader>(*data);
+	dec_header=crypt.decrypt<YAPET::FileHeader>(*data);
 	delete data;
 
-	GPSAFE::FileHeader* fh_ptr(*dec_header);
-	std::cout << fh_ptr->control << std::endl;
+	YAPET::FileHeader* fh_ptr(*dec_header);
+	if (memcmp(fh_ptr->control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE) != 0)
+	    return 1;
 	delete dec_header;
 
     } catch (std::exception& ex) {

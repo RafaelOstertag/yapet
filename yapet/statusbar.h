@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@
 #include "resizeable.h"
 #include "uiexception.h"
 
-class StatusBar : protected GPSUI::Resizeable {
+class StatusBar : protected YAPETUI::Resizeable {
     private:
 	WINDOW* statusbar;
 	std::string message;
@@ -53,13 +53,13 @@ class StatusBar : protected GPSUI::Resizeable {
 	inline const StatusBar& operator=(const StatusBar&) { return *this; }
 
     protected:
-	void createWindow() throw(GPSUI::UIException);
+	void createWindow() throw(YAPETUI::UIException);
 
     public:
-	StatusBar() throw(GPSUI::UIException);
+	StatusBar() throw(YAPETUI::UIException);
 	virtual ~StatusBar();
 
-	void putMsg(std::string msg) throw(GPSUI::UIException);
+	void putMsg(std::string msg) throw(YAPETUI::UIException);
 	std::string getMsg() const { return message; }
 	void refresh();
 

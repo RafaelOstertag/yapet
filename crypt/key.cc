@@ -1,6 +1,6 @@
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 # include <string.h>
 #endif
 
-using namespace GPSAFE;
+using namespace YAPET;
 
 /**
  * It clears the memory occupied by the key and the initialization
@@ -42,7 +42,7 @@ Key::cleanup() {
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key::Key(const char* password) throw(GPSException) {
+Key::Key(const char* password) throw(YAPETException) {
     // Sentinel variable to check the size of the key
     uint8_t eff_keylength;
 	    
@@ -51,7 +51,7 @@ Key::Key(const char* password) throw(GPSException) {
     //
     const EVP_MD* md = EVP_sha1();
     if (md == NULL)
-	throw GPSException("Run 1: Unable to initialize the EVP_MD structure");
+	throw YAPETException("Run 1: Unable to initialize the EVP_MD structure");
 
     EVP_MD_CTX mdctx;
     EVP_MD_CTX_init(&mdctx);
@@ -59,13 +59,13 @@ Key::Key(const char* password) throw(GPSException) {
     int retval = EVP_DigestInit_ex(&mdctx, md, NULL);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
-	throw GPSException("Run 1: Unable to initialize the digest");
+	throw YAPETException("Run 1: Unable to initialize the digest");
     }
 
     retval = EVP_DigestUpdate(&mdctx, password, strlen(password));
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
-	throw GPSException("Run 1: Unable to update the digest");
+	throw YAPETException("Run 1: Unable to update the digest");
     }
 
     unsigned int tmplen;
@@ -73,13 +73,13 @@ Key::Key(const char* password) throw(GPSException) {
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 1: Unable to finalize the digest");
+	throw YAPETException("Run 1: Unable to finalize the digest");
     }
 
     if (tmplen != SHA1_LEN) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 1: Digest does not have expected length");
+	throw YAPETException("Run 1: Digest does not have expected length");
     }
 
     eff_keylength = tmplen;
@@ -91,7 +91,7 @@ Key::Key(const char* password) throw(GPSException) {
     md = EVP_md5();
     if (md == NULL) {
 	cleanup();
-	throw GPSException("Run 2: Unable to initialize the EVP_MD structure");
+	throw YAPETException("Run 2: Unable to initialize the EVP_MD structure");
     }
 
     EVP_MD_CTX_init(&mdctx);
@@ -99,27 +99,27 @@ Key::Key(const char* password) throw(GPSException) {
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 2: Unable to initialize the digest");
+	throw YAPETException("Run 2: Unable to initialize the digest");
     }
 
     retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 2: Unable to update the digest");
+	throw YAPETException("Run 2: Unable to update the digest");
     }
 
     retval = EVP_DigestFinal_ex(&mdctx, key + SHA1_LEN, &tmplen);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 2: Unable to finalize the digest");
+	throw YAPETException("Run 2: Unable to finalize the digest");
     }
 
     if (tmplen != MD5_LEN) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 2: Digest does not have expected length");
+	throw YAPETException("Run 2: Digest does not have expected length");
     }
 
     eff_keylength += tmplen;
@@ -131,7 +131,7 @@ Key::Key(const char* password) throw(GPSException) {
     md = EVP_ripemd160();
     if (md == NULL) {
 	cleanup();
-	throw GPSException("Run 3: Unable to initialize the EVP_MD structure");
+	throw YAPETException("Run 3: Unable to initialize the EVP_MD structure");
     }
 
     EVP_MD_CTX_init(&mdctx);
@@ -139,27 +139,27 @@ Key::Key(const char* password) throw(GPSException) {
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 3: Unable to initialize the digest");
+	throw YAPETException("Run 3: Unable to initialize the digest");
     }
 
     retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN + MD5_LEN);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 3: Unable to update the digest");
+	throw YAPETException("Run 3: Unable to update the digest");
     }
 
     retval = EVP_DigestFinal_ex(&mdctx, key + SHA1_LEN + MD5_LEN, &tmplen);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 3: Unable to finalize the digest");
+	throw YAPETException("Run 3: Unable to finalize the digest");
     }
 
     if (tmplen != RIPEMD160_LEN) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("Run 3: Digest does not have expected length");
+	throw YAPETException("Run 3: Digest does not have expected length");
     }
 
     eff_keylength += tmplen;
@@ -173,7 +173,7 @@ Key::Key(const char* password) throw(GPSException) {
 		 "Effective key length of %d does not match expected key length %d",
 		 eff_keylength,
 		 KEYLENGTH);
-	throw GPSException(tmp);
+	throw YAPETException(tmp);
     }
 
     //
@@ -183,7 +183,7 @@ Key::Key(const char* password) throw(GPSException) {
     md = EVP_md5();
     if (md == NULL) {
 	cleanup();
-	throw GPSException("IVec: Unable to initialize the EVP_MD structure");
+	throw YAPETException("IVec: Unable to initialize the EVP_MD structure");
     }
 
     EVP_MD_CTX_init(&mdctx);
@@ -191,27 +191,27 @@ Key::Key(const char* password) throw(GPSException) {
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("IVec: Unable to initialize the digest");
+	throw YAPETException("IVec: Unable to initialize the digest");
     }
 
     retval = EVP_DigestUpdate(&mdctx, key, SHA1_LEN + MD5_LEN + RIPEMD160_LEN);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("IVec: Unable to update the digest");
+	throw YAPETException("IVec: Unable to update the digest");
     }
 
     retval = EVP_DigestFinal_ex(&mdctx, ivec_hash_buf, &tmplen);
     if (retval == 0) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("IVec: Unable to finalize the digest");
+	throw YAPETException("IVec: Unable to finalize the digest");
     }
 
     if (tmplen != MD5_LEN) {
 	EVP_MD_CTX_cleanup(&mdctx);
 	cleanup();
-	throw GPSException("IVec: Digest does not have expected length");
+	throw YAPETException("IVec: Digest does not have expected length");
     }
 
     EVP_MD_CTX_cleanup(&mdctx);

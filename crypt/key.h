@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 
 #include <openssl/evp.h>
 
-#include "gpsexception.h"
+#include "yapetexception.h"
 
 /**
  * @brief Namespace for cryptographic stuff
@@ -40,7 +40,7 @@
  * Namespace for cryptographic stuff. Has no front-end and relies on
  * openssl.
  */
-namespace GPSAFE {
+namespace YAPET {
     /**
      * @brief Converts the password into the key
      *
@@ -105,7 +105,7 @@ namespace GPSAFE {
 
 	public:
 	    //! Initializes the key
-	    Key(const char* password) throw(GPSException);
+	    Key(const char* password) throw(YAPETException);
 	    Key(const Key& k);
 	    ~Key();
 

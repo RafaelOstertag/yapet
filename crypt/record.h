@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -39,9 +39,9 @@
 #endif
 
 #include "bdbuffer.h"
-#include "gpsexception.h"
+#include "yapetexception.h"
 
-namespace GPSAFE {
+namespace YAPET {
 
     template<class T>
     class Record {
@@ -49,10 +49,10 @@ namespace GPSAFE {
 	    uint32_t _size;
 	    T* data;
 
-	    void alloc_mem() throw(GPSException) {
+	    void alloc_mem() throw(YAPETException) {
 		data = (T*) malloc(sizeof(T));
 		if (data == NULL)
-		    throw GPSException("Memory exhausted");
+		    throw YAPETException("Memory exhausted");
 
 		_size = sizeof(T);
 	    }
@@ -63,16 +63,16 @@ namespace GPSAFE {
 	    }
 
 	public:
-	    Record<T>(const T& d) throw(GPSException) {
+	    Record<T>(const T& d) throw(YAPETException) {
 		alloc_mem();
 		memcpy(data, &d, sizeof(T));
 	    }
 		
-	    Record<T>() throw (GPSException){
+	    Record<T>() throw (YAPETException){
 		alloc_mem();
 	    }
 
-	    Record<T>(const Record<T>& r) throw (GPSException) {
+	    Record<T>(const Record<T>& r) throw (YAPETException) {
 		alloc_mem();
 		memcpy(data, r.data, _size);
 	    }
@@ -92,7 +92,7 @@ namespace GPSAFE {
 	    operator uint8_t*() { return (uint8_t*)data; }
 	    operator const uint8_t*() const { return (const uint8_t*)data; }
 	    
-	    const Record<T>& operator=(const Record<T>& r) throw(GPSException) {
+	    const Record<T>& operator=(const Record<T>& r) throw(YAPETException) {
 		if (this == &r) return *this;
 
 		free_mem();
@@ -104,7 +104,7 @@ namespace GPSAFE {
 		return *this;
 	    }
 
-	    const Record<T>& operator=(const T& r) throw(GPSException) {
+	    const Record<T>& operator=(const T& r) throw(YAPETException) {
 		free_mem();
 		// This sets _size member too
 		alloc_mem();
@@ -113,7 +113,7 @@ namespace GPSAFE {
 		return *this;
 	    }
 
-	    const Record<T>& operator=(const T* r) throw(GPSException){
+	    const Record<T>& operator=(const T* r) throw(YAPETException){
 		free_mem();
 		// This sets _size member too
 		alloc_mem();
@@ -122,8 +122,8 @@ namespace GPSAFE {
 		return *this;
 	    }
 
-	    const Record<T>& operator=(const BDBuffer& bdb) throw(GPSException) {
-		if (bdb.size() < _size) throw GPSException("BDBuffer too small");
+	    const Record<T>& operator=(const BDBuffer& bdb) throw(YAPETException) {
+		if (bdb.size() < _size) throw YAPETException("BDBuffer too small");
 
 		free_mem();
 		// This sets _size member too

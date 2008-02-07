@@ -16,5 +16,5 @@ configure: configure.ac
 config.h.in: configure.ac
 	autoheader
 
-Makefile.in: gpsafe/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am Makefile.am
+Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am Makefile.am
 	automake -a -c -f --gnu

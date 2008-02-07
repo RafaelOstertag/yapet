@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// @@REPLACE@@
+// YAPET -- Yet Another Password Encryption Tool
 // Copyright (C) 2008  Rafael Ostertag
 //
 // This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,13 @@
 #include <button.h>
 #include <inputwidget.h>
 
-class FileOpen : protected GPSUI::Resizeable {
+/**
+ * @brief Displays a "file open dialog" (sorta)
+ *
+ *
+ * @notice The filename returned by getFilepath() always ends with ".pet"
+ */
+class FileOpen : protected YAPETUI::Resizeable {
     private:
 	enum {
 	    FALLBACK_PATH_MAX=255
@@ -51,11 +57,11 @@ class FileOpen : protected GPSUI::Resizeable {
 
 	std::string title;
 	WINDOW* window;
-	GPSUI::ListWidget<GPSUI::secstring>* dir;
-	GPSUI::ListWidget<GPSUI::secstring>* files;
-	GPSUI::InputWidget* input;
-	GPSUI::Button* okbutton;
-	GPSUI::Button* cancelbutton;
+	YAPETUI::ListWidget<YAPETUI::secstring>* dir;
+	YAPETUI::ListWidget<YAPETUI::secstring>* files;
+	YAPETUI::InputWidget* input;
+	YAPETUI::Button* okbutton;
+	YAPETUI::Button* cancelbutton;
 	
 	bool canceled;
 
@@ -63,8 +69,8 @@ class FileOpen : protected GPSUI::Resizeable {
 	inline FileOpen(const FileOpen&) {}
 	inline const FileOpen& operator=(const FileOpen&) { return *this; }
 
-	GPSUI::secstring directory;
-	GPSUI::secstring filename;
+	YAPETUI::secstring directory;
+	YAPETUI::secstring filename;
 
 	inline int windowWidth() {
 	    return maxX() - 8;
@@ -82,25 +88,28 @@ class FileOpen : protected GPSUI::Resizeable {
 	    return minY() + 2;
 	}
 
-	void createWindows() throw(GPSUI::UIException);
+	void createWindows() throw(YAPETUI::UIException);
 
-	void printTitle() throw(GPSUI::UIException);
+	void printTitle() throw(YAPETUI::UIException);
 
-	void printCWD() throw(GPSUI::UIException);
+	void printCWD() throw(YAPETUI::UIException);
 
     protected:
-	void getEntries(std::list<GPSUI::secstring>& d, std::list<GPSUI::secstring>& f) throw(GPSUI::UIException);
-	void getcwd() throw(GPSUI::UIException);
-	void cd(const GPSUI::secstring d) throw(GPSUI::UIException);
+	void getEntries(std::list<YAPETUI::secstring>& d,
+			std::list<YAPETUI::secstring>& f)
+	    throw(YAPETUI::UIException);
+
+	void getcwd() throw(YAPETUI::UIException);
+	void cd(const YAPETUI::secstring d) throw(YAPETUI::UIException);
 
     public:
-	FileOpen(std::string t) throw(GPSUI::UIException);
+	FileOpen(std::string t) throw(YAPETUI::UIException);
 	virtual ~FileOpen();
 
-	void run() throw(GPSUI::UIException);
-	void refresh() throw(GPSUI::UIException);
+	void run() throw(YAPETUI::UIException);
+	void refresh() throw(YAPETUI::UIException);
 
-	void resize() throw(GPSUI::UIException);
+	void resize() throw(YAPETUI::UIException);
 	
 	std::string getFilepath();
 
