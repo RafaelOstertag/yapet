@@ -43,11 +43,8 @@
 #include <uiexception.h>
 #include <statusbar.h>
 #include <listwidget.h>
-#include <scrdim.h>
 
-class MainWindow : protected GPSUI::Resizeable,
-		   protected GPSUI::ScrDim {
-
+class MainWindow : protected GPSUI::Resizeable {
     private:
 	WINDOW* toprightwin;
 	WINDOW* bottomrightwin;

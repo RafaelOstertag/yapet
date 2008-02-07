@@ -41,35 +41,82 @@
 #include "gpsexception.h"
 
 namespace GPSAFE {
+    /**
+     * @brief A wrapper-class for allocating and securely dellocating
+     * memory
+     *
+     * The BDBuffer class is a wrapper-class for allocating and
+     * deallocating memory for data of unsigned 8bit integers.
+     *
+     * Its primary intend is to make sure the memory is cleared after
+     * deallocation. It does so by zero'ing out the entire buffer upon
+     * destruction of the object.
+     *
+     * The class does not manage access to the allocated buffer by
+     * providing methods for accessing the memory. The pointer to the
+     * allocated memory can be obtained by casting to an \c uint8_t
+     * pointer.
+     */
     class BDBuffer {
 	private:
+	    /**
+	     * @brief Size of allocated memory chunk
+	     *
+	     * Holds the size of the allocated memory chunk in bytes.
+	     */
 	    uint32_t _size;
+
+	    /**
+	     * @brief pointer to the allocated memory
+	     *
+	     * Holds the pointer to the allocated memory.
+	     */
 	    uint8_t* data;
 
 	protected:
+	    //! Allocates memory of a given size
 	    uint8_t* alloc_mem(uint32_t s) throw(GPSException);
+	    //! Clears and frees memory
 	    void free_mem(uint8_t* d, uint32_t s);
 
 	public:
+	    //! Initializes the object with a given size of memory
 	    BDBuffer(uint32_t is) throw(GPSException);
 	    BDBuffer();
 	    BDBuffer(const BDBuffer& ed) throw(GPSException);
+	    //! Destructor
 	    ~BDBuffer();
 
+	    //! Resize the memory to a given size
 	    void resize(uint32_t ns) throw(GPSException);
+	    /**
+	     * @brief Get the size of the buffer
+	     *
+	     * Returns the size of the allocated memory chunk used as
+	     * buffer.
+	     *
+	     * @return the size of the allocated memory in bytes.
+	     */
 	    uint32_t size() const { return _size; }
 
+	    //! Access a location inside the memory chunk
 	    uint8_t* at(uint32_t pos) throw(std::out_of_range);
+	    //! Access a location inside the memory chunk
 	    const uint8_t* at(uint32_t pos) const throw(std::out_of_range);
 
+	    //! Returns the pointer to the memory chunk
 	    const uint8_t* operator()() const { return data; }
+	    //! Returns the pointer to the memory chunk
 	    uint8_t* operator()() { return data; }
 	    
-
+	    //! Returns the pointer to the memory chunk
 	    operator uint8_t*() { return data; }
+	    //! Returns the pointer to the memory chunk
 	    operator const uint8_t*() const { return data; }
 
+	    //! Returns the pointer to the memory chunk
 	    operator const void*() { return (void*)data; }
+
 	    const BDBuffer& operator=(const BDBuffer& ed);
 	    
     };

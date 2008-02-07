@@ -42,11 +42,8 @@
 #include <listwidget.h>
 #include <button.h>
 #include <inputwidget.h>
-#include <scrdim.h>
 
-class FileOpen : protected GPSUI::Resizeable,
-		 protected GPSUI::ScrDim {
-
+class FileOpen : protected GPSUI::Resizeable {
     private:
 	enum {
 	    FALLBACK_PATH_MAX=255

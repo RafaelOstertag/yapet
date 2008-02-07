@@ -641,8 +641,6 @@ MainWindow::~MainWindow() {
     delete recordlist;
     wclear(toprightwin);
     wclear(bottomrightwin);
-    wrefresh(toprightwin);
-    wrefresh(bottomrightwin);
     delwin (toprightwin);
     delwin (bottomrightwin);
     if (key != NULL)

@@ -17,20 +17,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <openssl/evp.h>
-
-#include <stdlib.h>
-
 #include "crypt.h"
 
 using namespace GPSAFE;
 
+/**
+ * Initializes the class with the given key, which is used for
+ * encryption and decryption.
+ *
+ * The constructor tries to set the key length of the cipher used to
+ * the length of the key provided. If this fails, a \c GPSException is
+ * thrown.
+ *
+ * @param k the key used for encryption/decryption.
+ *
+ * @throw GPSException in case the key length of the cipher cannot be
+ * set to the length of the key provided.
+ */
 Crypt::Crypt(const Key& k) throw(GPSException) : cipher(NULL),
 						 iv_length(0),
 						 key_length(0),

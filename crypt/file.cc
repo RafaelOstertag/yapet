@@ -153,7 +153,7 @@ File::seekDataSection() const throw(GPSException) {
     if (retval == -1)
 	throw GPSException(strerror(errno));
 
-    if (retval < sizeof(uint32_t))
+    if ( ((size_t)retval) != sizeof(uint32_t))
 	throw GPSException("Unable to seek to data section");
 
     len = uint32_from_disk(len);
@@ -197,7 +197,7 @@ File::read() const throw(GPSException) {
     if (retval == 0)
 	return NULL;
 
-    if (retval < sizeof(uint32_t) )
+    if ( ((size_t)retval) < sizeof(uint32_t) )
 	throw GPSException("Short read on file: " + filename);
 
     // Convert len to the endianess of the architecture
@@ -213,7 +213,7 @@ File::read() const throw(GPSException) {
 	return NULL;
     }
 
-    if (retval < len) {
+    if (((uint32_t)retval) < len) {
 	delete buf;
 	throw GPSException("Short read on file: " + filename);
     }
@@ -247,7 +247,7 @@ File::write(const BDBuffer& buff, bool append, bool force)
     if (retval == -1)
 	throw GPSException(strerror(errno));
     
-    if (retval < buff.size()) 
+    if (((size_t)retval) < buff.size()) 
 	throw GPSException("Short write on file: " + filename);
 
     mtime = lastModified();
@@ -326,11 +326,11 @@ File::writeHeader(const BDBuffer& enc_header) throw(GPSException) {
 
     // Write the recognition string
     ssize_t retval = ::write(fd, recog_string, strlen(recog_string));
-    if (retval != strlen(recog_string) )
-	throw GPSException("Short write on file " + filename);
-
     if (retval == -1)
 	throw GPSException(strerror(errno));
+
+    if (((size_t)retval) != strlen(recog_string) )
+	throw GPSException("Short write on file " + filename);
 
     write(enc_header);
 }
@@ -344,11 +344,11 @@ File::readHeader() const throw(GPSException) {
 	throw GPSException("Memory exhausted");
 
     int retval = ::read(fd, buff, strlen(recog_string));
-    if (retval != strlen(recog_string) )
-	throw GPSException("File type not recognized");
-
     if (retval == -1)
 	throw GPSException(strerror(errno));
+
+    if (((size_t)retval) != strlen(recog_string) )
+	throw GPSException("File type not recognized");
 
     retval = memcmp(recog_string, buff, strlen(recog_string));
     if (retval != 0)
@@ -386,8 +386,8 @@ File::validateKey(const Key& key) throw(GPSException,GPSInvalidPasswordException
 }
 
 File::File(const std::string& fn, const Key& key, bool create) 
-    throw(GPSException) : filename(fn),
-			  isopen(true) {
+    throw(GPSException) : isopen(true),
+			  filename(fn) {
     if (create)
 	openCreate();
     else

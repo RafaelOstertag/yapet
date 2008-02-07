@@ -25,12 +25,23 @@
 
 using namespace GPSAFE;
 
+/**
+ * It clears the memory occupied by the key and the initialization
+ * vector by setting it to zero.
+ */
 void
 Key::cleanup() {
     memset(key, 0, KEYLENGTH);
     memset(IVec, 0, IVECLENGTH);
 }
 
+/**
+ * Initializes the key and the initialization vector. Make sure you
+ * securely destroy the password provided to this method.
+ *
+ * @param password a pointer to the location the password is
+ * stored. The password has to be zero-terminated.
+ */
 Key::Key(const char* password) throw(GPSException) {
     // Sentinel variable to check the size of the key
     uint8_t eff_keylength;
@@ -230,6 +241,16 @@ Key::operator=(const Key& k) {
     return *this;
 }
 
+/**
+ * Compares the key \c k provided for equality with this key.
+ *
+ * Both, the key itself and the initialization vector are compared.
+ *
+ * @param k reference to the key compared with this.
+ *
+ * @return \c true if both keys and initialization vectors are equal,
+ * \c false otherwise.
+ */
 bool
 Key::operator==(const Key& k) const {
     if (k.size() != size()) return false;
@@ -245,4 +266,3 @@ Key::operator==(const Key& k) const {
 
     return true;
 }
-

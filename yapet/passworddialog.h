@@ -44,7 +44,6 @@
 #include <key.h>
 
 #include <resizeable.h>
-#include <scrdim.h>
 #include <button.h>
 #include <passwordwidget.h>
 
@@ -53,9 +52,7 @@ enum PWTYPE {
     EXISTING_PW
 };
 
-class PasswordDialog : protected GPSUI::Resizeable,
-		       protected GPSUI::ScrDim {
-
+class PasswordDialog : protected GPSUI::Resizeable {
     private:
 	enum {
 	    HEIGHT_NEW = 9,

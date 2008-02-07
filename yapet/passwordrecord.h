@@ -45,12 +45,10 @@
 #include <partdec.h>
 
 #include <resizeable.h>
-#include <scrdim.h>
 #include <button.h>
 #include <passwordwidget.h>
 
-class PasswordRecord : protected GPSUI::Resizeable,
-		      protected GPSUI::ScrDim {
+class PasswordRecord : protected GPSUI::Resizeable {
     private:
 	enum {
 	    HEIGHT = 14

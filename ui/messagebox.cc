@@ -49,7 +49,6 @@ MessageBox::MessageBox(std::string t, std::string m) throw(UIException) : window
 MessageBox::~MessageBox() {
     delete okbutton;
     wclear(window);
-    wrefresh(window);
     delwin(window);
 }
 

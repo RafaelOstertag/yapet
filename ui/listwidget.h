@@ -262,7 +262,6 @@ namespace GPSUI {
 	    
 	    virtual ~ListWidget() {
 			wclear(window);
-			wrefresh(window);
 			delwin(window);
 	    }
 	    

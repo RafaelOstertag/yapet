@@ -88,15 +88,14 @@ PasswordRecord::PasswordRecord(GPSAFE::Key& k, GPSAFE::PartDec* pe)
 
 PasswordRecord::~PasswordRecord() {
 	wclear(window);
-	wrefresh(window);
-    delwin(window);
-    delete name;
-    delete host;
-    delete username;
-    delete password;
-    delete comment;
-    delete okbutton;
-    delete cancelbutton;
+	delwin(window);
+	delete name;
+	delete host;
+	delete username;
+	delete password;
+	delete comment;
+	delete okbutton;
+	delete cancelbutton;
 }
 
 void

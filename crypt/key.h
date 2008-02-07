@@ -34,15 +34,18 @@
 
 #include "gpsexception.h"
 
-/** Namespace for cryptographic stuff
+/**
+ * @brief Namespace for cryptographic stuff
  *
  * Namespace for cryptographic stuff. Has no front-end and relies on
  * openssl.
  */
 namespace GPSAFE {
-    /** Converts the password into the key
+    /**
+     * @brief Converts the password into the key
      *
-     * Converts the password into the key which is used by the other classes.
+     * Converts the password into the key which is used by the other
+     * cryptographic related classes.
      *
      * The key uses the maximum length of 448bits (56bytes) allowed
      * for blowfish.
@@ -60,40 +63,37 @@ namespace GPSAFE {
     class Key {
 	private:
 	    enum { 
-		/** Length of the key
-		 *
+		/**
 		 * The max length of the blowfish key in bytes (448 bits)
 		 */
 		KEYLENGTH = 56,
-		/** Length of the md5 output
-		 *
+		/** 
 		 * The length of the output of md5 (128 bits)
 		 */
 		MD5_LEN = 16,
 
-		/** Length of the sha1 output
-		 *
+		/**
 		 * The length of the output of sha1 (160 bits)
 		 */
 		SHA1_LEN = 20,
-		/** Length of the ripemd-160 output
-		 *
+		/** 
 		 * The lenght of the output of ripemd-160 (160 bits)
 		 */
 		RIPEMD160_LEN = 20,
-		/** Length of the initialization vector
-		 *
+		/** 
 		 * The length of the initialization vector
 		 */
 		IVECLENGTH = 8
 	    };
 		
-	    /** Holds the key
+	    /**
+	     * @brief Holds the key
 	     *
 	     * This is the key used to encrypt and decrypt data.
 	     */
 	    uint8_t key[KEYLENGTH];
-	    /** Holds the initialization vector
+	    /**
+	     * @brief Holds the initialization vector
 	     *
 	     * The initialization vector used for encryption and
 	     * decryption.
@@ -104,35 +104,137 @@ namespace GPSAFE {
 	    void cleanup();
 
 	public:
+	    //! Initializes the key
 	    Key(const char* password) throw(GPSException);
 	    Key(const Key& k);
 	    ~Key();
 
-	    //! Returns the key
+	    /**
+	     * @brief Gets the pointer to the key
+	     * 
+	     * Returns the key and its length. The key is not
+	     * terminated by '\0'. So make sure you read only \c
+	     * key_len bytes from the pointer returned.
+	     *
+	     * @param key_len reference to an integer receiving the
+	     * key length in bytes
+	     *
+	     * @return pointer to the array of unsigned 8bit integers
+	     * holding the key.
+	     */
 	    inline const uint8_t* getKey(int& key_len) const {
 		key_len = KEYLENGTH;
 		return key;
 	    }
-	    //! Returns the key
+
+	    /**
+	     * @brief Gets the pointer to the key
+	     *
+	     * Returns the key only. Please note that the key is not
+	     * terminated by '\0', so make sure you read only as many
+	     * bytes as returned by \c size().
+	     *
+	     * @return pointer to the array of usigned 8bit integers
+	     * holding the key.
+	     */
 	    inline const uint8_t* getKey() const { return key; }
-	    //! Returns the initialization vector
+	    
+	    /**
+	     * @brief Gets the pointer to the initialization vector
+	     *
+	     * Gets the initialization vector and its length. Please
+	     * remember that the initialization vector is not '\0'
+	     * terminated. So make sure you read only \c ivec_len
+	     * bytes from the pointer returned.
+	     *
+	     * @param ivec_len a reference to an integer receiving the
+	     * length of the initialization vector.
+	     *
+	     * @return pointer to the array of unsigned 8bit integers
+	     * holding the initialization vector.
+	     */
 	    inline const uint8_t* getIVec(int& ivec_len) const {
 		ivec_len = IVECLENGTH;
 		return IVec;
 	    }
+
+	    /**
+	     * @brief Gets the initialization vector
+	     *
+	     * Gets the initialization vector. Please remember that
+	     * the initialization vector is not '\0' terminated. So
+	     * make sure you read only as many bytes as returned by \c
+	     * ivec_size().
+	     *
+	     * @return pointer to the array of unsigned 8bit integers
+	     * holding the initialization vector.
+	     */
 	    inline const uint8_t* getIVec() const { return IVec; }
 
-	    inline int size() const { return KEYLENGTH; }
-	    inline int ivec_size() const { return IVECLENGTH; }
+	    /**
+	     * @brief Returns the key length in bytes
+	     *
+	     * Returns the key length in bytes
+	     *
+	     * @return key length in bytes.
+	     */
+	    inline uint32_t size() const { return KEYLENGTH; }
 
+	    /**
+	     * @brief Returns the length of the initialization vector
+	     *
+	     * Returns the length of the initialization vector in
+	     * bytes.
+	     *
+	     * @return the size of the initialization vector in bytes.
+	     */
+	    inline uint32_t ivec_size() const { return IVECLENGTH; }
+
+	    /**
+	     * @brief Gets the pointer to the key
+	     * 
+	     * Returns the key and its length. The key is not
+	     * terminated by '\0'. So make sure you read only \c
+	     * key_len bytes from the pointer returned.
+	     *
+	     * @param key_len reference to an integer receiving the
+	     * key length in bytes
+	     *
+	     * @return pointer to the array of unsigned 8bit integers
+	     * holding the key.
+	     */
 	    inline const uint8_t* operator()(int& key_len) const { return getKey(key_len); }
+
+	    /**
+	     * @brief Gets the pointer to the key
+	     *
+	     * Returns the key only. Please note that the key is not
+	     * terminated by '\0', so make sure you read only as many
+	     * bytes as returned by \c size().
+	     *
+	     * @return pointer to the array of usigned 8bit integers
+	     * holding the key.
+	     */
 	    inline const uint8_t* operator()() const { return key; }
 
+	    /**
+	     * @brief Cast operator
+	     * 
+	     * Returns the pointer to the key.
+	     */
 	    inline operator uint8_t*() { return key; }
+
+	    /**
+	     * @brief Cast operator
+	     * 
+	     * Returns the pointer to the key.
+	     */
 	    inline operator const uint8_t*() const { return key; }
 
 	    const Key& operator=(const Key& k);
+	    //! Compares two keys for equality
 	    bool operator==(const Key& k) const;
+	    //! Compares two keys for inequality
 	    bool operator!=(const Key& k) const { return !operator==(k); }
     };
 	    

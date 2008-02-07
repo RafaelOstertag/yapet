@@ -147,7 +147,7 @@ InputWidget::InputWidget(int sx, int sy, int w, int ml)
 
 InputWidget::~InputWidget() {
     clearText();
-    wrefresh(window);
+    wclear(window);
     delwin(window);
 }
 

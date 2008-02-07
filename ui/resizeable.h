@@ -50,7 +50,30 @@ namespace GPSUI {
 	protected:
 	    static void registerResizeable(Resizeable* r);
 	    static void unregisterResizeable(Resizeable* r);
+
+	    inline int maxX() const {
+		int max_x, max_y;
+		getmaxyx(stdscr, max_y, max_x);
+		return max_x;
+	    }
 	    
+	    inline int maxY() const {
+		int max_x, max_y;
+		getmaxyx(stdscr, max_y, max_x);
+		return max_y;
+	    }
+	    
+	    inline int minX() const {
+		int x, y;
+		getbegyx(stdscr, y, x);
+		return x;
+	    }
+	    
+	    inline int minY() const {
+		int x, y;
+		getbegyx(stdscr, y, x);
+		return y;
+	    }
 	public:
 	    static void resizeAll();
 	    static void refreshAll();

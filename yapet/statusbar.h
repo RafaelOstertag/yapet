@@ -43,10 +43,8 @@
 
 #include "resizeable.h"
 #include "uiexception.h"
-#include "scrdim.h"
 
-class StatusBar : protected GPSUI::Resizeable,
-		  protected GPSUI::ScrDim {
+class StatusBar : protected GPSUI::Resizeable {
     private:
 	WINDOW* statusbar;
 	std::string message;

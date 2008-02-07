@@ -65,8 +65,7 @@ PasswordDialog::~PasswordDialog() {
 	delete pwidget2;
     delete okbutton;
     delete cancelbutton;
-	wclear(window);
-	wrefresh(window);
+    wclear(window);
     delwin(window);
 }
 

@@ -185,7 +185,6 @@ FileOpen::FileOpen(std::string t) throw(GPSUI::UIException) : Resizeable(),
 
 FileOpen::~FileOpen() {
 	wclear(window);
-	wrefresh(window);
 	delwin (window);
 	delete dir;
 	delete files;

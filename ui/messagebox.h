@@ -44,11 +44,10 @@
 #include "uiexception.h"
 #include "resizeable.h"
 #include "button.h"
-#include "scrdim.h"
 
 namespace GPSUI {
 
-    class MessageBox : protected Resizeable, protected ScrDim {
+    class MessageBox : protected Resizeable {
 	private:
 	    enum {
 		BASE_HEIGHT=6,
