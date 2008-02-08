@@ -44,7 +44,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([fcntl.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h])
+AC_CHECK_HEADERS([fcntl.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h])],
@@ -71,7 +71,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt rename])
+AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt rename getopt_long])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat],[],[])

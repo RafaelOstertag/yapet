@@ -67,6 +67,10 @@
 # include <string>
 #endif
 
+#ifdef HAVE_GETOPT_H
+# include <getopt.h>
+#endif
+
 #include "colors.h"
 #include "mainwindow.h"
 
@@ -85,6 +89,7 @@ const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
     "\n"								\
     "You should have received a copy of the GNU General Public License\n" \
     "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
+
 
 void set_rlimit() {
 #if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
@@ -160,8 +165,18 @@ int main (int argc, char** argv) {
 
     int c;
     std::string filename;
-    
+#ifdef HAVE_GETOPT_LONG
+    struct option long_options[] = {
+	{"copyright", no_argument, NULL, 'c'},
+	{"help", no_argument, NULL, 'h'},
+	{"version", no_argument, NULL, 'V'},
+	{"file", required_argument, NULL, 'f'},
+	{NULL,0,NULL,0}
+    };
+    while ( (c = getopt_long(argc, argv, ":chVf:", long_options, NULL)) != -1) {
+#else // HAVE_GETOPT_LONG
     while ( (c = getopt(argc, argv, ":c(copyright)h(help)V(version)f:(file)")) != -1) {
+#endif // HAVE_GETOPT_LONG
 	switch (c) {
 	case 'c':
 	    show_copyright();
