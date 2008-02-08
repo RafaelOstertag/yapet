@@ -1,6 +1,6 @@
 # $Id$
 
-EXTRA_DIST = NEWS AUTHORS README Makefile.cvs
+EXTRA_DIST = INSTALL.generic Makefile.cvs
 
 SUBDIRS = crypt ui tests doc yapet
 
