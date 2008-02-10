@@ -194,7 +194,23 @@ namespace YAPET {
 	    /**
 	     * @brief Decrypts data
 	     *
-	     * Decrypts the data in the \c BDBuffer supplied.
+	     * Decrypts the data supplied in the \c BDBuffer. It
+	     * returns the decrypted data as a \c Record of the
+	     * specified type.
+	     *
+	     * The \c Record has to be freed by the caller.
+	     *
+	     * @param data the \c BDBuffer to decrypt.
+	     *
+	     * @return pointer to a \c Record of the specified type,
+	     * holding the decrypted data. The caller is responsible
+	     * for freeing the memory occupied by the object returned.
+	     *
+	     * @throw YAPETException
+	     *
+	     * @throw YAPETEncryptionException
+	     *
+	     * @sa Record, BDBuffer
 	     */
 	    template<class T>
 	    Record<T>* decrypt(const BDBuffer& data)

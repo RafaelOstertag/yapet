@@ -101,7 +101,7 @@ File::lastModified() const throw(YAPETException){
     int retval = fstat(fd, &st_buf);
     if (retval == -1)
 	throw YAPETException(strerror(errno));
-    
+
     return st_buf.st_mtime;
 }
 
@@ -175,7 +175,7 @@ File::uint32_to_disk(uint32_t i) const {
     tmp = endian.dword.b.a;
     endian.dword.b.a = endian.dword.a.b;
     endian.dword.a.b = tmp;
-    
+
     return endian.abcd;
 }
 
@@ -206,7 +206,7 @@ File::read() const throw(YAPETException) {
 
     BDBuffer* buf = new BDBuffer(len);
     retval = ::read(fd, *buf, len);
-    if (retval == -1) 
+    if (retval == -1)
 	throw YAPETException(strerror(errno));
 
     if (retval == 0) {
@@ -223,7 +223,7 @@ File::read() const throw(YAPETException) {
 }
 
 void
-File::write(const BDBuffer& buff, bool forceappend, bool forcewrite) 
+File::write(const BDBuffer& buff, bool forceappend, bool forcewrite)
     throw(YAPETException, YAPETRetryException) {
     if ( (mtime != lastModified()) && !forcewrite)
 	throw YAPETRetryException("File has been modified");
@@ -247,8 +247,8 @@ File::write(const BDBuffer& buff, bool forceappend, bool forcewrite)
     retval = ::write(fd, buff, buff.size());
     if (retval == -1)
 	throw YAPETException(strerror(errno));
-    
-    if (((size_t)retval) < buff.size()) 
+
+    if (((size_t)retval) < buff.size())
 	throw YAPETException("Short write on file: " + filename);
 
     mtime = lastModified();
@@ -261,9 +261,9 @@ File::isempty() const throw(YAPETException){
     if (retval == -1)
 	throw YAPETException(strerror(errno));
 
-    if (st_buf.st_size == 0) 
+    if (st_buf.st_size == 0)
 	return true;
-    
+
     return false;
 }
 
@@ -299,7 +299,7 @@ File::initFile(const Key& key) throw(YAPETException) {
 }
 
 void
-File::writeHeader(const Record<FileHeader>& header, const Key& key) 
+File::writeHeader(const Record<FileHeader>& header, const Key& key)
     throw(YAPETException) {
 
     Crypt crypt(key);
@@ -356,7 +356,7 @@ File::readHeader() const throw(YAPETException) {
     retval = memcmp(recog_string, buff, strlen(recog_string));
     if (retval != 0)
 	throw YAPETException("File type not recognized");
-    
+
     return read();
 }
 
@@ -392,7 +392,7 @@ File::validateKey(const Key& key)
 	throw YAPETInvalidPasswordException();
 }
 
-File::File(const std::string& fn, const Key& key, bool create) 
+File::File(const std::string& fn, const Key& key, bool create)
     throw(YAPETException) : filename(fn) {
     if (create)
 	openCreate();
@@ -410,7 +410,7 @@ File::File(const File& f) throw(YAPETException) {
     fd = dup(f.fd);
     if (fd == -1)
 	throw YAPETException(strerror(errno));
-    
+
     filename = f.filename;
     mtime = f.mtime;
 }
@@ -435,7 +435,7 @@ File::read(const Key& key) const throw(YAPETException) {
 
     BDBuffer* buff = NULL;
     std::list<PartDec> retval;
-    
+
     try {
 	buff = read();
 	while (buff != NULL) {
@@ -486,7 +486,7 @@ File::setNewKey(const Key& oldkey,
 		const BDBuffer old_enc_rec = (*it).getEncRecord();
 		dec_rec_ptr =
 		    oldcrypt.decrypt<PasswordRecord>(old_enc_rec);
-		new_enc_rec = 
+		new_enc_rec =
 		    newcrypt.encrypt(*dec_rec_ptr);
 		write(*new_enc_rec);
 		delete dec_rec_ptr;

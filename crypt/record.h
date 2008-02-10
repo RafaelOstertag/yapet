@@ -67,7 +67,7 @@ namespace YAPET {
 		alloc_mem();
 		memcpy(data, &d, sizeof(T));
 	    }
-		
+
 	    Record<T>() throw (YAPETException){
 		alloc_mem();
 	    }
@@ -91,12 +91,12 @@ namespace YAPET {
 
 	    operator uint8_t*() { return (uint8_t*)data; }
 	    operator const uint8_t*() const { return (const uint8_t*)data; }
-	    
+
 	    const Record<T>& operator=(const Record<T>& r) throw(YAPETException) {
 		if (this == &r) return *this;
 
 		free_mem();
-		
+
 		// This sets _size member too
 		alloc_mem();
 		memcpy(data, r.data, r._size);

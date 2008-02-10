@@ -42,9 +42,108 @@
 #include "partdec.h"
 
 namespace YAPET {
-
+    /**
+     * @brief Class for storing and retrieving encrypted data to and
+     * from disk
+     *
+     * This class takes care of storing and retrieving encrypted
+     * password records to and from disk.
+     *
+     * Each file created by this class starts with a recognition
+     * string which currently consists of the 8 bytes "YAPET1.0" as
+     * depicted below.
+     *
+@verbatim
++--------+--------+--------+--------+--------+--------+--------+--------+
+|   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
+| 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte |
++--------+--------+--------+--------+--------+--------+--------+--------+
+@endverbatim
+     *
+     * After the recognition string an header totalling in 25 Bytes
+     * follows. The first byte indicates the version of the file. The
+     * next 20 Bytes are used as control string. After decryption, the
+     * control string is compared to the predefined clear text control
+     * string, to find out whether or not the key used to decrypt was
+     * the one used to encrypt.
+     *
+@verbatim
++--------+
+|Version |
+| 1 Byte |
++--------+--------+--------+--...---+
+|          Control String           |
+|             20 Bytes              |
++--------+--------+--------+--...---+
+|  Time when the Password  |
+|    was set (4 Bytes)     |
++--------+--------+--------+
+@endverbatim
+    *
+    * Each encrypted password record is prefixed by a 4 Byte unsigned
+    * integer which is stored in big-endian order. The methods take
+    * care returning them in the appropriate order of the host
+    * system. This integer is used to indicate the length of the
+    * following encrypted data chunk.
+    *
+@verbatim
++--------+--------+--------+--------+
+|   Length indicator in big-endian  |
+|         order (4 Bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of exactly as   |
+|   many Bytes as indicated by the prefix    |
++--------+--------+--------+--------+--...---+
+|   Length indicator in big-endian  |
+|         order (4 Bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of exactly as   |
+|   many Bytes as indicated by the prefix    |
++--------+--------+--------+--------+--...---+
+              [ . . . ]
+@endverbatim
+    *
+    * Putting this together, the file looks like this
+    *
+@verbatim
++--------+--------+--------+--------+--------+--------+--------+--------+
+|   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
+| 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte |
++--------+--------+--------+--------+--------+--------+--------+--------+
+|Version |
+| 1 Byte |
++--------+--------+--------+--...---+
+|          Control String           |
+|             20 Bytes              |
++--------+--------+--------+--...---+
+|  Time when the Password  |
+|    was set (4 Bytes)     |
++--------+--------+--------+--------+
+|   Length indicator in big-endian  |
+|         order (4 Bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of exactly as   |
+|   many Bytes as indicated by the prefix    |
++--------+--------+--------+--------+--...---+
+|   Length indicator in big-endian  |
+|         order (4 Bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of exactly as   |
+|   many Bytes as indicated by the prefix    |
++--------+--------+--------+--------+--...---+
+              [ . . . ]
+@endverbatim
+    *
+    * Instances of this class keeps the file open for the lifetime
+    * of the instance.
+    */
     class File {
 	private:
+	    /**
+	     * @brief the file descriptor of the password file
+	     *
+	     * The file descriptor of the password file.
+	     */
 	    int fd;
 	    std::string filename;
 	    time_t mtime;
@@ -58,7 +157,7 @@ namespace YAPET {
 	    void seekAbs(off_t offset) const throw(YAPETException);
 
 	    void preparePWSave() throw(YAPETException);
-	    
+
 	protected:
 	    struct WORD {
 		    uint8_t a;
@@ -74,7 +173,7 @@ namespace YAPET {
 		    uint32_t abcd;
 		    DWORD dword;
 	    };
-	    
+
 #ifndef WORDS_BIGENDIAN
 	    //! The given integer will be converted to big endian
 	    uint32_t uint32_to_disk(uint32_t i) const;
@@ -98,7 +197,7 @@ namespace YAPET {
 	    bool isempty() const throw(YAPETException);
 
 	    void initFile(const Key& key) throw(YAPETException);
-	    
+
 	    void writeHeader(const Record<FileHeader>& header,
 			     const Key& key)
 		throw(YAPETException);
@@ -122,7 +221,7 @@ namespace YAPET {
 	    std::string getFilename() const { return filename; }
 	    void setNewKey(const Key& oldkey, const Key& newkey)
 		throw(YAPETException);
-	    
+
 	    const File& operator=(const File& f) throw(YAPETException);
     };
 }

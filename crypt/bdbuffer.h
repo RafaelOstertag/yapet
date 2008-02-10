@@ -52,10 +52,10 @@ namespace YAPET {
      * deallocation. It does so by zero'ing out the entire buffer upon
      * destruction of the object.
      *
-     * The class does not manage access to the allocated buffer by
-     * providing methods for accessing the memory. The pointer to the
-     * allocated memory can be obtained by casting to an \c uint8_t
-     * pointer.
+     * The class provides some basic methods for accessing the memory.
+     *
+     * The pointer to the allocated memory can be obtained by casting
+     * to an \c uint8_t pointer.
      */
     class BDBuffer {
 	private:
