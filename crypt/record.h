@@ -43,12 +43,40 @@
 
 namespace YAPET {
 
+    /**
+     * @brief Template for allocating/deallocating memory for structs
+     *
+     * The primary intend of this template is to make sure the memory
+     * allocated for a struct is zero'ed out upon deallocation.
+     *
+     * The template allocates enough memory on the heap for holding
+     * the struct of type \c T.
+     *
+     * It allows direct manipulation of the struct on the heap.
+     */
     template<class T>
     class Record {
 	private:
+	    /**
+	     * @brief The size of the memory allocated.
+	     *
+	     * The size of the memory allocated. Used to zero out the
+	     * memory used by the struct.
+	     */
 	    uint32_t _size;
+	    /**
+	     * @brief Pointer to the struct.
+	     *
+	     * Pointer to the struct on the heap.
+	     */
 	    T* data;
 
+	    /**
+	     * @brief Allocate memory for the struct.
+	     *
+	     * Allocates the proper amount of memory for holding the
+	     * struct and sets the \c _size field.
+	     */
 	    void alloc_mem() throw(YAPETException) {
 		data = (T*) malloc(sizeof(T));
 		if (data == NULL)
@@ -57,17 +85,37 @@ namespace YAPET {
 		_size = sizeof(T);
 	    }
 
+	    /**
+	     * @brief Zero out and free memory.
+	     *
+	     * Zero'es the memory out and frees it.
+	     */
 	    void free_mem() {
 		memset(data, 0, _size);
 		free(data);
 	    }
 
 	public:
+	    /**
+	     * @brief Allocates memory.
+	     *
+	     * Allocates memory of the proper size and copies the
+	     * content of the given struct \c d.
+	     *
+	     * @param d reference to the struct from where the content
+	     * is copied to the allocated memory.
+	     */
 	    Record<T>(const T& d) throw(YAPETException) {
 		alloc_mem();
 		memcpy(data, &d, sizeof(T));
 	    }
 
+	    /**
+	     * @brief Allocates memory to hold a struct of the type \c
+	     * T.
+	     *
+	     * Allocates memory to hold a struct of the type \c T.
+	     */
 	    Record<T>() throw (YAPETException){
 		alloc_mem();
 	    }
@@ -81,15 +129,57 @@ namespace YAPET {
 		free_mem();
 	    }
 
+	    /**
+	     * @brief Get the size of the allocated memory.
+	     *
+	     * Get the size of the allocated memory.
+	     */
 	    uint32_t size() const { return _size; }
 
+	    /**
+	     * @brief Get the pointer to the struct.
+	     *
+	     * Gets the pointer to the struct on the heap.
+	     *
+	     * @return pointer to the struct on the heap.
+	     */
 	    T* getData() { return data; }
+	    /**
+	     * @brief Get the pointer to the struct.
+	     *
+	     * Gets the pointer to the struct on the heap.
+	     *
+	     * @return pointer to the struct on the heap.
+	     */
 	    const T* getData() const { return data; }
 
+	    /**
+	     * @brief Get the pointer to the struct.
+	     *
+	     * Gets the pointer to the struct on the heap.
+	     *
+	     * @return pointer to the struct on the heap.
+	     */
 	    operator T*() { return data; }
+	    /**
+	     * @brief Get the pointer to the struct.
+	     *
+	     * Gets the pointer to the struct on the heap.
+	     *
+	     * @return pointer to the struct on the heap.
+	     */
 	    operator const T*() const { return data; }
-
+	    
+	    /**
+	     * @brief Cast operator.
+	     *
+	     * Cast operator used by the openssl functions.
+	     *
+	     * @return pointer to the struct casted to an unsigned
+	     * integer pointer of 8 bits.
+	     */
 	    operator uint8_t*() { return (uint8_t*)data; }
+
 	    operator const uint8_t*() const { return (const uint8_t*)data; }
 
 	    const Record<T>& operator=(const Record<T>& r) throw(YAPETException) {

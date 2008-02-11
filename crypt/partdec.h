@@ -37,13 +37,34 @@
 #include "structs.h"
 
 namespace YAPET {
-    /** Holds a partially decrypted record
+    /**
+     * @brief Holds a partially decrypted record
      * 
-     * Partially decrypted records have their name stored plaintext.
+     * Partially decrypted records have their name stored in plain
+     * text. The other fields of the password record remain
+     * encrypted. This class is used for convenience. It relieves the
+     * user of writing code for decrypting the record in order to get
+     * only the record name.
+     *
+     * The \c File class uses this class when reading and returning
+     * the records stored in a file. It also expects a list of \c
+     * PartDec object when writing password records to the file.
+     *
+     * The encrypted data is also attached to this class as a \c BDBuffer.
      */
     class PartDec {
 	private:
+	    /**
+	     * @brief The record name in plain text
+	     *
+	     * The password record name in plain text.
+	     */
 	    uint8_t name[NAME_SIZE];
+	    /**
+	     * @brief The encrypted password record.
+	     *
+	     * This is the encrypted password record.
+	     */
 	    BDBuffer enc_data;
 
 	public:
@@ -61,9 +82,35 @@ namespace YAPET {
 
 	    void setRecord(Record<PasswordRecord>& pr,
 			   const Key& key) throw(YAPETException);
-	    const BDBuffer& getEncRecord() const { return enc_data; }
-	    const uint8_t* getName() const { return name; }
-	    const char* c_str() const { return (char*)name; }
+	    /**
+	     * @brief Get the encrypted password record.
+	     *
+	     * Gets the encrypted password record associated with this
+	     * object.
+	     *
+	     * @return reference to the \c BDBuffer holding the
+	     * encrypted data.
+	     */
+	    inline const BDBuffer& getEncRecord() const { return enc_data; }
+	    /**
+	     * @brief Get the plain text name of the password record.
+	     *
+	     * Returns the pointer to the plain text name of the
+	     * password record.
+	     *
+	     * @return pointer to the buffer holding the plain text
+	     * name of the password record.
+	     */
+	    inline const uint8_t* getName() const { return name; }
+	    /**
+	     * This method has been added because \c
+	     * YAPETUI::ListWidget expects the object assigned to the
+	     * list being displayed to have a public method called \c
+	     * c_str().
+	     *
+	     * @copydoc getName()
+	     */
+	    inline const char* c_str() const { return (char*)name; }
 	    const PartDec& operator=(const PartDec& pd);
     };
 }

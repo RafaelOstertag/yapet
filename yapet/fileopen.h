@@ -47,7 +47,7 @@
  * @brief Displays a "file open dialog" (sorta)
  *
  *
- * @notice The filename returned by getFilepath() always ends with ".pet"
+ * @note The filename returned by getFilepath() always ends with ".pet"
  */
 class FileOpen : protected YAPETUI::Resizeable {
     private:

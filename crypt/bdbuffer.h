@@ -42,7 +42,7 @@
 
 namespace YAPET {
     /**
-     * @brief A wrapper-class for allocating and securely dellocating
+     * @brief A wrapper-class for allocating and securely deallocating
      * memory
      *
      * The BDBuffer class is a wrapper-class for allocating and

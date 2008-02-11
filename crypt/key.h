@@ -55,10 +55,10 @@ namespace YAPET {
      * re-hashed using md5 which is then appended to the key generated
      * by the previous pass (sha1 + md5). The last pass hashes the
      * result of the former two passes using RIPEMD-160 and appended
-     * the result to the key (sha1 + md5 + ripemd-160).
+     * the result to the key (sha1 + md5 + ripemd160).
      *
      * The initialization vector is computed by hashing the key using
-     * the md5 algorithm and taking only the first eigth bytes.
+     * the md5 algorithm and taking only the first eight bytes.
      */
     class Key {
 	private:
@@ -113,7 +113,7 @@ namespace YAPET {
 	     * @brief Gets the pointer to the key
 	     * 
 	     * Returns the key and its length. The key is not
-	     * terminated by '\0'. So make sure you read only \c
+	     * terminated by \c \\0. So make sure you read only \c
 	     * key_len bytes from the pointer returned.
 	     *
 	     * @param key_len reference to an integer receiving the
@@ -131,7 +131,7 @@ namespace YAPET {
 	     * @brief Gets the pointer to the key
 	     *
 	     * Returns the key only. Please note that the key is not
-	     * terminated by '\0', so make sure you read only as many
+	     * terminated by \c \\0, so make sure you read only as many
 	     * bytes as returned by \c size().
 	     *
 	     * @return pointer to the array of usigned 8bit integers
@@ -143,7 +143,7 @@ namespace YAPET {
 	     * @brief Gets the pointer to the initialization vector
 	     *
 	     * Gets the initialization vector and its length. Please
-	     * remember that the initialization vector is not '\0'
+	     * remember that the initialization vector is not \c \\0
 	     * terminated. So make sure you read only \c ivec_len
 	     * bytes from the pointer returned.
 	     *
@@ -162,7 +162,7 @@ namespace YAPET {
 	     * @brief Gets the initialization vector
 	     *
 	     * Gets the initialization vector. Please remember that
-	     * the initialization vector is not '\0' terminated. So
+	     * the initialization vector is not \c \\0 terminated. So
 	     * make sure you read only as many bytes as returned by \c
 	     * ivec_size().
 	     *
@@ -194,7 +194,7 @@ namespace YAPET {
 	     * @brief Gets the pointer to the key
 	     * 
 	     * Returns the key and its length. The key is not
-	     * terminated by '\0'. So make sure you read only \c
+	     * terminated by \c \\0. So make sure you read only \c
 	     * key_len bytes from the pointer returned.
 	     *
 	     * @param key_len reference to an integer receiving the
@@ -209,7 +209,7 @@ namespace YAPET {
 	     * @brief Gets the pointer to the key
 	     *
 	     * Returns the key only. Please note that the key is not
-	     * terminated by '\0', so make sure you read only as many
+	     * terminated by \c \\0, so make sure you read only as many
 	     * bytes as returned by \c size().
 	     *
 	     * @return pointer to the array of usigned 8bit integers
