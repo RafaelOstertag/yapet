@@ -46,12 +46,20 @@
 /**
  * @brief Displays a "file open dialog" (sorta)
  *
+ * Displays a window where the user can navigate the directory hierarchy and
+ * select a file whose ending is \c .pet.
  *
- * @note The filename returned by getFilepath() always ends with ".pet"
+ * @note The filename returned by \c getFilepath() always ends with \c .pet.
  */
 class FileOpen : protected YAPETUI::BaseWindow {
     private:
 	enum {
+	    /**
+	     * @brief The max filename length.
+	     *
+	     * This is only used if we are unable to determine the max length
+	     * of the filename by other means.
+	     */
 	    FALLBACK_PATH_MAX=255
 	};
 

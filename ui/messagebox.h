@@ -46,7 +46,15 @@
 #include "button.h"
 
 namespace YAPETUI {
-
+    /**
+     * @brief Displays a message in a window on the screen.
+     *
+     * Displays a message in a separate window on the screen. A button will be
+     * available to quit the message.
+     *
+     * Line breaks in the message string are not handled at all. So try to
+     * avoid them.
+     */
     class MessageBox : protected BaseWindow {
 	private:
 	    enum {
@@ -84,13 +92,12 @@ namespace YAPETUI {
 	public:
 	    MessageBox(std::string t, std::string m) throw(UIException);
 	    virtual ~MessageBox();
-	    
+
 	    virtual int run() throw(UIException) ;
 	    virtual void resize() throw(UIException);
 	    virtual void refresh() throw(UIException);
     };
-    
+
 }
 
 #endif // _MESSAGEBOX_H
-    

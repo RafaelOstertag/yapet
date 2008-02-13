@@ -44,6 +44,13 @@
 #include "basewindow.h"
 #include "uiexception.h"
 
+/**
+ * @brief A status bar at the bottom of the screen.
+ *
+ * Shows a status bar at the bottom of the screen on character high. Messages
+ * can be showed to the user by calling \c putMsg(). The message stays visible
+ * until a new message is put.
+ */
 class StatusBar : protected YAPETUI::BaseWindow {
     private:
 	WINDOW* statusbar;

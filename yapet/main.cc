@@ -73,6 +73,15 @@
 
 #include "mainwindow.h"
 
+/**
+ * @file
+ *
+ * @brief The file holding the \c main() function.
+ *
+ * Holds the \c main() function. It does also process command line arguments
+ * and initialize curses.
+ */
+
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
     "Copyright (C) 2008  Rafael Ostertag\n"				\
     "\n"								\

@@ -41,14 +41,20 @@
 
 namespace YAPETUI {
 
+    /**
+     * @brief A password input widget.
+     *
+     * Basically the same as \c InputWidget, but shows asterisks \c '*' instead
+     * of the characters typed by the user.
+     */
     class PasswordWidget : public InputWidget {
 	private:
 	    inline const PasswordWidget& operator=(const PasswordWidget&) { return *this; }
-	    
+
     public:
 	    PasswordWidget(int sx, int sy, int w, int ml = 512) throw(UIException);
 	    virtual ~PasswordWidget();
-	    
+
 	    virtual void refresh() throw(UIException);
     };
 

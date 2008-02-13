@@ -68,30 +68,30 @@ namespace YAPETUI {
 		 */
 		BASE_SIZE = 4
 	    };
-	    
+
 	    WINDOW* window;
-	    
+
 	    inline Button(const Button&) {}
 	    inline const Button& operator=(const Button&) { return *this; }
-	    
+
 	    std::string label;
-	    
+
 	    int start_x;
 	    int start_y;
-	    
+
 	protected:
 	    inline virtual void onClick() {};
 	    void createWindow() throw(UIException);
-	    
+
 	public:
 	    Button(std::string l, int x, int y);
 	    virtual ~Button();
-	    
+
 	    void setLabel(std::string l) throw(UIException);
 	    std::string getLabel() { return label; }
-	    
+
 	    void refresh() throw(UIException);
-	    
+
 	    /**
 	     * @brief Shows the button and waits for input.
 	     *
@@ -102,7 +102,12 @@ namespace YAPETUI {
 	     */
 	    int focus() throw(UIException);
 	    /**
+	     * @brief Returns the width occupied by the button.
 	     *
+	     * Returns the width occupied on the screen by the button. It is
+	     * calculated by adding \c BASE_SIZE and \c label.length().
+	     *
+	     * @return the width occupied on the screen by the button.
 	     */
 	    inline int getLength() const {
 		return BASE_SIZE + label.length();

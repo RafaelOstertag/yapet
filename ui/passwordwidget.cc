@@ -21,7 +21,7 @@
 
 using namespace YAPETUI;
 
-PasswordWidget::PasswordWidget(int sx, int sy, int w, int ml) 
+PasswordWidget::PasswordWidget(int sx, int sy, int w, int ml)
     throw(UIException) : InputWidget(sx, sy, w, ml) {}
 
 PasswordWidget::~PasswordWidget() {

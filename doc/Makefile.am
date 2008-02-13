@@ -1,9 +1,9 @@
 # $Id$
 
-sgml_files = README.sgml.in INSTALL.sgml.in preamble.sgml
+EXTRA_DIST = Doxyfile.in README.sgml.in INSTALL.sgml.in preamble.sgml html/
 
-EXTRA_DIST = Doxyfile.in $(sgml_files) html/
-
+doxy_DATA = html/
+doxydir = $(docdir)
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
@@ -20,13 +20,25 @@ INSTALL.sgml: Makefile $(srcdir)/INSTALL.sgml.in
 	rm -f $@
 	$(editfile) $(srcdir)/$@.in > $@
 
+README.sgml: Makefile $(srcdir)/README.sgml.in
+	rm -f $@
+	$(editfile) $(srcdir)/$@.in > $@
+
+if HAVEDOCBOOK2TXT
+README: Makefile README.sgml
+	$(DOCBOOK2TXT) $(srcdir)/README.sgml
+
+INSTALL: Makefile INSTALL.sgml
+	$(DOCBOOK2TXT) $(srcdir)/INSTALL.sgml
+
+endif
+
 if HAVEDOXYGEN
-doxy = html/
-$(doxy): Doxyfile
+$(doxy_DATA): Doxyfile
 	$(DOXYGEN)
 endif
 
-dist-hook: $(doxy)
+dist-hook: html/ README INSTALL
 
 maintainer-clean-local:
 	rm -r html

@@ -40,7 +40,7 @@ StatusBar::createWindow() throw(YAPETUI::UIException){
 }
 
 StatusBar::StatusBar() throw (YAPETUI::UIException) : BaseWindow(),
-						    statusbar(NULL) {
+						      statusbar(NULL) {
     createWindow();
 }
 

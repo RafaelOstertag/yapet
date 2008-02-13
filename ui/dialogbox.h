@@ -60,7 +60,7 @@ namespace YAPETUI {
 	 */
 	ANSWER_CANCEL
     };
-    
+
     /**
      * @brief Class for displaying a dialog box.
      *
@@ -74,11 +74,11 @@ namespace YAPETUI {
 	private:
 	    Button* cancelbutton;
 	    ANSWER answer;
-	    
+
 	public:
 	    DialogBox(std::string t, std::string m) throw(UIException);
 	    virtual ~DialogBox();
-	    
+
 	    /**
 	     * @brief Display and runs the dialog.
 	     *
@@ -102,8 +102,7 @@ namespace YAPETUI {
 	     */
 	    ANSWER getAnswer() const { return answer; }
     };
-    
+
 }
 
 #endif // _DIALOGBOX_H
-    

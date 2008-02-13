@@ -44,6 +44,17 @@
 #include <statusbar.h>
 #include <listwidget.h>
 
+/**
+ * @brief The main window.
+ *
+ * This is the main window class which shows the main menu in top right window,
+ * some information in the lower right window and the passwords stored in the
+ * file currently open in the left window.
+ *
+ * It handles the menu key strokes and provides a screen locking function which
+ * is called after a certain number of seconds using the \c
+ * BaseWindow::setTimeout() method.
+ */
 class MainWindow : protected YAPETUI::BaseWindow {
     private:
 	WINDOW* toprightwin;
@@ -79,6 +90,7 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	void deleteSelectedRecord() throw(YAPETUI::UIException);
 	bool quit();
 	void lockScreen() const throw(YAPETUI::UIException);
+	void changePassword() throw(YAPETUI::UIException);
     public:
 	MainWindow() throw(YAPETUI::UIException);
 	virtual ~MainWindow();

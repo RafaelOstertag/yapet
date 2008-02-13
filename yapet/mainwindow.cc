@@ -54,25 +54,62 @@
 #include "passworddialog.h"
 #include "passwordrecord.h"
 
-
+/**
+ * @brief Structure defining a key for the \c MainWindow.
+ *
+ * This struct defines a key that will be displayed in the main menu of \c
+ * MainWindow.
+ */
 struct KeyDesc {
-    int y;
-    int x;
-    const char* key;
-    const char* desc;
+	/**
+	 * @brief The y-position of the key.
+	 *
+	 * The y-position of the key.
+	 */
+	int y;
+	/**
+	 * @brief The x-position of the key.
+	 *
+	 * The x-position of the key.
+	 */
+	int x;
+	/**
+	 * @brief The key.
+	 *
+	 * The key to be pressed to call the menu item.
+	 */
+	const char* key;
+	/**
+	 * @brief The description of the key.
+	 *
+	 * Describes the function of the menu item.
+	 */
+	const char* desc;
 };
 
+/**
+ * @brief The menu of \c MainWindow.
+ *
+ * Those are the keys used for the main menu of the \c MainWindow class.
+ */
 KeyDesc keys[] = { {4, 2, "S", "Save File"},
 		   {5, 2, "R", "Load File"},
 		   {6, 2, "L", "Lock Screen"},
 		   {7, 2, "A", "Add Entry"},
 		   {8, 2, "D", "Delete Entry"},
-		   {9, 2, "^L", "Redraw Screen"},
-		   {10, 2, "Q", "Quit"},
+		   {9, 2, "C", "Change Password"},
+		   {10, 2, "^L", "Redraw Screen"},
+		   {11, 2, "Q", "Quit"},
 		   {0, 0, NULL, NULL}
 };
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+/**
+ * @brief Class for calling the signal handler of \c MainWindow.
+ *
+ * This class is passed to \c BaseWindow::setTimeout() as class for calling the
+ * signal handler of \c MainWindow.
+ */
 class Alarm : public YAPETUI::BaseWindow::AlarmFunction {
     private:
 	MainWindow& ref;
@@ -648,6 +685,103 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
     }
 }
 
+void
+MainWindow::changePassword() throw(YAPETUI::UIException) {
+    if (file == NULL || key == NULL) return;
+
+    // Make sure there are no unsaved entries
+    if (records_changed) {
+	YAPETUI::DialogBox* dialogbox = NULL;
+	try {
+	    dialogbox = new YAPETUI::DialogBox("Question", "Save before changing password?");
+	    dialogbox->run();
+	    YAPETUI::ANSWER a = dialogbox->getAnswer();
+	    delete dialogbox;
+	    if (a == YAPETUI::ANSWER_OK) {
+		saveFile();
+	    } else {
+		statusbar.putMsg("Password change aborted");
+		return;
+	    }
+	} catch (YAPETUI::UIException&) {
+	    if (dialogbox != NULL)
+		delete dialogbox;
+	    statusbar.putMsg("Error showing error message");
+	    refresh();
+	    return;
+	}
+    }
+
+    // Prompt for the new password
+    PasswordDialog* pwdia = NULL;
+    YAPET::Key* newkey;
+    try {
+	pwdia = new PasswordDialog(NEW_PW, file->getFilename());
+	pwdia->run();
+	newkey = pwdia->getKey();
+	delete pwdia;
+    } catch(YAPETUI::UIException&) {
+	if (pwdia != NULL)
+	    delete pwdia;
+
+	statusbar.putMsg("Error while asking for password");
+	return;
+    }
+
+    // Make sure the key has been generated
+    if (newkey == NULL) {
+	statusbar.putMsg("Password change canceled");
+	return;
+    }
+
+    // Change the password
+    try {
+	file->setNewKey(*key, *newkey);
+    } catch (std::exception& ex) {
+	delete newkey;
+	YAPETUI::MessageBox* msgbox = NULL;
+	try {
+	    msgbox = new YAPETUI::MessageBox("Error", ex.what());
+	    msgbox->run();
+	    delete msgbox;
+	} catch (YAPETUI::UIException&) {
+	    if (msgbox != NULL)
+		delete msgbox;
+	}
+	return;
+    }
+
+    delete key;
+    key = newkey;
+
+    // Read records from file
+    try {
+	std::list<YAPET::PartDec> tmp_list = file->read(*key);
+	recordlist->setList(tmp_list);
+    } catch(YAPET::YAPETException& e) {
+	    if (file != NULL)
+		delete file;
+
+	    YAPETUI::MessageBox* msgbox = NULL;
+	    try {
+		msgbox = new YAPETUI::MessageBox("Error", e.what());
+		msgbox->run();
+		delete msgbox;
+	    } catch (YAPETUI::UIException&) {
+		if (msgbox != NULL)
+		    delete msgbox;
+		statusbar.putMsg("Error while trying to show error");
+	    }
+	    delete key;
+	    key = NULL;
+	    file = NULL;
+	    statusbar.putMsg("Error reading from file");
+	    return;
+    }
+
+    statusbar.putMsg("Password successfully changed");
+}
+
 MainWindow::MainWindow() throw (YAPETUI::UIException) : BaseWindow(),
 							toprightwin (NULL),
 							bottomrightwin (NULL),
@@ -757,6 +891,13 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		case 'D':
 		case 'd':
 		    deleteSelectedRecord();
+		    break;
+
+		case 'c':
+		case 'C':
+		    changePassword();
+		    ::refresh();
+		    YAPETUI::BaseWindow::refreshAll();
 		    break;
 		}
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

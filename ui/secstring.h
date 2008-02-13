@@ -38,8 +38,22 @@
 # include <string>
 #endif
 
+/**
+ * @file
+ *
+ * @brief A string class with memory clearing allocator.
+ *
+ * Holds the string class with a memory clearing allocator.
+ */
+
 namespace YAPETUI {
 
+    /**
+     * @brief Memory clearing allocator.
+     *
+     * This template implements a \c deallocate method which zero'es out the
+     * memory released.
+     */
     template <class T>
     class secallocator: public std::allocator<T> {
 	public:
@@ -51,6 +65,12 @@ namespace YAPETUI {
 
     };
 
+    /**
+     * @brief String class using the \c secallocator allocator.
+     *
+     * This string class uses the \c secallocator allocator in order to clear
+     * the memory occupied by the string.
+     */
     typedef std::basic_string<char, std::char_traits<char>, secallocator<char> > secstring;
 
 }

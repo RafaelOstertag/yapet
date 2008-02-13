@@ -48,6 +48,27 @@
 #include <button.h>
 #include <passwordwidget.h>
 
+/**
+ * @brief A window that displays all the information associated with a
+ * decrypted password record.
+ *
+ * A window that displays all the information associated with a decrypted
+ * password record. The window allows edition of the informations. If the
+ * information are edited, a call to \c entryChanged() yields \c true if the
+ * record has been edited.
+ *
+ * To display an existing record, provide a valid pointer to \c PartDec object
+ * when constructing the object. If the record has been changed, \c
+ * getEncEntry() will return the pointer to the \c PartDec object holding the
+ * altered record.
+ *
+ * To display a window for creating a new password record, pass \c NULL to the
+ * \c PartDec pointer argument when constructing. The new record can be
+ * obtained by calling \c getEncEntry().
+ *
+ * In any case, the memory occupied by the pointer returned by \c getEncEntry()
+ * has to be freed by the caller. The class does not take care of this.
+ */
 class PasswordRecord : protected YAPETUI::BaseWindow {
     private:
 	enum {
@@ -87,16 +108,52 @@ class PasswordRecord : protected YAPETUI::BaseWindow {
 	void createWindow() throw(YAPETUI::UIException);
 
     public:
+	/**
+	 * @brief Constructor.
+	 *
+	 * Depending on the value passed in \c pe, either an empty record is
+	 * showed or the decrypted password record including the password
+	 * stored in the record in plain text is showed.
+	 *
+	 * @param k the key used to decrypt/encrypt the password record.
+	 *
+	 * @param pe pointer to a \c PartDec which will be displayed, or \c
+	 * NULL in order to obtain a new password record.
+	 */
 	PasswordRecord(YAPET::Key& k, YAPET::PartDec* pe) throw(YAPETUI::UIException);
 	~PasswordRecord();
 
+	/**
+	 * @brief Shows the dialog and handles user input.
+	 *
+	 * Shows the dialog and handles user input.
+	 *
+	 * Call \c getEncEntry() for obtaining the encrypted password record.
+	 */
 	void run() throw(YAPETUI::UIException);
 	void resize() throw(YAPETUI::UIException);
 	void refresh() throw(YAPETUI::UIException);
 	/**
-	 * Caller is responsible for freeing the pointer returned
+	 * @brief Returns the password record.
+	 *
+	 * Returns the new or altered password record as \c PartDec object. The
+	 * caller is responsible for freeing the memory associated with the pointer returned.
+	 *
+	 * It returns \c NULL if the dialog has been canceled.
+	 *
+	 * @return pointer to the new or altered password record, or \c NULL if
+	 * the dialog has been canceled. The caller is responsible for freeing
+	 * the memory associated with the pointer returned.
 	 */
 	inline YAPET::PartDec* getEncEntry() const { return encentry; }
+
+	/**
+	 * @brief Indicates whether or not the record has been changed.
+	 *
+	 * Indicates whether or not the record has been changed.
+	 *
+	 * @return \c true if the record has been changed, \c false otherwise.
+	 */
 	inline bool entryChanged() const {
 	    return name->isTextChanged() ||
 		host->isTextChanged() ||

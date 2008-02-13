@@ -43,7 +43,7 @@ namespace YAPETUI {
     class UIException : public std::exception {
 	private:
 	    std::string message;
-	    
+
 	public:
 	    inline UIException() throw() : exception(),
 					   message("Generic UI exception") {}
@@ -59,7 +59,7 @@ namespace YAPETUI {
 		message = ex.message;
 		return *this;
 	    }
-	    inline virtual const char* what() const throw() { 
+	    inline virtual const char* what() const throw() {
 		return message.c_str();
 	    }
     };

@@ -100,7 +100,7 @@ namespace YAPET {
 |  Encrypted password record of exactly as   |
 |   many Bytes as indicated by the prefix    |
 +--------+--------+--------+--------+--...---+
-              [ . . . ]
+	      [ . . . ]
 @endverbatim
     *
     * Putting this together, a file created by this class looks like
@@ -132,7 +132,7 @@ namespace YAPET {
 |  Encrypted password record of exactly as   |
 |   many Bytes as indicated by the prefix    |
 +--------+--------+--------+--------+--...---+
-              [ . . . ]
+	      [ . . . ]
 @endverbatim
     *
     * Instances of this class keeps the file open for the lifetime
@@ -205,7 +205,7 @@ namespace YAPET {
 		    WORD a;
 		    WORD b;
 	    };
-	    
+
 	    /**
 	     * @brief Used for little-big endian conversion.
 	     *
@@ -260,7 +260,7 @@ namespace YAPET {
 	    //! Seeks to the first password record length indicator in
 	    //! the file
 	    void seekDataSection() const throw(YAPETException);
-	    
+
 	    //! Reads from the current offset in the file
 	    BDBuffer* read() const throw(YAPETException);
 	    //! Writes at the current offset in the file

@@ -19,10 +19,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-/** 
+/**
  * @file
  * @brief Holds workarounds for curses.h
- * 
+ *
  * Holds workarounds for curses.h when compiling under C++. It specifically
  * removes the macros:
  *

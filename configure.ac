@@ -15,6 +15,7 @@ AC_PROG_SED
 AC_PROG_RANLIB
 AC_ARG_VAR([DOXYGEN],[path of doxygen])
 AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
+AC_CHECK_PROG([DOCBOOK2TXT],[docbook2txt],[docbook2txt])
 
 AC_LANG([C++])
 
@@ -126,6 +127,7 @@ AC_C_BIGENDIAN
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
+AM_CONDITIONAL([HAVEDOCBOOK2TXT], [test x$DOCBOOK2TXT != x])
 
 AC_CONFIG_FILES([Makefile
 	yapet/Makefile

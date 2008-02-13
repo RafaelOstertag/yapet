@@ -86,9 +86,9 @@ namespace YAPETUI {
      * the terminal does not support colors.
      */
     struct color {
-	    /** 
+	    /**
 	     * @brief The number of the pair.
-	     * 
+	     *
 	     * The number of the pair as used by (n)curses.
 	     */
 	    short no;
@@ -163,7 +163,7 @@ namespace YAPETUI {
 	    static short getcolor(COLORS c);
     };
 
-    
+
 }
 
 #endif // _COLORS_H

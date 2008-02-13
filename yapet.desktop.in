@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=YAPET
+GenericName=Password Encryption
+Comment=Yet Another Password Encryption Tool
+TryExec=@prefix@/bin/@PACKAGE@
+Exec=@prefix@/bin/@PACKAGE@
+Terminal=true
+Categories=Utility,Security,ConsoleOnly
+# $Id$

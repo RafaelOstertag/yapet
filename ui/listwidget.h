@@ -52,7 +52,20 @@
 namespace YAPETUI {
 
     /**
-     * @brief
+     * @todo Scroll indicator.
+     *
+     * @todo Making focus clearly visible.
+     *
+     * @brief A widget showing a list of items for selecting one.
+     *
+     * This template shows a list of items on the screen and allows the user to
+     * select one of it. If the list is larger than the available screen
+     * height, it allows to scroll.
+     *
+     * The objects stored in the \c std::list are expected to have a method \c
+     * c_str() which should return the name or whatever of the item. This
+     * string is displayed on the screen
+     *
      */
     template<class T>
     class ListWidget {
@@ -62,7 +75,20 @@ namespace YAPETUI {
 	    int width;
 	    int height;
 
+	    /**
+	     * @brief Holds the starting position within the list.
+	     *
+	     * This holds the position from where we start showing items on the
+	     * screen.
+	     */
 	    int start_pos;
+	    /**
+	     * @brief The position within the visible items.
+	     *
+	     * Holds the position within the visible items. By adding \c
+	     * cur_pos \c + \c start_pos the item actually selected by the user
+	     * as offset from the beginning of the list is yielded.
+	     */
 	    int cur_pos;
 
 	protected:
@@ -247,6 +273,23 @@ namespace YAPETUI {
 	    }
 
 	public:
+	    /**
+	     * @brief Constructor.
+	     *
+	     * Initializes the widget, but does not show it.
+	     *
+	     * @param l the list holding the items to be displayed. The items
+	     * of the list are expected to have a method called \c c_str() for
+	     * getting their names. Empty lists are allowed.
+	     *
+	     * @param sx the horizontal start position of the widget on the screen.
+	     *
+	     * @param sy the vertical start position of the widget on the screen.
+	     *
+	     * @param w the width of the widget.
+	     *
+	     * @param h the height of the widget.
+	     */
 	    ListWidget(std::list<T> l, int sx, int sy, int w, int h)
 		throw(UIException) : window(NULL),
 				     width(w),
@@ -268,6 +311,15 @@ namespace YAPETUI {
 			delwin(window);
 	    }
 
+	    /**
+	     * @brief Sets a new list of items to display.
+	     *
+	     * Sets a new list of items to display.
+	     *
+	     * @param l the list holding the items to be displayed. The items
+	     * of the list are expected to have a method called \c c_str() for
+	     * getting their names. Empty lists are allowed.
+	     */
 	    void setList(typename std::list<T>& l) {
 		itemlist = l;
 		start_pos = 0;
@@ -276,6 +328,13 @@ namespace YAPETUI {
 		showSelected(-1);
 	    }
 
+	    /**
+	     * @brief Replace the item at the current position selected.
+	     *
+	     * Replaces the item at the current position of the list selected by the user.
+	     *
+	     * @param item the new item.
+	     */
 	    void replaceCurrentItem(T& item) {
 		typename std::list<T>::iterator itemlist_pos = itemlist.begin();
 		for (int i=0;
@@ -301,6 +360,28 @@ namespace YAPETUI {
 	    const std::list<T>& getList() const { return itemlist; }
 	    std::list<T>& getList() { return itemlist; }
 
+	    /**
+	     * @brief Sets the focus to this widget.
+	     *
+	     * Focus the widget and shows it on the screen. The widget handles
+	     * the following key strokes:
+	     *
+	     * - \c KEY_UP
+	     * - \c KEY_DOWN
+	     * - \c KEY_HOME
+	     * - \c KEY_A1
+	     * - \c KEY_END
+	     * - \c KEY_C1
+	     * - \c KEY_NPAGE
+	     * - \c KEY_C3
+	     * - \c KEY_PPAGE
+	     * - \c KEY_A3
+	     * - \c KEY_REFRESH
+	     *
+	     * Every other key stroke make it loosing the focus.
+	     *
+	     * @return the key stroke that made it loose the focus.
+	     */
 	    virtual int focus() throw(UIException) {
 		int retval = box(window, 0, 0);
 		if (retval == ERR)
