@@ -42,12 +42,12 @@
 #endif
 
 #include "uiexception.h"
-#include "resizeable.h"
+#include "basewindow.h"
 #include "button.h"
 
 namespace YAPETUI {
 
-    class MessageBox : protected Resizeable {
+    class MessageBox : protected BaseWindow {
 	private:
 	    enum {
 		BASE_HEIGHT=6,

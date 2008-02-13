@@ -73,7 +73,7 @@ KeyDesc keys[] = { {4, 2, "S", "Save File"},
 };
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-class Alarm : public YAPETUI::Resizeable::AlarmFunction {
+class Alarm : public YAPETUI::BaseWindow::AlarmFunction {
     private:
 	MainWindow& ref;
     public:
@@ -602,7 +602,7 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
 #ifdef HAVE_WRESIZE
 	if (ch == KEY_RESIZE) {
 	    delwin(lockwin);
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 	    continue;
 	}
 #endif
@@ -648,7 +648,7 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
     }
 }
 
-MainWindow::MainWindow() throw (YAPETUI::UIException) : Resizeable(),
+MainWindow::MainWindow() throw (YAPETUI::UIException) : BaseWindow(),
 							toprightwin (NULL),
 							bottomrightwin (NULL),
 							recordlist (NULL),
@@ -689,11 +689,11 @@ MainWindow::run() throw (YAPETUI::UIException) {
     while(true) {
 	try {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    Resizeable::setTimeout(&alrm,600);
+	    BaseWindow::setTimeout(&alrm,600);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    while ( (ch=recordlist->focus()) ) {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-		YAPETUI::Resizeable::suspendTimeout();
+		YAPETUI::BaseWindow::suspendTimeout();
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 		switch (ch) {
 		case '\n':
@@ -706,14 +706,14 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		    break;
 #ifdef HAVE_WRESIZE
 		case KEY_RESIZE:
-		    YAPETUI::Resizeable::resizeAll();
+		    YAPETUI::BaseWindow::resizeAll();
 		    break;
 #endif // HAVE_WRESIZE
 		case KEY_REFRESH:
 #ifdef HAVE_WRESIZE
-		    YAPETUI::Resizeable::resizeAll();
+		    YAPETUI::BaseWindow::resizeAll();
 #endif // HAVE_WRESIZE
-		    YAPETUI::Resizeable::refreshAll();
+		    YAPETUI::BaseWindow::refreshAll();
 		    break;
 		case 'S':
 		case 's':
@@ -739,14 +739,14 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		    }
 		    delete tmp;
 		    ::refresh();
-		    YAPETUI::Resizeable::refreshAll();
+		    YAPETUI::BaseWindow::refreshAll();
 		}
 		    break;
 		case 'L':
 		case 'l':
 		    lockScreen();
 		    ::refresh();
-		    YAPETUI::Resizeable::refreshAll();
+		    YAPETUI::BaseWindow::refreshAll();
 		    break;
 
 		case 'A':
@@ -760,7 +760,7 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		    break;
 		}
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    YAPETUI::Resizeable::setTimeout(&alrm,600);
+	    YAPETUI::BaseWindow::setTimeout(&alrm,600);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    }
 	} catch(std::exception& ex) {
@@ -800,7 +800,7 @@ MainWindow::handle_signal(int signo) {
     if (signo == SIGALRM) {
 	lockScreen();
 	::refresh();
-	YAPETUI::Resizeable::refreshAll();
+	YAPETUI::BaseWindow::refreshAll();
     }
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

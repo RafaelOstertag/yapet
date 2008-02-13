@@ -21,7 +21,7 @@
 
 using namespace YAPETUI;
 
-DialogBox::DialogBox(std::string t, std::string m) 
+DialogBox::DialogBox(std::string t, std::string m)
     throw(UIException) : MessageBox(t, m),
 			 cancelbutton(NULL),
 			 answer(ANSWER_CANCEL) {
@@ -40,8 +40,8 @@ DialogBox::run() throw(UIException) {
     while (true) {
 #ifdef HAVE_WRESIZE
 	int ch;
-	while ( (ch = MessageBox::run()) == KEY_RESIZE ) 
-	    Resizeable::resizeAll();
+	while ( (ch = MessageBox::run()) == KEY_RESIZE )
+	    BaseWindow::resizeAll();
 #else // HAVE_RESIZE
 	int ch = MessageBox::run();
 #endif // HAVE_RESIZE
@@ -52,7 +52,7 @@ DialogBox::run() throw(UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = cancelbutton->focus()) == KEY_RESIZE )
-	    Resizeable::resizeAll();
+	    BaseWindow::resizeAll();
 #else // HAVE_RESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_RESIZE

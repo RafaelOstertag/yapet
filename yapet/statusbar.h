@@ -41,14 +41,14 @@
 # include <string>
 #endif
 
-#include "resizeable.h"
+#include "basewindow.h"
 #include "uiexception.h"
 
-class StatusBar : protected YAPETUI::Resizeable {
+class StatusBar : protected YAPETUI::BaseWindow {
     private:
 	WINDOW* statusbar;
 	std::string message;
-	
+
 	inline StatusBar(const StatusBar&) {}
 	inline const StatusBar& operator=(const StatusBar&) { return *this; }
 

@@ -104,7 +104,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 	int ch = 0;
 #ifdef HAVE_WRESIZE
 	while ( (ch = name->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = name->focus();
 #endif // HAVE_WRESIZE
@@ -112,7 +112,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = host->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = host->focus();
 #endif // HAVE_WRESIZE
@@ -120,7 +120,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = username->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = username->focus();
 #endif // HAVE_WRESIZE
@@ -128,7 +128,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = password->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = password->focus();
 #endif // HAVE_WRESIZE
@@ -136,7 +136,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = comment->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = comment->focus();
 #endif // HAVE_WRESIZE
@@ -144,7 +144,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = okbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
@@ -187,7 +187,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE

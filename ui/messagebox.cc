@@ -57,7 +57,7 @@ MessageBox::run() throw(UIException) {
     refresh();
     int ch;
     while ( (ch = okbutton->focus()) == KEY_REFRESH )
-	Resizeable::refreshAll();
+	BaseWindow::refreshAll();
     return ch;
 }
 

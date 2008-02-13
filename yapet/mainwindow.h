@@ -39,12 +39,12 @@
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
 #include <file.h>
-#include <resizeable.h>
+#include <basewindow.h>
 #include <uiexception.h>
 #include <statusbar.h>
 #include <listwidget.h>
 
-class MainWindow : protected YAPETUI::Resizeable {
+class MainWindow : protected YAPETUI::BaseWindow {
     private:
 	WINDOW* toprightwin;
 	WINDOW* bottomrightwin;

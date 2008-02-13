@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "resizeable.h"
+#include "basewindow.h"
 #include "inputwidget.h"
 #include "colors.h"
 
@@ -76,7 +76,7 @@ void
 InputWidget::processInput(int ch) throw(UIException) {
     if (buffer.length()+1 > ((secstring::size_type)max_length)) return;
 
-    if ( ((secstring::size_type)start_pos + pos) > buffer.length()) 
+    if ( ((secstring::size_type)start_pos + pos) > buffer.length())
 	buffer.append(""+ch);
     else
 	buffer.insert(start_pos+pos, 1, ch);
@@ -135,7 +135,7 @@ InputWidget::createWindow(int sx, int sy, int w) throw(UIException) {
     //refresh();
 }
 
-InputWidget::InputWidget(int sx, int sy, int w, int ml) 
+InputWidget::InputWidget(int sx, int sy, int w, int ml)
     throw(UIException) : window(NULL),
 			 max_length(ml),
 			 start_pos(0),
@@ -176,22 +176,22 @@ InputWidget::focus() throw(UIException) {
 	    moveForward();
 	    break;
 	case KEY_END:
-        case KEY_A1:
+	case KEY_A1:
 	    moveEnd();
 	    break;
 	case KEY_HOME:
-        case KEY_C1:
+	case KEY_C1:
 	    moveHome();
 	    break;
 	case KEY_ENTER:
 	    ungetch('\n');
 	    break;
 	case KEY_DC:
-        case 127:
+	case 127:
 	    processDelete();
 	    break;
 	case KEY_BACKSPACE:
-        case 8:
+	case 8:
 	    processBackspace();
 	    break;
 #ifdef HAVE_WRESIZE
@@ -200,7 +200,7 @@ InputWidget::focus() throw(UIException) {
 	    break;
 #endif // HAVE_WRESIZE
 	case KEY_REFRESH:
-	    Resizeable::refreshAll();
+	    BaseWindow::refreshAll();
 	    break;
 	default:
 	    processInput(ch);

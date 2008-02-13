@@ -26,20 +26,20 @@ StatusBar::createWindow() throw(YAPETUI::UIException){
 
     statusbar = newwin (1, maxX(), maxY() - 1, minX());
     if (statusbar == NULL)
-        throw YAPETUI::UIException ("statusbar could not be initialized");
+	throw YAPETUI::UIException ("statusbar could not be initialized");
 
     int retval = wattron (statusbar, A_REVERSE);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error setting attribute");
+	throw YAPETUI::UIException ("Error setting attribute");
 
     retval = wbkgd (statusbar, ' ' | A_REVERSE);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error setting the statusbar background");
+	throw YAPETUI::UIException ("Error setting the statusbar background");
 
     refresh();
 }
 
-StatusBar::StatusBar() throw (YAPETUI::UIException) : Resizeable(),
+StatusBar::StatusBar() throw (YAPETUI::UIException) : BaseWindow(),
 						    statusbar(NULL) {
     createWindow();
 }
@@ -54,10 +54,10 @@ StatusBar::putMsg (std::string msg) throw (YAPETUI::UIException) {
     message = msg;
     int retval = wclear (statusbar);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error erasing status bar");
+	throw YAPETUI::UIException ("Error erasing status bar");
     retval = mywaddstr (statusbar, message.c_str());
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error adding status message");
+	throw YAPETUI::UIException ("Error adding status message");
     retval = wrefresh(statusbar);
     if (retval == ERR)
 	throw YAPETUI::UIException("Error refreshing status bar");

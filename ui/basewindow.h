@@ -19,8 +19,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _RESIZEABLE_H
-#define _RESIZEABLE_H
+#ifndef _BASEWINDOW_H
+#define _BASEWINDOW_H
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -46,8 +46,8 @@
 #endif
 
 namespace YAPETUI {
-  
-    class Resizeable {
+
+    class BaseWindow {
 	public:
 	    class AlarmFunction {
 		public:
@@ -59,11 +59,11 @@ namespace YAPETUI {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    static AlarmFunction* alarm_fun;
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    static std::list<Resizeable*> resizeable_list;
+	    static std::list<BaseWindow*> basewindow_list;
 
 	protected:
-	    static void registerResizeable(Resizeable* r);
-	    static void unregisterResizeable(Resizeable* r);
+	    static void registerBaseWindow(BaseWindow* r);
+	    static void unregisterBaseWindow(BaseWindow* r);
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    static void sig_handler(int signo);
 	    static void init_signal();
@@ -102,12 +102,12 @@ namespace YAPETUI {
 	    static void setTimeout(AlarmFunction* af, int sec);
 	    static void suspendTimeout();
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    Resizeable();
-	    virtual ~Resizeable();
+	    BaseWindow();
+	    virtual ~BaseWindow();
 	    virtual void resize() = 0;
 	    virtual void refresh() = 0;
     };
 
 }
 
-#endif // _RESIZEABLE_H
+#endif // _BASEWINDOW_H

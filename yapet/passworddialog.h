@@ -43,7 +43,7 @@
 
 #include <key.h>
 
-#include <resizeable.h>
+#include <basewindow.h>
 #include <button.h>
 #include <passwordwidget.h>
 
@@ -52,7 +52,7 @@ enum PWTYPE {
     EXISTING_PW
 };
 
-class PasswordDialog : protected YAPETUI::Resizeable {
+class PasswordDialog : protected YAPETUI::BaseWindow {
     private:
 	enum {
 	    HEIGHT_NEW = 9,

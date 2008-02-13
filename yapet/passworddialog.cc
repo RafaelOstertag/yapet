@@ -76,7 +76,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 	int ch = 0;
 #ifdef HAVE_WRESIZE
 	while ( (ch = pwidget1->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	pwidget1->focus();
 #endif // HAVE_WRESIZE
@@ -85,7 +85,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 	if (pwtype == NEW_PW) {
 #ifdef HAVE_WRESIZE
 	    while ( (ch = pwidget2->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	    pwidget2->focus();
 #endif // HAVE_WRESIZE
@@ -93,7 +93,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = okbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
@@ -125,7 +125,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 	}
 #ifdef HAVE_WRESIZE
 	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
@@ -157,7 +157,7 @@ PasswordDialog::resize() throw(YAPETUI::UIException) {
     cancelbutton = NULL;
 
     createWindow();
-}	
+}
 
 void
 PasswordDialog::refresh() throw(YAPETUI::UIException) {
@@ -178,12 +178,12 @@ PasswordDialog::refresh() throw(YAPETUI::UIException) {
     retval = mymvwaddstr(window, 2, 1, filename.c_str());
     if (retval == ERR)
 	throw YAPETUI::UIException("Error setting label");
-    
+
     if (pwtype == NEW_PW) {
 	retval = mymvwaddstr(window, 1, 1, "Enter new password for");
 	if (retval == ERR)
 	    throw YAPETUI::UIException("Error setting label");
-	
+
 	retval = mymvwaddstr(window, 4, 1, "Confirm password");
 	if (retval == ERR)
 	    throw YAPETUI::UIException("Error setting label");
@@ -191,12 +191,12 @@ PasswordDialog::refresh() throw(YAPETUI::UIException) {
 	retval = mymvwaddstr(window, 1, 1, "Enter password for");
 	if (retval == ERR)
 	    throw YAPETUI::UIException("Error setting label");
-    }	
+    }
 
     retval = wrefresh(window);
     if (retval == ERR)
 	throw YAPETUI::UIException("Error refreshing password dialog");
-    
+
     pwidget1->refresh();
     if (pwtype == NEW_PW)
 	pwidget2->refresh();

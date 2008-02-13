@@ -44,11 +44,11 @@
 #include <key.h>
 #include <partdec.h>
 
-#include <resizeable.h>
+#include <basewindow.h>
 #include <button.h>
 #include <passwordwidget.h>
 
-class PasswordRecord : protected YAPETUI::Resizeable {
+class PasswordRecord : protected YAPETUI::BaseWindow {
     private:
 	enum {
 	    HEIGHT = 14
@@ -83,7 +83,7 @@ class PasswordRecord : protected YAPETUI::Resizeable {
 	inline int getStartY() const {
 	    return maxY()/2 - getHeight()/2;
 	}
-	    
+
 	void createWindow() throw(YAPETUI::UIException);
 
     public:
@@ -104,7 +104,7 @@ class PasswordRecord : protected YAPETUI::Resizeable {
 		password->isTextChanged() ||
 		comment->isTextChanged();
 	}
-		
+
 };
 
 #endif // _PASSWORDRECORD_H

@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "resizeable.h"
+#include "basewindow.h"
 #include "colors.h"
 
 #ifdef HAVE_SIGNAL_H
@@ -36,11 +36,11 @@ using namespace YAPETUI;
 
 class RemoveByAddr {
     private:
-	const Resizeable* ptr;
+	const BaseWindow* ptr;
 
     public:
-	inline RemoveByAddr(const Resizeable* p) : ptr(p) {}
-	inline bool operator()(const Resizeable* p) const {
+	inline RemoveByAddr(const BaseWindow* p) : ptr(p) {}
+	inline bool operator()(const BaseWindow* p) const {
 	    if (ptr == p)
 		return true;
 	    return false;
@@ -49,7 +49,7 @@ class RemoveByAddr {
 
 class DeleteIt {
     public:
-	inline void operator()(Resizeable* p) const {
+	inline void operator()(BaseWindow* p) const {
 	    if (p != NULL)
 		delete p;
 	}
@@ -57,14 +57,14 @@ class DeleteIt {
 
 class ResizeIt {
     public:
-	inline void operator()(Resizeable* p) const {
+	inline void operator()(BaseWindow* p) const {
 	    p->resize();
 	}
 };
 
 class RefreshIt {
     public:
-	inline void operator()(Resizeable* p) const {
+	inline void operator()(BaseWindow* p) const {
 	    p->refresh();
 	}
 };
@@ -72,12 +72,12 @@ class RefreshIt {
 //
 // Static
 //
-std::list<Resizeable*> Resizeable::resizeable_list = std::list<Resizeable*>();
-Resizeable::AlarmFunction* Resizeable::alarm_fun = NULL;
+std::list<BaseWindow*> BaseWindow::basewindow_list = std::list<BaseWindow*>();
+BaseWindow::AlarmFunction* BaseWindow::alarm_fun = NULL;
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 void
-Resizeable::sig_handler(int signo) {
+BaseWindow::sig_handler(int signo) {
     switch (signo) {
     case SIGALRM:
 	if (alarm_fun != NULL)
@@ -95,7 +95,7 @@ Resizeable::sig_handler(int signo) {
 }
 
 void
-Resizeable::init_signal() {
+BaseWindow::init_signal() {
     sigset_t sigset;
     sigemptyset(&sigset);
     // Get the current sigprocmask
@@ -112,7 +112,7 @@ Resizeable::init_signal() {
     struct sigaction sa;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
-    sa.sa_handler = Resizeable::sig_handler;
+    sa.sa_handler = BaseWindow::sig_handler;
 
     sigaction(SIGALRM, &sa, NULL);
     sigaction(SIGTERM, &sa, NULL);
@@ -124,7 +124,7 @@ Resizeable::init_signal() {
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 void
-Resizeable::initCurses() {
+BaseWindow::initCurses() {
     initscr();
     raw();
     noecho();
@@ -137,61 +137,61 @@ Resizeable::initCurses() {
 }
 
 void
-Resizeable::endCurses() {
+BaseWindow::endCurses() {
     clear();
     ::refresh();
     endwin();
 }
 
 void
-Resizeable::registerResizeable(Resizeable* r) {
-    resizeable_list.push_back(r);
+BaseWindow::registerBaseWindow(BaseWindow* r) {
+    basewindow_list.push_back(r);
 }
 
 void
-Resizeable::unregisterResizeable(Resizeable* r) {
-    std::list<Resizeable*>::iterator it =
-	std::remove_if(resizeable_list.begin(),
-		       resizeable_list.end(),
+BaseWindow::unregisterBaseWindow(BaseWindow* r) {
+    std::list<BaseWindow*>::iterator it =
+	std::remove_if(basewindow_list.begin(),
+		       basewindow_list.end(),
 		       RemoveByAddr(r));
 
-    resizeable_list.erase(it, resizeable_list.end());
+    basewindow_list.erase(it, basewindow_list.end());
 }
 
 void
-Resizeable::deleteAll() {
-    std::for_each(resizeable_list.rbegin(),
-		  resizeable_list.rend(),
+BaseWindow::deleteAll() {
+    std::for_each(basewindow_list.rbegin(),
+		  basewindow_list.rend(),
 		  DeleteIt());
 }
 
 void
-Resizeable::resizeAll() {
+BaseWindow::resizeAll() {
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
     if (max_x<80 || max_y<25) return;
-    std::for_each(resizeable_list.begin(),
-		  resizeable_list.end(),
+    std::for_each(basewindow_list.begin(),
+		  basewindow_list.end(),
 		  ResizeIt());
     refreshAll();
 }
 
 void
-Resizeable::refreshAll() {
-    std::for_each(resizeable_list.begin(),
-		  resizeable_list.end(),
+BaseWindow::refreshAll() {
+    std::for_each(basewindow_list.begin(),
+		  basewindow_list.end(),
 		  RefreshIt());
 }
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 void
-Resizeable::setTimeout(AlarmFunction* af, int sec) {
+BaseWindow::setTimeout(AlarmFunction* af, int sec) {
     alarm_fun = af;
     alarm(sec);
 }
 
 void
-Resizeable::suspendTimeout() {
+BaseWindow::suspendTimeout() {
     alarm(0);
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
@@ -200,10 +200,10 @@ Resizeable::suspendTimeout() {
 //
 // Non-Static
 //
-Resizeable::Resizeable() {
-    Resizeable::registerResizeable(this);
+BaseWindow::BaseWindow() {
+    BaseWindow::registerBaseWindow(this);
 }
 
-Resizeable::~Resizeable() {
-    Resizeable::unregisterResizeable(this);
+BaseWindow::~BaseWindow() {
+    BaseWindow::unregisterBaseWindow(this);
 }

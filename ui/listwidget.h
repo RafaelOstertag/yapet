@@ -47,33 +47,33 @@
 
 #include "uiexception.h"
 #include "colors.h"
-#include "resizeable.h"
+#include "basewindow.h"
 
 namespace YAPETUI {
 
     /**
-     * @brief 
+     * @brief
      */
     template<class T>
     class ListWidget {
 	private:
 	    WINDOW* window;
-	    
+
 	    int width;
 	    int height;
-	    
+
 	    int start_pos;
 	    int cur_pos;
-	    
+
 	protected:
 	    typename std::list<T> itemlist;
 	    typedef typename std::list<T>::size_type l_size_type;
-	    
+
 	    inline ListWidget(const ListWidget& lw) {}
 	    inline const ListWidget& operator=(const ListWidget& lw) { return *this; }
-	    
+
 	    int pagesize() { return height-2; }
-	    
+
 	    void clearWin() throw(UIException) {
 		Colors::setcolor(window, LISTWIDGET);
 		int retval = wclear(window);
@@ -84,23 +84,23 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error drawing box around window");
 	    }
-	    
+
 	    void showListItems() throw(UIException) {
 		int usable_width = width - 2;
-		
+
 		clearWin();
-		
+
 		typename std::list<T>::iterator itemlist_pos = itemlist.begin();
 		// Advance to the start point
 		for(int i=0; i<start_pos; itemlist_pos++,i++);
-		
+
 		for(int i=0; i<pagesize() && itemlist_pos != itemlist.end(); itemlist_pos++, i++) {
 		    int retval = mymvwaddnstr(window, 1 + i, 1, (*itemlist_pos).c_str(), usable_width);
 		    if (retval == ERR)
 			throw UIException("Unable to display item");
 		}
 	    }
-	    
+
 	    void showSelected(int old_pos) throw(UIException) {
 		int retval = 0;
 
@@ -135,10 +135,10 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error refreshing window");
 	    }
-	    
+
 	    void scrollUp() {
 		if (itemlist.size() == 0) return;
-		
+
 		if (cur_pos>0) {
 		    int old_pos = cur_pos--;
 		    showSelected(old_pos);
@@ -150,10 +150,10 @@ namespace YAPETUI {
 		    }
 		}
 	    }
-	    
+
 	    void scrollDown() {
 		if (itemlist.size() == 0) return;
-		
+
 		if ( ((l_size_type)(cur_pos+start_pos))<itemlist.size()-1) {
 		    if (cur_pos < pagesize()-1 ) {
 			int old_pos = cur_pos++;
@@ -167,10 +167,10 @@ namespace YAPETUI {
 		    }
 		}
 	    }
-	    
+
 	    void scrollPageUp() {
 		if (itemlist.size() == 0) return;
-		
+
 		int old_pos = cur_pos;
 		cur_pos = 0;
 		if ( start_pos - pagesize() > 0 ) {
@@ -181,10 +181,10 @@ namespace YAPETUI {
 		showListItems();
 		showSelected(old_pos);
 	    }
-	    
+
 	    void scrollPageDown() {
 		if (itemlist.size() == 0) return;
-		
+
 		int old_pos = cur_pos;
 		if ( ((l_size_type)pagesize()) > itemlist.size() - 1 ) {
 		    cur_pos = itemlist.size() - 1;
@@ -196,24 +196,24 @@ namespace YAPETUI {
 		    }
 		    cur_pos = 0;
 		}
-		
+
 		showListItems();
 		showSelected(old_pos);
 	    }
-	    
+
 	    void scrollHome() {
 		if (itemlist.size() == 0) return;
-		
+
 		start_pos = 0;
 		int old_pos = cur_pos;
 		cur_pos = 0;
 		showListItems();
 		showSelected(old_pos);
 	    }
-	    
+
 	    void scrollEnd() {
 		if (itemlist.size() == 0) return;
-		
+
 		int old_pos = cur_pos;
 		start_pos = itemlist.size() - pagesize();
 		if (start_pos < 0) {
@@ -222,30 +222,30 @@ namespace YAPETUI {
 		} else {
 		    cur_pos = pagesize()-1;
 		}
-		
+
 		showListItems();
 		showSelected(old_pos);
 	    }
-	    
+
 	    void createWindow(int sx, int sy, int w, int h) throw(UIException) {
 		window = newwin(h, w, sy, sx);
 		if (window == NULL)
 		    throw UIException("Error creating list window");
 
 		Colors::setcolor(window, LISTWIDGET);
-		
+
 		int retval = keypad(window, true);
 		if (retval == ERR)
 		    throw UIException("Error enabling keypad");
-		
+
 		box(window, 0, 0);
-		
+
 		width = w;
 		height = h;
-		
+
 		//refresh();
 	    }
-	    
+
 	public:
 	    ListWidget(std::list<T> l, int sx, int sy, int w, int h)
 		throw(UIException) : window(NULL),
@@ -259,15 +259,15 @@ namespace YAPETUI {
 		     width == -1 ||
 		     height == -1 )
 		    throw UIException("No idea of the dimension of the list");
-		
+
 		createWindow(sx, sy, width, height);
 	    }
-	    
+
 	    virtual ~ListWidget() {
 			wclear(window);
 			delwin(window);
 	    }
-	    
+
 	    void setList(typename std::list<T>& l) {
 		itemlist = l;
 		start_pos = 0;
@@ -275,32 +275,32 @@ namespace YAPETUI {
 		showListItems();
 		showSelected(-1);
 	    }
-	    
+
 	    void replaceCurrentItem(T& item) {
 		typename std::list<T>::iterator itemlist_pos = itemlist.begin();
 		for (int i=0;
 		     i<(start_pos + cur_pos) && itemlist_pos != itemlist.end();
 		     itemlist_pos++, i++);
-		
+
 		*itemlist_pos = item;
 	    }
-	    
+
 	    void deleteSelectedItem() {
 		if (itemlist.size()==0) return;
 		typename std::list<T>::iterator itemlist_pos = itemlist.begin();
 		for (int i=0;
 		     i<(start_pos + cur_pos) && itemlist_pos != itemlist.end();
 		     itemlist_pos++, i++);
-		
+
 		if (itemlist_pos == itemlist.end()) return;
 		itemlist.erase(itemlist_pos);
 		scrollUp();
 	    }
-	    
-	    
+
+
 	    const std::list<T>& getList() const { return itemlist; }
 	    std::list<T>& getList() { return itemlist; }
-	    
+
 	    virtual int focus() throw(UIException) {
 		int retval = box(window, 0, 0);
 		if (retval == ERR)
@@ -315,74 +315,74 @@ namespace YAPETUI {
 		    ch = wgetch(window);
 		    switch (ch) {
 		    case KEY_UP:
-			scrollUp(); 
+			scrollUp();
 			break;
 		    case KEY_DOWN:
 			scrollDown();
 			break;
 		    case KEY_HOME:
-                    case KEY_A1:
+		    case KEY_A1:
 			scrollHome();
 			break;
 		    case KEY_END:
-                    case KEY_C1:
+		    case KEY_C1:
 			scrollEnd();
 			break;
 		    case KEY_NPAGE:
-                    case KEY_C3:
+		    case KEY_C3:
 			scrollPageDown();
 			break;
 		    case KEY_PPAGE:
-                    case KEY_A3:
+		    case KEY_A3:
 			scrollPageUp();
 			break;
 		    case KEY_REFRESH:
-			Resizeable::refreshAll();
+			BaseWindow::refreshAll();
 			break;
 		    default:
 			stay_in_loop = false;
 			break;
 		    }
 		}
-		
+
 		retval = box(window, 0, '-');
 		if (retval == ERR)
 		    throw UIException("Error re-setting the border");
 		retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing the list widget");
-		
+
 		return ch;
 	    }
-	    
+
 	    void refresh() throw(UIException) {
 		showListItems();
 		showSelected(-1);
-		
+
 		int retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing list");
 	    }
-	    
+
 	    void resize(int sx, int sy, int w, int h) throw(UIException) {
 		int retval = wclear(window);
 		if (retval == ERR)
 		    throw UIException("Error clearing list");
-		
+
 		retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing window");
-		
+
 		retval = delwin(window);
 		if (retval == ERR)
 		    throw UIException("Error deleting window");
-		
+
 		createWindow(sx, sy, w, h);
 	    }
-	    
+
 	    int getListPos() { return start_pos + cur_pos; }
-	    
-	    T getSelectedItem() { 
+
+	    T getSelectedItem() {
 		typename std::list<T>::iterator itemlist_pos = itemlist.begin();
 		for (int i=0;
 		     i<(start_pos + cur_pos) && itemlist_pos != itemlist.end();
@@ -392,6 +392,6 @@ namespace YAPETUI {
 
 	    l_size_type size() { return itemlist.size(); }
     };
-    
+
 }
 #endif // _LISTWIDGET_H

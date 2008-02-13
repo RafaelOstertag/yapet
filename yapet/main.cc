@@ -200,7 +200,7 @@ int main (int argc, char** argv) {
 	}
     }
 
-    YAPETUI::Resizeable::initCurses();
+    YAPETUI::BaseWindow::initCurses();
 
     MainWindow* mainwin = NULL;
     try {
@@ -211,12 +211,12 @@ int main (int argc, char** argv) {
     } catch (std::exception& ex) {
 	if (mainwin != NULL)
 	    delete mainwin;
-	YAPETUI::Resizeable::endCurses();
+	YAPETUI::BaseWindow::endCurses();
 	std::cerr << ex.what() << std::endl << std::endl;
 	return 1;
     }
 
-    YAPETUI::Resizeable::endCurses();
+    YAPETUI::BaseWindow::endCurses();
 
     return 0;
 }

@@ -38,7 +38,7 @@
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
 #include <secstring.h>
-#include <resizeable.h>
+#include <basewindow.h>
 #include <listwidget.h>
 #include <button.h>
 #include <inputwidget.h>
@@ -49,7 +49,7 @@
  *
  * @note The filename returned by getFilepath() always ends with ".pet"
  */
-class FileOpen : protected YAPETUI::Resizeable {
+class FileOpen : protected YAPETUI::BaseWindow {
     private:
 	enum {
 	    FALLBACK_PATH_MAX=255
@@ -62,7 +62,7 @@ class FileOpen : protected YAPETUI::Resizeable {
 	YAPETUI::InputWidget* input;
 	YAPETUI::Button* okbutton;
 	YAPETUI::Button* cancelbutton;
-	
+
 	bool canceled;
 
 
@@ -110,7 +110,7 @@ class FileOpen : protected YAPETUI::Resizeable {
 	void refresh() throw(YAPETUI::UIException);
 
 	void resize() throw(YAPETUI::UIException);
-	
+
 	std::string getFilepath();
 
 	inline bool isCanceled() const { return canceled; }

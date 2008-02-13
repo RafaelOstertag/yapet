@@ -51,7 +51,7 @@
 #include <colors.h>
 #include "fileopen.h"
 
-inline 
+inline
 bool endswith(YAPETUI::secstring h, YAPETUI::secstring n) {
     if (n.length() > h.length())
 	return false;
@@ -72,7 +72,7 @@ bool endswith(std::string h, std::string n) {
 
     return false;
 }
-    
+
 
 
 void
@@ -81,7 +81,7 @@ FileOpen::createWindows() throw (YAPETUI::UIException) {
 
     window = newwin (windowHeight(), windowWidth(), startY(), startX());
     if (window == NULL)
-        throw YAPETUI::UIException ("Error creating file open window");
+	throw YAPETUI::UIException ("Error creating file open window");
 
     std::list<YAPETUI::secstring> dir_list;
     std::list<YAPETUI::secstring> file_list;
@@ -113,7 +113,7 @@ FileOpen::createWindows() throw (YAPETUI::UIException) {
 }
 
 void
-FileOpen::getEntries(std::list<YAPETUI::secstring>& d, 
+FileOpen::getEntries(std::list<YAPETUI::secstring>& d,
 		     std::list<YAPETUI::secstring>& f)
     throw(YAPETUI::UIException) {
 
@@ -176,12 +176,12 @@ FileOpen::getcwd() throw (YAPETUI::UIException) {
 #endif
     char* buf = (char *) malloc ( (size_t) size);
     if (buf == NULL)
-        throw YAPETUI::UIException ("Error allocating memory");
+	throw YAPETUI::UIException ("Error allocating memory");
 
     char* ptr = ::getcwd (buf, (size_t) size);
     if (ptr == NULL) {
-        free (buf);
-        throw YAPETUI::UIException (strerror (errno));
+	free (buf);
+	throw YAPETUI::UIException (strerror (errno));
     }
 
     directory = ptr;
@@ -192,12 +192,12 @@ void
 FileOpen::cd (const YAPETUI::secstring d) throw (YAPETUI::UIException) {
     int retval = chdir (d.c_str());
     if (retval != 0)
-        throw YAPETUI::UIException (strerror (errno));
+	throw YAPETUI::UIException (strerror (errno));
 
     getcwd();
 }
 
-FileOpen::FileOpen(std::string t) throw(YAPETUI::UIException) : Resizeable(),
+FileOpen::FileOpen(std::string t) throw(YAPETUI::UIException) : BaseWindow(),
 						       title(t),
 						       window (NULL),
 						       dir (NULL),
@@ -208,7 +208,7 @@ FileOpen::FileOpen(std::string t) throw(YAPETUI::UIException) : Resizeable(),
 						       canceled(true) {
     getcwd();
     createWindows();
-    
+
 }
 
 FileOpen::~FileOpen() {
@@ -231,13 +231,13 @@ FileOpen::run() throw (YAPETUI::UIException) {
     int ch;
     // The big loop
     while(true){
-	
+
 	// The event handler for the directory list
 	while ( (ch= dir->focus()) != '\t') {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
-		YAPETUI::Resizeable::resizeAll();
+		YAPETUI::BaseWindow::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
 	    case KEY_ENTER:
@@ -250,13 +250,13 @@ FileOpen::run() throw (YAPETUI::UIException) {
 		    files->setList(file_list);
 		    dir->setList(dir_list);
 		} catch (YAPETUI::UIException& ex) {
-		    YAPETUI::MessageBox* tmp = 
+		    YAPETUI::MessageBox* tmp =
 			new YAPETUI::MessageBox("Error", ex.what());
 		    tmp->run();
 		    delete tmp;
 		}
 	    }
-		break;	    
+		break;
 	    }
 	}
 
@@ -265,7 +265,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
-		YAPETUI::Resizeable::resizeAll();
+		YAPETUI::BaseWindow::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
 	    case KEY_ENTER:
@@ -278,7 +278,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = input->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = input->focus();
 #endif // HAVE_WRESIZE
@@ -288,7 +288,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	// The ok button
 #ifdef HAVE_WRESIZE
 	while ( (ch = okbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
@@ -300,7 +300,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	// The cancel button
 #ifdef HAVE_WRESIZE
 	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::Resizeable::resizeAll();
+	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
@@ -326,7 +326,7 @@ FileOpen::refresh() throw (YAPETUI::UIException) {
 
     retval = wrefresh (window);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error refreshing window");
+	throw YAPETUI::UIException ("Error refreshing window");
 
     dir->refresh();
     files->refresh();
@@ -342,7 +342,7 @@ FileOpen::resize() throw (YAPETUI::UIException) {
     delete input;
     delete okbutton;
     delete cancelbutton;
-    
+
     int retval = delwin(window);
     if (retval == ERR)
 	throw YAPETUI::UIException("Error deleting window");
