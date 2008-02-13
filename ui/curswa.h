@@ -19,20 +19,42 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-/** Holds workarounds for curses.h
+/** 
+ * @file
+ * @brief Holds workarounds for curses.h
  * 
  * Holds workarounds for curses.h when compiling under C++. It specifically
  * removes the macros:
  *
- * - box
- * - clear
- * - erase
- * - move
- * - refresh
+ * - \c box
+ * - \c clear
+ * - \c erase
+ * - \c move
+ * - \c refresh
  *
  * and replaces them by inline functions.
  *
- * If 
+ * It also defines certain inline functions for dealing with \c const
+ * \c char* arguments. Some curses functions simply use \c char* which
+ * doesn't go along well with \c std::string::c_str(). The defined
+ * functions do have the same syntax as their cousins.
+ *
+ * The configure script figures out which one to use.
+ *
+ * The following functions are defined to handle \c const \c char*
+ * arguments
+ *
+ * - \c mywaddstr()
+ * - \c mymvwaddstr()
+ * - \c mymvwaddnstr()
+ *
+ * \c mvwchgat is also defined as inline function in case the curses
+ * library does not provide it. The configure script takes care of
+ * figuring whether or not the function is provided by the curses
+ * library.
+ *
+ * Please note that this file has to be included after the (n)curses
+ * header file.
  */
 
 #ifndef _CURSWA_H
@@ -45,6 +67,10 @@
 #ifdef KEY_REFRESH
 #undef KEY_REFRESH
 enum {
+    /**
+     * The value returned by \c [w]getch() when the user presses \c
+     * ^L.
+     */
     KEY_REFRESH = 12
 };
 #endif // KEY_REFRESH
@@ -91,8 +117,12 @@ inline int refresh() {
 #endif // HAVE_CURSES_H
 
 #ifdef WADDSTR_USE_CHAR
-#include <stdlib.h>
-#include <string.h>
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
 
 inline int waddstr_c(WINDOW* win, const char* str) {
     char* tmp_ptr = (char*)malloc(strlen(str)+1);
@@ -107,8 +137,12 @@ inline int waddstr_c(WINDOW* win, const char* str) {
 #endif // WADDSTR_USE_CHAR
 
 #ifdef MVWADDSTR_USE_CHAR
-#include <stdlib.h>
-#include <string.h>
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
 
 inline int mvwaddstr_c(WINDOW* win, int y, int x, const char* str) {
     char* tmp_ptr = (char*)malloc(strlen(str)+1);
@@ -123,8 +157,12 @@ inline int mvwaddstr_c(WINDOW* win, int y, int x, const char* str) {
 #endif // MVWADDSTR_USE_CHAR
 
 #ifdef MVWADDNSTR_USE_CHAR
-#include <stdlib.h>
-#include <string.h>
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
 
 inline int mvwaddnstr_c(WINDOW* win, int y, int x, const char* str, int n) {
     char* tmp_ptr = (char*)malloc(strlen(str)+1);
@@ -156,7 +194,6 @@ extern "C"
 # endif
 void *alloca (size_t);
 #endif
-     
 
 inline int mvwchgat(WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
     char* buff = (char*)alloca(n);

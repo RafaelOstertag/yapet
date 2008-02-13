@@ -37,53 +37,77 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
 #ifdef HAVE_LIST
 # include <list>
 #endif
 
 namespace YAPETUI {
-
+  
     class Resizeable {
+	public:
+	    class AlarmFunction {
+		public:
+		    inline AlarmFunction() {}
+		    inline virtual ~AlarmFunction() {}
+		    inline virtual void process(int) {}
+	    };
 	private:
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	    static AlarmFunction* alarm_fun;
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    static std::list<Resizeable*> resizeable_list;
-	    
+
 	protected:
 	    static void registerResizeable(Resizeable* r);
 	    static void unregisterResizeable(Resizeable* r);
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	    static void sig_handler(int signo);
+	    static void init_signal();
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 	    inline int maxX() const {
 		int max_x, max_y;
 		getmaxyx(stdscr, max_y, max_x);
 		return max_x;
 	    }
-	    
+
 	    inline int maxY() const {
 		int max_x, max_y;
 		getmaxyx(stdscr, max_y, max_x);
 		return max_y;
 	    }
-	    
+
 	    inline int minX() const {
 		int x, y;
 		getbegyx(stdscr, y, x);
 		return x;
 	    }
-	    
+
 	    inline int minY() const {
 		int x, y;
 		getbegyx(stdscr, y, x);
 		return y;
 	    }
 	public:
+	    static void initCurses();
+	    static void endCurses();
+	    static void deleteAll();
 	    static void resizeAll();
 	    static void refreshAll();
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	    static void setTimeout(AlarmFunction* af, int sec);
+	    static void suspendTimeout();
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    Resizeable();
 	    virtual ~Resizeable();
 	    virtual void resize() = 0;
 	    virtual void refresh() = 0;
     };
-    
+
 }
 
 #endif // _RESIZEABLE_H
-

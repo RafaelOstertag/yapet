@@ -33,6 +33,10 @@
 # include <sys/stat.h>
 #endif
 
+#ifdef HAVE_SIGNAL_H
+# include <signal.h>
+#endif
+
 #ifdef HAVE_ERRNO_H
 # include <errno.h>
 #endif
@@ -68,6 +72,18 @@ KeyDesc keys[] = { {4, 2, "S", "Save File"},
 		   {0, 0, NULL, NULL}
 };
 
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+class Alarm : public YAPETUI::Resizeable::AlarmFunction {
+    private:
+	MainWindow& ref;
+    public:
+	inline Alarm(MainWindow& r) : ref(r) {}
+	inline void process(int signo) {
+	    ref.handle_signal(signo);
+	}
+};
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+
 void
 MainWindow::printTitle() throw(YAPETUI::UIException) {
     YAPETUI::Colors::setcolor(stdscr, YAPETUI::DEFAULT);
@@ -92,30 +108,30 @@ MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
 
     int retval = mymvwaddstr (toprightwin, 1, start_title_x, win_title);
     if (retval == ERR)
-        throw YAPETUI::UIException ("mvwaddstr() blew it");
+	throw YAPETUI::UIException ("mvwaddstr() blew it");
     retval = wmove (toprightwin, 2, 1);
     if (retval == ERR)
-        throw YAPETUI::UIException ("wmove() blew it");
+	throw YAPETUI::UIException ("wmove() blew it");
 
     retval = whline (toprightwin, 0, max_x - 2);
     if (retval == ERR)
-        throw YAPETUI::UIException ("whline() blew it");
+	throw YAPETUI::UIException ("whline() blew it");
 
 
     KeyDesc* ptr = keys;
     while (ptr->key != NULL
-            && ptr->desc != NULL) {
+	    && ptr->desc != NULL) {
 
-        wattron (toprightwin, A_REVERSE);
-        retval = mvwprintw (toprightwin, ptr->y, ptr->x, "  %0-2s  ", ptr->key);
-        if (retval == ERR)
-            throw YAPETUI::UIException ("mvprintw() blew it");
-        wattroff (toprightwin, A_REVERSE);
-        retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, ptr->desc);
-        if (retval == ERR)
-            throw YAPETUI::UIException ("waddstr() blew it");
+	wattron (toprightwin, A_REVERSE);
+	retval = mvwprintw (toprightwin, ptr->y, ptr->x, "  %0-2s  ", ptr->key);
+	if (retval == ERR)
+	    throw YAPETUI::UIException ("mvprintw() blew it");
+	wattroff (toprightwin, A_REVERSE);
+	retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, ptr->desc);
+	if (retval == ERR)
+	    throw YAPETUI::UIException ("waddstr() blew it");
 
-        ptr++;
+	ptr++;
     }
 
 }
@@ -150,12 +166,12 @@ MainWindow::createWindow() throw(YAPETUI::UIException) {
     //
     toprightwin = newwin (maxY() - thirdY - 1 , maxX() - middleX, 1, middleX);
     if (toprightwin == NULL)
-        throw YAPETUI::UIException ("newwin() returned NULL");
+	throw YAPETUI::UIException ("newwin() returned NULL");
 
     YAPETUI::Colors::setcolor(toprightwin, YAPETUI::DEFAULT);
     int retval = box (toprightwin, 0, 0);
     if (retval == ERR)
-        throw YAPETUI::UIException ("box() blew it");
+	throw YAPETUI::UIException ("box() blew it");
 
     topRightWinContent();
 
@@ -164,7 +180,7 @@ MainWindow::createWindow() throw(YAPETUI::UIException) {
     //
     bottomrightwin = newwin (thirdY - 1 , maxX() - middleX, maxY()-thirdY, middleX);
     if (bottomrightwin == NULL)
-        throw YAPETUI::UIException ("newwin() returned NULL");
+	throw YAPETUI::UIException ("newwin() returned NULL");
 
     YAPETUI::Colors::setcolor(bottomrightwin, YAPETUI::DEFAULT);
     retval = werase (bottomrightwin);
@@ -172,7 +188,7 @@ MainWindow::createWindow() throw(YAPETUI::UIException) {
 	throw YAPETUI::UIException("werase() blew it");
     retval = box (bottomrightwin, 0, 0);
     if (retval == ERR)
-        throw YAPETUI::UIException ("box() blew it");
+	throw YAPETUI::UIException ("box() blew it");
 
 
     //
@@ -222,20 +238,20 @@ MainWindow::refresh() throw (YAPETUI::UIException) {
 
     retval = box(toprightwin, 0, 0);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error setting border");
+	throw YAPETUI::UIException ("Error setting border");
 
     retval = box(bottomrightwin, 0, 0);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error setting border");
+	throw YAPETUI::UIException ("Error setting border");
 
 
     retval = wrefresh (toprightwin);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error refreshing top right window");
+	throw YAPETUI::UIException ("Error refreshing top right window");
 
     retval = wrefresh (bottomrightwin);
     if (retval == ERR)
-        throw YAPETUI::UIException ("Error refreshing bottom right window");
+	throw YAPETUI::UIException ("Error refreshing bottom right window");
 
     recordlist->refresh();
     statusbar.refresh();
@@ -282,7 +298,7 @@ MainWindow::createFile(std::string& filename) throw(YAPETUI::UIException) {
 	}
 	closeFile();
     }
-} 
+}
 
 void
 MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
@@ -290,8 +306,9 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
     int retval = stat(filename.c_str(), &st);
     if (retval == -1 && errno == ENOENT) {
 	// Ask user whether or not he wants to create a new file
-	YAPETUI::DialogBox* question = new YAPETUI::DialogBox("Question",
-							  "The file does not exist. Do you want to create it?");
+	YAPETUI::DialogBox* question =
+	    new YAPETUI::DialogBox("Question",
+				   "The file does not exist. Do you want to create it?");
 	question->run();
 	YAPETUI::ANSWER a = question->getAnswer();
 	delete question;
@@ -322,7 +339,8 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
     if (!S_ISREG(st.st_mode)) {
 	YAPETUI::MessageBox* errmsg = NULL;
 	try {
-	    errmsg = new YAPETUI::MessageBox("Error", "The specified file is not a regular file");
+	    errmsg = new YAPETUI::MessageBox("Error",
+					     "The specified file is not a regular file");
 	    errmsg->run();
 	    delete errmsg;
 	} catch (YAPETUI::UIException&) {
@@ -331,7 +349,7 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
 	}
 	return;
     }
-    
+
     closeFile();
 
     // Ask for password
@@ -353,6 +371,7 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
 	    file = new YAPET::File(filename, *key, false);
 	    std::list<YAPET::PartDec> tmp_list = file->read(*key);
 	    recordlist->setList(tmp_list);
+	    statusbar.putMsg(filename + " opened");
 	    return;
 	} catch(YAPET::YAPETException& e) {
 	    if (file != NULL)
@@ -439,7 +458,7 @@ MainWindow::addNewRecord() {
 		delete pwentry->getEncEntry();
 	    delete pwentry;
 	}
-	
+
 	YAPETUI::MessageBox* msgbox = NULL;
 	try {
 	    msgbox = new YAPETUI::MessageBox("Error", "Error adding password entry");
@@ -448,10 +467,10 @@ MainWindow::addNewRecord() {
 	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
-	    
+
 	    statusbar.putMsg("Error showing error message");
 	}
-	
+
     }
     ::refresh();
     refresh();
@@ -459,7 +478,9 @@ MainWindow::addNewRecord() {
 
 void
 MainWindow::editSelectedRecord() {
-    if (key == NULL || file == NULL) return;
+    if (key == NULL ||
+	file == NULL ||
+	recordlist->size() == 0) return;
     PasswordRecord* pwentry = NULL;
     try {
 	YAPET::PartDec pd = recordlist->getSelectedItem();
@@ -480,7 +501,7 @@ MainWindow::editSelectedRecord() {
 		delete pwentry->getEncEntry();
 	    delete pwentry;
 	}
-	
+
 	YAPETUI::MessageBox* msgbox = NULL;
 	try {
 	    msgbox = new YAPETUI::MessageBox("Error", "Error adding password entry");
@@ -489,7 +510,7 @@ MainWindow::editSelectedRecord() {
 	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
-	    
+
 	    statusbar.putMsg("Error showing error message");
 	}
     }
@@ -523,7 +544,7 @@ MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
 	} catch (YAPETUI::UIException&) {
 	    if (msgbox != NULL)
 		delete msgbox;
-	    
+
 	    statusbar.putMsg("Error showing error message");
 	}
     }
@@ -563,20 +584,20 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
 	WINDOW* lockwin = newwin(0,0,0,0);
 	if (lockwin == NULL)
 	    throw YAPETUI::UIException("Error creating lock window");
-	
+
 	int retval = werase(lockwin);
 	if (retval == ERR) {
 	    delwin(lockwin);
 	    throw YAPETUI::UIException("Error erasing window");
 	}
-	
-	
+
+
 	retval = wrefresh(lockwin);
 	if (retval == ERR) {
 	    delwin(lockwin);
 	    throw YAPETUI::UIException("Error refreshing window");
 	}
-	
+
 	ch = wgetch(lockwin);
 #ifdef HAVE_WRESIZE
 	if (ch == KEY_RESIZE) {
@@ -600,7 +621,7 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
 	    delwin(lockwin);
 	    continue;
 	}
-	
+
 	if (testkey == NULL) {
 	    delwin(lockwin);
 	    continue;
@@ -621,20 +642,20 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
 	    delwin(lockwin);
 	    return;
 	}
-	
+
 	delete testkey;
 	delwin(lockwin);
     }
 }
 
 MainWindow::MainWindow() throw (YAPETUI::UIException) : Resizeable(),
-						      toprightwin (NULL),
-						      bottomrightwin (NULL),
-						      recordlist (NULL),
-						      statusbar(),
-						      records_changed(false),
-						      key (NULL),
-						      file (NULL) {
+							toprightwin (NULL),
+							bottomrightwin (NULL),
+							recordlist (NULL),
+							statusbar(),
+							records_changed(false),
+							key (NULL),
+							file (NULL) {
     createWindow();
 }
 
@@ -648,6 +669,8 @@ MainWindow::~MainWindow() {
 	delete key;
     if (file != NULL)
 	delete file;
+
+
 }
 
 void
@@ -661,16 +684,24 @@ MainWindow::run() throw (YAPETUI::UIException) {
 
     refresh();
 
+    Alarm alrm(*this);
     int ch;
     while(true) {
 	try {
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	    Resizeable::setTimeout(&alrm,600);
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    while ( (ch=recordlist->focus()) ) {
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+		YAPETUI::Resizeable::suspendTimeout();
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 		switch (ch) {
 		case '\n':
 		    editSelectedRecord();
 		    break;
+		case 3: // ^C
 		case 'Q':
-		case 'q': 
+		case 'q':
 		    if (quit()) return;
 		    break;
 #ifdef HAVE_WRESIZE
@@ -728,6 +759,9 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		    deleteSelectedRecord();
 		    break;
 		}
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	    YAPETUI::Resizeable::setTimeout(&alrm,600);
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    }
 	} catch(std::exception& ex) {
 	    statusbar.putMsg(ex.what());
@@ -760,3 +794,13 @@ MainWindow::run(std::string fn) {
     run();
 }
 
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+void
+MainWindow::handle_signal(int signo) {
+    if (signo == SIGALRM) {
+	lockScreen();
+	::refresh();
+	YAPETUI::Resizeable::refreshAll();
+    }
+}
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

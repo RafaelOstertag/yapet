@@ -44,10 +44,28 @@
 #include "uiexception.h"
 #include "listwidget.h"
 
+/**
+ * @brief Holds primitive classes associated with the user interface.
+ *
+ * This namepsace holds the primitive classes used to build the user
+ * interface of yapet.
+ */
 namespace YAPETUI {
+    /**
+     * @brief A button.
+     *
+     * Displays a button.
+     *
+     * When the user presses the button, \c focus() returns \c \\n.
+     */
     class Button {
 	private:
 	    enum {
+		/**
+		 * @brief The base size of a button.
+		 *
+		 * A button with no label would look like this \c [  ].
+		 */
 		BASE_SIZE = 4
 	    };
 	    
@@ -74,8 +92,21 @@ namespace YAPETUI {
 	    
 	    void refresh() throw(UIException);
 	    
+	    /**
+	     * @brief Shows the button and waits for input.
+	     *
+	     * Shows the button and waits for input. When button is
+	     * pressed, it returns \c \\n.
+	     *
+	     * @return on press \c \\n.
+	     */
 	    int focus() throw(UIException);
-	    inline int getLength() const { return BASE_SIZE + label.length(); }
+	    /**
+	     *
+	     */
+	    inline int getLength() const {
+		return BASE_SIZE + label.length();
+	    }
     };
 }
 

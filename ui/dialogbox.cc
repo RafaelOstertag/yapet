@@ -21,10 +21,13 @@
 
 using namespace YAPETUI;
 
-DialogBox::DialogBox(std::string t, std::string m) throw(UIException) : MessageBox(t, m),
-									cancelbutton(NULL),
-									answer(ANSWER_CANCEL) {
-    cancelbutton = new Button("Cancel", getStartX() + 2 + getOkButtonLength(), getStartY() + getBaseHeight() -2);
+DialogBox::DialogBox(std::string t, std::string m) 
+    throw(UIException) : MessageBox(t, m),
+			 cancelbutton(NULL),
+			 answer(ANSWER_CANCEL) {
+    cancelbutton = new Button("Cancel",
+			      getStartX() + 2 + getOkButtonLength(),
+			      getStartY() + getBaseHeight() -2);
 }
 
 DialogBox::~DialogBox() {

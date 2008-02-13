@@ -18,6 +18,15 @@
 //
 
 #include "resizeable.h"
+#include "colors.h"
+
+#ifdef HAVE_SIGNAL_H
+# include <signal.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 #ifdef HAVE_ALGORITHM
 # include <algorithm>
@@ -35,6 +44,14 @@ class RemoveByAddr {
 	    if (ptr == p)
 		return true;
 	    return false;
+	}
+};
+
+class DeleteIt {
+    public:
+	inline void operator()(Resizeable* p) const {
+	    if (p != NULL)
+		delete p;
 	}
 };
 
@@ -56,7 +73,75 @@ class RefreshIt {
 // Static
 //
 std::list<Resizeable*> Resizeable::resizeable_list = std::list<Resizeable*>();
+Resizeable::AlarmFunction* Resizeable::alarm_fun = NULL;
 
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+void
+Resizeable::sig_handler(int signo) {
+    switch (signo) {
+    case SIGALRM:
+	if (alarm_fun != NULL)
+	    alarm_fun->process(signo);
+	break;
+    case SIGHUP:
+    case SIGINT:
+    case SIGQUIT:
+    case SIGTERM:
+    case SIGKILL:
+	deleteAll();
+	endCurses();
+	abort();
+    }
+}
+
+void
+Resizeable::init_signal() {
+    sigset_t sigset;
+    sigemptyset(&sigset);
+    // Get the current sigprocmask
+    sigprocmask(SIG_SETMASK, NULL, &sigset);
+    // enable the signals we want
+    sigaddset(&sigset, SIGALRM);
+    sigaddset(&sigset, SIGTERM);
+    sigaddset(&sigset, SIGKILL);
+    sigaddset(&sigset, SIGQUIT);
+    sigaddset(&sigset, SIGINT);
+    sigaddset(&sigset, SIGHUP);
+    sigprocmask(SIG_UNBLOCK, &sigset, NULL);
+
+    struct sigaction sa;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sa.sa_handler = Resizeable::sig_handler;
+
+    sigaction(SIGALRM, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
+    sigaction(SIGKILL, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGHUP, &sa, NULL);
+}
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+
+void
+Resizeable::initCurses() {
+    initscr();
+    raw();
+    noecho();
+    ::refresh();
+    curs_set(0);
+    keypad (stdscr, TRUE);
+
+    YAPETUI::Colors::initColors();
+    init_signal();
+}
+
+void
+Resizeable::endCurses() {
+    clear();
+    ::refresh();
+    endwin();
+}
 
 void
 Resizeable::registerResizeable(Resizeable* r) {
@@ -65,7 +150,7 @@ Resizeable::registerResizeable(Resizeable* r) {
 
 void
 Resizeable::unregisterResizeable(Resizeable* r) {
-    std::list<Resizeable*>::iterator it = 
+    std::list<Resizeable*>::iterator it =
 	std::remove_if(resizeable_list.begin(),
 		       resizeable_list.end(),
 		       RemoveByAddr(r));
@@ -74,7 +159,17 @@ Resizeable::unregisterResizeable(Resizeable* r) {
 }
 
 void
+Resizeable::deleteAll() {
+    std::for_each(resizeable_list.rbegin(),
+		  resizeable_list.rend(),
+		  DeleteIt());
+}
+
+void
 Resizeable::resizeAll() {
+    int max_x, max_y;
+    getmaxyx(stdscr, max_y, max_x);
+    if (max_x<80 || max_y<25) return;
     std::for_each(resizeable_list.begin(),
 		  resizeable_list.end(),
 		  ResizeIt());
@@ -87,7 +182,20 @@ Resizeable::refreshAll() {
 		  resizeable_list.end(),
 		  RefreshIt());
 }
-   
+
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+void
+Resizeable::setTimeout(AlarmFunction* af, int sec) {
+    alarm_fun = af;
+    alarm(sec);
+}
+
+void
+Resizeable::suspendTimeout() {
+    alarm(0);
+}
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+
 
 //
 // Non-Static
@@ -99,4 +207,3 @@ Resizeable::Resizeable() {
 Resizeable::~Resizeable() {
     Resizeable::unregisterResizeable(this);
 }
-

@@ -45,6 +45,18 @@
 #include "secstring.h"
 
 namespace YAPETUI {
+    /**
+     * @brief A widget where text can be entered.
+     *
+     * A single line widget where text can be entered. The text
+     * entered can be obtained by calling \c getText().
+     *
+     * The text is stored in a \c secstring.
+     *
+     * To activate the widget, call \c focus().
+     *
+     * @sa secstring
+     */
     class InputWidget {
 	private:
 	    WINDOW* window;

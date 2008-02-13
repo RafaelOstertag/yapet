@@ -51,6 +51,9 @@
 
 namespace YAPETUI {
 
+    /**
+     * @brief 
+     */
     template<class T>
     class ListWidget {
 	private:

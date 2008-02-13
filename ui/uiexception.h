@@ -35,7 +35,11 @@
 #endif
 
 namespace YAPETUI {
-
+    /**
+     * @brief User interface exception.
+     *
+     * Exception class used by the user interface.
+     */
     class UIException : public std::exception {
 	private:
 	    std::string message;
@@ -49,12 +53,15 @@ namespace YAPETUI {
 		message = ex.message;
 	    }
 	    inline virtual ~UIException() throw() { /* empty */ }
-	    inline const UIException& operator=(const UIException& ex) throw() {
+	    inline const UIException& operator=(const UIException& ex)
+		throw() {
 		if (this == &ex) return *this;
 		message = ex.message;
 		return *this;
 	    }
-	    inline virtual const char* what() const throw() { return message.c_str(); }
+	    inline virtual const char* what() const throw() { 
+		return message.c_str();
+	    }
     };
 
 }

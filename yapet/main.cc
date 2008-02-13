@@ -71,7 +71,6 @@
 # include <getopt.h>
 #endif
 
-#include "colors.h"
 #include "mainwindow.h"
 
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
@@ -99,13 +98,13 @@ void set_rlimit() {
     rl.rlim_max = 0;
     int retval = setrlimit(RLIMIT_CORE, &rl);
     if (retval != 0) {
-	std::cerr << "Failed to suppress the creation of core file." 
-		  << std::endl 
-		  << "The error message is: " << strerror(errno) 
+	std::cerr << "Failed to suppress the creation of core file."
+		  << std::endl
+		  << "The error message is: " << strerror(errno)
 		  << std::endl
 		  << "In case a core file is created, it may contain clear text passwords."
 		  << std::endl
-		  << std::endl 
+		  << std::endl
 		  << "Press <ENTER> to continue"
 		  << std::endl;
 	char tmp;
@@ -113,10 +112,10 @@ void set_rlimit() {
     }
 #else
     std::cerr << "Cannot suppress the creation of core file."
-	      << std::endl 
+	      << std::endl
 	      << "In case a core file is created, it may contain clear text passwords."
 	      << std::endl
-	      << std::endl 
+	      << std::endl
 	      << "Press <ENTER> to continue"
 	      << std::endl;
     char tmp;
@@ -201,15 +200,7 @@ int main (int argc, char** argv) {
 	}
     }
 
-
-    initscr();
-    raw();
-    noecho();
-    refresh();
-    curs_set(0);
-    keypad (stdscr, TRUE);
-
-    YAPETUI::Colors::initColors();
+    YAPETUI::Resizeable::initCurses();
 
     MainWindow* mainwin = NULL;
     try {
@@ -220,15 +211,12 @@ int main (int argc, char** argv) {
     } catch (std::exception& ex) {
 	if (mainwin != NULL)
 	    delete mainwin;
-	clear();
-	endwin();
+	YAPETUI::Resizeable::endCurses();
 	std::cerr << ex.what() << std::endl << std::endl;
 	return 1;
     }
 
-    clear();
-    refresh();
-    endwin();
+    YAPETUI::Resizeable::endCurses();
 
     return 0;
 }

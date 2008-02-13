@@ -48,9 +48,9 @@ namespace YAPETUI {
 		memset(p, '0', n*sizeof(std::allocator<T>::value_type));
 		std::allocator<T>::deallocate(p, n);
 	    }
-	    
+
     };
-    
+
     typedef std::basic_string<char, std::char_traits<char>, secallocator<char> > secstring;
 
 }

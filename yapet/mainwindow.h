@@ -79,7 +79,6 @@ class MainWindow : protected YAPETUI::Resizeable {
 	void deleteSelectedRecord() throw(YAPETUI::UIException);
 	bool quit();
 	void lockScreen() const throw(YAPETUI::UIException);
-
     public:
 	MainWindow() throw(YAPETUI::UIException);
 	virtual ~MainWindow();
@@ -87,6 +86,10 @@ class MainWindow : protected YAPETUI::Resizeable {
 	void run() throw(YAPETUI::UIException);
 	void run(std::string fn);
 	void resize() throw(YAPETUI::UIException);
+
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	void handle_signal(int signo);
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
 #endif // _MAINWINDOW_H

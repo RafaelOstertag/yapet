@@ -46,8 +46,8 @@ namespace YAPET {
     /**
      * @brief Template for allocating/deallocating memory for structs
      *
-     * The primary intend of this template is to make sure the memory
-     * allocated for a struct is zero'ed out upon deallocation.
+     * The primary intend of this template is to make sure the memory allocated
+     * for a struct is zero'ed out upon deallocation.
      *
      * The template allocates enough memory on the heap for holding
      * the struct of type \c T.
@@ -154,35 +154,51 @@ namespace YAPET {
 	    const T* getData() const { return data; }
 
 	    /**
-	     * @brief Get the pointer to the struct.
+	     * @brief Cast to the pointer of the struct.
 	     *
-	     * Gets the pointer to the struct on the heap.
+	     * Cast to the pointer of the struct on the heap.
 	     *
 	     * @return pointer to the struct on the heap.
 	     */
 	    operator T*() { return data; }
 	    /**
-	     * @brief Get the pointer to the struct.
+	     * @brief Cast to the pointer of the struct.
 	     *
-	     * Gets the pointer to the struct on the heap.
+	     * Cast to the pointer of the struct on the heap.
 	     *
 	     * @return pointer to the struct on the heap.
 	     */
 	    operator const T*() const { return data; }
-	    
 	    /**
 	     * @brief Cast operator.
 	     *
 	     * Cast operator used by the openssl functions.
 	     *
-	     * @return pointer to the struct casted to an unsigned
-	     * integer pointer of 8 bits.
+	     * @return pointer to the struct casted to an unsigned 8 bits
+	     * integer pointer.
 	     */
 	    operator uint8_t*() { return (uint8_t*)data; }
-
+	    /**
+	     * @brief Cast operator.
+	     *
+	     * Cast operator used by the openssl functions.
+	     *
+	     * @return pointer to the struct casted to an unsigned 8 bits
+	     * integer pointer.
+	     */
 	    operator const uint8_t*() const { return (const uint8_t*)data; }
 
-	    const Record<T>& operator=(const Record<T>& r) throw(YAPETException) {
+	    /**
+	     * @brief Assignment operator.
+	     *
+	     * Assigns another \c Record to \c this.
+	     *
+	     * @param r reference to a \c Record.
+	     *
+	     * @return const reference to \c this.
+	     */
+	    const Record<T>& operator=(const Record<T>& r)
+		throw(YAPETException) {
 		if (this == &r) return *this;
 
 		free_mem();
@@ -194,6 +210,15 @@ namespace YAPET {
 		return *this;
 	    }
 
+	    /**
+	     * @brief Assignment operator.
+	     *
+	     * Assigns a struct of type \c T to \c this.
+	     *
+	     * @param r reference to a struct of type \c T.
+	     *
+	     * @return const reference to \c this.
+	     */
 	    const Record<T>& operator=(const T& r) throw(YAPETException) {
 		free_mem();
 		// This sets _size member too
@@ -203,6 +228,15 @@ namespace YAPET {
 		return *this;
 	    }
 
+	    /**
+	     * @brief Assignment operator.
+	     *
+	     * Assigns a struct of type \c T to \c this.
+	     *
+	     * @param r pointer to a struct of type \c T.
+	     *
+	     * @return const reference to \c this.
+	     */
 	    const Record<T>& operator=(const T* r) throw(YAPETException){
 		free_mem();
 		// This sets _size member too
@@ -212,8 +246,23 @@ namespace YAPET {
 		return *this;
 	    }
 
-	    const Record<T>& operator=(const BDBuffer& bdb) throw(YAPETException) {
-		if (bdb.size() < _size) throw YAPETException("BDBuffer too small");
+	    /**
+	     * @brief Assignment operator.
+	     *
+	     * Assigns a \c BDBuffer. If the size of the \c BDBuffer is smaller
+	     * than the size of the struct, an exception is thrown.
+	     *
+	     * Only as much bytes as fit into struct are copied from the \c
+	     * BDBuffer.
+	     *
+	     * @param bdb reference to a \c BDBuffer.
+	     *
+	     * @return const reference to \c this.
+	     */
+	    const Record<T>& operator=(const BDBuffer& bdb)
+		throw(YAPETException) {
+		if (bdb.size() < _size)
+		    throw YAPETException("BDBuffer too small");
 
 		free_mem();
 		// This sets _size member too

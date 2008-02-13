@@ -38,49 +38,128 @@
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
 namespace YAPETUI {
-    
+    /**
+     * @brief The indices of the color array.
+     *
+     * This are the indices of the color array.
+     */
     enum COLORS {
+	/**
+	 * The default color.
+	 */
 	DEFAULT = 0,
+	/**
+	 * The color used for the title of a message box.
+	 */
 	MESSAGEBOX_TITLE,
+	/**
+	 * The color of the message box
+	 */
 	MESSAGEBOX,
+	/**
+	 * The color for an input widget without focus.
+	 */
 	INPUTWIDGET_NOFOCUS,
+	/**
+	 * Color for an input widget with focus.
+	 */
 	INPUTWIDGET_FOCUS,
+	/**
+	 * Color of buttons without focus.
+	 */
 	BUTTON_NOFOCUS,
+	/**
+	 * Color of buttons with focus.
+	 */
 	BUTTON_FOCUS,
+	/**
+	 * Color of listwidgets.
+	 */
 	LISTWIDGET
     };
 
     /**
-     * Struct holding the color
+     * @brief Struct holding the color.
+     *
+     * The purpose of this struct is to hold the color and the
+     * attribute for the given color. The attribute is used in case
+     * the terminal does not support colors.
      */
     struct color {
-	    /** The number of the pair
+	    /** 
+	     * @brief The number of the pair.
 	     * 
-	     * The number of the pair
+	     * The number of the pair as used by (n)curses.
 	     */
 	    short no;
 	    /**
-	     * The foreground color
+	     * @brief The foreground color.
+	     *
+	     * The foreground color of the color pair
 	     */
 	    short fg;
 	    /**
-	     * The background color
+	     * @brief The background color.
+	     *
+	     * The background color of the pair.
 	     */
 	    short bg;
 	    /**
-	     * The attribute used when no color is available
+	     * @brief The attribute.
+	     *
+	     * The attribute used when no color is available.
 	     */
 	    int attr;
     };
 
+    /**
+     * @brief Class for managing colors.
+     *
+     * This class is used for managing colors.
+     */
     class Colors {
 	private:
+	    /**
+	     * @brief Indicates whether or colors has been initialized
+	     *
+	     * Indicates whether or colors has been initialized by
+	     * calling \c initColors().
+	     */
 	    static bool initialized;
+	    /**
+	     * @brief Array holding the colors.
+	     *
+	     * The color pairs for curses are access by using the
+	     * names defined in the \c COLOR enum.
+	     */
 	    static color colors[];
 	public:
+	    /**
+	     * @brief Initializes the color pairs.
+	     *
+	     * Initializes the color pairs used by curses if the
+	     * terminal supports colors.
+	     */
 	    static void initColors();
+	    /**
+	     * @brief Set the color of the curses window.
+	     *
+	     * Sets the color of the curses window. If colors are not
+	     * supported by the terminal, it returns the value of the
+	     * \c attr field of the \c color struct.
+	     */
 	    static void setcolor(WINDOW* w, COLORS c);
 	    static void unsetcolor(WINDOW* w, COLORS c);
+	    /**
+	     * @brief Returns the number of the color pair.
+	     *
+	     * Returns the number used by curses for the given
+	     * color. If color support is unavailable, it always
+	     * returns 0.
+	     *
+	     * @return the number of the color pair, or zero if color
+	     * support is not available.
+	     */
 	    static short getcolor(COLORS c);
     };
 

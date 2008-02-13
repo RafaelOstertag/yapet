@@ -99,7 +99,7 @@ namespace YAPET {
     /**
      * @brief Structure of the password record.
      *
-     * The structure of the password records.
+     * The structure of a password records.
      */
     struct PasswordRecord {
 	    /**
