@@ -13,8 +13,9 @@ AC_PROG_CXX([CC c++ g++])
 AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
-AC_ARG_VAR([DOXYGEN],[path of doxygen])
+AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
+AC_ARG_VAR([DOXYGEN],[path to docbook2txt])
 AC_CHECK_PROG([DOCBOOK2TXT],[docbook2txt],[docbook2txt])
 
 AC_LANG([C++])

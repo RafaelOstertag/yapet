@@ -158,11 +158,15 @@ FileOpen::printCWD() throw(YAPETUI::UIException) {
 
     int retval = mvwprintw(window, 1, 1, format, " ");
     if (retval == ERR)
-	throw YAPETUI::UIException("Error touching line");
+	throw YAPETUI::UIException("Error clearing line");
 
     retval = mymvwaddstr(window, 1, 1, directory.c_str());
     if (retval == ERR)
 	throw YAPETUI::UIException("Error printing cwd");
+
+    retval = wrefresh(window);
+    if (retval == ERR)
+	throw YAPETUI::UIException("Error refreshing cwd");
 }
 
 void
@@ -249,11 +253,13 @@ FileOpen::run() throw (YAPETUI::UIException) {
 		    getEntries(dir_list, file_list);
 		    files->setList(file_list);
 		    dir->setList(dir_list);
+		    printCWD();
 		} catch (YAPETUI::UIException& ex) {
 		    YAPETUI::MessageBox* tmp =
 			new YAPETUI::MessageBox("Error", ex.what());
 		    tmp->run();
 		    delete tmp;
+		    this->refresh();
 		}
 	    }
 		break;

@@ -52,8 +52,6 @@
 namespace YAPETUI {
 
     /**
-     * @todo Scroll indicator.
-     *
      * @todo Making focus clearly visible.
      *
      * @brief A widget showing a list of items for selecting one.
@@ -111,6 +109,27 @@ namespace YAPETUI {
 		    throw UIException("Error drawing box around window");
 	    }
 
+	    void showScrollIndicators() throw(UIException) {
+ 		if (start_pos > 0) {
+		    int retval = mvwaddch(window,
+					  1,
+					  width - 1,
+					  '^');
+		    if (retval == ERR)
+			throw UIException("Unable to display scroll up indicator");
+		}
+
+		if ( itemlist.size() - 1  > start_pos + cur_pos &&
+		     itemlist.size() > pagesize()) {
+		    int retval = mvwaddch(window,
+					  height - 2,
+					  width - 1,
+					  'v');
+		    if (retval == ERR)
+			throw UIException("Unable to display scroll down indicator");
+		}
+	    }
+
 	    void showListItems() throw(UIException) {
 		int usable_width = width - 2;
 
@@ -121,10 +140,16 @@ namespace YAPETUI {
 		for(int i=0; i<start_pos; itemlist_pos++,i++);
 
 		for(int i=0; i<pagesize() && itemlist_pos != itemlist.end(); itemlist_pos++, i++) {
-		    int retval = mymvwaddnstr(window, 1 + i, 1, (*itemlist_pos).c_str(), usable_width);
+		    int retval = mymvwaddnstr(window,
+					      1 + i,
+					      1,
+					      (*itemlist_pos).c_str(),
+					      usable_width);
 		    if (retval == ERR)
 			throw UIException("Unable to display item");
 		}
+
+		showScrollIndicators();
 	    }
 
 	    void showSelected(int old_pos) throw(UIException) {
@@ -157,6 +182,7 @@ namespace YAPETUI {
 		retval = touchwin(window);
 		if (retval == ERR)
 		    throw UIException("Error touching window");
+
 		retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing window");
@@ -266,10 +292,9 @@ namespace YAPETUI {
 
 		box(window, 0, 0);
 
+		// We set them here in case the window was resized
 		width = w;
 		height = h;
-
-		//refresh();
 	    }
 
 	public:
@@ -278,13 +303,16 @@ namespace YAPETUI {
 	     *
 	     * Initializes the widget, but does not show it.
 	     *
-	     * @param l the list holding the items to be displayed. The items
-	     * of the list are expected to have a method called \c c_str() for
-	     * getting their names. Empty lists are allowed.
+	     * @param l the list holding the items to be
+	     * displayed. The items of the list are expected to have a
+	     * method called \c c_str() for getting their names. Empty
+	     * lists are allowed.
 	     *
-	     * @param sx the horizontal start position of the widget on the screen.
+	     * @param sx the horizontal start position of the widget
+	     * on the screen.
 	     *
-	     * @param sy the vertical start position of the widget on the screen.
+	     * @param sy the vertical start position of the widget on
+	     * the screen.
 	     *
 	     * @param w the width of the widget.
 	     *
@@ -386,6 +414,9 @@ namespace YAPETUI {
 		int retval = box(window, 0, 0);
 		if (retval == ERR)
 		    throw UIException("Error re-setting the border");
+
+		showScrollIndicators();
+
 		retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing the list widget");
