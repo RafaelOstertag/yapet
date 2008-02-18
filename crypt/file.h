@@ -302,7 +302,9 @@ namespace YAPET {
 	    //! Sets a new encryption key for the current file.
 	    void setNewKey(const Key& oldkey, const Key& newkey)
 		throw(YAPETException);
-
+	    time_t getMasterPWSet(const Key& key) const
+		throw(YAPETException,YAPETInvalidPasswordException);
+	    //! Returns the time the master password was set
 	    const File& operator=(const File& f) throw(YAPETException);
     };
 }

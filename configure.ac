@@ -84,7 +84,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt getopt_long rename sigaction])
+AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat])

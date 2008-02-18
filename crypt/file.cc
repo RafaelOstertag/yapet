@@ -385,7 +385,7 @@ File::initFile(const Key& key) throw(YAPETException) {
     FileHeader* ptr = header;
     ptr->version = 1;
     memcpy(ptr->control, CONTROL_STR, HEADER_CONTROL_SIZE);
-    ptr->pwset = time(NULL);
+    ptr->pwset = uint32_to_disk(time(NULL));
 
     mtime = lastModified();
 
@@ -716,6 +716,43 @@ File::setNewKey(const Key& oldkey,
 	throw;
     }
     delete oldfile;
+}
+
+/**
+ * Returns the time as a \c time_t when the master password was set.
+ *
+ * @param key the key used to decrypt the header.
+ *
+ * @return a \c time_t representing the time the master password was
+ * set.
+ */
+time_t
+File::getMasterPWSet(const Key& key) const
+    throw(YAPETException,YAPETInvalidPasswordException) {
+    Crypt crypt(key);
+    BDBuffer* enc_header = NULL;
+    Record<FileHeader>* dec_header = NULL;
+    FileHeader* ptr_dec_header = NULL;
+
+    try {
+	enc_header = readHeader();
+	dec_header = crypt.decrypt<FileHeader>(*enc_header);
+	ptr_dec_header = *dec_header;
+    } catch (YAPETEncryptionException& ex) {
+	if (enc_header != NULL) delete enc_header;
+	if (dec_header != NULL) delete dec_header;
+	throw YAPETInvalidPasswordException();
+    } catch (YAPETException& ex) {
+	if (enc_header != NULL) delete enc_header;
+	if (dec_header != NULL) delete dec_header;
+	throw;
+    }
+
+    time_t t = uint32_from_disk(ptr_dec_header->pwset);
+    delete enc_header;
+    delete dec_header;
+
+    return t;
 }
 
 

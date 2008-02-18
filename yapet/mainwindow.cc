@@ -45,6 +45,17 @@
 # include <string.h>
 #endif
 
+#ifdef TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
+#else
+# ifdef HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
+#endif // TIME_WITH_SYS_TIME
+
 #include <button.h>
 #include <dialogbox.h>
 #include <colors.h>
@@ -186,6 +197,20 @@ MainWindow::bottomRightWinContent() throw(YAPETUI::UIException) {
     retval = mvwprintw(bottomrightwin, 3, 2, "%d entries ", recordlist->size());
     if (retval == ERR)
 	throw YAPETUI::UIException ("mvprintw() blew it");
+
+#if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
+    if (file != NULL) {
+	try {
+	    time_t t = file->getMasterPWSet(*key);
+	    retval = mvwprintw(bottomrightwin, 4, 2, "PW set: %s",
+			       asctime(localtime(&t)) );
+	    if (retval == ERR)
+		throw YAPETUI::UIException ("mvprintw() blew it");
+	} catch (YAPET::YAPETException& ex) {
+	    statusbar.putMsg(ex.what());
+	}
+    }
+#endif
 
 }
 

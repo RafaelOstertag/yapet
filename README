@@ -1,19 +1,18 @@
-
 YAPET - Yet Another Password Encryption Tool 0.1
 
 Rafael Ostertag
 
    $Id$
-     _________________________________________________________________
+     __________________________________________________________________
 
    Table of Contents
 
    YAPET is curses based password encryption tool. Its primary aim is to
-          provide a safe way to store passwords in a file while 
+          provide a safe way to store passwords in a file while
 
    Copyright© 2008 by Rafael Ostertag
 
-YAPET is curses based password encryption tool. Its primary aim is to
-provide a safe way to store passwords in a file while
+YAPET is curses based password encryption tool. Its primary aim is to provide
+a safe way to store passwords in a file while
 
    bla
