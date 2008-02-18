@@ -23,7 +23,31 @@
   &preamble;
 
   <sect1>
-    <title>Quick Installation Instructions</title>
+    <title>Build Prerequisites</title>
+    
+    <para>&YP; was designed to have only few library dependencies, and to build on most
+      popular Unices.</para>
+    
+    <sect2>
+      <title>Supported Platforms</title>
+      
+      <para>&YP; was successfully built on following platforms:</para>
+      <itemizedlist>
+	<listitem><simpara>FreeBSD</simpara></listitem>
+	<listitem><simpara>Linux</simpara></listitem>
+	<listitem><simpara>Sun Solaris 10 x86</simpara></listitem>
+	<listitem><simpara>Cygwin</simpara></listitem>
+      </itemizedlist>
+    </sect2>
+
+<sect2>
+<title></title>
+</sect2>
+    
+  </sect1>
+
+  <sect1>
+    <title>Brief Build Instructions</title>
 
     <para>&YP; uses a <command>configure</command> script as generated
       by <command>autoconf</command> and friends for configuring the
@@ -68,7 +92,6 @@
     <para>To start &YP; issue
       <filename>/usr/local/bin</filename>/<command>yapet</command> on
       the command line.</para>
-
 </sect1>
 
 <sect1>
@@ -85,6 +108,24 @@
 	  where &YP; will be installed. The executable is installed in
 	  <literal>&lt;PATH&gt;</literal><filename>/bin</filename>.
 	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--with-xsl-sheet=</option><literal>&lt;FILE&gt;</literal>
+      </term>
+
+      <listitem>
+	<para><literal>&lt;FILE&gt;</literal> is the file path of the
+	XSL Style Sheet to use for generating documentation
+	files. This option is only used
+	if <command>docbook2txt</command> is not available,
+	and <command>xsltproc</command> and <command>lynx</command>
+	are found by <command>configure</command>. More specifically,
+	this is the file fed to <command>xsltproc</command> for
+	generating some of the documenation files (this file for
+	instance) from the docbook source.</para>
       </listitem>
     </varlistentry>
 
