@@ -15,12 +15,23 @@ AC_PROG_SED
 AC_PROG_RANLIB
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
-AC_ARG_VAR([DOXYGEN],[path to docbook2txt])
-AC_CHECK_PROG([DOCBOOK2TXT],[docbook2txt],[docbook2txt])
+AC_ARG_VAR([DOCBOOK2TXT],[path to docbook2txt])
+AC_ARG_VAR([XSLTPROC], [path to xsltproc])
+AC_ARG_VAR([LYNX], [path to lynx])
+AC_CHECK_PROG([DOCBOOK2TXT],[docbook2txt],[docbook2txt],[no])
+if test x$DOCBOOK2TXT == xno ; then
+	AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
+	AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
+fi
 
 AC_LANG([C++])
 
 # Arguments
+AC_ARG_WITH([xsl-sheet],
+	[AS_HELP_STRING([--with-xsl-sheet],
+		[path of the XSL DocBook sheet used to generate the documentation])],
+	[AC_SUBST([XSLFILE], ["$withval"])],
+	[AC_SUBST([XSLFILE], ["no"])])
 AC_ARG_WITH([curses-include],
 	[AS_HELP_STRING([--with-curses-include],[directory for (n)curses header files])],
 	[CPPFLAGS="-I$withval $CPPFLAGS"],
@@ -76,7 +87,7 @@ AC_FUNC_ALLOCA
 AC_CHECK_FUNCS([memset strerror getcwd pathconf setrlimit getopt getopt_long rename sigaction])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
-AC_CHECK_FUNCS([wresize mvwchgat],[],[])
+AC_CHECK_FUNCS([wresize mvwchgat])
 
 # Some custom tests
 AC_MSG_CHECKING([whether waddstr() use const char*])
@@ -90,7 +101,8 @@ AC_COMPILE_IFELSE(
 	const char teststr[] = "Const string";]],
 				  [[initscr(); waddstr(stdscr, teststr); endwin();]])],
 	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no]) AC_DEFINE([WADDSTR_USE_CHAR],[1],[Set to 1 if waddstr() doesn't use const char*])])
+	[AC_MSG_RESULT([no])
+	AC_DEFINE([WADDSTR_USE_CHAR],[1],[Set to 1 if waddstr() doesn't use const char*])])
 
 AC_MSG_CHECKING([whether mvwaddstr() use const char*])
 AC_COMPILE_IFELSE(
@@ -103,7 +115,8 @@ AC_COMPILE_IFELSE(
 	const char teststr[] = "Const string";]],
 				  [[initscr(); mvwaddstr(stdscr, 2, 1, teststr); endwin();]])],
 	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no]) AC_DEFINE([MVWADDSTR_USE_CHAR],[1],[Set to 1 if mvwaddstr() doesn't use const char*])])
+	[AC_MSG_RESULT([no])
+	AC_DEFINE([MVWADDSTR_USE_CHAR],[1],[Set to 1 if mvwaddstr() doesn't use const char*])])
 
 AC_MSG_CHECKING([whether mvwaddnstr() use const char*])
 AC_COMPILE_IFELSE(
@@ -116,7 +129,8 @@ AC_COMPILE_IFELSE(
 	const char teststr[] = "Const string";]],
 				  [[initscr(); mvwaddnstr(stdscr, 2, 1, teststr, 4); endwin();]])],
 	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no]) AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
+	[AC_MSG_RESULT([no])
+	AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
 
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
@@ -128,7 +142,8 @@ AC_C_BIGENDIAN
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
-AM_CONDITIONAL([HAVEDOCBOOK2TXT], [test x$DOCBOOK2TXT != x])
+AM_CONDITIONAL([HAVEDOCBOOK2TXT], [test x$DOCBOOK2TXT != xno])
+AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLFILE != xno])
 
 AC_CONFIG_FILES([Makefile
 	yapet/Makefile

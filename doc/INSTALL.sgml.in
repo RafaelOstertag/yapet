@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-  "/usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+	  "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
 <!ENTITY YP "@PACKAGE_NAME@">

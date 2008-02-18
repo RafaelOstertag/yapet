@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-  "/usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd"
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
 <!ENTITY YP "@PACKAGE_NAME@">
@@ -22,5 +22,16 @@
 
   &preamble;
 
-  
-<article>
+  <sect1>
+  <title>&YP; is curses based password encryption tool. Its primary
+  aim is to provide a safe way to store passwords in a file while </title>
+<para>bla</para>
+</sect1>
+
+</article>
+
+<!--
+Local Variables:
+mode: sgml
+End:
+-->
