@@ -1,6 +1,11 @@
 # $Id$
-
 EXTRA_DIST = Doxyfile.in README.sgml.in INSTALL.sgml.in preamble.sgml html-doc
+
+README_sgmlfiles = README.sgml preamble.sgml
+README_target = $(top_srcdir)/README
+
+INSTALL_sgmlfiles = INSTALL.sgml preamble.sgml
+INSTALL_target = $(top_srcdir)/INSTALL
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
@@ -21,32 +26,25 @@ README.sgml: $(srcdir)/README.sgml.in
 	rm -f $@
 	$(editfile) $(srcdir)/$@.in > $@
 
-if HAVEDOCBOOK2TXT
-$(top_srcdir)/README: README.sgml
-	$(DOCBOOK2TXT) $(srcdir)/README.sgml
-	mv $(srcdir)/README.txt $(top_srcdir)/README
-
-$(top_srcdir)/INSTALL: INSTALL.sgml
-	$(DOCBOOK2TXT) $(srcdir)/INSTALL.sgml
-	mv $(srcdir)/INSTALL.txt $(top_srcdir)/INSTALL
-else
 if HAVEXSLTPROC
-$(top_srcdir)/README: README.sgml
+$(README_target): $(README_sgmlfiles)
+	rm -f $(README_target)
 	$(XSLTPROC) -o $(srcdir)/README.html $(XSLFILE) $(srcdir)/README.sgml
 	$(LYNX) -nolist -dump $(srcdir)/README.html > $@
 	rm -f $(srcdir)/README.html
 
-$(top_srcdir)/INSTALL: INSTALL.sgml
+$(INSTALL_target): $(INSTALL_sgmlfiles)
+	rm -f $(INSTALL_target)
 	$(XSLTPROC) -o $(srcdir)/INSTALL.html $(XSLFILE) $(srcdir)/INSTALL.sgml
 	$(LYNX) -nolist -dump $(srcdir)/INSTALL.html > $@
 	rm -f $(srcdir)/INSTALL.html
 else
-$(top_srcdir)/README: README.sgml
+$(README_target): $(README_sgmlfiles)
 
-$(top_srcdir)/INSTALL: INSTALL.sgml
+$(INSTALL_target): $(INSTALL_sgmlfiles)
 
 endif # if HAVEXSLTPROC
-endif # if HAVEDOCBOOK2TXT
+
 
 if HAVEDOXYGEN
 html-doc: Doxyfile
@@ -56,8 +54,8 @@ html-doc: Doxyfile
 
 endif
 
-dist-hook: html-doc $(top_srcdir)/README $(top_srcdir)/INSTALL
-all-local: $(top_srcdir)/README $(top_srcdir)/INSTALL
+dist-hook: html-doc $(INSTALL_target) $(README_target)
+all-local: $(INSTALL_target) $(README_target)
 
 maintainer-clean-local:
 	rm -rf html-doc

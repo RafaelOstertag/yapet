@@ -80,7 +80,7 @@ namespace YAPETUI {
 		     * integer argument is the number of the signal, which
 		     * currently is always \c SIGALRM.
 		     */
-		    inline virtual void process(int) = 0;
+		    virtual void process(int) = 0;
 	    };
 	private:
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

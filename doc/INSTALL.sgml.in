@@ -22,13 +22,13 @@
 
   &preamble;
 
-  <sect1>
+  <sect1 id="prereq">
     <title>Build Prerequisites</title>
     
     <para>&YP; was designed to have only few library dependencies, and to build on most
       popular Unices.</para>
     
-    <sect2>
+    <sect2 id="supportedplatforms">
       <title>Supported Platforms</title>
       
       <para>&YP; was successfully built on following platforms:</para>
@@ -40,13 +40,15 @@
       </itemizedlist>
     </sect2>
 
-<sect2>
-<title></title>
-</sect2>
+    <sect2 id="requiredlibraries">
+      <title>Required Libraries</title>
+
+      
+    </sect2>
     
   </sect1>
 
-  <sect1>
+  <sect1 id="buildinstr">
     <title>Brief Build Instructions</title>
 
     <para>&YP; uses a <command>configure</command> script as generated
@@ -92,107 +94,106 @@
     <para>To start &YP; issue
       <filename>/usr/local/bin</filename>/<command>yapet</command> on
       the command line.</para>
-</sect1>
+  </sect1>
 
-<sect1>
-  <title>Brief configure Options Description</title>
+  <sect1>
+    <title>Brief configure Options Description</title>
 
-  <variablelist>
-    <varlistentry>
-      <term>
-	<option>--prefix=</option><literal>&lt;PATH&gt;</literal>
-      </term>
-
-      <listitem>
-	<para><literal>&lt;PATH&gt;</literal> is the base directory
-	  where &YP; will be installed. The executable is installed in
-	  <literal>&lt;PATH&gt;</literal><filename>/bin</filename>.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--with-xsl-sheet=</option><literal>&lt;FILE&gt;</literal>
-      </term>
-
-      <listitem>
-	<para><literal>&lt;FILE&gt;</literal> is the file path of the
-	XSL Style Sheet to use for generating documentation
-	files. This option is only used
-	if <command>docbook2txt</command> is not available,
-	and <command>xsltproc</command> and <command>lynx</command>
-	are found by <command>configure</command>. More specifically,
-	this is the file fed to <command>xsltproc</command> for
-	generating some of the documenation files (this file for
-	instance) from the docbook source.</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--with-curses-include=</option><literal>&lt;PATH&gt;</literal>
-      </term>
-
-      <listitem><para>This option tells the compiler where to find the
-	header files of
-	curses/ncurses. <literal>&lt;PATH&gt;</literal> has to be the
-	directory where the header files are located, not the file
-	name of the header file.</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--with-curses-lib=</option><literal>&lt;PATH&gt;</literal>
-      </term>
-
-      <listitem>
-	<para>This option tells the linker where to find the
-	  curses/ncurses shared
-	  library. <literal>&lt;PATH&gt;</literal> has to be the
-	  directory where the shared library is located, not the file
-	  name of the shared library.</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--with-openssl-include=</option><literal>&lt;PATH&gt;</literal>
-      </term>
-
-      <listitem>
-	<para>This options tells the compiler where to find the
-	header files of openssl. <literal>&lt;PATH&gt;</literal> has to be the
-	directory where the header files are located, not the file
-	name of the header file.</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--with-openssl-lib=</option><literal>&lt;PATH&gt;</literal>
-      </term>
-
-      <listitem>
-	<para>This option tells the linker where to find the
-	  openssl shared
-	  library. <literal>&lt;PATH&gt;</literal> has to be the
-	  directory where the shared library is located, not the file
-	  name of the shared library.</para>
-      </listitem>
-    </varlistentry>
-  </variablelist>
-</sect1>
-
-<sect1>
-  <title>Further Information</title>
-
-  <para>For more information about the configure script, read the
-    file <filename>INSTALL.generic</filename> which comes along in the
-    tarball of &YP;.</para>
-</sect1>
-
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <option>--prefix=</option><literal>&lt;PATH&gt;</literal>
+	</term>
+	
+	<listitem>
+	  <para><literal>&lt;PATH&gt;</literal> is the base directory
+	    where &YP; will be installed. The executable is installed in
+	    <literal>&lt;PATH&gt;</literal><filename>/bin</filename>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      
+      <varlistentry>
+	<term>
+	  <option>--with-xsl-sheet=</option><literal>&lt;FILE&gt;</literal>
+	</term>
+	
+	<listitem>
+	  <para><literal>&lt;FILE&gt;</literal> is the file path of
+	    the XSL Style Sheet to use for generating documentation
+	    files. More specifically, this is the file fed
+	    to <command>xsltproc</command> for generating some of the
+	    documenation files (this file for instance) from the
+	    docbook source. This option is only used
+	    if <command>xsltproc</command> and <command>lynx</command>
+	    are found by <command>configure</command>.</para>
+	</listitem>
+      </varlistentry>
+      
+      <varlistentry>
+	<term>
+	  <option>--with-curses-include=</option><literal>&lt;PATH&gt;</literal>
+	</term>
+	
+	<listitem><para>This option tells the compiler where to find the
+	    header files of
+	    curses/ncurses. <literal>&lt;PATH&gt;</literal> has to be the
+	    directory where the header files are located, not the file
+	    name of the header file.</para>
+	</listitem>
+      </varlistentry>
+      
+      <varlistentry>
+	<term>
+	  <option>--with-curses-lib=</option><literal>&lt;PATH&gt;</literal>
+	</term>
+	
+	<listitem>
+	  <para>This option tells the linker where to find the
+	    curses/ncurses shared
+	    library. <literal>&lt;PATH&gt;</literal> has to be the
+	    directory where the shared library is located, not the file
+	    name of the shared library.</para>
+	</listitem>
+      </varlistentry>
+      
+      <varlistentry>
+	<term>
+	  <option>--with-openssl-include=</option><literal>&lt;PATH&gt;</literal>
+	</term>
+	
+	<listitem>
+	  <para>This options tells the compiler where to find the
+	    header files of openssl. <literal>&lt;PATH&gt;</literal> has to be the
+	    directory where the header files are located, not the file
+	    name of the header file.</para>
+	</listitem>
+      </varlistentry>
+      
+      <varlistentry>
+	<term>
+	  <option>--with-openssl-lib=</option><literal>&lt;PATH&gt;</literal>
+	</term>
+	
+	<listitem>
+	  <para>This option tells the linker where to find the
+	    openssl shared
+	    library. <literal>&lt;PATH&gt;</literal> has to be the
+	    directory where the shared library is located, not the file
+	    name of the shared library.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
+  
+  <sect1>
+    <title>Further Information</title>
+    
+    <para>For more information about the configure script, read the
+      file <filename>INSTALL.generic</filename> which comes along in the
+      tarball of &YP;.</para>
+  </sect1>
+  
 </article>
 
 <!--
