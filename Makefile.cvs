@@ -2,7 +2,10 @@
 #
 # $Id$
 
-all: ChangeLog aclocal.m4 configure config.h.in Makefile.in
+all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
+
+README:
+	touch README
 
 ChangeLog:
 	touch ChangeLog
