@@ -156,7 +156,7 @@ namespace YAPETUI {
 		int retval = 0;
 
 		if (itemlist.size() > 0) {
-		    retval = mvwchgat(window,
+		    retval = mymvwchgat(window,
 				      cur_pos + 1,
 				      1,
 				      width-2,
@@ -169,7 +169,7 @@ namespace YAPETUI {
 		}
 
 		if (old_pos > -1) {
-		    retval = mvwchgat(window,
+		    retval = mymvwchgat(window,
 				      old_pos + 1,
 				      1,
 				      width-2,

@@ -161,7 +161,11 @@ MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
     if (retval == ERR)
 	throw YAPETUI::UIException ("wmove() blew it");
 
+#if defined(_XOPEN_CURSES) && !defined(__NCURSES_H)
+    retval = whline (toprightwin, '-', max_x - 2);
+#else
     retval = whline (toprightwin, 0, max_x - 2);
+#endif
     if (retval == ERR)
 	throw YAPETUI::UIException ("whline() blew it");
 

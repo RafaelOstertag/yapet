@@ -79,6 +79,10 @@ enum {
 
 #ifdef HAVE_CURSES_H
 
+#if defined(tab) && defined(_XOPEN_CURSES)
+#undef tab
+#endif
+
 #ifdef box
 #undef box
 inline int box(WINDOW* win, int verch, int horch) {
@@ -176,7 +180,7 @@ inline int mvwaddnstr_c(WINDOW* win, int y, int x, const char* str, int n) {
 #define mymvwaddnstr(a,b,c,d,e) mvwaddnstr(a,b,c,d,e)
 #endif // MVWADDSTR_USE_CHAR
 
-#ifndef HAVE_MVWCHGAT
+#if !defined(HAVE_MVWCHGAT) || ( defined(_XOPEN_CURSES) && !defined(__NCURSES_H) )
 
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
@@ -195,7 +199,7 @@ extern "C"
 void *alloca (size_t);
 #endif
 
-inline int mvwchgat(WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
+inline int _mvwchgat_(WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
     char* buff = (char*)alloca(n);
     if (buff == NULL)
 	return ERR;
@@ -215,6 +219,9 @@ inline int mvwchgat(WINDOW* w, int y, int x, int n, int attr, short color, const
     return OK;
 }
 
+#define mymvwchgat(a,b,c,d,e,f,g) _mvwchgat_(a,b,c,d,e,f,g)
+#else
+#define mymvwchgat(a,b,c,d,e,f,g) mvwchgat(a,b,c,d,e,f,g)
 #endif // HAVE_MVWCHGAT
 
 #endif // _CURSWA_H
