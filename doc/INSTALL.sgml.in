@@ -25,8 +25,8 @@
   <sect1 id="prereq">
     <title>Build Prerequisites</title>
 
-    <para>&YP; was designed to have only few library dependencies, and to build on most
-      popular Unices.</para>
+    <para>&YP; was designed to have only few library dependencies, and
+      to build on most popular Unices.</para>
 
     <sect2 id="supportedplatforms">
       <title>Supported Platforms</title>
@@ -47,10 +47,27 @@
       <itemizedlist>
 
 	<listitem>
-	  <simpara><ulink url="http://www.openssl.org">openssl</ulink></simpara></listitem>
+	  <simpara><ulink
+	  url="http://www.openssl.org">openssl</ulink></simpara></listitem>
 	<listitem>
-	  <simpara>curses or
-	  <ulink url="http://http://www.gnu.org/software/ncurses/">ncurses</ulink></simpara> </listitem>
+	  <simpara>curses or <ulink
+url="http://http://www.gnu.org/software/ncurses/">ncurses</ulink></simpara>
+	  </listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 id="compilers">
+      <title>Supported Compilers</title>      
+
+      <para>&YP; is written in C++, so you obviously need a C++
+compiler to compile. It compiles out of the box using the following
+compilers</para>
+
+      <itemizedlist>
+	<listitem>
+	  <simpara>Sun Studio 11 C++ Compiler (only tested under Sun
+	  Solaris 10 x86)</simpara>
+	</listitem>
       </itemizedlist>
     </sect2>
 
@@ -60,9 +77,9 @@
     <title>Brief Build Instructions</title>
 
     <para>&YP; uses a <command>configure</command> script as generated
-      by <command>autoconf</command> and friends for configuring the
-      build process of &YP;. Change to the directory where you
-      unpacked <filename>&YPPKG;</filename> and simply type</para>
+by <command>autoconf</command> and friends for configuring the build 
+process of &YP;. Change to the directory where you unpacked
+<filename>&YPPKG;</filename> and simply type</para>
 
     <para>
 <screen>
