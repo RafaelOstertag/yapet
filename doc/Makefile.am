@@ -1,7 +1,7 @@
 # $Id$
-EXTRA_DIST = Doxyfile.in README.sgml.in INSTALL.sgml.in preamble.sgml html-doc
+EXTRA_DIST = Doxyfile.in README.sgml.in INSTALL.sgml.in preamble.sgml supportedplatforms.sgml html-doc
 
-README_sgmlfiles = README.sgml preamble.sgml
+README_sgmlfiles = README.sgml preamble.sgml supportedplatforms.sgml
 README_target = $(top_srcdir)/README
 
 INSTALL_sgmlfiles = INSTALL.sgml preamble.sgml

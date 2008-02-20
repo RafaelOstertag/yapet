@@ -3,7 +3,11 @@
 	  "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
 <!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SUN "<trademark class='trademark'>Sun</trademark>">
+<!ENTITY SOLARIS "&SUN; <trademark class='trademark'>Solaris</trademark>">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>
@@ -31,44 +35,46 @@
     <sect2 id="supportedplatforms">
       <title>Supported Platforms</title>
 
-      <para>&YP; was successfully built on following platforms:</para>
-      <itemizedlist>
-	<listitem><simpara>FreeBSD</simpara></listitem>
-	<listitem><simpara>Linux</simpara></listitem>
-	<listitem><simpara>Sun Solaris 10 x86</simpara></listitem>
-	<listitem><simpara>Cygwin</simpara></listitem>
-      </itemizedlist>
+      &supplatforms;
     </sect2>
 
     <sect2 id="requiredlibraries">
       <title>Required Libraries</title>
 
       <para>&YP; depends on two libraries</para>
-      <itemizedlist>
 
-	<listitem>
-	  <simpara><ulink
-	  url="http://www.openssl.org">openssl</ulink></simpara></listitem>
-	<listitem>
-	  <simpara>curses or <ulink
-url="http://http://www.gnu.org/software/ncurses/">ncurses</ulink></simpara>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    <simpara>openssl (<ulink
+	    url="http://www.openssl.org">http://www.openssl.org</ulink>)</simpara></listitem>
+	  <listitem>
+	    <simpara>curses or ncurses (<ulink
+		url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>)</simpara>
 	  </listitem>
-      </itemizedlist>
+	</itemizedlist>
+      </para>
+
     </sect2>
 
     <sect2 id="compilers">
-      <title>Supported Compilers</title>      
+      <title>Supported Compilers</title>
 
       <para>&YP; is written in C++, so you obviously need a C++
-compiler to compile. It compiles out of the box using the following
-compilers</para>
+	compiler to compile. It compiles out of the box using the
+	following compilers</para>
 
-      <itemizedlist>
-	<listitem>
-	  <simpara>Sun Studio 11 C++ Compiler (only tested under Sun
-	  Solaris 10 x86)</simpara>
-	</listitem>
-      </itemizedlist>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    <simpara>&SUN; Studio 11 C++ Compiler (only tested under
+	    &SOLARIS; 10 x86)</simpara>
+	  </listitem>
+	  <listitem>
+	    <simpara>GNU GCC</simpara>
+	  </listitem>
+	</itemizedlist>
+      </para>
     </sect2>
 
   </sect1>
@@ -77,9 +83,9 @@ compilers</para>
     <title>Brief Build Instructions</title>
 
     <para>&YP; uses a <command>configure</command> script as generated
-by <command>autoconf</command> and friends for configuring the build 
-process of &YP;. Change to the directory where you unpacked
-<filename>&YPPKG;</filename> and simply type</para>
+      by <command>autoconf</command> and friends for configuring the
+      build process of &YP;. Change to the directory where you
+      unpacked <filename>&YPPKG;</filename> and simply type</para>
 
     <para>
 <screen>
@@ -101,8 +107,7 @@ process of &YP;. Change to the directory where you unpacked
     </para>
 
     <para>&YP; will now be builded. After the build has finished,
-      switch to the root user if not done already, and type
-    </para>
+      switch to the root user if not done already, and type</para>
 
     <para>
 <screen>
@@ -110,11 +115,11 @@ process of &YP;. Change to the directory where you unpacked
 </screen>
     </para>
 
-    <para>This will install &YP; into
-      the <filename>/usr/local/bin</filename> directory, if the prefix
-      has not been changed by providing
-      <option>--prefix=<literal>&lt;PATH&gt;</literal></option> to
-      the <command>configure</command> script.</para>
+    <para>This will install &YP; into the
+      <filename>/usr/local/bin</filename> directory, if the prefix has
+      not been changed by providing
+      <option>--prefix=<literal>&lt;PATH&gt;</literal></option> to the
+      <command>configure</command> script.</para>
 
     <para>To start &YP; issue
       <filename>/usr/local/bin</filename>/<command>yapet</command> on
@@ -132,10 +137,12 @@ process of &YP;. Change to the directory where you unpacked
 
 	<listitem>
 	  <para><literal>&lt;PATH&gt;</literal> is the base directory
-	    where &YP; will be installed. The executable is installed in
+	    where &YP; will be installed. The executable is installed
+	    in
 	    <literal>&lt;PATH&gt;</literal><filename>/bin</filename>.
 	  </para>
 	</listitem>
+
       </varlistentry>
 
       <varlistentry>
@@ -146,11 +153,11 @@ process of &YP;. Change to the directory where you unpacked
 	<listitem>
 	  <para><literal>&lt;FILE&gt;</literal> is the file path of
 	    the XSL Style Sheet to use for generating documentation
-	    files. More specifically, this is the file fed
-	    to <command>xsltproc</command> for generating some of the
+	    files. More specifically, this is the file fed to
+	    <command>xsltproc</command> for generating some of the
 	    documenation files (this file for instance) from the
-	    docbook source. This option is only used
-	    if <command>xsltproc</command> and <command>lynx</command>
+	    docbook source. This option is only used if
+	    <command>xsltproc</command> and <command>lynx</command>
 	    are found by <command>configure</command>.</para>
 	</listitem>
       </varlistentry>
@@ -160,11 +167,11 @@ process of &YP;. Change to the directory where you unpacked
 	  <option>--with-curses-include=</option><literal>&lt;PATH&gt;</literal>
 	</term>
 
-	<listitem><para>This option tells the compiler where to find the
-	    header files of
-	    curses/ncurses. <literal>&lt;PATH&gt;</literal> has to be the
-	    directory where the header files are located, not the file
-	    name of the header file.</para>
+	<listitem><para>This option tells the compiler where to find
+	    the header files of
+	    curses/ncurses. <literal>&lt;PATH&gt;</literal> has to be
+	    the directory where the header files are located, not the
+	    file name of the header file.</para>
 	</listitem>
       </varlistentry>
 
@@ -177,8 +184,8 @@ process of &YP;. Change to the directory where you unpacked
 	  <para>This option tells the linker where to find the
 	    curses/ncurses shared
 	    library. <literal>&lt;PATH&gt;</literal> has to be the
-	    directory where the shared library is located, not the file
-	    name of the shared library.</para>
+	    directory where the shared library is located, not the
+	    file name of the shared library.</para>
 	</listitem>
       </varlistentry>
 
@@ -189,9 +196,9 @@ process of &YP;. Change to the directory where you unpacked
 
 	<listitem>
 	  <para>This options tells the compiler where to find the
-	    header files of openssl. <literal>&lt;PATH&gt;</literal> has to be the
-	    directory where the header files are located, not the file
-	    name of the header file.</para>
+	    header files of openssl. <literal>&lt;PATH&gt;</literal>
+	    has to be the directory where the header files are
+	    located, not the file name of the header file.</para>
 	</listitem>
       </varlistentry>
 
@@ -201,11 +208,10 @@ process of &YP;. Change to the directory where you unpacked
 	</term>
 
 	<listitem>
-	  <para>This option tells the linker where to find the
-	    openssl shared
-	    library. <literal>&lt;PATH&gt;</literal> has to be the
-	    directory where the shared library is located, not the file
-	    name of the shared library.</para>
+	  <para>This option tells the linker where to find the openssl
+	    shared library. <literal>&lt;PATH&gt;</literal> has to be
+	    the directory where the shared library is located, not the
+	    file name of the shared library.</para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -215,8 +221,8 @@ process of &YP;. Change to the directory where you unpacked
     <title>Further Information</title>
 
     <para>For more information about the configure script, read the
-      file <filename>INSTALL.generic</filename> which comes along in the
-      tarball of &YP;.</para>
+      file <filename>INSTALL.generic</filename> which comes along in
+      the tarball of &YP;.</para>
   </sect1>
 
 </article>
@@ -224,5 +230,17 @@ process of &YP;. Change to the directory where you unpacked
 <!--
 Local Variables:
 mode: sgml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
 End:
 -->

@@ -3,7 +3,11 @@
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
 <!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>
@@ -22,16 +26,111 @@
 
   &preamble;
 
+  <sect1 id="intro">
+    <title>Introduction</title>
+
+    <para>&YP; is a curses based password encryption tool using the
+    Blowfish encryption algorithm. Its primary aim is to provide a
+    safe way to store passwords in a file on disk while having a small
+    footprint, and compiling and running under today's most popular
+    Unices, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
+
+
+    <para>If you are looking for a fully fledged password encryption
+    tool having a graphical user interface, I recommend you start with
+    revelation (<ulink url="http://oss.codepoet.no/revelation/">http://oss.codepoet.no/revelation</ulink>). &YP;
+    is text based and less feature rich in comparison to
+    revelation.</para>
+  </sect1>
+
   <sect1>
-  <title>&YP; is curses based password encryption tool. Its primary
-  aim is to provide a safe way to store passwords in a file while </title>
-<para>bla</para>
-</sect1>
+    <title>Motivation</title>
+
+    <para>
+    Using several different Unices, I wanted to have a single
+    application running on all Unices for storing my passwords in a
+    secure manner. While revelation is running fine under &FREEBSD;
+    and Linux, it's a pain to get it run under &SOLARIS; 10 (as you can
+    see, the only tool I tried was revelation). It has many
+    dependencies because it uses GNOME and PyGNOME. I didn't want to
+    go thru the hassle of installing PyGNOME under &SOLARIS;, and
+    decided to roll my own.</para>
+  </sect1>
+
+  <sect1>
+    <title>Supported Platforms</title>
+
+    &supplatforms;
+  </sect1>
+
+  <sect1>
+    <title>Features</title>
+
+    <para>&YP; features</para>
+
+    <para>
+      <itemizedlist>
+	<listitem>
+	  <para>Using Blowfish encryption (<ulink
+	      url="http://www.schneier.com/blowfish.html">http://www.schneier.com/blowfish.html</ulink>)
+	      with 448 bits key.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Passwords are not kept clear text in memory.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Doesn't depend on a graphical user interface and their
+	    "dependency hell". Provides
+	    a text based user interface.</para>
+	</listitem>
+
+
+	<listitem>
+
+	  <para>Is only dependent of two libraries: openssl (<ulink
+	      url="http://www.openssl.org">http://www.openssl.org</ulink>)
+	      and curses or ncurses (<ulink
+	      url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>).</para>
+	</listitem>
+      </itemizedlist>
+    </para>
+  </sect1>
+
+  <sect1>
+    <title>Installation</title>
+
+    <para>&YP; uses a <command>configure</command> script for
+      configuring the build process. Refer to the
+      <filename>INSTALL</filename> file in the source tarball
+      <filename>&YPPKG;</filename>.</para>
+  </sect1>
+
+  <sect1>
+    <title>A Word of Caution</title>
+
+
+    <para>Although I took several precautions to avoid having
+    passwords stored clear text in memory, </para>
+  </sect1>
 
 </article>
 
 <!--
 Local Variables:
 mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2b
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
 End:
 -->
