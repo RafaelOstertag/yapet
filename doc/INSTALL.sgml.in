@@ -4,6 +4,10 @@
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
 <!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
 <!ENTITY YP "@PACKAGE_NAME@">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SUN "<trademark class='trademark'>Sun</trademark>">
