@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
+[
+<!ENTITY preamble SYSTEM "preamble.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY caution SYSTEM "caution.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+]>
+<refentry id="yapet">
+
+  <refmeta>
+    <refentrytitle>yapet</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>yapet</refname>
+    <refpurpose>store passwords encrypted on disk</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <!-- one of (SBR GROUP ARG COMMAND) -->
+      <command>yapet</command>
+      <arg>-c</arg>
+      <arg>-h</arg>
+      <arg>-V</arg>
+      <arg><replaceable>filename</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>&yp; stands for "Yet Another Password Encryption Tool" and
+    is a &CURSES; based program for storing passwords encrypted on
+    disk. It relies on the &CRYPTO; library provided by OpenSSL for
+    encrypting and decrypting the passwords. The cipher for encryption
+    and decryption is Blowfish with a 448 bits key.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>OPTIONS</title>
+  </refsect1>
+
+  <refsect1>
+    <title>CAUTION</title>
+    &caution;
+  </refsect1>
+
+  <refsect1>
+    <title>BUGS</title>
+
+    <itemizedlist>
+      <listitem>
+	<para>The user interface is clumsy and not really user
+	friendly. It may flicker running &yp; in a ssh
+	session.</para>
+      </listitem>
+
+      <listitem>
+	<para></para>
+      </listitem>
+    </itemizedlist>
+  </refsect1>
+
+  <refsect1>
+    <title>AUTHOR</title>
+    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
+  </refsect1>
+
+
+</refentry>
+
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

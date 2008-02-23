@@ -9,6 +9,7 @@
 <!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
 <manvolnum>3X</manvolnum></citerefentry>">
 <!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SUN "<trademark class='trademark'>Sun</trademark>">
 <!ENTITY SOLARIS "&SUN; <trademark class='trademark'>Solaris</trademark>">
@@ -126,7 +127,7 @@
       <command>configure</command> script.</para>
 
     <para>To start &YP; issue
-      <filename>/usr/local/bin</filename>/<command>yapet</command> on
+      <filename>/usr/local/bin</filename>/&yp; on
       the command line.</para>
   </sect1>
 
