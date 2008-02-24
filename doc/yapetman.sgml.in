@@ -20,7 +20,7 @@
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>
 <refentry id="yapet">
-
+  <!-- $Id$ -->
   <refmeta>
     <refentrytitle>yapet</refentrytitle>
     <manvolnum>1</manvolnum>
@@ -33,7 +33,6 @@
 
   <refsynopsisdiv>
     <cmdsynopsis>
-      <!-- one of (SBR GROUP ARG COMMAND) -->
       <command>yapet</command>
       <arg>-c</arg>
       <arg>-h</arg>
@@ -42,7 +41,11 @@
     </cmdsynopsis>
   </refsynopsisdiv>
 
-
+  <!--
+  -
+  -  DESCRIPTION
+  -
+  -->
   <refsect1>
     <title>DESCRIPTION</title>
 
@@ -54,15 +57,110 @@
     </para>
   </refsect1>
 
+  <!--
+  -
+  -  OPTIONS
+  -
+  -->
   <refsect1>
     <title>OPTIONS</title>
+
+    <variablelist>
+      <varlistentry>
+	<term>-c</term>
+	<listitem>
+	  <para>shows the copyright information.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>-h</term>
+	<listitem>
+
+	  <para>prints a help text.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>-V</term>
+	<listitem>
+
+	  <para>shows the version of &yp;.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><replaceable>filename</replaceable></term>
+	<listitem>
+	  <para>the file to open. If the file does not exist, &yp;
+	  asks whether it should be created.</para>
+
+	  <para>Files created by &yp; have the suffix <filename
+	      moreinfo="none">.pet</filename>.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
   </refsect1>
 
+  <!--
+  -
+  -  USAGE
+  -
+  -->
+  <refsect1>
+    <title>USAGE</title>
+
+<screen format="linespecific">
+                  ..::|| YAPET 0.1 ||::..
++---------------------------++---------------------------+
+|                           ||          K E Y S          |
+|                           ||---------------------------|
+|                           ||                           |
+|                           ||   S     Save File         |
+|                           ||   R     Load File         |
+|                           ||   L     Lock Screen       |
+|                           ||   A     Add Entry         |
+|                           ||   D     Delete Entry      |
+|                           ||   C     Change Password   |
+|                           ||   ^L    Redraw Screen     |
+|                           ||   Q     Quit              |
+|                           ||                           |
+|                           |+---------------------------+
+|                           |+---------------------------+
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
++---------------------------++---------------------------+
+No file loaded
+</screen>
+
+    <refsect2>
+      <title>OPENING FILE</title>
+
+    </refsect2>
+
+    <refsect2>
+      <title>CREATING FILE</title>
+
+    </refsect2>
+  </refsect1>
+
+  <!--
+  -
+  -  CAUTION
+  -
+  -->
   <refsect1>
     <title>CAUTION</title>
     &caution;
   </refsect1>
 
+  <!--
+  -
+  -  BUGS
+  -
+  -->
   <refsect1>
     <title>BUGS</title>
 
@@ -74,24 +172,41 @@
       </listitem>
 
       <listitem>
-	<para></para>
+	<para>Clearing the memory when it is no longer used seems
+	buggy since I was able to snoop the master password in core
+	dumps.</para>
       </listitem>
+
     </itemizedlist>
   </refsect1>
 
+  <!--
+  -
+  -  AUTHOR
+  -
+  -->
   <refsect1>
     <title>AUTHOR</title>
     <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
   </refsect1>
 
+  <!--
+  -
+  -  SEE ALSO
+  -
+  -->
+  <refsect1>
+    <title>SEE ALSO</title>
 
+    <simpara>&CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+  </refsect1>
 </refentry>
 
 <!--
 Local Variables:
 mode: sgml
-sgml-omittag:t
-sgml-shorttag:t
+sgml-omittag:nil
+sgml-shorttag:nil
 sgml-namecase-general:t
 sgml-general-insert-case:lower
 sgml-minimize-attributes:nil

@@ -15,10 +15,10 @@ AC_PROG_SED
 AC_PROG_RANLIB
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
-AC_ARG_VAR([DOCBOOK2TXT],[path to docbook2txt])
+AC_ARG_VAR([DOCBOOK2X],[path to docbook2x-man])
 AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
-AC_CHECK_PROG([DOCBOOK2MAN],[docbook2man],[docbook2man],[no])
+AC_CHECK_PROG([DOCBOOK2X],[docbook2x-man],[docbook2x-man],[no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 
@@ -140,7 +140,7 @@ AC_C_BIGENDIAN
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
-AM_CONDITIONAL([HAVEDOCBOOK2MAN], [test x$DOCBOOK2MAN != xno])
+AM_CONDITIONAL([HAVEDOCBOOK2X], [test x$DOCBOOK2X != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLFILE != xno])
 
 AC_CONFIG_FILES([Makefile

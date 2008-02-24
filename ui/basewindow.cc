@@ -169,7 +169,6 @@ void
 BaseWindow::resizeAll() {
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
-    if (max_x<80 || max_y<25) return;
     std::for_each(basewindow_list.begin(),
 		  basewindow_list.end(),
 		  ResizeIt());
@@ -195,7 +194,6 @@ BaseWindow::suspendTimeout() {
     alarm(0);
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
 
 //
 // Non-Static

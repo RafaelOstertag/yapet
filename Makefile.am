@@ -1,13 +1,13 @@
 # $Id$
 
-EXTRA_DIST = INSTALL.generic Makefile.cvs yapet.desktop.in
+EXTRA_DIST = DESIGN INSTALL.generic Makefile.cvs yapet.desktop.in
 
 SUBDIRS = crypt ui yapet tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
-textdoc_DATA = README COPYING AUTHORS
+textdoc_DATA = README COPYING AUTHORS DESIGN
 textdocdir = $(docdir)
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \

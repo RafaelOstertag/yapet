@@ -2,7 +2,7 @@
     passwords stored clear text in memory, I was able to snoop up the
     master password in a core file. This means for you, the user of
     &YP;, that it is possible, though not likely, for a malicious user
-    to get hold of one or more passwords, <emphasis>while</emphasis>
+    to get hold of one or more passwords <emphasis>while</emphasis>
     &YP; is running. <emphasis>But</emphasis> remember, the passwords
     stored in the files created by &YP; are encrypted and not stored
     clear text. This is the best possible way of keeping them stored

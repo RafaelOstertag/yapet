@@ -144,7 +144,7 @@ void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
-	      << " [-c, -h, -V] [<filename>]"
+	      << " [-c] [-h] [-V] [<filename>]"
 	      << std::endl
 	      << std::endl;
     std::cout << "-c, --copyright\tshow copyright information"
