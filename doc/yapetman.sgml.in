@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
+[
+<!ENTITY preamble SYSTEM "preamble.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY figmainscreen SYSTEM "manfigures/mainscreen.sgml">
+<!ENTITY caution SYSTEM "caution.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+]>
+<refentry id="yapet">
+  <!-- $Id$ -->
+  <refmeta>
+    <refentrytitle>yapet</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
+    <refmiscinfo class="manual">&YP; Password Encryption Tool</refmiscinfo>
+  </refmeta>
+
+  <refentryinfo>
+     <productname>&YP;</productname>
+  </refentryinfo>
+
+  <refnamediv>
+    <refname>yapet</refname>
+    <refpurpose>store passwords encrypted on disk</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      &yp;
+      <arg>-c</arg>
+      <arg>-h</arg>
+      <arg>-V</arg>
+      <arg><replaceable>filename</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <!--
+  -
+  -  DESCRIPTION
+  -
+  -->
+  <refsect1 id="description">
+    <title>DESCRIPTION</title>
+
+    <para>&yp; stands for "Yet Another Password Encryption Tool" and
+    is a &CURSES; based program for storing passwords encrypted on
+    disk. It relies on the &CRYPTO; library provided by OpenSSL for
+    encrypting and decrypting the passwords. The cipher for encryption
+    and decryption is Blowfish with a 448 bits key.
+    </para>
+  </refsect1>
+
+  <!--
+  -
+  -  OPTIONS
+  -
+  -->
+  <refsect1 id="options">
+    <title>OPTIONS</title>
+
+    <variablelist>
+      <varlistentry>
+	<term>-c</term>
+	<listitem>
+	  <para>shows the copyright information.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>-h</term>
+	<listitem>
+
+	  <para>prints a help text.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>-V</term>
+	<listitem>
+
+	  <para>shows the version of &yp;.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><replaceable>filename</replaceable></term>
+	<listitem>
+	  <para>the file to open. If the file does not exist, &yp;
+	  asks whether it should be created.</para>
+
+	  <para>Files created by &yp; always have the
+	      suffix <filename moreinfo="none">.pet</filename>.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <!--
+  -
+  -  USAGE
+  -
+  -->
+  <refsect1 id="usage">
+    <title>USAGE</title>
+    <para>
+      If you start &yp; without any command line arguments given, you
+      will see a screen as shown in <xref linkend="fig.mainscreen"
+      />.</para>
+
+    &figmainscreen;
+
+    <para>Passwords are stored as records (also refered to as entries)
+    with the following fields</para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term>Name</term>
+	<listitem>
+	  <simpara>The name displayed in the main screen.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Host</term>
+	<listitem>
+	  <simpara>The host where the password is used.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Username</term>
+	<listitem>
+	  <simpara>The username the password is associated with.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Password</term>
+	<listitem>
+	  <simpara>The password.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Comment</term>
+	<listitem>
+	  <simpara>A comment.</simpara>
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>Files created by &yp; always have the
+      suffix <filename>.pet</filename>. This cannot be changed by
+      the user.</para>
+
+    <para>
+      The upper right frame in <xref linkend="fig.mainscreen" /> shows
+      the keys recognized by &yp;. The keys are not case-sensitive.
+    </para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term><keycap>S</keycap></term>
+	<listitem>
+	  <simpara>Saves the password records to the file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>R</keycap></term>
+	<listitem>
+	  <simpara>Loads (reads) a file from disk. This command is
+	    also used to create a new file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>L</keycap></term>
+	<listitem>
+	  <simpara>Locks the screen. Has only effect if a file is
+	    loaded.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>A</keycap></term>
+	<listitem>
+	  <simpara>Adds a new password entry (record) to the
+	    currently loaded file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>D</keycap></term>
+	<listitem>
+	  <simpara>Deletes a password entry (record) from the
+	    currently loaded file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>C</keycap></term>
+	<listitem>
+	  <simpara>Change the master password of the currently loaded
+	    file. This action requires to save all changes first. The
+	    file with the old master password will be saved
+	    as <filename><replaceable>filename</replaceable>.bak</filename>
+	    where <replaceable>filename</replaceable> the name of the
+	    currently loaded file without suffix is.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <keycombo action="simul"><keycap>CTRL</keycap>
+	    <keycap>L</keycap></keycombo> (<keycap>^L</keycap>)</term>
+	<listitem>
+	  <simpara>Redraws the screen.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>Q</keycap></term>
+	<listitem><simpara>Quits &yp;.</simpara></listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>The empty frame on the left side of the main screen will
+    display the password entries' `Name'.</para>
+
+    <refsect2 id="creatingfiles">
+      <title>Creating Files</title>
+
+    </refsect2>
+
+    <refsect2 id="openingfiles">
+      <title>Opening Files</title>
+
+    </refsect2>
+  </refsect1>
+
+  <!--
+  -
+  -  CAUTION
+  -
+  -->
+  <refsect1 id="caution">
+    <title>CAUTION</title>
+    &caution;
+  </refsect1>
+
+  <!--
+  -
+  -  BUGS
+  -
+  -->
+  <refsect1 id="bugs">
+    <title>BUGS</title>
+
+    <itemizedlist>
+      <listitem>
+	<para>The user interface is clumsy and not really user
+	friendly. It may flicker running &yp; in a ssh
+	session.</para>
+      </listitem>
+
+      <listitem>
+	<para>Clearing the memory when it is no longer used seems
+	buggy since I was able to snoop the master password in core
+	dumps.</para>
+      </listitem>
+
+    </itemizedlist>
+  </refsect1>
+
+  <!--
+  -
+  - LICENSE
+  -
+  -->
+  <refsect1 id="license">
+    <title>LICENSE</title>
+
+    <para>This program is free software: you can redistribute it
+      and/or modify it under the terms of the GNU General Public
+      License as published by the Free Software Foundation, either
+      version 3 of the License, or (at your option) any later
+      version.</para>
+
+    <para>This program is distributed in the hope that it will be
+      useful, but WITHOUT ANY WARRANTY; without even the implied
+      warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+      See the GNU General Public License for more details.</para>
+
+    <para>You should have received a copy of the GNU General Public
+      License along with this program.  If not, see
+      <ulink url="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</ulink>.</para>
+  </refsect1>
+
+  <!--
+  -
+  - AVAILABILITY
+  -
+  -->
+  <refsect1 id="availability">
+    <title>AVAILABILITY</title>
+
+    <para>The latest version of this program can be found
+    under <ulink url="http://www.guengel.ch/myapps/yapet">http://www.guengel.ch/myapps/yapet</ulink>.</para>
+  </refsect1>
+  <!--
+  -
+  -  AUTHOR
+  -
+  -->
+  <refsect1 id="author">
+    <title>AUTHOR</title>
+    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
+  </refsect1>
+
+  <!--
+  -
+  -  SEE ALSO
+  -
+  -->
+  <refsect1 id="seealso">
+    <title>SEE ALSO</title>
+
+    <simpara>&CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+  </refsect1>
+</refentry>
+
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
