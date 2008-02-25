@@ -34,9 +34,7 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@top_srcdir[@]|$(top_srcdir)|g' \
 	-e 's|@top_builddir[@]|$(top_builddir)|g'
 
-sed_in_files != for f in $(sed_files) ; do echo $(ECHO_N) "$$f.in " ; done
-
-$(sed_files): $(sed_in_files)
+$(sed_files):
 	rm -f "$@"
 	$(editfile) "$(srcdir)/$@.in" > "$@"
 
