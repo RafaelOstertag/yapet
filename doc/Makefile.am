@@ -1,21 +1,20 @@
 # $Id$
 
 EXTRA_DIST = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in		\
-yapet.sgml.in Doxyfile.in preamble.sgml supportedplatforms.sgml	\
-caution.sgml README.html INSTALL.html DESIGN.html yapet.html		\
-html-doc
+yapet.sgml.in Doxyfile.in preamble.sgml supportedplatforms.sgml		\
+manfigures/mainscreen.sgml caution.sgml README.html INSTALL.html	\
+DESIGN.html yapet.html html-doc
 
-sed_files = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml	\
-Doxyfile
+sed_files = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml Doxyfile
 
 sgml_files = yapet.sgml README.sgml INSTALL.sgml DESIGN.sgml	\
 preamble.sgml supportedplatforms.sgml caution.sgml		\
 manfigures/mainscreen.sgml
 
 # Those files are fed to xsltproc
-sgml_main = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
-
-man_target = yapet
+sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
+sgml_text = README.sgml INSTALL.sgml DESIGN.sgml
+sgml_man = yapet.sgml
 
 dist_man_MANS = yapet.1
 man1_MANS = yapet.1
@@ -38,29 +37,37 @@ $(sed_files):
 
 if HAVEXSLTPROC
 
-html: stamp_html
+htmlfiles: stamp-html
 
-stamp_html: $(sgml_files)
-	for f in $(sgml_main) ; do \
+stamp-html: $(sgml_files)
+	for f in $(sgml_html) ; do \
 		nosuffix=`echo $$f | $(SED) s/\.sgml//` ; \
 		rm -f "$$nosuffix.html" ; \
 		test -f "$$f" && $(XSLTPROC) -o "$$nosuffix.html" $(docbook_docbook_xsl) "$$f" ; \
 	done
-	touch stamp_html
+	touch stamp-html
 
-plaintext: stamp_plaintext
+plaintext: stamp-plaintext
 
-stamp_plaintext: $(sgml_files)
-	for f in $(sgml_main) ; do \
+stamp-plaintext: $(sgml_files)
+	for f in $(sgml_text) ; do \
 		nosuffix=`echo $$f | $(SED) s/\.sgml//` ; \
 		rm -f "$(top_srcdir)/$$nosuffix" ; \
 		test -f "$$f" && $(LYNX) -nolist -dump "$$nosuffix.html" > "$(top_srcdir)/$$nosuffix" ; \
 	done
-	touch stamp_plaintext
+	touch stamp-plaintext
 
-yapet.1: $(YAPETMAN_sgmlfiles)
-	rm -f $(srcdir)/yapet.1
-	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(srcdir)/yapetman.sgml
+yapet.1: $(sgml_files)
+	rm -f yapet.1
+	$(XSLTPROC) -o $@ $(docbook_man_xsl) yapet.sgml
+
+else
+
+htmlfiles:
+
+plaintext:
+
+yapet.1:
 
 endif # if HAVEXSLTPROC
 
@@ -72,10 +79,13 @@ html-doc: Doxyfile
 
 endif
 
-dist-hook: html-doc html plaintext
-all-local: html plaintext
+dist-hook: html-doc htmlfiles plaintext yapet.1
+all-local: htmlfiles plaintext yapet.1
+clean-local:
+	rm -f stamp-plaintext
+	rm -f stamp-html
 
 maintainer-clean-local:
 	rm -rf html-doc
-	rm -f stamp_plaintext
-	rm -f stamp_html
+	rm -f stamp-plaintext
+	rm -f stamp-html
