@@ -2,8 +2,8 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
-<!ENTITY preamble SYSTEM "preamble.sgml">
-<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
+<!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
 <!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>

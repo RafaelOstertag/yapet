@@ -2,3 +2,5 @@
 Makefile.in
 testfile.gps
 Makefile
+encryptiontest.gps
+encryptiontest.gps.bak

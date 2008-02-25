@@ -1,9 +1,12 @@
 # $Id$
 
-EXTRA_DIST = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in		\
-yapet.sgml.in Doxyfile.in preamble.sgml supportedplatforms.sgml		\
-manfigures/mainscreen.sgml caution.sgml README.html INSTALL.html	\
-DESIGN.html yapet.html html-doc
+EXTRA_DIST = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in	\
+yapet.sgml.in Doxyfile.in preamble.sgml supportedplatforms.sgml	\
+manfigures/mainscreen.sgml caution.sgml README.html DESIGN.html	\
+yapet.html source-doc
+
+htmldoc_DATA = README.html DESIGN.html yapet.html
+htmldocdir = $(docdir)/html
 
 sed_files = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml Doxyfile
 
@@ -16,8 +19,7 @@ sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml
 sgml_man = yapet.sgml
 
-dist_man_MANS = yapet.1
-man1_MANS = yapet.1
+dist_man1_MANS = yapet.1
 
 docbook_docbook_xsl = $(XSLPATH)/xhtml/docbook.xsl
 docbook_man_xsl = $(XSLPATH)/manpages/docbook.xsl
@@ -28,14 +30,19 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_NAME[@]|$(PACKAGE_NAME)|g' \
 	-e 's|@PACKAGE[@]|$(PACKAGE)|g' \
 	-e 's|@PACKAGE_TARNAME[@]|$(PACKAGE_TARNAME)|g' \
+	-e 's|@srcdir[@]|$(srcdir)|g' \
 	-e 's|@top_srcdir[@]|$(top_srcdir)|g' \
 	-e 's|@top_builddir[@]|$(top_builddir)|g'
 
-$(sed_files):
+sed_in_files != for f in $(sed_files) ; do echo $(ECHO_N) "$$f.in " ; done
+
+$(sed_files): $(sed_in_files)
 	rm -f "$@"
-	$(editfile) "$@.in" > "$@"
+	$(editfile) "$(srcdir)/$@.in" > "$@"
 
 if HAVEXSLTPROC
+
+$(htmldoc_DATA): stamp-html
 
 htmlfiles: stamp-html
 
@@ -57,35 +64,37 @@ stamp-plaintext: $(sgml_files)
 	done
 	touch stamp-plaintext
 
-yapet.1: $(sgml_files)
-	rm -f yapet.1
-	$(XSLTPROC) -o $@ $(docbook_man_xsl) yapet.sgml
+$(srcdir)/yapet.1: $(sgml_files)
+	rm -f $@
+	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) yapet.sgml
 
 else
+
+$(htmldoc_DATA):
 
 htmlfiles:
 
 plaintext:
 
-yapet.1:
+$(srcdir)/yapet.1:
 
 endif # if HAVEXSLTPROC
 
 if HAVEDOXYGEN
-html-doc: Doxyfile
+source-doc: Doxyfile
 	$(DOXYGEN)
 else
-html-doc: Doxyfile
+source-doc: Doxyfile
 
 endif
 
-dist-hook: html-doc htmlfiles plaintext yapet.1
-all-local: htmlfiles plaintext yapet.1
+dist-hook: source-doc htmlfiles plaintext yapet.1
+all-local: htmlfiles plaintext $(srcdir)/yapet.1
 clean-local:
 	rm -f stamp-plaintext
 	rm -f stamp-html
 
 maintainer-clean-local:
-	rm -rf html-doc
+	rm -rf source-doc
 	rm -f stamp-plaintext
 	rm -f stamp-html
