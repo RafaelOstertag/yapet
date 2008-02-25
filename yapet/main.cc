@@ -71,6 +71,7 @@
 # include <getopt.h>
 #endif
 
+#include "fileopen.h" // for the endswith() functions
 #include "mainwindow.h"
 
 /**
@@ -205,8 +206,12 @@ int main (int argc, char** argv) {
 	}
     }
 
-    if (argc > 1)
+    if (argc > 1) {
 	filename = argv[argc-1];
+
+	if (!endswith(filename, ".pet"))
+	filename+=".pet";
+    }
 
     YAPETUI::BaseWindow::initCurses();
 

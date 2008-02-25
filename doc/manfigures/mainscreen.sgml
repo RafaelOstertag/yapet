@@ -1,0 +1,31 @@
+<figure id="fig.mainscreen">
+  <title>Main screen</title>
+  <mediaobject>
+    <textobject>
+<screen format="linespecific">
+                  ..::|| YAPET 0.1 ||::..
++---------------------------++---------------------------+
+|                           ||          K E Y S          |
+|                           ||---------------------------|
+|                           ||                           |
+|                           ||   S     Save File         |
+|                           ||   R     Load File         |
+|                           ||   L     Lock Screen       |
+|                           ||   A     Add Entry         |
+|                           ||   D     Delete Entry      |
+|                           ||   C     Change Password   |
+|                           ||   ^L    Redraw Screen     |
+|                           ||   Q     Quit              |
+|                           ||                           |
+|                           |+---------------------------+
+|                           |+---------------------------+
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
++---------------------------++---------------------------+
+No file loaded
+</screen>
+    </textobject>
+  </mediaobject>
+</figure>

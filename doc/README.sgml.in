@@ -110,7 +110,7 @@
     </para>
   </sect1>
 
-  <sect1>
+  <sect1 id="installation">
     <title>Installation</title>
 
     <para>&YP; uses a <command>configure</command> script for

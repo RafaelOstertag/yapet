@@ -137,14 +137,14 @@
     <variablelist>
       <varlistentry>
 	<term>
-	  <option>--prefix=</option><literal>&lt;PATH&gt;</literal>
+	  <option>--prefix=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem>
-	  <para><literal>&lt;PATH&gt;</literal> is the base directory
+	  <para><replaceable>PATH</replaceable> is the base directory
 	    where &YP; will be installed. The executable is installed
 	    in
-	    <literal>&lt;PATH&gt;</literal><filename>/bin</filename>.
+	    <replaceable>PATH</replaceable><filename>/bin</filename>.
 	  </para>
 	</listitem>
 
@@ -152,16 +152,13 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-xsl-sheet=</option><literal>&lt;FILE&gt;</literal>
+	  <option>--with-xsl-path=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem>
-	  <para><literal>&lt;FILE&gt;</literal> is the file path of
-	    the XSL Style Sheet to use for generating documentation
-	    files. More specifically, this is the file fed to
-	    <command>xsltproc</command> for generating some of the
-	    documenation files (this file for instance) from the
-	    docbook source. This option is only used if
+	  <para><replaceable>PATH</replaceable> is the path to the XSL
+	    Style Sheets to use for generating documentation
+	    files. This option is only used if
 	    <command>xsltproc</command> and <command>lynx</command>
 	    are found by <command>configure</command>.</para>
 	</listitem>
@@ -169,12 +166,12 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-curses-include=</option><literal>&lt;PATH&gt;</literal>
+	  <option>--with-curses-include=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem><para>This option tells the compiler where to find
 	    the header files of
-	    curses/ncurses. <literal>&lt;PATH&gt;</literal> has to be
+	    curses/ncurses. <replaceable>PATH</replaceable> has to be
 	    the directory where the header files are located, not the
 	    file name of the header file.</para>
 	</listitem>
@@ -182,13 +179,13 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-curses-lib=</option><literal>&lt;PATH&gt;</literal>
+	  <option>--with-curses-lib=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem>
 	  <para>This option tells the linker where to find the
 	    curses/ncurses shared
-	    library. <literal>&lt;PATH&gt;</literal> has to be the
+	    library. <replaceable>PATH</replaceable> has to be the
 	    directory where the shared library is located, not the
 	    file name of the shared library.</para>
 	</listitem>
@@ -196,12 +193,12 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-openssl-include=</option><literal>&lt;PATH&gt;</literal>
+	  <option>--with-openssl-include=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem>
 	  <para>This options tells the compiler where to find the
-	    header files of openssl. <literal>&lt;PATH&gt;</literal>
+	    header files of openssl. <replaceable>PATH</replaceable>
 	    has to be the directory where the header files are
 	    located, not the file name of the header file.</para>
 	</listitem>
@@ -209,12 +206,12 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-openssl-lib=</option><literal>&lt;PATH&gt;</literal>
+	  <option>--with-openssl-lib=</option><replaceable>PATH</replaceable>
 	</term>
 
 	<listitem>
 	  <para>This option tells the linker where to find the openssl
-	    shared library. <literal>&lt;PATH&gt;</literal> has to be
+	    shared library. <replaceable>PATH</replaceable> has to be
 	    the directory where the shared library is located, not the
 	    file name of the shared library.</para>
 	</listitem>

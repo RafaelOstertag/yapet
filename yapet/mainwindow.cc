@@ -514,6 +514,7 @@ MainWindow::addNewRecord() {
 	    recordlist->getList().push_back(*pwentry->getEncEntry());
 	    delete pwentry->getEncEntry();
 	    records_changed = true;
+	    statusbar.putMsg("New record added");
 	} else {
 	    statusbar.putMsg("Record addition canceled");
 	}
@@ -556,6 +557,7 @@ MainWindow::editSelectedRecord() {
 	    pwentry->getEncEntry() != NULL) {
 	    recordlist->replaceCurrentItem(*pwentry->getEncEntry());
 	    records_changed = true;
+	    statusbar.putMsg("Record edited");
 	    delete pwentry->getEncEntry();
 	} else {
 	    statusbar.putMsg("Record edition canceled");

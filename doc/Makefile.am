@@ -14,10 +14,13 @@ INSTALL_target = $(top_srcdir)/INSTALL
 DESIGN_sgmlfiles = DESIGN.sgml preamble.sgml
 DESIGN_target = $(top_srcdir)/DESIGN
 
-YAPETMAN_sgmlfiles = yapetman.sgml caution.sgml
+YAPETMAN_sgmlfiles = yapetman.sgml caution.sgml manfigures/mainscreen.sgml
 
 dist_man_MANS = yapet.1
 man1_MANS = yapet.1
+
+docbook_docbook_xsl = $(XSLPATH)/xhtml/docbook.xsl
+docbook_man_xsl = $(XSLPATH)/manpages/docbook.xsl
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
@@ -50,20 +53,24 @@ yapetman.sgml: $(srcdir)/yapetman.sgml.in
 if HAVEXSLTPROC
 $(README_target): $(README_sgmlfiles)
 	rm -f $(README_target)
-	$(XSLTPROC) -o $(srcdir)/README.html $(XSLFILE) $(srcdir)/README.sgml
+	$(XSLTPROC) -o $(srcdir)/README.html $(docbook_docbook_xsl) $(srcdir)/README.sgml
 	$(LYNX) -nolist -dump $(srcdir)/README.html > $@
 
 
 $(INSTALL_target): $(INSTALL_sgmlfiles)
 	rm -f $(INSTALL_target)
-	$(XSLTPROC) -o $(srcdir)/INSTALL.html $(XSLFILE) $(srcdir)/INSTALL.sgml
+	$(XSLTPROC) -o $(srcdir)/INSTALL.html $(docbook_docbook_xsl) $(srcdir)/INSTALL.sgml
 	$(LYNX) -nolist -dump $(srcdir)/INSTALL.html > $@
 
 
 $(DESIGN_target): $(DESIGN_sgmlfiles)
 	rm -f $(DESIGN_target)
-	$(XSLTPROC) -o $(srcdir)/DESIGN.html $(XSLFILE) $(srcdir)/DESIGN.sgml
+	$(XSLTPROC) -o $(srcdir)/DESIGN.html $(docbook_docbook_xsl) $(srcdir)/DESIGN.sgml
 	$(LYNX) -nolist -dump $(srcdir)/DESIGN.html > $@
+
+yapet.1: $(YAPETMAN_sgmlfiles)
+	rm -f $(srcdir)/yapet.1
+	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(srcdir)/yapetman.sgml
 
 else
 $(README_target): $(README_sgmlfiles)
@@ -72,18 +79,9 @@ $(INSTALL_target): $(INSTALL_sgmlfiles)
 
 $(DESIGN_target): $(DESIGN_sgmlfiles)
 
+yapet.1: $(YAPETMAN_sgmlfiles)
+
 endif # if HAVEXSLTPROC
-
-if HAVEDOCBOOK2X
-yapet.1: $(YAPETMAN_sgmlfiles)
-	rm -f $(srcdir)/yapet.1
-	$(DOCBOOK2X) $(srcdir)/yapetman.sgml
-
-else
-yapet.1: $(YAPETMAN_sgmlfiles)
-
-endif # if HAVEDOCBOOK2X
-
 
 if HAVEDOXYGEN
 html-doc: Doxyfile

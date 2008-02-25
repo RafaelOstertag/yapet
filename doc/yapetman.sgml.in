@@ -4,6 +4,7 @@
 [
 <!ENTITY preamble SYSTEM "preamble.sgml">
 <!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY figmainscreen SYSTEM "manfigures/mainscreen.sgml">
 <!ENTITY caution SYSTEM "caution.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
@@ -24,7 +25,13 @@
   <refmeta>
     <refentrytitle>yapet</refentrytitle>
     <manvolnum>1</manvolnum>
+    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
+    <refmiscinfo class="manual">&YP; Password Encryption Tool</refmiscinfo>
   </refmeta>
+
+  <refentryinfo>
+     <productname>&YP;</productname>
+  </refentryinfo>
 
   <refnamediv>
     <refname>yapet</refname>
@@ -33,7 +40,7 @@
 
   <refsynopsisdiv>
     <cmdsynopsis>
-      <command>yapet</command>
+      &yp;
       <arg>-c</arg>
       <arg>-h</arg>
       <arg>-V</arg>
@@ -46,7 +53,7 @@
   -  DESCRIPTION
   -
   -->
-  <refsect1>
+  <refsect1 id="description">
     <title>DESCRIPTION</title>
 
     <para>&yp; stands for "Yet Another Password Encryption Tool" and
@@ -62,7 +69,7 @@
   -  OPTIONS
   -
   -->
-  <refsect1>
+  <refsect1 id="options">
     <title>OPTIONS</title>
 
     <variablelist>
@@ -95,8 +102,8 @@
 	  <para>the file to open. If the file does not exist, &yp;
 	  asks whether it should be created.</para>
 
-	  <para>Files created by &yp; have the suffix <filename
-	      moreinfo="none">.pet</filename>.</para>
+	  <para>Files created by &yp; always have the
+	      suffix <filename moreinfo="none">.pet</filename>.</para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -107,41 +114,145 @@
   -  USAGE
   -
   -->
-  <refsect1>
+  <refsect1 id="usage">
     <title>USAGE</title>
+    <para>
+      If you start &yp; without any command line arguments given, you
+      will see a screen as shown in <xref linkend="fig.mainscreen"
+      />.</para>
 
-<screen format="linespecific">
-                  ..::|| YAPET 0.1 ||::..
-+---------------------------++---------------------------+
-|                           ||          K E Y S          |
-|                           ||---------------------------|
-|                           ||                           |
-|                           ||   S     Save File         |
-|                           ||   R     Load File         |
-|                           ||   L     Lock Screen       |
-|                           ||   A     Add Entry         |
-|                           ||   D     Delete Entry      |
-|                           ||   C     Change Password   |
-|                           ||   ^L    Redraw Screen     |
-|                           ||   Q     Quit              |
-|                           ||                           |
-|                           |+---------------------------+
-|                           |+---------------------------+
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-+---------------------------++---------------------------+
-No file loaded
-</screen>
+    &figmainscreen;
 
-    <refsect2>
-      <title>OPENING FILE</title>
+    <para>Passwords are stored as records (also refered to as entries)
+    with the following fields</para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term>Name</term>
+	<listitem>
+	  <simpara>The name displayed in the main screen.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Host</term>
+	<listitem>
+	  <simpara>The host where the password is used.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Username</term>
+	<listitem>
+	  <simpara>The username the password is associated with.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Password</term>
+	<listitem>
+	  <simpara>The password.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Comment</term>
+	<listitem>
+	  <simpara>A comment.</simpara>
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>Files created by &yp; always have the
+      suffix <filename>.pet</filename>. This cannot be changed by
+      the user.</para>
+
+    <para>
+      The upper right frame in <xref linkend="fig.mainscreen" /> shows
+      the keys recognized by &yp;. The keys are not case-sensitive.
+    </para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term><keycap>S</keycap></term>
+	<listitem>
+	  <simpara>Saves the password records to the file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>R</keycap></term>
+	<listitem>
+	  <simpara>Loads (reads) a file from disk. This command is
+	    also used to create a new file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>L</keycap></term>
+	<listitem>
+	  <simpara>Locks the screen. Has only effect if a file is
+	    loaded.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>A</keycap></term>
+	<listitem>
+	  <simpara>Adds a new password entry (record) to the
+	    currently loaded file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>D</keycap></term>
+	<listitem>
+	  <simpara>Deletes a password entry (record) from the
+	    currently loaded file.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>C</keycap></term>
+	<listitem>
+	  <simpara>Change the master password of the currently loaded
+	    file. This action requires to save all changes first. The
+	    file with the old master password will be saved
+	    as <filename><replaceable>filename</replaceable>.bak</filename>
+	    where <replaceable>filename</replaceable> the name of the
+	    currently loaded file without suffix is.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <keycombo action="simul"><keycap>CTRL</keycap>
+	    <keycap>L</keycap></keycombo> (<keycap>^L</keycap>)</term>
+	<listitem>
+	  <simpara>Redraws the screen.</simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>Q</keycap></term>
+	<listitem><simpara>Quits &yp;.</simpara></listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>The empty frame on the left side of the main screen will
+    display the password entries' `Name'.</para>
+
+    <refsect2 id="creatingfiles">
+      <title>Creating Files</title>
 
     </refsect2>
 
-    <refsect2>
-      <title>CREATING FILE</title>
+    <refsect2 id="openingfiles">
+      <title>Opening Files</title>
 
     </refsect2>
   </refsect1>
@@ -151,7 +262,7 @@ No file loaded
   -  CAUTION
   -
   -->
-  <refsect1>
+  <refsect1 id="caution">
     <title>CAUTION</title>
     &caution;
   </refsect1>
@@ -161,7 +272,7 @@ No file loaded
   -  BUGS
   -
   -->
-  <refsect1>
+  <refsect1 id="bugs">
     <title>BUGS</title>
 
     <itemizedlist>
@@ -182,10 +293,45 @@ No file loaded
 
   <!--
   -
+  - LICENSE
+  -
+  -->
+  <refsect1 id="license">
+    <title>LICENSE</title>
+
+    <para>This program is free software: you can redistribute it
+      and/or modify it under the terms of the GNU General Public
+      License as published by the Free Software Foundation, either
+      version 3 of the License, or (at your option) any later
+      version.</para>
+
+    <para>This program is distributed in the hope that it will be
+      useful, but WITHOUT ANY WARRANTY; without even the implied
+      warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+      See the GNU General Public License for more details.</para>
+
+    <para>You should have received a copy of the GNU General Public
+      License along with this program.  If not, see
+      <ulink url="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</ulink>.</para>
+  </refsect1>
+
+  <!--
+  -
+  - AVAILABILITY
+  -
+  -->
+  <refsect1 id="availability">
+    <title>AVAILABILITY</title>
+
+    <para>The latest version of this program can be found
+    under <ulink url="http://www.guengel.ch/myapps/yapet">http://www.guengel.ch/myapps/yapet</ulink>.</para>
+  </refsect1>
+  <!--
+  -
   -  AUTHOR
   -
   -->
-  <refsect1>
+  <refsect1 id="author">
     <title>AUTHOR</title>
     <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
   </refsect1>
@@ -195,7 +341,7 @@ No file loaded
   -  SEE ALSO
   -
   -->
-  <refsect1>
+  <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
     <simpara>&CURSES;, &OPENSSL;, &CRYPTO;</simpara>

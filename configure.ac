@@ -15,21 +15,19 @@ AC_PROG_SED
 AC_PROG_RANLIB
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
-AC_ARG_VAR([DOCBOOK2X],[path to docbook2x-man])
 AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
-AC_CHECK_PROG([DOCBOOK2X],[docbook2x-man],[docbook2x-man],[no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 
 AC_LANG([C++])
 
 # Arguments
-AC_ARG_WITH([xsl-sheet],
-	[AS_HELP_STRING([--with-xsl-sheet],
-		[path of the XSL DocBook sheet used to generate the documentation])],
-	[AC_SUBST([XSLFILE], ["$withval"])],
-	[AC_SUBST([XSLFILE], ["no"])])
+AC_ARG_WITH([xsl-path],
+	[AS_HELP_STRING([--with-xsl-path],
+		[path to the XSL DocBook Style Sheets used to generate the documentation])],
+	[AC_SUBST([XSLPATH], ["$withval"])],
+	[AC_SUBST([XSLPATH], ["no"])])
 AC_ARG_WITH([curses-include],
 	[AS_HELP_STRING([--with-curses-include],[directory for (n)curses header files])],
 	[CPPFLAGS="-I$withval $CPPFLAGS"],
@@ -140,8 +138,7 @@ AC_C_BIGENDIAN
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
-AM_CONDITIONAL([HAVEDOCBOOK2X], [test x$DOCBOOK2X != xno])
-AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLFILE != xno])
+AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLPATH != xno])
 
 AC_CONFIG_FILES([Makefile
 	yapet/Makefile

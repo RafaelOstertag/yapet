@@ -124,4 +124,26 @@ class FileOpen : protected YAPETUI::BaseWindow {
 	inline bool isCanceled() const { return canceled; }
 };
 
+inline
+bool endswith(YAPETUI::secstring h, YAPETUI::secstring n) {
+    if (n.length() > h.length())
+	return false;
+
+    if ( h.substr(h.length()-n.length(),n.length()) == n)
+	return true;
+
+    return false;
+}
+
+inline
+bool endswith(std::string h, std::string n) {
+    if (n.length() > h.length())
+	return false;
+
+    if ( h.substr(h.length()-n.length(),n.length()) == n)
+	return true;
+
+    return false;
+}
+
 #endif // _FILEOPEN_H
