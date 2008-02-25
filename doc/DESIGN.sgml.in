@@ -30,7 +30,7 @@
 
   &preamble;
 
-  <sect1>
+  <sect1 id="design">
     <title>Design</title>
 
     <para>&YP; uses a master password provided by the user to generate
