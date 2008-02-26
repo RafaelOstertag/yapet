@@ -22,3 +22,5 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 yapet.desktop: Makefile $(srcdir)/yapet.desktop.in
 	rm -f $@.tmp $@
 	$(editfile) $(srcdir)/$@.in > $@
+
+DISTCLEANFILES = yapet.desktop

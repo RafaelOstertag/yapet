@@ -1,5 +1,7 @@
 # $Id$
 
+DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak
+
 check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5
 
 TESTS = $(check_PROGRAMS)

@@ -34,33 +34,24 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@top_builddir[@]|$(top_builddir)|g'
 
 sed_files_target = $(sed_files:.in=)
+sgml_html_targets = $(sgml_html:.sgml=.html)
+sgml_text_target = $(sgml_text:.sgml=)
 
 $(sed_files_target): $(sed_files)
 	$(editfile) "$(srcdir)/$@.in" > "$@"
 
 if HAVEXSLTPROC
 
-$(htmldoc_DATA): stamp-html
+$(sgml_html_targets): $(sgml_files) $(sgml_html)
+	nosuffix=`echo "$@" | $(SED) s/\.html//` ; \
+	rm -f "$@" ; \
+	$(XSLTPROC) -o "$@" $(docbook_docbook_xsl) "$$nosuffix.sgml"
 
-htmlfiles: stamp-html
-
-stamp-html: $(sgml_files)
-	for f in $(sgml_html) ; do \
-		nosuffix=`echo $$f | $(SED) s/\.sgml//` ; \
-		rm -f "$$nosuffix.html" ; \
-		test -f "$$f" && $(XSLTPROC) -o "$$nosuffix.html" $(docbook_docbook_xsl) "$$f" ; \
-	done
-	touch stamp-html
-
-plaintext: stamp-plaintext
-
-stamp-plaintext: $(sgml_files)
-	for f in $(sgml_text) ; do \
-		nosuffix=`echo $$f | $(SED) s/\.sgml//` ; \
-		rm -f "$(top_srcdir)/$$nosuffix" ; \
-		test -f "$$f" && $(LYNX) -nolist -dump "$$nosuffix.html" > "$(top_srcdir)/$$nosuffix" ; \
-	done
-	touch stamp-plaintext
+$(sgml_text_target): $(sgml_files) $(sgml_text)
+	$(XSLTPROC) -o "$@.tmp" $(docbook_docbook_xsl) "$@.sgml"
+	$(LYNX) -nolist -dump "$@.tmp" > "$@"
+	rm "$@.tmp"
+	cp "$@" "$(top_srcdir)/$@
 
 $(srcdir)/yapet.1: $(sgml_files)
 	rm -f $@
@@ -70,9 +61,9 @@ else
 
 $(htmldoc_DATA):
 
-htmlfiles:
+$(sgml_html_targets):
 
-plaintext:
+$(sgml_text_target):
 
 $(srcdir)/yapet.1:
 
@@ -86,15 +77,14 @@ source-doc: Doxyfile
 
 endif
 
-dist-hook: source-doc htmlfiles plaintext $(srcdir)/yapet.1
+dist-hook: source-doc $(sgml_html_targets) $(sgml_text_target) $(srcdir)/yapet.1
 	cp -r $(srcdir)/source-doc $(distdir)
 
-all-local: htmlfiles plaintext $(srcdir)/yapet.1
-clean-local:
-	rm -f stamp-plaintext
-	rm -f stamp-html
+distclean-local:
+	rm -f $(sed_files_target)
+
+all-local: $(sgml_html_targets) $(sgml_text_target) source-doc $(srcdir)/yapet.1
 
 maintainer-clean-local:
 	rm -rf source-doc
-	rm -f stamp-plaintext
-	rm -f stamp-html
+	rm -f $(sgml_html_targets) $(sgml_text_target)
