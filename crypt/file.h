@@ -49,38 +49,53 @@ namespace YAPET {
      * This class takes care of storing and retrieving encrypted
      * password records to and from disk.
      *
-     * Each file created by this class starts with a recognition
-     * string which currently consists of the 8 bytes "YAPET1.0" as
-     * depicted below.
+     * Each file created by this class starts with a unencrypted
+     * recognition string which currently consists of the 8 bytes
+     * "YAPET1.0" as depicted below.
      *
 @verbatim
 +--------+--------+--------+--------+--------+--------+--------+--------+
 |   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
-| 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte |
+| 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte |
 +--------+--------+--------+--------+--------+--------+--------+--------+
 @endverbatim
      *
-     * After the recognition string a header totalling in 25 Bytes
-     * follows. The first byte indicates the version of the file. The
-     * next 20 Bytes are used as control string. After decryption, the
-     * control string is compared to the predefined clear text control
-     * string, to find out whether or not the key used to decrypt was
-     * the one used to encrypt.
+     * After the recognition string a 4 byte unsigned integer which is
+     * stored in big-endian order follows. This indicator is read to
+     * determine how many bytes to read in order to get the encrypted
+     * header.
+     *
+@verbatim
++--------+--------+--------+--------+
+|   Length indicator in big-endian  |
+|         order (4 bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted header exactly as many bytes    |
+|        indicated by the prefix             |
++--------+--------+--------+--------+--...---+
+@endverbatim
+     *
+     * The decrypted header is 25 bytes in size. The first byte
+     * indicates the version of the file. The next 20 bytes are used
+     * as control string. After decryption, the control string is
+     * compared to the predefined clear text control string, in order
+     * to find out whether or not the key used to decrypt was the same
+     * used to encrypt.
      *
 @verbatim
 +--------+
 |Version |
-| 1 Byte |
+| 1 byte |
 +--------+--------+--------+--...---+
 |          Control String           |
-|             20 Bytes              |
+|             20 bytes              |
 +--------+--------+--------+--...---+
 |  Time when the Password  |
-|    was set (4 Bytes)     |
+|    was set (4 bytes)     |
 +--------+--------+--------+
 @endverbatim
     *
-    * Each encrypted password record is prefixed by a 4 Byte unsigned
+    * Each encrypted password record is prefixed by a 4 byte unsigned
     * integer which is stored in big-endian order. The methods take
     * care returning them in the appropriate order of the host
     * system. This integer is used to indicate the length of the
@@ -89,48 +104,45 @@ namespace YAPET {
 @verbatim
 +--------+--------+--------+--------+
 |   Length indicator in big-endian  |
-|         order (4 Bytes)           |
+|         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
 |  Encrypted password record of exactly as   |
-|   many Bytes as indicated by the prefix    |
+|   many bytes as indicated by the prefix    |
 +--------+--------+--------+--------+--...---+
 |   Length indicator in big-endian  |
-|         order (4 Bytes)           |
+|         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
 |  Encrypted password record of exactly as   |
-|   many Bytes as indicated by the prefix    |
+|   many bytes as indicated by the prefix    |
 +--------+--------+--------+--------+--...---+
 	      [ . . . ]
 @endverbatim
     *
-    * Putting this together, a file created by this class looks like
-    * this
+    * Putting this together, an encrypted file created by this class
+    * looks like this
     *
 @verbatim
 +--------+--------+--------+--------+--------+--------+--------+--------+
 |   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
-| 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte | 1 Byte |
+| 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte |
 +--------+--------+--------+--------+--------+--------+--------+--------+
-|Version |
-| 1 Byte |
-+--------+--------+--------+--...---+
-|          Control String           |
-|             20 Bytes              |
-+--------+--------+--------+--...---+
-|  Time when the Password  |
-|    was set (4 Bytes)     |
-+--------+--------+--------+--------+
 |   Length indicator in big-endian  |
-|         order (4 Bytes)           |
+|         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted password record of exactly as   |
-|   many Bytes as indicated by the prefix    |
+|  Encrypted header exactly as many bytes    |
+|        indicated by the prefix             |
 +--------+--------+--------+--------+--...---+
 |   Length indicator in big-endian  |
-|         order (4 Bytes)           |
+|         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
 |  Encrypted password record of exactly as   |
-|   many Bytes as indicated by the prefix    |
+|   many bytes as indicated by the prefix    |
++--------+--------+--------+--------+--...---+
+|   Length indicator in big-endian  |
+|         order (4 bytes)           |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of exactly as   |
+|   many bytes as indicated by the prefix    |
 +--------+--------+--------+--------+--...---+
 	      [ . . . ]
 @endverbatim

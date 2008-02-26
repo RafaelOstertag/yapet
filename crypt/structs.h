@@ -91,7 +91,7 @@ namespace YAPET {
 	     * @brief The date the key has first been used.
 	     *
 	     * Holds the date the key has first been used to encrypt
-	     * the file.
+	     * the file. Has to be stored in big-endian order.
 	     */
 	    time_t pwset;
     };

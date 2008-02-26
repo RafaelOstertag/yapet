@@ -39,7 +39,7 @@
     encrypted on disk. Its primary aim is to provide a
     safe way to store passwords in a file on disk while having a small
     footprint, and compiling and running under today's most popular
-    Unices, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
+    Unixes, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
 
     <para>If you are looking for a fully fledged password encryption
     tool having a graphical user interface, I recommend you start with
@@ -52,8 +52,8 @@
     <title>Motivation</title>
 
     <para>
-    Using several different Unices, I wanted to have a single
-    application running on all Unices for storing my passwords in a
+    Using several different Unixes, I wanted to have a single
+    application running on all Unixes for storing my passwords in a
     secure manner. While revelation is running fine under &FREEBSD;
     and Linux, it's a pain to get it run under &SOLARIS; 10 (as you can
     see, the only tool I tried was revelation). It has many
@@ -117,6 +117,17 @@
       configuring the build process. Refer to the
       <filename>INSTALL</filename> file in the source tarball
       <filename>&YPPKG;</filename>.</para>
+  </sect1>
+
+  <sect1 id="usage">
+    <title>Usage</title>
+
+    <para>&YP; is kept simple. You should not find it difficult to
+    use. The user interface has some quirks, though.</para>
+
+    <para>See the manual page <citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry> after installing &YP; for a
+      minimal usage guide.</para>
   </sect1>
 
   <sect1 id="design">

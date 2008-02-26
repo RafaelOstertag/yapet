@@ -35,7 +35,7 @@
     <title>Build Prerequisites</title>
 
     <para>&YP; was designed to have only few library dependencies, and
-      to build on most popular Unices.</para>
+      to build on most popular Unixes.</para>
 
     <sect2 id="supportedplatforms">
       <title>Supported Platforms</title>
@@ -111,7 +111,7 @@
 </screen>
     </para>
 
-    <para>&YP; will now be builded. After the build has finished,
+    <para>&YP; will now be built. After the build has finished,
       switch to the root user if not done already, and type</para>
 
     <para>

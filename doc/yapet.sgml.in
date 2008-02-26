@@ -4,6 +4,7 @@
 [
 <!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
+<!ENTITY pwrecord SYSTEM "@srcdir@/pwrecord.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
@@ -153,47 +154,10 @@ No file loaded
 </figure>
 
 
-    <para>Passwords are stored as records (also refered to as entries)
-    with the following fields</para>
+    <para>Passwords are stored as records (also referred to as entries)
+    having the following fields</para>
 
-    <variablelist>
-
-      <varlistentry>
-	<term>Name</term>
-	<listitem>
-	  <simpara>The name displayed in the main screen.</simpara>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>Host</term>
-	<listitem>
-	  <simpara>The host where the password is used.</simpara>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>Username</term>
-	<listitem>
-	  <simpara>The username the password is associated with.</simpara>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>Password</term>
-	<listitem>
-	  <simpara>The password.</simpara>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>Comment</term>
-	<listitem>
-	  <simpara>A comment.</simpara>
-	</listitem>
-      </varlistentry>
-
-    </variablelist>
+    &pwrecord;
 
     <para>Files created by &yp; always have the
       suffix <filename>.pet</filename>. This cannot be changed by
@@ -214,7 +178,7 @@ No file loaded
       <varlistentry>
 	<term><keycap>R</keycap></term> <listitem> <simpara>Loads
 	(reads) a file from disk. This command is also used to create
-	a new file. When creating a new file, enter the filename into
+	a new file. When creating a new file, enter the file name into
 	the entry field. &yp; will ask whether it should create the
 	file if it does not exist.</simpara> </listitem>
 	</varlistentry>
@@ -228,7 +192,7 @@ No file loaded
 
       <varlistentry>
 	<term><keycap>A</keycap></term> <listitem> <para>Adds a new
-	password entry to the currently loaded file. This will be
+	password entry to the currently loaded file. The entry will be
 	permanently added to the file when the file is saved by
 	pressing <keycap>S</keycap>.</para> </listitem>
 	</varlistentry>
@@ -266,10 +230,12 @@ No file loaded
     </variablelist>
 
     <para>The empty frame on the left side of the main screen will
-    display the password entries' `Name'. You can move the selection
-    by using <keycap>Up</keycap>, <keycap>Down</keycap>, <keycap>Page
+    display the password entries' <guilabel>Name</guilabel>. You can
+    move the selection by
+    using <keycap>Up</keycap>, <keycap>Down</keycap>, <keycap>Page
     Up</keycap>, <keycap>Page Down</keycap>, <keycap>Home</keycap>,
-    and <keycap>End</keycap> keys.</para>
+    and <keycap>End</keycap> keys. A entry can be opened for viewing
+    and editing by pressing <keycap>Enter</keycap>.</para>
 
     <para><keycap>Tab</keycap> will switch the focus to the next
     widget. Be aware that <keycombo
