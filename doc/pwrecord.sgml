@@ -1,0 +1,38 @@
+<variablelist>
+
+  <varlistentry>
+    <term>Name</term>
+    <listitem>
+      <simpara>The name displayed in the main screen.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term>Host</term>
+    <listitem>
+      <simpara>The host where the password is used.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term>Username</term>
+    <listitem>
+      <simpara>The username the password is associated with.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term>Password</term>
+    <listitem>
+      <simpara>The password.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term>Comment</term>
+    <listitem>
+      <simpara>A comment.</simpara>
+    </listitem>
+  </varlistentry>
+
+</variablelist>
