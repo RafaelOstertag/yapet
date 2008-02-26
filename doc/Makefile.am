@@ -49,11 +49,11 @@ $(sgml_html_targets): $(sgml_files) $(sgml_html)
 
 $(sgml_text_target): $(sgml_files) $(sgml_text)
 	$(XSLTPROC) -o "$@.tmp" $(docbook_docbook_xsl) "$@.sgml"
-	$(LYNX) -nolist -dump "$@.tmp" > "$@"
+	$(LYNX) -force_html -nolist -dump "$@.tmp" > "$@"
 	rm "$@.tmp"
 	cp "$@" "$(top_srcdir)/$@"
 
-$(srcdir)/yapet.1: $(sgml_files)
+yapet.1: $(sgml_files)
 	rm -f $@
 	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) yapet.sgml
 
@@ -77,14 +77,18 @@ source-doc: Doxyfile
 
 endif
 
-dist-hook: source-doc $(sgml_html_targets) $(sgml_text_target) $(srcdir)/yapet.1
-	cp -r $(srcdir)/source-doc $(distdir)
+dist-hook: source-doc $(sgml_html_targets) $(sgml_text_target) yapet.1
+	if test -d $(srcdir)/source-doc ; then \
+		cp -r $(srcdir)/source-doc $(distdir) ; \
+	else \
+		cp -r $(builddir)/source-doc $(distdir) ; \
+	fi
 
 distclean-local:
 	rm -f $(sed_files_target)
 
-all-local: $(sgml_html_targets) $(sgml_text_target) source-doc $(srcdir)/yapet.1
+all-local: $(sgml_html_targets) $(sgml_text_target) source-doc yapet.1
 
 maintainer-clean-local:
 	rm -rf source-doc
-	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target)
+	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target) yapet.1
