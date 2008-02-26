@@ -246,7 +246,7 @@ No file loaded
 	master password will be saved as
 	<filename><replaceable>filename</replaceable>.bak</filename>
 	where <replaceable>filename</replaceable> the name of the
-	currently loaded file without suffix is.</para> </listitem>
+	currently loaded file is.</para> </listitem>
 	</varlistentry>
 
       <varlistentry>
