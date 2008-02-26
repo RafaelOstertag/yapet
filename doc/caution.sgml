@@ -1,3 +1,4 @@
+<!-- $Id$ -->
 <para>Although I took several precautions to avoid having any
   passwords stored clear text in memory, I was able to snoop up the
   master password in a core file. This means for you, the user of

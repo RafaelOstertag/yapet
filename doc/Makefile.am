@@ -51,7 +51,7 @@ $(sgml_text_target): $(sgml_files) $(sgml_text)
 	$(XSLTPROC) -o "$@.tmp" $(docbook_docbook_xsl) "$@.sgml"
 	$(LYNX) -nolist -dump "$@.tmp" > "$@"
 	rm "$@.tmp"
-	cp "$@" "$(top_srcdir)/$@
+	cp "$@" "$(top_srcdir)/$@"
 
 $(srcdir)/yapet.1: $(sgml_files)
 	rm -f $@
@@ -87,4 +87,4 @@ all-local: $(sgml_html_targets) $(sgml_text_target) source-doc $(srcdir)/yapet.1
 
 maintainer-clean-local:
 	rm -rf source-doc
-	rm -f $(sgml_html_targets) $(sgml_text_target)
+	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target)
