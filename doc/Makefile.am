@@ -2,8 +2,7 @@
 
 EXTRA_DIST = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in	\
 yapet.sgml.in Doxyfile.in preamble.sgml supportedplatforms.sgml	\
-manfigures/mainscreen.sgml caution.sgml README.html DESIGN.html	\
-yapet.html source-doc
+caution.sgml README.html DESIGN.html yapet.html source-doc
 
 htmldoc_DATA = README.html DESIGN.html yapet.html
 htmldocdir = $(docdir)/html
@@ -11,8 +10,7 @@ htmldocdir = $(docdir)/html
 sed_files = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml Doxyfile
 
 sgml_files = yapet.sgml README.sgml INSTALL.sgml DESIGN.sgml	\
-preamble.sgml supportedplatforms.sgml caution.sgml		\
-manfigures/mainscreen.sgml
+preamble.sgml supportedplatforms.sgml caution.sgml
 
 # Those files are fed to xsltproc
 sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml

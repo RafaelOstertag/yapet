@@ -4,7 +4,6 @@
 [
 <!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
-<!ENTITY figmainscreen SYSTEM "@srcdir@/manfigures/mainscreen.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
@@ -121,7 +120,38 @@
       will see a screen as shown in <xref linkend="fig.mainscreen"
       />.</para>
 
-    &figmainscreen;
+<figure id="fig.mainscreen">
+  <title>Main screen</title>
+  <mediaobject>
+    <textobject>
+<screen format="linespecific">
+		  ..::|| YAPET 0.1 ||::..
++---------------------------++---------------------------+
+|                           ||          K E Y S          |
+|                           ||---------------------------|
+|                           ||                           |
+|                           ||   S     Save File         |
+|                           ||   R     Load File         |
+|                           ||   L     Lock Screen       |
+|                           ||   A     Add Entry         |
+|                           ||   D     Delete Entry      |
+|                           ||   C     Change Password   |
+|                           ||   ^L    Redraw Screen     |
+|                           ||   Q     Quit              |
+|                           ||                           |
+|                           |+---------------------------+
+|                           |+---------------------------+
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
+|                           ||                           |
++---------------------------++---------------------------+
+No file loaded
+</screen>
+    </textobject>
+  </mediaobject>
+</figure>
+
 
     <para>Passwords are stored as records (also refered to as entries)
     with the following fields</para>
@@ -177,84 +207,75 @@
     <variablelist>
 
       <varlistentry>
-	<term><keycap>S</keycap></term>
-	<listitem>
-	  <simpara>Saves the password records to the file.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>S</keycap></term> <listitem> <simpara>Saves the
+	password records to the file.</simpara> </listitem>
+	</varlistentry>
 
       <varlistentry>
-	<term><keycap>R</keycap></term>
-	<listitem>
-	  <simpara>Loads (reads) a file from disk. This command is
-	    also used to create a new file.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>R</keycap></term> <listitem> <simpara>Loads
+	(reads) a file from disk. This command is also used to create
+	a new file. When creating a new file, enter the filename into
+	the entry field. &yp; will ask whether it should create the
+	file if it does not exist.</simpara> </listitem>
+	</varlistentry>
 
       <varlistentry>
-	<term><keycap>L</keycap></term>
-	<listitem>
-	  <simpara>Locks the screen. Has only effect if a file is
-	    loaded.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>L</keycap></term> <listitem> <simpara>Locks and
+	blanks the screen. Has only effect if a file is loaded. In
+	order to unlock the screen, the password of the currently
+	loaded file has to be entered.</simpara> </listitem>
+	</varlistentry>
 
       <varlistentry>
-	<term><keycap>A</keycap></term>
-	<listitem>
-	  <simpara>Adds a new password entry (record) to the
-	    currently loaded file.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>A</keycap></term> <listitem> <para>Adds a new
+	password entry to the currently loaded file. This will be
+	permanently added to the file when the file is saved by
+	pressing <keycap>S</keycap>.</para> </listitem>
+	</varlistentry>
 
       <varlistentry>
-	<term><keycap>D</keycap></term>
-	<listitem>
-	  <simpara>Deletes a password entry (record) from the
-	    currently loaded file.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>D</keycap></term> <listitem> <para>Deletes a
+	password entry from the currently loaded file. The entry will
+	be permanently deleted when the file is saved by pressing
+	<keycap>S</keycap>.</para> </listitem> </varlistentry>
 
       <varlistentry>
-	<term><keycap>C</keycap></term>
-	<listitem>
-	  <simpara>Change the master password of the currently loaded
-	    file. This action requires to save all changes first. The
-	    file with the old master password will be saved
-	    as <filename><replaceable>filename</replaceable>.bak</filename>
-	    where <replaceable>filename</replaceable> the name of the
-	    currently loaded file without suffix is.</simpara>
-	</listitem>
-      </varlistentry>
+	<term><keycap>C</keycap></term> <listitem> <para>Change the
+	master password of the currently loaded file. This action
+	requires to save all changes first. The file with the old
+	master password will be saved as
+	<filename><replaceable>filename</replaceable>.bak</filename>
+	where <replaceable>filename</replaceable> the name of the
+	currently loaded file without suffix is.</para> </listitem>
+	</varlistentry>
 
       <varlistentry>
 	<term>
 	  <keycombo action="simul"><keycap>CTRL</keycap>
 	    <keycap>L</keycap></keycombo> (<keycap>^L</keycap>)</term>
-	<listitem>
-	  <simpara>Redraws the screen.</simpara>
-	</listitem>
-      </varlistentry>
+	    <listitem> <simpara>Redraws the screen.</simpara>
+	    </listitem> </varlistentry>
 
       <varlistentry>
-	<term><keycap>Q</keycap></term>
-	<listitem><simpara>Quits &yp;.</simpara></listitem>
-      </varlistentry>
+	<term><keycap>Q</keycap></term> <listitem><para>Quits &yp;. If
+	changes are not written to disk &yp; will ask whether they
+	should be saved or not. Regardless of the answer, &yp; quits,
+	either saving the changes or discarding
+	them.</para></listitem> </varlistentry>
 
     </variablelist>
 
     <para>The empty frame on the left side of the main screen will
-    display the password entries' `Name'.</para>
+    display the password entries' `Name'. You can move the selection
+    by using <keycap>Up</keycap>, <keycap>Down</keycap>, <keycap>Page
+    Up</keycap>, <keycap>Page Down</keycap>, <keycap>Home</keycap>,
+    and <keycap>End</keycap> keys.</para>
 
-    <refsect2 id="creatingfiles">
-      <title>Creating Files</title>
+    <para><keycap>Tab</keycap> will switch the focus to the next
+    widget. Be aware that <keycombo
+    action="simul"><keycap>Shift</keycap><keycap>Tab</keycap></keycombo>
+    does not work for focusing the previous widget.</para>
 
-    </refsect2>
-
-    <refsect2 id="openingfiles">
-      <title>Opening Files</title>
-
-    </refsect2>
   </refsect1>
 
   <!--
