@@ -98,7 +98,7 @@
 </screen>
     </para>
 
-    <para>on the command line. The configure script will then check
+    <para>on the command line. The <command>configure</command> script will then check
       the system an prepares for the build process.
     </para>
 
@@ -205,11 +205,50 @@
     </variablelist>
   </sect1>
 
+  <sect1 id="wgi">
+    <title>What gets installed?</title>
+
+    <para>Upon
+    issuing <command>make <option>install</option></command> the
+    following files are installed in <replaceable>PATH</replaceable>
+    (assuming you did not change the destination of the files)</para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/bin/yapet</filename></term>
+	<listitem><para>The binary.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/share/man/man1/yapet.1</filename></term>
+	<listitem><para>The manual page for &YP;.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/share/applications/yapet.desktop</filename></term>
+	<listitem><para>The desktop file for GNOME et al.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|README]</filename></term>
+	<listitem><para>Various documentation files.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html]</filename></term>
+	<listitem><para>Various documentation files in HTML format.</para></listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect1>
+
   <sect1 id="furtherinfo">
     <title>Further Information</title>
 
     <para>For more information about the configure script, read the
-      file <filename>INSTALL.generic</filename> which comes along in
+      file <filename>INSTALL.generic</filename> which comes along with
       the tarball of &YP;.</para>
   </sect1>
 

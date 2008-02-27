@@ -185,8 +185,9 @@
       <title>Password Records</title>
 
       <para>Each encrypted password record is prefixed by a 4 byte
-	unsigned integer which is stored in big-endian order.
-	of the following encrypted data chunk.
+	unsigned integer which is stored in big-endian order. That
+	integer is used to indicate the length of the following
+	encrypted data chunk.
       </para>
 
       <figure id="fig.passwordrecord">
@@ -260,7 +261,7 @@
 
     <para>Memory used for storing sensitive information is cleared by
       setting it to zero upon de-allocation. This is default behavior
-      of &YP; functions. However, &YP; can not alter the way functions
+      of &YP; functions. However, &YP; cannot alter the way functions
       provided by &CRYPTO; and &CURSES; de-allocates memory. An attempt
       to make &CURSES; more secure is taken by
       calling <citerefentry><refentrytitle><function>wclear</function></refentrytitle>

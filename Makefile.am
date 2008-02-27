@@ -1,6 +1,7 @@
 # $Id$
 
-EXTRA_DIST = DESIGN INSTALL.generic Makefile.cvs yapet.desktop.in
+EXTRA_DIST = MAINTAINER DESIGN INSTALL.generic Makefile.cvs	\
+yapet.desktop.in
 
 SUBDIRS = crypt ui yapet tests doc
 

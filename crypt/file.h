@@ -98,7 +98,7 @@ namespace YAPET {
     * Each encrypted password record is prefixed by a 4 byte unsigned
     * integer which is stored in big-endian order. The methods take
     * care returning them in the appropriate order of the host
-    * system. This integer is used to indicate the length of the
+    * system. That integer is used to indicate the length of the
     * following encrypted data chunk.
     *
 @verbatim
