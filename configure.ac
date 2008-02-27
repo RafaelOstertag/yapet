@@ -45,6 +45,11 @@ AC_ARG_WITH([openssl-lib],
 	[LDFLAGS="-L$withval $LDFLAGS"],
 	[])
 
+# "Enables"
+AC_ARG_ENABLE([build-doc],
+	[AS_HELP_STRING([--enable-build-doc],[build docs])],
+	[my_builddoc=yes],
+	[my_builddoc=no])
 
 # Libs
 AC_MSG_NOTICE([Searching for required libraries])
@@ -137,6 +142,7 @@ AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
 AC_C_BIGENDIAN
 
 # Some conditionals for the makefileS
+AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLPATH != xno])
 

@@ -152,20 +152,6 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-xsl-path=</option><replaceable>PATH</replaceable>
-	</term>
-
-	<listitem>
-	  <para><replaceable>PATH</replaceable> is the path to the XSL
-	    Style Sheets to use for generating documentation
-	    files. This option is only used if
-	    <command>xsltproc</command> and <command>lynx</command>
-	    are found by <command>configure</command>.</para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>
 	  <option>--with-curses-include=</option><replaceable>PATH</replaceable>
 	</term>
 
