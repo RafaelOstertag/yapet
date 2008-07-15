@@ -67,6 +67,18 @@ namespace YAPETUI {
      */
     template<class T>
     class ListWidget {
+	public:
+	    /**
+	     * @brief The sort order available
+	     *
+	     * The sort order that are available for sorting the list
+	     * items.
+	     */
+	    enum SortOrder {
+		ASCENDING,
+		DESCENDING
+	    };
+
 	private:
 	    WINDOW* window;
 
@@ -89,6 +101,13 @@ namespace YAPETUI {
 	     */
 	    int cur_pos;
 
+	    /**
+	     * @brief Holds the sort order currently applied
+	     *
+	     * Holds the sort order that is currently applied to the list.
+	     */
+	    SortOrder sortorder;
+
 	protected:
 	    typename std::list<T> itemlist;
 	    typedef typename std::list<T>::size_type l_size_type;
@@ -110,7 +129,7 @@ namespace YAPETUI {
 	    }
 
 	    void showScrollIndicators() throw(UIException) {
- 		if (start_pos > 0) {
+		if (start_pos > 0) {
 		    int retval = mvwaddch(window,
 					  1,
 					  width - 1,
@@ -331,6 +350,8 @@ namespace YAPETUI {
 		     height == -1 )
 		    throw UIException("No idea of the dimension of the list");
 
+		setSortOrder(ASCENDING);
+
 		createWindow(sx, sy, width, height);
 	    }
 
@@ -354,12 +375,14 @@ namespace YAPETUI {
 		cur_pos = 0;
 		showListItems();
 		showSelected(-1);
+		setSortOrder(this->sortorder);
 	    }
 
 	    /**
 	     * @brief Replace the item at the current position selected.
 	     *
-	     * Replaces the item at the current position of the list selected by the user.
+	     * Replaces the item at the current position of the list
+	     * selected by the user.
 	     *
 	     * @param item the new item.
 	     */
@@ -370,6 +393,7 @@ namespace YAPETUI {
 		     itemlist_pos++, i++);
 
 		*itemlist_pos = item;
+		setSortOrder(this->sortorder);
 	    }
 
 	    void deleteSelectedItem() {
@@ -503,6 +527,36 @@ namespace YAPETUI {
 	    }
 
 	    l_size_type size() { return itemlist.size(); }
+
+	    /**
+	     * @brief Returns the sort order applied to the list
+	     *
+	     * Returns the current sort order that is applied to the list.
+	     *
+	     * @return \c SortOrder value.
+	     */
+	    SortOrder getSortOrder() const { return sortorder; }
+
+	    /**
+	     * @brief Sorts the list
+	     *
+	     * Sorts the list using the given order. It is expected
+	     * that \c T has defined the < operator.
+	     *
+	     * @param so value of the type \c SortOrder
+	     */
+	    void setSortOrder(SortOrder so) {
+		std::sort(itemlist.begin(),itemlist.end());
+		sortorder = so;
+		switch (sortorder) {
+		case ASCENDING:
+		    break;
+		case DESCENDING:
+		    std::reverse(itemlist.begin(),itemlist.end());
+		    break;
+		}
+	    }
+
     };
 
 }
