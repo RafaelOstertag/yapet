@@ -39,7 +39,7 @@
 namespace YAPET {
     /**
      * @brief Holds a partially decrypted record
-     * 
+     *
      * Partially decrypted records have their name stored in plain
      * text. The other fields of the password record remain
      * encrypted. This class is used for convenience. It relieves the
@@ -112,6 +112,8 @@ namespace YAPET {
 	     */
 	    inline const char* c_str() const { return (char*)name; }
 	    const PartDec& operator=(const PartDec& pd);
+
+	    bool operator<(const PartDec& pd) const;
     };
 }
 

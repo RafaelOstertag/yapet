@@ -16,6 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#ifdef HAVE_STRING_H
+# include<string.h>
+#endif
 
 #include "partdec.h"
 
@@ -30,7 +33,7 @@ PartDec::PartDec() {
 
 PartDec::PartDec(BDBuffer& bd, const Key& key)
     throw(YAPETException) : enc_data(bd) {
-   
+
     Crypt crypt(key);
     Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord>(bd);
     PasswordRecord* ptr_dec_pw_rec = *dec_pw_rec;
@@ -73,4 +76,17 @@ PartDec::operator=(const PartDec& pd) {
     enc_data = pd.enc_data;
 
     return *this;
+}
+
+/**
+ * This is mainly used for sorting the entries...
+ */
+bool
+PartDec::operator<(const PartDec& pd) const {
+    if (this == &pd) return false;
+
+    if (strcmp((const char*)name, (const char*)pd.name) < 0)
+	return true;
+
+    return false;
 }
