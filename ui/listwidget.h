@@ -373,9 +373,9 @@ namespace YAPETUI {
 		itemlist = l;
 		start_pos = 0;
 		cur_pos = 0;
+		setSortOrder(this->sortorder);
 		showListItems();
 		showSelected(-1);
-		setSortOrder(this->sortorder);
 	    }
 
 	    /**
@@ -540,13 +540,13 @@ namespace YAPETUI {
 	    /**
 	     * @brief Sorts the list
 	     *
-	     * Sorts the list using the given order. It is expected
-	     * that \c T has defined the < operator.
+	     * Sorts the list using the given order. It expects that
+	     * \c T has defined the < operator.
 	     *
 	     * @param so value of the type \c SortOrder
 	     */
 	    void setSortOrder(SortOrder so) {
-		std::sort(itemlist.begin(),itemlist.end());
+		itemlist.sort();
 		sortorder = so;
 		switch (sortorder) {
 		case ASCENDING:
@@ -555,6 +555,17 @@ namespace YAPETUI {
 		    std::reverse(itemlist.begin(),itemlist.end());
 		    break;
 		}
+	    }
+
+	    /**
+	     * @brief Sorts the list with the currently set sort order
+	     *
+	     * Sorts the list using the currently set sort order.
+	     *
+	     * @sa setSortOrder
+	     */
+	    void setSortOrder() {
+		setSortOrder(getSortOrder());
 	    }
 
     };
