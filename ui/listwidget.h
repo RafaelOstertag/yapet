@@ -52,17 +52,15 @@
 namespace YAPETUI {
 
     /**
-     * @todo Making focus clearly visible.
-     *
      * @brief A widget showing a list of items for selecting one.
      *
-     * This template shows a list of items on the screen and allows the user to
-     * select one of it. If the list is larger than the available screen
-     * height, it allows to scroll.
+     * This template shows a list of items on the screen and allows
+     * the user to select one of it. If the list is larger than the
+     * available screen height, it allows to scroll.
      *
-     * The objects stored in the \c std::list are expected to have a method \c
-     * c_str() which should return the name or whatever of the item. This
-     * string is displayed on the screen
+     * The objects stored in the \c std::list are expected to have a
+     * method \c c_str() which should return the name or whatever of
+     * the item. This string is displayed on the screen
      *
      */
     template<class T>
@@ -86,12 +84,21 @@ namespace YAPETUI {
 	    int height;
 
 	    /**
+	     * @brief Indicates whether or not the widget has the focus
+	     *
+	     * Indicates whether or not this widget has the
+	     * focus. Determines how the border has to be drawn
+	     */
+	    bool hasfocus;
+
+	    /**
 	     * @brief Holds the starting position within the list.
 	     *
 	     * This holds the position from where we start showing items on the
 	     * screen.
 	     */
 	    int start_pos;
+
 	    /**
 	     * @brief The position within the visible items.
 	     *
@@ -108,6 +115,13 @@ namespace YAPETUI {
 	     */
 	    SortOrder sortorder;
 
+	    int setBorder() const {
+		if (hasfocus)
+		    return box(window,0,0);
+		else
+		    return wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
+	    }
+
 	protected:
 	    typename std::list<T> itemlist;
 	    typedef typename std::list<T>::size_type l_size_type;
@@ -123,7 +137,7 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error clearing window");
 
-		retval = box(window, 0, 0);
+		retval = setBorder();
 		if (retval == ERR)
 		    throw UIException("Error drawing box around window");
 	    }
@@ -171,19 +185,39 @@ namespace YAPETUI {
 		showScrollIndicators();
 	    }
 
+	    /**
+	     * @brief Highlights the selected item
+	     *
+	     * Highlights the selected item in the list. However, this
+	     * is depending of the global member \c hasfocus. If \c
+	     * hasfocus is \c false, the highlight is removed.
+	     *
+	     * @param old_pos tells the method the position of the old
+	     * highlight, so it can be removed. If the value is less
+	     * than \c 0, it does not try to clear the old highlight.
+	     */
 	    void showSelected(int old_pos) throw(UIException) {
 		int retval = 0;
 
 		if (itemlist.size() > 0) {
-		    retval = mymvwchgat(window,
-				      cur_pos + 1,
-				      1,
-				      width-2,
-				      A_REVERSE,
-				      Colors::getcolor(LISTWIDGET),
-				      NULL);
+		    if (hasfocus)
+			retval = mymvwchgat(window,
+					    cur_pos + 1,
+					    1,
+					    width-2,
+					    A_REVERSE,
+					    Colors::getcolor(LISTWIDGET),
+					    NULL);
+		    else
+			retval = mymvwchgat(window,
+					    cur_pos + 1,
+					    1,
+					    width-2,
+					    A_NORMAL,
+					    Colors::getcolor(LISTWIDGET),
+					    NULL);
 		    if (retval == ERR)
-			throw UIException("Error move cursor");
+			throw UIException("Error displaying cursor");
 
 		}
 
@@ -208,29 +242,6 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error refreshing window");
 	    }
-
-	    // Clear display of the selecteino
-	    void clearSelected() throw(UIException) {
-		// Clear the entire selection
-		int retval = mymvwchgat(window,
-				    cur_pos + 1,
-				    1,
-				    width-2,
-				    A_NORMAL,
-				    Colors::getcolor(LISTWIDGET),
-				    NULL);
-		if (retval == ERR)
-		    throw UIException("Error move cursor");
-
-		retval = touchwin(window);
-		if (retval == ERR)
-		    throw UIException("Error touching window");
-
-		retval = wrefresh(window);
-		if (retval == ERR)
-		    throw UIException("Error refreshing window");
-	    }
-
 
 	    void scrollUp() {
 		if (itemlist.size() == 0) return;
@@ -334,7 +345,9 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error enabling keypad");
 
-		box(window, 0, 0);
+		retval = setBorder();
+		if (retval == ERR)
+		    throw UIException("Error re-setting the border");
 
 		// We set them here in case the window was resized
 		width = w;
@@ -364,6 +377,7 @@ namespace YAPETUI {
 	     */
 	    ListWidget(std::list<T> l, int sx, int sy, int w, int h)
 		throw(UIException) : window(NULL),
+				     hasfocus(false),
 				     width(w),
 				     height(h),
 				     start_pos(0),
@@ -381,8 +395,8 @@ namespace YAPETUI {
 	    }
 
 	    virtual ~ListWidget() {
-			wclear(window);
-			delwin(window);
+		wclear(window);
+		delwin(window);
 	    }
 
 	    /**
@@ -399,8 +413,7 @@ namespace YAPETUI {
 		start_pos = 0;
 		cur_pos = 0;
 		setSortOrder(this->sortorder);
-		showListItems();
-		showSelected(-1);
+		refresh();
 	    }
 
 	    /**
@@ -460,19 +473,21 @@ namespace YAPETUI {
 	     * @return the key stroke that made it loose the focus.
 	     */
 	    virtual int focus() throw(UIException) {
-		int retval = box(window, 0, 0);
+		hasfocus = true;
+
+		int retval = setBorder();
 		if (retval == ERR)
-		    throw UIException("Error re-setting the border");
+		    throw UIException("Error setting the border of window");
 
 		showScrollIndicators();
+		showSelected(-1);
 
 		retval = wrefresh(window);
 		if (retval == ERR)
 		    throw UIException("Error refreshing the list widget");
 
 		int ch;
-		bool stay_in_loop = true;
-		while (stay_in_loop) {
+		while (hasfocus) {
 		    ch = wgetch(window);
 		    switch (ch) {
 		    case KEY_UP:
@@ -501,14 +516,14 @@ namespace YAPETUI {
 			BaseWindow::refreshAll();
 			break;
 		    default:
-			stay_in_loop = false;
+			hasfocus = false;
 			break;
 		    }
 		}
 
-		clearSelected();
+		showSelected(-1);
 
-		retval = wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
+		retval = setBorder();
 		if (retval == ERR)
 		    throw UIException("Error re-setting the border");
 		retval = wrefresh(window);
