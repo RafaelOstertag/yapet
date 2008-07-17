@@ -600,7 +600,10 @@ MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
 	    recordlist->deleteSelectedItem();
 	    records_changed = true;
 	    recordlist->refresh();
+	    statusbar.putMsg("Record deleted");
 	    records_changed = true;
+	} else {
+	    statusbar.clear();
 	}
 	delete dialog;
     } catch(YAPETUI::UIException&) {
