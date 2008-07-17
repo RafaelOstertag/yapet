@@ -188,6 +188,7 @@ namespace YAPETUI {
 		}
 
 		if (old_pos > -1) {
+		    // Reset the old position to 'normal' attribute
 		    retval = mymvwchgat(window,
 				      old_pos + 1,
 				      1,
@@ -198,6 +199,7 @@ namespace YAPETUI {
 		    if (retval == ERR)
 			throw UIException("Error move cursor");
 		}
+
 		retval = touchwin(window);
 		if (retval == ERR)
 		    throw UIException("Error touching window");
@@ -206,6 +208,29 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error refreshing window");
 	    }
+
+	    // Clear display of the selecteino
+	    void clearSelected() throw(UIException) {
+		// Clear the entire selection
+		int retval = mymvwchgat(window,
+				    cur_pos + 1,
+				    1,
+				    width-2,
+				    A_NORMAL,
+				    Colors::getcolor(LISTWIDGET),
+				    NULL);
+		if (retval == ERR)
+		    throw UIException("Error move cursor");
+
+		retval = touchwin(window);
+		if (retval == ERR)
+		    throw UIException("Error touching window");
+
+		retval = wrefresh(window);
+		if (retval == ERR)
+		    throw UIException("Error refreshing window");
+	    }
+
 
 	    void scrollUp() {
 		if (itemlist.size() == 0) return;
@@ -481,7 +506,9 @@ namespace YAPETUI {
 		    }
 		}
 
-		retval = box(window, 0, '-');
+		clearSelected();
+
+		retval = wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
 		if (retval == ERR)
 		    throw UIException("Error re-setting the border");
 		retval = wrefresh(window);
