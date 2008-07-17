@@ -591,6 +591,8 @@ MainWindow::editSelectedRecord() {
 
 void
 MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
+    if (recordlist->size() < 1) return;
+
     YAPETUI::DialogBox* dialog = NULL;
     try {
 	dialog = new YAPETUI::DialogBox("Question", "Delete selected record?");
@@ -603,7 +605,7 @@ MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
 	    statusbar.putMsg("Record deleted");
 	    records_changed = true;
 	} else {
-	    statusbar.clear();
+	    statusbar.putMsg("");
 	}
 	delete dialog;
     } catch(YAPETUI::UIException&) {
@@ -629,11 +631,11 @@ void
 MainWindow::setSortOrder() {
     try {
 	switch (recordlist->getSortOrder()) {
-	case(YAPETUI::ListWidget<class T>::ASCENDING):
+	case(YAPETUI::ListWidget<YAPET::PartDec>::ASCENDING):
 	    recordlist->setSortOrder(YAPETUI::ListWidget<YAPET::PartDec>::DESCENDING);
 	    statusbar.putMsg("Set sort order descending");
 	    break;
-	case(YAPETUI::ListWidget<class T>::DESCENDING):
+	case(YAPETUI::ListWidget<YAPET::PartDec>::DESCENDING):
 	    recordlist->setSortOrder(YAPETUI::ListWidget<YAPET::PartDec>::ASCENDING);
 	    statusbar.putMsg("Set sort order ascending");
 	    break;
