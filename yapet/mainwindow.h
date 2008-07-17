@@ -88,6 +88,7 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	void addNewRecord();
 	void editSelectedRecord();
 	void deleteSelectedRecord() throw(YAPETUI::UIException);
+	void setSortOrder();
 	bool quit();
 	void lockScreen() const throw(YAPETUI::UIException);
 	void changePassword() throw(YAPETUI::UIException);

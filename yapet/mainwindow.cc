@@ -108,9 +108,10 @@ KeyDesc keys[] = { {4, 2, "S", "Save File"},
 		   {6, 2, "L", "Lock Screen"},
 		   {7, 2, "A", "Add Entry"},
 		   {8, 2, "D", "Delete Entry"},
-		   {9, 2, "C", "Change Password"},
-		   {10, 2, "^L", "Redraw Screen"},
-		   {11, 2, "Q", "Quit"},
+		   {9, 2, "O", "Sort Order"},
+		   {10, 2, "C", "Change Password"},
+		   {11, 2, "^L", "Redraw Screen"},
+		   {12, 2, "Q", "Quit"},
 		   {0, 0, NULL, NULL}
 };
 
@@ -512,6 +513,7 @@ MainWindow::addNewRecord() {
 	if (pwentry->entryChanged() &&
 	    pwentry->getEncEntry() != NULL) {
 	    recordlist->getList().push_back(*pwentry->getEncEntry());
+	    recordlist->setSortOrder();
 	    delete pwentry->getEncEntry();
 	    records_changed = true;
 	    statusbar.putMsg("New record added");
@@ -556,6 +558,7 @@ MainWindow::editSelectedRecord() {
 	if (pwentry->entryChanged() &&
 	    pwentry->getEncEntry() != NULL) {
 	    recordlist->replaceCurrentItem(*pwentry->getEncEntry());
+	    recordlist->setSortOrder();
 	    records_changed = true;
 	    statusbar.putMsg("Record edited");
 	    delete pwentry->getEncEntry();
@@ -617,6 +620,34 @@ MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
 	}
     }
     refresh();
+}
+
+void
+MainWindow::setSortOrder() {
+    try {
+	switch (recordlist->getSortOrder()) {
+	case(YAPETUI::ListWidget<class T>::ASCENDING):
+	    recordlist->setSortOrder(YAPETUI::ListWidget<YAPET::PartDec>::DESCENDING);
+	    statusbar.putMsg("Set sort order descending");
+	    break;
+	case(YAPETUI::ListWidget<class T>::DESCENDING):
+	    recordlist->setSortOrder(YAPETUI::ListWidget<YAPET::PartDec>::ASCENDING);
+	    statusbar.putMsg("Set sort order ascending");
+	    break;
+	};
+	recordlist->refresh();
+    } catch(std::exception& ex) {
+	YAPETUI::MessageBox* msgbox = NULL;
+	try {
+	    msgbox = new YAPETUI::MessageBox("Error", ex.what());
+	    msgbox->run();
+	    delete msgbox;
+	} catch (YAPETUI::UIException&) {
+	    if (msgbox != NULL)
+		delete msgbox;
+	    statusbar.putMsg("Error showing error message");
+	}
+    }
 }
 
 bool
@@ -922,6 +953,11 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		case 'D':
 		case 'd':
 		    deleteSelectedRecord();
+		    break;
+
+		case 'O':
+		case 'o':
+		    setSortOrder();
 		    break;
 
 		case 'c':
