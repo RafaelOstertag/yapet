@@ -64,6 +64,7 @@
 #include "fileopen.h"
 #include "passworddialog.h"
 #include "passwordrecord.h"
+#include "searchdialog.h"
 
 /**
  * @brief Structure defining a key for the \c MainWindow.
@@ -103,15 +104,17 @@ struct KeyDesc {
  *
  * Those are the keys used for the main menu of the \c MainWindow class.
  */
-KeyDesc keys[] = { {4, 2, "S", "Save File"},
-		   {5, 2, "R", "Load File"},
-		   {6, 2, "L", "Lock Screen"},
-		   {7, 2, "A", "Add Entry"},
-		   {8, 2, "D", "Delete Entry"},
-		   {9, 2, "O", "Sort Order"},
-		   {10, 2, "C", "Change Password"},
-		   {11, 2, "^L", "Redraw Screen"},
-		   {12, 2, "Q", "Quit"},
+KeyDesc keys[] = { {3, 2, "S", "Save File"},
+		   {4, 2, "R", "Load File"},
+		   {5, 2, "L", "Lock Screen"},
+		   {6, 2, "A", "Add Entry"},
+		   {7, 2, "D", "Delete Entry"},
+		   {8, 2, "O", "Sort Order"},
+		   {9, 2, "/", "Search"},
+		   {10, 2, "N", "Search Next"},
+		   {11, 2, "C", "Change Password"},
+		   {12, 2, "^L", "Redraw Screen"},
+		   {13, 2, "Q", "Quit"},
 		   {0, 0, NULL, NULL}
 };
 
@@ -666,6 +669,41 @@ MainWindow::setSortOrder() {
     }
 }
 
+void
+MainWindow::searchTerm() {
+    if (key == NULL ||
+	file == NULL ||
+	recordlist->size() == 0) return;
+    SearchDialog* searchdialog = NULL;
+    try {
+	searchdialog = new SearchDialog();
+	searchdialog->run();
+	if (!searchdialog->isCanceled()) {
+	} else {
+	    statusbar.putMsg("Search canceled");
+	}
+	delete searchdialog;
+    } catch (YAPETUI::UIException& ex) {
+	if (searchdialog != NULL) {
+	    delete searchdialog;
+	}
+
+	YAPETUI::MessageBox* msgbox = NULL;
+	try {
+	    msgbox = new YAPETUI::MessageBox("Error", ex.what());
+	    msgbox->run();
+	    delete msgbox;
+	} catch (YAPETUI::UIException&) {
+	    if (msgbox != NULL)
+		delete msgbox;
+
+	    statusbar.putMsg("Error showing error message");
+	}
+    }
+    ::refresh();
+    refresh();
+}
+
 bool
 MainWindow::quit() {
     if (!records_changed) return true;
@@ -974,6 +1012,10 @@ MainWindow::run() throw (YAPETUI::UIException) {
 		case 'O':
 		case 'o':
 		    setSortOrder();
+		    break;
+
+		case '/':
+		    searchTerm();
 		    break;
 
 		case 'c':
