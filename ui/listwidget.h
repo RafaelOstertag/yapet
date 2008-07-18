@@ -115,19 +115,27 @@ namespace YAPETUI {
 	     */
 	    SortOrder sortorder;
 
+	    typename std::list<T> itemlist;
+	    typedef typename std::list<T>::size_type l_size_type;
+
+	    inline ListWidget(const ListWidget& lw) {}
+	    inline const ListWidget& operator=(const ListWidget& lw) { return *this; }
+
+
+	    /**
+	     * @brief Sets the border depending on the focus.
+	     *
+	     * Sets the border depending on whether or not the list
+	     * has the focus.
+	     *
+	     * @retval the return value of the call to wborder().
+	     */
 	    int setBorder() const {
 		if (hasfocus)
 		    return box(window,0,0);
 		else
 		    return wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
 	    }
-
-	protected:
-	    typename std::list<T> itemlist;
-	    typedef typename std::list<T>::size_type l_size_type;
-
-	    inline ListWidget(const ListWidget& lw) {}
-	    inline const ListWidget& operator=(const ListWidget& lw) { return *this; }
 
 	    int pagesize() { return height-2; }
 
