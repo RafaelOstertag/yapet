@@ -31,11 +31,11 @@ SearchDialog::createWindow() throw(YAPETUI::UIException) {
     searchtermw = new YAPETUI::InputWidget(getStartX() + 1,
 					 getStartY() + 2,
 					 getWidth() - 2);
-    
+
     okbutton = new YAPETUI::Button("Ok",
 				   getStartX() + 1,
 				   getStartY() + getHeight() - 2);
-    
+
     cancelbutton = new YAPETUI::Button("Cancel",
 				       getStartX() + okbutton->getLength() + 2,
 				       getStartY() + getHeight() - 2);
