@@ -182,6 +182,16 @@ namespace YAPETUI {
 	    }
 	public:
 	    /**
+	     * @brief The minimum dimensions supported
+	     *
+	     * Resize events below either of the dimensions will not
+	     * be processed.
+	     */
+	    enum MinDimension {
+		MIN_Y = 24,
+		MIN_X = 80
+	    };
+	    /**
 	     * @brief Initializes (n)curses.
 	     *
 	     * Initializes curses and sets up the signal handlers.

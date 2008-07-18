@@ -169,6 +169,8 @@ void
 BaseWindow::resizeAll() {
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
+    if (max_y < MIN_Y ||
+	max_x < MIN_X) return;
     std::for_each(basewindow_list.begin(),
 		  basewindow_list.end(),
 		  ResizeIt());
