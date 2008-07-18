@@ -126,7 +126,7 @@
   <mediaobject>
     <textobject>
 <screen format="linespecific">
-		  ..::|| YAPET 0.1 ||::..
+		  ..::|| YAPET x.x ||::..
 +---------------------------++---------------------------+
 |                           ||          K E Y S          |
 |                           ||---------------------------|
@@ -136,6 +136,7 @@
 |                           ||   L     Lock Screen       |
 |                           ||   A     Add Entry         |
 |                           ||   D     Delete Entry      |
+|                           ||   O     Sort Order        |
 |                           ||   C     Change Password   |
 |                           ||   ^L    Redraw Screen     |
 |                           ||   Q     Quit              |
@@ -202,6 +203,12 @@ No file loaded
 	password entry from the currently loaded file. The entry will
 	be permanently deleted when the file is saved by pressing
 	<keycap>S</keycap>.</para> </listitem> </varlistentry>
+
+      <varlistentry>
+	<term><keycap>O</keycap></term> <listitem> <para>Changes the
+	sort order to either ascending or descending. This setting is
+	not kept permanently.</para> <para>The default sort order is
+	ascending.</para></listitem> </varlistentry>
 
       <varlistentry>
 	<term><keycap>C</keycap></term> <listitem> <para>Change the
