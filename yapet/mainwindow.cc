@@ -136,10 +136,21 @@ class Alarm : public YAPETUI::BaseWindow::AlarmFunction {
 void
 MainWindow::printTitle() throw(YAPETUI::UIException) {
     YAPETUI::Colors::setcolor(stdscr, YAPETUI::DEFAULT);
+
+    // Clear the previous title
+    int retval = wmove(stdscr, 0,0);
+    if (retval == ERR)
+	throw YAPETUI::UIException("Error moving cursor");
+    retval = wclrtoeol(stdscr);
+    if (retval == ERR)
+	throw YAPETUI::UIException("Error clearing line");
+
     // Title
     char title[100];
     snprintf(title,100, "..::|| %s ||::..", PACKAGE_STRING);
-    int retval = wmove(stdscr, 0, maxX()/2 - strlen(title)/2);
+
+    // Position the title
+    retval = wmove(stdscr, 0, maxX()/2 - strlen(title)/2);
     if (retval == ERR)
 	throw YAPETUI::UIException("Error moving cursor");
     retval = mywaddstr(stdscr, title);
