@@ -126,17 +126,18 @@
   <mediaobject>
     <textobject>
 <screen format="linespecific">
-		  ..::|| YAPET x.x ||::..
+		  ..::|| YAPET @PACKAGE_VERSION@ ||::..
 +---------------------------++---------------------------+
 |                           ||          K E Y S          |
 |                           ||---------------------------|
-|                           ||                           |
 |                           ||   S     Save File         |
 |                           ||   R     Load File         |
 |                           ||   L     Lock Screen       |
 |                           ||   A     Add Entry         |
 |                           ||   D     Delete Entry      |
 |                           ||   O     Sort Order        |
+|                           ||   /     Search            |
+|                           ||   N     Search Next       |
 |                           ||   C     Change Password   |
 |                           ||   ^L    Redraw Screen     |
 |                           ||   Q     Quit              |
@@ -161,12 +162,19 @@ No file loaded
     &pwrecord;
 
     <para>Files created by &yp; always have the
-      suffix <filename>.pet</filename>. This cannot be changed by
-      the user.</para>
+      suffix <filename>.pet</filename>. This cannot be changed by the
+      user. Also, if a file is loaded using the command line the
+      suffix <filename>.pet</filename> is appended to the filename
+      given that it was not specified by the user.</para>
+
+    <para>The password entries are protected by a master password. The
+    master password is used to encrypt and decrypt the records. If the
+    master password is lost, so are the records.</para>
 
     <para>
       The upper right frame in <xref linkend="fig.mainscreen" /> shows
-      the keys recognized by &yp;. The keys are not case-sensitive.
+      the keys recognized by &yp;. The keys are not
+      case-sensitive. Following is a short explanation of the keys.
     </para>
 
     <variablelist>
@@ -195,7 +203,10 @@ No file loaded
 	<term><keycap>A</keycap></term> <listitem> <para>Adds a new
 	password entry to the currently loaded file. The entry will be
 	permanently added to the file when the file is saved by
-	pressing <keycap>S</keycap>.</para> </listitem>
+	pressing <keycap>S</keycap>.</para>
+	  <para>Before you can use this function, you have to load an
+	existing file or create a new one by
+	pressing <keycap>R</keycap>.</para></listitem>
 	</varlistentry>
 
       <varlistentry>
@@ -207,8 +218,24 @@ No file loaded
       <varlistentry>
 	<term><keycap>O</keycap></term> <listitem> <para>Changes the
 	sort order to either ascending or descending. This setting is
-	not kept permanently.</para> <para>The default sort order is
+	not kept permanently and is lost upon restart of
+	&yp;.</para> <para>The default sort order is
 	ascending.</para></listitem> </varlistentry>
+
+      <varlistentry>
+	<term><keycap>/</keycap></term> <listitem><para>Starts a new
+	    search. &YP; can search the name of the entries for a
+	    particular term. If the term is found, the item is
+	    highlighted. You can repeat a search by
+	    pressing <keycap>N</keycap> using the same term
+	    again.</para></listitem> </varlistentry>
+
+      <varlistentry>
+	<term><keycap>N</keycap></term> <listitem><para>Repeats a
+	    search using the search term specified invoking the search
+	    functionality by
+	    pressing <keycap>/</keycap>. </para> </listitem>
+      </varlistentry>
 
       <varlistentry>
 	<term><keycap>C</keycap></term> <listitem> <para>Change the
@@ -248,6 +275,11 @@ No file loaded
     widget. Be aware that <keycombo
     action="simul"><keycap>Shift</keycap><keycap>Tab</keycap></keycombo>
     does not work for focusing the previous widget.</para>
+
+    <para>If there is no key pressed for more than ten (10) minutes,
+    &yp; will blank the screen. It will prompt for the password of
+    the currently load file when a key is pressed. This is the same
+    behavior as seen by pressing the key <keycap>L</keycap>.</para>
 
   </refsect1>
 
