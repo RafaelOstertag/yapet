@@ -101,7 +101,7 @@ namespace YAPETUI {
 		    explicit ItemContains(const char* t) :
 			searchterm(t) {}
 		    bool operator()(const T& item) {
-			char* ptr;
+			const char* ptr;
 #ifdef HAVE_STRCASESTR
 			ptr = strcasestr(item.c_str(), searchterm);
 #elif HAVE_STRSTR
