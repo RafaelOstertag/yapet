@@ -127,7 +127,11 @@ SearchDialog::refresh() throw(YAPETUI::UIException) {
 	throw YAPETUI::UIException("Error setting title");
 
     // The label
+#ifdef HAVE_STRCASESTR
     retval = mymvwaddstr(window, 1, 1, "Please enter the search term");
+#else
+    retval = mymvwaddstr(window, 1, 1, "Please enter the search term (case-sensitive)");
+#endif
     if (retval == ERR)
 	throw YAPETUI::UIException("Error setting label");
 

@@ -65,7 +65,7 @@ class SearchDialog : protected YAPETUI::BaseWindow {
 	bool canceled;
 
 	inline SearchDialog(const SearchDialog&) {}
-	inline const SearchDialog& operator=(const SearchDialog&) { 
+	inline const SearchDialog& operator=(const SearchDialog&) {
 	    return *this; }
 
 	inline int getWidth() const { return maxX() - 8; }
@@ -85,8 +85,8 @@ class SearchDialog : protected YAPETUI::BaseWindow {
 	void refresh() throw(YAPETUI::UIException);
 
 	inline bool isCanceled() const { return canceled; }
-	inline YAPETUI::secstring getSearchTerm() const {
-	    return searchtermw->getText();
+	inline const char* getSearchTerm() const {
+	    return searchtermw->getText().c_str();
 	}
 };
 
