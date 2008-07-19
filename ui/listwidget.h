@@ -37,12 +37,20 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#ifdef HAVE_FUNCTIONAL
+# include <functional>
+#endif
+
 #ifdef HAVE_ITERATOR
 # include <iterator>
 #endif
 
 #ifdef HAVE_LIST
 # include <list>
+#endif
+
+#ifdef HAVE_STRING_H
+# include <string.h>
 #endif
 
 #include "uiexception.h"
@@ -60,7 +68,9 @@ namespace YAPETUI {
      *
      * The objects stored in the \c std::list are expected to have a
      * method \c c_str() which should return the name or whatever of
-     * the item. This string is displayed on the screen
+     * the item. This string is displayed on the screen. Further, the
+     * object need to provide a less-than operator for sorting
+     * purpose.
      *
      */
     template<class T>
@@ -78,6 +88,34 @@ namespace YAPETUI {
 	    };
 
 	private:
+	    /**
+	     * @brief Used to search for item names
+	     *
+	     * This class is used to search for items containing a
+	     * certain search term in their name.
+	     */
+	    class ItemContains : public std::unary_function<T,bool> {
+		private:
+		    const char* searchterm;
+		public:
+		    explicit ItemContains(const char* t) :
+			searchterm(t) {}
+		    bool operator()(const T& item) {
+			char* ptr;
+#ifdef HAVE_STRCASESTR
+			ptr = strcasestr(item.c_str(), searchterm);
+#elif HAVE_STRSTR
+			ptr = strstr(item.c_str(), searchterm);
+#else
+# error "Sorry, neither strcasestr() nor strstr() found"
+#endif
+			if (ptr != NULL)
+			    return true;
+
+			return false;
+		    }
+	    };
+
 	    WINDOW* window;
 
 	    int width;
@@ -94,33 +132,112 @@ namespace YAPETUI {
 	    /**
 	     * @brief Holds the starting position within the list.
 	     *
-	     * This holds the position from where we start showing items on the
-	     * screen.
+	     * This holds the position from where we start showing
+	     * items on the screen.
 	     */
 	    int start_pos;
 
 	    /**
 	     * @brief The position within the visible items.
 	     *
-	     * Holds the position within the visible items. By adding \c
-	     * cur_pos \c + \c start_pos the item actually selected by the user
-	     * as offset from the beginning of the list is yielded.
+	     * Holds the position within the visible items. By adding
+	     * \c cur_pos \c + \c start_pos the item actually selected
+	     * by the user as offset from the beginning of the list is
+	     * yielded.
 	     */
 	    int cur_pos;
 
 	    /**
 	     * @brief Holds the sort order currently applied
 	     *
-	     * Holds the sort order that is currently applied to the list.
+	     * Holds the sort order that is currently applied to the
+	     * list.
 	     */
 	    SortOrder sortorder;
 
+	    /**
+	     * @brief Items displayed.
+	     *
+	     * The actual list holding the items displayed by the
+	     * widget.
+	     */
 	    typename std::list<T> itemlist;
 	    typedef typename std::list<T>::size_type l_size_type;
 
-	    inline ListWidget(const ListWidget& lw) {}
-	    inline const ListWidget& operator=(const ListWidget& lw) { return *this; }
+	    typedef typename std::list<T>::iterator list_it;
+	    typedef typename std::list<T>::const_iterator c_list_it;
 
+	    /**
+	     * @brief Points the current hit of a search
+	     *
+	     * When the list is searched, this iterator points to the
+	     * current hit of a search.
+	     */
+	    list_it cur_search_hit;
+
+	    /**
+	     * @brief Holds the last search term
+	     *
+	     * Holds the last search term used.
+	     */
+	    std::string last_search_term;
+
+	    inline ListWidget(const ListWidget& lw) {}
+	    inline const ListWidget& operator=(const ListWidget& lw) {
+		return *this; }
+
+	    /**
+	     * @brief Validates the given iterator against the list
+	     *
+	     * Indicates whether or not the given iterator is still
+	     * valid for the list
+	     *
+	     * @param it the iterator to be validated against \c
+	     * itemlist.
+	     *
+	     * @retval a positive value (including zero) to indicate
+	     * the position of the iterator, a negative value
+	     * otherwise if the iterator is not valid.
+	     */
+	    l_size_type validateIterator(list_it& it) {
+		l_size_type pos;
+		list_it itit = itemlist.begin();
+
+		for (pos = 0; itit != itemlist.end(); pos++, itit++ )
+		    if (itit == it)
+			return pos;
+
+		return -1;
+	    }
+
+	    l_size_type validateIterator(c_list_it& it) const {
+		l_size_type pos;
+		c_list_it itit = itemlist.begin();
+
+		for (pos = 0; itit != itemlist.end(); pos++, itit++ )
+		    if (itit == it)
+			return pos;
+
+		return -1;
+	    }
+
+
+	    void highlightItemIter(list_it& it) {
+		    l_size_type pos = validateIterator(it);
+
+		    if (pos < 0) return;
+
+		    if ( (pos/pagesize()) > 0) {
+			start_pos=pos;
+			cur_pos=0;
+		    } else {
+			start_pos = 0;
+			cur_pos = pos;
+		    }
+
+		    showListItems();
+		    showSelected(-1);
+	    }
 
 	    /**
 	     * @brief Sets the border depending on the focus.
@@ -160,7 +277,7 @@ namespace YAPETUI {
 			throw UIException("Unable to display scroll up indicator");
 		}
 
-		if ( itemlist.size() - 1  > start_pos + cur_pos &&
+		if ( (itemlist.size() - 1)  > start_pos + cur_pos &&
 		     itemlist.size() > pagesize()) {
 		    int retval = mvwaddch(window,
 					  height - 2,
@@ -385,12 +502,14 @@ namespace YAPETUI {
 	     */
 	    ListWidget(std::list<T> l, int sx, int sy, int w, int h)
 		throw(UIException) : window(NULL),
-				     hasfocus(false),
 				     width(w),
 				     height(h),
+				     hasfocus(false),
 				     start_pos(0),
 				     cur_pos(0),
-				     itemlist(l) {
+				     itemlist(l),
+				     cur_search_hit(itemlist.end()),
+				     last_search_term("") {
 		if ( sx == -1 ||
 		     sy == -1 ||
 		     width == -1 ||
@@ -412,9 +531,10 @@ namespace YAPETUI {
 	     *
 	     * Sets a new list of items to display.
 	     *
-	     * @param l the list holding the items to be displayed. The items
-	     * of the list are expected to have a method called \c c_str() for
-	     * getting their names. Empty lists are allowed.
+	     * @param l the list holding the items to be
+	     * displayed. The items of the list are expected to have a
+	     * method called \c c_str() for getting their names. Empty
+	     * lists are allowed.
 	     */
 	    void setList(typename std::list<T>& l) {
 		itemlist = l;
@@ -425,7 +545,8 @@ namespace YAPETUI {
 	    }
 
 	    /**
-	     * @brief Replace the item at the current position selected.
+	     * @brief Replace the item at the current position
+	     * selected.
 	     *
 	     * Replaces the item at the current position of the list
 	     * selected by the user.
@@ -461,8 +582,8 @@ namespace YAPETUI {
 	    /**
 	     * @brief Sets the focus to this widget.
 	     *
-	     * Focus the widget and shows it on the screen. The widget handles
-	     * the following key strokes:
+	     * Focus the widget and shows it on the screen. The widget
+	     * handles the following key strokes:
 	     *
 	     * - \c KEY_UP
 	     * - \c KEY_DOWN
@@ -591,7 +712,7 @@ namespace YAPETUI {
 	     * @brief Sorts the list
 	     *
 	     * Sorts the list using the given order. It expects that
-	     * \c T has defined the < operator.
+	     * \c T has defined the less than operator.
 	     *
 	     * @param so value of the type \c SortOrder
 	     */
@@ -616,6 +737,70 @@ namespace YAPETUI {
 	     */
 	    void setSortOrder() {
 		setSortOrder(getSortOrder());
+	    }
+
+	    /**
+	     * @brief Searches for a term in the list items
+	     *
+	     * Searches for a given term in the list items.
+	     *
+	     * @param t the term to search for
+	     *
+	     * @retval \c true if the term was found, else \c false.
+	     */
+	    bool searchTerm(const char* t) {
+		last_search_term = t;
+		cur_search_hit = std::find_if(itemlist.begin(),
+					      itemlist.end(),
+					      ItemContains(t));
+
+		if (cur_search_hit != itemlist.end()) {
+		    highlightItemIter(cur_search_hit);
+		    return true;
+		}
+
+		return false;
+	    }
+
+	    /**
+	     * @brief Searches again using the last search term used.
+	     *
+	     * Performs a search again using the last search term again.
+	     *
+	     * @retval \c true if the term was found again, else \c false
+	     */
+	    bool searchNext() {
+		if (validateIterator(cur_search_hit) < 0 ||
+		    last_search_term.empty() )
+		    return false;
+		
+		// Here make the search start at the beginning, or
+		// continue at the next item
+		if (cur_search_hit == itemlist.end() ) {
+		    cur_search_hit = itemlist.begin();
+		} else {
+		    // Advance to the next item. Else we would have a
+		    // hit on the item pointed to by cur_search_hit...
+		    cur_search_hit++;
+		}
+
+		// Indicate that we reached the end of the list. Upon
+		// the next call of this method, cur_search_hit will
+		// be set to the beginning of the list and the search
+		// starts from the top again
+		if (cur_search_hit == itemlist.end()) return false;
+
+		cur_search_hit = std::find_if(cur_search_hit,
+					      itemlist.end(),
+					      ItemContains(last_search_term.c_str()));
+
+		if (cur_search_hit != itemlist.end()) {
+		    highlightItemIter(cur_search_hit);
+		    return true;
+		}
+
+		return false;
+
 	    }
 
     };
