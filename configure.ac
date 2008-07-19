@@ -1,6 +1,6 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.1],[rafi@guengel.ch])
+AC_INIT([YAPET],[0.2],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -69,7 +69,7 @@ AC_CHECK_HEADER([ncurses.h],
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
-AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory],
+AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory functional],
 		       [],
 		       [AC_MSG_ERROR([your system is missing a required C++ header file])])
 
@@ -85,7 +85,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror strcmp getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime])
+AC_CHECK_FUNCS([memset strerror strcmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat])
