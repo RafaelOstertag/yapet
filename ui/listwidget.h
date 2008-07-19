@@ -773,7 +773,7 @@ namespace YAPETUI {
 		if (validateIterator(cur_search_hit) < 0 ||
 		    last_search_term.empty() )
 		    return false;
-		
+
 		// Here make the search start at the beginning, or
 		// continue at the next item
 		if (cur_search_hit == itemlist.end() ) {
