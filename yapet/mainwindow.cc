@@ -679,6 +679,12 @@ MainWindow::searchTerm() {
 	searchdialog = new SearchDialog();
 	searchdialog->run();
 	if (!searchdialog->isCanceled()) {
+	    if (recordlist->searchTerm(searchdialog->getSearchTerm()) ) {
+		// simply clear the status bar
+		statusbar.putMsg("");
+	    } else {
+		statusbar.putMsg("Search term not found");
+	    }
 	} else {
 	    statusbar.putMsg("Search canceled");
 	}
@@ -702,6 +708,20 @@ MainWindow::searchTerm() {
     }
     ::refresh();
     refresh();
+}
+
+void
+MainWindow::searchNext() {
+    if (key == NULL ||
+	file == NULL ||
+	recordlist->size() == 0) return;
+
+    if (recordlist->searchNext() ) {
+	    // simply clear the status bar
+	statusbar.putMsg("");
+    } else {
+	statusbar.putMsg("Search term not found");
+    }
 }
 
 bool
@@ -1016,6 +1036,11 @@ MainWindow::run() throw (YAPETUI::UIException) {
 
 		case '/':
 		    searchTerm();
+		    break;
+
+		case 'N':
+		case 'n':
+		    searchNext();
 		    break;
 
 		case 'c':

@@ -90,6 +90,7 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	void deleteSelectedRecord() throw(YAPETUI::UIException);
 	void setSortOrder();
 	void searchTerm();
+	void searchNext();
 	bool quit();
 	void lockScreen() const throw(YAPETUI::UIException);
 	void changePassword() throw(YAPETUI::UIException);
