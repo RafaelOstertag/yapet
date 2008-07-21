@@ -19,6 +19,14 @@
 
 #include "bdbuffer.h"
 
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
+
 using namespace YAPET;
 
 /**
@@ -117,7 +125,7 @@ BDBuffer::resize(uint32_t ns) throw(YAPETException) {
 
     uint8_t* newbuf = alloc_mem(ns);
 
-    if (ns > _size) 
+    if (ns > _size)
 	memcpy(newbuf, data, _size);
     else
 	memcpy(newbuf, data, ns);

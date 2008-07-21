@@ -1,5 +1,6 @@
 // $Id$
 
+#include <string.h>
 #include <iostream>
 #include <bdbuffer.h>
 

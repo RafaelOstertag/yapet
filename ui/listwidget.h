@@ -49,6 +49,10 @@
 # include <list>
 #endif
 
+#ifdef HAVE_ALGORITHM
+# include <algorithm>
+#endif
+
 #ifdef HAVE_STRING_H
 # include <string.h>
 #endif
@@ -615,7 +619,7 @@ namespace YAPETUI {
 		if (retval == ERR)
 		    throw UIException("Error refreshing the list widget");
 
-		int ch;
+		int ch = 0;
 		while (hasfocus) {
 		    ch = wgetch(window);
 		    switch (ch) {

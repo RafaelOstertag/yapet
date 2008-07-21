@@ -19,6 +19,10 @@
 
 #include "passwordwidget.h"
 
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
 using namespace YAPETUI;
 
 PasswordWidget::PasswordWidget(int sx, int sy, int w, int ml)

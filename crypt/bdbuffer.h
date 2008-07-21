@@ -108,7 +108,7 @@ namespace YAPET {
 	    const uint8_t* operator()() const { return data; }
 	    //! Returns the pointer to the memory chunk
 	    uint8_t* operator()() { return data; }
-	    
+
 	    //! Returns the pointer to the memory chunk
 	    operator uint8_t*() { return data; }
 	    //! Returns the pointer to the memory chunk
@@ -118,10 +118,9 @@ namespace YAPET {
 	    operator const void*() { return (void*)data; }
 
 	    const BDBuffer& operator=(const BDBuffer& ed);
-	    
+
     };
-	
+
 }
 
 #endif // _BDBUFFER_H
-
