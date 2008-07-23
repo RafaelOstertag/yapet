@@ -3,17 +3,20 @@
 htmldoc_DATA = README.html DESIGN.html yapet.html
 htmldocdir = $(docdir)/html
 
-EXTRA_DIST = source-doc/ $(htmldoc_DATA)
-
 dist_man1_MANS = yapet.1
-
-if BUILDDOC
 
 sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in	\
 yapet.sgml.in Doxyfile.in
 
-sgml_files = yapet.sgml README.sgml INSTALL.sgml DESIGN.sgml		\
-preamble.sgml supportedplatforms.sgml caution.sgml pwrecord.sgml
+sgml_static_files = preamble.sgml supportedplatforms.sgml caution.sgml	\
+pwrecord.sgml
+
+sgml_files = yapet.sgml README.sgml INSTALL.sgml DESIGN.sgml	\
+$(sgml_static_files)
+
+EXTRA_DIST = source-doc/ $(htmldoc_DATA) $(sgml_files) $(sed_static_files)
+
+if BUILDDOC
 
 # Those files are fed to xsltproc
 sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
