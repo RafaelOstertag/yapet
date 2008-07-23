@@ -81,6 +81,7 @@ namespace YAPETUI {
 
 	protected:
 	    void createWindow(int sx, int sy, int w) throw(UIException);
+	    void visibleCursor(bool v) const;
 	    inline const WINDOW* getWindow() const { return window; }
 	    inline WINDOW* getWindow() { return window; }
 	    inline int getStartPos() const { return start_pos; }
@@ -88,6 +89,7 @@ namespace YAPETUI {
 	    inline int getWidth() const { return width; }
 	    inline secstring& getBuffer() { return buffer; }
 	    inline const secstring& getBuffer() const { return buffer; }
+
 
 	public:
 	    InputWidget(int sx, int sy, int w, int ml = 512) throw(UIException);

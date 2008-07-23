@@ -135,6 +135,16 @@ InputWidget::createWindow(int sx, int sy, int w) throw(UIException) {
     //refresh();
 }
 
+void
+InputWidget::visibleCursor(bool v) const {
+    if (v) {
+	int err = curs_set(2);
+	if (err == ERR) curs_set(1);
+    } else {
+	curs_set(0);
+    }
+}
+
 InputWidget::InputWidget(int sx, int sy, int w, int ml)
     throw(UIException) : window(NULL),
 			 max_length(ml),
@@ -163,7 +173,7 @@ InputWidget::focus() throw(UIException) {
     if (retval == ERR)
 	throw UIException("Error moving cursor for widget");
 
-    curs_set(2);
+    visibleCursor(true);
     int ch;
     while ( (ch=wgetch(window)) != '\n' && ch != '\t') {
 	switch (ch) {
@@ -187,11 +197,10 @@ InputWidget::focus() throw(UIException) {
 	    ungetch('\n');
 	    break;
 	case KEY_DC:
-	case 127:
 	    processDelete();
 	    break;
 	case KEY_BACKSPACE:
-	case 8:
+	case 127:
 	    processBackspace();
 	    break;
 #ifdef HAVE_WRESIZE
@@ -208,7 +217,7 @@ InputWidget::focus() throw(UIException) {
 	}
     }
  BAILOUT:
-    curs_set(0);
+    visibleCursor(false);
 
     Colors::setcolor(window, INPUTWIDGET_NOFOCUS);
 
