@@ -1,6 +1,6 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.2p1],[rafi@guengel.ch])
+AC_INIT([YAPET],[0.3],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -23,11 +23,6 @@ AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 AC_LANG([C++])
 
 # Arguments
-AC_ARG_WITH([xsl-path],
-	[AS_HELP_STRING([--with-xsl-path],
-		[path to the XSL DocBook Style Sheets used to generate the documentation])],
-	[AC_SUBST([XSLPATH], ["$withval"])],
-	[AC_SUBST([XSLPATH], ["no"])])
 AC_ARG_WITH([curses-include],
 	[AS_HELP_STRING([--with-curses-include],[directory for (n)curses header files])],
 	[CPPFLAGS="-I$withval $CPPFLAGS"],
@@ -144,7 +139,7 @@ AC_C_BIGENDIAN
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
-AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno -a x$XSLPATH != xno])
+AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno ])
 
 AC_CONFIG_FILES([Makefile
 	yapet/Makefile
