@@ -23,8 +23,8 @@ sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml
 sgml_man = yapet.sgml
 
-docbook_docbook_xsl = $(XSLPATH)/xhtml/docbook.xsl
-docbook_man_xsl = $(XSLPATH)/manpages/docbook.xsl
+docbook_docbook_xsl = http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl
+docbook_man_xsl = http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
