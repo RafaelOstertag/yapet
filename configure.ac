@@ -45,6 +45,11 @@ AC_ARG_ENABLE([build-doc],
 	[AS_HELP_STRING([--enable-build-doc],[build docs])],
 	[my_builddoc=yes],
 	[my_builddoc=no])
+AC_ARG_ENABLE([terminal-title],
+	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title])],
+	[AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+	my_settitle=yes],
+	[my_settitle=no])
 
 # Libs
 AC_MSG_NOTICE([Searching for required libraries])
@@ -53,12 +58,12 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([fcntl.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h])
+AC_CHECK_HEADERS([stdio.h fcntl.h strings.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h])
 
 AC_CHECK_HEADER([ncurses.h],
-	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h])],
+	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
 	[AC_CHECK_HEADER([curses.h],
-		[AC_DEFINE([HAVE_CURSES_H],[1],[Set to 1 if you have curses.h])],
+		[AC_DEFINE([HAVE_CURSES_H],[1],[Set to 1 if you have curses.h]) my_usencurses=no],
 		[AC_MSG_ERROR([curses header not found])])]
 )
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
@@ -80,10 +85,10 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror strcmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime])
+AC_CHECK_FUNCS([memset strerror strcmp strncasecmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime fflush fprintf])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
-AC_CHECK_FUNCS([wresize mvwchgat])
+AC_CHECK_FUNCS([wresize mvwchgat termname])
 
 # Some custom tests
 AC_MSG_CHECKING([whether waddstr() use const char*])
@@ -148,3 +153,20 @@ AC_CONFIG_FILES([Makefile
 	tests/Makefile
 	doc/Makefile])
 AC_OUTPUT
+
+echo "******************************************************************"
+echo ""
+echo "Prefix              : $prefix"
+echo "CPPFLAGS            : $CPPFLAGS"
+echo "CXXFLAGS            : $CXXFLAGS"
+echo "LDFLAGS             : $LDFLAGS"
+echo "Use ncurses.h       : $my_usencurses"
+echo ""
+echo "Doxygen             : $DOXYGEN"
+echo "xsltproc            : $XSLTPROC"
+echo "Lynx                : $LYNX"
+echo ""
+echo "Build Documentation : $my_builddoc"
+echo "Set Terminal Title  : $my_settitle"
+echo ""
+echo "******************************************************************"
