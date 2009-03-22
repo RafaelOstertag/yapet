@@ -23,7 +23,7 @@ using namespace YAPETUI;
 
 bool Colors::initialized = false;
 
-color Colors::colors[] = { 
+color Colors::colors[] = {
     // Normal
     {1, COLOR_WHITE, COLOR_BLUE, A_NORMAL},
     // Message box title
@@ -36,10 +36,10 @@ color Colors::colors[] = {
     {5, COLOR_BLACK, COLOR_YELLOW, A_REVERSE},
     // Button no focus
     {6, COLOR_WHITE, COLOR_BLACK, A_NORMAL},
-    // Button focus    
+    // Button focus
     {7, COLOR_BLACK, COLOR_GREEN, A_REVERSE},
     // List widget
-    {8, COLOR_WHITE, COLOR_BLUE, A_NORMAL} 
+    {8, COLOR_WHITE, COLOR_BLUE, A_NORMAL}
 };
 
 
@@ -85,7 +85,7 @@ Colors::initColors() {
     init_pair(colors[LISTWIDGET].no,
 	      colors[LISTWIDGET].fg,
 	      colors[LISTWIDGET].bg);
-    
+
 
     initialized = true;
 }
