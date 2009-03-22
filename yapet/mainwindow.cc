@@ -59,6 +59,7 @@
 #include <button.h>
 #include <dialogbox.h>
 #include <colors.h>
+#include <misc.h>
 
 #include "mainwindow.h"
 #include "fileopen.h"
@@ -159,6 +160,11 @@ MainWindow::printTitle() throw(YAPETUI::UIException) {
     retval = mywaddstr(stdscr, title);
     if (retval == ERR)
 	throw YAPETUI::UIException("Error printing title");
+
+#ifdef CANSETTITLE
+    std::string termtitle("YAPET");
+    setTerminalTitle(termtitle);
+#endif
 }
 
 void
