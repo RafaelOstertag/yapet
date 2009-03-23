@@ -115,7 +115,7 @@ inline bool isXTerm() { return false; }
  */
 #ifdef CANSETTITLE
 void setTerminalTitle (const std::string& title) {
-    if (isXTerm())
+    if (isXTerm()) {
 	fprintf(stdout, "%c]0;%s%c", '\033', title.c_str(), '\007');
 	fflush(stdout);
     }
