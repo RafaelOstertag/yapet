@@ -161,10 +161,13 @@ MainWindow::printTitle() throw(YAPETUI::UIException) {
     if (retval == ERR)
 	throw YAPETUI::UIException("Error printing title");
 
-#ifdef CANSETTITLE
-    std::string termtitle("YAPET");
-    setTerminalTitle(termtitle);
-#endif
+    std::string terminal_title;
+    if ( file != NULL )
+	terminal_title = "YAPET (" + file->getFilename() + ")";
+    else
+	terminal_title = "YAPET";
+
+    setTerminalTitle(terminal_title);
 }
 
 void
@@ -770,12 +773,14 @@ MainWindow::lockScreen() const throw(YAPETUI::UIException){
 	    throw YAPETUI::UIException("Error erasing window");
 	}
 
-
 	retval = wrefresh(lockwin);
 	if (retval == ERR) {
 	    delwin(lockwin);
 	    throw YAPETUI::UIException("Error refreshing window");
 	}
+
+	std::string locked_title("YAPET -- Locked --");
+	setTerminalTitle(locked_title);
 
 	ch = wgetch(lockwin);
 #ifdef HAVE_WRESIZE
@@ -931,7 +936,8 @@ MainWindow::MainWindow() throw (YAPETUI::UIException) : BaseWindow(),
 							statusbar(),
 							records_changed(false),
 							key (NULL),
-							file (NULL) {
+							file (NULL),
+							terminal_title("YAPET") {
     createWindow();
 }
 
@@ -1013,7 +1019,6 @@ MainWindow::run() throw (YAPETUI::UIException) {
 			file = NULL;
 			key = NULL;
 		    }
-		    delete tmp;
 		    ::refresh();
 		    YAPETUI::BaseWindow::refreshAll();
 		}
