@@ -30,10 +30,6 @@
 #include <string>
 #endif
 
-#if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
-#define CANSETTITLE
-#endif
-
 /**
  * @file
  * @brief Miscellaneous functions that do not fit elsewhere
@@ -41,9 +37,11 @@
  * Miscellaneous functions that do not fit elsewhere
  */
 
-#ifdef CANSETTITLE
-    extern void setTerminalTitle (const std::string& title);
-#endif
+/** @brief Indicates whether or not the terminal is an X Terminal */
+extern bool isXTerm();
+
+/** @brief Set the title on a terminal */
+extern void setTerminalTitle (const std::string& title);
 
 
 #endif // _MISC_H

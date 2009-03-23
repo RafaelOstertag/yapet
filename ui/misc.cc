@@ -45,22 +45,81 @@
 #include <strings.h>
 #endif
 
-static const char* xterm_name = "xterm";
-static const char* dtterm_name = "dtterm";
+// For convenience
+#if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
+#define CANSETTITLE
+#endif
 
+/**
+ * @brief The terminals we know
+ *
+ * Holds the terminals we know that can have set the title.
+ */
+static const char* xterms[] = {
+    "xterm",
+    "dtterm",
+    NULL
+};
+
+/**
+ * @brief Wrapper function
+ *
+ * Wrapper function for strncasecmp, strncmp, strcmp.
+ *
+ * @param s1 String one
+ * @param s2 String two
+ */
+inline static int mystrcmp(const char* s1, const char* s2) {
+#ifdef HAVE_STRNCASECMP
+    return strncasecmp(s1, s2, (strlen(s1)<strlen(s2) ? strlen(s1) : strlen(s2)) );
+#elif HAVE_STRNCMP
+    return strncmp(s1, s2, (strlen(s1)<strlen(s2) ? strlen(s1) : strlen(s2)) );
+#elif HAVE_STRCMP
+    return strcmp(s1, s2);
+#else
+# error "Sorry, strncasecmp, strncmp, or strcmp needed"
+#endif
+}
+
+
+
+/**
+ * Indicates whether or not the terminal is an X Terminal. It uses the
+ * \c termname() function to determine the type of terminal. It compares the
+ * return value of \c termname() with the values stored in \c xterms.
+ *
+ * The function is always available, but always returns \c false if \c termname
+ * is not supported
+ *
+ * @retval \c true if the terminal is an X Terminal, \c false otherwise.
+ */
+#ifdef HAVE_TERMNAME
+bool isXTerm() {
+    const char** tmp = xterms;
+    char* tn = termname();
+    while (*tmp != NULL) {
+	if (mystrcmp(tn,*tmp) == 0) return true;
+	tmp++;
+    }
+    return false;
+}
+#else
+inline bool isXTerm() { return false; }
+#endif // HAVE_TERMNAME
+
+/**
+ * If supported, set the title on a terminal. The function is always available,
+ * but might not have an effect.
+ *
+ * @param title the title to set
+ */
 #ifdef CANSETTITLE
 void setTerminalTitle (const std::string& title) {
-#ifdef HAVE_STRNCASECMP
-    if (strncasecmp(termname(), xterm_name, strlen(xterm_name)) == 0 ||
-	strncasecmp(termname(), xterm_name, strlen(dtterm_name)) == 0) {
-#elif HAVE_STRCMP
-    if (strcmp(termname(), xterm_name, strlen(xterm_name)) == 0 ||
-	strcmp(termname(), xterm_name, strlen(dtterm_name)) == 0) {
-#else
-# error "Sorry, strncasecmp or strcmp needed"
-#endif
+    if (isXTerm())
 	fprintf(stdout, "%c]0;%s%c", '\033', title.c_str(), '\007');
 	fflush(stdout);
     }
 }
+#else // CANSETTITLE
+inline void setTerminalTitle (const std::string& title) {}
 #endif // CANSETTITLE
