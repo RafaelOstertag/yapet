@@ -17,26 +17,27 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "searchdialog.h"
 
 void
 SearchDialog::createWindow() throw(YAPETUI::UIException) {
     if (window != NULL)
-	throw YAPETUI::UIException("May you consider deleting the window before reallocating");
+	throw YAPETUI::UIException(_("May you consider deleting the window before reallocating"));
 
     window = newwin(getHeight(), getWidth(), getStartY(), getStartX());
     if (window == NULL)
-	throw YAPETUI::UIException("Error creating search dialog");
+	throw YAPETUI::UIException(_("Error creating search dialog"));
 
     searchtermw = new YAPETUI::InputWidget(getStartX() + 1,
 					 getStartY() + 2,
 					 getWidth() - 2);
 
-    okbutton = new YAPETUI::Button("Ok",
+    okbutton = new YAPETUI::Button(_("OK"),
 				   getStartX() + 1,
 				   getStartY() + getHeight() - 2);
 
-    cancelbutton = new YAPETUI::Button("Cancel",
+    cancelbutton = new YAPETUI::Button(_("Cancel"),
 				       getStartX() + okbutton->getLength() + 2,
 				       getStartY() + getHeight() - 2);
 }
@@ -97,7 +98,7 @@ void
 SearchDialog::resize() throw(YAPETUI::UIException) {
     int retval = delwin(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error deleting search dialog window");
+	throw YAPETUI::UIException(_("Error deleting search dialog window"));
 
     delete searchtermw;
     delete okbutton;
@@ -116,28 +117,28 @@ SearchDialog::refresh() throw(YAPETUI::UIException) {
     YAPETUI::Colors::setcolor(window, YAPETUI::MESSAGEBOX);
     int retval = werase(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error clearing search dialog");
+	throw YAPETUI::UIException(_("Error clearing search dialog"));
 
     retval = box(window, 0, 0);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding box");
+	throw YAPETUI::UIException(_("Error adding box"));
 
-    retval = mymvwaddstr(window, 0, 2, "S E A R C H");
+    retval = mymvwaddstr(window, 0, 2, _("S E A R C H"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error setting title");
+	throw YAPETUI::UIException(_("Error setting title"));
 
     // The label
 #ifdef HAVE_STRCASESTR
-    retval = mymvwaddstr(window, 1, 1, "Please enter the search term");
+    retval = mymvwaddstr(window, 1, 1, _("Please enter the search term"));
 #else
-    retval = mymvwaddstr(window, 1, 1, "Please enter the search term (case-sensitive)");
+    retval = mymvwaddstr(window, 1, 1, _("Please enter the search term (case-sensitive)"));
 #endif
     if (retval == ERR)
-	throw YAPETUI::UIException("Error setting label");
+	throw YAPETUI::UIException(_("Error setting label"));
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error refreshing the search dialog");
+	throw YAPETUI::UIException(_("Error refreshing the search dialog"));
 
     searchtermw->refresh();
     okbutton->refresh();

@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "passwordwidget.h"
 
 #ifdef HAVE_STDLIB_H
@@ -36,7 +37,7 @@ void
 PasswordWidget::refresh() throw(UIException) {
     int retval = wclear(getWindow());
     if (retval == ERR)
-	throw UIException("Error clearing input widget");
+	throw UIException(_("Error clearing input widget"));
 
     if (getPos() > 0) {
 	char* tmp = (char*)malloc(getPos()+1);
@@ -49,7 +50,7 @@ PasswordWidget::refresh() throw(UIException) {
 			      getWidth()-1);
 	free(tmp);
 	if (retval == ERR)
-	    throw UIException("Error adding text to window");
+	    throw UIException(_("Error adding text to window"));
 
 	if (getPos() >= getWidth() - 1)
 	    retval = wmove(getWindow(), 0, getWidth()-1);
@@ -57,10 +58,10 @@ PasswordWidget::refresh() throw(UIException) {
 	    retval = wmove(getWindow(), 0, getPos());
 
 	if (retval == ERR)
-	    throw UIException("Error moving cursor");
+	    throw UIException(_("Error moving cursor"));
     }
 
     retval = wrefresh(getWindow());
     if (retval == ERR)
-	throw UIException("Error refreshing input widget");
+	throw UIException(_("Error refreshing input widget"));
 }

@@ -38,6 +38,8 @@
 # include <string.h>
 #endif
 
+#include "intl.h"
+
 #include "bdbuffer.h"
 #include "yapetexception.h"
 
@@ -80,7 +82,7 @@ namespace YAPET {
 	    void alloc_mem() throw(YAPETException) {
 		data = (T*) malloc(sizeof(T));
 		if (data == NULL)
-		    throw YAPETException("Memory exhausted");
+		    throw YAPETException(_("Memory exhausted"));
 
 		_size = sizeof(T);
 	    }
@@ -262,7 +264,7 @@ namespace YAPET {
 	    const Record<T>& operator=(const BDBuffer& bdb)
 		throw(YAPETException) {
 		if (bdb.size() < _size)
-		    throw YAPETException("BDBuffer too small");
+		    throw YAPETException(_("BDBuffer too small"));
 
 		free_mem();
 		// This sets _size member too

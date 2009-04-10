@@ -1,0 +1,27 @@
+# List of source files which contain translatable strings.
+
+# ui/
+ui/messagebox.cc
+ui/uiexception.h
+ui/inputwidget.cc
+ui/passwordwidget.cc
+ui/dialogbox.cc
+ui/button.cc
+ui/listwidget.h
+
+# yapet/
+yapet/mainwindow.cc
+yapet/fileopen.cc
+yapet/passwordrecord.cc
+yapet/passworddialog.cc
+yapet/main.cc
+yapet/searchdialog.cc
+yapet/statusbar.cc
+
+# crypt/
+crypt/bdbuffer.cc
+crypt/file.cc
+crypt/crypt.cc
+crypt/crypt.h
+crypt/yapetexception.h
+crypt/key.cc

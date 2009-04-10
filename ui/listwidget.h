@@ -57,6 +57,7 @@
 # include <string.h>
 #endif
 
+#include "intl.h"
 #include "uiexception.h"
 #include "colors.h"
 #include "basewindow.h"
@@ -264,11 +265,11 @@ namespace YAPETUI {
 		Colors::setcolor(window, LISTWIDGET);
 		int retval = wclear(window);
 		if (retval == ERR)
-		    throw UIException("Error clearing window");
+		    throw UIException(_("Error clearing window"));
 
 		retval = setBorder();
 		if (retval == ERR)
-		    throw UIException("Error drawing box around window");
+		    throw UIException(_("Error drawing box around window"));
 	    }
 
 	    void showScrollIndicators() throw(UIException) {
@@ -278,7 +279,7 @@ namespace YAPETUI {
 					  width - 1,
 					  '^');
 		    if (retval == ERR)
-			throw UIException("Unable to display scroll up indicator");
+			throw UIException(_("Unable to display scroll up indicator"));
 		}
 
 		if ( (itemlist.size() - 1)  > start_pos + cur_pos &&
@@ -288,7 +289,7 @@ namespace YAPETUI {
 					  width - 1,
 					  'v');
 		    if (retval == ERR)
-			throw UIException("Unable to display scroll down indicator");
+			throw UIException(_("Unable to display scroll down indicator"));
 		}
 	    }
 
@@ -308,7 +309,7 @@ namespace YAPETUI {
 					      (*itemlist_pos).c_str(),
 					      usable_width);
 		    if (retval == ERR)
-			throw UIException("Unable to display item");
+			throw UIException(_("Unable to display item"));
 		}
 
 		showScrollIndicators();
@@ -346,7 +347,7 @@ namespace YAPETUI {
 					    Colors::getcolor(LISTWIDGET),
 					    NULL);
 		    if (retval == ERR)
-			throw UIException("Error displaying cursor");
+			throw UIException(_("Error displaying cursor"));
 
 		}
 
@@ -360,16 +361,16 @@ namespace YAPETUI {
 				      Colors::getcolor(LISTWIDGET),
 				      NULL);
 		    if (retval == ERR)
-			throw UIException("Error move cursor");
+			throw UIException(_("Error move cursor"));
 		}
 
 		retval = touchwin(window);
 		if (retval == ERR)
-		    throw UIException("Error touching window");
+		    throw UIException(_("Error touching window"));
 
 		retval = wrefresh(window);
 		if (retval == ERR)
-		    throw UIException("Error refreshing window");
+		    throw UIException(_("Error refreshing window"));
 	    }
 
 	    void scrollUp() {
@@ -466,17 +467,17 @@ namespace YAPETUI {
 	    void createWindow(int sx, int sy, int w, int h) throw(UIException) {
 		window = newwin(h, w, sy, sx);
 		if (window == NULL)
-		    throw UIException("Error creating list window");
+		    throw UIException(_("Error creating list window"));
 
 		Colors::setcolor(window, LISTWIDGET);
 
 		int retval = keypad(window, true);
 		if (retval == ERR)
-		    throw UIException("Error enabling keypad");
+		    throw UIException(_("Error enabling keypad"));
 
 		retval = setBorder();
 		if (retval == ERR)
-		    throw UIException("Error re-setting the border");
+		    throw UIException(_("Error re-setting the border"));
 
 		// We set them here in case the window was resized
 		width = w;
@@ -518,7 +519,7 @@ namespace YAPETUI {
 		     sy == -1 ||
 		     width == -1 ||
 		     height == -1 )
-		    throw UIException("No idea of the dimension of the list");
+		    throw UIException(_("No idea of the dimension of the list"));
 
 		setSortOrder(ASCENDING);
 
@@ -610,14 +611,14 @@ namespace YAPETUI {
 
 		int retval = setBorder();
 		if (retval == ERR)
-		    throw UIException("Error setting the border of window");
+		    throw UIException(_("Error setting the border of window"));
 
 		showScrollIndicators();
 		showSelected(-1);
 
 		retval = wrefresh(window);
 		if (retval == ERR)
-		    throw UIException("Error refreshing the list widget");
+		    throw UIException(_("Error refreshing the list widget"));
 
 		int ch = 0;
 		while (hasfocus) {
@@ -658,10 +659,10 @@ namespace YAPETUI {
 
 		retval = setBorder();
 		if (retval == ERR)
-		    throw UIException("Error re-setting the border");
+		    throw UIException(_("Error re-setting the border"));
 		retval = wrefresh(window);
 		if (retval == ERR)
-		    throw UIException("Error refreshing the list widget");
+		    throw UIException(_("Error refreshing the list widget"));
 
 		return ch;
 	    }
@@ -672,21 +673,21 @@ namespace YAPETUI {
 
 		int retval = wrefresh(window);
 		if (retval == ERR)
-		    throw UIException("Error refreshing list");
+		    throw UIException(_("Error refreshing list"));
 	    }
 
 	    void resize(int sx, int sy, int w, int h) throw(UIException) {
 		int retval = wclear(window);
 		if (retval == ERR)
-		    throw UIException("Error clearing list");
+		    throw UIException(_("Error clearing list"));
 
 		retval = wrefresh(window);
 		if (retval == ERR)
-		    throw UIException("Error refreshing window");
+		    throw UIException(_("Error refreshing window"));
 
 		retval = delwin(window);
 		if (retval == ERR)
-		    throw UIException("Error deleting window");
+		    throw UIException(_("Error deleting window"));
 
 		createWindow(sx, sy, w, h);
 	    }

@@ -104,7 +104,7 @@ bool isXTerm() {
     return false;
 }
 #else
-inline bool isXTerm() { return false; }
+bool isXTerm() { return false; }
 #endif // HAVE_TERMNAME
 
 /**
@@ -121,5 +121,5 @@ void setTerminalTitle (const std::string& title) {
     }
 }
 #else // CANSETTITLE
-inline void setTerminalTitle (const std::string& title) {}
+void setTerminalTitle (const std::string& title) {}
 #endif // CANSETTITLE

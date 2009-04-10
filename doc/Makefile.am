@@ -54,10 +54,14 @@ $(sgml_text_target): $(sgml_files) $(sgml_text)
 	$(LYNX) -force_html -nolist -dump "$@.tmp" > "$@"
 	rm "$@.tmp"
 	mv -f "$@" "$(top_srcdir)/$@"
+	touch $@
 
 yapet.1: $(sgml_files)
 	rm -f $@
 	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) yapet.sgml
+
+clean-local:
+	rm -f $(sgml_text_target)
 
 endif # HAVEXSLTPROC
 

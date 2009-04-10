@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "passwordrecord.h"
 #include <messagebox.h>
 
@@ -30,11 +31,11 @@
 void
 PasswordRecord::createWindow() throw(YAPETUI::UIException) {
     if (window != NULL)
-	throw YAPETUI::UIException("May you consider deleting the window before reallocating");
+	throw YAPETUI::UIException(_("May you consider deleting the window before reallocating"));
 
     window = newwin(getHeight(), getWidth(), getStartY(), getStartX());
     if (window == NULL)
-	throw YAPETUI::UIException("Error creating password entry");
+	throw YAPETUI::UIException(_("Error creating password entry"));
 
     name = new YAPETUI::InputWidget(getStartX() + 1,
 				  getStartY() + 2,
@@ -61,18 +62,18 @@ PasswordRecord::createWindow() throw(YAPETUI::UIException) {
 				     getWidth() - 2,
 				     YAPET::COMMENT_SIZE);
 
-    okbutton = new YAPETUI::Button("Ok",
+    okbutton = new YAPETUI::Button(_("OK"),
 				 getStartX() + 1,
 				 getStartY() + 12);
 
-    cancelbutton = new YAPETUI::Button("Cancel",
+    cancelbutton = new YAPETUI::Button(_("Cancel"),
 				     getStartX() + okbutton->getLength() + 2,
 				     getStartY() + 12);
 
     refresh();
 }
 
-PasswordRecord::PasswordRecord(YAPET::Key& k, YAPET::PartDec* pe) 
+PasswordRecord::PasswordRecord(YAPET::Key& k, YAPET::PartDec* pe)
     throw(YAPETUI::UIException) : window(NULL),
 			 name(NULL),
 			 host(NULL),
@@ -173,7 +174,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 
 		YAPETUI::MessageBox* msgbox = NULL;
 		try {
-		    msgbox = new YAPETUI::MessageBox("Error", ex.what());
+		    msgbox = new YAPETUI::MessageBox(_("E R R O R"), ex.what());
 		    msgbox->run();
 		    delete msgbox;
 		} catch (YAPETUI::UIException&) {
@@ -202,7 +203,7 @@ void
 PasswordRecord::resize() throw(YAPETUI::UIException) {
     int retval = delwin(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error deleting password entry window");
+	throw YAPETUI::UIException(_("Error deleting password entry window"));
 
     delete name;
     delete host;
@@ -229,39 +230,39 @@ PasswordRecord::refresh() throw(YAPETUI::UIException) {
 
     int retval = wclear(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error clearing window");
+	throw YAPETUI::UIException(_("Error clearing window"));
 
     retval = box(window, 0, 0);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding box");
+	throw YAPETUI::UIException(_("Error adding box"));
 
-    retval = mymvwaddstr(window, 0, 2, "P A S S W O R D  R E C O R D");
+    retval = mymvwaddstr(window, 0, 2, _("P A S S W O R D  R E C O R D"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error setting label");
+	throw YAPETUI::UIException(_("Error setting label"));
 
-    retval = mymvwaddstr(window, 1, 1, "Name");
+    retval = mymvwaddstr(window, 1, 1, _("Name"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding label");
+	throw YAPETUI::UIException(_("Error adding label"));
 
-    retval = mymvwaddstr(window, 3, 1, "Host");
+    retval = mymvwaddstr(window, 3, 1, _("Host"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding label");
+	throw YAPETUI::UIException(_("Error adding label"));
 
-    retval = mymvwaddstr(window, 5, 1, "Username");
+    retval = mymvwaddstr(window, 5, 1, _("Username"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding label");
+	throw YAPETUI::UIException(_("Error adding label"));
 
-    retval = mymvwaddstr(window, 7, 1, "Password");
+    retval = mymvwaddstr(window, 7, 1, _("Password"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding label");
+	throw YAPETUI::UIException(_("Error adding label"));
 
-    retval = mymvwaddstr(window, 9, 1, "Comment");
+    retval = mymvwaddstr(window, 9, 1, _("Comment"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error adding label");
+	throw YAPETUI::UIException(_("Error adding label"));
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error refreshing window");
+	throw YAPETUI::UIException(_("Error refreshing window"));
 
 
     if (encentry != NULL) {
@@ -281,7 +282,7 @@ PasswordRecord::refresh() throw(YAPETUI::UIException) {
 		delete dec_rec;
 	    YAPETUI::MessageBox* msgbox = NULL;
 	    try {
-		msgbox = new YAPETUI::MessageBox("Error", ex.what());
+		msgbox = new YAPETUI::MessageBox(_("E R R O R"), ex.what());
 		msgbox->run();
 		delete msgbox;
 	    } catch (YAPETUI::UIException&) {

@@ -17,6 +17,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
+
 #include "crypt.h"
 
 using namespace YAPET;
@@ -40,7 +42,7 @@ Crypt::Crypt(const Key& k) throw(YAPETException) : cipher(NULL),
 						 key(k){
     cipher = EVP_bf_cbc();
     if (cipher == NULL)
-	throw YAPETException("Unable to get cipher");
+	throw YAPETException(_("Unable to get cipher"));
 
     // Test if key length is ok
     EVP_CIPHER_CTX ctx;
@@ -49,15 +51,15 @@ Crypt::Crypt(const Key& k) throw(YAPETException) : cipher(NULL),
     int retval = EVP_CipherInit_ex(&ctx, cipher, NULL, NULL, NULL, 0);
     if (retval == 0) {
 	EVP_CIPHER_CTX_cleanup(&ctx);
-	throw YAPETException("Error initializing cipher");
+	throw YAPETException(_("Error initializing cipher"));
     }
 
     retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
     if (retval == 0) {
 	EVP_CIPHER_CTX_cleanup(&ctx);
-	throw YAPETException("Error setting the key length");
+	throw YAPETException(_("Error setting the key length"));
     }
-    
+
     iv_length = EVP_CIPHER_CTX_iv_length(&ctx);
     key_length = EVP_CIPHER_CTX_key_length(&ctx);
 

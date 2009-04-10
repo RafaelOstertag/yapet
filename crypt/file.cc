@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "crypt.h"
 #include "record.h"
 #include "structs.h"
@@ -163,7 +164,7 @@ File::seekAbs(off_t offset) const throw(YAPETException) {
 	throw YAPETException(strerror(errno));
 
     if (pos != offset)
-	throw YAPETException("Error seeking within file: " + filename);
+	throw YAPETException(_("Error seeking within file: ") + filename);
 }
 
 /**
@@ -202,7 +203,7 @@ File::seekDataSection() const throw(YAPETException) {
 	throw YAPETException(strerror(errno));
 
     if ( ((size_t)retval) != sizeof(uint32_t))
-	throw YAPETException("Unable to seek to data section");
+	throw YAPETException(_("Unable to seek to data section"));
 
     len = uint32_from_disk(len);
 
@@ -276,7 +277,7 @@ File::read() const throw(YAPETException) {
 	return NULL;
 
     if ( ((size_t)retval) < sizeof(uint32_t) )
-	throw YAPETException("Short read on file: " + filename);
+	throw YAPETException(_("Short read on file: ") + filename);
 
     // Convert len to the endianess of the architecture
     len = uint32_from_disk(len);
@@ -293,7 +294,7 @@ File::read() const throw(YAPETException) {
 
     if (((uint32_t)retval) < len) {
 	delete buf;
-	throw YAPETException("Short read on file: " + filename);
+	throw YAPETException(_("Short read on file: ") + filename);
     }
 
     return buf;
@@ -325,7 +326,7 @@ void
 File::write(const BDBuffer& buff, bool forceappend, bool forcewrite)
     throw(YAPETException, YAPETRetryException) {
     if ( (mtime != lastModified()) && !forcewrite)
-	throw YAPETRetryException("File has been modified");
+	throw YAPETRetryException(_("File has been modified"));
 
     if (forceappend) {
 	off_t pos = lseek(fd, 0, SEEK_END);
@@ -341,14 +342,14 @@ File::write(const BDBuffer& buff, bool forceappend, bool forcewrite)
     if (retval == -1)
 	throw YAPETException(strerror(errno));
     if (retval != sizeof(uint32_t) )
-	throw YAPETException("Short write on file: " + filename);
+	throw YAPETException(_("Short write on file: ") + filename);
 
     retval = ::write(fd, buff, buff.size());
     if (retval == -1)
 	throw YAPETException(strerror(errno));
 
     if (((size_t)retval) < buff.size())
-	throw YAPETException("Short write on file: " + filename);
+	throw YAPETException(_("Short write on file: ") + filename);
 
     mtime = lastModified();
 }
@@ -394,7 +395,7 @@ File::initFile(const Key& key) throw(YAPETException) {
     // Sanity checks
     BDBuffer* buff = readHeader();
     if (buff == NULL)
-	throw YAPETException("EOF encountered while reading header");
+	throw YAPETException(_("EOF encountered while reading header"));
 
     Record<FileHeader>* dec_hdr = crypt.decrypt<FileHeader>(*buff);
 
@@ -402,7 +403,7 @@ File::initFile(const Key& key) throw(YAPETException) {
 
     int retval = memcmp(ptr_dec_hdr->control, ptr->control, HEADER_CONTROL_SIZE);
     if (retval != 0)
-	throw YAPETException("Sanity check for control field failed");
+	throw YAPETException(_("Sanity check for control field failed"));
 
     delete buff;
     delete dec_hdr;
@@ -433,7 +434,7 @@ File::writeHeader(const Record<FileHeader>& header, const Key& key)
 	if (buff != NULL)
 	    delete buff;
 
-	throw YAPETException("Unknown exception catched");
+	throw YAPETException(_("Unknown exception catched"));
     }
 
     delete buff;
@@ -456,7 +457,7 @@ File::writeHeader(const BDBuffer& enc_header) throw(YAPETException) {
 	throw YAPETException(strerror(errno));
 
     if (((size_t)retval) != strlen(RECOG_STR) )
-	throw YAPETException("Short write on file " + filename);
+	throw YAPETException(_("Short write on file: ") + filename);
 
     mtime = lastModified();
 
@@ -481,18 +482,18 @@ File::readHeader() const throw(YAPETException) {
 
     char* buff = (char*) alloca(strlen(RECOG_STR));
     if (buff == NULL)
-	throw YAPETException("Memory exhausted");
+	throw YAPETException(_("Memory exhausted"));
 
     int retval = ::read(fd, buff, strlen(RECOG_STR));
     if (retval == -1)
 	throw YAPETException(strerror(errno));
 
     if (((size_t)retval) != strlen(RECOG_STR) )
-	throw YAPETException("File type not recognized");
+	throw YAPETException(_("File type not recognized"));
 
     retval = memcmp(RECOG_STR, buff, strlen(RECOG_STR));
     if (retval != 0)
-	throw YAPETException("File type not recognized");
+	throw YAPETException(_("File type not recognized"));
 
     return read();
 }

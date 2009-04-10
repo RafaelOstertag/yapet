@@ -34,6 +34,8 @@
 # include <string>
 #endif
 
+#include "intl.h"
+
 namespace YAPETUI {
     /**
      * @brief User interface exception.
@@ -46,7 +48,7 @@ namespace YAPETUI {
 
 	public:
 	    inline UIException() throw() : exception(),
-					   message("Generic UI exception") {}
+					   message(_("Generic UI exception")) {}
 	    inline UIException(std::string msg) throw() : exception(),
 							  message(msg) {}
 	    inline UIException(const UIException& ex) throw() {

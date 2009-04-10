@@ -17,17 +17,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "passworddialog.h"
 #include "messagebox.h"
 
 void
 PasswordDialog::createWindow() throw(YAPETUI::UIException) {
     if (window != NULL)
-	throw YAPETUI::UIException("May you consider deleting the window before reallocating");
+	throw YAPETUI::UIException(_("May you consider deleting the window before reallocating"));
 
     window = newwin(getHeight(), getWidth(), getStartY(), getStartX());
     if (window == NULL)
-	throw YAPETUI::UIException("Error creating password dialog");
+	throw YAPETUI::UIException(_("Error creating password dialog"));
 
     pwidget1 = new YAPETUI::PasswordWidget(getStartX() + 1,
 					 getStartY() + 3,
@@ -37,11 +38,11 @@ PasswordDialog::createWindow() throw(YAPETUI::UIException) {
 					     getStartY() + 5,
 					     getWidth()-2);
 
-    okbutton = new YAPETUI::Button("Ok",
+    okbutton = new YAPETUI::Button(_("OK"),
 				 getStartX() + 1,
 				 getStartY() + getHeight() - 2);
 
-    cancelbutton = new YAPETUI::Button("Cancel",
+    cancelbutton = new YAPETUI::Button(_("Cancel"),
 				     getStartX() + okbutton->getLength() + 2,
 				     getStartY() + getHeight() - 2);
 
@@ -105,7 +106,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 		} else {
 		    YAPETUI::MessageBox* errmsg = NULL;
 		    try {
-			errmsg = new YAPETUI::MessageBox("Error", "Passwords do not match");
+			errmsg = new YAPETUI::MessageBox(_("E R R O R"), _("Passwords do not match"));
 			errmsg->run();
 			delete errmsg;
 		    } catch(YAPETUI::UIException&) {
@@ -139,7 +140,7 @@ void
 PasswordDialog::resize() throw(YAPETUI::UIException) {
     int retval = delwin(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error deleting password dialog window");
+	throw YAPETUI::UIException(_("Error deleting password dialog window"));
 
     pwidget1->clearText();
     delete pwidget1;
@@ -164,38 +165,38 @@ PasswordDialog::refresh() throw(YAPETUI::UIException) {
     YAPETUI::Colors::setcolor(window, YAPETUI::MESSAGEBOX);
     int retval = werase(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error clearing password dialog");
+	throw YAPETUI::UIException(_("Error clearing password dialog"));
 
     retval = box(window, 0, 0);
     if (retval == ERR)
-    throw YAPETUI::UIException("Error adding box");
+	throw YAPETUI::UIException(_("Error adding box"));
 
-    retval = mymvwaddstr(window, 0, 2, "P A S S W O R D");
+    retval = mymvwaddstr(window, 0, 2, _("P A S S W O R D"));
     if (retval == ERR)
-	throw YAPETUI::UIException("Error setting title");
+	throw YAPETUI::UIException(_("Error setting title"));
 
     // The label holding the file name
     retval = mymvwaddstr(window, 2, 1, filename.c_str());
     if (retval == ERR)
-	throw YAPETUI::UIException("Error setting label");
+	throw YAPETUI::UIException(_("Error setting label"));
 
     if (pwtype == NEW_PW) {
-	retval = mymvwaddstr(window, 1, 1, "Enter new password for");
+	retval = mymvwaddstr(window, 1, 1, _("Enter new password for"));
 	if (retval == ERR)
-	    throw YAPETUI::UIException("Error setting label");
+	    throw YAPETUI::UIException(_("Error setting label"));
 
-	retval = mymvwaddstr(window, 4, 1, "Confirm password");
+	retval = mymvwaddstr(window, 4, 1, _("Confirm password"));
 	if (retval == ERR)
-	    throw YAPETUI::UIException("Error setting label");
+	    throw YAPETUI::UIException(_("Error setting label"));
     } else {
-	retval = mymvwaddstr(window, 1, 1, "Enter password for");
+	retval = mymvwaddstr(window, 1, 1, _("Enter password for"));
 	if (retval == ERR)
-	    throw YAPETUI::UIException("Error setting label");
+	    throw YAPETUI::UIException(_("Error setting label"));
     }
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error refreshing password dialog");
+	throw YAPETUI::UIException(_("Error refreshing password dialog"));
 
     pwidget1->refresh();
     if (pwtype == NEW_PW)

@@ -27,6 +27,8 @@
 # include <string.h>
 #endif
 
+#include "intl.h"
+
 using namespace YAPET;
 
 /**
@@ -42,7 +44,7 @@ uint8_t*
 BDBuffer::alloc_mem(uint32_t s) throw(YAPETException) {
     uint8_t* tmp = (uint8_t*) malloc(s);
     if (tmp == NULL)
-	throw YAPETException("Memory exhausted");
+	throw YAPETException(_("Memory exhausted"));
 
     return tmp;
 }
@@ -154,7 +156,7 @@ BDBuffer::resize(uint32_t ns) throw(YAPETException) {
 uint8_t*
 BDBuffer::at(uint32_t pos) throw(std::out_of_range) {
     if (pos > (_size - 1))
-	throw std::out_of_range("Position out of range");
+	throw std::out_of_range(_("Position out of range"));
 
     return data + pos;
 }
@@ -176,7 +178,7 @@ BDBuffer::at(uint32_t pos) throw(std::out_of_range) {
 const uint8_t*
 BDBuffer::at(uint32_t pos) const throw(std::out_of_range) {
     if (pos > (_size - 1))
-	throw std::out_of_range("Position out of range");
+	throw std::out_of_range(_("Position out of range"));
 
     return data + pos;
 }

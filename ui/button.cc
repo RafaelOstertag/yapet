@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "button.h"
 #include "colors.h"
 #include "basewindow.h"
@@ -27,7 +28,7 @@ void
 Button::createWindow() throw(UIException) {
     window = newwin (1, BASE_SIZE + label.length(), start_y, start_x);
     if (window == NULL)
-	throw UIException ("Error creating button");
+	throw UIException (_("Error creating button"));
 
     //refresh();
 }
@@ -50,13 +51,13 @@ Button::setLabel (std::string l) throw (UIException) {
     label = l;
     int retval = wclear (window);
     if (retval == ERR)
-	throw UIException ("Error clearing button");
+	throw UIException (_("Error clearing button"));
     retval = wrefresh (window);
     if (retval == ERR)
-	throw UIException ("Error refreshing button");
+	throw UIException (_("Error refreshing button"));
     retval = delwin (window);
     if (retval == ERR)
-	throw UIException ("Error deleting button");
+	throw UIException (_("Error deleting button"));
 
 
 }
@@ -66,13 +67,13 @@ Button::refresh() throw (UIException) {
     Colors::setcolor(window, BUTTON_NOFOCUS);
     int retval = werase(window);
     if (retval == ERR)
-	throw UIException ("Error erasing button");
+	throw UIException (_("Error erasing button"));
 
     mvwprintw (window, 0, 0, "[ %s ]", label.c_str());
 
     retval = wrefresh (window);
     if (retval == ERR)
-	throw UIException ("Error refreshing button");
+	throw UIException (_("Error refreshing button"));
 }
 
 int
@@ -82,15 +83,15 @@ Button::focus() throw (UIException) {
 
     int retval = touchwin (window);
     if (retval == ERR)
-	throw UIException ("Erro touching window");
+	throw UIException (_("Error touching window"));
 
     retval = wrefresh (window);
     if (retval == ERR)
-	throw UIException ("Error refreshing button");
+	throw UIException (_("Error refreshing button"));
 
     retval = keypad (window, TRUE);
     if (retval == ERR)
-	throw UIException ("Error setting keypad");
+	throw UIException (_("Error setting keypad"));
 
     int ch;
     while (true) {
@@ -130,11 +131,11 @@ Button::focus() throw (UIException) {
 
     retval = touchwin (window);
     if (retval == ERR)
-	throw UIException ("Erro touching window");
+	throw UIException (_("Error touching window"));
 
     retval = wrefresh (window);
     if (retval == ERR)
-	throw UIException ("Error refreshing button");
+	throw UIException (_("Error refreshing button"));
 
     return ch;
 }

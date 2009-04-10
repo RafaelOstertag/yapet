@@ -34,6 +34,8 @@
 # include <string>
 #endif
 
+#include "intl.h"
+
 namespace YAPET {
 
     /**
@@ -44,16 +46,16 @@ namespace YAPET {
     class YAPETException : public std::exception {
 	private:
 	    std::string message;
-	    
+
 	public:
 	    /**
 	     * @brief Initializes a default exception message
 	     *
 	     * Initializes a default exception message
 	     */
-	    inline YAPETException() 
+	    inline YAPETException()
 		throw() : exception(),
-			  message("Generic exception message") {}
+			  message(_("Generic exception message")) {}
 	    /**
 	     * @brief Initializes with a user specified message
 	     *
@@ -61,7 +63,7 @@ namespace YAPET {
 	     *
 	     * @param msg the message of the exception
 	     */
-	    inline YAPETException(std::string msg) 
+	    inline YAPETException(std::string msg)
 		throw() : exception(),
 			  message(msg) {}
 	    inline YAPETException(const YAPETException& ex) throw() {
@@ -77,7 +79,7 @@ namespace YAPET {
 	    inline virtual const char* what() const throw() {
 		return message.c_str();
 	    }
-    };    
+    };
 
     /**
      * @brief Exception indicating that an operation may be retried
@@ -89,8 +91,8 @@ namespace YAPET {
      */
     class YAPETRetryException : public YAPETException {
 	public:
-	    inline YAPETRetryException() 
-		throw() : YAPETException("Retry") {}
+	    inline YAPETRetryException()
+	    throw() : YAPETException(_("Retry")) {}
 	    inline YAPETRetryException(std::string msg)
 		throw() : YAPETException(msg) {}
 	    inline YAPETRetryException(const YAPETRetryException& ex)
@@ -114,7 +116,7 @@ namespace YAPET {
     class YAPETEncryptionException : public YAPETException {
 	public:
 	    inline YAPETEncryptionException()
-		throw() : YAPETException("Encryption error") {}
+	    throw() : YAPETException(_("Encryption error")) {}
 	    inline YAPETEncryptionException(std::string msg)
 		throw() : YAPETException(msg) {}
 	    inline YAPETEncryptionException(const YAPETEncryptionException& ex)
@@ -140,7 +142,7 @@ namespace YAPET {
     class YAPETInvalidPasswordException : public YAPETException {
 	public:
 	    inline YAPETInvalidPasswordException()
-		throw() : YAPETException("Invalid password") {}
+	    throw() : YAPETException(_("Invalid password")) {}
 	    inline YAPETInvalidPasswordException(std::string msg)
 		throw() : YAPETException(msg) {}
 
@@ -157,7 +159,7 @@ namespace YAPET {
 		return *this;
 	    }
     };
-						 
+
 }
 
 #endif // _YAPETEXCEPTION_H

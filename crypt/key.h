@@ -62,12 +62,12 @@ namespace YAPET {
      */
     class Key {
 	private:
-	    enum { 
+	    enum {
 		/**
 		 * The max length of the blowfish key in bytes (448 bits)
 		 */
 		KEYLENGTH = 56,
-		/** 
+		/**
 		 * The length of the output of md5 (128 bits)
 		 */
 		MD5_LEN = 16,
@@ -76,16 +76,16 @@ namespace YAPET {
 		 * The length of the output of sha1 (160 bits)
 		 */
 		SHA1_LEN = 20,
-		/** 
+		/**
 		 * The lenght of the output of ripemd-160 (160 bits)
 		 */
 		RIPEMD160_LEN = 20,
-		/** 
+		/**
 		 * The length of the initialization vector
 		 */
 		IVECLENGTH = 8
 	    };
-		
+
 	    /**
 	     * @brief Holds the key
 	     *
@@ -111,7 +111,7 @@ namespace YAPET {
 
 	    /**
 	     * @brief Gets the pointer to the key
-	     * 
+	     *
 	     * Returns the key and its length. The key is not
 	     * terminated by \c \\0. So make sure you read only \c
 	     * key_len bytes from the pointer returned.
@@ -138,7 +138,7 @@ namespace YAPET {
 	     * holding the key.
 	     */
 	    inline const uint8_t* getKey() const { return key; }
-	    
+
 	    /**
 	     * @brief Gets the pointer to the initialization vector
 	     *
@@ -192,7 +192,7 @@ namespace YAPET {
 
 	    /**
 	     * @brief Gets the pointer to the key
-	     * 
+	     *
 	     * Returns the key and its length. The key is not
 	     * terminated by \c \\0. So make sure you read only \c
 	     * key_len bytes from the pointer returned.
@@ -219,14 +219,14 @@ namespace YAPET {
 
 	    /**
 	     * @brief Cast operator
-	     * 
+	     *
 	     * Returns the pointer to the key.
 	     */
 	    inline operator uint8_t*() { return key; }
 
 	    /**
 	     * @brief Cast operator
-	     * 
+	     *
 	     * Returns the pointer to the key.
 	     */
 	    inline operator const uint8_t*() const { return key; }
@@ -237,7 +237,7 @@ namespace YAPET {
 	    //! Compares two keys for inequality
 	    bool operator!=(const Key& k) const { return !operator==(k); }
     };
-	    
+
 }
 
 #endif // _KEY_H

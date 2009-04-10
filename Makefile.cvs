@@ -2,6 +2,13 @@
 #
 # $Id$
 
+DEFPATH=$(PATH)
+PATH=/opt/guengel/bin
+ACLOCAL=/opt/guengel/bin/aclocal
+AUTOCONF=/opt/guengel/bin/autoconf
+AUTOHEADER=/opt/guengel/bin/autoheader
+AUTOMAKE=/opt/guengel/bin/automake
+
 all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
 
 README:
@@ -11,13 +18,13 @@ ChangeLog:
 	touch ChangeLog
 
 aclocal.m4: configure.ac
-	aclocal
+	$(ACLOCAL) -I m4
 
 configure: configure.ac
-	autoconf
+	$(AUTOCONF)
 
 config.h.in: configure.ac
-	autoheader
+	$(AUTOHEADER)
 
 Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am Makefile.am
-	automake -a -c -f --gnu
+	$(AUTOMAKE) -a -c -f --gnu

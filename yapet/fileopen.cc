@@ -47,6 +47,7 @@
 # include <algorithm>
 #endif
 
+#include "intl.h"
 #include <messagebox.h>
 #include <colors.h>
 #include "fileopen.h"
@@ -57,7 +58,7 @@ FileOpen::createWindows() throw (YAPETUI::UIException) {
 
     window = newwin (windowHeight(), windowWidth(), startY(), startX());
     if (window == NULL)
-	throw YAPETUI::UIException ("Error creating file open window");
+	throw YAPETUI::UIException (_("Error creating file open window"));
 
     std::list<YAPETUI::secstring> dir_list;
     std::list<YAPETUI::secstring> file_list;
@@ -78,11 +79,11 @@ FileOpen::createWindows() throw (YAPETUI::UIException) {
 				   startY()+windowHeight()-3,
 				   windowWidth()-2);
 
-    okbutton = new YAPETUI::Button("OK",
+    okbutton = new YAPETUI::Button(_("OK"),
 				 startX()+1,
 				 startY()+windowHeight()-2);
 
-    cancelbutton = new YAPETUI::Button("Cancel",
+    cancelbutton = new YAPETUI::Button(_("Cancel"),
 				     startX()+8,
 				     startY()+windowHeight()-2);
 
@@ -124,7 +125,7 @@ void
 FileOpen::printTitle() throw(YAPETUI::UIException) {
     int retval = mymvwaddstr(window, 0, 2, title.c_str());
     if (retval == ERR)
-	throw YAPETUI::UIException("Error printing title");
+	throw YAPETUI::UIException(_("Error printing title"));
 }
 
 void
@@ -134,15 +135,15 @@ FileOpen::printCWD() throw(YAPETUI::UIException) {
 
     int retval = mvwprintw(window, 1, 1, format, " ");
     if (retval == ERR)
-	throw YAPETUI::UIException("Error clearing line");
+	throw YAPETUI::UIException(_("Error clearing line"));
 
     retval = mymvwaddstr(window, 1, 1, directory.c_str());
     if (retval == ERR)
-	throw YAPETUI::UIException("Error printing cwd");
+	throw YAPETUI::UIException(_("Error printing cwd"));
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error refreshing cwd");
+	throw YAPETUI::UIException(_("Error refreshing cwd"));
 }
 
 void
@@ -156,7 +157,7 @@ FileOpen::getcwd() throw (YAPETUI::UIException) {
 #endif
     char* buf = (char *) malloc ( (size_t) size);
     if (buf == NULL)
-	throw YAPETUI::UIException ("Error allocating memory");
+	throw YAPETUI::UIException (_("Error allocating memory"));
 
     char* ptr = ::getcwd (buf, (size_t) size);
     if (ptr == NULL) {
@@ -232,7 +233,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 		    printCWD();
 		} catch (YAPETUI::UIException& ex) {
 		    YAPETUI::MessageBox* tmp =
-			new YAPETUI::MessageBox("Error", ex.what());
+			new YAPETUI::MessageBox(_("E R R O R"), ex.what());
 		    tmp->run();
 		    delete tmp;
 		    this->refresh();
@@ -301,14 +302,14 @@ FileOpen::refresh() throw (YAPETUI::UIException) {
 
     int retval = box(window, 0, 0);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error drawing box");
+	throw YAPETUI::UIException(_("Error drawing box"));
 
     printTitle();
     printCWD();
 
     retval = wrefresh (window);
     if (retval == ERR)
-	throw YAPETUI::UIException ("Error refreshing window");
+	throw YAPETUI::UIException (_("Error refreshing window"));
 
     dir->refresh();
     files->refresh();
@@ -327,7 +328,7 @@ FileOpen::resize() throw (YAPETUI::UIException) {
 
     int retval = delwin(window);
     if (retval == ERR)
-	throw YAPETUI::UIException("Error deleting window");
+	throw YAPETUI::UIException(_("Error deleting window"));
 
     window = NULL;
     dir = NULL;

@@ -71,6 +71,7 @@
 # include <getopt.h>
 #endif
 
+#include "intl.h"
 #include "fileopen.h" // for the endswith() functions
 #include "mainwindow.h"
 
@@ -108,25 +109,25 @@ void set_rlimit() {
     rl.rlim_max = 0;
     int retval = setrlimit(RLIMIT_CORE, &rl);
     if (retval != 0) {
-	std::cerr << "Failed to suppress the creation of core file."
+	std::cerr << _("Failed to suppress the creation of core file.")
 		  << std::endl
-		  << "The error message is: " << strerror(errno)
+		  << _("The error message is: ") << strerror(errno)
 		  << std::endl
-		  << "In case a core file is created, it may contain clear text passwords."
+		  << _("In case a core file is created, it may contain clear text passwords.")
 		  << std::endl
 		  << std::endl
-		  << "Press <ENTER> to continue"
+		  << _("Press <ENTER> to continue")
 		  << std::endl;
 	char tmp;
 	std::cin >> tmp;
     }
 #else
-    std::cerr << "Cannot suppress the creation of core file."
+    std::cerr << _("Cannot suppress the creation of core file.")
 	      << std::endl
-	      << "In case a core file is created, it may contain clear text passwords."
+	      << _("In case a core file is created, it may contain clear text passwords.")
 	      << std::endl
 	      << std::endl
-	      << "Press <ENTER> to continue"
+	      << _("Press <ENTER> to continue")
 	      << std::endl;
     char tmp;
     std::cin >> tmp;
@@ -172,6 +173,10 @@ void show_help(char* prgname) {
 int main (int argc, char** argv) {
     set_rlimit();
 
+    setlocale(LC_ALL, "");
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+
     int c;
     std::string filename;
 #ifdef HAVE_GETOPT_LONG
@@ -196,11 +201,11 @@ int main (int argc, char** argv) {
 	    show_version();
 	    return 0;
 	case ':':
-	    std::cerr << "-" << (char)optopt << " without argument"
+	    std::cerr << "-" << (char)optopt << _(" without argument")
 		      << std::endl;
 	    return 1;
 	case '?':
-	    std::cerr << "unknown argument '" << (char)optopt << "'"
+	    std::cerr << _("unknown argument") << " '" << (char)optopt << "'"
 		      << std::endl;
 	    return 1;
 	}

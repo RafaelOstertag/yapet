@@ -30,6 +30,9 @@
 # include <inttypes.h>
 #endif
 
+#include "intl.h"
+
+
 #include <openssl/evp.h>
 
 #include "yapetexception.h"
@@ -136,10 +139,10 @@ namespace YAPET {
 	     * @sa Record, BDBuffer
 	     */
 	    template<class T>
-	    BDBuffer* encrypt(const Record<T>& data) 
+	    BDBuffer* encrypt(const Record<T>& data)
 		throw(YAPETException, YAPETEncryptionException) {
-		if (key.ivec_size() != iv_length) 
-		    throw YAPETException("IVec length missmatch");
+		if (key.ivec_size() != iv_length)
+		    throw YAPETException(_("IVec length missmatch"));
 
 		EVP_CIPHER_CTX ctx;
 		EVP_CIPHER_CTX_init(&ctx);
@@ -151,15 +154,15 @@ namespace YAPET {
 						key.getIVec());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETEncryptionException("Error initializing encryption engine");
+		    throw YAPETEncryptionException(_("Error initializing encryption engine"));
 		}
 
 		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETException("Error setting the key length");
+		    throw YAPETException(_("Error setting the key length"));
 		}
-		
+
 		BDBuffer* encdata =
 		    new BDBuffer(data.size() + EVP_MAX_BLOCK_LENGTH);
 		int outlen;
@@ -171,9 +174,9 @@ namespace YAPET {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete encdata;
-		    throw YAPETEncryptionException("Error encrypting data");
+		    throw YAPETEncryptionException(_("Error encrypting data"));
 		}
-		
+
 		int tmplen;
 		retval = EVP_EncryptFinal_ex(&ctx,
 					     encdata->at(outlen),
@@ -181,7 +184,7 @@ namespace YAPET {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete encdata;
-		    throw YAPETEncryptionException("Error finalizing encryption");
+		    throw YAPETEncryptionException(_("Error finalizing encryption"));
 		}
 
 		encdata->resize(outlen+tmplen);
@@ -216,7 +219,7 @@ namespace YAPET {
 	    Record<T>* decrypt(const BDBuffer& data)
 		throw(YAPETException, YAPETEncryptionException) {
 		if ( ((unsigned int)key.ivec_size()) != iv_length)
-		    throw YAPETException("IVec length missmatch");
+		    throw YAPETException(_("IVec length missmatch"));
 
 		EVP_CIPHER_CTX ctx;
 		EVP_CIPHER_CTX_init(&ctx);
@@ -228,13 +231,13 @@ namespace YAPET {
 						key.getIVec());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETEncryptionException("Error initializing encryption engine");
+		    throw YAPETEncryptionException(_("Error initializing encryption engine"));
 		}
 
 		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETException("Error setting the key length");
+		    throw YAPETException(_("Error setting the key length"));
 		}
 
 		BDBuffer* decdata = new BDBuffer(data.size());
@@ -247,7 +250,7 @@ namespace YAPET {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete decdata;
-		    throw YAPETEncryptionException("Error decrypting data");
+		    throw YAPETEncryptionException(_("Error decrypting data"));
 		}
 
 		int tmplen;
@@ -257,16 +260,16 @@ namespace YAPET {
 		if (retval == 0) {
 		    EVP_CIPHER_CTX_cleanup(&ctx);
 		    delete decdata;
-		    throw YAPETEncryptionException("Error finalizing decryption");
+		    throw YAPETEncryptionException(_("Error finalizing decryption"));
 		}
-		
+
 		decdata->resize(outlen+tmplen);
-		
+
 		EVP_CIPHER_CTX_cleanup(&ctx);
 
 		Record<T>* r = new Record<T>;
 		*r=*decdata;
-		
+
 		delete decdata;
 		return r;
 	    }

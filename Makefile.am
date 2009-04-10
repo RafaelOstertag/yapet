@@ -1,9 +1,9 @@
 # $Id$
 
-EXTRA_DIST = MAINTAINER DESIGN INSTALL.generic Makefile.cvs	\
-yapet.desktop.in
+EXTRA_DIST = config.rpath m4/ChangeLog  MAINTAINER DESIGN INSTALL.generic Makefile.cvs	\
+yapet.desktop.in intl.h gettext.h
 
-SUBDIRS = crypt ui yapet tests doc
+SUBDIRS = intl po crypt ui yapet tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
@@ -25,3 +25,5 @@ yapet.desktop: Makefile $(srcdir)/yapet.desktop.in
 	$(editfile) $(srcdir)/$@.in > $@
 
 DISTCLEANFILES = yapet.desktop
+
+ACLOCAL_AMFLAGS = -I m4

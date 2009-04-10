@@ -1,10 +1,11 @@
 # $Id$
 AC_PREREQ(2.61)
 AC_INIT([YAPET],[0.3],[rafi@guengel.ch])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([yapet],[0.3])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
+
 
 # Progs
 AC_MSG_NOTICE([Checking required programs])
@@ -19,7 +20,7 @@ AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
-
+AC_USE_SYSTEM_EXTENSIONS
 AC_LANG([C++])
 
 # Arguments
@@ -58,7 +59,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([stdio.h fcntl.h strings.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h])
+AC_CHECK_HEADERS([stdio.h fcntl.h strings.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h locale.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
@@ -141,12 +142,18 @@ AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
 
 AC_C_BIGENDIAN
 
+
+AC_MSG_NOTICE([Intl support])
+AM_GNU_GETTEXT
+
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno ])
 
 AC_CONFIG_FILES([Makefile
+	intl/Makefile
+	po/Makefile.in
 	yapet/Makefile
 	ui/Makefile
 	crypt/Makefile

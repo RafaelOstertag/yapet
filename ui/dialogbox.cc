@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "dialogbox.h"
 
 using namespace YAPETUI;
@@ -25,7 +26,7 @@ DialogBox::DialogBox(std::string t, std::string m)
     throw(UIException) : MessageBox(t, m),
 			 cancelbutton(NULL),
 			 answer(ANSWER_CANCEL) {
-    cancelbutton = new Button("Cancel",
+    cancelbutton = new Button(_("Cancel"),
 			      getStartX() + 2 + getOkButtonLength(),
 			      getStartY() + getBaseHeight() -2);
 }
@@ -67,7 +68,7 @@ void
 DialogBox::resize() throw(UIException) {
     MessageBox::resize();
     delete cancelbutton;
-    cancelbutton = new Button("Cancel", getStartX() + 2 + getOkButtonLength(), getStartY() + getBaseHeight() -2);
+    cancelbutton = new Button(_("Cancel"), getStartX() + 2 + getOkButtonLength(), getStartY() + getBaseHeight() -2);
 }
 
 void

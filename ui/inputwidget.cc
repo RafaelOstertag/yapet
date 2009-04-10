@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "intl.h"
 #include "basewindow.h"
 #include "inputwidget.h"
 #include "colors.h"
@@ -116,21 +117,21 @@ InputWidget::processDelete() throw(UIException) {
 void
 InputWidget::createWindow(int sx, int sy, int w) throw(UIException) {
     if (window != NULL)
-	throw UIException("May you consider deleting the window first before reallocating it");
+	throw UIException(_("May you consider deleting the window first before reallocating it"));
 
     window = newwin(1, w, sy, sx);
     if (window == NULL)
-	throw UIException("Error creating the input window");
+	throw UIException(_("Error creating the input window"));
 
     Colors::setcolor(window, INPUTWIDGET_NOFOCUS);
 
     int retval = wclear(window);
     if (retval == ERR)
-	throw UIException("Error clearing input widget");
+	throw UIException(_("Error clearing input widget"));
 
     retval = keypad(window, TRUE);
     if (retval == ERR)
-	throw UIException("Error setting keypad on input widget");
+	throw UIException(_("Error setting keypad on input widget"));
 
     //refresh();
 }
@@ -167,11 +168,11 @@ InputWidget::focus() throw(UIException) {
 
     int retval = wrefresh(window);
     if (retval == ERR)
-	throw UIException("Error refreshing the widget");
+	throw UIException(_("Error refreshing the widget"));
 
     retval = wmove(window, 0, pos);
     if (retval == ERR)
-	throw UIException("Error moving cursor for widget");
+	throw UIException(_("Error moving cursor for widget"));
 
     visibleCursor(true);
     int ch;
@@ -223,7 +224,7 @@ InputWidget::focus() throw(UIException) {
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw UIException("Error refreshing the widget");
+	throw UIException(_("Error refreshing the widget"));
     return ch;
 }
 
@@ -231,7 +232,7 @@ void
 InputWidget::refresh() throw(UIException) {
     int retval = werase(window);
     if (retval == ERR)
-	throw UIException("Error clearing input widget");
+	throw UIException(_("Error clearing input widget"));
 
     if (buffer.length() > 0) {
 	secstring sub = buffer.substr(start_pos, width);
@@ -241,7 +242,7 @@ InputWidget::refresh() throw(UIException) {
 			      sub.c_str(),
 			      width-1);
 	if (retval == ERR)
-	    throw UIException("Error adding text to window");
+	    throw UIException(_("Error adding text to window"));
 
 	if (pos >= width - 1)
 	    retval = wmove(window, 0, width-1);
@@ -249,12 +250,12 @@ InputWidget::refresh() throw(UIException) {
 	    retval = wmove(window, 0, pos);
 
 	if (retval == ERR)
-	    throw UIException("Error moving cursor");
+	    throw UIException(_("Error moving cursor"));
     }
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw UIException("Error refreshing input widget");
+	throw UIException(_("Error refreshing input widget"));
 
 }
 
@@ -262,15 +263,15 @@ void
 InputWidget::resize(int sx, int sy, int w) throw(UIException) {
     int retval = wclear(window);
     if (retval == ERR)
-	throw UIException("Error clearing input widget");
+	throw UIException(_("Error clearing input widget"));
 
     retval = wrefresh(window);
     if (retval == ERR)
-	throw UIException("Error refreshing input widget");
+	throw UIException(_("Error refreshing input widget"));
 
     retval = delwin(window);
     if (retval == ERR)
-	throw UIException("Error deleting input widget");
+	throw UIException(_("Error deleting input widget"));
 
     window = NULL;
     createWindow(sx, sy, w);
