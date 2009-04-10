@@ -15,9 +15,9 @@ AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
-AC_CHECK_PROG([DOXYGEN],[doxygen],[doxygen])
 AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
+AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 AC_USE_SYSTEM_EXTENSIONS
@@ -148,7 +148,7 @@ AM_GNU_GETTEXT
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
-AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != x])
+AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno ])
 
 AC_CONFIG_FILES([Makefile
