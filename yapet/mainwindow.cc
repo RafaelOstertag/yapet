@@ -101,15 +101,25 @@ struct KeyDesc {
 	const char* desc;
 };
 
-/**
- * @brief The menu of \c MainWindow.
+/*
+ * The _ macro is undefined and redefined to a noop, so we can trick the
+ * xgettext program to read strings to translate. After that, _ is restored to
+ * its previous state (taken from intl.h).
  *
- * Those are the keys used for the main menu of the \c MainWindow class.
+ * The actual translation using gettext is done in
+ * MainWindow::topRightWinContent()
+ *
+ * Better approaches welcome.
  */
 #ifdef _
 #undef _
 #endif
 #define _(String) String
+/**
+ * @brief The menu of \c MainWindow.
+ *
+ * Those are the keys used for the main menu of the \c MainWindow class.
+ */
 KeyDesc keys[] = { {3, 2, "S", _("Save File")},
 		   {4, 2, "R", _("Load File")},
 		   {5, 2, "L", _("Lock Screen")},
@@ -189,7 +199,6 @@ MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
     int max_y, max_x;
     getmaxyx (toprightwin, max_y, max_x);
 
-    //char win_title[] = "K E Y S";
     int start_title_x = max_x / 2 - strlen (_("K E Y S")) / 2;
 
     int retval = mymvwaddstr (toprightwin, 1, start_title_x, _("K E Y S"));
@@ -216,6 +225,7 @@ MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
 	if (retval == ERR)
 	    throw YAPETUI::UIException (_("mvprintw() blew it"));
 	wattroff (toprightwin, A_REVERSE);
+	// The translation of the keys is done here
 	retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, _(ptr->desc));
 	if (retval == ERR)
 	    throw YAPETUI::UIException (_("waddstr() blew it"));
