@@ -63,11 +63,32 @@ yapet.1: $(sgml_files)
 clean-local:
 	rm -f $(sgml_text_target)
 
+else
+yapet.1:
+	@echo "You don't have xsltproc installed."
+	@echo "Unable to build man page"
+
+$(sed_files_target):
+	@echo "You don't have xsltproc installed."
+
+$(sgml_html_targets):
+	@echo "You don't have xsltproc installed."
+	@echo "Unable to build html pages"
+
+$(sgml_text_target):
+	@echo "You don't have xsltproc installed."
+	@echo "Unable to build text files"
+
 endif # HAVEXSLTPROC
 
 if HAVEDOXYGEN
 source-doc: Doxyfile
 	$(DOXYGEN)
+else
+source-doc:
+	@echo "You don't have doxygen installed."
+	@echo "Unable to build source code documentation"
+
 endif # HAVEDOXYGENT
 
 endif # BUILDDOC
