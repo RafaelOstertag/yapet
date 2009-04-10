@@ -106,19 +106,32 @@ struct KeyDesc {
  *
  * Those are the keys used for the main menu of the \c MainWindow class.
  */
-KeyDesc keys[] = { {3, 2, "S", "Save File"},
-		   {4, 2, "R", "Load File"},
-		   {5, 2, "L", "Lock Screen"},
-		   {6, 2, "A", "Add Entry"},
-		   {7, 2, "D", "Delete Entry"},
-		   {8, 2, "O", "Sort Order"},
-		   {9, 2, "/", "Search"},
-		   {10, 2, "N", "Search Next"},
-		   {11, 2, "C", "Change Password"},
-		   {12, 2, "^L", "Redraw Screen"},
-		   {13, 2, "Q", "Quit"},
+#ifdef _
+#undef _
+#endif
+#define _(String) String
+KeyDesc keys[] = { {3, 2, "S", _("Save File")},
+		   {4, 2, "R", _("Load File")},
+		   {5, 2, "L", _("Lock Screen")},
+		   {6, 2, "A", _("Add Entry")},
+		   {7, 2, "D", _("Delete Entry")},
+		   {8, 2, "O", _("Sort Order")},
+		   {9, 2, "/", _("Search")},
+		   {10, 2, "N", _("Search Next")},
+		   {11, 2, "C", _("Change Password")},
+		   {12, 2, "^L", _("Redraw Screen")},
+		   {13, 2, "Q", _("Quit")},
 		   {0, 0, NULL, NULL}
 };
+#undef _
+#if ! defined(_) && ENABLE_NLS==0
+#define _(String) (String)
+#endif
+
+#if ! defined(_) && ENABLE_NLS==1
+#define _(String) gettext(String)
+#endif
+
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 /**
@@ -618,7 +631,7 @@ MainWindow::deleteSelectedRecord() throw(YAPETUI::UIException){
 
     YAPETUI::DialogBox* dialog = NULL;
     try {
-	dialog = new YAPETUI::DialogBox(_("Q U E S T I O N"), ("Delete selected record?"));
+	dialog = new YAPETUI::DialogBox(_("Q U E S T I O N"), _("Delete selected record?"));
 	dialog->run();
 	YAPETUI::ANSWER a = dialog->getAnswer();
 	if (a == YAPETUI::ANSWER_OK) {
@@ -1017,7 +1030,7 @@ MainWindow::run() throw (YAPETUI::UIException) {
 			if (key != NULL)
 			    delete key;
 			if (tmp != NULL)
-			    delete tmp;
+			  delete tmp;
 			file = NULL;
 			key = NULL;
 		    }
