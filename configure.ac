@@ -67,6 +67,7 @@ AC_CHECK_HEADER([ncurses.h],
 		[AC_DEFINE([HAVE_CURSES_H],[1],[Set to 1 if you have curses.h]) my_usencurses=no],
 		[AC_MSG_ERROR([curses header not found])])]
 )
+AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if you have openssl/crypto.h])])
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
@@ -138,6 +139,8 @@ AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
 	[],
 	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
+AC_MSG_NOTICE([Checking support functions])
+AC_CHECK_FUNCS([SSLeay_version])
 
 
 AC_C_BIGENDIAN
