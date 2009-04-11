@@ -9,5 +9,9 @@ dialogbox.cc colors.cc misc.h misc.cc
 
 libui_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 
+if USE_INCLUDED_LIBINTL
+libui_a_CPPFLAGS += -I$(top_srcdir)/intl
+endif
+
 clean-local:
 	rm -rf SunWS_cache

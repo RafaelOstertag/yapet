@@ -1,7 +1,7 @@
 # $Id$
 
-EXTRA_DIST = config.rpath m4/ChangeLog  MAINTAINER DESIGN INSTALL.generic Makefile.cvs	\
-yapet.desktop.in intl.h gettext.h
+EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN	\
+INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h
 
 SUBDIRS = intl po crypt ui yapet tests doc
 

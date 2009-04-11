@@ -153,7 +153,7 @@ AM_GNU_GETTEXT
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno ])
-
+AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL == xyes])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
@@ -178,5 +178,7 @@ echo "Lynx                : $LYNX"
 echo ""
 echo "Build Documentation : $my_builddoc"
 echo "Set Terminal Title  : $my_settitle"
+echo ""
+echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""
 echo "******************************************************************"
