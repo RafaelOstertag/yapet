@@ -150,10 +150,10 @@ AC_MSG_NOTICE([Intl support])
 AM_GNU_GETTEXT
 
 # Some conditionals for the makefileS
-AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc == xyes])
+AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
-AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno ])
-AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL == xyes])
+AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
+AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
