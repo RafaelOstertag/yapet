@@ -5,13 +5,13 @@ htmldocdir = $(docdir)/html
 
 dist_man1_MANS = yapet.1
 
-sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in	\
-yapet.sgml.in Doxyfile.in
+sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
+Doxyfile.in README.Cygwin.sgml.in
 
 sgml_static_files = preamble.sgml supportedplatforms.sgml caution.sgml	\
 pwrecord.sgml
 
-sgml_files = yapet.sgml README.sgml INSTALL.sgml DESIGN.sgml	\
+sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
 $(sgml_static_files)
 
 EXTRA_DIST = source-doc/ $(htmldoc_DATA) $(sgml_files) $(sed_static_files)
@@ -20,7 +20,7 @@ if BUILDDOC
 
 # Those files are fed to xsltproc
 sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
-sgml_text = README.sgml INSTALL.sgml DESIGN.sgml
+sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
 sgml_man = yapet.sgml
 
 docbook_docbook_xsl = http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl
