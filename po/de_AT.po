@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.3\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-04-10 22:35+0200\n"
+"POT-Creation-Date: 2009-04-11 11:48+0200\n"
 "PO-Revision-Date: 2009-04-10 22:08+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ui/messagebox.cc:29 yapet/mainwindow.cc:261 yapet/passwordrecord.cc:34
+#: ui/messagebox.cc:29 yapet/mainwindow.cc:271 yapet/passwordrecord.cc:34
 #: yapet/passworddialog.cc:27 yapet/searchdialog.cc:26
 msgid "May you consider deleting the window before reallocating"
 msgstr "Zuerst Fenster löschen bevor wiederallozieren"
@@ -41,7 +41,7 @@ msgstr "Ok"
 msgid "Error deleting message box"
 msgstr "Fehler beim Fensterlöschen"
 
-#: ui/messagebox.cc:85 yapet/mainwindow.cc:786
+#: ui/messagebox.cc:85 yapet/mainwindow.cc:796
 msgid "Error erasing window"
 msgstr "Fehler beim Löschen des Fensters"
 
@@ -53,7 +53,7 @@ msgstr "Fehler beim Zeichnen des Fensterrahmens"
 msgid "Error printing message"
 msgstr "Fehler beim Titel anzeigen"
 
-#: ui/messagebox.cc:100 yapet/mainwindow.cc:176 yapet/fileopen.cc:128
+#: ui/messagebox.cc:100 yapet/mainwindow.cc:186 yapet/fileopen.cc:128
 msgid "Error printing title"
 msgstr "Fehler beim Titel anzeigen"
 
@@ -94,8 +94,8 @@ msgstr "Fehler beim verschieben des Cursors"
 msgid "Error adding text to window"
 msgstr "Fehler beim Zeichnen des Fensterrahmens"
 
-#: ui/inputwidget.cc:253 ui/passwordwidget.cc:61 yapet/mainwindow.cc:161
-#: yapet/mainwindow.cc:173
+#: ui/inputwidget.cc:253 ui/passwordwidget.cc:61 yapet/mainwindow.cc:171
+#: yapet/mainwindow.cc:183
 msgid "Error moving cursor"
 msgstr "Fehler beim verschieben des Cursors"
 
@@ -169,7 +169,7 @@ msgstr "Kann Cursor nicht anzeigen"
 msgid "Error move cursor"
 msgstr "Kann Cursor nicht bewegen"
 
-#: ui/listwidget.h:373 ui/listwidget.h:686 yapet/mainwindow.cc:792
+#: ui/listwidget.h:373 ui/listwidget.h:686 yapet/mainwindow.cc:802
 #: yapet/fileopen.cc:312 yapet/passwordrecord.cc:265
 msgid "Error refreshing window"
 msgstr "Kann Fenster nicht auffrischen"
@@ -210,295 +210,295 @@ msgstr "Kann die Liste nicht löschen"
 msgid "Error deleting window"
 msgstr "Fehler beim Fensterlöschen"
 
-#: yapet/mainwindow.cc:113
+#: yapet/mainwindow.cc:123
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: yapet/mainwindow.cc:114
+#: yapet/mainwindow.cc:124
 msgid "Load File"
 msgstr "Datei laden"
 
-#: yapet/mainwindow.cc:115
+#: yapet/mainwindow.cc:125
 msgid "Lock Screen"
 msgstr "Bildschirm sperren"
 
-#: yapet/mainwindow.cc:116
+#: yapet/mainwindow.cc:126
 msgid "Add Entry"
 msgstr "Eintrag hinzufügen"
 
-#: yapet/mainwindow.cc:117
+#: yapet/mainwindow.cc:127
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
 
-#: yapet/mainwindow.cc:118
+#: yapet/mainwindow.cc:128
 msgid "Sort Order"
 msgstr "Sortierreihenfolge"
 
-#: yapet/mainwindow.cc:119
+#: yapet/mainwindow.cc:129
 msgid "Search"
 msgstr "Suchen"
 
-#: yapet/mainwindow.cc:120
+#: yapet/mainwindow.cc:130
 msgid "Search Next"
 msgstr "Weiter suchen"
 
-#: yapet/mainwindow.cc:121
+#: yapet/mainwindow.cc:131
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: yapet/mainwindow.cc:122
+#: yapet/mainwindow.cc:132
 msgid "Redraw Screen"
 msgstr "Bildschirm neu zeichnen"
 
-#: yapet/mainwindow.cc:123
+#: yapet/mainwindow.cc:133
 msgid "Quit"
 msgstr "Beenden"
 
-#: yapet/mainwindow.cc:164 yapet/fileopen.cc:138
+#: yapet/mainwindow.cc:174 yapet/fileopen.cc:138
 msgid "Error clearing line"
 msgstr "Fehler beim Löschen der Zeile"
 
-#: yapet/mainwindow.cc:193 yapet/mainwindow.cc:195
+#: yapet/mainwindow.cc:202 yapet/mainwindow.cc:204
 msgid "K E Y S"
 msgstr "T A S T E N"
 
-#: yapet/mainwindow.cc:197
+#: yapet/mainwindow.cc:206
 msgid "mvwaddstr() blew it"
 msgstr "mvwaddstr() vermasselte es"
 
-#: yapet/mainwindow.cc:200
+#: yapet/mainwindow.cc:209
 msgid "wmove() blew it"
 msgstr "wmove() vermasselte es"
 
-#: yapet/mainwindow.cc:208
+#: yapet/mainwindow.cc:217
 msgid "whline() blew it"
 msgstr "whline() vermasselte es"
 
-#: yapet/mainwindow.cc:217 yapet/mainwindow.cc:237 yapet/mainwindow.cc:240
-#: yapet/mainwindow.cc:249
+#: yapet/mainwindow.cc:226 yapet/mainwindow.cc:247 yapet/mainwindow.cc:250
+#: yapet/mainwindow.cc:259
 msgid "mvprintw() blew it"
 msgstr "mvprintw() vermasselte es"
 
-#: yapet/mainwindow.cc:221 yapet/mainwindow.cc:234
+#: yapet/mainwindow.cc:231 yapet/mainwindow.cc:244
 msgid "waddstr() blew it"
 msgstr "waddstr() vermasselte es"
 
-#: yapet/mainwindow.cc:232
+#: yapet/mainwindow.cc:242
 msgid "Cipher: Blowfish"
 msgstr "Verschlüsselung: Blowfish"
 
-#: yapet/mainwindow.cc:235
+#: yapet/mainwindow.cc:245
 #, c-format
 msgid "Key: %d bytes (%d bits)"
 msgstr "Schlüssel: %d Bytes (%d bits)"
 
-#: yapet/mainwindow.cc:238
+#: yapet/mainwindow.cc:248
 #, c-format
 msgid "%d entries "
 msgstr "%d Einträge"
 
-#: yapet/mainwindow.cc:246
+#: yapet/mainwindow.cc:256
 #, c-format
 msgid "PW set: %s"
 msgstr "PW seit: %s"
 
-#: yapet/mainwindow.cc:272 yapet/mainwindow.cc:286
+#: yapet/mainwindow.cc:282 yapet/mainwindow.cc:296
 msgid "newwin() returned NULL"
 msgstr "newwin() gab NULL zurück"
 
-#: yapet/mainwindow.cc:277 yapet/mainwindow.cc:294
+#: yapet/mainwindow.cc:287 yapet/mainwindow.cc:304
 msgid "box() blew it"
 msgstr "box() vermasselte es"
 
-#: yapet/mainwindow.cc:291
+#: yapet/mainwindow.cc:301
 msgid "werase() blew it"
 msgstr "werase() vermasselte es"
 
-#: yapet/mainwindow.cc:316 yapet/mainwindow.cc:320
+#: yapet/mainwindow.cc:326 yapet/mainwindow.cc:330
 msgid "delwin() blew it"
 msgstr "delwin() vermasselte es"
 
-#: yapet/mainwindow.cc:337
+#: yapet/mainwindow.cc:347
 msgid "Error refreshing stdscr"
 msgstr "Fehler beim Auffrischen von stdscr"
 
-#: yapet/mainwindow.cc:344 yapet/mainwindow.cc:348
+#: yapet/mainwindow.cc:354 yapet/mainwindow.cc:358
 msgid "Error setting border"
 msgstr "Fehler beim setzen des Rahmens"
 
-#: yapet/mainwindow.cc:353
+#: yapet/mainwindow.cc:363
 msgid "Error refreshing top right window"
 msgstr "Fehler beim Auffrischen des oberen rechten Fensters"
 
-#: yapet/mainwindow.cc:357
+#: yapet/mainwindow.cc:367
 msgid "Error refreshing bottom right window"
 msgstr "Fehler beim Auffrischen des unteren rechten Fensters"
 
-#: yapet/mainwindow.cc:377 yapet/mainwindow.cc:887
+#: yapet/mainwindow.cc:387 yapet/mainwindow.cc:897
 msgid "Error while asking for password"
 msgstr "Fehler beim Abfragen des Passwortes"
 
-#: yapet/mainwindow.cc:382
+#: yapet/mainwindow.cc:392
 msgid "Creation of file canceled"
 msgstr "Erstellen der Datei abgebrochen"
 
-#: yapet/mainwindow.cc:388
+#: yapet/mainwindow.cc:398
 msgid " created"
 msgstr " erstellt"
 
-#: yapet/mainwindow.cc:393 yapet/mainwindow.cc:429 yapet/mainwindow.cc:445
-#: yapet/mainwindow.cc:485 yapet/mainwindow.cc:514 yapet/mainwindow.cc:569
-#: yapet/mainwindow.cc:614 yapet/mainwindow.cc:653 yapet/mainwindow.cc:683
-#: yapet/mainwindow.cc:721 yapet/mainwindow.cc:830 yapet/mainwindow.cc:904
-#: yapet/mainwindow.cc:927 yapet/fileopen.cc:236 yapet/passwordrecord.cc:177
+#: yapet/mainwindow.cc:403 yapet/mainwindow.cc:439 yapet/mainwindow.cc:455
+#: yapet/mainwindow.cc:495 yapet/mainwindow.cc:524 yapet/mainwindow.cc:579
+#: yapet/mainwindow.cc:624 yapet/mainwindow.cc:663 yapet/mainwindow.cc:693
+#: yapet/mainwindow.cc:731 yapet/mainwindow.cc:840 yapet/mainwindow.cc:914
+#: yapet/mainwindow.cc:937 yapet/fileopen.cc:236 yapet/passwordrecord.cc:177
 #: yapet/passwordrecord.cc:285 yapet/passworddialog.cc:109
 msgid "E R R O R"
 msgstr "F E H L E R"
 
-#: yapet/mainwindow.cc:400 yapet/mainwindow.cc:520 yapet/mainwindow.cc:576
-#: yapet/mainwindow.cc:621 yapet/mainwindow.cc:660 yapet/mainwindow.cc:689
-#: yapet/mainwindow.cc:728 yapet/mainwindow.cc:768 yapet/mainwindow.cc:869
+#: yapet/mainwindow.cc:410 yapet/mainwindow.cc:530 yapet/mainwindow.cc:586
+#: yapet/mainwindow.cc:631 yapet/mainwindow.cc:670 yapet/mainwindow.cc:699
+#: yapet/mainwindow.cc:738 yapet/mainwindow.cc:778 yapet/mainwindow.cc:879
 msgid "Error showing error message"
 msgstr "Fehler beim Anzeigen der Fehlermeldung"
 
-#: yapet/mainwindow.cc:413 yapet/mainwindow.cc:634 yapet/mainwindow.cc:755
-#: yapet/mainwindow.cc:856
+#: yapet/mainwindow.cc:423 yapet/mainwindow.cc:644 yapet/mainwindow.cc:765
+#: yapet/mainwindow.cc:866
 msgid "Q U E S T I O N"
 msgstr "F R A G E"
 
-#: yapet/mainwindow.cc:414
+#: yapet/mainwindow.cc:424
 msgid "The file does not exist. Do you want to create it?"
 msgstr "Datei existiert nicht. Wollen Sie sie erstellen?"
 
-#: yapet/mainwindow.cc:422
+#: yapet/mainwindow.cc:432
 msgid "File creation canceled"
 msgstr "Dateierstellung abgebrochen"
 
-#: yapet/mainwindow.cc:446
+#: yapet/mainwindow.cc:456
 msgid "The specified file is not a regular file"
 msgstr "Die angegebene Datei ist keine reguläre Datei"
 
-#: yapet/mainwindow.cc:468
+#: yapet/mainwindow.cc:478
 msgid "UI error while asking for password"
 msgstr "UI Fehler währen Passwortabfrage"
 
-#: yapet/mainwindow.cc:477
+#: yapet/mainwindow.cc:487
 msgid " opened"
 msgstr " geöffnet"
 
-#: yapet/mainwindow.cc:491 yapet/mainwindow.cc:933
+#: yapet/mainwindow.cc:501 yapet/mainwindow.cc:943
 msgid "Error while trying to show error"
 msgstr "Fehler beim Fehleranzeigen"
 
-#: yapet/mainwindow.cc:496
+#: yapet/mainwindow.cc:506
 msgid "Error opening file"
 msgstr "Fehler beim Öffnen der Datei"
 
-#: yapet/mainwindow.cc:500
+#: yapet/mainwindow.cc:510
 msgid "Opening of "
 msgstr "Öffnen von "
 
-#: yapet/mainwindow.cc:500
+#: yapet/mainwindow.cc:510
 msgid " canceled"
 msgstr " abgebrochen"
 
-#: yapet/mainwindow.cc:510
+#: yapet/mainwindow.cc:520
 msgid " saved"
 msgstr " gespeichert"
 
-#: yapet/mainwindow.cc:555
+#: yapet/mainwindow.cc:565
 msgid "New record added"
 msgstr "Neuer Eintrag hinzugefügt"
 
-#: yapet/mainwindow.cc:557
+#: yapet/mainwindow.cc:567
 msgid "Record addition canceled"
 msgstr "Hinzufügen von Eintrag abgebrochen"
 
-#: yapet/mainwindow.cc:569 yapet/mainwindow.cc:614
+#: yapet/mainwindow.cc:579 yapet/mainwindow.cc:624
 msgid "Error adding password entry"
 msgstr "Fehler beim hinzufügen des Passworteintrages"
 
-#: yapet/mainwindow.cc:599
+#: yapet/mainwindow.cc:609
 msgid "Record edited"
 msgstr "Eintrag bearbeitet"
 
-#: yapet/mainwindow.cc:602
+#: yapet/mainwindow.cc:612
 msgid "Record edition canceled"
 msgstr "Bearbeiten des Eintrags abgebrochen"
 
-#: yapet/mainwindow.cc:634
+#: yapet/mainwindow.cc:644
 msgid "Delete selected record?"
 msgstr "Ausgewählter Eintrag löschen?"
 
-#: yapet/mainwindow.cc:641
+#: yapet/mainwindow.cc:651
 msgid "Record deleted"
 msgstr "Eintrag gelöscht"
 
-#: yapet/mainwindow.cc:653
+#: yapet/mainwindow.cc:663
 msgid "Error showing dialog"
 msgstr "Fehler beim Anzeigen des Dialogs"
 
-#: yapet/mainwindow.cc:672
+#: yapet/mainwindow.cc:682
 msgid "Set sort order descending"
 msgstr "Sortierreihenfolge absteigend"
 
-#: yapet/mainwindow.cc:676
+#: yapet/mainwindow.cc:686
 msgid "Set sort order ascending"
 msgstr "Sortierreihenfolge aufsteigend"
 
-#: yapet/mainwindow.cc:708 yapet/mainwindow.cc:745
+#: yapet/mainwindow.cc:718 yapet/mainwindow.cc:755
 msgid "Search term not found"
 msgstr "Begriff nicht gefunden"
 
-#: yapet/mainwindow.cc:711
+#: yapet/mainwindow.cc:721
 msgid "Search canceled"
 msgstr "Suche abgebrochen"
 
-#: yapet/mainwindow.cc:755
+#: yapet/mainwindow.cc:765
 msgid "Save before quitting?"
 msgstr "Vor Beenden speichern?"
 
-#: yapet/mainwindow.cc:781
+#: yapet/mainwindow.cc:791
 msgid "Error creating lock window"
 msgstr "Fehler beim Erstellen des Sperrfensters"
 
-#: yapet/mainwindow.cc:795
+#: yapet/mainwindow.cc:805
 msgid "YAPET -- Locked --"
 msgstr "YAPET -- Gesperrt --"
 
-#: yapet/mainwindow.cc:830
+#: yapet/mainwindow.cc:840
 msgid "Wrong password"
 msgstr "Falsches Passwort"
 
-#: yapet/mainwindow.cc:856
+#: yapet/mainwindow.cc:866
 msgid "Save before changing password?"
 msgstr "Speichern bevor Passwort geändert wird?"
 
-#: yapet/mainwindow.cc:863
+#: yapet/mainwindow.cc:873
 msgid "Password change aborted"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:893
+#: yapet/mainwindow.cc:903
 msgid "Password change canceled"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:938
+#: yapet/mainwindow.cc:948
 msgid "Error reading from file"
 msgstr "Fehler beim Lesen der Datei"
 
-#: yapet/mainwindow.cc:942
+#: yapet/mainwindow.cc:952
 msgid "Password successfully changed"
 msgstr "Passwort erfolgreich geändert"
 
-#: yapet/mainwindow.cc:974
+#: yapet/mainwindow.cc:984
 msgid "No file loaded"
 msgstr "Keine Datei geladen"
 
-#: yapet/mainwindow.cc:977
+#: yapet/mainwindow.cc:987
 msgid " loaded"
 msgstr " geladen"
 
-#: yapet/mainwindow.cc:1020
+#: yapet/mainwindow.cc:1030
 msgid "O P E N  F I L E"
 msgstr "D A T E I  Ö F F N E N"
 
@@ -611,32 +611,32 @@ msgstr "Passwort eingeben für"
 msgid "Error refreshing password dialog"
 msgstr "Fehler beim Auffrischen des Passwortdialogs"
 
-#: yapet/main.cc:112
+#: yapet/main.cc:116
 msgid "Failed to suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:114
+#: yapet/main.cc:118
 msgid "The error message is: "
 msgstr "Die Fehlermeldung ist: "
 
-#: yapet/main.cc:116 yapet/main.cc:127
+#: yapet/main.cc:120 yapet/main.cc:131
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 "Falls eine Core Datei erstellt wird, kann sie Klartextpasswörter enthalten."
 
-#: yapet/main.cc:119 yapet/main.cc:130
+#: yapet/main.cc:123 yapet/main.cc:134
 msgid "Press <ENTER> to continue"
 msgstr "Drücke <EINGABE> um weiterzumachen"
 
-#: yapet/main.cc:125
+#: yapet/main.cc:129
 msgid "Cannot suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:204
+#: yapet/main.cc:228
 msgid " without argument"
 msgstr " ohne Argument"
 
-#: yapet/main.cc:208
+#: yapet/main.cc:232
 msgid "unknown argument"
 msgstr "unbekanntes argument"
 
