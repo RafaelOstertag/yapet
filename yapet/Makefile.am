@@ -8,3 +8,6 @@ passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc
 
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(localedir)\"
 yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
+
+clean-local:
+	rm -rf SunWS_cache

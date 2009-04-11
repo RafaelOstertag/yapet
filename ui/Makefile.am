@@ -8,3 +8,6 @@ messagebox.h messagebox.cc listwidget.h button.h button.cc passwordwidget.cc	\
 dialogbox.cc colors.cc misc.h misc.cc
 
 libui_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
+
+clean-local:
+	rm -rf SunWS_cache

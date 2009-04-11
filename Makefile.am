@@ -27,3 +27,6 @@ yapet.desktop: Makefile $(srcdir)/yapet.desktop.in
 DISTCLEANFILES = yapet.desktop
 
 ACLOCAL_AMFLAGS = -I m4
+
+clean-local:
+	rm -rf SunWS_cache

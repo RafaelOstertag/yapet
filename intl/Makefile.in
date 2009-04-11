@@ -543,6 +543,7 @@ mostlyclean:
 	rm -f -r .libs _libs
 
 clean: mostlyclean
+	rm -rf SunWS_cache
 
 distclean: clean
 	rm -f Makefile ID TAGS
