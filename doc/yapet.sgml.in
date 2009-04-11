@@ -164,7 +164,7 @@ No file loaded
     <para>Files created by &yp; always have the
       suffix <filename>.pet</filename>. This cannot be changed by the
       user. Also, if a file is loaded using the command line the
-      suffix <filename>.pet</filename> is appended to the filename
+      suffix <filename>.pet</filename> is appended to the file name
       given that it was not specified by the user.</para>
 
     <para>The password entries are protected by a master password. The
@@ -373,4 +373,3 @@ No file loaded
     <simpara>&CURSES;, &OPENSSL;, &CRYPTO;</simpara>
   </refsect1>
 </refentry>
-

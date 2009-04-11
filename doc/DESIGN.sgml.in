@@ -21,7 +21,8 @@
 <article>
 
   <articleinfo>
-    <title>&YP; - Design</title>
+    <title>&YP; - Yet Another Password Encryption Tool &YPVER;</title>
+    <subtitle>&YP; - Design</subtitle>
     <author>
       <firstname>Rafael</firstname>
       <surname>Ostertag</surname>
@@ -36,9 +37,9 @@
   <sect1 id="general">
     <title>General</title>
 
-    <para>&YP; stores passwords encrypted to disk. Passwords are kept
-      in records with additional information. A record is comprised by
-      the following components:
+    <para>&YP; stores passwords encrypted on disk. Passwords are kept in
+    records with additional information. A record is comprised by the following
+    components:
     </para>
     &pwrecord;
 
@@ -296,4 +297,3 @@
     source tarball of &YP;.</para>
   </sect1>
 </article>
-

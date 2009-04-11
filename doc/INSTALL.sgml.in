@@ -19,7 +19,8 @@
 <article>
 
   <articleinfo>
-    <title>Installation Instructions</title>
+    <title>&YP; - Yet Another Password Encryption Tool &YPVER;</title>
+    <subtitle>Installation Instructions</subtitle>
     <author>
       <firstname>Rafael</firstname>
       <surname>Ostertag</surname>
@@ -60,6 +61,11 @@
 	</itemizedlist>
       </para>
 
+      <para>As of version 0.3 &YP; uses GNU Gettext for internationalization,
+      hence GNU Gettext is an optional dependency. In case GNU Gettext is not
+      available on the build system, the GNU Gettext version included in the
+      source distribution is used.</para>
+
     </sect2>
 
     <sect2 id="compilers">
@@ -72,7 +78,7 @@
       <para>
 	<itemizedlist>
 	  <listitem>
-	    <simpara>&SUN; Studio 11 C++ Compiler (only tested under
+	    <simpara>&SUN; Studio 11/12 C++ Compiler (only tested under
 	    &SOLARIS; 10 x86)</simpara>
 	  </listitem>
 	  <listitem>
@@ -99,7 +105,7 @@
     </para>
 
     <para>on the command line. The <command>configure</command> script will then check
-      the system an prepares for the build process.
+      the system and prepares for the build process.
     </para>
 
     <para>If the <command>configure</command> script successfully
@@ -202,6 +208,29 @@
 	    file name of the shared library.</para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-terminal-title</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs &YP; to set the terminal title in XTerm and friends.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-build-doc</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs the build system to (re-)generate the documentation
+	  files. You usually do not need this, since the source distribution
+	  ships with pre-built documentation files.
+	  </para>
+	</listitem>
+      </varlistentry>
     </variablelist>
   </sect1>
 
@@ -238,6 +267,11 @@
       <varlistentry>
 	<term><filename><replaceable>PATH</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html]</filename></term>
 	<listitem><para>Various documentation files in HTML format.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>PATH</replaceable>/share/locale/<replaceable>LANG</replaceable></filename></term>
+	<listitem><para>The translation files files.</para></listitem>
       </varlistentry>
 
     </variablelist>
