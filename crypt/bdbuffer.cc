@@ -27,7 +27,7 @@
 # include <string.h>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 
 using namespace YAPET;
 

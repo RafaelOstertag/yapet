@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "intl.h"
+#include "../intl.h"
 #include "crypt.h"
 #include "record.h"
 #include "structs.h"

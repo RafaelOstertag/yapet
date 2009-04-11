@@ -71,7 +71,11 @@
 # include <getopt.h>
 #endif
 
-#include "intl.h"
+#ifdef HAVE_CRYPTO_H
+# include <openssl/crypto.h>
+#endif
+
+#include "../intl.h"
 #include "fileopen.h" // for the endswith() functions
 #include "mainwindow.h"
 
@@ -136,6 +140,26 @@ void set_rlimit() {
 
 void show_version() {
     std::cout << PACKAGE_STRING << std::endl;
+
+#ifdef HAVE_SSLEAY_VERSION
+    std::cout << "SSL Version: " << SSLeay_version(SSLEAY_VERSION) << std::endl;
+#endif
+
+#ifdef NCURSES_VERSION
+    std::cout << "Curses Implementation: " << "ncurses (" << NCURSES_VERSION << ")" << std::endl;
+#else	// NCURSES_VERSION
+#ifdef _XOPEN_CURSES
+    std::cout << "Curses Implementation: " << "XOpen Curses" << std::endl;
+#else	// _XOPEN_CURSES
+    std::cout << "Curses Implementation: " << "System Curses" << std::endl;
+#endif	// _XOPEN_CURSES
+#endif	// NCURSES_VERSION
+
+#if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
+    std::cout << "Compiled with support for terminal title" << std::endl;
+#else
+    std::cout << "Compiled without support for terminal title" << std::endl;
+#endif
 }
 
 void show_copyright() {

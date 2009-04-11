@@ -34,7 +34,7 @@
 # include <string>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 
 namespace YAPETUI {
     /**

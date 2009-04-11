@@ -30,7 +30,7 @@
 # include <inttypes.h>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 
 
 #include <openssl/evp.h>

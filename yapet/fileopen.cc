@@ -47,7 +47,7 @@
 # include <algorithm>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 #include <messagebox.h>
 #include <colors.h>
 #include "fileopen.h"

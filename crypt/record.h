@@ -38,7 +38,7 @@
 # include <string.h>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 
 #include "bdbuffer.h"
 #include "yapetexception.h"

@@ -19,7 +19,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "intl.h"
+#include "../intl.h"
 #include "key.h"
 
 #ifdef HAVE_STRING_H

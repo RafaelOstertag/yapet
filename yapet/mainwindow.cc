@@ -61,7 +61,7 @@
 #include <colors.h>
 #include <misc.h>
 
-#include "intl.h"
+#include "../intl.h"
 #include "mainwindow.h"
 #include "fileopen.h"
 #include "passworddialog.h"

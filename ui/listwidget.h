@@ -57,7 +57,7 @@
 # include <string.h>
 #endif
 
-#include "intl.h"
+#include "../intl.h"
 #include "uiexception.h"
 #include "colors.h"
 #include "basewindow.h"
