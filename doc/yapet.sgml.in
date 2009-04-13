@@ -2,7 +2,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	  "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
 [
-<!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
+<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
 <!ENTITY pwrecord SYSTEM "@srcdir@/pwrecord.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
@@ -31,6 +31,7 @@
 
   <refentryinfo>
      <productname>&YP;</productname>
+     &cpr;
   </refentryinfo>
 
   <refnamediv>
@@ -76,7 +77,7 @@
       <varlistentry>
 	<term>-c</term>
 	<listitem>
-	  <para>shows the copyright information.</para>
+	  <para>show the copyright information.</para>
 	</listitem>
       </varlistentry>
 
@@ -84,7 +85,7 @@
 	<term>-h</term>
 	<listitem>
 
-	  <para>prints a help text.</para>
+	  <para>print a help text.</para>
 	</listitem>
       </varlistentry>
 
@@ -92,7 +93,7 @@
 	<term>-V</term>
 	<listitem>
 
-	  <para>shows the version of &yp;.</para>
+	  <para>show the version of &yp;.</para>
 	</listitem>
       </varlistentry>
 

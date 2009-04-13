@@ -2,6 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
 [
+<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
 <!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
@@ -25,12 +26,11 @@
       <firstname>Rafael</firstname>
       <surname>Ostertag</surname>
     </author>
+    &cpr;
     <releaseinfo>
       $Id$
     </releaseinfo>
   </articleinfo>
-
-  &preamble;
 
   <sect1 id="prereq">
     <title>Build Prerequisites</title>

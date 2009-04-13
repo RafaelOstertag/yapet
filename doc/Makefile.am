@@ -8,7 +8,7 @@ dist_man1_MANS = yapet.1
 sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
 Doxyfile.in README.Cygwin.sgml.in
 
-sgml_static_files = preamble.sgml supportedplatforms.sgml caution.sgml	\
+sgml_static_files = copyright.sgml supportedplatforms.sgml caution.sgml	\
 pwrecord.sgml
 
 sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
