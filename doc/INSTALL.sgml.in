@@ -211,11 +211,11 @@
 
       <varlistentry>
 	<term>
-	  <option>--enable-terminal-title</option>
+	  <option>--disable-nls</option>
 	</term>
 
 	<listitem>
-	  <para>Instructs &YP; to set the terminal title in XTerm and friends.</para>
+	  <para>Disables the Native Language Support.</para>
 	</listitem>
       </varlistentry>
 
@@ -231,6 +231,17 @@
 	  </para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-terminal-title</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs &YP; to set the terminal title in XTerm and friends.</para>
+	</listitem>
+      </varlistentry>
+
     </variablelist>
   </sect1>
 
@@ -271,7 +282,7 @@
 
       <varlistentry>
 	<term><filename><replaceable>PATH</replaceable>/share/locale/<replaceable>LANG</replaceable></filename></term>
-	<listitem><para>The translation files files.</para></listitem>
+	<listitem><para>The translation files.</para></listitem>
       </varlistentry>
 
     </variablelist>

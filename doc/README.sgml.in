@@ -34,12 +34,11 @@
   <sect1 id="intro">
     <title>Introduction</title>
 
-    <para>&YP; is a curses based password encryption tool using the
-    Blowfish encryption algorithm to store the password records
-    encrypted on disk. Its primary aim is to provide a
-    safe way to store passwords in a file on disk while having a small
-    footprint, and compiling and running under today's most popular
-    Unixes, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
+    <para>&YP; is a curses based password encryption tool using the Blowfish
+    encryption algorithm to store password records encrypted on disk. Its
+    primary aim is to provide a safe way to store passwords in a file on disk
+    while having a small footprint, and compiling and running under today's
+    most popular Unixes, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
 
     <para>If you are looking for a fully fledged password encryption
     tool having a graphical user interface, I recommend you start with
@@ -66,6 +65,9 @@
     <title>Supported Platforms</title>
 
     &supplatforms;
+
+    <para>If you want to use &YP; under Cygwin, you may want to read the
+    <filename>README.Cygwin</filename> file.</para>
   </sect1>
 
   <sect1 id="features">
