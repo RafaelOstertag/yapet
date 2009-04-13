@@ -1,12 +1,26 @@
 News
 ====
 
-2008-07-19:
-	Password entries are now sorted and can be searched.
+YAPET 0.3
+	
+	* Patch for building with gcc 4.3 or later applied.
+
+	* Patch for displaying cursor and backspace behavior applied.
+
+	* Internationalization enabled. Translation for de_CH, de_DE
+          (partially), and de_AT (partially) added.
+
+	* Terminal title in XTerm and friends is updated.
+
+
+YAPET 0.2:
+	
+	* Password entries are now sorted and can be searched.
 	
 
-2008-02-27:
-	Version 0.1 released.
+YAPET 0.1:
+
+	* Version 0.1 released.
 
 
 $Id$
