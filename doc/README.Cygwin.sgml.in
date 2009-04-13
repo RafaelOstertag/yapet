@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
 [
-<!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
+<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
@@ -28,9 +28,8 @@
     <releaseinfo>
       $Id$
     </releaseinfo>
+    &cpr;
   </articleinfo>
-
-  &preamble;
 
   <sect1 id="intro">
     <title>Introduction</title>
@@ -83,4 +82,20 @@
     <option>install</option></command> on the command line.</para>
 
   </sect1>
+
+  <sect1 id="builderror">
+    <title>Build Error</title>
+    <para>If the build process aborts with the error message</para>
+
+    <para>
+<screen>cc1: error: unrecognized command line option "-fvisibility=hidden"</screen>
+    </para>
+
+    <para>open the file <filename>intl/Makefile</filename> and remove the
+    option <option>-fvisibility=hidden</option> from the
+    <varname>CFLAGS</varname> variable. The <varname>CFLAGS</varname> variable
+    is located around line number 86 in the
+    <filename>Makefile</filename>.</para>
+  </sect1>
+
 </article>
