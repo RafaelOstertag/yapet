@@ -40,6 +40,10 @@ AC_ARG_WITH([openssl-lib],
 	[AS_HELP_STRING([--with-openssl-lib],[directory for openssl libraries])],
 	[LDFLAGS="-L$withval $LDFLAGS"],
 	[])
+AC_SUBST([DOCBOOKXSL],[http://docbook.sourceforge.net/release/xsl/current])
+AC_ARG_WITH([docbook-xsl],
+	[AS_HELP_STRING([--with-docbook-xsl],[directory where to find the Docbook XSL])],
+	[AC_SUBST([DOCBOOKXSL],[$withval])])
 
 # "Enables"
 AC_ARG_ENABLE([build-doc],
@@ -168,6 +172,7 @@ echo "******************************************************************"
 echo ""
 echo "Prefix              : $prefix"
 echo "CPPFLAGS            : $CPPFLAGS"
+echo "CFLAGS              : $CFLAGS"
 echo "CXXFLAGS            : $CXXFLAGS"
 echo "LDFLAGS             : $LDFLAGS"
 echo "Use ncurses.h       : $my_usencurses"
@@ -175,6 +180,7 @@ echo ""
 echo "Doxygen             : $DOXYGEN"
 echo "xsltproc            : $XSLTPROC"
 echo "Lynx                : $LYNX"
+echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
 echo "Build Documentation : $my_builddoc"
 echo "Set Terminal Title  : $my_settitle"
@@ -182,3 +188,6 @@ echo ""
 echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""
 echo "******************************************************************"
+echo ""
+echo "Looks good. Now type $MAKE."
+echo ""
