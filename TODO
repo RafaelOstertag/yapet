@@ -12,6 +12,8 @@ YAPET To Do
 
 * Translate the options, copyright etc.
 
+* Fix handling of --enable-terminal-title in configure script
+
 $Id$
 Local Variables:
 mode: text
