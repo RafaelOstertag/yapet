@@ -1,0 +1,18 @@
+YAPET To Do
+===========
+
+* Add support for configuration file:
+  - lock timeout
+  - initial file to load
+
+* File security:
+  - permission on file set to rw for owner only
+  - configuration option to enforce file security
+  - warning if file is not secure
+
+* Translate the options, copyright etc.
+
+$Id$
+Local Variables:
+mode: text
+End:
