@@ -1,7 +1,7 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.3],[rafi@guengel.ch])
-AM_INIT_AUTOMAKE([yapet],[0.3])
+AC_INIT([YAPET],[0.3a],[rafi@guengel.ch])
+AM_INIT_AUTOMAKE([yapet],[0.3a])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
