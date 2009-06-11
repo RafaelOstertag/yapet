@@ -14,6 +14,9 @@ YAPET To Do
 
 * Fix handling of --enable-terminal-title in configure script
 
+* Adjust the --copyright switch to behave as suggested in
+  http://www.gnu.org/licenses/gpl-3.0.html#howto
+
 $Id$
 Local Variables:
 mode: text
