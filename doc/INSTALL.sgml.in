@@ -271,7 +271,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|README]</filename></term>
+	<term><filename><replaceable>PATH</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|LICENSE|README]</filename></term>
 	<listitem><para>Various documentation files.</para></listitem>
       </varlistentry>
 
