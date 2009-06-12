@@ -36,10 +36,10 @@
 
     <para>Build instructions for &YP; under Cygwin. The build and configuration
     steps are basically the same as on a real UNIX system. The only catch is,
-    that the configure script need the <option>CXX</option> and
+    that the configure script needs the <option>CXX</option> and
     <option>CC</option> variables explicitely set to <filename>g++</filename>
     and <filename>gcc</filename> respectively, else you will see a lot of
-    errors.
+    error messages.
     </para>
   </sect1>
 
