@@ -1,7 +1,7 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.3a],[rafi@guengel.ch])
-AM_INIT_AUTOMAKE([yapet],[0.3a])
+AC_INIT([YAPET],[0.4],[rafi@guengel.ch])
+AM_INIT_AUTOMAKE([yapet],[0.4])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -14,6 +14,9 @@ AC_PROG_CXX([CC c++ g++])
 AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
+AC_PROG_MKDIR_P
+AC_PROG_LEX
+AC_PROG_YACC
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
