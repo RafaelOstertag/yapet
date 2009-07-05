@@ -15,8 +15,6 @@ AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
 AC_PROG_MKDIR_P
-AC_PROG_LEX
-AC_PROG_YACC
 AC_ARG_VAR([DOXYGEN],[path to doxygen])
 AC_ARG_VAR([XSLTPROC], [path to xsltproc])
 AC_ARG_VAR([LYNX], [path to lynx])
@@ -78,7 +76,7 @@ AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if 
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
-AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory functional],
+AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory functional fstream sstream],
 		       [],
 		       [AC_MSG_ERROR([your system is missing a required C++ header file])])
 
@@ -94,7 +92,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror strcmp strncmp strncasecmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime fflush fprintf fstat getuid fchmod fchown])
+AC_CHECK_FUNCS([memset strerror strcmp strncmp strncasecmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime fflush fprintf fstat getuid fchmod fchown access])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])
