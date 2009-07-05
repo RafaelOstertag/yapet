@@ -954,15 +954,18 @@ MainWindow::changePassword() throw(YAPETUI::UIException) {
     statusbar.putMsg(_("Password successfully changed"));
 }
 
-MainWindow::MainWindow(bool fsecurity) throw (YAPETUI::UIException) : BaseWindow(),
-							toprightwin (NULL),
-							bottomrightwin (NULL),
-							recordlist (NULL),
-							statusbar(),
-							records_changed(false),
-							key (NULL),
-							file (NULL),
-							usefsecurity(fsecurity) {
+MainWindow::MainWindow(unsigned int timeout,
+		       bool fsecurity) throw (YAPETUI::UIException) : BaseWindow(),
+								      toprightwin (NULL),
+								      bottomrightwin (NULL),
+								      recordlist (NULL),
+								      statusbar(),
+								      records_changed(false),
+								      key (NULL),
+								      file (NULL),
+								      locktimeout(timeout),
+								      usefsecurity(fsecurity) {
+    locktimeout = locktimeout < 10 ? 10 : locktimeout;
     createWindow();
 }
 
@@ -996,7 +999,7 @@ MainWindow::run() throw (YAPETUI::UIException) {
     while(true) {
 	try {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    BaseWindow::setTimeout(&alrm,600);
+	    BaseWindow::setTimeout(&alrm,locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	    while ( (ch=recordlist->focus()) ) {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

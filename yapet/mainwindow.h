@@ -67,6 +67,8 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	YAPET::Key* key;
 	YAPET::File* file;
 
+	unsigned int locktimeout;
+
 	bool usefsecurity;
 
 	inline MainWindow(const MainWindow&) {}
@@ -98,7 +100,7 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	void lockScreen() const throw(YAPETUI::UIException);
 	void changePassword() throw(YAPETUI::UIException);
     public:
-	MainWindow(bool fsecurity) throw(YAPETUI::UIException);
+	MainWindow(unsigned int timeout, bool fsecurity) throw(YAPETUI::UIException);
 	virtual ~MainWindow();
 
 	void run() throw(YAPETUI::UIException);

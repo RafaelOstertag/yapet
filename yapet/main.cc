@@ -196,9 +196,14 @@ void show_help(char* prgname) {
 	      << std::endl;
     std::cout << "-s, --no-file-security\tdisables checks of owner and file permissions."
 	      << std::endl
-	      << "\t\t\tWhen creating new files, the file mode"
+	      << "\t\t\tWhen creating new files, the file mode is set"
 	      << std::endl
-	      << "\t\t\tdefaults to 0644."
+	      << "\t\t\tto 0644."
+	      << std::endl
+	      << std::endl;
+    std::cout << "-t, --timeout\t\tthe time-out in seconds until the screen is locked."
+	      << std::endl
+	      << "\t\t\tDefault: 600 sec."
 	      << std::endl
 	      << std::endl;
     std::cout << "-V, --version\t\tshow the version of " PACKAGE_NAME
@@ -226,17 +231,21 @@ int main (int argc, char** argv) {
     int c;
     std::string filename;
     bool filesecurity = true;
+    int timeout = 600;
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
 	{"copyright", no_argument, NULL, 'c'},
 	{"help", no_argument, NULL, 'h'},
 	{"no-file-security", no_argument, NULL, 's'},
+	{"timeout", required_argument, NULL, 't'},
 	{"version", no_argument, NULL, 'V'},
 	{NULL,0,NULL,0}
     };
-    while ( (c = getopt_long(argc, argv, ":chsV", long_options, NULL)) != -1) {
+    while ( (c = getopt_long(argc, argv, ":chst:V", long_options, NULL)) != -1) {
 #else // HAVE_GETOPT_LONG
-    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)V(version)")) != -1) {
+	extern char *optarg;
+	extern int optopt, optind;
+    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)t:(timeout)V(version)")) != -1) {
 #endif // HAVE_GETOPT_LONG
 	switch (c) {
 	case 'c':
@@ -251,6 +260,9 @@ int main (int argc, char** argv) {
 	case 's':
 	    filesecurity = false;
 	    break;
+	case 't':
+	    sscanf(optarg, "%u", &timeout);
+	    break;
 	case ':':
 	    std::cerr << "-" << (char)optopt << _(" without argument")
 		      << std::endl;
@@ -262,8 +274,8 @@ int main (int argc, char** argv) {
 	}
     }
 
-    if (argc > 1) {
-	filename = argv[argc-1];
+    if (optind < argc) {
+	filename = argv[optind];
 
 	if (!endswith(filename, ".pet"))
 	filename+=".pet";
@@ -273,7 +285,7 @@ int main (int argc, char** argv) {
 
     MainWindow* mainwin = NULL;
     try {
-	mainwin = new MainWindow(filesecurity);
+	mainwin = new MainWindow(timeout, filesecurity);
 	// filename may be empty
 	mainwin->run(filename);
 	delete mainwin;
