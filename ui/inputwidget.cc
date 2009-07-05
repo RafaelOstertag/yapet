@@ -177,8 +177,19 @@ InputWidget::focus() throw(UIException) {
 
     visibleCursor(true);
     int ch;
-    while ( (ch=wgetch(window)) != '\n' && ch != '\t') {
+    while (true) {
+	ch=wgetch(window);
 	switch (ch) {
+	    // Bailout keys
+#ifdef HAVE_WRESIZE
+	case KEY_RESIZE:
+#endif // HAVE_WRESIZE
+	case '\n':
+	case KEY_TAB:
+	case KEY_ESC:
+	    goto BAILOUT;
+	    break;
+	    // Motion and other keys
 	case KEY_UP:
 	case KEY_LEFT:
 	    moveBackward();
@@ -205,11 +216,6 @@ InputWidget::focus() throw(UIException) {
 	case 127:
 	    processBackspace();
 	    break;
-#ifdef HAVE_WRESIZE
-	case KEY_RESIZE:
-	    goto BAILOUT;
-	    break;
-#endif // HAVE_WRESIZE
 	case KEY_REFRESH:
 	    BaseWindow::refreshAll();
 	    break;

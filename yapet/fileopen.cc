@@ -222,6 +222,10 @@ FileOpen::run() throw (YAPETUI::UIException) {
 		YAPETUI::BaseWindow::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
+	    case KEY_ESC:
+		canceled = true;
+		return;
+		break;
 	    case KEY_ENTER:
 	    case '\n': {
 		try {
@@ -252,6 +256,10 @@ FileOpen::run() throw (YAPETUI::UIException) {
 		YAPETUI::BaseWindow::resizeAll();
 		break;
 #endif // HAVE_WRESIZE
+	    case KEY_ESC:
+		canceled = true;
+		return;
+		break;
 	    case KEY_ENTER:
 	    case '\n':
 		filename = files->getSelectedItem();
@@ -266,6 +274,10 @@ FileOpen::run() throw (YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = input->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    canceled = true;
+	    return;
+	}
 	filename = input->getText();
 
 
@@ -276,9 +288,16 @@ FileOpen::run() throw (YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n' || ch == KEY_ENTER) {
+	switch (ch) {
+	case KEY_ESC:
+	    canceled = true;
+	    return;
+	    break;
+	case '\n':
+	case KEY_ENTER:
 	    canceled = false;
 	    return;
+	    break;
 	}
 
 	// The cancel button
@@ -288,7 +307,7 @@ FileOpen::run() throw (YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n' || ch == KEY_ENTER) {
+	if (ch == '\n' || ch == KEY_ENTER || ch == KEY_ESC) {
 	    canceled = true;
 	    return;
 	}

@@ -105,12 +105,15 @@ Button::focus() throw (UIException) {
 	    onClick();
 	    goto BAILOUT;
 	    break;
-	case '\t':
+	case KEY_TAB:
 	case KEY_LEFT:
 	case KEY_RIGHT:
 	case KEY_UP:
 	case KEY_DOWN:
 	    ch = '\t';
+	    goto BAILOUT;
+	    break;
+	case KEY_ESC:
 	    goto BAILOUT;
 	    break;
 	case KEY_REFRESH:

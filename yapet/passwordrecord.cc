@@ -110,7 +110,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = name->focus();
 #endif // HAVE_WRESIZE
-
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = host->focus()) == KEY_RESIZE)
@@ -118,6 +121,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = host->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 
 #ifdef HAVE_WRESIZE
@@ -126,6 +133,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = username->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 
 #ifdef HAVE_WRESIZE
@@ -134,6 +145,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = password->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 
 #ifdef HAVE_WRESIZE
@@ -142,6 +157,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = comment->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 
 #ifdef HAVE_WRESIZE
@@ -150,6 +169,10 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    encentry = NULL;
+	    return;
+	}
 
 	if (ch == '\n') {
 	    if (!entryChanged()) {
@@ -193,7 +216,7 @@ PasswordRecord::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n') {
+	if (ch == '\n' || ch == KEY_ESC) {
 	    encentry = NULL;
 	    return;
 	}

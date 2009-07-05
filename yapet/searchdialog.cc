@@ -68,8 +68,12 @@ SearchDialog::run() throw(YAPETUI::UIException) {
 	while ( (ch = searchtermw->focus()) == KEY_RESIZE)
 	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
-	searchtermw->focus();
+	ch = searchtermw->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC) {
+	    canceled = true;
+	    return;
+	}
 
 #ifdef HAVE_WRESIZE
 	while ( (ch = okbutton->focus()) == KEY_RESIZE)
@@ -77,7 +81,11 @@ SearchDialog::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n') {
+	switch (ch) {
+	case KEY_ESC:
+	    canceled = true;
+	    return;
+	case '\n':
 	    canceled = false;
 	    return;
 	}
@@ -87,7 +95,7 @@ SearchDialog::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n') {
+	if (ch == '\n' || ch == KEY_ESC) {
 	    canceled = true;
 	    return;
 	}

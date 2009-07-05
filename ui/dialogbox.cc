@@ -47,8 +47,13 @@ DialogBox::run() throw(UIException) {
 #else // HAVE_RESIZE
 	int ch = MessageBox::run();
 #endif // HAVE_RESIZE
-	if (ch == '\n') {
+	switch (ch) {
+	case '\n':
 	    answer = ANSWER_OK;
+	    return ch;
+	    break;
+	case KEY_ESC:
+	    answer = ANSWER_CANCEL;
 	    return ch;
 	}
 
@@ -58,7 +63,7 @@ DialogBox::run() throw(UIException) {
 #else // HAVE_RESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_RESIZE
-	if (ch == '\n') {
+	if (ch == '\n' || ch == KEY_ESC) {
 	    answer = ANSWER_CANCEL;
 	    return ch;
 	}

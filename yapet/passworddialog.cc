@@ -80,8 +80,10 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 	while ( (ch = pwidget1->focus()) == KEY_RESIZE)
 	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
-	pwidget1->focus();
+	ch = pwidget1->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC)
+	    return;
 
 	// Password input widget 2 only if we prompt for a new password
 	if (pwtype == NEW_PW) {
@@ -89,8 +91,10 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 	    while ( (ch = pwidget2->focus()) == KEY_RESIZE)
 	    YAPETUI::BaseWindow::resizeAll();
 #else // HAVE_WRESIZE
-	    pwidget2->focus();
+	    ch = pwidget2->focus();
 #endif // HAVE_WRESIZE
+	    if (ch == KEY_ESC)
+		return;
 	}
 
 #ifdef HAVE_WRESIZE
@@ -99,6 +103,9 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = okbutton->focus();
 #endif // HAVE_WRESIZE
+	if (ch == KEY_ESC)
+	    return;
+
 	if (ch == '\n') {
 	    if (pwtype == NEW_PW) {
 		if (pwidget1->getText() == pwidget2->getText()) {
@@ -131,7 +138,7 @@ PasswordDialog::run() throw(YAPETUI::UIException) {
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n')
+	if (ch == '\n' || ch == KEY_ENTER || ch == KEY_ESC)
 	    return;
     }
 

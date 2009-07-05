@@ -65,16 +65,30 @@
 # include <config.h>
 #endif
 
+
+enum {
 #ifdef KEY_REFRESH
 #undef KEY_REFRESH
-enum {
     /**
      * The value returned by \c [w]getch() when the user presses \c
      * ^L.
      */
-    KEY_REFRESH = 12
-};
+    KEY_REFRESH = 12,
 #endif // KEY_REFRESH
+#ifndef KEY_ESC
+    /**
+     * The value returned by \c [w]getch() upon pressing the escape key
+     */
+    KEY_ESC = 27,
+#endif // KEY_ESC
+#ifndef KEY_TAB
+    /**
+     * The value returned by \c [w]getch() upon pressing the tab key
+     */
+    KEY_TAB = '\t'
+#endif // KEY_TAB
+};
+
 
 
 
