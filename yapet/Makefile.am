@@ -2,9 +2,10 @@
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = mainwindow.h statusbar.h fileopen.h passworddialog.h	\
-passwordrecord.h main.cc mainwindow.cc statusbar.cc fileopen.cc		\
-passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc
+yapet_SOURCES = mainwindow.h statusbar.h fileopen.h passworddialog.h		\
+passwordrecord.h main.cc mainwindow.cc statusbar.cc fileopen.cc			\
+passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc cfgfile.h	\
+cfgfile.cc
 
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(localedir)\"
 

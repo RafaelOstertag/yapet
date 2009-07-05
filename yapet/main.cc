@@ -89,6 +89,7 @@
 #include "../intl.h"
 #include "fileopen.h" // for the endswith() functions
 #include "mainwindow.h"
+#include "cfgfile.h"
 
 /**
  * @file
@@ -232,6 +233,13 @@ int main (int argc, char** argv) {
     std::string filename;
     bool filesecurity = true;
     int timeout = 600;
+
+    ConfigFile* cfg = new ConfigFile();
+    filename = cfg->getFileToLoad();
+    filesecurity = cfg->getUseFileSecurity();
+    timeout = cfg->getLockTimeout();
+    delete cfg;
+
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
 	{"copyright", no_argument, NULL, 'c'},

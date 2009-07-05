@@ -240,10 +240,14 @@ void
 MainWindow::bottomRightWinContent() throw(YAPETUI::UIException) {
     if (key == NULL || recordlist == NULL) return;
 
-    int retval = mymvwaddstr(bottomrightwin, 1, 2, _("Cipher: Blowfish"));
+    int retval = 0;
+    if (usefsecurity)
+	retval = mymvwaddstr(bottomrightwin, 1, 2, _("File permission check: enabled"));
+    else
+	retval = mymvwaddstr(bottomrightwin, 1, 2, _("File permission check: disabled"));
     if (retval == ERR)
 	throw YAPETUI::UIException (_("waddstr() blew it"));
-    retval = mvwprintw(bottomrightwin, 2, 2, _("Key: %d bytes (%d bits)"), key->size(), key->size()*8);
+    retval = mvwprintw(bottomrightwin, 2, 2, _("Screen lock time-out: %u sec"), locktimeout);
     if (retval == ERR)
 	throw YAPETUI::UIException (_("mvprintw() blew it"));
     retval = mvwprintw(bottomrightwin, 3, 2, _("%d entries "), recordlist->size());
