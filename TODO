@@ -4,11 +4,7 @@ YAPET To Do
 * Add support for configuration file:
   - lock timeout
   - initial file to load
-
-* File security:
-  - permission on file set to rw for owner only
   - configuration option to enforce file security
-  - warning if file is not secure
 
 * Translate the options, copyright etc.
 
@@ -16,6 +12,9 @@ YAPET To Do
 
 * Adjust the --copyright switch to behave as suggested in
   http://www.gnu.org/licenses/gpl-3.0.html#howto
+
+* Fix the display of the selection bar in list widgets upon page down/up
+
 
 $Id$
 Local Variables:
