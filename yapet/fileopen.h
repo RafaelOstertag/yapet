@@ -122,7 +122,7 @@ class FileOpen : protected YAPETUI::BaseWindow {
 
 	std::string getFilepath();
 
-	inline bool isCanceled() const { return canceled; }
+	inline bool isCanceled() const { return filename.empty() ? true : canceled; }
 };
 
 inline
