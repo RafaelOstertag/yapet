@@ -9,6 +9,8 @@ YAPET 0.4
 
 	* File owner and permissions will be checked for security reasons.
 
+	* Time-out until screen is locked can be configured.
+
 
 YAPET 0.3a
 
