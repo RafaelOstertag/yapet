@@ -171,6 +171,10 @@ void show_version() {
 #else
     std::cout << "Compiled without support for terminal title" << std::endl;
 #endif
+
+#if !defined(HAVE_FSTAT) || !defined(HAVE_GETUID) || !defined(HAVE_FCHMOD) || !defined(HAVE_FCHOWN)
+    std::cout << "Support for file security not available" << std::endl;
+#endif
 }
 
 void show_copyright() {
@@ -181,19 +185,26 @@ void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
-	      << " [-c] [-h] [-V] [<filename>]"
+	      << " [-c] [-h] [-s] [-V] [<filename>]"
 	      << std::endl
 	      << std::endl;
-    std::cout << "-c, --copyright\tshow copyright information"
+    std::cout << "-c, --copyright\t\tshow copyright information"
 	      << std::endl
 	      << std::endl;
-    std::cout << "-h, --help\tshow this help text"
+    std::cout << "-h, --help\t\tshow this help text"
 	      << std::endl
 	      << std::endl;
-    std::cout << "-V, --version\tshow the version of " PACKAGE_NAME
+    std::cout << "-s, --no-file-security\tdisables checks of owner and file permissions."
+	      << std::endl
+	      << "\t\t\tWhen creating new files, the file mode"
+	      << std::endl
+	      << "\t\t\tdefaults to 0644."
 	      << std::endl
 	      << std::endl;
-    std::cout << "<filename>\topen the specified file <filename>"
+    std::cout << "-V, --version\t\tshow the version of " PACKAGE_NAME
+	      << std::endl
+	      << std::endl;
+    std::cout << "<filename>\t\topen the specified file <filename>"
 	      << std::endl
 	      << std::endl;
     std::cout << PACKAGE_NAME " stores passwords encrypted on disk using the blowfish algorithm."
@@ -214,16 +225,18 @@ int main (int argc, char** argv) {
 
     int c;
     std::string filename;
+    bool filesecurity = true;
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
 	{"copyright", no_argument, NULL, 'c'},
 	{"help", no_argument, NULL, 'h'},
+	{"no-file-security", no_argument, NULL, 's'},
 	{"version", no_argument, NULL, 'V'},
 	{NULL,0,NULL,0}
     };
-    while ( (c = getopt_long(argc, argv, ":chV", long_options, NULL)) != -1) {
+    while ( (c = getopt_long(argc, argv, ":chsV", long_options, NULL)) != -1) {
 #else // HAVE_GETOPT_LONG
-    while ( (c = getopt(argc, argv, ":c(copyright)h(help)V(version)")) != -1) {
+    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)V(version)")) != -1) {
 #endif // HAVE_GETOPT_LONG
 	switch (c) {
 	case 'c':
@@ -235,6 +248,9 @@ int main (int argc, char** argv) {
 	case 'V':
 	    show_version();
 	    return 0;
+	case 's':
+	    filesecurity = false;
+	    break;
 	case ':':
 	    std::cerr << "-" << (char)optopt << _(" without argument")
 		      << std::endl;
@@ -257,7 +273,7 @@ int main (int argc, char** argv) {
 
     MainWindow* mainwin = NULL;
     try {
-	mainwin = new MainWindow();
+	mainwin = new MainWindow(filesecurity);
 	// filename may be empty
 	mainwin->run(filename);
 	delete mainwin;

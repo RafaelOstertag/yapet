@@ -395,7 +395,7 @@ MainWindow::createFile(std::string& filename) throw(YAPETUI::UIException) {
     }
 
     try {
-	file = new YAPET::File(filename, *key, true);
+	file = new YAPET::File(filename, *key, true, usefsecurity);
 	statusbar.putMsg(filename + _(" created"));
 	records_changed = false;
     } catch(YAPET::YAPETException& ex) {
@@ -482,7 +482,7 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
     // Open file
     if (key != NULL) {
 	try {
-	    file = new YAPET::File(filename, *key, false);
+	    file = new YAPET::File(filename, *key, false, usefsecurity);
 	    std::list<YAPET::PartDec> tmp_list = file->read(*key);
 	    recordlist->setList(tmp_list);
 	    statusbar.putMsg(filename + _(" opened"));
@@ -515,6 +515,7 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
 void
 MainWindow::saveFile() {
     if (key == NULL || file == NULL) return;
+
     try {
 	file->save(recordlist->getList());
 	records_changed = false;
@@ -953,14 +954,15 @@ MainWindow::changePassword() throw(YAPETUI::UIException) {
     statusbar.putMsg(_("Password successfully changed"));
 }
 
-MainWindow::MainWindow() throw (YAPETUI::UIException) : BaseWindow(),
+MainWindow::MainWindow(bool fsecurity) throw (YAPETUI::UIException) : BaseWindow(),
 							toprightwin (NULL),
 							bottomrightwin (NULL),
 							recordlist (NULL),
 							statusbar(),
 							records_changed(false),
 							key (NULL),
-							file (NULL) {
+							file (NULL),
+							usefsecurity(fsecurity) {
     createWindow();
 }
 

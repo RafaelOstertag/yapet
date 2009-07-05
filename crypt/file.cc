@@ -110,16 +110,84 @@ const char CONTROL_STR[] = "ABCDEFGHIJKLMNOPQRSTUVW";
 const char RECOG_STR[] = "YAPET1.0";
 
 /**
+ * Checks the permission and owner of a file for security.
+ *
+ * It throws a \c YAPETRetryException if the owner of the file does not match
+ * the uid of the owner of the process, or if the mode is not \c
+ * (S_IRUSR|S_IWUSR).
+ */
+void
+File::checkFileSecurity() throw(YAPETException) {
+#if defined(HAVE_FSTAT) && defined(HAVE_GETUID)
+    struct stat buf;
+    int err = fstat(fd, &buf);
+    if (err == -1)
+	throw YAPETException(strerror(errno));
+
+    uid_t uid = getuid();
+
+    if (buf.st_uid != uid) {
+	std::string tmp(_("You are not the owner of ") );
+	throw YAPETRetryException(tmp + filename);
+    }
+
+    if (buf.st_mode != (S_IFREG | S_IRUSR | S_IWUSR) ) {
+	std::string tmp1(_("File permissions of "));
+	std::string tmp2(_(" are not secure"));
+	throw YAPETRetryException(tmp1 + filename + tmp2);
+    }
+#endif
+}
+
+/**
+ * Sets the owner and permissions on a file in a manner that \c
+ * File::checkFileSecurity does not complain.
+ *
+ * If it cannot set the security permissions, it throws a \c
+ * YAPETRetryException if the error can be avoided using non-secure settings.
+ */
+void
+File::setFileSecurity() throw(YAPETException) {
+#if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD) && defined(HAVE_FSTAT)
+    struct stat buf;
+
+    int err = fstat(fd, &buf);
+    if (err == -1)
+	throw YAPETException(strerror(errno));
+
+    err = fchown(fd, getuid(), buf.st_gid);
+    if (err == -1) {
+	std::string tmp(_("Cannot set the owner of "));
+	throw YAPETRetryException(tmp + filename);
+    }
+
+    err = fchmod(fd, S_IRUSR | S_IWUSR);
+    if (err == -1) {
+	std::string tmp(_("Cannot set file permissions on ") );
+	throw YAPETRetryException(tmp + filename);
+    }
+#endif
+}
+
+
+/**
  * Creates a file with name specified in \c filename and sets \c fd to
- * the obtained file descriptor. The file is opened for read-write. It
- * is created with only the user having read-write access.
+ * the obtained file descriptor. The file is opened for read-write.
+ *
+ * @param secure if \c true, then only the owner has read/write access. Else
+ * the owner has read/write access, and the group and world has read access.
  */
 void
 File::openCreate() throw(YAPETException) {
     fd = ::open(filename.c_str(),
-		O_RDWR | O_CREAT | O_TRUNC | O_APPEND, S_IRUSR | S_IWUSR);
+		O_RDWR | O_CREAT | O_TRUNC | O_APPEND,
+		(usefsecurity ? S_IRUSR | S_IWUSR :
+		 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ) );
     if (fd == -1)
 	throw YAPETException(strerror(errno));
+
+    if (usefsecurity)
+	checkFileSecurity();
 }
 
 /**
@@ -131,6 +199,9 @@ File::openNoCreate() throw(YAPETException) {
     fd = ::open(filename.c_str(), O_RDWR | O_APPEND);
     if (fd == -1)
 	throw YAPETException(strerror(errno));
+
+    if (usefsecurity)
+	checkFileSecurity();
 }
 
 /**
@@ -181,6 +252,8 @@ File::seekAbs(off_t offset) const throw(YAPETException) {
 /**
  * Truncates the file up to the header by creating a new empty file
  * copying over the existing header.
+ *
+ * @param secure is passed to \c File::openCreate
  */
 void
 File::preparePWSave() throw(YAPETException) {
@@ -573,9 +646,16 @@ File::validateKey(const Key& key)
  * to this flag always causes the file to be created. Even if it
  * already exists. Existing files will be truncated and the data
  * stored will be lost.
+ *
+ * @param secure if \c true, the functions checks whether or not the file
+ * permissions are secure. If \c false, file permissions are not checked for
+ * security. When creating a file and the value is \c true, the file is created
+ * using secure file permissions meaning only the owner has write and read
+ * access. Else, the owner has read and write access, the group and world has
+ * read access.
  */
-File::File(const std::string& fn, const Key& key, bool create)
-    throw(YAPETException) : filename(fn) {
+File::File(const std::string& fn, const Key& key, bool create, bool secure)
+    throw(YAPETException) : filename(fn), usefsecurity(secure) {
     if (create)
 	openCreate();
     else
@@ -598,6 +678,7 @@ File::File(const File& f) throw(YAPETException) {
 
     filename = f.filename;
     mtime = f.mtime;
+    usefsecurity = f.usefsecurity;
 }
 
 /**
@@ -612,10 +693,17 @@ File::~File() {
  *
  * @param records list of \c PartDec records
  *
+ * @param secure if \c true, advises the function to set the file permissions
+ * in a secure fashion, \c false makes the function to simply save the file
+ * without setting the proper permissions.
+ *
  * @sa PartDec
  */
 void
 File::save(std::list<PartDec>& records) throw(YAPETException) {
+    if (usefsecurity)
+	setFileSecurity();
+
     preparePWSave();
     std::list<PartDec>::iterator it = records.begin();
     while (it != records.end() ) {
@@ -673,6 +761,8 @@ File::read(const Key& key) const throw(YAPETException) {
  * @param oldkey the old key used to encrypt the records
  *
  * @param newkey the new key used to encrypt the records
+ *
+ * @param secure refer to \c File::save for explanation of this parameter.
  */
 void
 File::setNewKey(const Key& oldkey,
@@ -690,7 +780,7 @@ File::setNewKey(const Key& oldkey,
     File* oldfile = NULL;
     try {
 	// Reopen the old (backup) file
-	oldfile = new File(backupfilename, oldkey, false);
+	oldfile = new File(backupfilename, oldkey, false, false);
 	// Initialize the (this) file with the new key
 	openCreate();
 	initFile(newkey);

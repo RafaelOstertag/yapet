@@ -67,6 +67,8 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	YAPET::Key* key;
 	YAPET::File* file;
 
+	bool usefsecurity;
+
 	inline MainWindow(const MainWindow&) {}
 	inline const MainWindow& operator=(const MainWindow&) { return *this;}
 
@@ -96,7 +98,7 @@ class MainWindow : protected YAPETUI::BaseWindow {
 	void lockScreen() const throw(YAPETUI::UIException);
 	void changePassword() throw(YAPETUI::UIException);
     public:
-	MainWindow() throw(YAPETUI::UIException);
+	MainWindow(bool fsecurity) throw(YAPETUI::UIException);
 	virtual ~MainWindow();
 
 	void run() throw(YAPETUI::UIException);

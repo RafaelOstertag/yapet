@@ -192,6 +192,24 @@ namespace YAPET {
 	     */
 	    time_t mtime;
 
+	    /**
+	     * @brief Flag for enabling file security.
+	     *
+	     * In this context "file security" means tight access restrictions
+	     * on the files created, or refusing to read a file that has not
+	     * tight access restriction set.
+	     *
+	     * If this flag is \c true, reading a file not having the mode 0600
+	     * is not allowed and files created will have the mode
+	     * 0600. Setting this to \c false, will disable the checks and not
+	     * enforce the mode 0600 when writing files.
+	     */
+	    bool usefsecurity;
+
+	    //! Checks the permissions and owner of a file for security
+	    void checkFileSecurity() throw(YAPETException);
+	    //! Sets the owner and permissions on a file
+	    void setFileSecurity() throw(YAPETException);
 
 	    //! Creates and opens a new file.
 	    void openCreate() throw(YAPETException);
@@ -311,7 +329,8 @@ namespace YAPET {
 	    //! Constructor
 	    File(const std::string& fn,
 		 const Key& key,
-		 bool create=false)
+		 bool create=false,
+		 bool secure=true)
 		throw(YAPETException);
 	    File(const File& f) throw(YAPETException);
 	    ~File();
@@ -329,6 +348,11 @@ namespace YAPET {
 		throw(YAPETException,YAPETInvalidPasswordException);
 	    //! Returns the time the master password was set
 	    const File& operator=(const File& f) throw(YAPETException);
+
+	    //! Returns whether or not file security is enabled
+	    bool filesecurityEnabled() const { return usefsecurity; }
+	    //! Sets file security
+	    void setFilesecurity(bool secure) { usefsecurity = secure; }
     };
 }
 #endif // _FILE_H
