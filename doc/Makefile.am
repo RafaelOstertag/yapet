@@ -14,7 +14,7 @@ pwrecord.sgml
 sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
 $(sgml_static_files)
 
-EXTRA_DIST = source-doc/ $(htmldoc_DATA) $(sgml_files) $(sed_static_files)
+EXTRA_DIST = source-doc/ $(htmldoc_DATA) $(sgml_files) $(sed_static_files) $(sed_files)
 
 if BUILDDOC
 
