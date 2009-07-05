@@ -1,17 +1,9 @@
 YAPET To Do
 ===========
 
-* Add support for configuration file:
-  - lock timeout
-  - initial file to load
-  - configuration option to enforce file security
-
 * Translate the options, copyright etc.
 
 * Fix handling of --enable-terminal-title in configure script
-
-* Adjust the --copyright switch to behave as suggested in
-  http://www.gnu.org/licenses/gpl-3.0.html#howto
 
 * Fix the display of the selection bar in list widgets upon page down/up
 

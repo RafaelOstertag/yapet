@@ -7,9 +7,12 @@ YAPET 0.4
 
 	* Bug allowing to create files named only '.pet' fixed.
 
-	* File owner and permissions will be checked for security reasons.
+	* File owner and permissions will be checked as an additional security
+          measure.
 
 	* Time-out until screen is locked can be configured.
+
+	* Can read startup options from config file.
 
 
 YAPET 0.3a
