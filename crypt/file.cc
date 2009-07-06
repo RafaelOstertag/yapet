@@ -132,8 +132,8 @@ File::checkFileSecurity() throw(YAPETException) {
     }
 
     if (buf.st_mode != (S_IFREG | S_IRUSR | S_IWUSR) ) {
-	std::string tmp1(_("File permissions of "));
-	std::string tmp2(_(" are not secure"));
+	std::string tmp1(_("Permissions of "));
+	std::string tmp2(_(" not secure."));
 	throw YAPETRetryException(tmp1 + filename + tmp2);
     }
 #endif
