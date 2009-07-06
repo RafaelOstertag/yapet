@@ -61,7 +61,7 @@ ConfigFile::getHomeDir() const {
 #endif
 #if defined(HAVE_GETPWUID) && defined (HAVE_GETUID)
     struct passwd* pwd;
-    
+
     pwd = getpwuid(getuid());
     if (pwd != NULL) {
 	homedir = pwd->pw_dir;
@@ -82,14 +82,13 @@ ConfigFile::parseFile() {
 
 	const int MAX_LENGTH = 1024;
 	char line[MAX_LENGTH];
-	
+
 	while (cfgsin.getline(line, MAX_LENGTH) ) {
 	    std::string l(line);
 	    std::string needle("load=");
 	    if (l.find(needle,0) == 0) {
 		l.erase(0,needle.length());
 		filetoload = l;
-		std::cout << filetoload << std::endl;
 		continue;
 	    }
 	    needle = "locktimeout=";
@@ -97,7 +96,6 @@ ConfigFile::parseFile() {
 		l.erase(0,needle.length());
 		std::istringstream sstr(l);
 		sstr >> locktimeout;
-		std::cout << locktimeout << std::endl;
 		continue;
 	    }
 	    needle = "checkfsecurity=";
@@ -105,11 +103,10 @@ ConfigFile::parseFile() {
 		l.erase(0,needle.length());
 		std::istringstream sstr(l);
 		sstr >> usefsecurity;
-		std::cout << usefsecurity << std::endl;
 		continue;
 	    }
 	}
-		
+
 	cfgsin.close();
     } catch (...) {
 	// lazy me
