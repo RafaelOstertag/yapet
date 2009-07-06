@@ -3,10 +3,9 @@ YAPET To Do
 
 * Translate the options, copyright etc.
 
-* Fix handling of --enable-terminal-title in configure script
-
 * Fix the display of the selection bar in list widgets upon page down/up
 
+* Make screen lock lock the screen even if a dialog is open
 
 $Id$
 Local Variables:
