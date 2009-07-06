@@ -56,7 +56,7 @@ void print_record(YAPET::PartDec& pd, const YAPET::Key& key) {
     YAPET::Crypt crypt(key);
 
     std::cout << "PartDec Name:\t" << pd.getName() << std::endl;
-    
+
     const YAPET::BDBuffer& enc_rec = pd.getEncRecord();
     YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec = crypt.decrypt<YAPET::PasswordRecord>(enc_rec);
     YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
@@ -93,7 +93,7 @@ void check_record(YAPET::PartDec& pd, const YAPET::Key& key, int rec_no) {
 	print_record(pd, key);
 	throw std::logic_error("Name does not match");
     }
-	
+
     const YAPET::BDBuffer& enc_rec = pd.getEncRecord();
     YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec = crypt.decrypt<YAPET::PasswordRecord>(enc_rec);
     YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
