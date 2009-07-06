@@ -48,14 +48,17 @@ AC_ARG_WITH([docbook-xsl],
 
 # "Enables"
 AC_ARG_ENABLE([build-doc],
-	[AS_HELP_STRING([--enable-build-doc],[build docs])],
-	[my_builddoc=yes],
+	[AS_HELP_STRING([--enable-build-doc],[rebuild documentation])],
+	[my_builddoc=$enableval],
 	[my_builddoc=no])
 AC_ARG_ENABLE([terminal-title],
 	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title])],
-	[AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
-	my_settitle=yes],
+	[my_settitle=$enableval],
 	[my_settitle=no])
+
+if test x$my_settitle = xyes ; then
+   AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+fi
 
 # Libs
 AC_MSG_NOTICE([Searching for required libraries])
