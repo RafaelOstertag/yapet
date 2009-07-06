@@ -1,8 +1,9 @@
 # $Id$
 
-DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak
+DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak test1.pet
+EXTRA_DIST = test1.csv
 
-check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5
+check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5 import1 import2
 
 TESTS = $(check_PROGRAMS)
 
@@ -41,6 +42,14 @@ file4_SOURCES = file4.cc tests.h
 
 file5_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 file5_SOURCES = file5.cc tests.h
+
+import1_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import1_CPPFLAGS = -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import1_SOURCES = import1.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import2_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import2_CPPFLAGS = -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import2_SOURCES = import2.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
 
 clean-local:
 	rm -rf SunWS_cache

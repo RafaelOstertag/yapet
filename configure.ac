@@ -79,7 +79,7 @@ AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if 
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
-AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory functional fstream sstream],
+AC_CHECK_HEADERS([list exception stdexcept string iostream algorithm iterator memory functional fstream sstream vector],
 		       [],
 		       [AC_MSG_ERROR([your system is missing a required C++ header file])])
 
@@ -167,6 +167,7 @@ AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	yapet/Makefile
 	ui/Makefile
+	csv2yapet/Makefile
 	crypt/Makefile
 	tests/Makefile
 	doc/Makefile])
