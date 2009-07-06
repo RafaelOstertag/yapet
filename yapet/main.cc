@@ -186,7 +186,7 @@ void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
-	      << " [-c] [-h] [-s] [-V] [<filename>]"
+	      << " [-c] [-h] [-s | -S] [-V] [<filename>]"
 	      << std::endl
 	      << std::endl;
     std::cout << "-c, --copyright\t\tshow copyright information"
@@ -195,11 +195,18 @@ void show_help(char* prgname) {
     std::cout << "-h, --help\t\tshow this help text"
 	      << std::endl
 	      << std::endl;
-    std::cout << "-s, --no-file-security\tdisables checks of owner and file permissions."
+    std::cout << "-s, --no-file-security\tdisable check of owner and file permissions."
 	      << std::endl
 	      << "\t\t\tWhen creating new files, the file mode is set"
 	      << std::endl
 	      << "\t\t\tto 0644."
+	      << std::endl
+	      << std::endl;
+    std::cout << "-S, --file-security\tenable check of owner and file permissions."
+	      << std::endl
+	      << "\t\t\tWhen creating new files, the file mode is set"
+	      << std::endl
+	      << "\t\t\tto 0600."
 	      << std::endl
 	      << std::endl;
     std::cout << "-t, --timeout\t\tthe time-out in seconds until the screen is locked."
@@ -245,15 +252,16 @@ int main (int argc, char** argv) {
 	{"copyright", no_argument, NULL, 'c'},
 	{"help", no_argument, NULL, 'h'},
 	{"no-file-security", no_argument, NULL, 's'},
+	{"file-security", no_argument, NULL, 'S'},
 	{"timeout", required_argument, NULL, 't'},
 	{"version", no_argument, NULL, 'V'},
 	{NULL,0,NULL,0}
     };
-    while ( (c = getopt_long(argc, argv, ":chst:V", long_options, NULL)) != -1) {
+    while ( (c = getopt_long(argc, argv, ":chsSt:V", long_options, NULL)) != -1) {
 #else // HAVE_GETOPT_LONG
 	extern char *optarg;
 	extern int optopt, optind;
-    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)t:(timeout)V(version)")) != -1) {
+    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)S(file-security)t:(timeout)V(version)")) != -1) {
 #endif // HAVE_GETOPT_LONG
 	switch (c) {
 	case 'c':
@@ -267,6 +275,9 @@ int main (int argc, char** argv) {
 	    return 0;
 	case 's':
 	    filesecurity = false;
+	    break;
+	case 'S':
+	    filesecurity = true;
 	    break;
 	case 't':
 	    sscanf(optarg, "%u", &timeout);
