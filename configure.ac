@@ -71,7 +71,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([stdio.h fcntl.h strings.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h locale.h pwd.h])
+AC_CHECK_HEADERS([stdio.h fcntl.h strings.h string.h unistd.h limits.h sys/param.h sys/resource.h errno.h getopt.h signal.h locale.h pwd.h termios.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
@@ -99,7 +99,7 @@ AC_TYPE_OFF_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([memset strerror strcmp strncmp strncasecmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime fflush fprintf fstat getuid fchmod fchown access getenv getpwuid])
+AC_CHECK_FUNCS([memset strerror strcmp strncmp strncasecmp strcasestr strstr getcwd pathconf setrlimit getopt getopt_long rename sigaction asctime localtime fflush fprintf fstat getuid fchmod fchown access getenv getpwuid tcgetattr tcsetattr])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])
