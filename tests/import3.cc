@@ -2,6 +2,15 @@
 // Tests the error detection.
 // Relies on test2.csv
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#endif
+
+
 #include <csvimport.h>
 #include "testpaths.h"
 

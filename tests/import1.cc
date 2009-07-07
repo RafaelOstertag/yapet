@@ -2,7 +2,16 @@
 // Tests whether or not import works under lab conditions.
 // Relies on test1.csv
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#endif
+
 #include <csvimport.h>
+
 #include "testpaths.h"
 
 int main (int, char**) {

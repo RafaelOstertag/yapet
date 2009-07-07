@@ -2,6 +2,15 @@
 // Tests whether or not strange input make the import choke
 // Relies on test3.csv
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#endif
+
+
 #include <csvimport.h>
 #include "testpaths.h"
 
