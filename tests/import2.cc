@@ -1,5 +1,6 @@
 // $Id$
-// Checks whether or not the import of import1 worked
+// Checks whether or not the import of import1 worked.
+// Relies on test1.csv
 
 #include <string.h>
 
@@ -13,6 +14,7 @@
 #include <file.h>
 
 #include "tests.h"
+#include "testpaths.h"
 
 #ifdef ROUNDS
 #undef ROUNDS
