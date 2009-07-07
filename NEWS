@@ -14,6 +14,8 @@ YAPET 0.4
 
 	* Can read startup options from config file.
 
+	* New utility csv2yapet can import password records from CSV files.
+
 
 YAPET 0.3a
 
