@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008, 2009  Rafael Ostertag
+// Copyright (C) 2009  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -25,20 +25,29 @@
 
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 
 #ifdef HAVE_STRING
-#include <string>
+# include <string>
 #endif
 
-#ifdef HAVE_STDEXCEPTION
-#include <stdexcept>
+#ifdef HAVE_STDEXCEPT
+# include <stdexcept>
 #endif
 
 #ifdef HAVE_VECTOR
-#include <vector>
+# include <vector>
 #endif
+
+#ifdef HAVE_LIST
+# include <list>
+#endif
+
+struct LogEntry {
+	unsigned int lineno;
+	std::string message;
+};
 
 class CSVImport {
     private:
@@ -57,6 +66,8 @@ class CSVImport {
 	bool had_errors;
 	unsigned int num_errors;
 
+	std::list<LogEntry> logs;
+
 	unsigned int countSeparator(const std::string& s) const;
 	void getSeparatorPos(const std::string& line,
 			     std::vector<std::string::size_type>& posvec) const;
@@ -71,6 +82,8 @@ class CSVImport {
 	inline bool getVerbose() const { return verbose; }
 	inline bool hadErrors() const { return had_errors; }
 	inline unsigned int numErrors() const { return num_errors; }
+	inline std::list<LogEntry> getLog() const { return logs; }
+	void printLog() const;
 };
 
 #endif // _CSVIMPORT_H

@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008, 2009  Rafael Ostertag
+// Copyright (C) 2009  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -33,19 +33,23 @@
 #endif
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+# include <string.h>
+#endif
+
+#ifdef HAVE_STDIO_H
+# include <stdio.h>
 #endif
 
 #ifdef HAVE_IOSTREAM
-#include <iostream>
+# include <iostream>
 #endif
 
 #ifdef HAVE_FSTREAM
-#include <fstream>
+# include <fstream>
 #endif
 
 #include "csvimport.h"
@@ -77,6 +81,10 @@ CSVImport::getSeparatorPos(const std::string& line,
 void
 CSVImport::logError(unsigned long lno, const std::string& errmsg) {
     if (verbose) std::cout << 'e';
+    LogEntry tmp;
+    tmp.lineno = lno;
+    tmp.message = errmsg;
+    logs.push_back(tmp);
     had_errors = true;
     num_errors++;
 }
@@ -107,7 +115,12 @@ CSVImport::import(const char* pw) throw(std::exception) {
 	YAPET::PASSWORD_SIZE +
 	YAPET::COMMENT_SIZE +
 	// for the separators
-	4;
+	NUM_SEPARATORS;
+
+    // used for logging purpose
+    unsigned int num_fields = NUM_SEPARATORS + 1;
+    char num_fields_str[5];
+    snprintf(num_fields_str, 5, "%u", num_fields);
 
     YAPET::Key key(pw);
     YAPET::File yapetfile(dstfile, key, true);
@@ -119,14 +132,21 @@ CSVImport::import(const char* pw) throw(std::exception) {
     while (csvfile.getline(line, max_len) ) {
 	lineno++;
 	std::string l(line);
-	if (countSeparator(l) != NUM_SEPARATORS) {
+	if (countSeparator(l) > NUM_SEPARATORS) {
 	    std::string tmp("Too many fields. Expected ");
-	    tmp += NUM_SEPARATORS + 1;
+	    tmp += num_fields_str;
 	    tmp += " fields.";
 	    logError(lineno, tmp );
 	    continue;
 	}
-	
+	if (countSeparator(l) < NUM_SEPARATORS) {
+	    std::string tmp("Too few fields. Expected ");
+	    tmp += num_fields_str;
+	    tmp += " fields.";
+	    logError(lineno, tmp );
+	    continue;
+	}
+
 	getSeparatorPos(l, seppos);
 	if (seppos.size() == 0) {
 	    logError(lineno, "Unable to identify separators.");
@@ -151,4 +171,16 @@ CSVImport::import(const char* pw) throw(std::exception) {
     if (verbose) std::cout << std::endl;
     yapetfile.save(list);
     csvfile.close();
+}
+
+void
+CSVImport::printLog() const {
+    if (logs.size() == 0) return;
+
+    std::list<LogEntry>::const_iterator it = logs.begin();
+
+    while (it != logs.end()) {
+	std::cout << "Line " << (*it).lineno << ": " << (*it).message << std::endl;
+	it++;
+    }
 }
