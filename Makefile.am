@@ -3,7 +3,10 @@
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
 INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h
 
-SUBDIRS = intl po crypt ui yapet csv2yapet tests doc
+SUBDIRS = intl po crypt ui yapet tests doc
+if BUILDCSV2YAPET
+SUBDIRS += csv2yapet
+endif
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications

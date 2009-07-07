@@ -55,6 +55,10 @@ AC_ARG_ENABLE([terminal-title],
 	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title])],
 	[my_settitle=$enableval],
 	[my_settitle=no])
+AC_ARG_ENABLE([csv2yapet],
+	[AS_HELP_STRING([--disable-csv2yapet],[the csv file import utility will not be built])],
+	[my_buildcsv2yapet=$enableval],
+	[my_buildcsv2yapet=yes])
 
 if test x$my_settitle = xyes ; then
    AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
@@ -162,6 +166,7 @@ AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
+AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
@@ -170,6 +175,7 @@ AC_CONFIG_FILES([Makefile
 	csv2yapet/Makefile
 	crypt/Makefile
 	tests/Makefile
+	tests/testpaths.h
 	doc/Makefile])
 AC_OUTPUT
 
@@ -189,6 +195,7 @@ echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
 echo "Build Documentation : $my_builddoc"
 echo "Set Terminal Title  : $my_settitle"
+echo "Build csv2yapet     : $my_buildcsv2yapet"
 echo ""
 echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""
