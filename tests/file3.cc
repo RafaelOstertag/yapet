@@ -24,7 +24,7 @@ int main(int, char**) {
 	    snprintf((char*)ptr_rec->password,YAPET::PASSWORD_SIZE, PW, i);
 	    snprintf((char*)ptr_rec->comment,YAPET::COMMENT_SIZE, COMMENT,i);
 	    list.push_back(YAPET::PartDec(record, key));
-	    
+
 	    std::cout << "\r";
 	}
 	file.save(list);
@@ -47,7 +47,7 @@ int main(int, char**) {
 	    check_record(*it, key, i);
 	    it++;
 	}
-	
+
     } catch (std::exception& ex) {
 	std::cout << ex.what() << std::endl;
 	return 1;
