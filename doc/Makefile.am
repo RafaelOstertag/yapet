@@ -62,6 +62,8 @@ yapet.1: $(sgml_files)
 
 clean-local:
 	rm -f $(sgml_text_target)
+	rm -f $(sgml_html_targets)
+	rm -f $(sed_files_target)
 
 else
 yapet.1:
