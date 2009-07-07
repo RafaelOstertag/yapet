@@ -1,0 +1,8 @@
+/*
+ * Include defines for path, in order to make the checks work with a build dir
+ * different from the source dir
+ *
+ * $Id$
+ */
+
+#define SRCDIR "@srcdir@"
