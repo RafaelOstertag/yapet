@@ -186,7 +186,7 @@ void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
-	      << " [-c] [-h] [-s | -S] [-t <sec>] [-V] [<filename>]"
+	      << " [[-c] | [-h] | [-V]] [[-s] | [-S]] [-t <sec>] [<filename>]"
 	      << std::endl
 	      << std::endl;
     std::cout << "-c, --copyright\t\tshow copyright information"
