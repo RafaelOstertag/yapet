@@ -452,7 +452,7 @@ MainWindow::openFile(std::string filename) throw(YAPETUI::UIException) {
 	return;
     }
 
-    // We were able to stat the file, no make sure it is a file and open it
+    // We were able to stat the file, now make sure it is a file and open it
     // using the password
     if (!S_ISREG(st.st_mode)) {
 	YAPETUI::MessageBox* errmsg = NULL;
@@ -764,7 +764,14 @@ MainWindow::searchNext() {
 
 bool
 MainWindow::quit() {
-    if (!records_changed) return true;
+    /**
+     * @bug find out how to clear the terminal title properly.
+     */
+    if (!records_changed) {
+	// Clear the terminal title
+	setTerminalTitle("");
+	return true;
+    }
 
     YAPETUI::DialogBox* dialogbox = NULL;
     try {
@@ -772,11 +779,12 @@ MainWindow::quit() {
 	dialogbox->run();
 	YAPETUI::ANSWER a = dialogbox->getAnswer();
 	delete dialogbox;
+	// Clear the terminal title
+	setTerminalTitle("");
 	if (a == YAPETUI::ANSWER_OK) {
 	    saveFile();
 	    return true;
 	}
-
 	return true;
     } catch (YAPETUI::UIException&) {
 	if (dialogbox != NULL)
