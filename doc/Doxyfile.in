@@ -566,7 +566,8 @@ WARN_LOGFILE           =
 
 INPUT                  = @top_srcdir@/crypt \
                          @top_srcdir@/ui \
-                         @top_srcdir@/yapet
+                         @top_srcdir@/yapet \
+			 @top_srcdir@/csv2yapet
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
