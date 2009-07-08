@@ -71,7 +71,7 @@ class CSVImport {
 	 * Object copying not allowed.
 	 */
 	inline CSVImport(const CSVImport&) {}
-	
+
 	enum {
 	    /**
 	     * The expected number of separators.
