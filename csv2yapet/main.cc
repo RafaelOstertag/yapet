@@ -71,11 +71,29 @@
 #endif
 
 enum {
+    /**
+     * Error on command line, i.e. missing parameter.
+     */
     ERR_CMDLINE = 1,
+    /**
+     * The passwords supplied by the user do not match.
+     */
     ERR_PASSWDMISMATCH = 2,
+    /**
+     * The destination file already exists.
+     */
     ERR_FILEEXISTS = 3,
+    /**
+     * A fatal error. Does not indicate import errors which are handled/logged by \c CSVImport.
+     */
     ERR_FATAL = 4,
+    /**
+     * The max password length
+     */
     MAX_PASSWD = 1024,
+    /**
+     * The max file path length.
+     */
     MAX_FILEPATH = 1024
 };
 
@@ -96,6 +114,10 @@ const char COPYRIGHT[] = "\nCopyright (C) 2009  Rafael Ostertag\n"	\
     "You should have received a copy of the GNU General Public License\n" \
     "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
 
+/**
+ * Disables the echoing of input when using stdin. Uses \c tcgetattr and \c
+ * tcsetattr in order to disable the echoing.
+ */
 void disable_echo() {
 #ifdef CAN_DISABLE_ECHO
     struct termios ctios;
@@ -110,6 +132,9 @@ void disable_echo() {
 #endif
 }
 
+/**
+ * Same as \c disable_echo, but reversed.
+ */
 void enable_echo() {
 #ifdef CAN_DISABLE_ECHO
     struct termios ctios;
@@ -253,6 +278,8 @@ int main (int argc, char** argv) {
     }
 
     try {
+	// We read the password from stdin only if the user did not provide the
+	// -s switch.
 	if (!cmdline_pw) {
 	    std::cout << "Please enter the password for " << dstfile << ": ";
 	    std::cout.flush();

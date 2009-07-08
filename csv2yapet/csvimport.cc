@@ -56,6 +56,13 @@
 #include <structs.h>
 #include <file.h>
 
+/**
+ * Count the number of separators on the line.
+ *
+ * @param s the line
+ *
+ * @return the number of separators.
+ */
 unsigned int
 CSVImport::countSeparator(const std::string& s) const {
     unsigned int c = 0;
@@ -67,6 +74,13 @@ CSVImport::countSeparator(const std::string& s) const {
     return c;
 }
 
+/**
+ * Returns a vector holding the character positions of the separators.
+ *
+ * @param line the line
+ *
+ * @param posvec the vector filled with the positions
+ */
 void
 CSVImport::getSeparatorPos(const std::string& line,
 			   std::vector<std::string::size_type>& posvec) const {
@@ -78,6 +92,13 @@ CSVImport::getSeparatorPos(const std::string& line,
     }
 }
 
+/**
+ * Logs the given error.
+ *
+ * @param lno the line number the error occurred.
+ *
+ * @param errmsg the error message.
+ */
 void
 CSVImport::logError(unsigned long lno, const std::string& errmsg) {
     if (verbose) std::cout << 'e';
@@ -88,6 +109,19 @@ CSVImport::logError(unsigned long lno, const std::string& errmsg) {
     had_errors = true;
     num_errors++;
 }
+
+/**
+ * The constructor tests whether the given source file exists and can be
+ * read. May return a \c std::runtime_error if this is not the case
+ *
+ * @param src the file path of the source file.
+ *
+ * @param dst the file path of the destination file.
+ *
+ * @param sep the separator used for fields.
+ *
+ * @param verb enable/disable verbosity. Default \c true.
+ */
 
 CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb) throw(std::runtime_error) :
     srcfile(src),
@@ -102,6 +136,11 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb) thro
 	throw std::runtime_error("Cannot access " + srcfile);
 }
 
+/**
+ * Does the import.
+ *
+ * @param pw the password set on the destination file.
+ */
 void
 CSVImport::import(const char* pw) throw(std::exception) {
     std::ifstream csvfile(srcfile.c_str());
@@ -109,6 +148,8 @@ CSVImport::import(const char* pw) throw(std::exception) {
     if (!csvfile)
 	throw std::runtime_error("Cannot open " + srcfile);
 
+    // the max line length. Computed from the field sizes of a YAPET password
+    // record.
     const int max_len = YAPET::NAME_SIZE +
 	YAPET::HOST_SIZE +
 	YAPET::USERNAME_SIZE +
@@ -173,6 +214,9 @@ CSVImport::import(const char* pw) throw(std::exception) {
     csvfile.close();
 }
 
+/**
+ * Prints the log entries to stdout.
+ */
 void
 CSVImport::printLog() const {
     if (logs.size() == 0) return;
