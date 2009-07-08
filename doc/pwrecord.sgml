@@ -11,7 +11,7 @@
   <varlistentry>
     <term>Host</term>
     <listitem>
-      <simpara>The host where the password is used.</simpara>
+      <simpara>The host on which the password is used.</simpara>
     </listitem>
   </varlistentry>
 
