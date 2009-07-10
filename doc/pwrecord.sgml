@@ -2,35 +2,35 @@
 <variablelist>
 
   <varlistentry>
-    <term>Name</term>
+    <term><guilabel>Name</guilabel></term>
     <listitem>
       <simpara>The name displayed in the main screen.</simpara>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-    <term>Host</term>
+    <term><guilabel>Host</guilabel></term>
     <listitem>
       <simpara>The host on which the password is used.</simpara>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-    <term>Username</term>
+    <term><guilabel>Username</guilabel></term>
     <listitem>
       <simpara>The username the password is associated with.</simpara>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-    <term>Password</term>
+    <term><guilabel>Password</guilabel></term>
     <listitem>
       <simpara>The password.</simpara>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-    <term>Comment</term>
+    <term><guilabel>Comment</guilabel></term>
     <listitem>
       <simpara>A comment.</simpara>
     </listitem>
