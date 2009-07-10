@@ -84,7 +84,7 @@ enum {
      */
     ERR_FILEEXISTS = 3,
     /**
-     * A fatal error. Does not indicate import errors which are handled/logged by \c CSVImport.
+     * A fatal error. Does not indicate convert errors which are handled/logged by \c CSVImport.
      */
     ERR_FATAL = 4,
     /**
@@ -173,7 +173,7 @@ void show_help(char* prgname) {
 	      << std::endl;
     std::cout << "-p, --password\tuse <password> as the password for the file created"
 	      << std::endl
-	      << "\t\tby the import."
+	      << "\t\tby the convert."
 	      << std::endl
 	      << "\t\tThe use of this option is discouraged."
 	      << std::endl
