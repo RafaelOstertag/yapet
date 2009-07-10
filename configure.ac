@@ -48,20 +48,28 @@ AC_ARG_WITH([docbook-xsl],
 
 # "Enables"
 AC_ARG_ENABLE([build-doc],
-	[AS_HELP_STRING([--enable-build-doc],[rebuild documentation])],
+	[AS_HELP_STRING([--enable-build-doc],[enable the rebuild of the documentation (Default: no)])],
 	[my_builddoc=$enableval],
 	[my_builddoc=no])
+AC_ARG_ENABLE([source-doc],
+	[AS_HELP_STRING([--enable-source-doc],[enable the build of the source code documentention (Requires doxygen; default: no)])],
+	[my_buildsourcedoc=$enableval],
+	[my_buildsourcedoc=no])
 AC_ARG_ENABLE([terminal-title],
-	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title])],
+	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title (Default: no)])],
 	[my_settitle=$enableval],
 	[my_settitle=no])
 AC_ARG_ENABLE([csv2yapet],
-	[AS_HELP_STRING([--disable-csv2yapet],[the csv file import utility will not be built])],
+	[AS_HELP_STRING([--disable-csv2yapet],[the csv file import utility will not be built (Default: yes)])],
 	[my_buildcsv2yapet=$enableval],
 	[my_buildcsv2yapet=yes])
 
 if test x$my_settitle = xyes ; then
    AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+fi
+
+if test x$DOXYGEN = xno ; then
+   my_buildsourcedoc=no
 fi
 
 # Libs
@@ -163,6 +171,7 @@ AM_GNU_GETTEXT
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
+AM_CONDITIONAL([BUILDSOURCEDOC], [test x$my_buildsourcedoc = xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
@@ -194,6 +203,7 @@ echo "Lynx                : $LYNX"
 echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
 echo "Build Documentation : $my_builddoc"
+echo "Build Source Doc.   : $my_buildsourcedoc"
 echo "Set Terminal Title  : $my_settitle"
 echo "Build csv2yapet     : $my_buildcsv2yapet"
 echo ""
