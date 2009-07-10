@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
+[
+<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
+<!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
+<!ENTITY pwrecord SYSTEM "@srcdir@/pwrecord.sgml">
+<!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
+<!ENTITY license SYSTEM "@srcdir@/license.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY CSV2YAPET "csv2yapet">
+<!ENTITY csv2yapet "<command>csv2yapet</command>">
+<!ENTITY csv2yapetman ", <citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+]>
+<refentry id="csv2yapet">
+  <!-- $Id$ -->
+
+  <refentryinfo>
+     <productname>csv2yapet</productname>
+     &cpr;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>csv2yapet</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
+    <refmiscinfo class="manual">User Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>csv2yapet</refname>
+    <refpurpose>convert CSV file to &YP; file</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis cmdlength="9">
+      &csv2yapet;
+      <group>
+	<arg choice="opt" rep="norepeat"><option>-c</option></arg>
+	<arg choice="opt" rep="norepeat"><option>-h</option></arg>
+	<arg choice="opt" rep="norepeat"><option>-V</option></arg>
+      </group>
+      <arg choice="opt" rep="norepeat"><option>-p</option> <arg
+      choice="req"><replaceable>password</replaceable></arg></arg>
+      <arg choice="opt" rep="norepeat"><option>-q</option></arg>
+      <arg choice="opt" rep="norepeat"><option>-s</option> <arg choice="req"
+      rep="norepeat"><replaceable>separator</replaceable></arg></arg>
+
+      <arg choice="req"><replaceable>src</replaceable></arg>
+      <arg choice="req"><replaceable>dst</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <!--
+  -
+  -  DESCRIPTION
+  -
+  -->
+  <refsect1 id="description">
+    <title>DESCRIPTION</title>
+
+    <para>The &csv2yapet; utility converts a CSV file
+    <replaceable>src</replaceable> to an &YP; file
+    <replaceable>dst</replaceable>. The expected columns and column order of
+    the CSV file is explained in <xref linkend="sourcefileformat" />.</para>
+
+    <para>For each successfully imported source file record a corresponding
+    &YP; password record will be generated in the resulting file.</para>
+
+    <para>The file suffix <filename>.pet</filename> is appended to the output
+    file <replaceable>dst</replaceable> if not provided as part of the file
+    path.</para>
+
+    <para>The password either entered on the standard input or provided as
+    command line argument using the <option>-p</option> option is used to
+    encrypt the destination file <replaceable>dst</replaceable> and must be
+    used to decrypt the file content when opening the file in &ypman;.</para>
+
+    <para>&csv2yapet; will not overwrite existing destination files. If the
+    destination file already exists &csv2yapet; will abort the
+    conversion.</para>
+
+    <para>Errors during the conversion process will be printed to standard
+    error unless the <option>-q</option> option is provided.</para>
+  </refsect1>
+
+  <!--
+  -
+  -  OPTIONS
+  -
+  -->
+  <refsect1 id="options">
+    <title>OPTIONS</title>
+
+    <para>The following options are supported:</para>
+
+    <variablelist>
+      <varlistentry>
+	<term><option>-c</option>, <option>--copyright</option></term>
+	<listitem>
+	  <para>Show the copyright information.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-h</option>, <option>--help</option></term>
+	<listitem>
+
+	  <para>Print a help text.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-p</option> <replaceable>password</replaceable>,
+	<option>--password</option> <replaceable>password</replaceable></term>
+
+	<listitem>
+	  <para>The password to be used to encrypt the &YP; file. If
+	  &csv2yapet; is invoked without this option, it will prompt for the
+	  password on the standard input.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-q</option>, <option>--quiet</option></term>
+
+	<listitem>
+	  <para>Enable the quiet mode. No details about errors are reported.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-s</option> <replaceable>separator</replaceable>,
+	<option>--separator</option>
+	<replaceable>separator</replaceable></term>
+
+	<listitem>
+
+	  <para>
+	    Change the default field separator ',' (comma) to the single
+	    character <replaceable>separator</replaceable>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-V</option>, <option>--version</option></term>
+	<listitem>
+
+	  <para>Show the version of &yp;.</para>
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <!--
+  -
+  -  OPERANDS
+  -
+  -->
+  <refsect1 id="operands">
+    <title>OPERANDS</title>
+
+    <para>The following operands are required:</para>
+
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>src</replaceable></term>
+
+	<listitem>
+	  <para>The source CSV file to be converted. It must be of the format
+	  as described in <xref linkend="sourcefileformat" />.</para>
+
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><replaceable>dst</replaceable></term>
+
+	<listitem>
+	  <para>The resulting &YP; file holding the content of
+	  <replaceable>src</replaceable> encrypted. This file must not exist
+	  prior the conversion process, else &csv2yapet; will not start the
+	  conversion and abort.</para>
+
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <!--
+      -
+      - SOURCE FILE FORMAT
+      -
+  -->
+  <refsect1 id="sourcefileformat">
+    <title>SOURCE FILE FORMAT</title>
+
+    <para>The source file <replaceable>src</replaceable> to be converted has to
+    be organized as CSV file. The default character for delimiting the fields
+    is ',' (comma) unless specified differently on the command line providing
+    the <option>-s</option> option (refer to <xref linkend="options"
+    />).</para>
+
+    <para>Fields containing the field separator character will lead to import
+    errors (see also <xref linkend="bugs" />).</para>
+
+    <para>The following table will describe the format of the source CSV file as expected by &csv2yapet;:</para>
+
+    <table>
+      <title>Source file format</title>
+
+      <tgroup cols="2">
+	<colspec colname="colnum" align="center"/>
+	<colspec colname="desc" align="left"/>
+	
+	<thead>
+	  <row>
+	    <entry>Column #</entry>
+	    <entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>1</entry>
+	    <entry>Record name. Corresponds to the Name field of a &YP; password entry.</entry>
+	  </row>
+
+	  <row>
+	    <entry>2</entry>
+	    <entry>Host name. Corresponds to the Host field of a &YP; password entry.</entry>
+	  </row>
+
+	  <row>
+	    <entry>3</entry> <entry>User name. Corresponds to the Username
+	    field of a &YP; password entry.</entry>
+	  </row>
+
+	  <row>
+	    <entry>4</entry>
+	    <entry>Password. Corresponds to the Password field of a &YP; password entry.</entry>
+	  </row>
+
+	  <row>
+	    <entry>5</entry>
+	    <entry>Comment. Corresponds to the Comment field of a &YP; password entry.</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+  </refsect1>
+
+  <!--
+      -
+      - EXIT STATUS
+      -
+  -->
+  <refsect1 id="exitstatus">
+    <title>EXIST STATUS</title>
+
+    <para>
+      <variablelist>
+
+	<varlistentry>
+	  <term><returnvalue>0</returnvalue></term>
+
+	  <listitem>
+	    <para>No error.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>1</returnvalue></term>
+
+	  <listitem>
+	    <para>Wrong command line arguments provided.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>2</returnvalue></term>
+
+	  <listitem>
+	    <para>The passwords provided on the standard input do not match.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>3</returnvalue></term>
+
+	  <listitem>
+	    <para>The destination file
+	    <filename><replaceable>dst</replaceable></filename> already exists.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>4</returnvalue></term>
+
+	  <listitem>
+	    <para>An unexpected error occurred.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+      </variablelist>
+    </para>
+
+  </refsect1>
+
+  <!--
+  -
+  -  BUGS
+  -
+  -->
+  <refsect1 id="bugs">
+    <title>BUGS</title>
+
+    <itemizedlist>
+      <listitem>
+	  <para>If the field separating character is part of the field value,
+	  it is misinterpreted as field delimiter.</para>
+      </listitem>
+    </itemizedlist>
+
+
+    <para>Please report other bugs to the author (see <xref linkend="author"
+    />).</para>
+
+  </refsect1>
+
+  <!--
+  -
+  - EXAMPLES
+  -
+  -->
+
+  <refsect1 id="examples">
+    <title>EXAMPLES</title>
+
+    <para>
+    </para>
+  </refsect1>
+
+  <!--
+  -
+  -  AUTHOR
+  -
+  -->
+  <refsect1 id="author">
+    <title>AUTHOR</title>
+    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
+  </refsect1>
+
+  <!--
+  -
+  -  SEE ALSO
+  -
+  -->
+  <refsect1 id="seealso">
+    <title>SEE ALSO</title>
+
+    <simpara>&ypman;, &CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+  </refsect1>
+
+  <!--
+      -
+      - LICENSE
+      -
+  -->
+  <refsect1 id="license">
+    <title>LICENSE</title>
+
+    <para>&CSV2YAPET; is part of &YP;.</para>
+
+    &license;
+  </refsect1>
+
+</refentry>
