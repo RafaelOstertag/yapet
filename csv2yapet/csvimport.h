@@ -59,7 +59,7 @@ struct LogEntry {
 };
 
 /**
- * The class taking care of importing a csv file.
+ * The class taking care of converting a csv file.
  */
 class CSVImport {
     private:
