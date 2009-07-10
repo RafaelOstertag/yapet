@@ -1,27 +1,31 @@
 # $Id$
 
-htmldoc_DATA = README.html DESIGN.html yapet.html
+htmldoc_DATA = README.html DESIGN.html yapet.html csv2yapet.html
 htmldocdir = $(docdir)/html
 
-dist_man1_MANS = yapet.1
+dist_man1_MANS = yapet.1 csv2yapet.1
 
 sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
-Doxyfile.in README.Cygwin.sgml.in
+csv2yapet.sgml.in Doxyfile.in README.Cygwin.sgml.in
 
 sgml_static_files = copyright.sgml supportedplatforms.sgml caution.sgml	\
-pwrecord.sgml
+pwrecord.sgml license.sgml
 
-sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
-$(sgml_static_files)
+sgml_files = yapet.sgml csv2yapet.sgml README.sgml README.Cygwin.sgml	\
+INSTALL.sgml DESIGN.sgml $(sgml_static_files)
 
 EXTRA_DIST = source-doc/ $(htmldoc_DATA) $(sgml_files) $(sed_static_files) $(sed_files)
 
 if BUILDDOC
 
+if BUILDCSV2YAPET
+xsltprocprofile = --stringparam profile.condition csv2yapet
+endif
+
 # Those files are fed to xsltproc
-sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
+sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml csv2yapet.sgml
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
-sgml_man = yapet.sgml
+sgml_man = yapet.sgml csv2yapet.sgml
 
 docbook_docbook_xsl = @DOCBOOKXSL@/xhtml/docbook.xsl
 docbook_man_xsl = @DOCBOOKXSL@/manpages/docbook.xsl
@@ -45,20 +49,19 @@ $(sed_files_target): $(sed_files)
 	$(editfile) "$(srcdir)/$@.in" > "$@"
 
 $(sgml_html_targets): $(sgml_files) $(sgml_html)
-	nosuffix=`echo "$@" | $(SED) s/\.html//` ; \
-	rm -f "$@" ; \
-	$(XSLTPROC) -o "$@" $(docbook_docbook_xsl) "$$nosuffix.sgml"
+	rm -f "$@"
+	$(XSLTPROC) -o "$@" $(xsltprocprofile) $(docbook_docbook_xsl) "$(@:.html=.sgml)"
 
 $(sgml_text_target): $(sgml_files) $(sgml_text)
-	$(XSLTPROC) -o "$@.tmp" $(docbook_docbook_xsl) "$@.sgml"
+	$(XSLTPROC) -o "$@.tmp"  $(xsltprocprofile) $(docbook_docbook_xsl) "$@.sgml"
 	$(LYNX) -force_html -nolist -dump "$@.tmp" > "$@"
 	rm "$@.tmp"
 	mv -f "$@" "$(top_srcdir)/$@"
 	touch $@
 
-yapet.1: $(sgml_files)
+$(dist_man1_MANS): $(sgml_files)
 	rm -f $@
-	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) yapet.sgml
+	$(XSLTPROC) -o $(srcdir)/$@  $(xsltprocprofile) $(docbook_man_xsl) $(@:.1=.sgml)
 
 clean-local:
 	rm -f $(sgml_text_target)
@@ -66,7 +69,7 @@ clean-local:
 	rm -f $(sed_files_target)
 
 else
-yapet.1:
+$(dist_man1_MANS):
 	@echo "You don't have xsltproc installed."
 	@echo "Unable to build man page"
 
@@ -95,13 +98,13 @@ endif # HAVEDOXYGENT
 
 endif # BUILDDOC
 
-dist-hook: source-doc $(sgml_html_targets) yapet.1
+dist-hook: source-doc $(sgml_html_targets) $(dist_man1_MANS)
 
 
 if BUILDDOC
-all-local: $(sgml_html_targets) $(sgml_text_target) source-doc yapet.1
+all-local: $(sgml_html_targets) $(sgml_text_target) source-doc $(dist_man1_MANS)
 endif
 
 maintainer-clean-local:
 	rm -rf source-doc
-	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target) yapet.1
+	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target) $(dist_man1_MANS)
