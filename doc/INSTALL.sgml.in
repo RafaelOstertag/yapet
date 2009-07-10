@@ -126,11 +126,10 @@
 </screen>
     </para>
 
-    <para>This will install &YP; into the
-      <filename>/usr/local/bin</filename> directory, if the prefix has
-      not been changed by providing
-      <option>--prefix=<literal>&lt;PATH&gt;</literal></option> to the
-      <command>configure</command> script.</para>
+    <para>This will install &YP; into the <filename>/usr/local/bin</filename>
+    directory, if the prefix has not been changed by providing
+    <option>--prefix=<replaceable>&lt;PATH&gt;</replaceable></option> to the
+    <command>configure</command> script.</para>
 
     <para>To start &YP; issue
       <filename>/usr/local/bin</filename>/&yp; on
@@ -143,14 +142,14 @@
     <variablelist>
       <varlistentry>
 	<term>
-	  <option>--prefix=</option><replaceable>PATH</replaceable>
+	  <option>--prefix=</option><replaceable>&lt;PATH&gt;</replaceable>
 	</term>
 
 	<listitem>
-	  <para><replaceable>PATH</replaceable> is the base directory
+	  <para><replaceable>&lt;PATH&gt;</replaceable> is the base directory
 	    where &YP; will be installed. The executable is installed
 	    in
-	    <replaceable>PATH</replaceable><filename>/bin</filename>.
+	    <replaceable>&lt;PATH&gt;</replaceable><filename>/bin</filename>.
 	  </para>
 	</listitem>
 
@@ -158,12 +157,12 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-curses-include=</option><replaceable>PATH</replaceable>
+	  <option>--with-curses-include=</option><replaceable>&lt;PATH&gt;</replaceable>
 	</term>
 
 	<listitem><para>This option tells the compiler where to find
 	    the header files of
-	    curses/ncurses. <replaceable>PATH</replaceable> has to be
+	    curses/ncurses. <replaceable>&lt;PATH&gt;</replaceable> has to be
 	    the directory where the header files are located, not the
 	    file name of the header file.</para>
 	</listitem>
@@ -171,41 +170,40 @@
 
       <varlistentry>
 	<term>
-	  <option>--with-curses-lib=</option><replaceable>PATH</replaceable>
+	  <option>--with-curses-lib=</option><replaceable>&lt;PATH&gt;</replaceable>
 	</term>
 
 	<listitem>
-	  <para>This option tells the linker where to find the
-	    curses/ncurses shared
-	    library. <replaceable>PATH</replaceable> has to be the
-	    directory where the shared library is located, not the
-	    file name of the shared library.</para>
+	  <para>This option tells the linker where to find the curses/ncurses
+	  shared library. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the shared library is located, not the file name of
+	  the shared library.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term>
-	  <option>--with-openssl-include=</option><replaceable>PATH</replaceable>
+	  <option>--with-openssl-include=</option><replaceable>&lt;PATH&gt;</replaceable>
 	</term>
 
 	<listitem>
-	  <para>This options tells the compiler where to find the
-	    header files of openssl. <replaceable>PATH</replaceable>
-	    has to be the directory where the header files are
-	    located, not the file name of the header file.</para>
+	  <para>This options tells the compiler where to find the header files
+	  of openssl. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the header files are located, not the file name of
+	  the header file.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term>
-	  <option>--with-openssl-lib=</option><replaceable>PATH</replaceable>
+	  <option>--with-openssl-lib=</option><replaceable>&lt;PATH&gt;</replaceable>
 	</term>
 
 	<listitem>
-	  <para>This option tells the linker where to find the openssl
-	    shared library. <replaceable>PATH</replaceable> has to be
-	    the directory where the shared library is located, not the
-	    file name of the shared library.</para>
+	  <para>This option tells the linker where to find the openssl shared
+	  library. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the shared library is located, not the file name of
+	  the shared library.</para>
 	</listitem>
       </varlistentry>
 
@@ -242,6 +240,17 @@
 	</listitem>
       </varlistentry>
 
+      <varlistentry>
+	<term>
+	  <option>--disable-csv2yapet</option>
+	</term>
+
+	<listitem>
+	  <para>If given the <command>csv2yapet</command> import utility
+	  will not be built.</para>
+	</listitem>
+      </varlistentry>
+
     </variablelist>
   </sect1>
 
@@ -250,38 +259,58 @@
 
     <para>Upon
     issuing <command>make <option>install</option></command> the
-    following files are installed in <replaceable>PATH</replaceable>
+    following files are installed in <replaceable>&lt;PATH&gt;</replaceable>
     (assuming you did not change the destination of the files)</para>
 
     <variablelist>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/bin/yapet</filename></term>
-	<listitem><para>The binary.</para></listitem>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/yapet</filename></term>
+	<listitem><para>The &YP; binary.</para></listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/man/man1/yapet.1</filename></term>
-	<listitem><para>The manual page for &YP;.</para></listitem>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/csv2yapet</filename></term>
+	<listitem><para>Utility for converting CSV files into &YP; files.</para>
+
+	<para>Will be installed only when the build of
+	<command>csv2yapet</command> has not been disabled.</para></listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/applications/yapet.desktop</filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/man/man1/[yapet.1|csv2yapet.1]</filename></term>
+
+	<listitem>
+	  <para>The manual page for &YP;.</para>
+
+	  <para><filename>csv2yapet.1</filename> will be installed only when
+	  the build of <command>csv2yapet</command> has not been disabled.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/applications/yapet.desktop</filename></term>
 	<listitem><para>The desktop file for GNOME et al.</para></listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|LICENSE|README]</filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|LICENSE|README]</filename></term>
 	<listitem><para>Various documentation files.</para></listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html]</filename></term>
-	<listitem><para>Various documentation files in HTML format.</para></listitem>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html|csv2yapet.html]</filename></term>
+	<listitem>
+	  <para>Various documentation files in HTML format.</para>
+
+	  <para><filename>csv2yapet.html</filename> will be installed only when
+	  the build of <command>csv2yapet</command> has not been
+	  disabled.</para>
+	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>PATH</replaceable>/share/locale/<replaceable>LANG</replaceable></filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/locale/<replaceable>LANG</replaceable></filename></term>
 	<listitem><para>The translation files.</para></listitem>
       </varlistentry>
 
