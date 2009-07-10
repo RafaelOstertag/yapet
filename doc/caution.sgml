@@ -1,11 +1,7 @@
 <!-- $Id$ -->
-<para>Although I took several precautions to avoid having any
-  passwords stored clear text in memory, I was able to snoop up the
-  master password in core files. This means for you, the user of &YP;,
-  that it is possible, though not likely, for a malicious user to get
-  hold of one or more passwords <emphasis>while</emphasis> &YP; is
-  running. <emphasis>But</emphasis> remember, the passwords stored in
-  the files created by &YP; are encrypted and not stored clear
-  text. This is the best possible way of keeping them stored on a
-  disk. The best overall method for keeping them, is to memorize them
-  and not writing them down in any form.</para>
+<para>Although several precautions were taken to avoid having any passwords
+  stored clear text in memory, there were occassions when core files contained
+  the master password. This means that it is possible, though not likely, for a
+  malicious user to get hold of one or more
+  passwords <emphasis>while</emphasis> &YP; is running.
+</para>
