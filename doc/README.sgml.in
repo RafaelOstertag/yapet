@@ -5,6 +5,7 @@
 <!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
 <!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
+<!ENTITY license SYSTEM "@srcdir@/license.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
 <!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
@@ -39,25 +40,21 @@
     while having a small footprint, and compiling and running under today's
     most popular Unixes, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
 
-    <para>If you are looking for a fully fledged password encryption
-    tool having a graphical user interface, I recommend you start with
-    revelation (<ulink url="http://oss.codepoet.no/revelation/">http://oss.codepoet.no/revelation</ulink>). &YP;
-    is text based and less feature rich in comparison to
-    revelation.</para>
+    <para>If you are looking for a fully fledged password encryption tool
+    having a graphical user interface, I recommend you start with revelation
+    (<ulink
+    url="http://oss.codepoet.no/revelation/">http://oss.codepoet.no/revelation/</ulink>). &YP;
+    is text based and less feature rich in comparison to revelation.</para>
   </sect1>
 
   <sect1 id="motivation">
     <title>Motivation</title>
 
     <para>
-    Using several different Unixes, I wanted to have a single
-    application running on all Unixes for storing my passwords in a
-    secure manner. While revelation is running fine under &FREEBSD;
-    and Linux, it's a pain to get it run under &SOLARIS; 10 (as you can
-    see, the only tool I tried was revelation). It has many
-    dependencies because it uses GNOME and PyGNOME. I didn't want to
-    go thru the hassle of installing PyGNOME under &SOLARIS;, and
-    decided to roll my own.</para>
+      Using several different Unixes, I wanted to have a single application
+      running on all Unixes for storing my passwords in a secure manner and
+      running over a secure shell connection.
+    </para>
   </sect1>
 
   <sect1 id="platforms">
@@ -77,9 +74,10 @@
     <para>
       <itemizedlist>
 	<listitem>
-	  <para>using Blowfish encryption (<ulink
-	      url="http://www.schneier.com/blowfish.html">http://www.schneier.com/blowfish.html</ulink>)
-	      with 448 bits key.</para>
+	  <para>Blowfish encryption (<ulink
+	  url="http://www.schneier.com/blowfish.html">http://www.schneier.com/blowfish.html</ulink>)
+	  with 448 bits key using the OpenSSL library (<ulink
+	  url="http://www.openssl.org/">http://www.openssl.org/</ulink>).</para>
 	</listitem>
 
 	<listitem>
@@ -88,8 +86,7 @@
 
 	<listitem>
 	  <para>doesn't depend on a graphical user interface and their
-	    "dependency hell". Provides
-	    a text based user interface.</para>
+	  "dependency hell" providing a text based user interface.</para>
 	</listitem>
 
 
@@ -103,9 +100,12 @@
 
 	<listitem>
 
-	  <para>locks the terminal after ten minutes of
-	  inactivity.</para>
+	  <para>locks the terminal on inactivity.</para>
 
+	</listitem>
+
+	<listitem>
+	  <para>a utility to convert CSV files to the native &YP; format.</para>
 	</listitem>
       </itemizedlist>
     </para>
@@ -135,7 +135,7 @@
     <title>Design</title>
 
     <para>Refer to the <filename>DESIGN</filename> file which comes
-    along with the source tarball, in order to get an idea of the
+    along with the source tarball in order to get an idea of the
     design of &YP;.</para>
   </sect1>
 
@@ -148,34 +148,7 @@
   <sect1 id="license">
     <title>License</title>
 
-    <simpara>YAPET -- Yet Another Password Encryption Tool</simpara>
-    <simpara>Copyright (C) 2008, 2009 Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
-
-    <para>This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by the
-    Free Software Foundation, either version 3 of the License, or (at your
-    option) any later version.</para>
-
-    <para>This program is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-    or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-    for more details.</para>
-
-    <para>You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <ulink
-    url="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</ulink>.</para>
-
-    <sect2 id="additional">
-      <title>Additional permission under GNU GPL version 3 section 7</title>
-
-      <para>If you modify this program, or any covered work, by linking or
-      combining it with the OpenSSL project's OpenSSL library (or a modified
-      version of that library), containing parts covered by the terms of the
-      OpenSSL or SSLeay licenses, Rafael Ostertag grants you additional
-      permission to convey the resulting work.  Corresponding Source for a
-      non-source form of such a combination shall include the source code for
-      the parts of OpenSSL used as well as that of the covered work.</para>
-    </sect2>
+    &license;
   </sect1>
 
 </article>
