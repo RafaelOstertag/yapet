@@ -7,6 +7,9 @@ YAPET To Do
 
 * Make screen lock lock the screen even if a dialog is open
 
+* Fix the logic detecting the field delimiter in csv2yapet so that it doesn't
+  choke on separator characters in the field value.
+
 $Id$
 Local Variables:
 mode: text
