@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.4\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-07-07 23:39+0200\n"
+"POT-Creation-Date: 2009-07-11 02:26+0200\n"
 "PO-Revision-Date: 2009-07-06 20:09+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -40,7 +40,7 @@ msgstr "Ok"
 msgid "Error deleting message box"
 msgstr "Fehler beim Fensterlöschen"
 
-#: ui/messagebox.cc:86 yapet/mainwindow.cc:802
+#: ui/messagebox.cc:86 yapet/mainwindow.cc:810
 msgid "Error erasing window"
 msgstr "Fehler beim Löschen des Fensters"
 
@@ -168,7 +168,7 @@ msgstr "Kann Cursor nicht anzeigen"
 msgid "Error move cursor"
 msgstr "Kann Cursor nicht bewegen"
 
-#: ui/listwidget.h:374 ui/listwidget.h:687 yapet/mainwindow.cc:808
+#: ui/listwidget.h:374 ui/listwidget.h:687 yapet/mainwindow.cc:816
 #: yapet/fileopen.cc:332 yapet/passwordrecord.cc:289
 msgid "Error refreshing window"
 msgstr "Kann Fenster nicht auffrischen"
@@ -337,7 +337,7 @@ msgstr "Fehler beim Auffrischen des oberen rechten Fensters"
 msgid "Error refreshing bottom right window"
 msgstr "Fehler beim Auffrischen des unteren rechten Fensters"
 
-#: yapet/mainwindow.cc:392 yapet/mainwindow.cc:903
+#: yapet/mainwindow.cc:392 yapet/mainwindow.cc:911
 msgid "Error while asking for password"
 msgstr "Fehler beim Abfragen des Passwortes"
 
@@ -352,20 +352,20 @@ msgstr " erstellt"
 #: yapet/mainwindow.cc:408 yapet/mainwindow.cc:444 yapet/mainwindow.cc:460
 #: yapet/mainwindow.cc:500 yapet/mainwindow.cc:530 yapet/mainwindow.cc:585
 #: yapet/mainwindow.cc:630 yapet/mainwindow.cc:669 yapet/mainwindow.cc:699
-#: yapet/mainwindow.cc:737 yapet/mainwindow.cc:846 yapet/mainwindow.cc:920
-#: yapet/mainwindow.cc:943 yapet/fileopen.cc:241 yapet/passwordrecord.cc:201
+#: yapet/mainwindow.cc:737 yapet/mainwindow.cc:854 yapet/mainwindow.cc:928
+#: yapet/mainwindow.cc:951 yapet/fileopen.cc:241 yapet/passwordrecord.cc:201
 #: yapet/passwordrecord.cc:309 yapet/passworddialog.cc:117
 msgid "E R R O R"
 msgstr "F E H L E R"
 
 #: yapet/mainwindow.cc:415 yapet/mainwindow.cc:536 yapet/mainwindow.cc:592
 #: yapet/mainwindow.cc:637 yapet/mainwindow.cc:676 yapet/mainwindow.cc:705
-#: yapet/mainwindow.cc:744 yapet/mainwindow.cc:784 yapet/mainwindow.cc:885
+#: yapet/mainwindow.cc:744 yapet/mainwindow.cc:792 yapet/mainwindow.cc:893
 msgid "Error showing error message"
 msgstr "Fehler beim Anzeigen der Fehlermeldung"
 
-#: yapet/mainwindow.cc:428 yapet/mainwindow.cc:650 yapet/mainwindow.cc:771
-#: yapet/mainwindow.cc:872
+#: yapet/mainwindow.cc:428 yapet/mainwindow.cc:650 yapet/mainwindow.cc:778
+#: yapet/mainwindow.cc:880
 msgid "Q U E S T I O N"
 msgstr "F R A G E"
 
@@ -389,7 +389,7 @@ msgstr "UI Fehler währen Passwortabfrage"
 msgid " opened"
 msgstr " geöffnet"
 
-#: yapet/mainwindow.cc:506 yapet/mainwindow.cc:949
+#: yapet/mainwindow.cc:506 yapet/mainwindow.cc:957
 msgid "Error while trying to show error"
 msgstr "Fehler beim Fehleranzeigen"
 
@@ -457,51 +457,51 @@ msgstr "Begriff nicht gefunden"
 msgid "Search canceled"
 msgstr "Suche abgebrochen"
 
-#: yapet/mainwindow.cc:771
+#: yapet/mainwindow.cc:778
 msgid "Save before quitting?"
 msgstr "Vor Beenden speichern?"
 
-#: yapet/mainwindow.cc:797
+#: yapet/mainwindow.cc:805
 msgid "Error creating lock window"
 msgstr "Fehler beim Erstellen des Sperrfensters"
 
-#: yapet/mainwindow.cc:811
+#: yapet/mainwindow.cc:819
 msgid "YAPET -- Locked --"
 msgstr "YAPET -- Gesperrt --"
 
-#: yapet/mainwindow.cc:846
+#: yapet/mainwindow.cc:854
 msgid "Wrong password"
 msgstr "Falsches Passwort"
 
-#: yapet/mainwindow.cc:872
+#: yapet/mainwindow.cc:880
 msgid "Save before changing password?"
 msgstr "Speichern bevor Passwort geändert wird?"
 
-#: yapet/mainwindow.cc:879
+#: yapet/mainwindow.cc:887
 msgid "Password change aborted"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:909
+#: yapet/mainwindow.cc:917
 msgid "Password change canceled"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:954
+#: yapet/mainwindow.cc:962
 msgid "Error reading from file"
 msgstr "Fehler beim Lesen der Datei"
 
-#: yapet/mainwindow.cc:958
+#: yapet/mainwindow.cc:966
 msgid "Password successfully changed"
 msgstr "Passwort erfolgreich geändert"
 
-#: yapet/mainwindow.cc:994
+#: yapet/mainwindow.cc:1002
 msgid "No file loaded"
 msgstr "Keine Datei geladen"
 
-#: yapet/mainwindow.cc:997
+#: yapet/mainwindow.cc:1005
 msgid " loaded"
 msgstr " geladen"
 
-#: yapet/mainwindow.cc:1040
+#: yapet/mainwindow.cc:1048
 msgid "O P E N  F I L E"
 msgstr "D A T E I  Ö F F N E N"
 
