@@ -26,5 +26,5 @@ configure: configure.ac
 config.h.in: configure.ac
 	$(AUTOHEADER)
 
-Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am
+Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac
 	$(AUTOMAKE) -a -c -f --gnu
