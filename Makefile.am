@@ -1,7 +1,10 @@
 # $Id$
 
+AUTOMAKE_OPTIONS = check-news dist-bzip2
+DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc
+
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
-INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h
+INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h BUGS
 
 SUBDIRS = intl po crypt ui yapet
 if BUILDCSV2YAPET
