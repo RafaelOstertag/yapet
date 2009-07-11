@@ -82,6 +82,9 @@
     <para>For each successfully imported source file record a corresponding
     &YP; password record will be generated in the resulting file.</para>
 
+    <para>After the successful conversion the file
+    <replaceable>dst</replaceable> can be opened with &ypman;.</para>
+
     <para>The file suffix <filename>.pet</filename> is appended to the output
     file <replaceable>dst</replaceable> if not provided as part of the file
     path.</para>
@@ -95,8 +98,8 @@
     destination file already exists &csv2yapet; will abort the
     conversion.</para>
 
-    <para>Errors during the conversion process will be printed to standard
-    error unless the <option>-q</option> option is provided.</para>
+    <para>Errors during the conversion process will be displayed unless the
+    <option>-q</option> option is provided.</para>
   </refsect1>
 
   <!--
@@ -224,49 +227,52 @@
     <para>Fields containing the field separator character will lead to import
     errors (see also <xref linkend="bugs" />).</para>
 
-    <para>The following table will describe the format of the source CSV file as expected by &csv2yapet;:</para>
+    <para>The following table will describe the format of the source CSV file
+    as expected by &csv2yapet;:</para>
 
-    <table>
+    <table pgwide="1">
       <title>Source file format</title>
 
       <tgroup cols="2">
-	<colspec colname="colnum" align="center"/>
-	<colspec colname="desc" align="left"/>
-	
+	<colspec colname="colnum" align="center" />
+	<colspec colname="desc" align="left" />
+
 	<thead>
 	  <row>
 	    <entry>Column #</entry>
-	    <entry>Description</entry>
+	    <entry align="left">&YP; record field</entry>
 	  </row>
 	</thead>
 	<tbody>
 	  <row>
 	    <entry>1</entry>
-	    <entry>Record name. Corresponds to the Name field of a &YP; password entry.</entry>
+	    <entry align="left">Name</entry>
 	  </row>
 
 	  <row>
 	    <entry>2</entry>
-	    <entry>Host name. Corresponds to the Host field of a &YP; password entry.</entry>
+	    <entry>Host</entry>
 	  </row>
 
 	  <row>
-	    <entry>3</entry> <entry>User name. Corresponds to the Username
-	    field of a &YP; password entry.</entry>
+	    <entry>3</entry>
+	    <entry>Username</entry>
 	  </row>
 
 	  <row>
 	    <entry>4</entry>
-	    <entry>Password. Corresponds to the Password field of a &YP; password entry.</entry>
+	    <entry>Password</entry>
 	  </row>
 
 	  <row>
 	    <entry>5</entry>
-	    <entry>Comment. Corresponds to the Comment field of a &YP; password entry.</entry>
+	    <entry>Comment</entry>
 	  </row>
 	</tbody>
       </tgroup>
     </table>
+
+    <para>See <xref linkend="examples" /> for an example CSV file.</para>
 
   </refsect1>
 
@@ -362,8 +368,35 @@
   <refsect1 id="examples">
     <title>EXAMPLES</title>
 
-    <para>
-    </para>
+    <example id="ex.csv">
+      <title>An example of a CSV file accepted by &csv2yapet;.</title>
+
+      <para>The following example shows an excerpt of a CSV file as accepted
+      for conversion by &csv2yapet;.</para>
+<screen>
+ssh host,host.example.org,johndoe,secret,linux machine
+mail account,imap.email.org,john_doe,secret,
+&hellip;
+</screen>
+    </example>
+
+    <example id="ex.invoc1">
+      <title>Invoking &csv2yapet;.</title>
+
+      <para>The following example shows how to invoke &csv2yapet; in order to
+      convert a CSV file to an &YP; file. If the <option>-s</option> option is
+      not given, &csv2yapet; will ask for a password as shown:</para>
+
+<screen>
+<prompt>$</prompt> &csv2yapet; <filename>passwords.csv</filename> <filename>passwords.pet</filename>
+Please enter the password for passwords.pet:
+Please re-type the password:
+
+passwords.pet successfully created.
+$
+</screen>
+    </example>
+
   </refsect1>
 
   <!--
@@ -384,7 +417,7 @@
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara>&ypman;, &CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+    <simpara>&ypman;</simpara>
   </refsect1>
 
   <!--
