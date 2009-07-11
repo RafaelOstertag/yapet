@@ -48,7 +48,7 @@ AC_ARG_WITH([docbook-xsl],
 
 # "Enables"
 AC_ARG_ENABLE([build-doc],
-	[AS_HELP_STRING([--enable-build-doc],[enable the rebuild of the documentation (Default: no)])],
+	[AS_HELP_STRING([--enable-build-doc],[enable the rebuild of the documentation (Requires xsltproc, lynx; Default: no)])],
 	[my_builddoc=$enableval],
 	[my_builddoc=no])
 AC_ARG_ENABLE([source-doc],
@@ -66,6 +66,10 @@ AC_ARG_ENABLE([csv2yapet],
 
 if test x$my_settitle = xyes ; then
    AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+fi
+
+if test x$LYNX = xno || test x$XSLTPROC = xno ; then
+   my_builddoc=no
 fi
 
 if test x$DOXYGEN = xno ; then
