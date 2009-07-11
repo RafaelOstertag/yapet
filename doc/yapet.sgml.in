@@ -17,8 +17,8 @@
 <!ENTITY yp "<command>@PACKAGE@</command>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman "<citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
-<manvolnum>1</manvolnum></citerefentry>, ">
+<!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
 <trademark class='trademark'>Solaris</trademark>">
@@ -588,7 +588,7 @@ checkfsecurity=1</literallayout>
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara>&csv2yapetman;&CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+    <simpara>&csv2yapetman;, &CURSES;, &OPENSSL;, &CRYPTO;</simpara>
   </refsect1>
 
   <!--
