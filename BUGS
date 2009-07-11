@@ -1,0 +1,15 @@
+BUGS
+====
+
+* The user interface is clumsy and not really user friendly. It may
+  flicker while running YAPET in a secure shell session session.
+
+* Clearing the memory when it is no longer used seems to be buggy
+  since the master password might be written to a core file.
+
+Please report bugs to Rafael Ostertag <rafi@guengel.ch>.
+
+$Id$
+Local Variables:
+mode: text
+End:
