@@ -3,9 +3,9 @@ YAPET To Do
 
 * Translate the options, copyright etc.
 
-* Fix the display of the selection bar in list widgets upon page down/up
+* Fix the display of the selection bar in list widgets upon page down/up.
 
-* Make screen lock lock the screen even if a dialog is open
+* Make screen lock lock the screen even if a dialog is open.
 
 * Fix the logic detecting the field delimiter in csv2yapet so that it doesn't
   choke on separator characters in the field value.
