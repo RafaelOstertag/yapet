@@ -11,6 +11,8 @@
 <!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
 <manvolnum>3X</manvolnum></citerefentry>">
 <!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
 <trademark class='trademark'>Solaris</trademark>">
@@ -53,7 +55,7 @@
     <para>
       Using several different Unixes, I wanted to have a single application
       running on all Unixes for storing my passwords in a secure manner and
-      running over a secure shell connection.
+      running easily over a secure shell connection.
     </para>
   </sect1>
 
@@ -69,7 +71,7 @@
   <sect1 id="features">
     <title>Features</title>
 
-    <para>&YP; features</para>
+    <para>&YP; features:</para>
 
     <para>
       <itemizedlist>
@@ -86,7 +88,7 @@
 
 	<listitem>
 	  <para>doesn't depend on a graphical user interface and their
-	  "dependency hell" providing a text based user interface.</para>
+	  "dependency hell" due to a text based user interface.</para>
 	</listitem>
 
 
@@ -126,9 +128,8 @@
     <para>&YP; is kept simple. You should not find it difficult to
     use. The user interface has some quirks, though.</para>
 
-    <para>See the manual page <citerefentry><refentrytitle>yapet</refentrytitle>
-<manvolnum>1</manvolnum></citerefentry> after installing &YP; for a
-      minimal usage guide.</para>
+    <para>See the manual page &ypman; after installing &YP; for a minimal usage
+    guide.</para>
   </sect1>
 
   <sect1 id="design">

@@ -38,15 +38,6 @@
     <para>&YP; was designed to have only few library dependencies, and
       to build on most popular Unixes.</para>
 
-    <sect2 id="supportedplatforms">
-      <title>Supported Platforms</title>
-
-      &supplatforms;
-    </sect2>
-
-    <sect2 id="requiredlibraries">
-      <title>Required Libraries</title>
-
       <para>&YP; depends on two libraries</para>
 
       <para>
@@ -66,6 +57,10 @@
       available on the build system, the GNU Gettext version included in the
       source distribution is used.</para>
 
+    <sect2 id="supportedplatforms">
+      <title>Supported Platforms</title>
+
+      &supplatforms;
     </sect2>
 
     <sect2 id="compilers">
@@ -105,7 +100,7 @@
     </para>
 
     <para>on the command line. The <command>configure</command> script will then check
-      the system and prepares for the build process.
+      the system and prepare for the build process.
     </para>
 
     <para>If the <command>configure</command> script successfully
@@ -209,6 +204,28 @@
 
       <varlistentry>
 	<term>
+	  <option>--enable-terminal-title</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs the build process to compile &YP; with support for
+	  setting the terminal title in XTerm and friends.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-csv2yapet</option>
+	</term>
+
+	<listitem>
+	  <para>If given the <command>csv2yapet</command> import utility
+	  will not be built.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
 	  <option>--disable-nls</option>
 	</term>
 
@@ -225,29 +242,34 @@
 	<listitem>
 	  <para>Instructs the build system to (re-)generate the documentation
 	  files. You usually do not need this, since the source distribution
-	  ships with pre-built documentation files.
-	  </para>
+	  ships with pre-built documentation files.</para>
+	  
+	  <para>This option depends on the two applications
+	  <command>xsltproc</command> and <command>lynx</command>. They need to
+	  be installed on the system and to be found by
+	  <command>configure</command> else setting this option won't have any
+	  effect.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term>
-	  <option>--enable-terminal-title</option>
+	  <option>--enable-source-doc</option>
 	</term>
 
 	<listitem>
-	  <para>Instructs &YP; to set the terminal title in XTerm and friends.</para>
-	</listitem>
-      </varlistentry>
+	  <para>Providing this option will make the build system to generate
+	  the source code documentation using
+	  <command>doxygen</command>.</para>
 
-      <varlistentry>
-	<term>
-	  <option>--disable-csv2yapet</option>
-	</term>
+	  <para>This options has only effect if <command>doxygen</command> is
+	  installed on the system and found by
+	  <command>configure</command>.</para>
 
-	<listitem>
-	  <para>If given the <command>csv2yapet</command> import utility
-	  will not be built.</para>
+	  <para>The source code documentation will not be installed. It is
+	  located in the <filename>doc/</filename> directory of the build
+	  directory.</para>
+	  
 	</listitem>
       </varlistentry>
 
@@ -321,9 +343,9 @@
   <sect1 id="furtherinfo">
     <title>Further Information</title>
 
-    <para>For more information about the configure script, read the
-      file <filename>INSTALL.generic</filename> which comes along with
-      the tarball of &YP;.</para>
+    <para>For more detailed information about the configure script, read the
+    file <filename>INSTALL.generic</filename> which comes along with the
+    tarball of &YP;.</para>
   </sect1>
 
 </article>

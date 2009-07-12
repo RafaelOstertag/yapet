@@ -15,6 +15,8 @@
 <manvolnum>3X</manvolnum></citerefentry>">
 <!ENTITY YP "@PACKAGE_NAME@">
 <!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
 <!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
@@ -545,12 +547,12 @@ checkfsecurity=1</literallayout>
     <itemizedlist>
       <listitem>
 	<para>The user interface is clumsy and not really user friendly. It may
-	flicker while running &yp; in a secure shell session session.</para>
+	flicker while running &yp; in a secure shell session.</para>
       </listitem>
 
       <listitem>
-	<para>Clearing the memory when it is no longer used seems to be buggy
-	since the master password might be written to a core file.</para>
+	<para>Clearing the memory when it is no longer used seems buggy since
+	the master password is written to a core file sometimes.</para>
       </listitem>
 
     </itemizedlist>
@@ -567,8 +569,8 @@ checkfsecurity=1</literallayout>
   <refsect1 id="availability">
     <title>AVAILABILITY</title>
 
-    <para>The latest version of this program can be found
-    under <ulink url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet</ulink>.</para>
+    <para>The latest version of &yp; can be found under <ulink
+    url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
   </refsect1>
   <!--
   -

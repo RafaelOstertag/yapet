@@ -167,7 +167,7 @@
 	<term><option>-V</option>, <option>--version</option></term>
 	<listitem>
 
-	  <para>Show the version of &yp;.</para>
+	  <para>Show the version of &csv2yapet;.</para>
 	</listitem>
       </varlistentry>
 
@@ -190,7 +190,7 @@
 
 	<listitem>
 	  <para>The source CSV file to be converted. It must be of the format
-	  as described in <xref linkend="sourcefileformat" />.</para>
+	  described in <xref linkend="sourcefileformat" />.</para>
 
 	</listitem>
       </varlistentry>

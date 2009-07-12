@@ -1,12 +1,11 @@
 <!-- $Id$ -->
-      <para>&YP; successful builds and runs on following
-      platforms:</para>
+     <para>&YP; builds and runs on following platforms:</para>
 
-      <para>
-	<itemizedlist>
-	  <listitem><simpara>&FREEBSD;</simpara></listitem>
-	  <listitem><simpara>&SOLARIS; x86</simpara></listitem>
-	  <listitem><simpara>Linux</simpara></listitem>
-	  <listitem><simpara>Cygwin</simpara></listitem>
-	</itemizedlist>
-      </para>
+     <para>
+       <itemizedlist>
+	 <listitem><simpara>&FREEBSD;</simpara></listitem>
+	 <listitem><simpara>&SOLARIS; x86</simpara></listitem>
+	 <listitem><simpara>Linux</simpara></listitem>
+	 <listitem><simpara>Cygwin</simpara></listitem>
+       </itemizedlist>
+     </para>

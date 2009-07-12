@@ -1,13 +1,28 @@
 BUGS
 ====
 
-* The user interface is clumsy and not really user friendly. It may
-  flicker while running YAPET in a secure shell session session.
+YAPET
+-----
 
-* Clearing the memory when it is no longer used seems to be buggy
-  since the master password might be written to a core file.
+* The user interface is clumsy and not really user friendly. It may flicker
+  while running YAPET in a secure shell session.
+
+* Clearing the memory when it is no longer used seems buggy since the master
+  password is written to a core file sometimes.
+
+
+csv2yapet
+---------
+
+* If the field separating character is part of the field value, it is
+  misinterpreted as field delimiter.
+
+
+Reporting Bugs
+--------------
 
 Please report bugs to Rafael Ostertag <rafi@guengel.ch>.
+
 
 $Id$
 Local Variables:

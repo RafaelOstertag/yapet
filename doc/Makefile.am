@@ -41,7 +41,7 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 if BUILDDOC
 
 # Those files are fed to xsltproc
-sgml_html = README.sgml INSTALL.sgml DESIGN.sgml yapet.sgml csv2yapet.sgml
+sgml_html = README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml yapet.sgml csv2yapet.sgml
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
 sgml_man = yapet.sgml csv2yapet.sgml
 
