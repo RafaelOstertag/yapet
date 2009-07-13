@@ -16,7 +16,7 @@ sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
 csv2yapet.sgml.in README.Cygwin.sgml.in
 
 sgml_static_files = copyright.sgml supportedplatforms.sgml caution.sgml	\
-pwrecord.sgml license.sgml
+pwrecord.sgml license.sgml bugreport.sgml
 
 sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
 $(sgml_static_files)
