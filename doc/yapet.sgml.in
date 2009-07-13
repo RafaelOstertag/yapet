@@ -7,6 +7,7 @@
 <!ENTITY pwrecord SYSTEM "@srcdir@/pwrecord.sgml">
 <!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
 <!ENTITY license SYSTEM "@srcdir@/license.sgml">
+<!ENTITY bugreport SYSTEM "@srcdir@/bugreport.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
 <!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
@@ -557,8 +558,7 @@ checkfsecurity=1</literallayout>
 
     </itemizedlist>
 
-    <para>Please report other bugs to the author (see <xref linkend="author"
-    />).</para>
+    &bugreport;
   </refsect1>
 
   <!--
