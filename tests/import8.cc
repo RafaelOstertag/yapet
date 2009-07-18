@@ -1,6 +1,6 @@
 // $Id$
-// Checks whether or not the import of import1 worked.
-// Relies on test1.csv
+// Checks whether or not the import of import7 worked.
+// Relies on test5.csv
 
 #include <string.h>
 
@@ -22,10 +22,10 @@
 #define ROUNDS 200
 
 int main(int, char**) {
-    std::cout << "Check if import1 worked... " << std::endl;
+    std::cout << "Check if import7 worked... " << std::endl;
     try {
-	YAPET::Key key("test1");
-	YAPET::File file("test1.pet", key, false);
+	YAPET::Key key("test5");
+	YAPET::File file("test5.pet", key, false);
 	std::list<YAPET::PartDec> list = file.read(key);
 	if (list.size() != ROUNDS) {
 	    std::cout << "no" << std::endl;

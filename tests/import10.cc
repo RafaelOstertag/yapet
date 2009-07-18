@@ -1,6 +1,6 @@
 // $Id$
-// Checks whether or not the import of import1 worked.
-// Relies on test1.csv
+// Checks whether or not the import of import9 worked.
+// Relies on test6.csv
 
 #include <string.h>
 
@@ -13,19 +13,23 @@
 #include <partdec.h>
 #include <file.h>
 
+// Keep them define's here, since tests.h only defines the default if they are
+// not predefined
+#define ROUNDS 200
+#define NAME "\"Test name %d"
+#define HOST "Test host %d\""
+#define UNAME "Test \"username %d"
+#define PW "Test \"password\" %d"
+#define COMMENT "Test \"\"comment %d\"\""
+
 #include "tests.h"
 #include "testpaths.h"
 
-#ifdef ROUNDS
-#undef ROUNDS
-#endif
-#define ROUNDS 200
-
 int main(int, char**) {
-    std::cout << "Check if import1 worked... " << std::endl;
+    std::cout << "Check if import9 worked... " << std::endl;
     try {
-	YAPET::Key key("test1");
-	YAPET::File file("test1.pet", key, false);
+	YAPET::Key key("test6");
+	YAPET::File file("test6.pet", key, false);
 	std::list<YAPET::PartDec> list = file.read(key);
 	if (list.size() != ROUNDS) {
 	    std::cout << "no" << std::endl;

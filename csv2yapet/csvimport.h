@@ -36,32 +36,29 @@
 # include <stdexcept>
 #endif
 
-#ifdef HAVE_VECTOR
-# include <vector>
-#endif
-
 #ifdef HAVE_LIST
 # include <list>
 #endif
 
 /**
- * Log entry.
- */
-struct LogEntry {
-	/**
-	 * The line number where the error occurred.
-	 */
-	unsigned int lineno;
-	/**
-	 * The error message.
-	 */
-	std::string message;
-};
-
-/**
  * The class taking care of converting a csv file.
  */
 class CSVImport {
+    public:
+	/**
+	 * Log entry.
+	 */
+	struct LogEntry {
+		/**
+		 * The line number where the error occurred.
+		 */
+		unsigned int lineno;
+		/**
+		 * The error message.
+		 */
+		std::string message;
+	};
+
     private:
 	/**
 	 * Object assignment not allowed.
@@ -110,11 +107,8 @@ class CSVImport {
 	 */
 	std::list<LogEntry> logs;
 
-	//! Count the separators of the line provided.
-	unsigned int countSeparator(const std::string& s) const;
-	//! Returns the position of the separators in the line.
-	void getSeparatorPos(const std::string& line,
-			     std::vector<std::string::size_type>& posvec) const;
+	//! Cleanup the field values
+	void cleanupValue(std::string& str);
 	//! Log the given error
 	void logError(unsigned long lno, const std::string& errmsg);
 

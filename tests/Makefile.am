@@ -1,12 +1,15 @@
 # $Id$
 
-DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak	\
-test1.pet test2.pet test3.pet test4.pet
-EXTRA_DIST = test1.csv test2.csv test3.csv test4.csv
+DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
+test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
+test9.pet
+EXTRA_DIST = test1.csv test2.csv test3.csv test4.csv test5.csv test6.csv	\
+test7.csv test8.csv test9.csv
 
 check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5
 if BUILDCSV2YAPET
-check_PROGRAMS += import1 import2 import3 import4 import5 import6
+check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
+import8 import9 import10 import11 import12 import13 import14
 endif
 
 TESTS = $(check_PROGRAMS)
@@ -72,6 +75,38 @@ import5_SOURCES = import5.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddi
 import6_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 import6_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
 import6_SOURCES = import6.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import7_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import7_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import7_SOURCES = import7.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import8_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import8_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import8_SOURCES = import8.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import9_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import9_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import9_SOURCES = import9.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import10_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import10_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import10_SOURCES = import10.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import11_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import11_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import11_SOURCES = import11.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import12_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import12_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import12_SOURCES = import12.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import13_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import13_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import13_SOURCES = import13.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
+
+import14_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import14_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/csv2yapet -I$(top_srcdir)/crypt
+import14_SOURCES = import14.cc $(top_builddir)/csv2yapet/csvimport.h $(top_builddir)/csv2yapet/csvimport.cc
 
 endif
 

@@ -1,6 +1,8 @@
 // $Id$
-// Tests the error detection.
-// Relies on test2.csv
+//
+// Tests the error detection when double quoting is wrong.
+//
+// Relies on test8.csv
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -16,23 +18,19 @@
 
 int main (int, char**) {
     try {
-	std::cout << "Importing from test2.csv" << std::endl;
+	std::cout << "Importing from test8.csv" << std::endl;
 	std::cout << "Testing for error recognition" << std::endl;
-	CSVImport imp(SRCDIR "/test2.csv", "test2.pet", ',');
-	imp.import("test2");
+	CSVImport imp(SRCDIR "/test8.csv", "test8.pet", ',');
+	imp.import("test8");
 	imp.printLog();
-	if (imp.numErrors() != 2)
+	if (imp.numErrors() != 1)
 	    return 1;
 	std::list<CSVImport::LogEntry> logs(imp.getLog());
-	if (logs.size() != 2)
+	if (logs.size() != 1)
 	    return 1;
 	std::list<CSVImport::LogEntry>::const_iterator it = logs.begin();
-	if ((*it).lineno != 2)
+	if ((*it).lineno != 3)
 	    return 1;
-	it++;
-	if ((*it).lineno != 10)
-	    return 1;
-
     } catch(std::exception& ex) {
 	std::cout << ex.what() << std::endl;
 	return 1;

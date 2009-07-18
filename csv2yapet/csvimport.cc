@@ -57,38 +57,27 @@
 #include <file.h>
 
 /**
- * Count the number of separators on the line.
+ * Removes the double quotes at the beginning and any escaped double quotes.
  *
- * @param s the line
+ * @param str the string to be cleaned up.
  *
- * @return the number of separators.
- */
-unsigned int
-CSVImport::countSeparator(const std::string& s) const {
-    unsigned int c = 0;
-    std::string::size_type pos = 0;
-    while ( (pos = s.find(separator, pos)) != std::string::npos ) {
-	c++;
-	pos++;
-    }
-    return c;
-}
-
-/**
- * Returns a vector holding the character positions of the separators.
- *
- * @param line the line
- *
- * @param posvec the vector filled with the positions
+ * @return the string \c str passed will be modified.
  */
 void
-CSVImport::getSeparatorPos(const std::string& line,
-			   std::vector<std::string::size_type>& posvec) const {
-    posvec.clear();
-    std::string::size_type pos = 0;
-    while ( (pos = line.find(separator, pos)) != std::string::npos ) {
-	posvec.push_back(pos);
-	pos++;
+CSVImport::cleanupValue(std::string& str) {
+    if (str.length() == 0) return;
+
+    if (str.at(0) == '"')
+	str = str.erase(0, 1);
+
+    if (str.at(str.length()-1) == '"')
+	str = str.erase(str.length()-1, 1);
+
+    std::string::size_type pos=0;
+    while ( ( pos = str.find("\"\"", pos)) != std::string::npos ) {
+	str.erase(pos,1);
+	if (pos + 1 < str.length() )
+	    pos++;
     }
 }
 
@@ -159,7 +148,7 @@ CSVImport::import(const char* pw) throw(std::exception) {
 	NUM_SEPARATORS;
 
     // used for logging purpose
-    unsigned int num_fields = NUM_SEPARATORS + 1;
+    const unsigned int num_fields = NUM_SEPARATORS + 1;
     char num_fields_str[5];
     snprintf(num_fields_str, 5, "%u", num_fields);
 
@@ -168,19 +157,67 @@ CSVImport::import(const char* pw) throw(std::exception) {
     std::list<YAPET::PartDec> list;
 
     char line[max_len];
-    std::vector<std::string::size_type> seppos;
+    // Holds the line number count
     unsigned long lineno = 0;
+    // Flag indicating whether we're in a quote or not
+    bool inquote = false;
+    // Array holding the field values of the csv file
+    std::string field_values[num_fields];
+    // Integer indicating which field has to be filled
+    int current_field = 0;
+    // Number of delimiters found per line
+    int num_sep_found = 0;
+    // The iterator for scanning the line character by character
+    std::string::size_type it=0;
+
     while (csvfile.getline(line, max_len) ) {
 	lineno++;
 	std::string l(line);
-	if (countSeparator(l) > NUM_SEPARATORS) {
-	    std::string tmp("Too many fields. Expected ");
-	    tmp += num_fields_str;
-	    tmp += " fields.";
-	    logError(lineno, tmp );
-	    continue;
+	// integer pointing to the last delimiter found
+	std::string::size_type last_sep = 0;
+
+	if (!inquote) {
+	    current_field = 0;
+	    num_sep_found = 0;
+	    for (unsigned int i = 0; i < num_fields; i++)
+		field_values[i].clear();
 	}
-	if (countSeparator(l) < NUM_SEPARATORS) {
+
+	// Indicate scanning error
+	bool scan_error = false;
+	for (it=0; it < l.length(); it++) {
+	    // Flip the inquote flag when encountering a double quote
+	    if (l.at(it) == '"') {
+		inquote = !inquote;
+	    }
+
+	    if (!inquote && (l.at(it) == separator) ) {
+		num_sep_found++;
+		if (num_sep_found > NUM_SEPARATORS) {
+		    std::string tmp("Too many fields. Expected ");
+		    tmp += num_fields_str;
+		    tmp += " fields.";
+		    logError(lineno, tmp );
+		    scan_error = true;
+		    break;
+		}
+		field_values[current_field] = l.substr(last_sep, it - last_sep);
+		cleanupValue(field_values[current_field]);
+		last_sep = it + 1;
+		current_field++;
+	    }
+	}
+
+	if (scan_error) continue;
+
+	// Make sure the last field will be extracted too, but check if the
+	// last separator has any value followed.
+	if (it > last_sep) {
+	    field_values[current_field] = l.substr(last_sep, it - last_sep);
+	    cleanupValue(field_values[current_field]);
+	}
+
+	if (!inquote && (num_sep_found < NUM_SEPARATORS) ) {
 	    std::string tmp("Too few fields. Expected ");
 	    tmp += num_fields_str;
 	    tmp += " fields.";
@@ -188,26 +225,17 @@ CSVImport::import(const char* pw) throw(std::exception) {
 	    continue;
 	}
 
-	getSeparatorPos(l, seppos);
-	if (seppos.size() == 0) {
-	    logError(lineno, "Unable to identify separators.");
-	    continue;
+	if (!inquote && (num_sep_found == NUM_SEPARATORS) ) {
+	    YAPET::Record<YAPET::PasswordRecord> record;
+	    YAPET::PasswordRecord *ptr_rec = record;
+	    strncpy((char*)ptr_rec->name, field_values[0].c_str(), YAPET::NAME_SIZE);
+	    strncpy((char*)ptr_rec->host, field_values[1].c_str(), YAPET::HOST_SIZE);
+	    strncpy((char*)ptr_rec->username, field_values[2].c_str(), YAPET::USERNAME_SIZE);
+	    strncpy((char*)ptr_rec->password, field_values[3].c_str(), YAPET::PASSWORD_SIZE);
+	    strncpy((char*)ptr_rec->comment, field_values[4].c_str(), YAPET::COMMENT_SIZE);
+	    list.push_back(YAPET::PartDec(record, key));
+	    if (verbose) std::cout << ".";
 	}
-
-	std::string name = l.substr(0, seppos[0]);
-	std::string host = l.substr(seppos[0]+1, seppos[1] - seppos[0] - 1);
-	std::string uname = l.substr(seppos[1]+1, seppos[2] - seppos[1] - 1);
-	std::string passwd = l.substr(seppos[2]+1, seppos[3] - seppos[2] - 1 );
-	std::string comment = l.substr(seppos[3]+1, l.length() - seppos[3]);
-	YAPET::Record<YAPET::PasswordRecord> record;
-	YAPET::PasswordRecord *ptr_rec = record;
-	strncpy((char*)ptr_rec->name, name.c_str(), YAPET::NAME_SIZE);
-	strncpy((char*)ptr_rec->host, host.c_str(), YAPET::HOST_SIZE);
-	strncpy((char*)ptr_rec->username, uname.c_str(), YAPET::USERNAME_SIZE);
-	strncpy((char*)ptr_rec->password, passwd.c_str(), YAPET::PASSWORD_SIZE);
-	strncpy((char*)ptr_rec->comment, comment.c_str(), YAPET::COMMENT_SIZE);
-	list.push_back(YAPET::PartDec(record, key));
-	if (verbose) std::cout << ".";
     }
     if (verbose) std::cout << std::endl;
     yapetfile.save(list);

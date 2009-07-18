@@ -12,13 +12,31 @@
 #include <key.h>
 #include <crypt.h>
 
-#define ROUNDS 5000
+#ifndef ROUNDS
+# define ROUNDS 5000
+#endif
+
 #define FN "encryptiontest.gps"
-#define NAME "Test name %d"
-#define HOST "Test host %d"
-#define UNAME "Test username %d"
-#define PW "Test password %d"
-#define COMMENT "Test comment %d"
+
+#ifndef NAME
+# define NAME "Test name %d"
+#endif
+
+#ifndef HOST
+# define HOST "Test host %d"
+#endif
+
+#ifndef UNAME
+# define UNAME "Test username %d"
+#endif
+
+#ifndef PW
+# define PW "Test password %d"
+#endif
+
+#ifndef COMMENT
+# define COMMENT "Test comment %d"
+#endif
 
 
 inline
