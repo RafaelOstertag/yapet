@@ -74,7 +74,6 @@ class FileOpen : protected YAPETUI::BaseWindow {
 
 	bool canceled;
 
-
 	inline FileOpen(const FileOpen&) {}
 	inline const FileOpen& operator=(const FileOpen&) { return *this; }
 

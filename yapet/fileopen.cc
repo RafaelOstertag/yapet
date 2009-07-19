@@ -51,6 +51,7 @@
 #include "../intl.h"
 #include <messagebox.h>
 #include <colors.h>
+#include "consts.h"
 #include "fileopen.h"
 
 void
@@ -112,7 +113,7 @@ FileOpen::getEntries(std::list<YAPETUI::secstring>& d,
 	    d.push_back(de->d_name);
 	} else if (S_ISREG(st.st_mode)) {
 	    std::string tmp(de->d_name);
-	    if (endswith(tmp, ".pet") )
+	    if (endswith(tmp, Consts::getDefaultSuffix()) )
 		f.push_back(de->d_name);
 	}
     }
@@ -362,8 +363,8 @@ FileOpen::resize() throw (YAPETUI::UIException) {
 
 std::string
 FileOpen::getFilepath() {
-    if (!endswith(filename, ".pet"))
-	filename+=".pet";
+    if (!endswith(filename, Consts::getDefaultSuffix().c_str()))
+	filename+=Consts::getDefaultSuffix().c_str();
 
     std::string tmp_filename(filename.c_str());
     std::string tmp_directory(directory.c_str());

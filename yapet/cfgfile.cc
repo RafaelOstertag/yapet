@@ -42,6 +42,7 @@
 #include <sstream>
 #endif
 
+#include "consts.h"
 #include "cfgfile.h"
 
 std::string ConfigFile::cfgfile(".yapet");
@@ -89,6 +90,10 @@ ConfigFile::parseFile() {
 	    if (l.find(needle,0) == 0) {
 		l.erase(0,needle.length());
 		filetoload = l;
+		if ( filetoload.find(Consts::getDefaultSuffix(),
+				     filetoload.length() - Consts::getDefaultSuffix().length())
+		     == std::string::npos )
+		    filetoload += Consts::getDefaultSuffix();
 		continue;
 	    }
 	    needle = "locktimeout=";

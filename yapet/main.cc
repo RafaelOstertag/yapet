@@ -87,9 +87,10 @@
 #endif
 
 #include "../intl.h"
-#include "fileopen.h" // for the endswith() functions
+#include "fileopen.h"
 #include "mainwindow.h"
 #include "cfgfile.h"
+#include "consts.h"
 
 /**
  * @file
@@ -296,8 +297,8 @@ int main (int argc, char** argv) {
     if (optind < argc) {
 	filename = argv[optind];
 
-	if (!endswith(filename, ".pet"))
-	filename+=".pet";
+	if (!endswith(filename, Consts::getDefaultSuffix()))
+	    filename+=Consts::getDefaultSuffix();
     }
 
     YAPETUI::BaseWindow::initCurses();

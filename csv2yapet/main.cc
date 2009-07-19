@@ -64,6 +64,7 @@
 # include <stdexcept>
 #endif
 
+#include <consts.h>
 #include "csvimport.h"
 
 #if defined(HAVE_TERMIOS_H) && defined (HAVE_TCSETATTR) && defined (HAVE_TCGETATTR)
@@ -269,8 +270,10 @@ int main (int argc, char** argv) {
 	return ERR_CMDLINE;
     }
 
-    if ( dstfile.find(".pet", dstfile.length() - 4) == std::string::npos )
-	dstfile += ".pet";
+    if ( dstfile.find(Consts::getDefaultSuffix(),
+		      dstfile.length() - Consts::getDefaultSuffix().length())
+	 == std::string::npos )
+	dstfile += Consts::getDefaultSuffix();
 
     if (access(dstfile.c_str(), F_OK) == 0) {
 	std::cerr << dstfile << " already exists. Aborting." << std::endl;
