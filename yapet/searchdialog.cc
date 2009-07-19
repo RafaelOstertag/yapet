@@ -140,7 +140,11 @@ SearchDialog::refresh() throw(YAPETUI::UIException) {
 #ifdef HAVE_STRCASESTR
     retval = mymvwaddstr(window, 1, 1, _("Please enter the search term"));
 #else
+# ifdef HAVE_TOLOWER
+    retval = mymvwaddstr(window, 1, 1, _("Please enter the search term"));
+# else
     retval = mymvwaddstr(window, 1, 1, _("Please enter the search term (case-sensitive)"));
+# endif // HAVE_TOLOWER
 #endif
     if (retval == ERR)
 	throw YAPETUI::UIException(_("Error setting label"));

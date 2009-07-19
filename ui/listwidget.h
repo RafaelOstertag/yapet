@@ -38,6 +38,10 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#ifdef HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+
 #ifdef HAVE_FUNCTIONAL
 # include <functional>
 #endif
@@ -111,7 +115,30 @@ namespace YAPETUI {
 #ifdef HAVE_STRCASESTR
 			ptr = strcasestr(item.c_str(), searchterm);
 #elif HAVE_STRSTR
+# ifdef HAVE_TOLOWER
+			// Prepare the haystack
+			size_t haystack_len = strlen(item.c_str())+1;
+			char* haystack = new char[haystack_len];
+			strncpy(haystack, item.c_str(), haystack_len);
+			for (size_t i=0; i < haystack_len; haystack[i] = (char)tolower(haystack[i]), i++);
+
+			// Prepare needle
+			size_t needle_len = strlen(searchterm)+1;
+			char* needle = new char[needle_len];
+			strncpy(needle, searchterm, needle_len);
+			for (size_t i=0; i < needle_len; needle[i] = (char)tolower(needle[i]), i++);
+
+			// Now do the search
+			ptr = strstr(haystack, needle);
+
+			// Destroy that properly
+			memset((void*)haystack, 0, haystack_len);
+			memset((void*)needle, 0, needle_len);
+			delete []haystack;
+			delete []needle;
+# else
 			ptr = strstr(item.c_str(), searchterm);
+# endif // HAVE_TOLOWER
 #else
 # error "Sorry, neither strcasestr() nor strstr() found"
 #endif
