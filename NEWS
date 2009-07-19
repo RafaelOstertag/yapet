@@ -5,6 +5,8 @@ YAPET 0.5
 
       * csv2yapet can handle field delimiters as field values.
 
+      * File suffix can be omitted in ~/.yapet per-user configuration file.
+
 
 YAPET 0.4
 
@@ -17,7 +19,7 @@ YAPET 0.4
 
       * Time-out until screen is locked can be configured.
 
-      * Can read startup options from config file.
+      * Can read start-up options from configuration file.
 
       * New utility csv2yapet to convert CSV file to YAPET files.
 
