@@ -7,6 +7,9 @@ YAPET 0.5
 
       * File suffix can be omitted in ~/.yapet per-user configuration file.
 
+      * Case-insensitive search available even when strcasestr() is not
+        supported on build platform.
+
 
 YAPET 0.4
 
