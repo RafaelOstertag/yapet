@@ -1,7 +1,7 @@
 # $Id$
 
 AUTOMAKE_OPTIONS = check-news dist-bzip2
-DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc --enable-install-doc
 
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
 INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h BUGS
@@ -15,8 +15,10 @@ SUBDIRS += tests doc
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
+if !DISABLEINSTALLDOC
 textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE
 textdocdir = $(docdir)
+endif # !DISABLEINSTALLDOC
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
