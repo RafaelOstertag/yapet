@@ -24,13 +24,15 @@
 #define _INTL_H
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+# include "config.h"
 #endif
 
-#include "gettext.h"
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
+#ifdef ENABLE_NLS
+# include "gettext.h"
+# ifdef HAVE_LOCALE_H
+#  include <locale.h>
+# endif // HAVE_LOCALE_H
+#endif // ENABLE_NLS
 
 #if ! defined(_) && ENABLE_NLS==0
 #define _(String) (String)
