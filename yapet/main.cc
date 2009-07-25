@@ -233,9 +233,11 @@ void show_help(char* prgname) {
 int main (int argc, char** argv) {
     set_rlimit();
 
+#ifdef ENABLE_NLS
     setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
+#endif
 
     int c;
     std::string filename;
