@@ -2,12 +2,12 @@
 #
 # $Id$
 
-DEFPATH=$(PATH)
-PATH=/opt/guengel/bin
 ACLOCAL=/opt/guengel/bin/aclocal
 AUTOCONF=/opt/guengel/bin/autoconf
 AUTOHEADER=/opt/guengel/bin/autoheader
 AUTOMAKE=/opt/guengel/bin/automake
+SVN2CL=/opt/guengel/bin/svn2cl.sh
+SVN2CLOPTS=--group-by-day --separate-daylogs --reparagraph --authors=/opt/guengel/share/svn2cl/authors.xml -o ChangeLog
 
 all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
 
@@ -15,7 +15,8 @@ README:
 	touch README
 
 ChangeLog:
-	touch ChangeLog
+	svn update
+	$(SVN2CL) $(SVN2CLOPTS)
 
 aclocal.m4: configure.ac
 	$(ACLOCAL) -I m4
@@ -28,3 +29,5 @@ config.h.in: configure.ac
 
 Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac
 	$(AUTOMAKE) -a -c -f --gnu
+
+.PHONY: ChangeLog
