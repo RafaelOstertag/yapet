@@ -4,7 +4,7 @@
   <varlistentry>
     <term><guilabel>Name</guilabel></term>
     <listitem>
-      <simpara>The name displayed in the main screen.</simpara>
+      <simpara>The name displayed in the Main Screen.</simpara>
     </listitem>
   </varlistentry>
 
@@ -25,7 +25,7 @@
   <varlistentry>
     <term><guilabel>Password</guilabel></term>
     <listitem>
-      <simpara>The password.</simpara>
+      <simpara>The password to protect.</simpara>
     </listitem>
   </varlistentry>
 
