@@ -75,18 +75,17 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para>&yp; stands for "Yet Another Password Encryption Tool" and
-    is a &CURSES; based program for storing passwords encrypted on
-    disk. It relies on the &CRYPTO; library provided by OpenSSL for
-    encrypting and decrypting the passwords. The cipher for encryption
-    and decryption is Blowfish with a 448 bits key.
+    <para>&yp; stands for "Yet Another Password Encryption Tool" and is a text
+    based program for storing passwords encrypted on disk. It relies on OpenSSL
+    for encrypting and decrypting the password records. The cipher for
+    encryption and decryption is Blowfish with a 448 bits key.
     </para>
 
     <para>Invoking &yp; without any command line arguments given, a screen as
-    shown in "<xref linkend="fig.mainscreen" />" will be displayed.</para>
+    shown in <xref linkend="fig.mainscreen" /> will be displayed.</para>
 
 <figure id="fig.mainscreen">
-  <title>Main screen</title>
+  <title>Main Screen</title>
   <mediaobject>
     <textobject>
 <screen format="linespecific">
@@ -119,9 +118,183 @@ No file loaded
   </mediaobject>
 </figure>
 
-    <para>The upper right frame in "<xref linkend="fig.mainscreen" />" shows the
-    keys recognized by &yp;. The keys are not case-sensitive. Following a short
-    explanation of the keys:
+    <para>The upper right frame in <xref linkend="fig.mainscreen" /> shows
+    the function keys recognized by &yp;. See <xref linkend="functionkeys" />
+    for details about the function keys.</para>
+
+    <para>The empty frame on the left side of the main screen will display a
+    list of the password records' <guilabel>Name</guilabel> field (see <xref
+    linkend="passwordrecord" />). The selection can be moved as explained in
+    <xref linkend="selectionmovement" />.</para>
+
+    <para>Files created by &yp; always have the suffix
+    <filename>.pet</filename>. This cannot be changed by the user. Also, if a
+    file is loaded using the command line the suffix <filename>.pet</filename>
+    is appended to the file name given that it was not specified by the
+    user.</para>
+
+    <para>The password entries are protected by a master password. The master
+    password is used to encrypt and decrypt the records. If the master password
+    is lost, so are the records.</para>
+
+    <para>If there no key is pressed for more than ten minutes (the default) or
+    the amount of time specified using the <option>-t</option> option, &yp;
+    will blank and lock the screen. It will prompt for the password of the
+    currently load file when a key is pressed. This is the same behavior as
+    seen by pressing the key <keycap>L</keycap>.</para>
+
+  </refsect1>
+
+  <!--
+  -
+  -  OPTIONS
+  -
+  -->
+  <refsect1 id="options">
+    <title>OPTIONS</title>
+
+    <para>The following options are supported:</para>
+
+    <variablelist>
+      <varlistentry>
+	<term><option>-c</option>, <option>--copyright</option></term>
+	<listitem>
+	  <para>Show the copyright information.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-h</option>, <option>--help</option></term>
+	<listitem>
+
+	  <para>Print a help text.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-s</option>, <option>--no-file-security</option></term>
+
+	<listitem>
+	  <para>Disable the check for the owner and file mode when loading
+	  files. Without this option, &yp; checks password files for having the
+	  same owner as the user running &yp; and verifies that the file mode
+	  is strictly 0600. If one of these conditions are not met, &yp; refuses
+	  to load the file. Providing this options disables those checks and
+	  &yp; will load files with owners other than the process owner of
+	  &yp; and file modes different from 0600.</para>
+
+	  <para>New files saved while this option is active will have the file
+	  mode set to 0644.</para>
+
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-S</option>, <option>--file-security</option></term>
+
+	<listitem>
+	  <para>Enable the check for the owner and file mode when loading
+	  files. This option makes &yp; to load password files having the
+	  owner set to the process owner of &yp; and the file mode strictly set
+	  to 0600 only. If one of these conditions are not met, &yp; refuses to
+	  load the file.</para>
+
+	  <para>New files saved while this option is active will have the file
+	  mode set to 0600.</para>
+
+	  <para>This is the default mode.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-t</option> <replaceable>sec</replaceable>,
+	<option>--timeout</option> <replaceable>sec</replaceable></term>
+
+	<listitem>
+
+	  <para>Set the timeout until the screen is locked to
+	  <replaceable>sec</replaceable> seconds. The minimum time allowed is
+	  10 seconds. If a lower value is provided, the timeout will be set to
+	  10 seconds.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-V</option>, <option>--version</option></term>
+	<listitem>
+
+	  <para>Show the version of &yp;.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option><replaceable>filename</replaceable></option></term>
+
+	<listitem>
+	  <para>The file to open upon invocation of &yp;. If the file does not
+	  exist, &yp; asks whether it should be created.
+	  </para>
+
+	  <para>Files created by &yp; always have the suffix <filename
+	  moreinfo="none">.pet</filename>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <!--
+  -
+  -  PASSWORD RECORD
+  -
+  -->
+  <refsect1 id="passwordrecord">
+    <title>PASSWORD RECORD</title>
+
+    <para>Passwords are stored as records (also called entries) having the
+    fields as shown in <xref linkend="fig.pwrecord" /> below.</para>
+
+<figure id="fig.pwrecord">
+  <title>Password Record Dialog</title>
+  <mediaobject>
+    <textobject>
+<screen format="linespecific">
++-P A S S W O R D  R E C O R D--------------------+
+|Name                                             |
+|_________________________________________________|
+|Host                                             |
+|_________________________________________________|
+|Username                                         |
+|_________________________________________________|
+|Password                                         |
+|_________________________________________________|
+|Comment                                          |
+|_________________________________________________|
+|                                                 |
+|[ OK ] [ Cancel ]                                |
++-------------------------------------------------+
+</screen>
+    </textobject>
+  </mediaobject>
+</figure>
+
+    <para>The fields have the following meaning:</para>
+
+    &pwrecord;
+  </refsect1>
+
+  <!--
+  -
+  -  FUNCTION KEYS
+  -
+  -->
+  <refsect1 id="functionkeys">
+    <title>FUNCTION KEYS</title>
+
+    <para>Function keys are the keys recognized by &yp; in the main screen,
+    i.e. if no dialog is presented.  Function keys are not case-sensitive. See
+    below for an explanation of the function keys recognized:
     </para>
 
     <variablelist>
@@ -254,170 +427,160 @@ No file loaded
       </varlistentry>
 
     </variablelist>
+  </refsect1>
 
-    <para>The empty frame on the left side of the main screen will display the
-    password entries' <guilabel>Name</guilabel>. The selection can be moved by
-    using <keycap>Up</keycap>, <keycap>Down</keycap>, <keycap>Page Up</keycap>,
-    <keycap>Page Down</keycap>, <keycap>Home</keycap>, and <keycap>End</keycap>
-    keys. An entry can be opened for viewing and editing by pressing
-    <keycap>Enter</keycap>.</para>
+  <!--
+  -
+  -  DIALOGS
+  -
+  -->
+  <refsect1 id="dialogs">
+    <title>DIALOGS</title>
 
-    <para>Passwords are stored as records (also referred to as entries)
-    having the fields as shown in "<xref linkend="fig.pwrecord" />" below.</para>
-
-<figure id="fig.pwrecord">
-  <title>Password record dialog</title>
-  <mediaobject>
-    <textobject>
-<screen format="linespecific">
-+-P A S S W O R D  R E C O R D--------------------+
-|Name                                             |
-|_________________________________________________|
-|Host                                             |
-|_________________________________________________|
-|Username                                         |
-|_________________________________________________|
-|Password                                         |
-|_________________________________________________|
-|Comment                                          |
-|_________________________________________________|
-|                                                 |
-|[ OK ] [ Cancel ]                                |
-+-------------------------------------------------+
-</screen>
-    </textobject>
-  </mediaobject>
-</figure>
-
-    <para>The fields have the following meaning:</para>
-
-    &pwrecord;
-
-    <para>Files created by &yp; always have the suffix
-    <filename>.pet</filename>. This cannot be changed by the user. Also, if a
-    file is loaded using the command line the suffix <filename>.pet</filename>
-    is appended to the file name given that it was not specified by the
-    user.</para>
-
-    <para>The password entries are protected by a master password. The master
-    password is used to encrypt and decrypt the records. If the master password
-    is lost, so are the records.</para>
+    <para>Frames appearing on top of the Main Screen are called
+    <firstterm>Dialogs</firstterm>. They are comprised of widgets which can
+    take input from the user.</para>
 
     <para>The <keycap>Tab</keycap> key will switch the focus to the next
-    widget. Be aware
-    that <keycombo action="simul"><keycap>Shift</keycap><keycap>Tab</keycap></keycombo>
-    does not work for focusing the previous widget.</para>
+    widget. Be aware that <keycombo
+    action="simul"><keycap>Shift</keycap><keycap>Tab</keycap></keycombo> does
+    not work for focusing the previous widget.</para>
 
     <para>By pressing the <keycap>Esc</keycap> key dialogs will be canceled and
     closed.</para>
-
-    <para>If there is no key pressed for more than ten minutes (by default) or
-    the amount of time specified using the <option>-t</option> option, &yp;
-    will blank and lock the screen. It will prompt for the password of the
-    currently load file when a key is pressed. This is the same behavior as
-    seen by pressing the key <keycap>L</keycap>.</para>
 
   </refsect1>
 
   <!--
   -
-  -  OPTIONS
+  -  SELECTION MOVEMENT
   -
   -->
-  <refsect1 id="options">
-    <title>OPTIONS</title>
+  <refsect1 id="selectionmovement">
+    <title>SELECTION MOVEMENT</title>
 
-    <para>The following options are supported:</para>
+    <para>The keys explained below are recognized for selection movement in
+    list widgets, such as the password records list or the lists used by the
+    File Open dialog.</para>
 
     <variablelist>
       <varlistentry>
-	<term><option>-c</option>, <option>--copyright</option></term>
+	<term><keycap>Up</keycap>, <keycap>k</keycap>, <keycap>Down</keycap>,
+	<keycap>j</keycap></term>
+
 	<listitem>
-	  <para>Show the copyright information.</para>
+	  <para>Moves the selection one item up (<keycap>Up</keycap>, <keycap>k</keycap>) or down <keycap>Down</keycap>,
+	<keycap>j</keycap>.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-h</option>, <option>--help</option></term>
-	<listitem>
+	<term><keycap>Page Up</keycap>, <keycap>Page Down</keycap></term>
 
-	  <para>Print a help text.</para>
+	<listitem>
+	  <para>Scrolls one screen-full up (<keycap>Page Up</keycap>) or down
+	  (<keycap>Page Down</keycap>).</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-s</option>, <option>--no-file-security</option></term>
+	<term><keycap>Home</keycap>, <keycap>End</keycap></term>
 
 	<listitem>
-	  <para>Disable the check for the owner and file mode when loading
-	  files. Without this option, &yp; checks password files for having the
-	  same owner as the user running &yp; and verifies that the file mode
-	  is strictly 0600. If one of these conditions are not met, &yp; refuses
-	  to load the file. Providing this options disables those checks and
-	  &yp; will load files with owners other than the process owner of
-	  &yp; and file modes different from 0600.</para>
-
-	  <para>New files saved while this option is active will have the file
-	  mode set to 0644.</para>
-
+	  <para>Scrolls to the beginning (<keycap>Home</keycap>) or the end
+	  (<keycap>End</keycap>) of the list.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-S</option>, <option>--file-security</option></term>
+	<term><keycap>Enter</keycap></term>
 
 	<listitem>
-	  <para>Enable the check for the owner and file mode when loading
-	  files. This option makes &yp; to load password files having the
-	  owner set to the process owner of &yp; and the file mode strictly set
-	  to 0600 only. If one of these conditions are not met, &yp; refuses to
-	  load the file.</para>
+	  <para>Chooses the selected item.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
 
-	  <para>New files saved while this option is active will have the file
-	  mode set to 0600.</para>
+  <refsect1 id="cursormovement">
+    <title>CURSOR MOVEMENT</title>
 
-	  <para>This is the default mode.</para>
+    <para>Cursor movement, whether in clear text or password fields, is
+    accomplished by using the following keys:</para>
+
+    <variablelist>
+      <varlistentry>
+	<term><keycap>Left</keycap>, <keycap>Up</keycap></term>
+
+	<listitem>
+	  <para>Moves the cursor one character to the left. In password fields, it
+	  deletes the character to the left of the current cursor
+	  position.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-t</option> <replaceable>sec</replaceable>,
-	<option>--timeout</option> <replaceable>sec</replaceable></term>
+	<term><keycap>Right</keycap>, <keycap>Down</keycap></term>
 
 	<listitem>
-
-	  <para>Set the timeout until the screen is locked to
-	  <replaceable>sec</replaceable> seconds. The minimum time allowed is
-	  10 seconds. If a lower value is provided, the timeout will be set to
-	  10 seconds.</para>
+	  <para>Moves the cursor one character to the right. In password fields,
+	  these keys do nothing.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-V</option>, <option>--version</option></term>
-	<listitem>
+	<term><keycap>Home</keycap></term>
 
-	  <para>Show the version of &yp;.</para>
+	<listitem>
+	  <para>Moves the cursor at the beginning of the input field.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option><replaceable>filename</replaceable></option></term>
+	<term><keycap>End</keycap></term>
 
 	<listitem>
-	  <para>The file to open upon invocation of &yp;. If the file does not
-	  exist, &yp; asks whether it should be created.
-	  </para>
+	  <para>Moves the cursor at the end of the input field.</para>
+	</listitem>
+      </varlistentry>
 
-	  <para>Files created by &yp; always have the suffix <filename
-	  moreinfo="none">.pet</filename>.
-	  </para>
+      <varlistentry>
+	<term><keycap>Backspace</keycap></term>
+
+	<listitem>
+	  <para>Moves the cursor one character to the right and deletes the
+	  character at this position.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>Delete</keycap></term>
+
+	<listitem>
+	  <para>Keeps the cursor at the current position and deletes the
+	  character on the right, shifting remaining characters to the
+	  left.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><keycap>Enter</keycap>, <keycap>Tab</keycap></term>
+
+	<listitem>
+	  <para>The input is confirmed and the next widget will be
+	  focused.</para>
 	</listitem>
       </varlistentry>
 
     </variablelist>
+
   </refsect1>
 
+  <!--
+  -
+  -  CONFIGURATION FILE
+  -
+  -->
   <refsect1 id="configurationfile">
     <title>CONFIGURATION FILE</title>
 
@@ -440,6 +603,9 @@ No file loaded
 
 	<listitem>
 	  <para>The file to load upon start of &yp;.</para>
+
+	  <para>Equivalent to providing a <replaceable>filename</replaceable>
+	  when invoking &yp;.</para>
 	</listitem>
       </varlistentry>
 
@@ -447,8 +613,11 @@ No file loaded
 	<term><option>locktimeout</option></term>
 
 	<listitem>
-	  <para>A positive integer specifying the time of inactivity in seconds until
-	  the screen is locked.</para>
+	  <para>A positive integer specifying the time of inactivity in seconds
+	  until the screen is locked.</para>
+
+	  <para>Equivalent to providing the <option>-t</option> option when
+	  invoking &yp;.</para>
 	</listitem>
       </varlistentry>
 
@@ -460,6 +629,9 @@ No file loaded
 	  verification of the file owner and permissions when loading a file. A
 	  value of 0 disables the verification of the file owner and
 	  permissions when loading a file.</para>
+
+	  <para>Equivalent to providing the <option>-S</option> (same as 1) or
+	  <option>-s</option> (same as 0) options when invoking &yp;.</para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -508,7 +680,6 @@ No file loaded
   - EXAMPLES
   -
   -->
-
   <refsect1 id="examples">
     <title>EXAMPLES</title>
 
@@ -521,7 +692,7 @@ checkfsecurity=0</literallayout>
 
       <para>In this example, the file <filename>/home/joe/passwords</filename>
       will be loaded upon invocation of &yp;. The timeout until the screen is
-      locked set to 300 seconds. File permissions will not be verified.</para>
+      locked is set to 300 seconds. File permissions will not be verified.</para>
     </example>
 
     <example id="ex.cfgfile2">
@@ -531,7 +702,7 @@ checkfsecurity=0</literallayout>
 checkfsecurity=1</literallayout>
 
       <para>In this example, no file will be automatically loaded upon
-      invocation of &yp;. The timeout until the screen is locked set to 150
+      invocation of &yp;. The timeout until the screen is locked is set to 150
       seconds. File permissions and owner will be verified.</para>
     </example>
 
@@ -572,6 +743,7 @@ checkfsecurity=1</literallayout>
     <para>The latest version of &yp; can be found under <ulink
     url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
   </refsect1>
+
   <!--
   -
   -  AUTHOR
