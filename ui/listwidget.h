@@ -653,9 +653,11 @@ namespace YAPETUI {
 		    ch = wgetch(window);
 		    switch (ch) {
 		    case KEY_UP:
+		    case 'k': // vi key
 			scrollUp();
 			break;
 		    case KEY_DOWN:
+		    case 'j': // vi key
 			scrollDown();
 			break;
 		    case KEY_HOME:
