@@ -36,6 +36,10 @@
 # include <errno.h>
 #endif
 
+#ifdef HAVE_STDIO_H
+# include <stdio.h>
+#endif
+
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
