@@ -10,6 +10,9 @@ YAPET 0.5
       * Case-insensitive search available even when strcasestr() is not
         supported on build platform.
 
+      * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
+        navigating the password record list.
+
 
 YAPET 0.4
 
