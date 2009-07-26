@@ -66,7 +66,7 @@ AC_ARG_ENABLE([source-doc],
 AC_ARG_ENABLE([terminal-title],
 	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title (Default: no)])],
 	[my_settitle=$enableval],
-	[my_settitle=no])
+	[my_settitle=yes])
 AC_ARG_ENABLE([csv2yapet],
 	[AS_HELP_STRING([--disable-csv2yapet],[the csv file import utility will not be built (Default: yes)])],
 	[my_buildcsv2yapet=$enableval],
