@@ -6,12 +6,13 @@
 #include <file.h>
 
 #include "tests.h"
+#include "testpaths.h"
 
 int main(int, char**) {
-    std::cout << "Be patient, this test may take a few minutes ..." << std::endl;
+    std::cout << "Be patient, this test may take a few moments ..." << std::endl;
     try {
 	YAPET::Key key("JustAPassword");
-	YAPET::File file(FN, key, true);
+	YAPET::File file(SRCDIR "/" FN, key, true);
 	std::list<YAPET::PartDec> list;
 
 	for (int i=0; i < ROUNDS; i++) {
@@ -35,7 +36,7 @@ int main(int, char**) {
 
     try {
 	YAPET::Key key("JustAPassword");
-	YAPET::File file(FN, key, false);
+	YAPET::File file(SRCDIR "/" FN, key, false);
 	std::list<YAPET::PartDec> list = file.read(key);
 	if (list.size() != ROUNDS)
 	    return 1;

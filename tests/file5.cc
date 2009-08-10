@@ -15,13 +15,14 @@
 #include <file.h>
 
 #include "tests.h"
+#include "testpaths.h"
 
 int main(int, char**) {
-    std::cout << "Be patient, this test may take a few minutes ..." << std::endl;
+    std::cout << "Be patient, this test may take a few moments ..." << std::endl;
     try {
 	YAPET::Key oldkey("JustAPassword");
 	YAPET::Key newkey("JustANewPassword");
-	YAPET::File file(FN, oldkey, false);
+	YAPET::File file(SRCDIR "/" FN, oldkey, false);
 	file.setNewKey(oldkey, newkey);
 	std::list<YAPET::PartDec> list = file.read(newkey);
 	if (list.size() != ROUNDS)
@@ -32,7 +33,7 @@ int main(int, char**) {
 	    check_record(*it, newkey, i);
 	    it++;
 	}
-	
+
     } catch (std::exception& ex) {
 	std::cout << ex.what() << std::endl;
 	return 1;
