@@ -1,7 +1,7 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.4],[rafi@guengel.ch])
-AM_INIT_AUTOMAKE([yapet],[0.4])
+AC_INIT([YAPET],[0.5],[rafi@guengel.ch])
+AM_INIT_AUTOMAKE([yapet],[0.5])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -64,7 +64,7 @@ AC_ARG_ENABLE([source-doc],
 	[my_buildsourcedoc=$enableval],
 	[my_buildsourcedoc=no])
 AC_ARG_ENABLE([terminal-title],
-	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title (Default: no)])],
+	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title (Default: yes)])],
 	[my_settitle=$enableval],
 	[my_settitle=yes])
 AC_ARG_ENABLE([csv2yapet],
