@@ -1,4 +1,4 @@
-// $I$
+// $Id$
 
 #include <stdio.h>
 #include <iostream>
@@ -17,7 +17,7 @@ int main() {
     } catch (std::exception& ex) {
 	std::cout << ex.what() << std::endl;
 	return 1;
-    }    
+    }
     return 0;
 
 }
