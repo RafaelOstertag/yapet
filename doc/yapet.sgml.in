@@ -76,8 +76,8 @@
     <title>DESCRIPTION</title>
 
     <para>&yp; stands for "Yet Another Password Encryption Tool" and is a text
-    based program for storing passwords encrypted on disk. It relies on OpenSSL
-    for encrypting and decrypting the password records. The cipher for
+    based program for storing password records encrypted on disk. It relies on
+    OpenSSL for encrypting and decrypting the password records. The cipher for
     encryption and decryption is Blowfish with a 448 bits key.
     </para>
 
