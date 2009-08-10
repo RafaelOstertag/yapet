@@ -68,7 +68,7 @@ AC_ARG_ENABLE([terminal-title],
 	[my_settitle=$enableval],
 	[my_settitle=yes])
 AC_ARG_ENABLE([csv2yapet],
-	[AS_HELP_STRING([--disable-csv2yapet],[the csv file import utility will not be built (Default: yes)])],
+	[AS_HELP_STRING([--disable-csv2yapet],[the CSV file import utility will not be built (Default: no)])],
 	[my_buildcsv2yapet=$enableval],
 	[my_buildcsv2yapet=yes])
 
