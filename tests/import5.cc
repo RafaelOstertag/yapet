@@ -16,8 +16,8 @@
 
 int main (int, char**) {
     try {
-	std::cout << "Importing from test4.csv" << std::endl;
-	std::cout << "Testing different (;) separator" << std::endl;
+	std::cout << " ==> Importing from test4.csv" << std::endl;
+	std::cout << " ==> Testing different (;) separator" << std::endl;
 	CSVImport imp(SRCDIR "/test4.csv", "test4.pet", ';');
 	imp.import("test4");
 	if (imp.hadErrors())

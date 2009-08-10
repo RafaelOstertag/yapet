@@ -16,8 +16,8 @@
 
 int main (int, char**) {
     try {
-	std::cout << "Importing from test3.csv" << std::endl;
-	std::cout << "Testing import of strange things" << std::endl;
+	std::cout << " ==> Importing from test3.csv" << std::endl;
+	std::cout << " ==> Testing import of strange things" << std::endl;
 	CSVImport imp( SRCDIR "/test3.csv", "test3.pet", ',');
 	imp.import("test3");
 	if (imp.hadErrors()) {

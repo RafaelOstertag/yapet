@@ -51,7 +51,8 @@ int main(int argc, char** argv) {
 	try {
 	    data3.at(100);
 	} catch (std::out_of_range& ex_) {
-	    std::cout << ex_.what() << std::endl;
+	    // Everything fine...
+	    std::cout << " ==> " << ex_.what() << " (OK) " << std::endl;
 	}
 
 

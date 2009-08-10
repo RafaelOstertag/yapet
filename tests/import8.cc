@@ -22,7 +22,7 @@
 #define ROUNDS 200
 
 int main(int, char**) {
-    std::cout << "Check if import7 worked... " << std::endl;
+    std::cout << " ==> Check if import7 worked... " << std::endl;
     try {
 	YAPET::Key key("test5");
 	YAPET::File file("test5.pet", key, false);

@@ -20,7 +20,8 @@ int main(int argc, char** argv) {
 	YAPET::Key key("corrupt");
 	YAPET::File file(std::string(SRCDIR "/" FN), key, false, false);
     } catch (std::exception& ex) {
-	std::cout << ex.what() << std::endl;
+	// Everything fine...
+	std::cout << " ==> " << ex.what() << " (OK) " << std::endl;
 	return 0;
     }
     return 1;

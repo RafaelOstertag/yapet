@@ -19,7 +19,7 @@
 
 int main (int, char**) {
     try {
-	std::cout << "Importing from test7.csv" << std::endl;;
+	std::cout << " ==> Importing from test7.csv" << std::endl;;
 	CSVImport imp(SRCDIR "/test7.csv", "test7.pet", ',');
 	imp.import("test7");
 	if (imp.hadErrors())

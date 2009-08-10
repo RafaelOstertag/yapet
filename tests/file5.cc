@@ -18,7 +18,7 @@
 #include "testpaths.h"
 
 int main(int, char**) {
-    std::cout << "Be patient, this test may take a few moments ..." << std::endl;
+    std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
     try {
 	YAPET::Key oldkey("JustAPassword");
 	YAPET::Key newkey("JustANewPassword");

@@ -1,4 +1,6 @@
 // $Id$
+//
+// Tests whether or not a wrong password throws an exception.
 
 #include <iostream>
 #include <file.h>
@@ -11,7 +13,7 @@ int main(int argc, char** argv) {
 	YAPET::Key key("JustATestPasswordForKeepingSecret");
 	YAPET::File file(std::string(SRCDIR "/" FN), key, false);
     } catch (std::exception& ex) {
-	std::cout << ex.what() << std::endl;
+	std::cout << " ##> " << ex.what() << std::endl;
 	return 1;
     }
 
@@ -19,7 +21,7 @@ int main(int argc, char** argv) {
 	YAPET::Key key2("JustATestPasswordForKeepingSecreT");
 	YAPET::File file2(std::string(SRCDIR "/" FN), key2, false);
     } catch (std::exception& ex) {
-	std::cout << ex.what() << std::endl;
+	std::cout << " ==> " << ex.what() << " (OK) " << std::endl;
 	return 0;
     }
 

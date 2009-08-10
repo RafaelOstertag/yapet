@@ -26,7 +26,7 @@
 #include "testpaths.h"
 
 int main(int, char**) {
-    std::cout << "Check if import9 worked... " << std::endl;
+    std::cout << " ==> Check if import9 worked... " << std::endl;
     try {
 	YAPET::Key key("test6");
 	YAPET::File file("test6.pet", key, false);
