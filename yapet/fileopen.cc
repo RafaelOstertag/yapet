@@ -226,7 +226,6 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	    case KEY_ESC:
 		canceled = true;
 		return;
-		break;
 	    case KEY_ENTER:
 	    case '\n': {
 		try {
@@ -260,7 +259,6 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	    case KEY_ESC:
 		canceled = true;
 		return;
-		break;
 	    case KEY_ENTER:
 	    case '\n':
 		filename = files->getSelectedItem();
@@ -293,12 +291,10 @@ FileOpen::run() throw (YAPETUI::UIException) {
 	case KEY_ESC:
 	    canceled = true;
 	    return;
-	    break;
 	case '\n':
 	case KEY_ENTER:
 	    canceled = false;
 	    return;
-	    break;
 	}
 
 	// The cancel button
