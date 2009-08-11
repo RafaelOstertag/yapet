@@ -20,9 +20,17 @@
 
 #include "consts.h"
 
+using namespace YAPETCONSTS;
+
 const std::string Consts::default_suffix(".pet");
+const std::string Consts::default_rcfilename(".yapet");
 
 const std::string&
 Consts::getDefaultSuffix() {
     return default_suffix;
+}
+
+const std::string&
+Consts::getDefaultRCFilename() {
+    return default_rcfilename;
 }

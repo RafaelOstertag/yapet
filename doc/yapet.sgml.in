@@ -27,6 +27,7 @@
 <trademark class='trademark'>Solaris</trademark>">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
+<!ENTITY DEFRCFILE "<envar>$HOME</envar><filename>/.yapet</filename>">
 ]>
 <refentry id="yapet">
   <!-- $Id$ -->
@@ -55,6 +56,11 @@
 	<arg choice="opt" rep="norepeat"><option>-c</option></arg>
 	<arg choice="opt" rep="norepeat"><option>-h</option></arg>
 	<arg choice="opt" rep="norepeat"><option>-V</option></arg>
+      </group>
+      <group>
+	<arg choice="opt" rep="norepeat"><option>-i</option></arg>
+	<arg choice="opt" rep="norepeat"><option>-r</option><arg choice="req"
+	rep="norepeat"><replaceable>rcfile</replaceable></arg></arg>
       </group>
       <group>
 	<arg choice="opt" rep="norepeat"><option>-s</option></arg>
@@ -168,6 +174,27 @@ No file loaded
 	<listitem>
 
 	  <para>Print a help text.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-i</option>, <option>--ignore-rc</option></term>
+	<listitem>
+	  <para>Do not read the configuration file. See also the
+	  <option>ignorerc</option> option in <xref linkend="configurationfile"
+	  />.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-r</option> <replaceable>rcfile</replaceable>,
+	<option>--rc-file</option> <replaceable>rcfile</replaceable></term>
+
+	<listitem>
+	  <para>Read the configuration file specified by
+	  <replaceable>rcfile</replaceable>. If this option is not given, the
+	  default configuration file read is &DEFRCFILE; unless
+	  <option>-i</option> is specified.</para>
 	</listitem>
       </varlistentry>
 
@@ -469,8 +496,9 @@ No file loaded
 	<keycap>j</keycap></term>
 
 	<listitem>
-	  <para>Moves the selection one item up (<keycap>Up</keycap>, <keycap>k</keycap>) or down <keycap>Down</keycap>,
-	<keycap>j</keycap>.</para>
+	  <para>Moves the selection one item up (<keycap>Up</keycap>,
+	  <keycap>k</keycap>) or down (<keycap>Down</keycap>,
+	  <keycap>j</keycap>).</para>
 	</listitem>
       </varlistentry>
 
@@ -584,9 +612,11 @@ No file loaded
   <refsect1 id="configurationfile">
     <title>CONFIGURATION FILE</title>
 
-    <para>If the file <filename>~/.yapet</filename> exists, &yp; reads the
-    options provided in this file. Options given on the command line have
-    precedence over options given in the configuration file.
+    <para>If the file &DEFRCFILE; exists, &yp; reads by default options
+    provided in this file. You may specify a different configuration file by
+    using the <option>-r</option> option (see <xref linkend="options"
+    />). Options given on the command line have precedence over options given
+    in a configuration file.
     </para>
 
     <para>The configuration file has the following syntax:</para>
@@ -606,6 +636,10 @@ No file loaded
 
 	  <para>Equivalent to providing a <replaceable>filename</replaceable>
 	  when invoking &yp;.</para>
+
+	  <para>Please note that &yp; does not expand <envar>~</envar> (tilde)
+	  or <envar>$HOME</envar> to the home directory of the user
+	  account.</para>
 	</listitem>
       </varlistentry>
 
@@ -634,6 +668,18 @@ No file loaded
 	  <option>-s</option> (same as 0) options when invoking &yp;.</para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term><option>ignorerc</option></term>
+
+	<listitem>
+	  <para>A value of 1 (one) or 0 (zero). A value of 1 let &yp; ignore
+	  the options provided in the configuration file (see also the
+	  <option>-i</option> in <xref linkend="options" />). A value of 0 has
+	  no effect on the processing of the configuration file.</para>
+	</listitem>
+      </varlistentry>
+
     </variablelist>
 
     <para>See <xref linkend="examples" /> for examples of configuration
@@ -664,12 +710,18 @@ No file loaded
 
     <variablelist>
       <varlistentry>
-	<term><envar>$HOME</envar><filename>/.yapet</filename></term>
+	<term>&DEFRCFILE;</term>
 
 	<listitem>
 	  <para>The per-user configuration file. If existing, options are read
 	  from this file but can be overridden by the command line
 	  options.</para>
+
+	  <para>Processing of this file can be disabled by invoking &yp; with
+	  the <option>-i</option> option.</para>
+
+	  <para>Refer to the <xref linkend="configurationfile" /> for an
+	  explanation of the per-user configuration file.</para>
 	</listitem>
       </varlistentry>
     </variablelist>

@@ -42,11 +42,17 @@
 #include <sstream>
 #endif
 
+#ifdef CFGDEBUG
+# ifdef HAVE_IOSTREAM
+#  include <iostream>
+# endif
+#endif
+
 #include "consts.h"
 #include "cfgfile.h"
+#include "cfg.h"
 
-std::string ConfigFile::cfgfile(".yapet");
-std::string ConfigFile::getCfgFile() { return cfgfile; }
+using namespace YAPETCONFIG;
 
 std::string
 ConfigFile::getHomeDir() const {
@@ -90,10 +96,11 @@ ConfigFile::parseFile() {
 	    if (l.find(needle,0) == 0) {
 		l.erase(0,needle.length());
 		filetoload = l;
-		if ( filetoload.find(Consts::getDefaultSuffix(),
-				     filetoload.length() - Consts::getDefaultSuffix().length())
+		if ( filetoload.find(YAPETCONSTS::Consts::getDefaultSuffix(),
+				     filetoload.length() -
+				     YAPETCONSTS::Consts::getDefaultSuffix().length())
 		     == std::string::npos )
-		    filetoload += Consts::getDefaultSuffix();
+		    filetoload += YAPETCONSTS::Consts::getDefaultSuffix();
 		continue;
 	    }
 	    needle = "locktimeout=";
@@ -110,6 +117,14 @@ ConfigFile::parseFile() {
 		sstr >> usefsecurity;
 		continue;
 	    }
+	    // Yes, the file can say that it should be ignored!
+	    needle = "ignorerc=";
+	    if (l.find(needle,0) == 0) {
+		l.erase(0,needle.length());
+		std::istringstream sstr(l);
+		sstr >> ignorerc;
+		continue;
+	    }
 	}
 
 	cfgsin.close();
@@ -119,15 +134,60 @@ ConfigFile::parseFile() {
 }
 
 
-ConfigFile::ConfigFile() : filetoload(""),
-			   usefsecurity(true),
-			   locktimeout(600),
-			   cfgfilepath("") {
-    cfgfilepath = getHomeDir() + ConfigFile::getCfgFile();
+ConfigFile::ConfigFile(std::string cfgfile) : filetoload(Config::getDefPetfile()),
+					      usefsecurity(Config::getDefFilesecurity()),
+					      locktimeout(Config::getDefTimeout()),
+					      ignorerc(false),
+					      cfgfilepath(""),
+					      opensuccess(true) {
+#ifdef CFGDEBUG
+    std::cout << " === ";
+    std::cout << "ConfigFile::ConfigFile(std::string )";
+    std::cout << ":" << std::endl;
+#endif
+    if (cfgfile.empty()) {
+
+	cfgfilepath = getHomeDir() +
+	    YAPETCONSTS::Consts::getDefaultRCFilename();
+#ifdef CFGDEBUG
+	std::cout << "\tcfgfile.empty() == true" << std::endl;
+	std::cout << "\tcfgfilepath: " << cfgfilepath << std::endl;
+#endif
+    } else {
+	cfgfilepath = cfgfile;
+#ifdef CFGDEBUG
+	std::cout << "\tcfgfile.empty() == false" << std::endl;
+	std::cout << "\tcfgfilepath = cfgfile: " << cfgfilepath << std::endl;
+#endif
+    }
 
     if (access(cfgfilepath.c_str(), R_OK | F_OK) == -1) {
+#ifdef CFGDEBUG
+	std::cout << "\taccess to " << cfgfilepath << " denied." << std::endl;
+#endif
 	cfgfilepath.clear();
+	opensuccess = false;
 	return;
     }
     parseFile();
+}
+
+ConfigFile::ConfigFile(const ConfigFile& cfgfile) {
+    filetoload = cfgfile.filetoload;
+    usefsecurity = cfgfile.usefsecurity;
+    locktimeout = cfgfile.locktimeout;
+    cfgfilepath = cfgfile.cfgfilepath;
+}
+
+const ConfigFile&
+ConfigFile::operator=(const ConfigFile& cfgfile) {
+    if (&cfgfile == this)
+	return *this;
+
+    filetoload = cfgfile.filetoload;
+    usefsecurity = cfgfile.usefsecurity;
+    locktimeout = cfgfile.locktimeout;
+    cfgfilepath = cfgfile.cfgfilepath;
+
+    return *this;
 }

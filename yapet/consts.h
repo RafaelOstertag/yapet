@@ -37,18 +37,24 @@
 # include <string>
 #endif
 
-class Consts {
-    private:
-	//! Holds the default suffix for yapet files
-	static const std::string default_suffix;
-	inline Consts() {}
-	inline ~Consts() {}
-	inline Consts(const Consts&) {}
-	inline const Consts& operator=(const Consts&) { return *this; }
+namespace YAPETCONSTS {
 
-    public:
-	//! Return the default suffix for yapet files
-	static const std::string& getDefaultSuffix();
-};
+    class Consts {
+	private:
+	    //! Holds the default suffix for yapet files
+	    static const std::string default_suffix;
+	    //! The default file name of the config file
+	    static const std::string default_rcfilename;
+	    inline Consts() {}
+	    inline ~Consts() {}
+	    inline Consts(const Consts&) {}
+	    inline const Consts& operator=(const Consts&) { return *this; }
 
+	public:
+	    //! Return the default suffix for yapet files
+	    static const std::string& getDefaultSuffix();
+	    static const std::string& getDefaultRCFilename();
+    };
+
+}
 #endif // _CONSTS_H

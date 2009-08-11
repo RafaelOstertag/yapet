@@ -113,7 +113,7 @@ FileOpen::getEntries(std::list<YAPETUI::secstring>& d,
 	    d.push_back(de->d_name);
 	} else if (S_ISREG(st.st_mode)) {
 	    std::string tmp(de->d_name);
-	    if (endswith(tmp, Consts::getDefaultSuffix()) )
+	    if (endswith(tmp, YAPETCONSTS::Consts::getDefaultSuffix()) )
 		f.push_back(de->d_name);
 	}
     }
@@ -363,8 +363,8 @@ FileOpen::resize() throw (YAPETUI::UIException) {
 
 std::string
 FileOpen::getFilepath() {
-    if (!endswith(filename, Consts::getDefaultSuffix().c_str()))
-	filename+=Consts::getDefaultSuffix().c_str();
+    if (!endswith(filename, YAPETCONSTS::Consts::getDefaultSuffix().c_str()))
+	filename+=YAPETCONSTS::Consts::getDefaultSuffix().c_str();
 
     std::string tmp_filename(filename.c_str());
     std::string tmp_directory(directory.c_str());

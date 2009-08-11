@@ -23,7 +23,6 @@
 #ifndef _CFGFILE_H
 #define _CFGFILE_H
 
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -33,34 +32,46 @@
 #endif
 
 /**
- * @brief Parses the configuration file.
+ * @brief All YAPET configuration stuff is contained herein.
  *
- * This class parses the per user configuration file.
+ * All YAPET configuration stuff is contained herein.
  */
-class ConfigFile {
-    private:
-	static std::string cfgfile;
-	static std::string getCfgFile();
+namespace YAPETCONFIG {
 
-	inline ConfigFile(const ConfigFile&) {}
-	inline const ConfigFile& operator=(const ConfigFile&) { return *this; }
+    /**
+     * @brief Parses the configuration file.
+     *
+     * This class parses the per user configuration file.
+     */
+    class ConfigFile {
+	private:
+	    std::string filetoload;
+	    bool usefsecurity;
+	    unsigned int locktimeout;
+	    // Yes, the file can say that it should be ignored!
+	    bool ignorerc;
+	    std::string cfgfilepath;
 
-	std::string filetoload;
-	bool usefsecurity;
-	unsigned int locktimeout;
-	std::string cfgfilepath;
+	    //! Indicates whether or not the file could have been opened
+	    bool opensuccess;
 
+	    std::string getHomeDir() const;
+	    void parseFile();
 
-	std::string getHomeDir() const;
-	void parseFile();
+	public:
+	    ConfigFile(std::string cfgfile="");
+	    ConfigFile(const ConfigFile& cfgfile);
+	    inline ~ConfigFile() {};
 
-    public:
-	ConfigFile();
-	inline ~ConfigFile() {};
+	    inline const std::string& getFileToLoad() const { return filetoload; }
+	    inline bool getUseFileSecurity() const { return usefsecurity; }
+	    inline unsigned int getLockTimeout() const { return locktimeout; }
+	    inline bool getIgnoreRC() const { return ignorerc ; }
+	    inline bool isOpenSuccess() const { return opensuccess; }
 
-	inline std::string getFileToLoad() const { return filetoload; }
-	inline bool getUseFileSecurity() const { return usefsecurity; }
-	inline unsigned int getLockTimeout() const { return locktimeout; }
-};
+	    const ConfigFile& operator=(const ConfigFile& cfgfile);
+    };
+
+}
 
 #endif // _CFGFILE_H

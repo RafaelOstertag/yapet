@@ -89,7 +89,7 @@
 #include "../intl.h"
 #include "fileopen.h"
 #include "mainwindow.h"
-#include "cfgfile.h"
+#include "cfg.h"
 #include "consts.h"
 
 /**
@@ -175,7 +175,13 @@ void show_version() {
 #endif
 
 #if !defined(HAVE_FSTAT) || !defined(HAVE_GETUID) || !defined(HAVE_FCHMOD) || !defined(HAVE_FCHOWN)
-    std::cout << "Support for file security not available" << std::endl;
+    std::cout << "Support for file security NOT available" << std::endl;
+#endif
+
+#if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
+    std::cout << "Creation of core file is suppressed" << std::endl;
+#else
+    std::cout << "Creation of core files is NOT suppressed" << std::endl;
 #endif
 }
 
@@ -187,13 +193,23 @@ void show_help(char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
-	      << " [[-c] | [-h] | [-V]] [[-s] | [-S]] [-t <sec>] [<filename>]"
+	      << " [-chV] [-i | -r <rcfile>] [-s | -S] [-t <sec>] [<filename>]"
 	      << std::endl
 	      << std::endl;
     std::cout << "-c, --copyright\t\tshow copyright information"
 	      << std::endl
 	      << std::endl;
     std::cout << "-h, --help\t\tshow this help text"
+	      << std::endl
+	      << std::endl;
+    std::cout << "-i, --ignore-rc\t\tdo not read the configuration file."
+	      << std::endl
+	      << std::endl;
+    std::cout << "-r, --rc-file\t\tread the configuration file specified by <rcfile>."
+	      << std::endl
+	      << "\t\t\tIf this option is not provided, it defaults to"
+	      << std::endl
+	      << "\t\t\t$HOME/.yapet unless -i is specified."
 	      << std::endl
 	      << std::endl;
     std::cout << "-s, --no-file-security\tdisable check of owner and file permissions."
@@ -223,9 +239,9 @@ void show_help(char* prgname) {
 	      << std::endl;
     std::cout << PACKAGE_NAME " stores passwords encrypted on disk using the blowfish algorithm."
 	      << std::endl;
-    std::cout << "The encryption key is computed from the master password using md5, sha1, and"
-	      << std::endl;
-    std::cout << "ripemd-160 digest algorithms producing a 448 bit (56 bytes) key."
+    std::cout << "Point your browser to http://www.guengel.ch/myapps/yapet/ for more information"
+	      << std::endl
+	      << "about " PACKAGE_NAME "."
 	      << std::endl
 	      << std::endl;
 }
@@ -239,32 +255,28 @@ int main (int argc, char** argv) {
     textdomain(PACKAGE);
 #endif
 
+    YAPETCONFIG::Config config;
+    // If empty, default is taken
+    std::string cfgfilepath;
     int c;
-    std::string filename;
-    bool filesecurity = true;
-    int timeout = 600;
-
-    ConfigFile* cfg = new ConfigFile();
-    filename = cfg->getFileToLoad();
-    filesecurity = cfg->getUseFileSecurity();
-    timeout = cfg->getLockTimeout();
-    delete cfg;
 
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
-	{"copyright", no_argument, NULL, 'c'},
-	{"help", no_argument, NULL, 'h'},
-	{"no-file-security", no_argument, NULL, 's'},
-	{"file-security", no_argument, NULL, 'S'},
-	{"timeout", required_argument, NULL, 't'},
-	{"version", no_argument, NULL, 'V'},
+	{(char*)"copyright", no_argument, NULL, 'c'},
+	{(char*)"help", no_argument, NULL, 'h'},
+	{(char*)"ignore-rc", no_argument, NULL, 'i'},
+	{(char*)"rc-file", required_argument, NULL, 'r'},
+	{(char*)"no-file-security", no_argument, NULL, 's'},
+	{(char*)"file-security", no_argument, NULL, 'S'},
+	{(char*)"timeout", required_argument, NULL, 't'},
+	{(char*)"version", no_argument, NULL, 'V'},
 	{NULL,0,NULL,0}
     };
-    while ( (c = getopt_long(argc, argv, ":chsSt:V", long_options, NULL)) != -1) {
+    while ( (c = getopt_long(argc, argv, ":chir:sSt:V", long_options, NULL)) != -1) {
 #else // HAVE_GETOPT_LONG
-	extern char *optarg;
-	extern int optopt, optind;
-    while ( (c = getopt(argc, argv, ":c(copyright)h(help)s(no-file-security)S(file-security)t:(timeout)V(version)")) != -1) {
+    extern char *optarg;
+    extern int optopt, optind;
+    while ( (c = getopt(argc, argv, ":c(copyright)h(help)i(ignore-rc)r:(rc-file)s(no-file-security)S(file-security)t:(timeout)V(version)")) != -1) {
 #endif // HAVE_GETOPT_LONG
 	switch (c) {
 	case 'c':
@@ -273,17 +285,25 @@ int main (int argc, char** argv) {
 	case 'h':
 	    show_help(argv[0]);
 	    return 0;
+	case 'i':
+	    config.setIgnorerc(true);
+	    break;
+	case 'r':
+	    cfgfilepath = optarg;
+	    break;
 	case 'V':
 	    show_version();
 	    return 0;
 	case 's':
-	    filesecurity = false;
+	    config.setFilesecurity(false);
 	    break;
 	case 'S':
-	    filesecurity = true;
+	    config.setFilesecurity(true);
 	    break;
 	case 't':
+	    unsigned int timeout;
 	    sscanf(optarg, "%u", &timeout);
+	    config.setTimeout(timeout);
 	    break;
 	case ':':
 	    std::cerr << "-" << (char)optopt << _(" without argument")
@@ -297,19 +317,24 @@ int main (int argc, char** argv) {
     }
 
     if (optind < argc) {
-	filename = argv[optind];
 
-	if (!endswith(filename, Consts::getDefaultSuffix()))
-	    filename+=Consts::getDefaultSuffix();
+	std::string tmp_filename = argv[optind];
+
+	if (!endswith(tmp_filename, YAPETCONSTS::Consts::getDefaultSuffix()))
+	    tmp_filename+=YAPETCONSTS::Consts::getDefaultSuffix();
+	config.setPetFile(tmp_filename);
     }
 
+    config.loadConfigFile(cfgfilepath);
+
+#ifndef CFGDEBUG
     YAPETUI::BaseWindow::initCurses();
 
     MainWindow* mainwin = NULL;
     try {
-	mainwin = new MainWindow(timeout, filesecurity);
+	mainwin = new MainWindow(config.getTimeout(), config.getFilesecurity());
 	// filename may be empty
-	mainwin->run(filename);
+	mainwin->run(config.getPetFile());
 	delete mainwin;
     } catch (std::exception& ex) {
 	if (mainwin != NULL)
@@ -320,6 +345,11 @@ int main (int argc, char** argv) {
     }
 
     YAPETUI::BaseWindow::endCurses();
+#else
+    config.getPetFile();
+    config.getTimeout();
+    config.getFilesecurity();
+#endif
 
     return 0;
 }
