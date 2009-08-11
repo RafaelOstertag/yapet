@@ -13,6 +13,9 @@ if USE_INCLUDED_LIBINTL
 yapet_CPPFLAGS += -I$(top_srcdir)/intl 
 endif
 
+if DISABLE_ASSERT
+yapet_CPPFLAGS += -DNDEBUG
+endif
 
 yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
 

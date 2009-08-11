@@ -11,5 +11,9 @@ if USE_INCLUDED_LIBINTL
 libgpcrypt_a_CPPFLAGS += -I$(top_srcdir)/intl 
 endif
 
+if DISABLE_ASSERT
+libgpcrypt_a_CPPFLAGS += -DNDEBUG
+endif
+
 clean-local:
 	rm -rf SunWS_cache

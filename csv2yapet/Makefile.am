@@ -10,6 +10,10 @@ if USE_INCLUDED_LIBINTL
 csv2yapet_CPPFLAGS += -I$(top_srcdir)/intl 
 endif
 
+if DISABLE_ASSERT
+csv2yapet_CPPFLAGS += -DNDEBUG
+endif
+
 csv2yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 
 clean-local:
