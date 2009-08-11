@@ -50,6 +50,10 @@ AC_ARG_WITH([docbook-xsl],
 	[AC_SUBST([DOCBOOKXSL],[$withval])])
 
 # "Enables"
+AC_ARG_ENABLE([assert],
+	[AS_HELP_STRING([--enable-assert],[enable assert statements for debugging purposes (Default: no)])],
+	[my_assert=$enableval],
+	[my_assert=no])
 AC_ARG_ENABLE([build-doc],
 	[AS_HELP_STRING([--enable-build-doc],[enable the rebuild of the documentation (Requires xsltproc, lynx; Default: no)])],
 	[my_builddoc=$enableval],
@@ -94,7 +98,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([ctype.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h])
+AC_CHECK_HEADERS([assert.h ctype.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
@@ -194,6 +198,7 @@ AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
+AM_CONDITIONAL([ENABLEASSERT], [test x$my_assert = xyes])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
@@ -220,6 +225,7 @@ echo "xsltproc            : $XSLTPROC"
 echo "Lynx                : $LYNX"
 echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
+echo "Enable asserts      : $my_assert"
 echo "Build Documentation : $my_builddoc"
 echo "Disable install Doc.: $my_disableinstalldoc"
 echo "Build Source Doc.   : $my_buildsourcedoc"
