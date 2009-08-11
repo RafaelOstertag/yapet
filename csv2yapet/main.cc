@@ -216,12 +216,12 @@ int main (int argc, char** argv) {
     int c;
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
-	{"copyright", no_argument, NULL, 'c'},
-	{"help", no_argument, NULL, 'h'},
-	{"password", required_argument, NULL, 'p'},
-	{"quiet", no_argument, NULL, 'q'},
-	{"separator", required_argument, NULL, 's'},
-	{"version", no_argument, NULL, 'V'},
+	{(char*)"copyright", no_argument, NULL, 'c'},
+	{(char*)"help", no_argument, NULL, 'h'},
+	{(char*)"password", required_argument, NULL, 'p'},
+	{(char*)"quiet", no_argument, NULL, 'q'},
+	{(char*)"separator", required_argument, NULL, 's'},
+	{(char*)"version", no_argument, NULL, 'V'},
 	{NULL,0,NULL,0}
     };
     while ( (c = getopt_long(argc, argv, ":chp:qs:V", long_options, NULL)) != -1) {
@@ -274,10 +274,11 @@ int main (int argc, char** argv) {
 	return ERR_CMDLINE;
     }
 
-    if ( dstfile.find(Consts::getDefaultSuffix(),
-		      dstfile.length() - Consts::getDefaultSuffix().length())
+    if ( dstfile.find(YAPETCONSTS::Consts::getDefaultSuffix(),
+		      dstfile.length() -
+		      YAPETCONSTS::Consts::getDefaultSuffix().length())
 	 == std::string::npos )
-	dstfile += Consts::getDefaultSuffix();
+	dstfile += YAPETCONSTS::Consts::getDefaultSuffix();
 
     if (access(dstfile.c_str(), F_OK) == 0) {
 	std::cerr << dstfile << " already exists. Aborting." << std::endl;
