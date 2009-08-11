@@ -7,6 +7,11 @@ AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 
+AC_ARG_VAR([AR], [ar command])
+AC_ARG_VAR([DOXYGEN],[doxygen command])
+AC_ARG_VAR([LYNX], [lynx command])
+AC_ARG_VAR([XSLTPROC], [xsltproc command])
+
 # Progs
 AC_MSG_NOTICE([Checking required programs])
 AC_PROG_CC([cc gcc])
@@ -14,10 +19,8 @@ AC_PROG_CXX([CC c++ g++])
 AC_PROG_INSTALL
 AC_PROG_SED
 AC_PROG_RANLIB
+AC_CHECK_PROGS([AR], [ar gar], [AC_MSG_ERROR([Unable to find ar. You may set the AR environment variable to the file path of ar.])])
 AC_PROG_MKDIR_P
-AC_ARG_VAR([DOXYGEN],[path to doxygen])
-AC_ARG_VAR([XSLTPROC], [path to xsltproc])
-AC_ARG_VAR([LYNX], [path to lynx])
 AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
@@ -109,12 +112,14 @@ AC_CHECK_HEADERS([algorithm exception fstream functional iostream iterator list 
 
 # Types
 AC_MSG_NOTICE([Checking types])
+AC_TYPE_INT32_T
+AC_TYPE_MODE_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_TYPE_UID_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
-AC_TYPE_INT32_T
-AC_TYPE_SSIZE_T
-AC_TYPE_SIZE_T
-AC_TYPE_OFF_T
 
 # library functions
 AC_MSG_NOTICE([Checking functions])
