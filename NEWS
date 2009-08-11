@@ -13,6 +13,12 @@ YAPET 0.5
       * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
         navigating the password record list.
 
+      * Added command line option for disabling the processing of the per-user
+      	configuration file.
+
+      * Added command line option for specifying different configuration files
+        to be loaded.
+
 
 YAPET 0.4
 
