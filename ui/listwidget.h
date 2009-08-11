@@ -228,9 +228,9 @@ namespace YAPETUI {
 	     * @param it the iterator to be validated against \c
 	     * itemlist.
 	     *
-	     * @retval a positive value (including zero) to indicate
-	     * the position of the iterator, a negative value
-	     * otherwise if the iterator is not valid.
+	     * @retval a positive value (including zero) to indicate the
+	     * position of the iterator, ((l_size_type)-1) to indicate an
+	     * error.
 	     */
 	    l_size_type validateIterator(list_it& it) {
 		l_size_type pos;
@@ -258,7 +258,7 @@ namespace YAPETUI {
 	    void highlightItemIter(list_it& it) {
 		    l_size_type pos = validateIterator(it);
 
-		    if (pos < 0) return;
+		    if (pos == ((l_size_type)-1)) return;
 
 		    if ( (pos/pagesize()) > 0) {
 			start_pos=pos;
@@ -805,7 +805,7 @@ namespace YAPETUI {
 	     * @retval \c true if the term was found again, else \c false
 	     */
 	    bool searchNext() {
-		if (validateIterator(cur_search_hit) < 0 ||
+		if (validateIterator(cur_search_hit) == ((l_size_type)-1) ||
 		    last_search_term.empty() )
 		    return false;
 
