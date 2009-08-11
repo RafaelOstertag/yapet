@@ -51,7 +51,6 @@ DialogBox::run() throw(UIException) {
 	case '\n':
 	    answer = ANSWER_OK;
 	    return ch;
-	    break;
 	case KEY_ESC:
 	    answer = ANSWER_CANCEL;
 	    return ch;

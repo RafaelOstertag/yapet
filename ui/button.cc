@@ -104,7 +104,6 @@ Button::focus() throw (UIException) {
 	    ch = '\n';
 	    onClick();
 	    goto BAILOUT;
-	    break;
 	case KEY_TAB:
 	case KEY_LEFT:
 	case KEY_RIGHT:
@@ -112,17 +111,14 @@ Button::focus() throw (UIException) {
 	case KEY_DOWN:
 	    ch = '\t';
 	    goto BAILOUT;
-	    break;
 	case KEY_ESC:
 	    goto BAILOUT;
-	    break;
 	case KEY_REFRESH:
 	    BaseWindow::refreshAll();
 	    break;
 #ifdef HAVE_WRESIZE
 	case KEY_RESIZE:
 	    goto BAILOUT;
-	    break;
 #endif // HAVE_WRESIZE
 	}
     }

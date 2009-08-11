@@ -188,7 +188,6 @@ InputWidget::focus() throw(UIException) {
 	case KEY_TAB:
 	case KEY_ESC:
 	    goto BAILOUT;
-	    break;
 	    // Motion and other keys
 	case KEY_UP:
 	case KEY_LEFT:
