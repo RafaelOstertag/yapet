@@ -198,7 +198,7 @@ AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
-AM_CONDITIONAL([ENABLEASSERT], [test x$my_assert = xyes])
+AM_CONDITIONAL([DISABLEASSERT], [test x$my_assert = xno])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
