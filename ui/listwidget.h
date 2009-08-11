@@ -62,6 +62,10 @@
 # include <string.h>
 #endif
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "../intl.h"
 #include "uiexception.h"
 #include "colors.h"
@@ -436,50 +440,53 @@ namespace YAPETUI {
 	    void scrollPageUp() {
 		if (itemlist.size() == 0) return;
 
-		int old_pos = cur_pos;
-		cur_pos = 0;
-		if ( start_pos - pagesize() > 0 ) {
-		    start_pos -= pagesize();
-		}else {
+		if ( ((l_size_type)pagesize()) > itemlist.size() - 1 ) {
+		    cur_pos = 0;
 		    start_pos = 0;
+		} else {
+		    if ( start_pos - pagesize() > 0 ) {
+			start_pos -= pagesize();
+		    } else {
+			start_pos = 0;
+		    }
 		}
 		showListItems();
-		showSelected(old_pos);
+		showSelected(-1);
 	    }
 
 	    void scrollPageDown() {
 		if (itemlist.size() == 0) return;
 
-		int old_pos = cur_pos;
 		if ( ((l_size_type)pagesize()) > itemlist.size() - 1 ) {
 		    cur_pos = itemlist.size() - 1;
 		    start_pos = 0;
 		} else {
-		    start_pos += pagesize() - 1;
-		    if ( ((l_size_type)start_pos) > itemlist.size() -1 ) {
-			start_pos = itemlist.size() - pagesize() - 1;
+		    if ( itemlist.size() - ((l_size_type)start_pos + pagesize())  < pagesize() ) {
+			start_pos = itemlist.size() - pagesize();
+			cur_pos = pagesize() - 1;
+		    } else {
+			start_pos += pagesize();
 		    }
-		    cur_pos = 0;
+		    assert(start_pos < itemlist.size());
+		    assert(start_pos + cur_pos < itemlist.size());
 		}
 
 		showListItems();
-		showSelected(old_pos);
+		showSelected(-1);
 	    }
 
 	    void scrollHome() {
 		if (itemlist.size() == 0) return;
 
 		start_pos = 0;
-		int old_pos = cur_pos;
 		cur_pos = 0;
 		showListItems();
-		showSelected(old_pos);
+		showSelected(-1);
 	    }
 
 	    void scrollEnd() {
 		if (itemlist.size() == 0) return;
 
-		int old_pos = cur_pos;
 		start_pos = itemlist.size() - pagesize();
 		if (start_pos < 0) {
 		    start_pos = 0;
@@ -489,7 +496,7 @@ namespace YAPETUI {
 		}
 
 		showListItems();
-		showSelected(old_pos);
+		showSelected(-1);
 	    }
 
 	    void createWindow(int sx, int sy, int w, int h) throw(UIException) {
