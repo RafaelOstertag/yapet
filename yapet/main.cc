@@ -102,49 +102,50 @@
  */
 
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
-    "Copyright (C) 2008, 2009  Rafael Ostertag\n"				\
-    "\n"								\
-    "This program is free software: you can redistribute it and/or modify\n" \
-    "it under the terms of the GNU General Public License as published by\n" \
-    "the Free Software Foundation, either version 3 of the License, or\n" \
-    "(at your option) any later version.\n"				\
-    "\n"								\
-    "This program is distributed in the hope that it will be useful,\n" \
-    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"	\
-    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"	\
-    "GNU General Public License for more details.\n"			\
-    "\n"								\
-    "You should have received a copy of the GNU General Public License\n" \
-    "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
+			 "Copyright (C) 2008, 2009  Rafael Ostertag\n"               \
+			 "\n"                                \
+			 "This program is free software: you can redistribute it and/or modify\n" \
+			 "it under the terms of the GNU General Public License as published by\n" \
+			 "the Free Software Foundation, either version 3 of the License, or\n" \
+			 "(at your option) any later version.\n"             \
+			 "\n"                                \
+			 "This program is distributed in the hope that it will be useful,\n" \
+			 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"  \
+			 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"   \
+			 "GNU General Public License for more details.\n"            \
+			 "\n"                                \
+			 "You should have received a copy of the GNU General Public License\n" \
+			 "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
 
 
 void set_rlimit() {
 #if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
     rlimit rl;
-
     rl.rlim_cur = 0;
     rl.rlim_max = 0;
-    int retval = setrlimit(RLIMIT_CORE, &rl);
+    int retval = setrlimit (RLIMIT_CORE, &rl);
+
     if (retval != 0) {
-	std::cerr << _("Failed to suppress the creation of core file.")
+	std::cerr << _ ("Failed to suppress the creation of core file.")
 		  << std::endl
-		  << _("The error message is: ") << strerror(errno)
+		  << _ ("The error message is: ") << strerror (errno)
 		  << std::endl
-		  << _("In case a core file is created, it may contain clear text passwords.")
+		  << _ ("In case a core file is created, it may contain clear text passwords.")
 		  << std::endl
 		  << std::endl
-		  << _("Press <ENTER> to continue")
+		  << _ ("Press <ENTER> to continue")
 		  << std::endl;
 	char tmp;
 	std::cin >> tmp;
     }
+
 #else
-    std::cerr << _("Cannot suppress the creation of core file.")
+    std::cerr << _ ("Cannot suppress the creation of core file.")
 	      << std::endl
-	      << _("In case a core file is created, it may contain clear text passwords.")
+	      << _ ("In case a core file is created, it may contain clear text passwords.")
 	      << std::endl
 	      << std::endl
-	      << _("Press <ENTER> to continue")
+	      << _ ("Press <ENTER> to continue")
 	      << std::endl;
     char tmp;
     std::cin >> tmp;
@@ -153,31 +154,26 @@ void set_rlimit() {
 
 void show_version() {
     std::cout << PACKAGE_STRING << std::endl;
-
 #ifdef HAVE_SSLEAY_VERSION
-    std::cout << "SSL Version: " << SSLeay_version(SSLEAY_VERSION) << std::endl;
+    std::cout << "SSL Version: " << SSLeay_version (SSLEAY_VERSION) << std::endl;
 #endif
-
 #ifdef NCURSES_VERSION
     std::cout << "Curses Implementation: " << "ncurses (" << NCURSES_VERSION << ")" << std::endl;
-#else	// NCURSES_VERSION
+#else   // NCURSES_VERSION
 #ifdef _XOPEN_CURSES
     std::cout << "Curses Implementation: " << "XOpen Curses" << std::endl;
-#else	// _XOPEN_CURSES
+#else   // _XOPEN_CURSES
     std::cout << "Curses Implementation: " << "System Curses" << std::endl;
-#endif	// _XOPEN_CURSES
-#endif	// NCURSES_VERSION
-
+#endif  // _XOPEN_CURSES
+#endif  // NCURSES_VERSION
 #if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
     std::cout << "Compiled with support for terminal title" << std::endl;
 #else
     std::cout << "Compiled without support for terminal title" << std::endl;
 #endif
-
 #if !defined(HAVE_FSTAT) || !defined(HAVE_GETUID) || !defined(HAVE_FCHMOD) || !defined(HAVE_FCHOWN)
     std::cout << "Support for file security NOT available" << std::endl;
 #endif
-
 #if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
     std::cout << "Creation of core file is suppressed" << std::endl;
 #else
@@ -189,7 +185,7 @@ void show_copyright() {
     std::cout << COPYRIGHT << std::endl;
 }
 
-void show_help(char* prgname) {
+void show_help (char* prgname) {
     show_version();
     std::cout << std::endl;
     std::cout << prgname
@@ -248,97 +244,103 @@ void show_help(char* prgname) {
 
 int main (int argc, char** argv) {
     set_rlimit();
-
 #ifdef ENABLE_NLS
-    setlocale(LC_ALL, "");
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
+    setlocale (LC_ALL, "");
+    bindtextdomain (PACKAGE, LOCALEDIR);
+    textdomain (PACKAGE);
 #endif
-
     YAPETCONFIG::Config config;
     // If empty, default is taken
     std::string cfgfilepath;
     int c;
-
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
-	{(char*)"copyright", no_argument, NULL, 'c'},
-	{(char*)"help", no_argument, NULL, 'h'},
-	{(char*)"ignore-rc", no_argument, NULL, 'i'},
-	{(char*)"rc-file", required_argument, NULL, 'r'},
-	{(char*)"no-file-security", no_argument, NULL, 's'},
-	{(char*)"file-security", no_argument, NULL, 'S'},
-	{(char*)"timeout", required_argument, NULL, 't'},
-	{(char*)"version", no_argument, NULL, 'V'},
-	{NULL,0,NULL,0}
+	{ (char*) "copyright", no_argument, NULL, 'c'},
+	{ (char*) "help", no_argument, NULL, 'h'},
+	{ (char*) "ignore-rc", no_argument, NULL, 'i'},
+	{ (char*) "rc-file", required_argument, NULL, 'r'},
+	{ (char*) "no-file-security", no_argument, NULL, 's'},
+	{ (char*) "file-security", no_argument, NULL, 'S'},
+	{ (char*) "timeout", required_argument, NULL, 't'},
+	{ (char*) "version", no_argument, NULL, 'V'},
+	{NULL, 0, NULL, 0}
     };
-    while ( (c = getopt_long(argc, argv, ":chir:sSt:V", long_options, NULL)) != -1) {
+
+    while ( (c = getopt_long (argc, argv, ":chir:sSt:V", long_options, NULL) ) != -1) {
 #else // HAVE_GETOPT_LONG
     extern char *optarg;
     extern int optopt, optind;
-    while ( (c = getopt(argc, argv, ":c(copyright)h(help)i(ignore-rc)r:(rc-file)s(no-file-security)S(file-security)t:(timeout)V(version)")) != -1) {
+
+    while ( (c = getopt (argc, argv, ":c(copyright)h(help)i(ignore-rc)r:(rc-file)s(no-file-security)S(file-security)t:(timeout)V(version)") ) != -1) {
 #endif // HAVE_GETOPT_LONG
+
 	switch (c) {
-	case 'c':
-	    show_copyright();
-	    return 0;
-	case 'h':
-	    show_help(argv[0]);
-	    return 0;
-	case 'i':
-	    config.setIgnorerc(true);
-	    break;
-	case 'r':
-	    cfgfilepath = optarg;
-	    break;
-	case 'V':
-	    show_version();
-	    return 0;
-	case 's':
-	    config.setFilesecurity(false);
-	    break;
-	case 'S':
-	    config.setFilesecurity(true);
-	    break;
-	case 't':
-	    unsigned int timeout;
-	    sscanf(optarg, "%u", &timeout);
-	    config.setTimeout(timeout);
-	    break;
-	case ':':
-	    std::cerr << "-" << (char)optopt << _(" without argument")
-		      << std::endl;
-	    return 1;
-	case '?':
-	    std::cerr << _("unknown argument") << " '" << (char)optopt << "'"
-		      << std::endl;
-	    return 1;
+	    case 'c':
+		show_copyright();
+		return 0;
+	    case 'h':
+		show_help (argv[0]);
+		return 0;
+	    case 'i':
+		config.setIgnorerc (true);
+		break;
+	    case 'r':
+		cfgfilepath = optarg;
+		break;
+	    case 'V':
+		show_version();
+		return 0;
+	    case 's':
+		config.setFilesecurity (false);
+		break;
+	    case 'S':
+		config.setFilesecurity (true);
+		break;
+	    case 't':
+		unsigned int timeout;
+		sscanf (optarg, "%u", &timeout);
+		config.setTimeout (timeout);
+		break;
+	    case ':':
+		std::cerr << "-" << (char) optopt << _ (" without argument")
+			  << std::endl;
+		return 1;
+	    case '?':
+		std::cerr << _ ("unknown argument") << " '" << (char) optopt << "'"
+			  << std::endl;
+		return 1;
 	}
     }
 
     if (optind < argc) {
-
-	std::string tmp_filename = argv[optind];
-
-	if (!endswith(tmp_filename, YAPETCONSTS::Consts::getDefaultSuffix()))
-	    tmp_filename+=YAPETCONSTS::Consts::getDefaultSuffix();
-	config.setPetFile(tmp_filename);
+	config.setPetFile (argv[optind]);
     }
 
-    config.loadConfigFile(cfgfilepath);
-
+    config.loadConfigFile (cfgfilepath);
+    // Make sure the .pet suffix is there
+#ifndef NDEBUG
+    std::string _tmp__ = config.getPetFile();
+#endif
+    assert (_tmp__.empty() ||
+	    _tmp__.find (YAPETCONSTS::Consts::getDefaultSuffix(),
+			 _tmp__.length() -
+			 YAPETCONSTS::Consts::getDefaultSuffix().length() )
+	    != std::string::npos);
+    // Make sure we have a cleaned up file path
+    assert (_tmp__.find ("//", 0) == std::string::npos);
 #ifndef CFGDEBUG
     YAPETUI::BaseWindow::initCurses();
-
     MainWindow* mainwin = NULL;
+
     try {
-	mainwin = new MainWindow(config.getTimeout(), config.getFilesecurity());
+	mainwin = new MainWindow (config.getTimeout(), config.getFilesecurity() );
 	// filename may be empty
-	mainwin->run(config.getPetFile());
+	mainwin->run (config.getPetFile() );
 	delete mainwin;
     } catch (std::exception& ex) {
 	if (mainwin != NULL)
 	    delete mainwin;
+
 	YAPETUI::BaseWindow::endCurses();
 	std::cerr << ex.what() << std::endl << std::endl;
 	return 1;
@@ -350,6 +352,5 @@ int main (int argc, char** argv) {
     config.getTimeout();
     config.getFilesecurity();
 #endif
-
     return 0;
 }
