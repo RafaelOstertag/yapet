@@ -637,9 +637,9 @@ No file loaded
 	  <para>Equivalent to providing a <replaceable>filename</replaceable>
 	  when invoking &yp;.</para>
 
-	  <para>Please note that &yp; does not expand <envar>~</envar> (tilde)
-	  or <envar>$HOME</envar> to the home directory of the user
-	  account.</para>
+	  <para>A <envar>~</envar> (tilde) sign as the first character of the
+	  file path will be replaced by the home directory of the user running
+	  &yp;</para>
 	</listitem>
       </varlistentry>
 
@@ -736,7 +736,7 @@ No file loaded
     <title>EXAMPLES</title>
 
     <example id="ex.cfgfile1">
-      <title>Example of an &yp; configuration file.</title>
+      <title>Example of an &yp; configuration file</title>
 
       <literallayout>load=/home/joe/passwords
 locktimeout=300
@@ -748,7 +748,7 @@ checkfsecurity=0</literallayout>
     </example>
 
     <example id="ex.cfgfile2">
-      <title>Example of an &yp; configuration file.</title>
+      <title>Example of an &yp; configuration file</title>
 
       <literallayout>locktimeout=150
 checkfsecurity=1</literallayout>
@@ -756,6 +756,19 @@ checkfsecurity=1</literallayout>
       <para>In this example, no file will be automatically loaded upon
       invocation of &yp;. The timeout until the screen is locked is set to 150
       seconds. File permissions and owner will be verified.</para>
+    </example>
+
+    <example id="ex.cfgfile3">
+      <title>Example 1 revisited</title>
+
+      <literallayout>load=~/passwords
+locktimeout=300
+checkfsecurity=0</literallayout>
+
+      <para>This example has the same effect as <xref linkend="ex.cfgfile1"
+      />. But instead of specifying the full path to the home directory, the ~
+      (tilde) sign is used, which is expanded to the home directory
+      automatically.</para>
     </example>
 
   </refsect1>
