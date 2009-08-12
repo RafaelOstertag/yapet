@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.4\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-07-11 02:26+0200\n"
+"POT-Creation-Date: 2009-08-12 13:34+0200\n"
 "PO-Revision-Date: 2009-07-06 20:08+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -29,7 +29,7 @@ msgstr "Zuerst Fenster löschen bevor wiederallozieren"
 msgid "Error creating message window"
 msgstr "Kann Listenfenster nicht erstellen"
 
-#: ui/messagebox.cc:41 yapet/fileopen.cc:83 yapet/passwordrecord.cc:66
+#: ui/messagebox.cc:41 yapet/fileopen.cc:84 yapet/passwordrecord.cc:66
 #: yapet/passworddialog.cc:42 yapet/searchdialog.cc:37
 msgid "OK"
 msgstr "Ok"
@@ -50,7 +50,7 @@ msgstr "Fehler beim Zeichnen des Fensterrahmens"
 msgid "Error printing message"
 msgstr "Fehler beim Titel anzeigen"
 
-#: ui/messagebox.cc:101 yapet/mainwindow.cc:187 yapet/fileopen.cc:129
+#: ui/messagebox.cc:101 yapet/mainwindow.cc:187 yapet/fileopen.cc:130
 msgid "Error printing title"
 msgstr "Fehler beim Titel anzeigen"
 
@@ -70,7 +70,7 @@ msgstr "Zuerst Fenster löschen bevor wiederallozieren"
 msgid "Error creating the input window"
 msgstr "Kann Listenfenster nicht erstellen"
 
-#: ui/inputwidget.cc:131 ui/inputwidget.cc:242 ui/inputwidget.cc:273
+#: ui/inputwidget.cc:131 ui/inputwidget.cc:241 ui/inputwidget.cc:272
 #: ui/passwordwidget.cc:41
 msgid "Error clearing input widget"
 msgstr "Fehler beim Löschen der Zeile"
@@ -79,7 +79,7 @@ msgstr "Fehler beim Löschen der Zeile"
 msgid "Error setting keypad on input widget"
 msgstr "Kann die Schlüssellänge nicht setzen"
 
-#: ui/inputwidget.cc:172 ui/inputwidget.cc:234
+#: ui/inputwidget.cc:172 ui/inputwidget.cc:233
 msgid "Error refreshing the widget"
 msgstr "Kann das Listen-Widget nicht auffrischen"
 
@@ -87,24 +87,24 @@ msgstr "Kann das Listen-Widget nicht auffrischen"
 msgid "Error moving cursor for widget"
 msgstr "Fehler beim verschieben des Cursors"
 
-#: ui/inputwidget.cc:252 ui/passwordwidget.cc:54
+#: ui/inputwidget.cc:251 ui/passwordwidget.cc:54
 msgid "Error adding text to window"
 msgstr "Fehler beim Zeichnen des Fensterrahmens"
 
-#: ui/inputwidget.cc:260 ui/passwordwidget.cc:62 yapet/mainwindow.cc:172
+#: ui/inputwidget.cc:259 ui/passwordwidget.cc:62 yapet/mainwindow.cc:172
 #: yapet/mainwindow.cc:184
 msgid "Error moving cursor"
 msgstr "Fehler beim verschieben des Cursors"
 
-#: ui/inputwidget.cc:265 ui/inputwidget.cc:277 ui/passwordwidget.cc:67
+#: ui/inputwidget.cc:264 ui/inputwidget.cc:276 ui/passwordwidget.cc:67
 msgid "Error refreshing input widget"
 msgstr "Kann das Listen-Widget nicht auffrischen"
 
-#: ui/inputwidget.cc:281
+#: ui/inputwidget.cc:280
 msgid "Error deleting input widget"
 msgstr "Fehler beim Fensterlöschen"
 
-#: ui/dialogbox.cc:30 ui/dialogbox.cc:77 yapet/fileopen.cc:87
+#: ui/dialogbox.cc:30 ui/dialogbox.cc:76 yapet/fileopen.cc:88
 #: yapet/passwordrecord.cc:70 yapet/passworddialog.cc:46
 #: yapet/searchdialog.cc:41
 msgid "Cancel"
@@ -118,7 +118,7 @@ msgstr "Fehler beim Zeichnen des Rahmens"
 msgid "Error clearing button"
 msgstr "Kann die Liste nicht löschen"
 
-#: ui/button.cc:58 ui/button.cc:77 ui/button.cc:91 ui/button.cc:142
+#: ui/button.cc:58 ui/button.cc:77 ui/button.cc:91 ui/button.cc:138
 msgid "Error refreshing button"
 msgstr "Kann die Liste nicht auffrischen"
 
@@ -130,7 +130,7 @@ msgstr "Fehler beim Fensterlöschen"
 msgid "Error erasing button"
 msgstr "Fehler beim Zeichnen des Rahmens"
 
-#: ui/button.cc:87 ui/button.cc:138 ui/listwidget.h:370
+#: ui/button.cc:87 ui/button.cc:134 ui/listwidget.h:401
 msgid "Error touching window"
 msgstr "Kann Fenster nicht antasten"
 
@@ -138,72 +138,72 @@ msgstr "Kann Fenster nicht antasten"
 msgid "Error setting keypad"
 msgstr "Kann Zahlenblock nicht einschalten"
 
-#: ui/listwidget.h:269 yapet/passwordrecord.cc:257
+#: ui/listwidget.h:300 yapet/passwordrecord.cc:257
 msgid "Error clearing window"
 msgstr "Fehler beim Löschen des Fensters"
 
-#: ui/listwidget.h:273
+#: ui/listwidget.h:304
 msgid "Error drawing box around window"
 msgstr "Fehler beim Zeichnen des Fensterrahmens"
 
-#: ui/listwidget.h:283
+#: ui/listwidget.h:314
 msgid "Unable to display scroll up indicator"
 msgstr "Kann Scroll-Up Indikator nicht anzeigen"
 
-#: ui/listwidget.h:293
+#: ui/listwidget.h:324
 msgid "Unable to display scroll down indicator"
 msgstr "Kann Scroll-Down Indikator nicht anzeigen"
 
-#: ui/listwidget.h:313
+#: ui/listwidget.h:344
 msgid "Unable to display item"
 msgstr "Kann Eintrag nicht anzeigen"
 
-#: ui/listwidget.h:351
+#: ui/listwidget.h:382
 msgid "Error displaying cursor"
 msgstr "Kann Cursor nicht anzeigen"
 
-#: ui/listwidget.h:365
+#: ui/listwidget.h:396
 msgid "Error move cursor"
 msgstr "Kann Cursor nicht bewegen"
 
-#: ui/listwidget.h:374 ui/listwidget.h:687 yapet/mainwindow.cc:816
-#: yapet/fileopen.cc:332 yapet/passwordrecord.cc:289
+#: ui/listwidget.h:405 ui/listwidget.h:723 yapet/mainwindow.cc:816
+#: yapet/fileopen.cc:329 yapet/passwordrecord.cc:289
 msgid "Error refreshing window"
 msgstr "Kann Fenster nicht auffrischen"
 
-#: ui/listwidget.h:471
+#: ui/listwidget.h:505
 msgid "Error creating list window"
 msgstr "Kann Listenfenster nicht erstellen"
 
-#: ui/listwidget.h:477
+#: ui/listwidget.h:511
 msgid "Error enabling keypad"
 msgstr "Kann Zahlenblock nicht einschalten"
 
-#: ui/listwidget.h:481 ui/listwidget.h:663
+#: ui/listwidget.h:515 ui/listwidget.h:699
 msgid "Error re-setting the border"
 msgstr "Kann den Rahmen nicht neu setzen"
 
-#: ui/listwidget.h:523
+#: ui/listwidget.h:557
 msgid "No idea of the dimension of the list"
 msgstr "Keine Ahnung der Dimension der Liste"
 
-#: ui/listwidget.h:615
+#: ui/listwidget.h:649
 msgid "Error setting the border of window"
 msgstr "Kann den Fensterrahmen nicht setzen"
 
-#: ui/listwidget.h:622 ui/listwidget.h:666
+#: ui/listwidget.h:656 ui/listwidget.h:702
 msgid "Error refreshing the list widget"
 msgstr "Kann das Listen-Widget nicht auffrischen"
 
-#: ui/listwidget.h:677
+#: ui/listwidget.h:713
 msgid "Error refreshing list"
 msgstr "Kann die Liste nicht auffrischen"
 
-#: ui/listwidget.h:683
+#: ui/listwidget.h:719
 msgid "Error clearing list"
 msgstr "Kann die Liste nicht löschen"
 
-#: ui/listwidget.h:691 yapet/fileopen.cc:351
+#: ui/listwidget.h:727 yapet/fileopen.cc:348
 msgid "Error deleting window"
 msgstr "Fehler beim Fensterlöschen"
 
@@ -251,7 +251,7 @@ msgstr "Bildschirm neu zeichnen"
 msgid "Quit"
 msgstr "Beenden"
 
-#: yapet/mainwindow.cc:175 yapet/fileopen.cc:139
+#: yapet/mainwindow.cc:175 yapet/fileopen.cc:140
 msgid "Error clearing line"
 msgstr "Fehler beim Löschen der Zeile"
 
@@ -503,23 +503,23 @@ msgstr " geladen"
 msgid "O P E N  F I L E"
 msgstr "D A T E I  Ö F F N E N"
 
-#: yapet/fileopen.cc:62
+#: yapet/fileopen.cc:63
 msgid "Error creating file open window"
 msgstr "Fehler beim Erstellen des Datei Öffnen Fensters"
 
-#: yapet/fileopen.cc:143
+#: yapet/fileopen.cc:144
 msgid "Error printing cwd"
 msgstr "Fehler beim Anzeigen des aktuellen Arbeitsverzeichnis"
 
-#: yapet/fileopen.cc:147
+#: yapet/fileopen.cc:148
 msgid "Error refreshing cwd"
 msgstr "Fehler beim Auffrischen des aktuellen Arbeitsverzeichnis"
 
-#: yapet/fileopen.cc:161
+#: yapet/fileopen.cc:162
 msgid "Error allocating memory"
 msgstr "Fehler beim Speicher allozieren"
 
-#: yapet/fileopen.cc:325
+#: yapet/fileopen.cc:322
 msgid "Error drawing box"
 msgstr "Fehler beim Zeichnen des Rahmens"
 
@@ -542,7 +542,7 @@ msgstr "P A S S W O R T  E I N T R A G"
 
 #: yapet/passwordrecord.cc:265 yapet/passworddialog.cc:189
 #: yapet/passworddialog.cc:194 yapet/passworddialog.cc:198
-#: yapet/passworddialog.cc:202 yapet/searchdialog.cc:146
+#: yapet/passworddialog.cc:202 yapet/searchdialog.cc:150
 msgid "Error setting label"
 msgstr "Fehler beim Setzen des Labels"
 
@@ -612,32 +612,32 @@ msgstr "Passwort eingeben für"
 msgid "Error refreshing password dialog"
 msgstr "Fehler beim Auffrischen des Passwortdialogs"
 
-#: yapet/main.cc:128
+#: yapet/main.cc:129
 msgid "Failed to suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:130
+#: yapet/main.cc:131
 msgid "The error message is: "
 msgstr "Die Fehlermeldung ist: "
 
-#: yapet/main.cc:132 yapet/main.cc:143
+#: yapet/main.cc:133 yapet/main.cc:145
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 "Falls eine Core Datei erstellt wird, kann sie Klartextpasswörter enthalten."
 
-#: yapet/main.cc:135 yapet/main.cc:146
+#: yapet/main.cc:136 yapet/main.cc:148
 msgid "Press <ENTER> to continue"
 msgstr "Drücke <EINGABE> um weiterzumachen"
 
-#: yapet/main.cc:141
+#: yapet/main.cc:143
 msgid "Cannot suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:286
+#: yapet/main.cc:305
 msgid " without argument"
 msgstr " ohne Argument"
 
-#: yapet/main.cc:290
+#: yapet/main.cc:309
 msgid "unknown argument"
 msgstr "unbekanntes argument"
 
@@ -657,15 +657,15 @@ msgstr "Fehler beim Säubern des Suchdialogs"
 msgid "S E A R C H"
 msgstr "S U C H E N"
 
-#: yapet/searchdialog.cc:141
+#: yapet/searchdialog.cc:141 yapet/searchdialog.cc:144
 msgid "Please enter the search term"
 msgstr "Bitten geben Sie den Suchbegriff ein"
 
-#: yapet/searchdialog.cc:143
+#: yapet/searchdialog.cc:146
 msgid "Please enter the search term (case-sensitive)"
 msgstr "Bitte geben Sie den Suchbegriff ein (Gr.- und Kl.schreibung beachten)"
 
-#: yapet/searchdialog.cc:150
+#: yapet/searchdialog.cc:154
 msgid "Error refreshing the search dialog"
 msgstr "Fehler beim Auffrischen des Suchdialogs"
 
