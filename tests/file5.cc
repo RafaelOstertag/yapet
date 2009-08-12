@@ -17,12 +17,15 @@
 #include "tests.h"
 #include "testpaths.h"
 
+// Please note: The file path of the test file cannot point to SRCDIR as
+// specified in testpaths.h since this breaks 'make distcheck'
+
 int main(int, char**) {
     std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
     try {
 	YAPET::Key oldkey("JustAPassword");
 	YAPET::Key newkey("JustANewPassword");
-	YAPET::File file(SRCDIR "/" FN, oldkey, false);
+	YAPET::File file(FN, oldkey, false);
 	file.setNewKey(oldkey, newkey);
 	std::list<YAPET::PartDec> list = file.read(newkey);
 	if (list.size() != ROUNDS)

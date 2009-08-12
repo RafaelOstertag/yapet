@@ -8,10 +8,13 @@
 
 #define FN "testfile.gps"
 
+// Please note: The file path of the test file cannot point to SRCDIR as
+// specified in testpaths.h since this breaks 'make distcheck'
+
 int main(int argc, char** argv) {
     try {
 	YAPET::Key key("JustATestPasswordForKeepingSecret");
-	YAPET::File file(std::string(SRCDIR "/" FN), key, false);
+	YAPET::File file(std::string(FN), key, false);
     } catch (std::exception& ex) {
 	std::cout << " ##> " << ex.what() << std::endl;
 	return 1;
@@ -19,7 +22,7 @@ int main(int argc, char** argv) {
 
     try {
 	YAPET::Key key2("JustATestPasswordForKeepingSecreT");
-	YAPET::File file2(std::string(SRCDIR "/" FN), key2, false);
+	YAPET::File file2(std::string(FN), key2, false);
     } catch (std::exception& ex) {
 	std::cout << " ==> " << ex.what() << " (OK) " << std::endl;
 	return 0;
