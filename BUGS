@@ -1,23 +1,54 @@
 BUGS
-====
+####
 
-YAPET
------
+
+Closed Bugs
+===========
+
+You can view closed bug reports on http://bugs.guengel.ch.
+
+
+YAPET 0.5
+---------
+
+YAPET 0.5 fixes following bugs:
+
+      * Bug #3: load option in ~/.yapet does not append the suffix
+
+      * Bug #4: Add a command line option to disable loading of the per-user
+      	    	configuration file
+
+      * Bug #5: Allow users to load different configuration files
+
+      * Bug #6: Fields containing the field delimiter confuses csv2yapet
+
+      * Bug #7: Make record search case-insensitiv even if strcasestr() is not
+            	available
+
+      * Bug #8: --enable-terminal-title should be default
+
+      * Bug #9: VI keys for list selection movement
+
+      * Bug #10: Add --disable-install-doc switch to configure
+
+      * Bug #11: Build fails on Fedora 11
+
+      * Bug #12: Selection highlight is lost in listwidgets when doing a page
+            	 wise scrolling.
+
+      * Bug #14: Shorthand for user's home directory in configuration files
+
+
+Open Bugs
+=========
 
 You can view the list of all known YAPET bugs on http://bugs.guengel.ch/.
 
 
-csv2yapet
----------
-
-You can view the list of all known csv2yapet bugs on http://bugs.guengel.ch/.
-
-
 Reporting Bugs
---------------
+==============
 
-Please report bugs to Rafael Ostertag <rafi@guengel.ch>. or (preferably) go to
-http://bugs.guengel.ch/ and create a bug report.
+Please report bugs on http://bugs.guengel.ch/.
 
 
 $Id$
