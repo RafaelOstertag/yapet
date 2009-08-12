@@ -24,11 +24,11 @@
 #define _CFGFILE_H
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 
 #ifdef HAVE_STRING
-#include <string>
+# include <string>
 #endif
 
 /**
@@ -59,17 +59,31 @@ namespace YAPETCONFIG {
 	    void parseFile();
 
 	public:
-	    ConfigFile(std::string cfgfile="");
-	    ConfigFile(const ConfigFile& cfgfile);
+	    ConfigFile (std::string cfgfile = "");
+	    ConfigFile (const ConfigFile& cfgfile);
 	    inline ~ConfigFile() {};
 
-	    inline const std::string& getFileToLoad() const { return filetoload; }
-	    inline bool getUseFileSecurity() const { return usefsecurity; }
-	    inline unsigned int getLockTimeout() const { return locktimeout; }
-	    inline bool getIgnoreRC() const { return ignorerc ; }
-	    inline bool isOpenSuccess() const { return opensuccess; }
 
-	    const ConfigFile& operator=(const ConfigFile& cfgfile);
+	    inline const std::string& getConfigFilePath() const {
+		return cfgfilepath;
+	    }
+	    inline const std::string& getFileToLoad() const {
+		return filetoload;
+	    }
+	    inline bool getUseFileSecurity() const {
+		return usefsecurity;
+	    }
+	    inline unsigned int getLockTimeout() const {
+		return locktimeout;
+	    }
+	    inline bool getIgnoreRC() const {
+		return ignorerc ;
+	    }
+	    inline bool isOpenSuccess() const {
+		return opensuccess;
+	    }
+
+	    const ConfigFile& operator= (const ConfigFile& cfgfile);
     };
 
 }
