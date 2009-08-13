@@ -43,6 +43,7 @@ inline
 void progress() {
     static int n = 0;
 
+    /*
     switch (n) {
     case 0:
     case 1:
@@ -65,6 +66,18 @@ void progress() {
 	std::cout << "|";
 	n=-1;
 	break;
+	}*/
+
+    // I change the progress indicator to somewhat less verbose, since the
+    // above indicator looks terrible in build logs of automated builds, e.g.:
+    // https://buildd.debian.org/pkg.cgi?pkg=yapet
+    if ( (n % 100) == 0 && !((n % 1000)==0)) {
+	std::cout << ".";
+	std::cout.flush();
+    }
+    if ( (n % 1000)==0 && n != 0) {
+	std::cout << "#";
+	std::cout.flush();
     }
     n++;
 }
@@ -143,5 +156,5 @@ void check_record(YAPET::PartDec& pd, const YAPET::Key& key, int rec_no) {
 
     delete ptr_dec_rec;
 
-    std::cout << "\r";
+    /*    std::cout << "\r"; */
 }

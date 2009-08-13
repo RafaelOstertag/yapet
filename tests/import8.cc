@@ -28,7 +28,8 @@ int main(int, char**) {
 	YAPET::File file("test5.pet", key, false);
 	std::list<YAPET::PartDec> list = file.read(key);
 	if (list.size() != ROUNDS) {
-	    std::cout << "no" << std::endl;
+	    std::cout << std::endl;
+	    std::cout << " ==> no" << std::endl;
 	    return 1;
 	}
 
@@ -40,10 +41,12 @@ int main(int, char**) {
 	}
 
     } catch (std::exception& ex) {
-	std::cout << "no" << std::endl;
+	std::cout << std::endl;
+	std::cout << " ==> no" << std::endl;
 	std::cout << ex.what() << std::endl;
 	return 1;
     }
-    std::cout << "yes" << std::endl;
+    std::cout << std::endl;
+    std::cout << " ==> yes" << std::endl;
     return 0;
 }

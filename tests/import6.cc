@@ -37,8 +37,10 @@ int main(int, char**) {
 	}
 
     } catch (std::exception& ex) {
+	std::cout << std::endl;
 	std::cout << ex.what() << std::endl;
 	return 1;
     }
+    std::cout << std::endl;
     return 0;
 }

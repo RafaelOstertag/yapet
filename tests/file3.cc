@@ -29,10 +29,12 @@ int main(int, char**) {
 	    snprintf((char*)ptr_rec->comment,YAPET::COMMENT_SIZE, COMMENT,i);
 	    list.push_back(YAPET::PartDec(record, key));
 
-	    std::cout << "\r";
+	    // Commented out due to new progress indicator
+	    // std::cout << "\r"; 
 	}
 	file.save(list);
     } catch (std::exception& ex) {
+	std::cout << std::endl;
 	std::cout << ex.what() << std::endl;
 	return 1;
     }
@@ -41,8 +43,11 @@ int main(int, char**) {
 	YAPET::Key key("JustAPassword");
 	YAPET::File file(FN, key, false);
 	std::list<YAPET::PartDec> list = file.read(key);
-	if (list.size() != ROUNDS)
+	if (list.size() != ROUNDS) {
+	    std::cout << std::endl;
+	    std::cout << "List has unexpected size" << std::endl;
 	    return 1;
+	}
 
 
 	std::list<YAPET::PartDec>::iterator it = list.begin();
@@ -53,8 +58,10 @@ int main(int, char**) {
 	}
 
     } catch (std::exception& ex) {
+	std::cout << std::endl;
 	std::cout << ex.what() << std::endl;
 	return 1;
     }
+    std::cout << std::endl;
     return 0;
 }

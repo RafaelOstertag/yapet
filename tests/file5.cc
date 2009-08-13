@@ -28,8 +28,11 @@ int main(int, char**) {
 	YAPET::File file(FN, oldkey, false);
 	file.setNewKey(oldkey, newkey);
 	std::list<YAPET::PartDec> list = file.read(newkey);
-	if (list.size() != ROUNDS)
+	if (list.size() != ROUNDS) {
+	    std::cout << std::endl;
+	    std::cout << "List has unexpected size" << std::endl;
 	    return 1;
+	}
 
 	std::list<YAPET::PartDec>::iterator it = list.begin();
 	for(int i=0; it != list.end(); i++) {
@@ -38,8 +41,10 @@ int main(int, char**) {
 	}
 
     } catch (std::exception& ex) {
+	std::cout << std::endl;
 	std::cout << ex.what() << std::endl;
 	return 1;
     }
+    std::cout << std::endl;
     return 0;
 }
