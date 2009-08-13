@@ -64,18 +64,20 @@
  * @return the string \c str passed will be modified.
  */
 void
-CSVImport::cleanupValue(std::string& str) {
+CSVImport::cleanupValue (std::string& str) {
     if (str.length() == 0) return;
 
-    if (str.at(0) == '"')
-	str = str.erase(0, 1);
+    if (str.at (0) == '"')
+	str = str.erase (0, 1);
 
-    if (str.at(str.length()-1) == '"')
-	str = str.erase(str.length()-1, 1);
+    if (str.at (str.length() - 1) == '"')
+	str = str.erase (str.length() - 1, 1);
 
-    std::string::size_type pos=0;
-    while ( ( pos = str.find("\"\"", pos)) != std::string::npos ) {
-	str.erase(pos,1);
+    std::string::size_type pos = 0;
+
+    while ( ( pos = str.find ("\"\"", pos) ) != std::string::npos ) {
+	str.erase (pos, 1);
+
 	if (pos + 1 < str.length() )
 	    pos++;
     }
@@ -89,12 +91,16 @@ CSVImport::cleanupValue(std::string& str) {
  * @param errmsg the error message.
  */
 void
-CSVImport::logError(unsigned long lno, const std::string& errmsg) {
-    if (verbose) std::cout << 'e';
+CSVImport::logError (unsigned long lno, const std::string& errmsg) {
+    if (verbose) {
+	std::cout << 'e';
+	std::cout.flush();
+    }
+
     LogEntry tmp;
     tmp.lineno = lno;
     tmp.message = errmsg;
-    logs.push_back(tmp);
+    logs.push_back (tmp);
     had_errors = true;
     num_errors++;
 }
@@ -112,17 +118,15 @@ CSVImport::logError(unsigned long lno, const std::string& errmsg) {
  * @param verb enable/disable verbosity. Default \c true.
  */
 
-CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb) throw(std::runtime_error) :
-    srcfile(src),
-    dstfile(dst),
-    separator(sep),
-    verbose(verb),
-    had_errors(false),
-    num_errors(0)
-{
-
-    if (access(srcfile.c_str(), R_OK | F_OK) == -1)
-	throw std::runtime_error("Cannot access " + srcfile);
+CSVImport::CSVImport (std::string src, std::string dst, char sep, bool verb) throw (std::runtime_error) :
+	srcfile (src),
+	dstfile (dst),
+	separator (sep),
+	verbose (verb),
+	had_errors (false),
+	num_errors (0) {
+    if (access (srcfile.c_str(), R_OK | F_OK) == -1)
+	throw std::runtime_error ("Cannot access " + srcfile);
 }
 
 /**
@@ -131,31 +135,28 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb) thro
  * @param pw the password set on the destination file.
  */
 void
-CSVImport::import(const char* pw) throw(std::exception) {
-    std::ifstream csvfile(srcfile.c_str());
+CSVImport::import (const char* pw) throw (std::exception) {
+    std::ifstream csvfile (srcfile.c_str() );
 
     if (!csvfile)
-	throw std::runtime_error("Cannot open " + srcfile);
+	throw std::runtime_error ("Cannot open " + srcfile);
 
     // the max line length. Computed from the field sizes of a YAPET password
     // record.
     const int max_len = YAPET::NAME_SIZE +
-	YAPET::HOST_SIZE +
-	YAPET::USERNAME_SIZE +
-	YAPET::PASSWORD_SIZE +
-	YAPET::COMMENT_SIZE +
-	// for the separators
-	NUM_SEPARATORS;
-
+			YAPET::HOST_SIZE +
+			YAPET::USERNAME_SIZE +
+			YAPET::PASSWORD_SIZE +
+			YAPET::COMMENT_SIZE +
+			// for the separators
+			NUM_SEPARATORS;
     // used for logging purpose
     const unsigned int num_fields = NUM_SEPARATORS + 1;
     char num_fields_str[5];
-    snprintf(num_fields_str, 5, "%u", num_fields);
-
-    YAPET::Key key(pw);
-    YAPET::File yapetfile(dstfile, key, true);
+    snprintf (num_fields_str, 5, "%u", num_fields);
+    YAPET::Key key (pw);
+    YAPET::File yapetfile (dstfile, key, true);
     std::list<YAPET::PartDec> list;
-
     char line[max_len];
     // Holds the line number count
     unsigned long lineno = 0;
@@ -168,41 +169,45 @@ CSVImport::import(const char* pw) throw(std::exception) {
     // Number of delimiters found per line
     int num_sep_found = 0;
     // The iterator for scanning the line character by character
-    std::string::size_type it=0;
+    std::string::size_type it = 0;
 
-    while (csvfile.getline(line, max_len) ) {
+    while (csvfile.getline (line, max_len) ) {
 	lineno++;
-	std::string l(line);
+	std::string l (line);
 	// integer pointing to the last delimiter found
 	std::string::size_type last_sep = 0;
 
 	if (!inquote) {
 	    current_field = 0;
 	    num_sep_found = 0;
+
 	    for (unsigned int i = 0; i < num_fields; i++)
 		field_values[i].clear();
 	}
 
 	// Indicate scanning error
 	bool scan_error = false;
-	for (it=0; it < l.length(); it++) {
+
+	for (it = 0; it < l.length(); it++) {
 	    // Flip the inquote flag when encountering a double quote
-	    if (l.at(it) == '"') {
+	    if (l.at (it) == '"') {
 		inquote = !inquote;
 	    }
 
-	    if (!inquote && (l.at(it) == separator) ) {
+	    if (!inquote && (l.at (it) == separator) ) {
 		num_sep_found++;
+
 		if (num_sep_found > NUM_SEPARATORS) {
-		    std::string tmp("Too many fields. Expected ");
+		    std::string tmp ("Too many fields. Expected ");
 		    tmp += num_fields_str;
 		    tmp += " fields.";
-		    logError(lineno, tmp );
+		    logError (lineno, tmp );
 		    scan_error = true;
 		    break;
 		}
-		field_values[current_field] = l.substr(last_sep, it - last_sep);
-		cleanupValue(field_values[current_field]);
+
+		field_values[current_field] = l.substr (last_sep, it - last_sep);
+		cleanupValue (field_values[current_field]);
 		last_sep = it + 1;
 		current_field++;
 	    }
@@ -213,32 +218,38 @@ CSVImport::import(const char* pw) throw(std::exception) {
 	// Make sure the last field will be extracted too, but check if the
 	// last separator has any value followed.
 	if (it > last_sep) {
-	    field_values[current_field] = l.substr(last_sep, it - last_sep);
-	    cleanupValue(field_values[current_field]);
+	    field_values[current_field] = l.substr (last_sep, it - last_sep);
+	    cleanupValue (field_values[current_field]);
 	}
 
 	if (!inquote && (num_sep_found < NUM_SEPARATORS) ) {
-	    std::string tmp("Too few fields. Expected ");
+	    std::string tmp ("Too few fields. Expected ");
 	    tmp += num_fields_str;
 	    tmp += " fields.";
-	    logError(lineno, tmp );
+	    logError (lineno, tmp );
 	    continue;
 	}
 
 	if (!inquote && (num_sep_found == NUM_SEPARATORS) ) {
 	    YAPET::Record<YAPET::PasswordRecord> record;
 	    YAPET::PasswordRecord *ptr_rec = record;
-	    strncpy((char*)ptr_rec->name, field_values[0].c_str(), YAPET::NAME_SIZE);
-	    strncpy((char*)ptr_rec->host, field_values[1].c_str(), YAPET::HOST_SIZE);
-	    strncpy((char*)ptr_rec->username, field_values[2].c_str(), YAPET::USERNAME_SIZE);
-	    strncpy((char*)ptr_rec->password, field_values[3].c_str(), YAPET::PASSWORD_SIZE);
-	    strncpy((char*)ptr_rec->comment, field_values[4].c_str(), YAPET::COMMENT_SIZE);
-	    list.push_back(YAPET::PartDec(record, key));
-	    if (verbose) std::cout << ".";
+	    strncpy ( (char*) ptr_rec->name, field_values[0].c_str(), YAPET::NAME_SIZE);
+	    strncpy ( (char*) ptr_rec->host, field_values[1].c_str(), YAPET::HOST_SIZE);
+	    strncpy ( (char*) ptr_rec->username, field_values[2].c_str(), YAPET::USERNAME_SIZE);
+	    strncpy ( (char*) ptr_rec->password, field_values[3].c_str(), YAPET::PASSWORD_SIZE);
+	    strncpy ( (char*) ptr_rec->comment, field_values[4].c_str(), YAPET::COMMENT_SIZE);
+	    list.push_back (YAPET::PartDec (record, key) );
+
+	    if (verbose) {
+		std::cout << ".";
+		std::cout.flush();
+	    }
 	}
     }
+
     if (verbose) std::cout << std::endl;
-    yapetfile.save(list);
+
+    yapetfile.save (list);
     csvfile.close();
 }
 
@@ -251,7 +262,7 @@ CSVImport::printLog() const {
 
     std::list<LogEntry>::const_iterator it = logs.begin();
 
-    while (it != logs.end()) {
+    while (it != logs.end() ) {
 	std::cout << "Line " << (*it).lineno << ": " << (*it).message << std::endl;
 	it++;
     }

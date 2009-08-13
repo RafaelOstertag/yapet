@@ -45,90 +45,102 @@
  */
 class CSVImport {
     public:
-	/**
-	 * Log entry.
-	 */
-	struct LogEntry {
-		/**
-		 * The line number where the error occurred.
-		 */
-		unsigned int lineno;
-		/**
-		 * The error message.
-		 */
-		std::string message;
-	};
+        /**
+         * Log entry.
+         */
+        struct LogEntry {
+            /**
+             * The line number where the error occurred.
+             */
+            unsigned int lineno;
+            /**
+             * The error message.
+             */
+            std::string message;
+        };
 
     private:
-	/**
-	 * Object assignment not allowed.
-	 */
-	inline const CSVImport& operator=(const CSVImport&) { return *this; }
-	/**
-	 * Object copying not allowed.
-	 */
-	inline CSVImport(const CSVImport&) {}
+        /**
+         * Object assignment not allowed.
+         */
+        inline const CSVImport& operator= (const CSVImport&) {
+            return *this;
+        }
+        /**
+         * Object copying not allowed.
+         */
+        inline CSVImport (const CSVImport&) {}
 
-	enum {
-	    /**
-	     * The expected number of separators.
-	     */
-	    NUM_SEPARATORS = 4
-	};
+        enum {
+            /**
+             * The expected number of separators.
+             */
+            NUM_SEPARATORS = 4
+        };
 
-	/**
-	 * The file path of the source (csv) file.
-	 */
-	std::string srcfile;
-	/**
-	 * The file path of the destination (pet) file.
-	 */
-	std::string dstfile;
-	/**
-	 * The separator character.
-	 */
-	char separator;
+        /**
+         * The file path of the source (csv) file.
+         */
+        std::string srcfile;
+        /**
+         * The file path of the destination (pet) file.
+         */
+        std::string dstfile;
+        /**
+         * The separator character.
+         */
+        char separator;
 
-	/**
-	 * Verbosity enabled/disabled.
-	 */
-	bool verbose;
-	/**
-	 * Indicates the occurrence of errors.
-	 */
-	bool had_errors;
-	/**
-	 * The number of errors occurred.
-	 */
-	unsigned int num_errors;
+        /**
+         * Verbosity enabled/disabled.
+         */
+        bool verbose;
+        /**
+         * Indicates the occurrence of errors.
+         */
+        bool had_errors;
+        /**
+         * The number of errors occurred.
+         */
+        unsigned int num_errors;
 
-	/**
-	 * Holds the log entries in case of errors.
-	 */
-	std::list<LogEntry> logs;
+        /**
+         * Holds the log entries in case of errors.
+         */
+        std::list<LogEntry> logs;
 
-	//! Cleanup the field values
-	void cleanupValue(std::string& str);
-	//! Log the given error
-	void logError(unsigned long lno, const std::string& errmsg);
+        //! Cleanup the field values
+        void cleanupValue (std::string& str);
+        //! Log the given error
+        void logError (unsigned long lno, const std::string& errmsg);
 
     public:
-	CSVImport(std::string src, std::string dst, char sep, bool verb=true) throw(std::runtime_error);
-	~CSVImport() {};
-	//! Do the import.
-	void import(const char* pw) throw(std::exception);
-	//! Set the verbosity.
-	inline void setVerbose(bool v) { verbose = v; }
-	//! Get the verbosity.
-	inline bool getVerbose() const { return verbose; }
-	//! Return whether or not errors occurred.
-	inline bool hadErrors() const { return had_errors; }
-	//! Return the number of errors occurred.
-	inline unsigned int numErrors() const { return num_errors; }
-	//! Return the log entries.
-	inline std::list<LogEntry> getLog() const { return logs; }
-	//! Print the log to stdout
-	void printLog() const;
+        CSVImport (std::string src, std::string dst, char sep, bool verb = true) throw (std::runtime_error);
+        ~CSVImport() {};
+        //! Do the import.
+        void import (const char* pw) throw (std::exception);
+        //! Set the verbosity.
+        inline void setVerbose (bool v) {
+            verbose = v;
+        }
+        //! Get the verbosity.
+        inline bool getVerbose() const {
+            return verbose;
+        }
+        //! Return whether or not errors occurred.
+        inline bool hadErrors() const {
+            return had_errors;
+        }
+        //! Return the number of errors occurred.
+        inline unsigned int numErrors() const {
+            return num_errors;
+        }
+        //! Return the log entries.
+        inline std::list<LogEntry> getLog() const {
+            return logs;
+        }
+        //! Print the log to stdout
+        void printLog() const;
 };
 
 #endif // _CSVIMPORT_H
