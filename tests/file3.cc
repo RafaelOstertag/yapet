@@ -30,7 +30,7 @@ int main(int, char**) {
 	    list.push_back(YAPET::PartDec(record, key));
 
 	    // Commented out due to new progress indicator
-	    // std::cout << "\r"; 
+	    // std::cout << "\r";
 	}
 	file.save(list);
     } catch (std::exception& ex) {
