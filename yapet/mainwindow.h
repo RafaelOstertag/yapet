@@ -71,44 +71,46 @@ class MainWindow : protected YAPETUI::BaseWindow {
 
 	bool usefsecurity;
 
-	inline MainWindow(const MainWindow&) {}
-	inline const MainWindow& operator=(const MainWindow&) { return *this;}
+	inline MainWindow (const MainWindow&) {}
+	inline const MainWindow& operator= (const MainWindow&) {
+	    return *this;
+	}
 
     protected:
 	void printTitle() throw (YAPETUI::UIException);
 
-	void topRightWinContent() throw(YAPETUI::UIException);
+	void topRightWinContent() throw (YAPETUI::UIException);
 
-	void bottomRightWinContent() throw(YAPETUI::UIException);
+	void bottomRightWinContent() throw (YAPETUI::UIException);
 
-	void createWindow() throw(YAPETUI::UIException);
+	void createWindow() throw (YAPETUI::UIException);
 
-	void refresh() throw(YAPETUI::UIException);
+	void refresh() throw (YAPETUI::UIException);
 
-	void createFile(std::string& filename) throw(YAPETUI::UIException);
-	void openFile(std::string filename) throw(YAPETUI::UIException);
+	void createFile (std::string& filename) throw (YAPETUI::UIException);
+	void openFile (std::string filename) throw (YAPETUI::UIException);
 	void saveFile();
 	void closeFile();
 
 	void addNewRecord();
 	void editSelectedRecord();
-	void deleteSelectedRecord() throw(YAPETUI::UIException);
+	void deleteSelectedRecord() throw (YAPETUI::UIException);
 	void setSortOrder();
 	void searchTerm();
 	void searchNext();
 	bool quit();
-	void lockScreen() const throw(YAPETUI::UIException);
-	void changePassword() throw(YAPETUI::UIException);
+	void lockScreen() const throw (YAPETUI::UIException);
+	void changePassword() throw (YAPETUI::UIException);
     public:
-	MainWindow(unsigned int timeout, bool fsecurity) throw(YAPETUI::UIException);
+	MainWindow (unsigned int timeout, bool fsecurity) throw (YAPETUI::UIException);
 	virtual ~MainWindow();
 
-	void run() throw(YAPETUI::UIException);
-	void run(std::string fn);
-	void resize() throw(YAPETUI::UIException);
+	void run() throw (YAPETUI::UIException);
+	void run (std::string fn);
+	void resize() throw (YAPETUI::UIException);
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	void handle_signal(int signo);
+	void handle_signal (int signo);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
