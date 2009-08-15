@@ -19,8 +19,11 @@ YAPET 0.5
       * Added command line option for specifying different configuration files
         to be loaded.
 
-      * ~ (tilde) in the load option of configuration files is expanded to
-        the home directory of the user.
+      * A ~ (tilde) sign in the load option of configuration files is expanded
+        to the home directory of the user.
+
+      * A visual mark will indicate whether records have been altered and need
+        to be written to disk.
 
 
 YAPET 0.4
