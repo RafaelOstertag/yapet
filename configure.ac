@@ -78,9 +78,17 @@ AC_ARG_ENABLE([csv2yapet],
 	[AS_HELP_STRING([--disable-csv2yapet],[the CSV file import utility will not be built (Default: no)])],
 	[my_buildcsv2yapet=$enableval],
 	[my_buildcsv2yapet=yes])
+AC_ARG_ENABLE([pwgen],
+	[AS_HELP_STRING([--disable-pwgen],[disable the password generator (Default: no)])],
+	[my_enablepwgen=$enableval],
+	[my_enablepwgen=yes])
 
 if test x$my_settitle = xyes ; then
    AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+fi
+
+if test x$my_enablepwgen = xyes ; then
+   AC_DEFINE([ENABLE_PWGEN],[1], [Define if you want to build support for the password generator])
 fi
 
 if test x$LYNX = xno || test x$XSLTPROC = xno ; then
@@ -197,15 +205,17 @@ AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
+AM_CONDITIONAL([BUILDPWGEN], [test x$my_enablepwgen = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
 AM_CONDITIONAL([DISABLE_ASSERT], [test x$my_assert = xno])
 AC_CONFIG_FILES([Makefile
 	intl/Makefile
 	po/Makefile.in
-	yapet/Makefile
-	ui/Makefile
-	csv2yapet/Makefile
 	crypt/Makefile
+	ui/Makefile
+	yapet/Makefile
+	yapet/pwgen/Makefile
+	csv2yapet/Makefile
 	tests/Makefile
 	tests/testpaths.h
 	doc/Makefile])
@@ -225,12 +235,13 @@ echo "xsltproc            : $XSLTPROC"
 echo "Lynx                : $LYNX"
 echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
-echo "Enable asserts      : $my_assert"
+echo "Enable assert       : $my_assert"
 echo "Build Documentation : $my_builddoc"
 echo "Disable install Doc.: $my_disableinstalldoc"
 echo "Build Source Doc.   : $my_buildsourcedoc"
 echo "Set Terminal Title  : $my_settitle"
 echo "Build csv2yapet     : $my_buildcsv2yapet"
+echo "Build with pwgen    : $my_enablepwgen"
 echo ""
 echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""

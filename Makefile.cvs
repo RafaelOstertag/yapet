@@ -27,7 +27,8 @@ configure: configure.ac
 config.h.in: configure.ac
 	$(AUTOHEADER)
 
-Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac
+Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac yapet/pwgen/Makefile.am
 	$(AUTOMAKE) -a -c -f --gnu
+	$(ACLOCAL) -I m4
 
 .PHONY: ChangeLog

@@ -1,5 +1,9 @@
 # $Id$
 
+if BUILDPWGEN
+SUBDIRS = pwgen
+endif
+
 bin_PROGRAMS = yapet
 
 yapet_SOURCES = mainwindow.h statusbar.h fileopen.h passworddialog.h		\
@@ -8,16 +12,20 @@ passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc cfgfile.h	\
 cfgfile.cc consts.h consts.cc cfg.h cfg.cc
 
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(localedir)\"
+yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
 
 if USE_INCLUDED_LIBINTL
 yapet_CPPFLAGS += -I$(top_srcdir)/intl 
 endif
 
+if BUILDPWGEN
+yapet_CPPFLAGS += -I$(srcdir)/pwgen
+yapet_LDADD += $(builddir)/pwgen/libypwgen.a
+endif
+
 if DISABLE_ASSERT
 yapet_CPPFLAGS += -DNDEBUG
 endif
-
-yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
 
 clean-local:
 	rm -rf SunWS_cache

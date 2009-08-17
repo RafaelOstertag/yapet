@@ -1,27 +1,63 @@
 # List of source files which contain translatable strings.
 
 # ui/
-ui/messagebox.cc
-ui/uiexception.h
-ui/inputwidget.cc
-ui/passwordwidget.cc
-ui/dialogbox.cc
+ui/misc.h
+ui/secstring.h
+ui/basewindow.cc
 ui/button.cc
+ui/colors.cc
+ui/dialogbox.cc
+ui/inputwidget.cc
+ui/messagebox.cc
+ui/misc.cc
+ui/passwordwidget.cc
+ui/basewindow.h
+ui/button.h
+ui/colors.h
+ui/curswa.h
+ui/dialogbox.h
+ui/inputwidget.h
 ui/listwidget.h
+ui/messagebox.h
+ui/passwordwidget.h
+ui/uiexception.h
 
 # yapet/
-yapet/mainwindow.cc
-yapet/fileopen.cc
-yapet/passwordrecord.cc
-yapet/passworddialog.cc
+yapet/passwordrecord.h
+yapet/searchdialog.h
+yapet/statusbar.h
+yapet/cfg.cc
+yapet/cfgfile.h
 yapet/main.cc
+yapet/consts.cc
+yapet/passwordrecord.cc
 yapet/searchdialog.cc
+yapet/consts.h
+yapet/fileopen.h
+yapet/cfg.h
+yapet/cfgfile.cc
+yapet/mainwindow.cc
+yapet/mainwindow.h
+yapet/fileopen.cc
+yapet/passworddialog.cc
 yapet/statusbar.cc
+yapet/passworddialog.h
+
+# yapet/pwgen
+yapet/pwgen/pwgen.h
+yapet/pwgen/pwgen.cc
 
 # crypt/
-crypt/bdbuffer.cc
-crypt/file.cc
-crypt/crypt.cc
+crypt/bdbuffer.h
 crypt/crypt.h
+crypt/file.h
+crypt/key.h
+crypt/partdec.h
+crypt/record.h
+crypt/structs.h
 crypt/yapetexception.h
+crypt/bdbuffer.cc
+crypt/crypt.cc
+crypt/file.cc
 crypt/key.cc
+crypt/partdec.cc
