@@ -61,22 +61,22 @@ inline const char* CharacterPool::get_other() {
 void
 CharacterPool::init (int p) throw (std::runtime_error) {
     if (p == 0)
-        throw std::runtime_error (_ ("Subpools may not be zero") );
+	throw std::runtime_error (_ ("Subpools may not be zero") );
 
     if (pools_used & LETTERS)
-        pool_length += pool_letters_len();
+	pool_length += pool_letters_len();
 
     if (pools_used & DIGITS)
-        pool_length += pool_digits_len();
+	pool_length += pool_digits_len();
 
     if (pools_used & PUNCT)
-        pool_length += pool_punct_len();
+	pool_length += pool_punct_len();
 
     if (pools_used & SPECIAL)
-        pool_length += pool_special_len();
+	pool_length += pool_special_len();
 
     if (pools_used & OTHER)
-        pool_length += pool_other_len();
+	pool_length += pool_other_len();
 
     pool = new char[pool_length];
 #ifdef DEBUG
@@ -84,50 +84,50 @@ CharacterPool::init (int p) throw (std::runtime_error) {
 #else
 
     if (pool == NULL) {
-        // Good luck!
-        throw std::runtime_error (_ ("Out of memory") );
+	// Good luck!
+	throw std::runtime_error (_ ("Out of memory") );
     }
 
 #endif
     size_t copy_pos = 0;
 
     if  (pools_used & LETTERS) {
-        memcpy ( (void*) (pool + copy_pos), (void*) letters, pool_letters_len() );
-        copy_pos += pool_letters_len();
+	memcpy ( (void*) (pool + copy_pos), (void*) letters, pool_letters_len() );
+	copy_pos += pool_letters_len();
     }
 
     if  (pools_used & DIGITS) {
-        memcpy ( (void*) (pool + copy_pos), (void*) digits, pool_digits_len() );
-        copy_pos += pool_digits_len();
+	memcpy ( (void*) (pool + copy_pos), (void*) digits, pool_digits_len() );
+	copy_pos += pool_digits_len();
     }
 
     if  (pools_used & PUNCT) {
-        memcpy ( (void*) (pool + copy_pos), (void*) punct, pool_punct_len() );
-        copy_pos += pool_punct_len();
+	memcpy ( (void*) (pool + copy_pos), (void*) punct, pool_punct_len() );
+	copy_pos += pool_punct_len();
     }
 
     if  (pools_used & SPECIAL) {
-        memcpy ( (void*) (pool + copy_pos), (void*) special, pool_special_len() );
-        copy_pos += pool_special_len();
+	memcpy ( (void*) (pool + copy_pos), (void*) special, pool_special_len() );
+	copy_pos += pool_special_len();
     }
 
     if  (pools_used & OTHER) {
-        memcpy ( (void*) (pool + copy_pos), (void*) other, pool_other_len() );
-        copy_pos += pool_other_len();
+	memcpy ( (void*) (pool + copy_pos), (void*) other, pool_other_len() );
+	copy_pos += pool_other_len();
     }
 
     assert (copy_pos == pool_length);
 }
 
 CharacterPool::CharacterPool (int p)  throw (std::runtime_error) : pool (NULL),
-        pool_length (0),
-        pools_used (p) {
+	pool_length (0),
+	pools_used (p) {
     init (p);
 }
 
 CharacterPool::CharacterPool (SUBPOOLS p)  throw (std::runtime_error) : pool (NULL),
-        pool_length (0),
-        pools_used (p) {
+	pool_length (0),
+	pools_used (p) {
     init (p);
 }
 
@@ -140,8 +140,8 @@ CharacterPool::~CharacterPool() throw() {
 // Copy constructor
 //
 CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error) :     pool (NULL),
-        pool_length (cp.pool_length),
-        pools_used (cp.pools_used) {
+	pool_length (cp.pool_length),
+	pools_used (cp.pools_used) {
     assert (cp.pool != NULL);
     assert (cp.pool_length > 0);
     pool = new char[pool_length];
@@ -150,8 +150,8 @@ CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error
 #else
 
     if (pool == NULL) {
-        // Good luck!
-        throw std::runtime_error (_ ("Out of memory") );
+	// Good luck!
+	throw std::runtime_error (_ ("Out of memory") );
     }
 
 #endif
@@ -170,7 +170,7 @@ CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error
 char
 CharacterPool::operator[] (size_t pos) throw (std::logic_error) {
     if (pos >= pool_length)
-        throw std::out_of_range (_ ("No character at given position") );
+	throw std::out_of_range (_ ("No character at given position") );
 
     return pool[pos];
 }
@@ -192,8 +192,8 @@ CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
 #else
 
     if (pool == NULL) {
-        // Good luck!
-        throw std::runtime_error (_ ("Out of memory") );
+	// Good luck!
+	throw std::runtime_error (_ ("Out of memory") );
     }
 
 #endif
@@ -205,18 +205,18 @@ CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
 void
 CharacterPool::print_pools_used() const {
     if  (pools_used & LETTERS)
-        std::cout << "LETTERS (" << LETTERS << ")" << std::endl;
+	std::cout << "LETTERS (" << LETTERS << ")" << std::endl;
 
     if  (pools_used & DIGITS)
-        std::cout << "DIGITS (" << DIGITS << ")" << std::endl;
+	std::cout << "DIGITS (" << DIGITS << ")" << std::endl;
 
     if  (pools_used & PUNCT)
-        std::cout << "PUNCT (" << PUNCT << ")" << std::endl;
+	std::cout << "PUNCT (" << PUNCT << ")" << std::endl;
 
     if  (pools_used & SPECIAL)
-        std::cout << "SPECIAL (" << SPECIAL << ")" << std::endl;
+	std::cout << "SPECIAL (" << SPECIAL << ")" << std::endl;
 
     if  (pools_used & OTHER)
-        std::cout << "OTHER (" << OTHER << ")" << std::endl;
+	std::cout << "OTHER (" << OTHER << ")" << std::endl;
 }
 #endif

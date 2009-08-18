@@ -42,7 +42,7 @@
 # include <stdlib.h>
 #endif
 
-#if !defined(NDEBUG) && defined(HAVE_ASSERT_H)
+#ifdef HAVE_ASSERT_H
 # include <assert.h>
 #endif
 
@@ -57,10 +57,10 @@ using namespace YAPET::PWGEN;
 void
 RNG::check_availability() throw (PWGenException) {
     if (access ("/dev/random", R_OK) == 0)
-        rng_available |= DEVRANDOM;
+	rng_available |= DEVRANDOM;
 
     if (access ("/dev/urandom", R_OK) == 0 )
-        rng_available |= DEVURANDOM;
+	rng_available |= DEVURANDOM;
 
 #ifdef HAVE_LRAND48
     rng_available |= LRAND48;
@@ -71,7 +71,7 @@ RNG::check_availability() throw (PWGenException) {
     assert (rng_available != 0);
 
     if (rng_available == 0)
-        throw PWGenNoRNGException();
+	throw PWGenNoRNGException();
 }
 
 /**
@@ -84,39 +84,39 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
     assert (rng_available != 0);
 
     if (rng_available == 0)
-        throw PWGenException (_ ("Unable to initialize RNG when none is available") );
+	throw PWGenException (_ ("Unable to initialize RNG when none is available") );
 
     if (! (rng_available & request) )
-        throw PWGenRNGNotAvailable();
+	throw PWGenRNGNotAvailable();
 
     switch (request) {
-        case DEVRANDOM:
-            fd = open ("/dev/random", O_RDONLY);
+	case DEVRANDOM:
+	    fd = open ("/dev/random", O_RDONLY);
 
-            if ( fd < 0 )
-                throw PWGenException (_ ("Unable to open /dev/random") );
+	    if ( fd < 0 )
+		throw PWGenException (_ ("Unable to open /dev/random") );
 
-            break;
-        case DEVURANDOM:
-            fd = open ("/dev/urandom", O_RDONLY);
+	    break;
+	case DEVURANDOM:
+	    fd = open ("/dev/urandom", O_RDONLY);
 
-            if ( fd < 0 )
-                throw PWGenException (_ ("Unable to open /dev/random") );
+	    if ( fd < 0 )
+		throw PWGenException (_ ("Unable to open /dev/random") );
 
-            break;
-        case LRAND48:
+	    break;
+	case LRAND48:
 #if defined(HAVE_SRAND48) && defined(HAVE_TIME)
-            srand48 (time (NULL) );
+	    srand48 (time (NULL) );
 #endif
-            break;
-        case RAND:
+	    break;
+	case RAND:
 #if defined(HAVE_RAND) && defined(HAVE_TIME)
-            srand (time (NULL) );
+	    srand (time (NULL) );
 #endif
-            break;
-            // To make the compiler (gcc -pedantic) happy
-        case NONE:
-            throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
+	    break;
+	    // To make the compiler (gcc -pedantic) happy
+	case NONE:
+	    throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
     }
 
     rng_used = request;
@@ -141,10 +141,10 @@ RNG::devrandom (size_t ceil) throw (PWGenException) {
     int retval = read (fd, &buff, sizeof (size_t) );
 
     if (retval < (int) sizeof (size_t) )
-        throw PWGenException (_ ("Read to few bytes on /dev/[u]random.") );
+	throw PWGenException (_ ("Read to few bytes on /dev/[u]random.") );
 
     if (buff > ceil)
-        return buff % ceil;
+	return buff % ceil;
 
     return buff;
 }
@@ -157,7 +157,7 @@ RNG::_lrand48 (size_t ceil) throw() {
     long val = lrand48();
 
     if ( (size_t) val > ceil)
-        return val % ceil;
+	return val % ceil;
 
     return (size_t) val;
 #else
@@ -177,7 +177,7 @@ RNG::_rand (unsigned int ceil) throw() {
     int val = rand();
 
     if ( (size_t) val > ceil)
-        return val % ceil;
+	return val % ceil;
 
     return (size_t) val;
 #else
@@ -203,23 +203,23 @@ RNG::RNG() throw (PWGenException) : fd (-1), rng_initialized (false), rng_used (
     assert (rng_available != 0);
 
     if (rng_available & DEVRANDOM) {
-        init_rng (DEVRANDOM);
-        return;
+	init_rng (DEVRANDOM);
+	return;
     }
 
     if (rng_available & DEVURANDOM) {
-        init_rng (DEVURANDOM);
-        return;
+	init_rng (DEVURANDOM);
+	return;
     }
 
     if (rng_available & LRAND48) {
-        init_rng (LRAND48);
-        return;
+	init_rng (LRAND48);
+	return;
     }
 
     if (rng_available & RAND) {
-        init_rng (RAND);
-        return;
+	init_rng (RAND);
+	return;
     }
 
     // Should not happen
@@ -239,15 +239,15 @@ RNG::RNG (const RNG& r) throw (PWGenException) {
 
     // Code below takes care of the file descriptor
     if ( (r.rng_used == DEVRANDOM) ||
-            (r.rng_used == DEVURANDOM) ) {
-        assert (r.fd > -1);
-        fd = dup (r.fd);
+	    (r.rng_used == DEVURANDOM) ) {
+	assert (r.fd > -1);
+	fd = dup (r.fd);
 
-        if (fd < 0)
-            throw PWGenException ("Unable to duplicate file descriptor");
+	if (fd < 0)
+	    throw PWGenException ("Unable to duplicate file descriptor");
     } else {
-        assert (r.fd == -1);
-        fd = r.fd;
+	assert (r.fd == -1);
+	fd = r.fd;
     }
 
     // From here on we may more or less simply copy values
@@ -256,19 +256,19 @@ RNG::RNG (const RNG& r) throw (PWGenException) {
     rng_available = r.rng_available;
 
     if (rng_used == LRAND48)
-        init_rng (LRAND48);
+	init_rng (LRAND48);
 
     if (rng_used == RAND)
-        init_rng (RAND);
+	init_rng (RAND);
 }
 
 RNG::~RNG() throw() {
     if (rng_used == DEVRANDOM ||
-            rng_used == DEVURANDOM) {
-        assert (fd > 0);
-        close (fd);
+	    rng_used == DEVURANDOM) {
+	assert (fd > 0);
+	close (fd);
     } else {
-        assert (fd == -1);
+	assert (fd == -1);
     }
 }
 
@@ -277,16 +277,18 @@ RNG::getRandomNumber (size_t ceil) throw (PWGenException) {
     assert (rng_initialized == true);
 
     switch (rng_used) {
-        case DEVRANDOM:
-        case DEVURANDOM:
-            return devrandom (ceil);
-        case LRAND48:
-            return _lrand48 (ceil);
-        case RAND:
-            return _rand (ceil);
-            // To make the compiler (gcc -pedantic) happy
-        case NONE:
-            throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
+	case DEVRANDOM:
+	case DEVURANDOM:
+	    return devrandom (ceil);
+	case LRAND48:
+	    return _lrand48 (ceil);
+	case RAND:
+	    return _rand (ceil);
+	    // To make the compiler (gcc -pedantic) happy
+	case NONE:
+	    throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
+	    // To make the compiler even more happy
+	    return 0;
     }
 }
 
@@ -298,25 +300,25 @@ RNG::operator= (const RNG & r) throw() {
 
     // Make sure we close the current fd if used
     if (rng_used == DEVRANDOM ||
-            rng_used == DEVURANDOM) {
-        assert (fd > -1);
-        close (fd);
-        fd = -1;
+	    rng_used == DEVURANDOM) {
+	assert (fd > -1);
+	close (fd);
+	fd = -1;
     } else {
-        assert (fd == -1);
+	assert (fd == -1);
     }
 
     // Code below takes care of the file descriptor from r
     if ( (r.rng_used == DEVRANDOM) ||
-            (r.rng_used == DEVURANDOM) ) {
-        assert (r.fd > -1);
-        fd = dup (r.fd);
+	    (r.rng_used == DEVURANDOM) ) {
+	assert (r.fd > -1);
+	fd = dup (r.fd);
 
-        if (fd < 0)
-            throw PWGenException ("Unable to duplicate file descriptor");
+	if (fd < 0)
+	    throw PWGenException ("Unable to duplicate file descriptor");
     } else {
-        assert (r.fd == -1);
-        fd = r.fd;
+	assert (r.fd == -1);
+	fd = r.fd;
     }
 
     // From here on we may more or less simply copy values
@@ -325,10 +327,10 @@ RNG::operator= (const RNG & r) throw() {
     rng_available = r.rng_available;
 
     if (rng_used == LRAND48)
-        init_rng (LRAND48);
+	init_rng (LRAND48);
 
     if (rng_used == RAND)
-        init_rng (RAND);
+	init_rng (RAND);
 
     return *this;
 }
