@@ -77,7 +77,7 @@ RNG::check_availability() throw (PWGenException) {
 /**
  * Initializes the given engine. Calls \c check_availabilit().
  *
- * @param r the engine requested.
+ * @param request the engine requested.
  */
 void
 RNG::init_rng (RNGENGINE request) throw (PWGenException) {
@@ -169,7 +169,7 @@ RNG::_lrand48 (size_t ceil) throw() {
 }
 
 size_t
-RNG::_rand (unsigned int ceil) throw() {
+RNG::_rand (size_t ceil) throw() {
     assert (rng_initialized);
     assert (rng_used == RAND);
     assert (RAND_MAX >= ceil);
