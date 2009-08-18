@@ -174,8 +174,6 @@ File::setFileSecurity() throw(YAPETException) {
  * Creates a file with name specified in \c filename and sets \c fd to
  * the obtained file descriptor. The file is opened for read-write.
  *
- * @param secure if \c true, then only the owner has read/write access. Else
- * the owner has read/write access, and the group and world has read access.
  */
 void
 File::openCreate() throw(YAPETException) {
@@ -253,7 +251,6 @@ File::seekAbs(off_t offset) const throw(YAPETException) {
  * Truncates the file up to the header by creating a new empty file
  * copying over the existing header.
  *
- * @param secure is passed to \c File::openCreate
  */
 void
 File::preparePWSave() throw(YAPETException) {
@@ -693,10 +690,6 @@ File::~File() {
  *
  * @param records list of \c PartDec records
  *
- * @param secure if \c true, advises the function to set the file permissions
- * in a secure fashion, \c false makes the function to simply save the file
- * without setting the proper permissions.
- *
  * @sa PartDec
  */
 void
@@ -761,8 +754,6 @@ File::read(const Key& key) const throw(YAPETException) {
  * @param oldkey the old key used to encrypt the records
  *
  * @param newkey the new key used to encrypt the records
- *
- * @param secure refer to \c File::save for explanation of this parameter.
  */
 void
 File::setNewKey(const Key& oldkey,
