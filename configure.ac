@@ -136,7 +136,7 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime drand48 fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid localtime memset pathconf rand rename setrlimit sigaction srand strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr tcgetattr tcsetattr time tolower])
+AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isspace localtime lrand48 memset pathconf rand rename setrlimit sigaction srand srand48 strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr tcgetattr tcsetattr time tolower])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])
@@ -193,6 +193,8 @@ AC_CHECK_FUNCS([SSLeay_version])
 
 AC_MSG_NOTICE([Checking miscellaneous properties of platform])
 AC_C_BIGENDIAN
+# Mainly used by the RNG test in tests/rng*
+AC_CHECK_FILES([/dev/urandom /dev/random])
 
 AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT
