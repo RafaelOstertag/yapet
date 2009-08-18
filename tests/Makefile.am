@@ -3,10 +3,11 @@
 DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
 test9.pet
-EXTRA_DIST = corrupt.pet test1.csv test2.csv test3.csv test4.csv test5.csv test6.csv	\
-test7.csv test8.csv test9.csv
+EXTRA_DIST = corrupt.pet foreign.pet test1.csv test2.csv test3.csv test4.csv	\
+test5.csv test6.csv test7.csv test8.csv test9.csv
 
-check_PROGRAMS = corrupt key record bdbuffer enc partdec file file2 file3 file4 file5
+check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5	\
+corrupt foreign
 if BUILDCSV2YAPET
 check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
 import8 import9 import10 import11 import12 import13 import14
@@ -31,6 +32,9 @@ endif
 
 corrupt_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 corrupt_SOURCES = corrupt.cc tests.h
+
+foreign_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+foreign_SOURCES = foreign.cc tests.h
 
 key_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 key_SOURCES = key.cc tests.h
