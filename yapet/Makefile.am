@@ -25,6 +25,8 @@ endif
 
 if DISABLE_ASSERT
 yapet_CPPFLAGS += -DNDEBUG
+else
+yapet_CPPFLAGS += -DDEBUG
 endif
 
 clean-local:

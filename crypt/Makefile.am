@@ -13,6 +13,8 @@ endif
 
 if DISABLE_ASSERT
 libgpcrypt_a_CPPFLAGS += -DNDEBUG
+else
+libgpcrypt_a_CPPFLAGS += -DDEBUG
 endif
 
 clean-local:

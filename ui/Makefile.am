@@ -15,6 +15,8 @@ endif
 
 if DISABLE_ASSERT
 libui_a_CPPFLAGS += -DNDEBUG
+else
+libui_a_CPPFLAGS += -DDEBUG
 endif
 
 clean-local:

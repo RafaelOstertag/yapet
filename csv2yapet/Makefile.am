@@ -12,6 +12,8 @@ endif
 
 if DISABLE_ASSERT
 csv2yapet_CPPFLAGS += -DNDEBUG
+else
+csv2yapet_CPPFLAGS += -DDEBUG
 endif
 
 csv2yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
