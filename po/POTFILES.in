@@ -1,4 +1,33 @@
 # List of source files which contain translatable strings.
+# yapet/
+yapet/passwordrecord.h
+yapet/searchdialog.h
+yapet/statusbar.h
+yapet/cfg.cc
+yapet/cfgfile.h
+yapet/main.cc
+yapet/consts.cc
+yapet/passwordrecord.cc
+yapet/searchdialog.cc
+yapet/consts.h
+yapet/fileopen.h
+yapet/cfg.h
+yapet/cfgfile.cc
+yapet/mainwindow.cc
+yapet/mainwindow.h
+yapet/fileopen.cc
+yapet/passworddialog.cc
+yapet/statusbar.cc
+yapet/passworddialog.h
+
+# yapet/pwgen/
+yapet/pwgen/charpool.cc
+yapet/pwgen/pwgen.cc
+yapet/pwgen/rng.cc
+yapet/pwgen/charpool.h
+yapet/pwgen/pwgen.h
+yapet/pwgen/pwgenexception.h
+yapet/pwgen/rng.h
 
 # ui/
 ui/misc.h
@@ -22,31 +51,6 @@ ui/messagebox.h
 ui/passwordwidget.h
 ui/uiexception.h
 
-# yapet/
-yapet/passwordrecord.h
-yapet/searchdialog.h
-yapet/statusbar.h
-yapet/cfg.cc
-yapet/cfgfile.h
-yapet/main.cc
-yapet/consts.cc
-yapet/passwordrecord.cc
-yapet/searchdialog.cc
-yapet/consts.h
-yapet/fileopen.h
-yapet/cfg.h
-yapet/cfgfile.cc
-yapet/mainwindow.cc
-yapet/mainwindow.h
-yapet/fileopen.cc
-yapet/passworddialog.cc
-yapet/statusbar.cc
-yapet/passworddialog.h
-
-# yapet/pwgen
-yapet/pwgen/pwgen.h
-yapet/pwgen/pwgen.cc
-
 # crypt/
 crypt/bdbuffer.h
 crypt/crypt.h
@@ -61,3 +65,6 @@ crypt/crypt.cc
 crypt/file.cc
 crypt/key.cc
 crypt/partdec.cc
+csv2yapet/main.cc
+csv2yapet/csvimport.cc
+csv2yapet/csvimport.h
