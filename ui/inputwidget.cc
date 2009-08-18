@@ -137,16 +137,6 @@ InputWidget::createWindow(int sx, int sy, int w) throw(UIException) {
     //refresh();
 }
 
-void
-InputWidget::visibleCursor(bool v) const {
-    if (v) {
-	int err = curs_set(2);
-	if (err == ERR) curs_set(1);
-    } else {
-	curs_set(0);
-    }
-}
-
 InputWidget::InputWidget(int sx, int sy, int w, int ml)
     throw(UIException) : window(NULL),
 			 max_length(ml),
@@ -160,6 +150,9 @@ InputWidget::InputWidget(int sx, int sy, int w, int ml)
 InputWidget::~InputWidget() {
     clearText();
     wclear(window);
+    // To be sure we don't have any sensitive information on the screen and
+    // buffers (hopefully)
+    wrefresh(window);
     delwin(window);
 }
 
