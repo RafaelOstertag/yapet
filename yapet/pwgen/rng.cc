@@ -101,7 +101,7 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
 	    fd = open ("/dev/urandom", O_RDONLY);
 
 	    if ( fd < 0 )
-		throw PWGenException (_ ("Unable to open /dev/random") );
+		throw PWGenException (_ ("Unable to open /dev/urandom") );
 
 	    break;
 	case LRAND48:
@@ -182,7 +182,7 @@ RNG::_rand (unsigned int ceil) throw() {
     return (size_t) val;
 #else
     assert (0);
-    throw PWGenRNGNotAvailable (_ ("rand48() not available on system") );
+    throw PWGenRNGNotAvailable (_ ("rand() not available on system") );
     // To make compiler happy
     return 0;
 #endif
