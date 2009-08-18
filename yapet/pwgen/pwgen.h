@@ -27,12 +27,57 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_STDEXCEPT
+# include <stdexcept>
+#endif
+
+#include "../../intl.h"
+
+#include "rng.h"
+#include "charpool.h"
+
 namespace YAPET {
+    /**
+     * @brief Namespace for pwgen.
+     *
+     * All password generator related classes belong to this namespace.
+     */
     namespace PWGEN {
+        /**
+         * @brief Generates a password.
+         *
+         * Generates a more or less secure password depending on the character pool used.
+         *
+         * @see CharacterPool
+         */
+        class PWGen {
+            private:
+                CharacterPool* cp;
+                RNG rng;
+                /**
+                 * @brief will hold the password.
+                 *
+                 * This will hold the (zero terminated) password. It is entierly managed by this
+                 * class. When PWGen returns a password, it is always a pointer
+                 * to this buffer.
+                 */
+                const char* password;
+                size_t password_len;
 
-	class PWGen {
+                void init (int p) throw (std::runtime_error);
 
-	};
+            public:
+                PWGen (SUBPOOLS p) throw (std::runtime_error);
+                PWGen (int p) throw (std::runtime_error);
+                PWGen (const PWGen& pw) throw();
+                virtual ~PWGen() throw();
+
+                void setNewPool (int p) throw (std::runtime_error);
+                void generatePassword (size_t len) throw (std::logic_error);
+                const char* getPassword() const throw();
+
+                const PWGen& operator= (const PWGen& pw) throw();
+        };
     }
 }
 
