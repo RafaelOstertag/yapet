@@ -2,6 +2,8 @@
 // Checks whether or not the import of import7 worked.
 // Relies on test5.csv
 
+#include <typeinfo>
+
 #include <string.h>
 
 #include <iostream>
@@ -21,31 +23,33 @@
 #endif
 #define ROUNDS 200
 
-int main(int, char**) {
+int main (int, char**) {
     std::cout << " ==> Check if import7 worked... " << std::endl;
+
     try {
-	YAPET::Key key("test5");
-	YAPET::File file("test5.pet", key, false);
-	std::list<YAPET::PartDec> list = file.read(key);
-	if (list.size() != ROUNDS) {
-	    std::cout << std::endl;
-	    std::cout << " ==> no" << std::endl;
-	    return 1;
-	}
+        YAPET::Key key ("test5");
+        YAPET::File file ("test5.pet", key, false);
+        std::list<YAPET::PartDec> list = file.read (key);
 
-	std::list<YAPET::PartDec>::iterator it = list.begin();
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " ==> no" << std::endl;
+            return 1;
+        }
 
-	for(int i=0; it != list.end(); i++) {
-	    check_record(*it, key, i);
-	    it++;
-	}
+        std::list<YAPET::PartDec>::iterator it = list.begin();
 
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, key, i);
+            it++;
+        }
     } catch (std::exception& ex) {
-	std::cout << std::endl;
-	std::cout << " ==> no" << std::endl;
-	std::cout << ex.what() << std::endl;
-	return 1;
+        std::cout << std::endl;
+        std::cout << " ==> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
+
     std::cout << std::endl;
     std::cout << " ==> yes" << std::endl;
     return 0;

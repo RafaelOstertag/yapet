@@ -1,5 +1,6 @@
 // $Id$
 
+#include <typeinfo>
 #include <stdio.h>
 #include <iostream>
 #include <exception>
@@ -67,24 +68,24 @@ const uint8_t expected_key[] = {
 
 int main() {
     try {
-	YAPET::Key key("JustATestPasswordForKeepingSecret");
+        YAPET::Key key ("JustATestPasswordForKeepingSecret");
+        std::cout << " ==> ";
 
-	std::cout << " ==> ";
-	for(unsigned int i=0; i < key.size(); i++)
-	    printf("%02x", key()[i]);
+        for (unsigned int i = 0; i < key.size(); i++)
+            printf ("%02x", key() [i]);
 
-	printf("\n");
+        printf ("\n");
 
-	for(unsigned int i=0; i < key.size(); i++) {
-	    if (key()[i] != expected_key[i]) {
-		std::cout << " ##> Error in key at position " << i << std::endl;
-		return 1;
-	    }
-	}
+        for (unsigned int i = 0; i < key.size(); i++) {
+            if (key() [i] != expected_key[i]) {
+                std::cout << " ##> Error in key at position " << i << std::endl;
+                return 1;
+            }
+        }
     } catch (std::exception& ex) {
-	std::cout << ex.what() << std::endl;
-	return 1;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
-    return 0;
 
+    return 0;
 }

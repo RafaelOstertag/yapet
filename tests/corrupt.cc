@@ -9,20 +9,22 @@
 # include <config.h>
 #endif
 
+#include <typeinfo>
 #include <iostream>
 #include <file.h>
 #include "testpaths.h"
 
 #define FN "corrupt.pet"
 
-int main(int argc, char** argv) {
+int main (int argc, char** argv) {
     try {
-	YAPET::Key key("corrupt");
-	YAPET::File file(std::string(SRCDIR "/" FN), key, false, false);
+        YAPET::Key key ("corrupt");
+        YAPET::File file (std::string (SRCDIR "/" FN), key, false, false);
     } catch (std::exception& ex) {
-	// Everything fine...
-	std::cout << " ==> " << ex.what() << " (OK) " << std::endl;
-	return 0;
+        // Everything fine...
+        std::cout << " ==> " << typeid (ex).name() << ": " << ex.what() << " (OK) " << std::endl;
+        return 0;
     }
+
     return 1;
 }
