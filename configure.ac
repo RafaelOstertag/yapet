@@ -55,11 +55,11 @@ AC_ARG_ENABLE([assert],
 	[my_assert=$enableval],
 	[my_assert=no])
 AC_ARG_ENABLE([build-doc],
-	[AS_HELP_STRING([--enable-build-doc],[enable the rebuild of the documentation (Requires xsltproc, lynx; Default: no)])],
+	[AS_HELP_STRING([--enable-build-doc],[enable rebuild of documentation (Requires xsltproc, lynx; Default: no)])],
 	[my_builddoc=$enableval],
 	[my_builddoc=no])
 AC_ARG_ENABLE([install-doc],
-	[AS_HELP_STRING([--disable-install-doc],[disable the installation of the documentation (man pages, text and html files; Default: no)])],
+	[AS_HELP_STRING([--disable-install-doc],[disable installation of documentation (man pages, text and html files; Default: no)])],
 	[if test x$enableval = xno ; then
 	my_disableinstalldoc=yes
 	else
@@ -67,19 +67,19 @@ AC_ARG_ENABLE([install-doc],
 	fi],
 	[my_disableinstalldoc=no])
 AC_ARG_ENABLE([source-doc],
-	[AS_HELP_STRING([--enable-source-doc],[enable the build of the source code documentention (Requires doxygen; default: no)])],
+	[AS_HELP_STRING([--enable-source-doc],[enable build of source code documentention (Requires doxygen; default: no)])],
 	[my_buildsourcedoc=$enableval],
 	[my_buildsourcedoc=no])
 AC_ARG_ENABLE([terminal-title],
-	[AS_HELP_STRING([--enable-terminal-title],[YAPET tries to set the terminal title (Default: yes)])],
+	[AS_HELP_STRING([--enable-terminal-title],[set the terminal title (Default: yes)])],
 	[my_settitle=$enableval],
 	[my_settitle=yes])
 AC_ARG_ENABLE([csv2yapet],
-	[AS_HELP_STRING([--disable-csv2yapet],[the CSV file import utility will not be built (Default: no)])],
+	[AS_HELP_STRING([--disable-csv2yapet],[CSV file import utility will not be built (Default: no)])],
 	[my_buildcsv2yapet=$enableval],
 	[my_buildcsv2yapet=yes])
 AC_ARG_ENABLE([pwgen],
-	[AS_HELP_STRING([--disable-pwgen],[disable the password generator (Default: no)])],
+	[AS_HELP_STRING([--disable-pwgen],[disable password generator (Default: no)])],
 	[my_enablepwgen=$enableval],
 	[my_enablepwgen=yes])
 
@@ -136,7 +136,7 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid localtime memset pathconf rename setrlimit sigaction strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr tcgetattr tcsetattr tolower])
+AC_CHECK_FUNCS([access asctime drand48 fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid localtime memset pathconf rand rename setrlimit sigaction srand strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr tcgetattr tcsetattr time tolower])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])
@@ -191,11 +191,10 @@ AC_CHECK_FUNCS([EVP_bf_cbc EVP_sha1 EVP_md5 EVP_ripemd160],
 AC_MSG_NOTICE([Checking support functions])
 AC_CHECK_FUNCS([SSLeay_version])
 
-
+AC_MSG_NOTICE([Checking miscellaneous properties of platform])
 AC_C_BIGENDIAN
 
-
-AC_MSG_NOTICE([Intl support])
+AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT
 
 # Some conditionals for the makefileS
