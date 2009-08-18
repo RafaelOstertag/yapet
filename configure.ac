@@ -106,7 +106,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([assert.h ctype.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h])
+AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
