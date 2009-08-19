@@ -20,19 +20,20 @@
 #include "testpaths.h"
 
 int main (int, char**) {
+    std::cout << std::endl;
     try {
-        std::cout << " ==> Importing from test7.csv" << std::endl;;
-        CSVImport imp (SRCDIR "/test7.csv", "test7.pet", ',');
-        imp.import ("test7");
+	std::cout << " ==> Importing from test7.csv" << std::endl;;
+	CSVImport imp (SRCDIR "/test7.csv", "test7.pet", ',');
+	imp.import ("test7");
 
-        if (imp.hadErrors() )
-            return 1;
+	if (imp.hadErrors() )
+	    return 1;
 
-        if (imp.numErrors() != 0)
-            return 1;
+	if (imp.numErrors() != 0)
+	    return 1;
     } catch (std::exception& ex) {
-        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
-        return 1;
+	std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+	return 1;
     }
 
     return 0;

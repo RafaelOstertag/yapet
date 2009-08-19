@@ -23,6 +23,7 @@
 // specified in testpaths.h since this breaks 'make distcheck'
 
 int main (int, char**) {
+    std::cout << std::endl;
     std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
 
     try {
