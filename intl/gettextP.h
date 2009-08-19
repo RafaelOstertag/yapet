@@ -20,7 +20,7 @@
 #ifndef _GETTEXTP_H
 #define _GETTEXTP_H
 
-#include <stddef.h>		/* Get size_t.  */
+#include <stddef.h>     /* Get size_t.  */
 
 #ifdef _LIBC
 # include "../iconv/gconv_int.h"
@@ -42,27 +42,27 @@
 extern char *__gettext (const char *__msgid);
 extern char *__dgettext (const char *__domainname, const char *__msgid);
 extern char *__dcgettext (const char *__domainname, const char *__msgid,
-			  int __category);
+                          int __category);
 extern char *__ngettext (const char *__msgid1, const char *__msgid2,
-			 unsigned long int __n);
+                         unsigned long int __n);
 extern char *__dngettext (const char *__domainname,
-			  const char *__msgid1, const char *__msgid2,
-			  unsigned long int n);
+                          const char *__msgid1, const char *__msgid2,
+                          unsigned long int n);
 extern char *__dcngettext (const char *__domainname,
-			   const char *__msgid1, const char *__msgid2,
-			   unsigned long int __n, int __category);
+                           const char *__msgid1, const char *__msgid2,
+                           unsigned long int __n, int __category);
 extern char *__dcigettext (const char *__domainname,
-			   const char *__msgid1, const char *__msgid2,
-			   int __plural, unsigned long int __n,
-			   int __category);
+                           const char *__msgid1, const char *__msgid2,
+                           int __plural, unsigned long int __n,
+                           int __category);
 extern char *__textdomain (const char *__domainname);
 extern char *__bindtextdomain (const char *__domainname,
-			       const char *__dirname);
+                               const char *__dirname);
 extern char *__bind_textdomain_codeset (const char *__domainname,
-					const char *__codeset);
+                                        const char *__codeset);
 extern void _nl_finddomain_subfreeres (void) attribute_hidden;
 extern void _nl_unload_domain (struct loaded_domain *__domain)
-     internal_function attribute_hidden;
+internal_function attribute_hidden;
 #else
 /* Declare the exported libintl_* functions, in a way that allows us to
    call them under their real name.  */
@@ -72,21 +72,21 @@ extern void _nl_unload_domain (struct loaded_domain *__domain)
 # include "libgnuintl.h"
 # ifdef IN_LIBGLOCALE
 extern char *gl_dcigettext (const char *__domainname,
-			    const char *__msgid1, const char *__msgid2,
-			    int __plural, unsigned long int __n,
-			    int __category,
-			    const char *__localename, const char *__encoding);
+                            const char *__msgid1, const char *__msgid2,
+                            int __plural, unsigned long int __n,
+                            int __category,
+                            const char *__localename, const char *__encoding);
 # else
 extern char *libintl_dcigettext (const char *__domainname,
-				 const char *__msgid1, const char *__msgid2,
-				 int __plural, unsigned long int __n,
-				 int __category);
+                                 const char *__msgid1, const char *__msgid2,
+                                 int __plural, unsigned long int __n,
+                                 int __category);
 # endif
 #endif
 
 #include "loadinfo.h"
 
-#include "gmo.h"		/* Get nls_uint32.  */
+#include "gmo.h"        /* Get nls_uint32.  */
 
 /* @@ end of prolog @@ */
 
@@ -118,85 +118,82 @@ static inline nls_uint32
 SWAP (nls_uint32 i)
 # else
 SWAP (i)
-     nls_uint32 i;
+nls_uint32 i;
 # endif
 {
-  return (i << 24) | ((i & 0xff00) << 8) | ((i >> 8) & 0xff00) | (i >> 24);
+    return (i << 24) | ( (i & 0xff00) << 8) | ( (i >> 8) & 0xff00) | (i >> 24);
 }
 #endif
 
 
 /* In-memory representation of system dependent string.  */
-struct sysdep_string_desc
-{
-  /* Length of addressed string, including the trailing NUL.  */
-  size_t length;
-  /* Pointer to addressed string.  */
-  const char *pointer;
+struct sysdep_string_desc {
+    /* Length of addressed string, including the trailing NUL.  */
+    size_t length;
+    /* Pointer to addressed string.  */
+    const char *pointer;
 };
 
 /* Cache of translated strings after charset conversion.
    Note: The strings are converted to the target encoding only on an as-needed
    basis.  */
-struct converted_domain
-{
-  /* The target encoding name.  */
-  const char *encoding;
-  /* The descriptor for conversion from the message catalog's encoding to
-     this target encoding.  */
+struct converted_domain {
+    /* The target encoding name.  */
+    const char *encoding;
+    /* The descriptor for conversion from the message catalog's encoding to
+       this target encoding.  */
 #ifdef _LIBC
-  __gconv_t conv;
+    __gconv_t conv;
 #else
 # if HAVE_ICONV
-  iconv_t conv;
+    iconv_t conv;
 # endif
 #endif
-  /* The table of translated strings after charset conversion.  */
-  char **conv_tab;
+    /* The table of translated strings after charset conversion.  */
+    char **conv_tab;
 };
 
 /* The representation of an opened message catalog.  */
-struct loaded_domain
-{
-  /* Pointer to memory containing the .mo file.  */
-  const char *data;
-  /* 1 if the memory is mmap()ed, 0 if the memory is malloc()ed.  */
-  int use_mmap;
-  /* Size of mmap()ed memory.  */
-  size_t mmap_size;
-  /* 1 if the .mo file uses a different endianness than this machine.  */
-  int must_swap;
-  /* Pointer to additional malloc()ed memory.  */
-  void *malloced;
+struct loaded_domain {
+    /* Pointer to memory containing the .mo file.  */
+    const char *data;
+    /* 1 if the memory is mmap()ed, 0 if the memory is malloc()ed.  */
+    int use_mmap;
+    /* Size of mmap()ed memory.  */
+    size_t mmap_size;
+    /* 1 if the .mo file uses a different endianness than this machine.  */
+    int must_swap;
+    /* Pointer to additional malloc()ed memory.  */
+    void *malloced;
 
-  /* Number of static strings pairs.  */
-  nls_uint32 nstrings;
-  /* Pointer to descriptors of original strings in the file.  */
-  const struct string_desc *orig_tab;
-  /* Pointer to descriptors of translated strings in the file.  */
-  const struct string_desc *trans_tab;
+    /* Number of static strings pairs.  */
+    nls_uint32 nstrings;
+    /* Pointer to descriptors of original strings in the file.  */
+    const struct string_desc *orig_tab;
+    /* Pointer to descriptors of translated strings in the file.  */
+    const struct string_desc *trans_tab;
 
-  /* Number of system dependent strings pairs.  */
-  nls_uint32 n_sysdep_strings;
-  /* Pointer to descriptors of original sysdep strings.  */
-  const struct sysdep_string_desc *orig_sysdep_tab;
-  /* Pointer to descriptors of translated sysdep strings.  */
-  const struct sysdep_string_desc *trans_sysdep_tab;
+    /* Number of system dependent strings pairs.  */
+    nls_uint32 n_sysdep_strings;
+    /* Pointer to descriptors of original sysdep strings.  */
+    const struct sysdep_string_desc *orig_sysdep_tab;
+    /* Pointer to descriptors of translated sysdep strings.  */
+    const struct sysdep_string_desc *trans_sysdep_tab;
 
-  /* Size of hash table.  */
-  nls_uint32 hash_size;
-  /* Pointer to hash table.  */
-  const nls_uint32 *hash_tab;
-  /* 1 if the hash table uses a different endianness than this machine.  */
-  int must_swap_hash_tab;
+    /* Size of hash table.  */
+    nls_uint32 hash_size;
+    /* Pointer to hash table.  */
+    const nls_uint32 *hash_tab;
+    /* 1 if the hash table uses a different endianness than this machine.  */
+    int must_swap_hash_tab;
 
-  /* Cache of charset conversions of the translated strings.  */
-  struct converted_domain *conversions;
-  size_t nconversions;
-  gl_rwlock_define (, conversions_lock)
+    /* Cache of charset conversions of the translated strings.  */
+    struct converted_domain *conversions;
+    size_t nconversions;
+    gl_rwlock_define (, conversions_lock)
 
-  const struct expression *plural;
-  unsigned long int nplurals;
+    const struct expression *plural;
+    unsigned long int nplurals;
 };
 
 /* We want to allocate a string at the end of the struct.  But ISO C
@@ -209,12 +206,11 @@ struct loaded_domain
 
 /* A set of settings bound to a message domain.  Used to store settings
    from bindtextdomain() and bind_textdomain_codeset().  */
-struct binding
-{
-  struct binding *next;
-  char *dirname;
-  char *codeset;
-  char domainname[ZERO];
+struct binding {
+    struct binding *next;
+    char *dirname;
+    char *codeset;
+    char domainname[ZERO];
 };
 
 /* A counter which is incremented each time some previous translations
@@ -233,7 +229,7 @@ extern const char *_nl_language_preferences_default (void);
 extern void _nl_locale_name_canonicalize (char *name);
 # define gl_locale_name_posix _nl_locale_name_posix
 extern const char *_nl_locale_name_posix (int category,
-					  const char *categoryname);
+        const char *categoryname);
 # define gl_locale_name_default _nl_locale_name_default
 extern const char *_nl_locale_name_default (void);
 # define gl_locale_name _nl_locale_name
@@ -241,24 +237,24 @@ extern const char *_nl_locale_name (int category, const char *categoryname);
 #endif
 
 struct loaded_l10nfile *_nl_find_domain (const char *__dirname, char *__locale,
-					 const char *__domainname,
-					 struct binding *__domainbinding)
-     internal_function;
+        const char *__domainname,
+        struct binding *__domainbinding)
+internal_function;
 void _nl_load_domain (struct loaded_l10nfile *__domain,
-		      struct binding *__domainbinding)
-     internal_function;
+                      struct binding *__domainbinding)
+internal_function;
 
 #ifdef IN_LIBGLOCALE
 char *_nl_find_msg (struct loaded_l10nfile *domain_file,
-		    struct binding *domainbinding, const char *encoding,
-		    const char *msgid,
-		    size_t *lengthp)
-     internal_function;
+                    struct binding *domainbinding, const char *encoding,
+                    const char *msgid,
+                    size_t *lengthp)
+internal_function;
 #else
 char *_nl_find_msg (struct loaded_l10nfile *domain_file,
-		    struct binding *domainbinding, const char *msgid,
-		    int convert, size_t *lengthp)
-     internal_function;
+                    struct binding *domainbinding, const char *msgid,
+                    int convert, size_t *lengthp)
+internal_function;
 #endif
 
 /* The internal variables in the standalone libintl.a must have different

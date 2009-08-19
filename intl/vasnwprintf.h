@@ -25,21 +25,21 @@
 /* Get wchar_t, size_t.  */
 #include <stddef.h>
 
-#ifdef	__cplusplus
+#ifdef  __cplusplus
 extern "C" {
 #endif
 
-/* Write formatted output to a string dynamically allocated with malloc().
-   You can pass a preallocated buffer for the result in RESULTBUF and its
-   size in *LENGTHP; otherwise you pass RESULTBUF = NULL.
-   If successful, return the address of the string (this may be = RESULTBUF
-   if no dynamic memory allocation was necessary) and set *LENGTHP to the
-   number of resulting bytes, excluding the trailing NUL.  Upon error, set
-   errno and return NULL.  */
-extern wchar_t * asnwprintf (wchar_t *resultbuf, size_t *lengthp, const wchar_t *format, ...);
-extern wchar_t * vasnwprintf (wchar_t *resultbuf, size_t *lengthp, const wchar_t *format, va_list args);
+    /* Write formatted output to a string dynamically allocated with malloc().
+       You can pass a preallocated buffer for the result in RESULTBUF and its
+       size in *LENGTHP; otherwise you pass RESULTBUF = NULL.
+       If successful, return the address of the string (this may be = RESULTBUF
+       if no dynamic memory allocation was necessary) and set *LENGTHP to the
+       number of resulting bytes, excluding the trailing NUL.  Upon error, set
+       errno and return NULL.  */
+    extern wchar_t * asnwprintf (wchar_t *resultbuf, size_t *lengthp, const wchar_t *format, ...);
+    extern wchar_t * vasnwprintf (wchar_t *resultbuf, size_t *lengthp, const wchar_t *format, va_list args);
 
-#ifdef	__cplusplus
+#ifdef  __cplusplus
 }
 #endif
 
