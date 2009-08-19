@@ -36,56 +36,58 @@
  *
  * All YAPET configuration stuff is contained herein.
  */
-namespace YAPETCONFIG {
+namespace YAPET {
+    namespace CONFIG {
 
-    /**
-     * @brief Parses the configuration file.
-     *
-     * This class parses the per user configuration file.
-     */
-    class ConfigFile {
-	private:
-	    std::string filetoload;
-	    bool usefsecurity;
-	    unsigned int locktimeout;
-	    // Yes, the file can say that it should be ignored!
-	    bool ignorerc;
-	    std::string cfgfilepath;
+        /**
+         * @brief Parses the configuration file.
+         *
+         * This class parses the per user configuration file.
+         */
+        class ConfigFile {
+            private:
+                std::string filetoload;
+                bool usefsecurity;
+                unsigned int locktimeout;
+                // Yes, the file can say that it should be ignored!
+                bool ignorerc;
+                std::string cfgfilepath;
 
-	    //! Indicates whether or not the file could have been opened
-	    bool opensuccess;
+                //! Indicates whether or not the file could have been opened
+                bool opensuccess;
 
-	    std::string getHomeDir() const;
-	    void parseFile();
+                std::string getHomeDir() const;
+                void parseFile();
 
-	public:
-	    ConfigFile (std::string cfgfile = "");
-	    ConfigFile (const ConfigFile& cfgfile);
-	    inline ~ConfigFile() {};
+            public:
+                ConfigFile (std::string cfgfile = "");
+                ConfigFile (const ConfigFile& cfgfile);
+                inline ~ConfigFile() {};
 
 
-	    inline const std::string& getConfigFilePath() const {
-		return cfgfilepath;
-	    }
-	    inline const std::string& getFileToLoad() const {
-		return filetoload;
-	    }
-	    inline bool getUseFileSecurity() const {
-		return usefsecurity;
-	    }
-	    inline unsigned int getLockTimeout() const {
-		return locktimeout;
-	    }
-	    inline bool getIgnoreRC() const {
-		return ignorerc ;
-	    }
-	    inline bool isOpenSuccess() const {
-		return opensuccess;
-	    }
+                inline const std::string& getConfigFilePath() const {
+                    return cfgfilepath;
+                }
+                inline const std::string& getFileToLoad() const {
+                    return filetoload;
+                }
+                inline bool getUseFileSecurity() const {
+                    return usefsecurity;
+                }
+                inline unsigned int getLockTimeout() const {
+                    return locktimeout;
+                }
+                inline bool getIgnoreRC() const {
+                    return ignorerc ;
+                }
+                inline bool isOpenSuccess() const {
+                    return opensuccess;
+                }
 
-	    const ConfigFile& operator= (const ConfigFile& cfgfile);
-    };
+                const ConfigFile& operator= (const ConfigFile& cfgfile);
+        };
 
+    }
 }
 
 #endif // _CFGFILE_H

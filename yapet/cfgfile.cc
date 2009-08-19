@@ -56,7 +56,7 @@
 #include "cfgfile.h"
 #include "cfg.h"
 
-using namespace YAPETCONFIG;
+using namespace YAPET::CONFIG;
 
 std::string
 ConfigFile::getHomeDir() const {

@@ -198,4 +198,6 @@ namespace YAPET {
 
     }
 
+}
+
 #endif // _CFG_H

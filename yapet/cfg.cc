@@ -30,7 +30,7 @@
 
 #include "cfg.h"
 
-using namespace YAPETCONFIG;
+using namespace YAPET::CONFIG;
 
 //! The default .pet file to open
 std::string Config::def_petfile ("");
