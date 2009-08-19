@@ -287,9 +287,10 @@ RNG::getRandomNumber (size_t ceil) throw (PWGenException) {
 	    // To make the compiler (gcc -pedantic) happy
 	case NONE:
 	    throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
-	    // To make the compiler even more happy
-	    return 0;
+	    break;
     }
+    // To make the compiler even more happy
+    return 0;
 }
 
 const RNG&
