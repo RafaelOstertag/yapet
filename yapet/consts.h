@@ -33,28 +33,41 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
 #ifdef HAVE_STRING
 # include <string>
 #endif
 
-namespace YAPETCONSTS {
+namespace YAPET {
+    namespace CONSTS {
 
-    class Consts {
-	private:
-	    //! Holds the default suffix for yapet files
-	    static const std::string default_suffix;
-	    //! The default file name of the config file
-	    static const std::string default_rcfilename;
-	    inline Consts() {}
-	    inline ~Consts() {}
-	    inline Consts(const Consts&) {}
-	    inline const Consts& operator=(const Consts&) { return *this; }
+	class Consts {
+	    private:
+		//! Holds the default suffix for yapet files
+		static const std::string default_suffix;
+		//! The default file name of the config file
+		static const std::string default_rcfilename;
+		//! The default password length
+		static const size_t default_pwlen;
+		//! The default character subpools to use
+		static const int default_character_pools;
+		inline Consts() {}
+		inline ~Consts() {}
+		inline Consts (const Consts&) {}
+		inline const Consts& operator= (const Consts&) {
+		    return *this;
+		}
 
-	public:
-	    //! Return the default suffix for yapet files
-	    static const std::string& getDefaultSuffix();
-	    static const std::string& getDefaultRCFilename();
-    };
+	    public:
+		static const std::string& getDefaultSuffix();
+		static const std::string& getDefaultRCFilename();
+		static const size_t getDefaultPWLength();
+		static const int getDefaultCharPools();
+	};
 
+    }
 }
 #endif // _CONSTS_H

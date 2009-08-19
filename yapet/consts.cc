@@ -19,11 +19,15 @@
 //
 
 #include "consts.h"
+// Used for the character pools
+#include "pwgen/pwgen.h"
 
-using namespace YAPETCONSTS;
+using namespace YAPET::CONSTS;
 
-const std::string Consts::default_suffix(".pet");
-const std::string Consts::default_rcfilename(".yapet");
+const std::string Consts::default_suffix (".pet");
+const std::string Consts::default_rcfilename (".yapet");
+const size_t Consts::default_pwlen (8);
+const int Consts::default_character_pools (LETTERS | DIGITS | PUNCT | SPECIAL);
 
 const std::string&
 Consts::getDefaultSuffix() {
@@ -33,4 +37,14 @@ Consts::getDefaultSuffix() {
 const std::string&
 Consts::getDefaultRCFilename() {
     return default_rcfilename;
+}
+
+const size_t
+Consts::getDefaultPWLength() {
+    return default_pwlen;
+}
+
+const int
+Consts::getDefaultCharPools() {
+    return default_character_pools;
 }
