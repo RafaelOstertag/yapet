@@ -17,33 +17,34 @@
 
 int main (int, char**) {
     std::cout << std::endl;
+
     try {
-	std::cout << " ==> Importing from test2.csv" << std::endl;
-	std::cout << " ==> Testing for error recognition" << std::endl;
-	CSVImport imp (SRCDIR "/test2.csv", "test2.pet", ',');
-	imp.import ("test2");
-	imp.printLog();
+        std::cout << " ==> Importing from test2.csv" << std::endl;
+        std::cout << " ==> Testing for error recognition" << std::endl;
+        CSVImport imp (SRCDIR "/test2.csv", "test2.pet", ',');
+        imp.import ("test2");
+        imp.printLog();
 
-	if (imp.numErrors() != 2)
-	    return 1;
+        if (imp.numErrors() != 2)
+            return 1;
 
-	std::list<CSVImport::LogEntry> logs (imp.getLog() );
+        std::list<CSVImport::LogEntry> logs (imp.getLog() );
 
-	if (logs.size() != 2)
-	    return 1;
+        if (logs.size() != 2)
+            return 1;
 
-	std::list<CSVImport::LogEntry>::const_iterator it = logs.begin();
+        std::list<CSVImport::LogEntry>::const_iterator it = logs.begin();
 
-	if ( (*it).lineno != 2)
-	    return 1;
+        if ( (*it).lineno != 2)
+            return 1;
 
-	it++;
+        it++;
 
-	if ( (*it).lineno != 10)
-	    return 1;
+        if ( (*it).lineno != 10)
+            return 1;
     } catch (std::exception& ex) {
-	std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
-	return 1;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
 
     return 0;

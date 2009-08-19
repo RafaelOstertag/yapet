@@ -31,27 +31,27 @@ int main (int, char**) {
     std::cout << " ==> Check if we can read files created on a different machine... " << std::endl;
 
     try {
-	YAPET::Key key ("foreign");
-	YAPET::File file (SRCDIR"/foreign.pet", key, false, false);
-	std::list<YAPET::PartDec> list = file.read (key);
+        YAPET::Key key ("foreign");
+        YAPET::File file (SRCDIR"/foreign.pet", key, false, false);
+        std::list<YAPET::PartDec> list = file.read (key);
 
-	if (list.size() != ROUNDS) {
-	    std::cout << std::endl;
-	    std::cout << " ==> no" << std::endl;
-	    return 1;
-	}
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " ==> no" << std::endl;
+            return 1;
+        }
 
-	std::list<YAPET::PartDec>::iterator it = list.begin();
+        std::list<YAPET::PartDec>::iterator it = list.begin();
 
-	for (int i = 0; it != list.end(); i++) {
-	    check_record (*it, key, i);
-	    it++;
-	}
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, key, i);
+            it++;
+        }
     } catch (std::exception& ex) {
-	std::cout << std::endl;
-	std::cout << " ==> no" << std::endl;
-	std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
-	return 1;
+        std::cout << std::endl;
+        std::cout << " ==> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
 
     std::cout << std::endl;

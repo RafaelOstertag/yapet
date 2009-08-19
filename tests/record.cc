@@ -14,7 +14,7 @@ int main (int, char**) {
     YAPET::Record<tmp> record (t);
 
     if (record.size() != 25) {
-	return 1;
+        return 1;
     }
 
     YAPET::Record<tmp> record2 (record);
