@@ -3,12 +3,10 @@ News
 
 YAPET 0.5
 
-      * csv2yapet can handle field delimiters as field values.
+      New Features:
+      -------------
 
-      * File suffix can be omitted in ~/.yapet per-user configuration file.
-
-      * Case-insensitive search available even when strcasestr() is not
-        supported on build platform.
+      * Builtin password generator
 
       * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
         navigating the password record list.
@@ -24,6 +22,19 @@ YAPET 0.5
 
       * A visual mark will indicate whether records have been altered and need
         to be written to disk.
+
+
+      Fixes:
+      ------
+
+      * csv2yapet can handle field delimiters in field values.
+
+      * File suffix can be omitted in ~/.yapet per-user configuration file.
+
+      * Case-insensitive search available even when strcasestr() is not
+        supported on build platform.
+
+      * Password Record more reliable now
 
 
 YAPET 0.4
