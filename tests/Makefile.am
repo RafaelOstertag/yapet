@@ -31,7 +31,7 @@ endif
 
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(top_srcdir)/crypt
+AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/crypt
 if BUILDCSV2YAPET
 AM_CPPFLAGS += -I$(top_srcdir)/csv2yapet
 endif
