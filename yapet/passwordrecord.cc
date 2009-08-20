@@ -398,7 +398,9 @@ PasswordRecord::resize() throw (YAPET::UI::UIException) {
     comment = NULL;
     okbutton = NULL;
     cancelbutton = NULL;
+#ifdef ENABLE_PWGEN
     pwgenbutton = NULL;
+#endif
     createWindow();
 }
 
