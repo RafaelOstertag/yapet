@@ -26,6 +26,7 @@ compilerprofile_1 () {
 }
 
 compilerprofile_2 () {
+    export MAKE=make
     export OPTS="-g -O0 -pedantic -Wall"
     export CFLAGS="${OPTS}"
     export CXXFLAGS="${OPTS} -std=c++0x"
