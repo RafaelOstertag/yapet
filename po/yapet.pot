@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 0.5\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-08-20 03:03+0200\n"
+"POT-Creation-Date: 2009-08-20 19:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Error clearing search dialog"
 msgstr ""
 
-#: yapet/searchdialog.cc:144 yapet/passwordrecord.cc:416
+#: yapet/searchdialog.cc:144 yapet/passwordrecord.cc:418
 #: yapet/passworddialog.cc:201
 msgid "Error adding box"
 msgstr ""
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Please enter the search term (case-sensitive)"
 msgstr ""
 
-#: yapet/searchdialog.cc:163 yapet/passwordrecord.cc:421
+#: yapet/searchdialog.cc:163 yapet/passwordrecord.cc:423
 #: yapet/passworddialog.cc:212 yapet/passworddialog.cc:218
 #: yapet/passworddialog.cc:223 yapet/passworddialog.cc:228
 msgid "Error setting label"
@@ -353,7 +353,7 @@ msgid "Error erasing window"
 msgstr ""
 
 #: yapet/mainwindow.cc:906 yapet/pwgendialog.cc:382
-#: yapet/passwordrecord.cc:451 yapet/fileopen.cc:358 ui/listwidget.h:419
+#: yapet/passwordrecord.cc:453 yapet/fileopen.cc:358 ui/listwidget.h:419
 #: ui/listwidget.h:755
 msgid "Error refreshing window"
 msgstr ""
@@ -459,37 +459,37 @@ msgstr ""
 msgid "Error deleting password entry window"
 msgstr ""
 
-#: yapet/passwordrecord.cc:411 ui/listwidget.h:308
+#: yapet/passwordrecord.cc:413 ui/listwidget.h:308
 msgid "Error clearing window"
 msgstr ""
 
-#: yapet/passwordrecord.cc:418
+#: yapet/passwordrecord.cc:420
 msgid "P A S S W O R D  R E C O R D"
 msgstr ""
 
-#: yapet/passwordrecord.cc:423
+#: yapet/passwordrecord.cc:425
 msgid "Name"
 msgstr ""
 
-#: yapet/passwordrecord.cc:426 yapet/passwordrecord.cc:431
-#: yapet/passwordrecord.cc:436 yapet/passwordrecord.cc:441
-#: yapet/passwordrecord.cc:446
+#: yapet/passwordrecord.cc:428 yapet/passwordrecord.cc:433
+#: yapet/passwordrecord.cc:438 yapet/passwordrecord.cc:443
+#: yapet/passwordrecord.cc:448
 msgid "Error adding label"
 msgstr ""
 
-#: yapet/passwordrecord.cc:428
+#: yapet/passwordrecord.cc:430
 msgid "Host"
 msgstr ""
 
-#: yapet/passwordrecord.cc:433
+#: yapet/passwordrecord.cc:435
 msgid "Username"
 msgstr ""
 
-#: yapet/passwordrecord.cc:438
+#: yapet/passwordrecord.cc:440
 msgid "Password"
 msgstr ""
 
-#: yapet/passwordrecord.cc:443
+#: yapet/passwordrecord.cc:445
 msgid "Comment"
 msgstr ""
 
@@ -521,102 +521,102 @@ msgstr ""
 msgid "The error message is: "
 msgstr ""
 
-#: yapet/main.cc:134 yapet/main.cc:146
+#: yapet/main.cc:134 yapet/main.cc:145
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 
-#: yapet/main.cc:137 yapet/main.cc:149
+#: yapet/main.cc:137 yapet/main.cc:148
 msgid "Press <ENTER> to continue"
 msgstr ""
 
-#: yapet/main.cc:144
+#: yapet/main.cc:143
 msgid "Cannot suppress the creation of core file."
 msgstr ""
 
-#: yapet/main.cc:159
+#: yapet/main.cc:157
 msgid "SSL Version: "
 msgstr ""
 
-#: yapet/main.cc:162 yapet/main.cc:165 yapet/main.cc:167
+#: yapet/main.cc:160 yapet/main.cc:163 yapet/main.cc:165
 msgid "Curses Implementation: "
 msgstr ""
 
-#: yapet/main.cc:171
+#: yapet/main.cc:169
 msgid "Compiled with support for terminal title"
 msgstr ""
 
-#: yapet/main.cc:173
+#: yapet/main.cc:171
 msgid "Compiled without support for terminal title"
 msgstr ""
 
-#: yapet/main.cc:176
+#: yapet/main.cc:174
 msgid "Compiled with password generator"
 msgstr ""
 
-#: yapet/main.cc:178
+#: yapet/main.cc:176
 msgid "Compiled without password generator"
 msgstr ""
 
-#: yapet/main.cc:181
+#: yapet/main.cc:179
 msgid "Support for file security NOT available"
 msgstr ""
 
-#: yapet/main.cc:184
+#: yapet/main.cc:182
 msgid "Creation of core file is suppressed"
 msgstr ""
 
-#: yapet/main.cc:186
+#: yapet/main.cc:184
 msgid "Creation of core files is NOT suppressed"
 msgstr ""
 
-#: yapet/main.cc:201
+#: yapet/main.cc:199
 msgid "show copyright information"
 msgstr ""
 
-#: yapet/main.cc:204
+#: yapet/main.cc:202
 msgid "show this help text"
 msgstr ""
 
-#: yapet/main.cc:207
+#: yapet/main.cc:205
 msgid "do not read the configuration file."
 msgstr ""
 
-#: yapet/main.cc:210
+#: yapet/main.cc:208
 msgid ""
 "read the configuration file specified by <rcfile>.\n"
 "\t\t\tIf this option is not provided, it defaults to\n"
 "\t\t\t$HOME/.yapet unless -i is specified."
 msgstr ""
 
-#: yapet/main.cc:215
+#: yapet/main.cc:213
 msgid ""
 "disable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
 "\t\t\tto 0644."
 msgstr ""
 
-#: yapet/main.cc:220
+#: yapet/main.cc:218
 msgid ""
 "enable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
 "\t\t\tto 0600."
 msgstr ""
 
-#: yapet/main.cc:225
+#: yapet/main.cc:223
 msgid ""
 "the time-out in seconds until the screen is locked.\n"
 "\t\t\tDefault: 600 sec."
 msgstr ""
 
-#: yapet/main.cc:229
+#: yapet/main.cc:227
 msgid "show the version of "
 msgstr ""
 
-#: yapet/main.cc:232
+#: yapet/main.cc:230
 msgid "open the specified file <filename>"
 msgstr ""
 
-#: yapet/main.cc:236
+#: yapet/main.cc:234
 #, c-format
 msgid ""
 "%s stores passwords encrypted on disk using the blowfish encryption\n"
@@ -624,11 +624,11 @@ msgid ""
 "for more informationabout %s."
 msgstr ""
 
-#: yapet/main.cc:304
+#: yapet/main.cc:302
 msgid " without argument"
 msgstr ""
 
-#: yapet/main.cc:308
+#: yapet/main.cc:306
 msgid "unknown argument"
 msgstr ""
 
@@ -728,7 +728,7 @@ msgstr ""
 msgid "rand() not available on system"
 msgstr ""
 
-#: yapet/pwgen/charpool.h:129
+#: yapet/pwgen/charpool.h:133
 msgid "NULL pointer passed."
 msgstr ""
 
