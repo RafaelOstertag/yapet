@@ -39,7 +39,7 @@ if BUILDPWGEN
 AM_CPPFLAGS += -I$(top_srcdir)/yapet/pwgen
 endif
 if USE_INCLUDED_LIBINTL
-AM_CPPFLAGS += -I$(top_srcdir)/intl 
+AM_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 corrupt_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
