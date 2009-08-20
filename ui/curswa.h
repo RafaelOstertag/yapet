@@ -93,12 +93,6 @@ enum {
      */
     KEY_SPACE = ' ',
 #endif // KEY_SPACE
-#ifndef KEY_CTRLG
-    /**
-     * The value returned by \c [w]getch() upon pressing CTRL+G
-     */
-    KEY_CTRLG = 7,
-#endif // KEY_CTRLG
     SPACER_TO_AVOID_COMPILER_WARNINGS
 };
 
