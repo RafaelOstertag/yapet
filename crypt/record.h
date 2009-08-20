@@ -69,222 +69,231 @@ namespace YAPET {
      */
     template<class T>
     class Record {
-	private:
-	    /**
-	     * @brief The size of the memory allocated.
-	     *
-	     * The size of the memory allocated. Used to zero out the
-	     * memory used by the struct.
-	     */
-	    uint32_t _size;
-	    /**
-	     * @brief Pointer to the struct.
-	     *
-	     * Pointer to the struct on the heap.
-	     */
-	    T* data;
+        private:
+            /**
+             * @brief The size of the memory allocated.
+             *
+             * The size of the memory allocated. Used to zero out the
+             * memory used by the struct.
+             */
+            uint32_t _size;
+            /**
+             * @brief Pointer to the struct.
+             *
+             * Pointer to the struct on the heap.
+             */
+            T* data;
 
-	    /**
-	     * @brief Allocate memory for the struct.
-	     *
-	     * Allocates the proper amount of memory for holding the
-	     * struct and sets the \c _size field.
-	     */
-	    void alloc_mem() throw(YAPETException) {
-		data = (T*) malloc(sizeof(T));
-		if (data == NULL)
-		    throw YAPETException(_("Memory exhausted"));
+            /**
+             * @brief Allocate memory for the struct.
+             *
+             * Allocates the proper amount of memory for holding the
+             * struct and sets the \c _size field.
+             */
+            void alloc_mem() throw (YAPETException) {
+                data = (T*) malloc (sizeof (T) );
 
-		_size = sizeof(T);
-	    }
+                if (data == NULL)
+                    throw YAPETException (_ ("Memory exhausted") );
 
-	    /**
-	     * @brief Zero out and free memory.
-	     *
-	     * Zero'es the memory out and frees it.
-	     */
-	    void free_mem() {
-		memset(data, 0, _size);
-		free(data);
-	    }
+                _size = sizeof (T);
+            }
 
-	public:
-	    /**
-	     * @brief Allocates memory.
-	     *
-	     * Allocates memory of the proper size and copies the
-	     * content of the given struct \c d.
-	     *
-	     * @param d reference to the struct from where the content
-	     * is copied to the allocated memory.
-	     */
-	    Record<T>(const T& d) throw(YAPETException) {
-		alloc_mem();
-		memcpy(data, &d, sizeof(T));
-	    }
+            /**
+             * @brief Zero out and free memory.
+             *
+             * Zero'es the memory out and frees it.
+             */
+            void free_mem() {
+                memset (data, 0, _size);
+                free (data);
+            }
 
-	    /**
-	     * @brief Allocates memory to hold a struct of the type \c
-	     * T.
-	     *
-	     * Allocates memory to hold a struct of the type \c T.
-	     */
-	    Record<T>() throw (YAPETException){
-		alloc_mem();
-	    }
+        public:
+            /**
+             * @brief Allocates memory.
+             *
+             * Allocates memory of the proper size and copies the
+             * content of the given struct \c d.
+             *
+             * @param d reference to the struct from where the content
+             * is copied to the allocated memory.
+             */
+            Record<T> (const T& d) throw (YAPETException) {
+                alloc_mem();
+                memcpy (data, &d, sizeof (T) );
+            }
 
-	    Record<T>(const Record<T>& r) throw (YAPETException) {
-		alloc_mem();
-		memcpy(data, r.data, _size);
-	    }
+            /**
+             * @brief Allocates memory to hold a struct of the type \c
+             * T.
+             *
+             * Allocates memory to hold a struct of the type \c T.
+             */
+            Record<T>() throw (YAPETException) {
+                alloc_mem();
+            }
 
-	    virtual ~Record<T>() {
-		free_mem();
-	    }
+            Record<T> (const Record<T>& r) throw (YAPETException) {
+                alloc_mem();
+                memcpy (data, r.data, _size);
+            }
 
-	    /**
-	     * @brief Get the size of the allocated memory.
-	     *
-	     * Get the size of the allocated memory.
-	     */
-	    uint32_t size() const { return _size; }
+            virtual ~Record<T>() {
+                free_mem();
+            }
 
-	    /**
-	     * @brief Get the pointer to the struct.
-	     *
-	     * Gets the pointer to the struct on the heap.
-	     *
-	     * @return pointer to the struct on the heap.
-	     */
-	    T* getData() { return data; }
-	    /**
-	     * @brief Get the pointer to the struct.
-	     *
-	     * Gets the pointer to the struct on the heap.
-	     *
-	     * @return pointer to the struct on the heap.
-	     */
-	    const T* getData() const { return data; }
+            /**
+             * @brief Get the size of the allocated memory.
+             *
+             * Get the size of the allocated memory.
+             */
+            uint32_t size() const {
+                return _size;
+            }
 
-	    /**
-	     * @brief Cast to the pointer of the struct.
-	     *
-	     * Cast to the pointer of the struct on the heap.
-	     *
-	     * @return pointer to the struct on the heap.
-	     */
-	    operator T*() { return data; }
-	    /**
-	     * @brief Cast to the pointer of the struct.
-	     *
-	     * Cast to the pointer of the struct on the heap.
-	     *
-	     * @return pointer to the struct on the heap.
-	     */
-	    operator const T*() const { return data; }
-	    /**
-	     * @brief Cast operator.
-	     *
-	     * Cast operator used by the openssl functions.
-	     *
-	     * @return pointer to the struct casted to an unsigned 8 bits
-	     * integer pointer.
-	     */
-	    operator uint8_t*() { return (uint8_t*)data; }
-	    /**
-	     * @brief Cast operator.
-	     *
-	     * Cast operator used by the openssl functions.
-	     *
-	     * @return pointer to the struct casted to an unsigned 8 bits
-	     * integer pointer.
-	     */
-	    operator const uint8_t*() const { return (const uint8_t*)data; }
+            /**
+             * @brief Get the pointer to the struct.
+             *
+             * Gets the pointer to the struct on the heap.
+             *
+             * @return pointer to the struct on the heap.
+             */
+            T* getData() {
+                return data;
+            }
+            /**
+             * @brief Get the pointer to the struct.
+             *
+             * Gets the pointer to the struct on the heap.
+             *
+             * @return pointer to the struct on the heap.
+             */
+            const T* getData() const {
+                return data;
+            }
 
-	    /**
-	     * @brief Assignment operator.
-	     *
-	     * Assigns another \c Record to \c this.
-	     *
-	     * @param r reference to a \c Record.
-	     *
-	     * @return const reference to \c this.
-	     */
-	    const Record<T>& operator=(const Record<T>& r)
-		throw(YAPETException) {
-		if (this == &r) return *this;
+            /**
+             * @brief Cast to the pointer of the struct.
+             *
+             * Cast to the pointer of the struct on the heap.
+             *
+             * @return pointer to the struct on the heap.
+             */
+            operator T*() {
+                return data;
+            }
+            /**
+             * @brief Cast to the pointer of the struct.
+             *
+             * Cast to the pointer of the struct on the heap.
+             *
+             * @return pointer to the struct on the heap.
+             */
+            operator const T*() const {
+                return data;
+            }
+            /**
+             * @brief Cast operator.
+             *
+             * Cast operator used by the openssl functions.
+             *
+             * @return pointer to the struct casted to an unsigned 8 bits
+             * integer pointer.
+             */
+            operator uint8_t*() {
+                return (uint8_t*) data;
+            }
+            /**
+             * @brief Cast operator.
+             *
+             * Cast operator used by the openssl functions.
+             *
+             * @return pointer to the struct casted to an unsigned 8 bits
+             * integer pointer.
+             */
+            operator const uint8_t*() const {
+                return (const uint8_t*) data;
+            }
 
-		free_mem();
+            /**
+             * @brief Assignment operator.
+             *
+             * Assigns another \c Record to \c this.
+             *
+             * @param r reference to a \c Record.
+             *
+             * @return const reference to \c this.
+             */
+            const Record<T>& operator= (const Record<T>& r)
+            throw (YAPETException) {
+                if (this == &r) return *this;
 
-		// This sets _size member too
-		alloc_mem();
-		memcpy(data, r.data, r._size);
+                free_mem();
+                // This sets _size member too
+                alloc_mem();
+                memcpy (data, r.data, r._size);
+                return *this;
+            }
 
-		return *this;
-	    }
+            /**
+             * @brief Assignment operator.
+             *
+             * Assigns a struct of type \c T to \c this.
+             *
+             * @param r reference to a struct of type \c T.
+             *
+             * @return const reference to \c this.
+             */
+            const Record<T>& operator= (const T& r) throw (YAPETException) {
+                free_mem();
+                // This sets _size member too
+                alloc_mem();
+                memcpy (data, &r, _size);
+                return *this;
+            }
 
-	    /**
-	     * @brief Assignment operator.
-	     *
-	     * Assigns a struct of type \c T to \c this.
-	     *
-	     * @param r reference to a struct of type \c T.
-	     *
-	     * @return const reference to \c this.
-	     */
-	    const Record<T>& operator=(const T& r) throw(YAPETException) {
-		free_mem();
-		// This sets _size member too
-		alloc_mem();
-		memcpy(data, &r, _size);
+            /**
+             * @brief Assignment operator.
+             *
+             * Assigns a struct of type \c T to \c this.
+             *
+             * @param r pointer to a struct of type \c T.
+             *
+             * @return const reference to \c this.
+             */
+            const Record<T>& operator= (const T* r) throw (YAPETException) {
+                free_mem();
+                // This sets _size member too
+                alloc_mem();
+                memcpy (data, r, _size);
+                return *this;
+            }
 
-		return *this;
-	    }
+            /**
+             * @brief Assignment operator.
+             *
+             * Assigns a \c BDBuffer. If the size of the \c BDBuffer is smaller
+             * than the size of the struct, an exception is thrown.
+             *
+             * Only as much bytes as fit into struct are copied from the \c
+             * BDBuffer.
+             *
+             * @param bdb reference to a \c BDBuffer.
+             *
+             * @return const reference to \c this.
+             */
+            const Record<T>& operator= (const BDBuffer& bdb)
+            throw (YAPETException) {
+                if (bdb.size() < _size)
+                    throw YAPETException (_ ("BDBuffer too small") );
 
-	    /**
-	     * @brief Assignment operator.
-	     *
-	     * Assigns a struct of type \c T to \c this.
-	     *
-	     * @param r pointer to a struct of type \c T.
-	     *
-	     * @return const reference to \c this.
-	     */
-	    const Record<T>& operator=(const T* r) throw(YAPETException){
-		free_mem();
-		// This sets _size member too
-		alloc_mem();
-		memcpy(data, r, _size);
-
-		return *this;
-	    }
-
-	    /**
-	     * @brief Assignment operator.
-	     *
-	     * Assigns a \c BDBuffer. If the size of the \c BDBuffer is smaller
-	     * than the size of the struct, an exception is thrown.
-	     *
-	     * Only as much bytes as fit into struct are copied from the \c
-	     * BDBuffer.
-	     *
-	     * @param bdb reference to a \c BDBuffer.
-	     *
-	     * @return const reference to \c this.
-	     */
-	    const Record<T>& operator=(const BDBuffer& bdb)
-		throw(YAPETException) {
-		if (bdb.size() < _size)
-		    throw YAPETException(_("BDBuffer too small"));
-
-		free_mem();
-		// This sets _size member too
-		alloc_mem();
-
-		memcpy(data, bdb(), _size);
-
-		return *this;
-	    }
+                free_mem();
+                // This sets _size member too
+                alloc_mem();
+                memcpy (data, bdb(), _size);
+                return *this;
+            }
     };
 }
 

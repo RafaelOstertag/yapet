@@ -51,44 +51,55 @@
  *
  * Dialog for entering the search term
  */
-class SearchDialog : protected YAPETUI::BaseWindow {
+class SearchDialog : protected YAPET::UI::BaseWindow {
     private:
-	enum {
-	    HEIGHT = 6
-	};
+        enum {
+            HEIGHT = 6
+        };
 
-	WINDOW* window;
-	YAPETUI::InputWidget* searchtermw;
-	YAPETUI::Button* okbutton;
-	YAPETUI::Button* cancelbutton;
-	YAPETUI::secstring searchterm;
+        WINDOW* window;
+        YAPET::UI::InputWidget* searchtermw;
+        YAPET::UI::Button* okbutton;
+        YAPET::UI::Button* cancelbutton;
+        YAPET::UI::secstring searchterm;
 
-	bool canceled;
+        bool canceled;
 
-	inline SearchDialog(const SearchDialog&) {}
-	inline const SearchDialog& operator=(const SearchDialog&) {
-	    return *this; }
+        inline SearchDialog (const SearchDialog&) {}
+        inline const SearchDialog& operator= (const SearchDialog&) {
+            return *this;
+        }
 
-	inline int getWidth() const { return maxX() - 8; }
-	inline int getHeight() const { return HEIGHT; }
+        inline int getWidth() const {
+            return maxX() - 8;
+        }
+        inline int getHeight() const {
+            return HEIGHT;
+        }
 
-	inline int getStartX() const { return maxX()/2 - getWidth()/2; }
-	inline int getStartY() const { return maxY()/2 - getHeight()/2; }
+        inline int getStartX() const {
+            return maxX() / 2 - getWidth() / 2;
+        }
+        inline int getStartY() const {
+            return maxY() / 2 - getHeight() / 2;
+        }
 
-	void createWindow() throw(YAPETUI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
 
     public:
-	SearchDialog() throw (YAPETUI::UIException);
-	~SearchDialog();
+        SearchDialog() throw (YAPET::UI::UIException);
+        ~SearchDialog();
 
-	void run() throw(YAPETUI::UIException);
-	void resize() throw(YAPETUI::UIException);
-	void refresh() throw(YAPETUI::UIException);
+        void run() throw (YAPET::UI::UIException);
+        void resize() throw (YAPET::UI::UIException);
+        void refresh() throw (YAPET::UI::UIException);
 
-	inline bool isCanceled() const { return canceled; }
-	inline const char* getSearchTerm() const {
-	    return searchtermw->getText().c_str();
-	}
+        inline bool isCanceled() const {
+            return canceled;
+        }
+        inline const char* getSearchTerm() const {
+            return searchtermw->getText().c_str();
+        }
 };
 
 #endif // _SEARCHDIALOG_H

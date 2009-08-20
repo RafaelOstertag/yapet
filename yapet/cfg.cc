@@ -29,29 +29,67 @@
 #endif
 
 #include "cfg.h"
+// Used for the character pools
+#include "pwgen/pwgen.h"
 
 using namespace YAPET::CONFIG;
 
 //! The default .pet file to open
-std::string Config::def_petfile ("");
+const std::string Config::def_petfile ("");
 //! The default lock timeout
-int Config::def_timeout (600);
+const int Config::def_timeout (600);
 //! Default for checking file security
-bool Config::def_filesecurity (true);
+const bool Config::def_filesecurity (true);
 //! Default for ignoring the rc file
-bool Config::def_ignorerc (false);
-
-std::string Config::getDefPetfile() {
+const bool Config::def_ignorerc (false);
+const size_t Config::def_pwlen (10);
+const int Config::def_character_pools (YAPET::PWGEN::LETTERS |
+				       YAPET::PWGEN::DIGITS |
+				       YAPET::PWGEN::PUNCT |
+				       YAPET::PWGEN::SPECIAL);
+std::string
+Config::getDefPetfile() {
     return def_petfile;
 }
-unsigned int Config::getDefTimeout() {
+unsigned int
+Config::getDefTimeout() {
     return def_timeout;
 }
-bool Config::getDefFilesecurity() {
+bool
+Config::getDefFilesecurity() {
     return def_filesecurity;
 }
-bool Config::getDefIgnorerc() {
+bool
+ Config::getDefIgnorerc() {
     return def_ignorerc;
+}
+size_t
+Config::getDefPWLength() {
+    return def_pwlen;
+}
+int
+Config::getDefCharPools() {
+    return def_character_pools;
+}
+bool
+Config::getDefCPoolLetters() {
+   return def_character_pools & YAPET::PWGEN::LETTERS ? true : false;
+}
+bool
+Config::getDefCPoolDigits(){
+    return def_character_pools & YAPET::PWGEN::DIGITS ? true : false;
+}
+bool
+Config::getDefCPoolPunct(){
+    return def_character_pools & YAPET::PWGEN::PUNCT ? true : false;
+}
+bool 
+Config::getDefCPoolSpecial(){
+    return def_character_pools & YAPET::PWGEN::SPECIAL ? true : false;
+}
+bool
+Config::getDefCPoolOther(){
+   return def_character_pools & YAPET::PWGEN::OTHER ? true : false;
 }
 
 std::string
@@ -64,9 +102,9 @@ Config::cleanupPath (const std::string& s) const {
 
     if (s.empty() ) {
 #ifdef CFGDEBUG
-	std::cout << "\tgot empty string." << std::endl;
+        std::cout << "\tgot empty string." << std::endl;
 #endif
-	return s;
+        return s;
     }
 
     std::string work_copy (s);
@@ -76,7 +114,7 @@ Config::cleanupPath (const std::string& s) const {
     std::string::size_type pos;
 
     while ( (pos = work_copy.find ("//", 0) ) != std::string::npos)
-	work_copy.erase (pos, 1);
+        work_copy.erase (pos, 1);
 
 #ifdef CFGDEBUG
     std::cout << "\tAfter cleanup: " << work_copy << std::endl;
@@ -85,18 +123,18 @@ Config::cleanupPath (const std::string& s) const {
 }
 
 Config::Config() : cfgfile (NULL),
-	cl_petfile(),
-	cl_timeout(),
-	cl_filesecurity(),
-	cl_ignorerc() {
+        cl_petfile(),
+        cl_timeout(),
+        cl_filesecurity(),
+        cl_ignorerc() {
     // Empty
 }
 
 Config::Config (const Config& c) {
     if (c.cfgfile != NULL)
-	cfgfile = new ConfigFile (* (c.cfgfile) );
+        cfgfile = new ConfigFile (* (c.cfgfile) );
     else
-	cfgfile = NULL;
+        cfgfile = NULL;
 
     cl_petfile = c.cl_petfile;
     cl_timeout = c.cl_timeout;
@@ -106,7 +144,7 @@ Config::Config (const Config& c) {
 
 Config::~Config() {
     if (cfgfile != NULL)
-	delete cfgfile;
+        delete cfgfile;
 }
 
 /**
@@ -122,38 +160,38 @@ Config::loadConfigFile (std::string filename) {
 
     if (cl_ignorerc.ignore) {
 #ifdef CFGDEBUG
-	std::cout << "\tadvised to ignore rc file!" << std::endl;
+        std::cout << "\tadvised to ignore rc file!" << std::endl;
 #endif
 
-	if (cfgfile != NULL) {
-	    delete cfgfile;
-	    cfgfile = NULL;
-	}
+        if (cfgfile != NULL) {
+            delete cfgfile;
+            cfgfile = NULL;
+        }
 
-	return;
+        return;
     }
 
     if (cfgfile != NULL)
-	delete cfgfile;
+        delete cfgfile;
 
     cfgfile = new ConfigFile (filename);
 
     if (!cfgfile->isOpenSuccess() ) {
-	delete cfgfile;
-	cfgfile = NULL;
+        delete cfgfile;
+        cfgfile = NULL;
 #ifdef CFGDEBUG
-	std::cout << "\topen " << filename << " was not successful" << std::endl;
+        std::cout << "\topen " << filename << " was not successful" << std::endl;
 #endif
     } else {
 #ifdef CFGDEBUG
-	std::cout << "\topen " << cfgfile->getConfigFilePath() << " successful" << std::endl;
+        std::cout << "\topen " << cfgfile->getConfigFilePath() << " successful" << std::endl;
 
-	if (cfgfile->getIgnoreRC() ) {
-	    std::cout << "\tRC file says to ignore itself!" << std::endl;
-	}
+        if (cfgfile->getIgnoreRC() ) {
+            std::cout << "\tRC file says to ignore itself!" << std::endl;
+        }
 
 #endif
-	cl_ignorerc.ignore = cfgfile->getIgnoreRC();
+        cl_ignorerc.ignore = cfgfile->getIgnoreRC();
     }
 }
 
@@ -167,28 +205,28 @@ Config::getPetFile() const {
 
     if (cl_petfile.set_on_cl) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cmd line: " << cl_petfile.name << std::endl;
+        std::cout << "\tvalue from cmd line: " << cl_petfile.name << std::endl;
 #endif
-	return cl_petfile.name;
+        return cl_petfile.name;
     }
 
     if (cl_ignorerc.ignore) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_petfile << std::endl;
+        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_petfile << std::endl;
 #endif
-	return Config::def_petfile;
+        return Config::def_petfile;
     }
 
     if (cfgfile != NULL) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cfgfile: " << cfgfile->getFileToLoad() << std::endl;
+        std::cout << "\tvalue from cfgfile: " << cfgfile->getFileToLoad() << std::endl;
 #endif
-	return std::string (cleanupPath (cfgfile->getFileToLoad() ) );
+        return std::string (cleanupPath (cfgfile->getFileToLoad() ) );
     }
 
 #ifdef CFGDEBUG
     else {
-	std::cout << "\tcfgfile == NULL " << std::endl;
+        std::cout << "\tcfgfile == NULL " << std::endl;
     }
 
 #endif
@@ -208,28 +246,28 @@ Config::getTimeout() const {
 
     if (cl_timeout.set_on_cl) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cmd line: " << cl_timeout.amount << std::endl;
+        std::cout << "\tvalue from cmd line: " << cl_timeout.amount << std::endl;
 #endif
-	return cl_timeout.amount;
+        return cl_timeout.amount;
     }
 
     if (cl_ignorerc.ignore) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_timeout << std::endl;
+        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_timeout << std::endl;
 #endif
-	return Config::def_timeout;
+        return Config::def_timeout;
     }
 
     if (cfgfile != NULL) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cfgfile: " << cfgfile->getLockTimeout() << std::endl;
+        std::cout << "\tvalue from cfgfile: " << cfgfile->getLockTimeout() << std::endl;
 #endif
-	return cfgfile->getLockTimeout();
+        return cfgfile->getLockTimeout();
     }
 
 #ifdef CFGDEBUG
     else {
-	std::cout << "\tcfgfile == NULL " << std::endl;
+        std::cout << "\tcfgfile == NULL " << std::endl;
     }
 
 #endif
@@ -249,28 +287,28 @@ Config::getFilesecurity() const {
 
     if (cl_filesecurity.set_on_cl) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cmd line: " << cl_filesecurity.check << std::endl;
+        std::cout << "\tvalue from cmd line: " << cl_filesecurity.check << std::endl;
 #endif
-	return cl_filesecurity.check;
+        return cl_filesecurity.check;
     }
 
     if (cl_ignorerc.ignore) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_filesecurity << std::endl;
+        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_filesecurity << std::endl;
 #endif
-	return Config::def_filesecurity;
+        return Config::def_filesecurity;
     }
 
     if (cfgfile != NULL) {
 #ifdef CFGDEBUG
-	std::cout << "\tvalue from cfgfile: " << cfgfile->getUseFileSecurity() << std::endl;
+        std::cout << "\tvalue from cfgfile: " << cfgfile->getUseFileSecurity() << std::endl;
 #endif
-	return cfgfile->getUseFileSecurity();
+        return cfgfile->getUseFileSecurity();
     }
 
 #ifdef CFGDEBUG
     else {
-	std::cout << "\tcfgfile == NULL " << std::endl;
+        std::cout << "\tcfgfile == NULL " << std::endl;
     }
 
 #endif
@@ -280,24 +318,59 @@ Config::getFilesecurity() const {
     return Config::def_filesecurity;
 }
 
+// This function is trivial, since at the time being it can only be set in the
+// configuration file.
+size_t
+Config::getPWGenPWLen() const {
+    if (cfgfile != NULL) {
+	return cfgfile->getPWGenPWLen() > 0 ? cfgfile->getPWGenPWLen() :
+	def_pwlen;
+    } else {
+	return def_pwlen;
+    }
+}
+
+int
+Config::getCharPools() const {
+    if (cfgfile != NULL) {
+	int retval = 0;
+	if (cfgfile->getPWGenLetters())
+	    retval |= YAPET::PWGEN::LETTERS;
+	if (cfgfile->getPWGenDigits())
+	    retval |= YAPET::PWGEN::DIGITS;
+	if (cfgfile->getPWGenPunct())
+	    retval |= YAPET::PWGEN::PUNCT;
+	if (cfgfile->getPWGenSpecial())
+	    retval |= YAPET::PWGEN::SPECIAL;
+	if (cfgfile->getPWGenOther())
+	    retval |= YAPET::PWGEN::OTHER;
+	
+	return retval != 0 ? retval : def_character_pools;
+    } else {
+	return def_character_pools;
+    }
+}
+
+
+
 
 const Config&
 Config::operator= (const Config & c) {
     if (&c == this)
-	return *this;
+        return *this;
 
     if (c.cfgfile != NULL &&
-	    cfgfile != NULL ) {
-	delete cfgfile;
-	cfgfile = new ConfigFile (* (c.cfgfile) );
+            cfgfile != NULL ) {
+        delete cfgfile;
+        cfgfile = new ConfigFile (* (c.cfgfile) );
     }
 
     if (c.cfgfile == NULL &&
-	    cfgfile != NULL ) {
-	delete cfgfile;
-	cfgfile = NULL;
+            cfgfile != NULL ) {
+        delete cfgfile;
+        cfgfile = NULL;
     } else {
-	cfgfile = NULL;
+        cfgfile = NULL;
     }
 
     cl_petfile = c.cl_petfile;

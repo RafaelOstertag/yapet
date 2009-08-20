@@ -52,96 +52,100 @@
  *
  * @note The filename returned by \c getFilepath() always ends with \c .pet.
  */
-class FileOpen : protected YAPETUI::BaseWindow {
+class FileOpen : protected YAPET::UI::BaseWindow {
     private:
-	enum {
-	    /**
-	     * @brief The max filename length.
-	     *
-	     * This is only used if we are unable to determine the max length
-	     * of the filename by other means.
-	     */
-	    FALLBACK_PATH_MAX=255
-	};
+        enum {
+            /**
+             * @brief The max filename length.
+             *
+             * This is only used if we are unable to determine the max length
+             * of the filename by other means.
+             */
+            FALLBACK_PATH_MAX = 255
+        };
 
-	std::string title;
-	WINDOW* window;
-	YAPETUI::ListWidget<YAPETUI::secstring>* dir;
-	YAPETUI::ListWidget<YAPETUI::secstring>* files;
-	YAPETUI::InputWidget* input;
-	YAPETUI::Button* okbutton;
-	YAPETUI::Button* cancelbutton;
+        std::string title;
+        WINDOW* window;
+        YAPET::UI::ListWidget<YAPET::UI::secstring>* dir;
+        YAPET::UI::ListWidget<YAPET::UI::secstring>* files;
+        YAPET::UI::InputWidget* input;
+        YAPET::UI::Button* okbutton;
+        YAPET::UI::Button* cancelbutton;
 
-	bool canceled;
+        bool canceled;
 
-	inline FileOpen(const FileOpen&) {}
-	inline const FileOpen& operator=(const FileOpen&) { return *this; }
+        inline FileOpen (const FileOpen&) {}
+        inline const FileOpen& operator= (const FileOpen&) {
+            return *this;
+        }
 
-	YAPETUI::secstring directory;
-	YAPETUI::secstring filename;
+        YAPET::UI::secstring directory;
+        YAPET::UI::secstring filename;
 
-	inline int windowWidth() {
-	    return maxX() - 8;
-	}
+        inline int windowWidth() {
+            return maxX() - 8;
+        }
 
-	inline int windowHeight() {
-	    return maxY() - 4;
-	}
+        inline int windowHeight() {
+            return maxY() - 4;
+        }
 
-	inline int startX() {
-	    return minX() + 4;
-	}
+        inline int startX() {
+            return minX() + 4;
+        }
 
-	inline int startY() {
-	    return minY() + 2;
-	}
+        inline int startY() {
+            return minY() + 2;
+        }
 
-	void createWindows() throw(YAPETUI::UIException);
+        void createWindows() throw (YAPET::UI::UIException);
 
-	void printTitle() throw(YAPETUI::UIException);
+        void printTitle() throw (YAPET::UI::UIException);
 
-	void printCWD() throw(YAPETUI::UIException);
+        void printCWD() throw (YAPET::UI::UIException);
 
     protected:
-	void getEntries(std::list<YAPETUI::secstring>& d,
-			std::list<YAPETUI::secstring>& f)
-	    throw(YAPETUI::UIException);
+        void getEntries (std::list<YAPET::UI::secstring>& d,
+                         std::list<YAPET::UI::secstring>& f)
+        throw (YAPET::UI::UIException);
 
-	void getcwd() throw(YAPETUI::UIException);
-	void cd(const YAPETUI::secstring d) throw(YAPETUI::UIException);
+        void getcwd() throw (YAPET::UI::UIException);
+        void cd (const YAPET::UI::secstring d) throw (YAPET::UI::UIException);
 
     public:
-	FileOpen(std::string t) throw(YAPETUI::UIException);
-	virtual ~FileOpen();
+        FileOpen (std::string t) throw (YAPET::UI::UIException);
+        virtual ~FileOpen();
 
-	void run() throw(YAPETUI::UIException);
-	void refresh() throw(YAPETUI::UIException);
+        void run() throw (YAPET::UI::UIException);
+        void refresh() throw (YAPET::UI::UIException);
 
-	void resize() throw(YAPETUI::UIException);
+        void resize() throw (YAPET::UI::UIException);
 
-	std::string getFilepath();
+        std::string getFilepath();
 
-	inline bool isCanceled() const { return filename.empty() ? true : canceled; }
+        inline bool isCanceled() const {
+            return filename.empty() ? true : canceled;
+        }
 };
 
 inline
-bool endswith(YAPETUI::secstring h, YAPETUI::secstring n) {
-    if (n.length() > h.length())
-	return false;
+bool endswith (YAPET::UI::secstring h, YAPET::UI::secstring n) {
+    if (n.length() > h.length() )
+        return false;
 
-    if ( h.substr(h.length()-n.length(),n.length()) == n)
-	return true;
+    if ( h.substr (h.length() - n.length(), n.length() ) == n)
+        return true;
 
     return false;
 }
 
 inline
-bool endswith(std::string h, std::string n) {
-    if (n.length() > h.length())
-	return false;
+bool endswith (std::string h, std::string n) {
+    if (n.length() > h.length() )
+        return false;
 
-    if ( h.substr(h.length()-n.length(),n.length()) == n)
-	return true;
+    if ( h.substr (h.length() - n.length(), n.length() ) == n)
+        return true;
 
     return false;
 }

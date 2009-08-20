@@ -23,48 +23,44 @@
 /**
  * @file
  *
- * Header file for constant values.
+ * Header file for global values
  */
 
-#ifndef _CONSTS_H
-#define _CONSTS_H
+#ifndef _GLOBALS_H
+#define _GLOBALS_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
-
 namespace YAPET {
-    namespace CONSTS {
+    /**
+     * Holding values that are globally read- and writable.
+     */
+    namespace GLOBALS {
 
-        class Consts {
+        class Globals {
             private:
-                //! Holds the default suffix for yapet files
-                static const std::string default_suffix;
-                //! The default file name of the config file
-                static const std::string default_rcfilename;
-		//! Maximum password length
-		static const size_t max_pwlen;
-                inline Consts() {}
-                inline ~Consts() {}
-                inline Consts (const Consts&) {}
-                inline const Consts& operator= (const Consts&) {
+		static int selected_character_pools;
+		static size_t selected_password_length;
+                inline Globals() {}
+                inline ~Globals() {}
+                inline Globals (const Globals&) {}
+                inline const Globals& operator= (const Globals&) {
                     return *this;
                 }
 
             public:
-                static const std::string& getDefaultSuffix();
-                static const std::string& getDefaultRCFilename();
-		static size_t getMaxPWLength();
+		static void setCharacterPools(int cp);
+		static int getCharacterPools();
+		static void setPasswordLength(size_t pl);
+		static size_t getPasswordLength();
         };
 
     }
 }
-#endif // _CONSTS_H
+#endif // _GLOBALS_H

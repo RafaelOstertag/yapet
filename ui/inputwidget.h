@@ -45,66 +45,97 @@
 #include "uiexception.h"
 #include "secstring.h"
 
-namespace YAPETUI {
-    /**
-     * @brief A widget where text can be entered.
-     *
-     * A single line widget where text can be entered. The text
-     * entered can be obtained by calling \c getText().
-     *
-     * The text is stored in a \c secstring.
-     *
-     * To activate the widget, call \c focus().
-     *
-     * @sa secstring
-     */
-    class InputWidget {
-	private:
-	    WINDOW* window;
-	    secstring buffer;
+namespace YAPET {
+    namespace UI {
+        /**
+         * @brief A widget where text can be entered.
+         *
+         * A single line widget where text can be entered. The text
+         * entered can be obtained by calling \c getText().
+         *
+         * The text is stored in a \c secstring.
+         *
+         * To activate the widget, call \c focus().
+         *
+         * @sa secstring
+         */
+        class InputWidget {
+            private:
+                WINDOW* window;
+                secstring buffer;
 
-	    int max_length;
-	    int start_pos;
-	    int pos;
-	    int width;
-	    bool text_changed;
+                int max_length;
+                int start_pos;
+                int pos;
+                int width;
+                bool text_changed;
 
-	    inline InputWidget(const InputWidget&) {}
-	    inline const InputWidget& operator=(const InputWidget&) { return *this; }
+                inline InputWidget (const InputWidget&) {}
+                inline const InputWidget& operator= (const InputWidget&) {
+                    return *this;
+                }
 
-	    void moveBackward() throw(UIException);
-	    void moveForward() throw(UIException);
-	    void moveHome() throw(UIException);
-	    void moveEnd() throw(UIException);
-	    void processBackspace() throw(UIException);
-	    void processDelete() throw(UIException);
-	    void processInput(int ch) throw(UIException);
+                void moveBackward() throw (UIException);
+                void moveForward() throw (UIException);
+                void moveHome() throw (UIException);
+                void moveEnd() throw (UIException);
 
-	protected:
-	    void createWindow(int sx, int sy, int w) throw(UIException);
-	    void visibleCursor(bool v) const;
-	    inline const WINDOW* getWindow() const { return window; }
-	    inline WINDOW* getWindow() { return window; }
-	    inline int getStartPos() const { return start_pos; }
-	    inline int getPos() const { return pos; }
-	    inline int getWidth() const { return width; }
-	    inline secstring& getBuffer() { return buffer; }
-	    inline const secstring& getBuffer() const { return buffer; }
+            protected:
+                virtual void processBackspace() throw (UIException);
+                virtual void processDelete() throw (UIException);
+                virtual void processInput (int ch) throw (UIException);
+                virtual void createWindow (int sx, int sy, int w) throw (UIException);
+                virtual inline const WINDOW* getWindow() const {
+                    return window;
+                }
+                virtual inline WINDOW* getWindow() {
+                    return window;
+                }
+                virtual inline int getStartPos() const {
+                    return start_pos;
+                }
+                virtual inline int getPos() const {
+                    return pos;
+                }
+                virtual inline int getWidth() const {
+                    return width;
+                }
+                virtual inline secstring& getBuffer() {
+                    return buffer;
+                }
+                virtual inline const secstring& getBuffer() const {
+                    return buffer;
+                }
 
+            public:
+                InputWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
+                virtual ~InputWidget();
 
-	public:
-	    InputWidget(int sx, int sy, int w, int ml = 512) throw(UIException);
-	    virtual ~InputWidget();
+                virtual int focus() throw (UIException);
+                virtual void refresh() throw (UIException);
+                virtual void resize (int sx, int sy, int w) throw (UIException);
+                virtual void setText (secstring t) throw (UIException);
+                virtual inline secstring getText() const {
+                    return buffer;
+                }
+                virtual void clearText();
+                /**
+                 * setText() does not change that flag, so we can tank
+                 * inputwidgets with data, without having to fear to ask the
+                 * user whether or not to save changes by mistake.
+                 */
+                inline void setTextChanged (bool b) {
+                    text_changed = b;
+                }
+                inline bool isTextChanged() const {
+                    return text_changed;
+                }
+                inline bool hasText() const {
+                    return !buffer.empty();
+                }
 
-	    int focus() throw(UIException);
-	    virtual void refresh() throw(UIException);
-	    void resize(int sx, int sy, int w) throw(UIException);
-	    void setText(secstring t) throw(UIException);
-	    inline secstring getText() const { return buffer; }
-	    void clearText();
-	    bool isTextChanged() const { return text_changed; }
-    };
+        };
 
+    }
 }
-
 #endif // _INPUTWIDGET_H

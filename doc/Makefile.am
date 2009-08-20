@@ -85,7 +85,7 @@ endif # BUILDDOC
 dist-hook: $(sgml_html_targets) $(dist_man1_MANS) $(sgml_text_target)
 
 if HAVEDOXYGEN
-Doxyfile:
+Doxyfile: Doxyfile.in
 	$(editfile) $(srcdir)/$@.in > $(builddir)/$@
 
 source-doc: Doxyfile

@@ -2,10 +2,11 @@
 
 noinst_LIBRARIES = libui.a
 
-libui_a_SOURCES = colors.h secstring.h basewindow.h curswa.h inputwidget.h	\
-uiexception.h passwordwidget.h dialogbox.h basewindow.cc inputwidget.cc		\
-messagebox.h messagebox.cc listwidget.h button.h button.cc passwordwidget.cc	\
-dialogbox.cc colors.cc misc.h misc.cc
+libui_a_SOURCES = colors.h secstring.h basewindow.h curswa.h checkboxgroup.h	\
+checkboxgroup.cc inputwidget.h uiexception.h passwordwidget.h dialogbox.h	\
+basewindow.cc inputwidget.cc messagebox.h messagebox.cc listwidget.h button.h	\
+button.cc passwordwidget.cc dialogbox.cc colors.cc misc.h misc.cc roinwidget.h	\
+roinwidget.cc intinwidget.h intinwidget.cc
 
 libui_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 

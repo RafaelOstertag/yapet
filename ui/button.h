@@ -43,7 +43,6 @@
 #endif
 
 #include "uiexception.h"
-#include "listwidget.h"
 
 /**
  * @brief Holds primitive classes associated with the user interface.
@@ -51,69 +50,74 @@
  * This namepsace holds the primitive classes used to build the user
  * interface of yapet.
  */
-namespace YAPETUI {
-    /**
-     * @brief A button.
-     *
-     * Displays a button.
-     *
-     * When the user presses the button, \c focus() returns \c \\n.
-     */
-    class Button {
-	private:
-	    enum {
-		/**
-		 * @brief The base size of a button.
-		 *
-		 * A button with no label would look like this \c [  ].
-		 */
-		BASE_SIZE = 4
-	    };
+namespace YAPET {
+    namespace UI {
+        /**
+         * @brief A button.
+         *
+         * Displays a button.
+         *
+         * When the user presses the button, \c focus() returns \c \\n.
+         */
+        class Button {
+            private:
+                enum {
+                    /**
+                     * @brief The base size of a button.
+                     *
+                     * A button with no label would look like this \c [  ].
+                     */
+                    BASE_SIZE = 4
+                };
 
-	    WINDOW* window;
+                WINDOW* window;
 
-	    inline Button(const Button&) {}
-	    inline const Button& operator=(const Button&) { return *this; }
+                inline Button (const Button&) {}
+                inline const Button& operator= (const Button&) {
+                    return *this;
+                }
 
-	    std::string label;
+                std::string label;
 
-	    int start_x;
-	    int start_y;
+                int start_x;
+                int start_y;
 
-	protected:
-	    inline virtual void onClick() {};
-	    void createWindow() throw(UIException);
+            protected:
+                inline virtual void onClick() {};
+                void createWindow() throw (UIException);
 
-	public:
-	    Button(std::string l, int x, int y);
-	    virtual ~Button();
+            public:
+                Button (std::string l, int x, int y);
+                virtual ~Button();
 
-	    void setLabel(std::string l) throw(UIException);
-	    std::string getLabel() { return label; }
+                void setLabel (std::string l) throw (UIException);
+                std::string getLabel() {
+                    return label;
+                }
 
-	    void refresh() throw(UIException);
+                void refresh() throw (UIException);
 
-	    /**
-	     * @brief Shows the button and waits for input.
-	     *
-	     * Shows the button and waits for input. When button is
-	     * pressed, it returns \c \\n.
-	     *
-	     * @return on press \c \\n.
-	     */
-	    int focus() throw(UIException);
-	    /**
-	     * @brief Returns the width occupied by the button.
-	     *
-	     * Returns the width occupied on the screen by the button. It is
-	     * calculated by adding \c BASE_SIZE and \c label.length().
-	     *
-	     * @return the width occupied on the screen by the button.
-	     */
-	    inline int getLength() const {
-		return BASE_SIZE + label.length();
-	    }
-    };
+                /**
+                 * @brief Shows the button and waits for input.
+                 *
+                 * Shows the button and waits for input. When button is
+                 * pressed, it returns \c \\n.
+                 *
+                 * @return on press \c \\n.
+                 */
+                int focus() throw (UIException);
+                /**
+                 * @brief Returns the width occupied by the button.
+                 *
+                 * Returns the width occupied on the screen by the button. It is
+                 * calculated by adding \c BASE_SIZE and \c label.length().
+                 *
+                 * @return the width occupied on the screen by the button.
+                 */
+                inline int getLength() const {
+                    return BASE_SIZE + label.length();
+                }
+        };
+    }
 }
-
 #endif // _BUTTON_H

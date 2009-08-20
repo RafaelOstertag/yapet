@@ -27,6 +27,10 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
 #ifdef HAVE_STRING
 # include <string>
 #endif
@@ -46,6 +50,15 @@ namespace YAPET {
          */
         class ConfigFile {
             private:
+		/**
+		 * Values returned by \c readOption.
+		 */
+		enum ReadResult {
+		    OPTION_NOT_FOUND,
+		    OPTION_EMPTY,
+		    OPTION_FOUND
+		};
+
                 std::string filetoload;
                 bool usefsecurity;
                 unsigned int locktimeout;
@@ -56,7 +69,41 @@ namespace YAPET {
                 //! Indicates whether or not the file could have been opened
                 bool opensuccess;
 
+		// PWGen settings
+		bool pwgen_letters;
+		bool pwgen_digits;
+		bool pwgen_punct;
+		bool pwgen_special;
+		bool pwgen_other;
+		size_t pwgen_pwlen;
+
                 std::string getHomeDir() const;
+		
+		/**
+		 * Reads single options into the variable specified.
+		 *
+		 * @param l line read from the config file
+		 *
+		 * @param needle name of the option including the '=' sign
+		 *
+		 * @param ref reference where to store the value read.
+		 *
+		 * @return a value from ReadResult. \c val is only touched if
+		 * return value is \c OPTION_FOUND.
+		 */
+		template<class t> ReadResult readOption(std::string l, const std::string& needle, t& val)  {
+		    if (l.find (needle, 0) == 0) {
+			l.erase (0, needle.length() );
+			if (l.empty())
+			    return OPTION_EMPTY;
+			
+			std::istringstream sstr(l);
+			sstr >> val;
+			return OPTION_FOUND;
+		    }
+		    return OPTION_NOT_FOUND;
+		}
+
                 void parseFile();
 
             public:
@@ -80,6 +127,24 @@ namespace YAPET {
                 inline bool getIgnoreRC() const {
                     return ignorerc ;
                 }
+		inline size_t getPWGenPWLen() const {
+		    return pwgen_pwlen;
+		}
+		inline bool getPWGenLetters() const {
+		    return pwgen_letters;
+		}
+		inline bool getPWGenDigits() const {
+		    return pwgen_digits;
+		}
+		inline bool getPWGenPunct() const {
+		    return pwgen_punct;
+		}
+		inline bool getPWGenSpecial() const {
+		    return pwgen_special;
+		}
+		inline bool getPWGenOther() const {
+		    return pwgen_other;
+		}
                 inline bool isOpenSuccess() const {
                     return opensuccess;
                 }

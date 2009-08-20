@@ -65,12 +65,12 @@ ConfigFile::getHomeDir() const {
     char* hd = getenv ("HOME");
 
     if (hd != NULL) {
-	homedir = hd;
+        homedir = hd;
 
-	if (homedir[homedir.length() ] != '/')
-	    homedir.push_back ('/');
+        if (homedir[homedir.length() ] != '/')
+            homedir.push_back ('/');
 
-	return homedir;
+        return homedir;
     }
 
 #endif
@@ -79,12 +79,12 @@ ConfigFile::getHomeDir() const {
     pwd = getpwuid (getuid() );
 
     if (pwd != NULL) {
-	homedir = pwd->pw_dir;
+        homedir = pwd->pw_dir;
 
-	if (homedir[homedir.length() ] != '/')
-	    homedir.push_back ('/');
+        if (homedir[homedir.length() ] != '/')
+            homedir.push_back ('/');
 
-	return homedir;
+        return homedir;
     }
 
 #endif
@@ -101,104 +101,93 @@ ConfigFile::parseFile() {
 #endif
 
     try {
-	std::ifstream cfgsin (cfgfilepath.c_str() );
+        std::ifstream cfgsin (cfgfilepath.c_str() );
 
-	if (!cfgsin)
-	    return;
+        if (!cfgsin)
+            return;
 
-	const int MAX_LENGTH = 1024;
-	char line[MAX_LENGTH];
+        const int MAX_LENGTH = 1024;
+        char line[MAX_LENGTH];
 
-	while (cfgsin.getline (line, MAX_LENGTH) ) {
-	    std::string l (line);
-	    std::string needle ("load=");
+        while (cfgsin.getline (line, MAX_LENGTH) ) {
+            std::string l (line);
 
-	    if (l.find (needle, 0) == 0) {
-		l.erase (0, needle.length() );
-
-		// Bail out if l is empty
-		if (l.empty() )
+	    ReadResult res;
+	    if ( (res = readOption<std::string>(l, "load=", filetoload)) != OPTION_NOT_FOUND) {
+		if (res == OPTION_EMPTY)
 		    continue;
 
-		filetoload = l;
-
-		if ( filetoload.find (YAPETCONSTS::Consts::getDefaultSuffix(),
+		// Append the suffix if necessary
+		if ( filetoload.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
 				      filetoload.length() -
-				      YAPETCONSTS::Consts::getDefaultSuffix().length() )
-			== std::string::npos )
-		    filetoload += YAPETCONSTS::Consts::getDefaultSuffix();
-
+				      YAPET::CONSTS::Consts::getDefaultSuffix().length() )
+		     == std::string::npos )
+		    filetoload += YAPET::CONSTS::Consts::getDefaultSuffix();
+		
 		// Check if we have to replace the ~. It will only be replaced
 		// if it is the first character of the file to load.
 		if (filetoload.at (0) == '~') {
 #ifdef CFGDEBUG
-		    std::cout << "\tReplace ~ in load option by " <<
-			      getHomeDir() << std::endl;
+                    std::cout << "\tReplace ~ in load option by " <<
+			getHomeDir() << std::endl;
 #endif
-		    filetoload.erase (0, 1);
-		    filetoload = getHomeDir() + filetoload;
-		}
+                    filetoload.erase (0, 1);
+                    filetoload = getHomeDir() + filetoload;
+                }
 
+                continue;
+            }
+
+	    if (readOption<unsigned int>(l, "locktimeout=", locktimeout) != OPTION_NOT_FOUND)
 		continue;
-	    }
 
-	    needle = "locktimeout=";
-
-	    if (l.find (needle, 0) == 0) {
-		l.erase (0, needle.length() );
-
-		// Bail out if l is empty
-		if (l.empty() )
-		    continue;
-
-		std::istringstream sstr (l);
-		sstr >> locktimeout;
+	    if (readOption<bool>(l, "checkfsecurity=", usefsecurity) != OPTION_NOT_FOUND)
 		continue;
-	    }
 
-	    needle = "checkfsecurity=";
-
-	    if (l.find (needle, 0) == 0) {
-		l.erase (0, needle.length() );
-
-		// Bail out if l is empty
-		if (l.empty() )
-		    continue;
-
-		std::istringstream sstr (l);
-		sstr >> usefsecurity;
+            // Yes, the file can say that it should be ignored!
+	    if (readOption<bool>(l, "ignorerc=", ignorerc) != OPTION_NOT_FOUND)
 		continue;
-	    }
 
-	    // Yes, the file can say that it should be ignored!
-	    needle = "ignorerc=";
-
-	    if (l.find (needle, 0) == 0) {
-		l.erase (0, needle.length() );
-
-		// Bail out if l is empty
-		if (l.empty() )
-		    continue;
-
-		std::istringstream sstr (l);
-		sstr >> ignorerc;
+	    if (readOption<size_t>(l, "pwgen_pwlen=", pwgen_pwlen) != OPTION_NOT_FOUND)
 		continue;
-	    }
-	}
 
-	cfgsin.close();
+	    if (readOption<bool>(l, "pwgen_letters=", pwgen_letters) != OPTION_NOT_FOUND)
+		continue;
+
+	    if (readOption<bool>(l, "pwgen_digits=", pwgen_digits) != OPTION_NOT_FOUND)
+		continue;
+
+	    if (readOption<bool>(l, "pwgen_punct=", pwgen_punct) != OPTION_NOT_FOUND)
+		continue;
+
+	    if (readOption<bool>(l, "pwgen_special=", pwgen_special) != OPTION_NOT_FOUND)
+		continue;
+
+	    if (readOption<bool>(l, "pwgen_other=", pwgen_other) != OPTION_NOT_FOUND)
+		continue;
+        }
+
+        cfgsin.close();
     } catch (...) {
-	// lazy me
+        // lazy me
     }
 }
 
 
 ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile() ),
-	usefsecurity (Config::getDefFilesecurity() ),
-	locktimeout (Config::getDefTimeout() ),
-	ignorerc (false),
-	cfgfilepath (""),
-	opensuccess (true) {
+					       usefsecurity (Config::getDefFilesecurity() ),
+					       locktimeout (Config::getDefTimeout() ),
+					       ignorerc (false),
+					       cfgfilepath (""),
+					       opensuccess (true),
+					       pwgen_letters(Config::getDefCPoolLetters()),
+					       pwgen_digits(Config::getDefCPoolDigits()),
+					       pwgen_punct(Config::getDefCPoolPunct()),
+					       pwgen_special(Config::getDefCPoolSpecial()),
+					       pwgen_other(Config::getDefCPoolOther()),
+					       pwgen_pwlen(Config::getDefPWLength())
+					       
+{
 #ifdef CFGDEBUG
     std::cout << " === ";
     std::cout << "ConfigFile::ConfigFile(std::string)";
@@ -206,27 +195,27 @@ ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile
 #endif
 
     if (cfgfile.empty() ) {
-	cfgfilepath = getHomeDir() +
-		      YAPETCONSTS::Consts::getDefaultRCFilename();
+        cfgfilepath = getHomeDir() +
+                      YAPET::CONSTS::Consts::getDefaultRCFilename();
 #ifdef CFGDEBUG
-	std::cout << "\tcfgfile.empty() == true" << std::endl;
-	std::cout << "\tcfgfilepath: " << cfgfilepath << std::endl;
+        std::cout << "\tcfgfile.empty() == true" << std::endl;
+        std::cout << "\tcfgfilepath: " << cfgfilepath << std::endl;
 #endif
     } else {
-	cfgfilepath = cfgfile;
+        cfgfilepath = cfgfile;
 #ifdef CFGDEBUG
-	std::cout << "\tcfgfile.empty() == false" << std::endl;
-	std::cout << "\tcfgfilepath = cfgfile: " << cfgfilepath << std::endl;
+        std::cout << "\tcfgfile.empty() == false" << std::endl;
+        std::cout << "\tcfgfilepath = cfgfile: " << cfgfilepath << std::endl;
 #endif
     }
 
     if (access (cfgfilepath.c_str(), R_OK | F_OK) == -1) {
 #ifdef CFGDEBUG
-	std::cout << "\taccess to " << cfgfilepath << " denied." << std::endl;
+        std::cout << "\taccess to " << cfgfilepath << " denied." << std::endl;
 #endif
-	cfgfilepath.clear();
-	opensuccess = false;
-	return;
+        cfgfilepath.clear();
+        opensuccess = false;
+        return;
     }
 
     parseFile();
@@ -237,16 +226,31 @@ ConfigFile::ConfigFile (const ConfigFile& cfgfile) {
     usefsecurity = cfgfile.usefsecurity;
     locktimeout = cfgfile.locktimeout;
     cfgfilepath = cfgfile.cfgfilepath;
+    opensuccess = cfgfile.opensuccess;
+    pwgen_letters = cfgfile.pwgen_letters;
+    pwgen_digits = cfgfile.pwgen_digits;
+    pwgen_punct = cfgfile.pwgen_punct;
+    pwgen_special = cfgfile.pwgen_special;
+    pwgen_other = cfgfile.pwgen_other;
+    pwgen_pwlen = cfgfile.pwgen_pwlen;
 }
 
 const ConfigFile&
 ConfigFile::operator= (const ConfigFile & cfgfile) {
     if (&cfgfile == this)
-	return *this;
+        return *this;
 
     filetoload = cfgfile.filetoload;
     usefsecurity = cfgfile.usefsecurity;
     locktimeout = cfgfile.locktimeout;
     cfgfilepath = cfgfile.cfgfilepath;
+    opensuccess = cfgfile.opensuccess;
+    pwgen_letters = cfgfile.pwgen_letters;
+    pwgen_digits = cfgfile.pwgen_digits;
+    pwgen_punct = cfgfile.pwgen_punct;
+    pwgen_special = cfgfile.pwgen_special;
+    pwgen_other = cfgfile.pwgen_other;
+    pwgen_pwlen = cfgfile.pwgen_pwlen;
+
     return *this;
 }

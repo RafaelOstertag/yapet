@@ -40,53 +40,47 @@
 using namespace YAPET;
 
 PartDec::PartDec() {
-    memset(name, 0, NAME_SIZE);
+    memset (name, 0, NAME_SIZE);
 }
 
-PartDec::PartDec(BDBuffer& bd, const Key& key)
-    throw(YAPETException) : enc_data(bd) {
-
-    Crypt crypt(key);
-    Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord>(bd);
+PartDec::PartDec (BDBuffer& bd, const Key& key)
+throw (YAPETException) : enc_data (bd) {
+    Crypt crypt (key);
+    Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord> (bd);
     PasswordRecord* ptr_dec_pw_rec = *dec_pw_rec;
-
-    memcpy(name, ptr_dec_pw_rec->name, NAME_SIZE);
+    memcpy (name, ptr_dec_pw_rec->name, NAME_SIZE);
     delete dec_pw_rec;
 }
 
-PartDec::PartDec(Record<PasswordRecord>& pr, const Key& key) throw(YAPETException) {
-    setRecord(pr, key);
+PartDec::PartDec (Record<PasswordRecord>& pr, const Key& key) throw (YAPETException) {
+    setRecord (pr, key);
 }
 
-PartDec::PartDec(const PartDec& pd) : enc_data(pd.enc_data) {
-    memcpy(name, pd.name, NAME_SIZE);
+PartDec::PartDec (const PartDec& pd) : enc_data (pd.enc_data) {
+    memcpy (name, pd.name, NAME_SIZE);
 }
 
 PartDec::~PartDec() {
-    memset(name, 0, NAME_SIZE);
+    memset (name, 0, NAME_SIZE);
 }
 
 void
-PartDec::setRecord(Record<PasswordRecord>& pr, const Key& key) throw(YAPETException) {
-
+PartDec::setRecord (Record<PasswordRecord>& pr, const Key& key) throw (YAPETException) {
     PasswordRecord* ptr_pr = pr;
-    memcpy(name, ptr_pr->name, NAME_SIZE);
-
-    Crypt crypt(key);
-    BDBuffer* enc_pr = crypt.encrypt(pr);
+    memcpy (name, ptr_pr->name, NAME_SIZE);
+    Crypt crypt (key);
+    BDBuffer* enc_pr = crypt.encrypt (pr);
     enc_data = *enc_pr;
     delete enc_pr;
 }
 
 const PartDec&
-PartDec::operator=(const PartDec& pd) {
+PartDec::operator= (const PartDec & pd) {
     if (this == &pd) return *this;
 
-    memset(name, 0, NAME_SIZE);
-    memcpy(name, pd.name, NAME_SIZE);
-
+    memset (name, 0, NAME_SIZE);
+    memcpy (name, pd.name, NAME_SIZE);
     enc_data = pd.enc_data;
-
     return *this;
 }
 
@@ -94,11 +88,11 @@ PartDec::operator=(const PartDec& pd) {
  * This is mainly used for sorting the entries...
  */
 bool
-PartDec::operator<(const PartDec& pd) const {
+PartDec::operator< (const PartDec& pd) const {
     if (this == &pd) return false;
 
-    if (strcmp((const char*)name, (const char*)pd.name) < 0)
-	return true;
+    if (strcmp ( (const char*) name, (const char*) pd.name) < 0)
+        return true;
 
     return false;
 }

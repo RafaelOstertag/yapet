@@ -22,47 +22,55 @@
 #include "statusbar.h"
 
 void
-StatusBar::createWindow() throw(YAPETUI::UIException){
+StatusBar::createWindow() throw (YAPET::UI::UIException) {
     if (statusbar != NULL)
-	throw YAPETUI::UIException(_("May you consider deleting the window before allocating"));
+        throw YAPET::UI::UIException (_ ("May you consider deleting the window before allocating") );
 
-    statusbar = newwin (1, maxX(), maxY() - 1, minX());
+    statusbar = newwin (1, maxX(), maxY() - 1, minX() );
+
     if (statusbar == NULL)
-	throw YAPETUI::UIException (_("statusbar could not be initialized"));
+        throw YAPET::UI::UIException (_ ("statusbar could not be initialized") );
 
     int retval = wattron (statusbar, A_REVERSE);
+
     if (retval == ERR)
-	throw YAPETUI::UIException (_("Error setting attribute"));
+        throw YAPET::UI::UIException (_ ("Error setting attribute") );
 
     retval = wbkgd (statusbar, ' ' | A_REVERSE);
+
     if (retval == ERR)
-	throw YAPETUI::UIException (_("Error setting the statusbar background"));
+        throw YAPET::UI::UIException (_ ("Error setting the statusbar background") );
 
     refresh();
 }
 
-StatusBar::StatusBar() throw (YAPETUI::UIException) : BaseWindow(),
-						      statusbar(NULL) {
+StatusBar::StatusBar() throw (YAPET::UI::UIException) : BaseWindow(),
+        statusbar (NULL) {
     createWindow();
 }
 
 StatusBar::~StatusBar() {
-    wclear(statusbar);
-	delwin (statusbar);
+    wclear (statusbar);
+    delwin (statusbar);
 }
 
 void
-StatusBar::putMsg (std::string msg) throw (YAPETUI::UIException) {
+StatusBar::putMsg (std::string msg) throw (YAPET::UI::UIException) {
     message = msg;
     int retval = wclear (statusbar);
+
     if (retval == ERR)
-	throw YAPETUI::UIException (_("Error erasing status bar"));
-    retval = mywaddstr (statusbar, message.c_str());
+        throw YAPET::UI::UIException (_ ("Error erasing status bar") );
+
+    retval = mywaddstr (statusbar, message.c_str() );
+
     if (retval == ERR)
-	throw YAPETUI::UIException (_("Error adding status message"));
-    retval = wrefresh(statusbar);
+        throw YAPET::UI::UIException (_ ("Error adding status message") );
+
+    retval = wrefresh (statusbar);
+
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error refreshing status bar"));
+        throw YAPET::UI::UIException (_ ("Error refreshing status bar") );
 }
 
 void
@@ -73,11 +81,11 @@ StatusBar::refresh() {
 
 void
 StatusBar::resize() {
-    int retval = delwin(statusbar);
+    int retval = delwin (statusbar);
+
     if (retval == ERR)
-	throw YAPETUI::UIException(_("status bar could not be deleted"));
+        throw YAPET::UI::UIException (_ ("status bar could not be deleted") );
 
     statusbar = NULL;
-
     createWindow();
 }

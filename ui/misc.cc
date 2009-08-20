@@ -68,13 +68,13 @@ static const char* xterms[] = {
  * @param s1 String one
  * @param s2 String two
  */
-inline static int mystrcmp(const char* s1, const char* s2) {
+inline static int mystrcmp (const char* s1, const char* s2) {
 #ifdef HAVE_STRNCASECMP
-    return strncasecmp(s1, s2, (strlen(s1)<strlen(s2) ? strlen(s1) : strlen(s2)) );
+    return strncasecmp (s1, s2, (strlen (s1) < strlen (s2) ? strlen (s1) : strlen (s2) ) );
 #elif HAVE_STRNCMP
-    return strncmp(s1, s2, (strlen(s1)<strlen(s2) ? strlen(s1) : strlen(s2)) );
+    return strncmp (s1, s2, (strlen (s1) < strlen (s2) ? strlen (s1) : strlen (s2) ) );
 #elif HAVE_STRCMP
-    return strcmp(s1, s2);
+    return strcmp (s1, s2);
 #else
 # error "Sorry, strncasecmp, strncmp, or strcmp needed"
 #endif
@@ -96,14 +96,19 @@ inline static int mystrcmp(const char* s1, const char* s2) {
 bool isXTerm() {
     const char** tmp = xterms;
     char* tn = termname();
+
     while (*tmp != NULL) {
-	if (mystrcmp(tn,*tmp) == 0) return true;
-	tmp++;
+        if (mystrcmp (tn, *tmp) == 0) return true;
+
+        tmp++;
     }
+
     return false;
 }
 #else
-bool isXTerm() { return false; }
+bool isXTerm() {
+    return false;
+}
 #endif // HAVE_TERMNAME
 
 /**
@@ -114,9 +119,9 @@ bool isXTerm() { return false; }
  */
 #ifdef CANSETTITLE
 void setTerminalTitle (const std::string& title) {
-    if (isXTerm()) {
-	fprintf(stdout, "%c]0;%s%c", '\033', title.c_str(), '\007');
-	fflush(stdout);
+    if (isXTerm() ) {
+        fprintf (stdout, "%c]0;%s%c", '\033', title.c_str(), '\007');
+        fflush (stdout);
     }
 }
 #else // CANSETTITLE

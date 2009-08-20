@@ -44,66 +44,69 @@
 
 #include "messagebox.h"
 
-namespace YAPETUI {
-    /**
-     * @brief The answers available.
-     *
-     * The answers available for the user. The answer can be retrieved
-     * by \c getAnswer().
-     */
-    enum ANSWER {
-	/**
-	 * The user pressed the \c OK button.
-	 */
-	ANSWER_OK,
-	/**
-	 * The user pressed the \c Cancel button.
-	 */
-	ANSWER_CANCEL
-    };
+namespace YAPET {
+    namespace UI {
+        /**
+         * @brief The answers available.
+         *
+         * The answers available for the user. The answer can be retrieved
+         * by \c getAnswer().
+         */
+        enum ANSWER {
+            /**
+             * The user pressed the \c OK button.
+             */
+            ANSWER_OK,
+            /**
+             * The user pressed the \c Cancel button.
+             */
+            ANSWER_CANCEL
+        };
 
-    /**
-     * @brief Class for displaying a dialog box.
-     *
-     * A dialog box presents the user a message and the buttons
-     * \c OK and \c Cancel.
-     *
-     * It is displayed by calling \c run(). To find out which button
-     * was pressed, call \c getAnswer().
-     */
-    class DialogBox : public MessageBox {
-	private:
-	    Button* cancelbutton;
-	    ANSWER answer;
+        /**
+         * @brief Class for displaying a dialog box.
+         *
+         * A dialog box presents the user a message and the buttons
+         * \c OK and \c Cancel.
+         *
+         * It is displayed by calling \c run(). To find out which button
+         * was pressed, call \c getAnswer().
+         */
+        class DialogBox : public MessageBox {
+            private:
+                Button* cancelbutton;
+                ANSWER answer;
 
-	public:
-	    DialogBox(std::string t, std::string m) throw(UIException);
-	    virtual ~DialogBox();
+            public:
+                DialogBox (std::string t, std::string m) throw (UIException);
+                virtual ~DialogBox();
 
-	    /**
-	     * @brief Display and runs the dialog.
-	     *
-	     * Display and runs the dialog. To find out which button
-	     * was pressed by the user, call \c getAnswer().
-	     *
-	     * @return the key the user pressed. In the current
-	     * implementation this is always \c \\n.
-	     */
-	    virtual int run() throw(UIException) ;
-	    virtual void resize() throw(UIException);
-	    virtual void refresh() throw(UIException);
-	    /**
-	     * @brief Returns the answer of the user.
-	     *
-	     * Returns the answer of the user.
-	     *
-	     * @return \c ANSWER_OK if the user pressed to \c OK
-	     * button or \c ANSWER_CANCEL if the user pressed the \c
-	     * Cancel button.
-	     */
-	    ANSWER getAnswer() const { return answer; }
-    };
+                /**
+                 * @brief Display and runs the dialog.
+                 *
+                 * Display and runs the dialog. To find out which button
+                 * was pressed by the user, call \c getAnswer().
+                 *
+                 * @return the key the user pressed. In the current
+                 * implementation this is always \c \\n.
+                 */
+                virtual int run() throw (UIException) ;
+                virtual void resize() throw (UIException);
+                virtual void refresh() throw (UIException);
+                /**
+                 * @brief Returns the answer of the user.
+                 *
+                 * Returns the answer of the user.
+                 *
+                 * @return \c ANSWER_OK if the user pressed to \c OK
+                 * button or \c ANSWER_CANCEL if the user pressed the \c
+                 * Cancel button.
+                 */
+                ANSWER getAnswer() const {
+                    return answer;
+                }
+        };
 
+    }
 }
-
 #endif // _DIALOGBOX_H

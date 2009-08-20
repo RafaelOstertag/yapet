@@ -52,10 +52,11 @@ using namespace YAPET;
  * @throw YAPETException if the memory could not be allocated.
  */
 uint8_t*
-BDBuffer::alloc_mem(uint32_t s) throw(YAPETException) {
-    uint8_t* tmp = (uint8_t*) malloc(s);
+BDBuffer::alloc_mem (uint32_t s) throw (YAPETException) {
+    uint8_t* tmp = (uint8_t*) malloc (s);
+
     if (tmp == NULL)
-	throw YAPETException(_("Memory exhausted"));
+        throw YAPETException (_ ("Memory exhausted") );
 
     return tmp;
 }
@@ -70,9 +71,9 @@ BDBuffer::alloc_mem(uint32_t s) throw(YAPETException) {
  * @param s size of the memory chunk. Needed to clear out the memory.
  */
 void
-BDBuffer::free_mem(uint8_t* d, uint32_t s) {
-    memset(d, 0, s);
-    free(d);
+BDBuffer::free_mem (uint8_t* d, uint32_t s) {
+    memset (d, 0, s);
+    free (d);
 }
 
 /**
@@ -80,8 +81,8 @@ BDBuffer::free_mem(uint8_t* d, uint32_t s) {
  *
  * @param is number of bytes to be allocated.
  */
-BDBuffer::BDBuffer(uint32_t is) throw(YAPETException) : _size(is) {
-    data = alloc_mem(_size);
+BDBuffer::BDBuffer (uint32_t is) throw (YAPETException) : _size (is) {
+    data = alloc_mem (_size);
 }
 
 /**
@@ -90,17 +91,17 @@ BDBuffer::BDBuffer(uint32_t is) throw(YAPETException) : _size(is) {
  * If the object is created using this constructor, functions
  * returning pointer to the buffer will return \c NULL
  */
-BDBuffer::BDBuffer() : _size(0), data(NULL) { }
+BDBuffer::BDBuffer() : _size (0), data (NULL) { }
 
-BDBuffer::BDBuffer(const BDBuffer& ed) throw(YAPETException) {
+BDBuffer::BDBuffer (const BDBuffer& ed) throw (YAPETException) {
     if (ed.data == NULL) {
-	data = NULL;
-	_size = 0;
-	return;
+        data = NULL;
+        _size = 0;
+        return;
     }
 
-    data = alloc_mem(ed._size);
-    memcpy(data, ed.data, ed._size);
+    data = alloc_mem (ed._size);
+    memcpy (data, ed.data, ed._size);
     _size = ed._size;
 }
 
@@ -111,7 +112,8 @@ BDBuffer::BDBuffer(const BDBuffer& ed) throw(YAPETException) {
  */
 BDBuffer::~BDBuffer() {
     if (data == NULL) return;
-    free_mem(data, _size);
+
+    free_mem (data, _size);
 }
 
 /**
@@ -129,22 +131,21 @@ BDBuffer::~BDBuffer() {
  * @param ns the new size of the memory chunk serving as buffer
  */
 void
-BDBuffer::resize(uint32_t ns) throw(YAPETException) {
+BDBuffer::resize (uint32_t ns) throw (YAPETException) {
     if (data == NULL) {
-	data = alloc_mem(ns);
-	_size = ns;
-	return;
+        data = alloc_mem (ns);
+        _size = ns;
+        return;
     }
 
-    uint8_t* newbuf = alloc_mem(ns);
+    uint8_t* newbuf = alloc_mem (ns);
 
     if (ns > _size)
-	memcpy(newbuf, data, _size);
+        memcpy (newbuf, data, _size);
     else
-	memcpy(newbuf, data, ns);
+        memcpy (newbuf, data, ns);
 
-    free_mem(data, _size);
-
+    free_mem (data, _size);
     _size = ns;
     data = newbuf;
 }
@@ -165,9 +166,9 @@ BDBuffer::resize(uint32_t ns) throw(YAPETException) {
  * index.
  */
 uint8_t*
-BDBuffer::at(uint32_t pos) throw(std::out_of_range) {
-    if (pos > (_size - 1))
-	throw std::out_of_range(_("Position out of range"));
+BDBuffer::at (uint32_t pos) throw (std::out_of_range) {
+    if (pos > (_size - 1) )
+        throw std::out_of_range (_ ("Position out of range") );
 
     return data + pos;
 }
@@ -187,25 +188,25 @@ BDBuffer::at(uint32_t pos) throw(std::out_of_range) {
  * @throw std::out_of_range exception if \c pos is not a valid index.
  */
 const uint8_t*
-BDBuffer::at(uint32_t pos) const throw(std::out_of_range) {
-    if (pos > (_size - 1))
-	throw std::out_of_range(_("Position out of range"));
+BDBuffer::at (uint32_t pos) const throw (std::out_of_range) {
+    if (pos > (_size - 1) )
+        throw std::out_of_range (_ ("Position out of range") );
 
     return data + pos;
 }
 
 const BDBuffer&
-BDBuffer::operator=(const BDBuffer& ed) {
+BDBuffer::operator= (const BDBuffer & ed) {
     if (this == &ed) return *this;
 
     if (data != NULL)
-	free_mem(data, _size);
+        free_mem (data, _size);
 
     if (ed.data != NULL) {
-	data = alloc_mem(ed._size);
-	memcpy(data, ed.data, ed._size);
+        data = alloc_mem (ed._size);
+        memcpy (data, ed.data, ed._size);
     } else {
-	data = NULL;
+        data = NULL;
     }
 
     _size = ed._size;

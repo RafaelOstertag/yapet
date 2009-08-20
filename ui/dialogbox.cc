@@ -21,15 +21,15 @@
 #include "../intl.h"
 #include "dialogbox.h"
 
-using namespace YAPETUI;
+using namespace YAPET::UI;
 
-DialogBox::DialogBox(std::string t, std::string m)
-    throw(UIException) : MessageBox(t, m),
-			 cancelbutton(NULL),
-			 answer(ANSWER_CANCEL) {
-    cancelbutton = new Button(_("Cancel"),
-			      getStartX() + 2 + getOkButtonLength(),
-			      getStartY() + getBaseHeight() -2);
+DialogBox::DialogBox (std::string t, std::string m)
+throw (UIException) : MessageBox (t, m),
+        cancelbutton (NULL),
+        answer (ANSWER_CANCEL) {
+    cancelbutton = new Button (_ ("Cancel"),
+                               getStartX() + 2 + getOkButtonLength(),
+                               getStartY() + getBaseHeight() - 2);
 }
 
 DialogBox::~DialogBox() {
@@ -37,47 +37,54 @@ DialogBox::~DialogBox() {
 }
 
 int
-DialogBox::run() throw(UIException) {
+DialogBox::run() throw (UIException) {
     refresh();
+
     while (true) {
 #ifdef HAVE_WRESIZE
-	int ch;
-	while ( (ch = MessageBox::run()) == KEY_RESIZE )
-	    BaseWindow::resizeAll();
+        int ch;
+
+        while ( (ch = MessageBox::run() ) == KEY_RESIZE )
+            BaseWindow::resizeAll();
+
 #else // HAVE_RESIZE
-	int ch = MessageBox::run();
+        int ch = MessageBox::run();
 #endif // HAVE_RESIZE
-	switch (ch) {
-	case '\n':
-	    answer = ANSWER_OK;
-	    return ch;
-	case KEY_ESC:
-	    answer = ANSWER_CANCEL;
-	    return ch;
-	}
+
+        switch (ch) {
+            case '\n':
+                answer = ANSWER_OK;
+                return ch;
+            case KEY_ESC:
+                answer = ANSWER_CANCEL;
+                return ch;
+        }
 
 #ifdef HAVE_WRESIZE
-	while ( (ch = cancelbutton->focus()) == KEY_RESIZE )
-	    BaseWindow::resizeAll();
+
+        while ( (ch = cancelbutton->focus() ) == KEY_RESIZE )
+            BaseWindow::resizeAll();
+
 #else // HAVE_RESIZE
-	ch = cancelbutton->focus();
+        ch = cancelbutton->focus();
 #endif // HAVE_RESIZE
-	if (ch == '\n' || ch == KEY_ESC) {
-	    answer = ANSWER_CANCEL;
-	    return ch;
-	}
+
+        if (ch == '\n' || ch == KEY_ESC) {
+            answer = ANSWER_CANCEL;
+            return ch;
+        }
     }
 }
 
 void
-DialogBox::resize() throw(UIException) {
+DialogBox::resize() throw (UIException) {
     MessageBox::resize();
     delete cancelbutton;
-    cancelbutton = new Button(_("Cancel"), getStartX() + 2 + getOkButtonLength(), getStartY() + getBaseHeight() -2);
+    cancelbutton = new Button (_ ("Cancel"), getStartX() + 2 + getOkButtonLength(), getStartY() + getBaseHeight() - 2);
 }
 
 void
-DialogBox::refresh() throw(UIException) {
+DialogBox::refresh() throw (UIException) {
     MessageBox::refresh();
     cancelbutton->refresh();
 }

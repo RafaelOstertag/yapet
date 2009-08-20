@@ -31,170 +31,187 @@
 # include <string>
 #endif
 
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
 #include "consts.h"
 #include "cfgfile.h"
 
 namespace YAPET {
     namespace CONFIG {
 
-	/**
-	 * @brief Handle the command line and config file options.
-	 *
-	 * This class handles the command line and config file options.
-	 */
-	class Config {
-	    private:
-		ConfigFile* cfgfile;
+        /**
+         * @brief Handle the command line and config file options.
+         *
+         * This class handles the command line and config file options.
+         */
+        class Config {
+            private:
+                ConfigFile* cfgfile;
 
-		//! The default .pet file to open
-		static std::string def_petfile;
-		//! The default lock timeout
-		static int def_timeout;
-		//! Default for checking file security
-		static bool def_filesecurity;
-		//! Default for ignoring the rc file
-		static bool def_ignorerc;
+                //! The default .pet file to open
+                static const std::string def_petfile;
+                //! The default lock timeout
+                static const int def_timeout;
+                //! Default for checking file security
+                static const bool def_filesecurity;
+                //! Default for ignoring the rc file
+                static const bool def_ignorerc;
+		//! The default password length
+		static const size_t def_pwlen;
+                //! The default character subpools to use
+                static const int def_character_pools;
 
-		struct s_cl_struct {
-		    // For indicating whether or not it has been set on the command
-		    // line
-		    bool set_on_cl;
-		    inline s_cl_struct() : set_on_cl (false) {}
-		    inline s_cl_struct (const s_cl_struct& r) {
-			set_on_cl = r.set_on_cl;
-		    }
-		    inline const s_cl_struct& operator= (const s_cl_struct& r) {
-			if (&r == this)
-			    return *this;
+                struct s_cl_struct {
+                    // For indicating whether or not it has been set on the command
+                    // line
+                    bool set_on_cl;
+                    inline s_cl_struct() : set_on_cl (false) {}
+                    inline s_cl_struct (const s_cl_struct& r) {
+                        set_on_cl = r.set_on_cl;
+                    }
+                    inline const s_cl_struct& operator= (const s_cl_struct& r) {
+                        if (&r == this)
+                            return *this;
 
-			set_on_cl = r.set_on_cl;
-			return *this;
-		    }
-		};
-		//! The .pet file to open provided on the command line
-		struct s_cl_petfile : public s_cl_struct {
-		    std::string name;
-		    inline s_cl_petfile() : s_cl_struct(), name ("") {}
-		    inline s_cl_petfile (const s_cl_petfile& r) : s_cl_struct (r) {
-			name = r.name ;
-		    }
-		    inline const s_cl_petfile& operator= (const s_cl_petfile& r) {
-			if (&r == this)
-			    return *this;
+                        set_on_cl = r.set_on_cl;
+                        return *this;
+                    }
+                };
+                //! The .pet file to open provided on the command line
+                struct s_cl_petfile : public s_cl_struct {
+                    std::string name;
+                    inline s_cl_petfile() : s_cl_struct(), name ("") {}
+                    inline s_cl_petfile (const s_cl_petfile& r) : s_cl_struct (r) {
+                        name = r.name ;
+                    }
+                    inline const s_cl_petfile& operator= (const s_cl_petfile& r) {
+                        if (&r == this)
+                            return *this;
 
-			s_cl_struct::operator= (r);
-			name = r.name;
-			return *this;
-		    }
-		};
-		//! The lock timeout provided on the command line
-		struct s_cl_timeout : public s_cl_struct {
-		    unsigned int amount;
-		    inline s_cl_timeout() : s_cl_struct(), amount (0) {}
-		    inline s_cl_timeout (const s_cl_timeout& r) : s_cl_struct (r) {
-			amount = r.amount ;
-		    }
-		    inline const s_cl_timeout& operator= (const s_cl_timeout& r) {
-			if (&r == this)
-			    return *this;
+                        s_cl_struct::operator= (r);
+                        name = r.name;
+                        return *this;
+                    }
+                };
+                //! The lock timeout provided on the command line
+                struct s_cl_timeout : public s_cl_struct {
+                    unsigned int amount;
+                    inline s_cl_timeout() : s_cl_struct(), amount (0) {}
+                    inline s_cl_timeout (const s_cl_timeout& r) : s_cl_struct (r) {
+                        amount = r.amount ;
+                    }
+                    inline const s_cl_timeout& operator= (const s_cl_timeout& r) {
+                        if (&r == this)
+                            return *this;
 
-			s_cl_struct::operator= (r);
-			amount = r.amount;
-			return *this;
-		    }
-		};
-		//! The request for checking file security on the command line
-		struct s_cl_filesecurity : public s_cl_struct {
-		    bool check;
-		    inline s_cl_filesecurity() : s_cl_struct(), check (false) {}
-		    inline s_cl_filesecurity (const s_cl_filesecurity& r) : s_cl_struct (r) {
-			check = r.check ;
-		    }
-		    inline const s_cl_filesecurity& operator= (const s_cl_filesecurity& r) {
-			if (&r == this)
-			    return *this;
+                        s_cl_struct::operator= (r);
+                        amount = r.amount;
+                        return *this;
+                    }
+                };
+                //! The request for checking file security on the command line
+                struct s_cl_filesecurity : public s_cl_struct {
+                    bool check;
+                    inline s_cl_filesecurity() : s_cl_struct(), check (false) {}
+                    inline s_cl_filesecurity (const s_cl_filesecurity& r) : s_cl_struct (r) {
+                        check = r.check ;
+                    }
+                    inline const s_cl_filesecurity& operator= (const s_cl_filesecurity& r) {
+                        if (&r == this)
+                            return *this;
 
-			s_cl_struct::operator= (r);
-			check = r.check;
-			return *this;
-		    }
-		};
-		//! Ignoring the rc file provided on the command line
-		struct s_cl_ignorerc : public s_cl_struct {
-		    bool ignore;
-		    inline s_cl_ignorerc() : s_cl_struct(), ignore (false) {}
-		    inline s_cl_ignorerc (const s_cl_ignorerc& r) : s_cl_struct (r) {
-			ignore = r.ignore ;
-		    }
-		    inline const s_cl_ignorerc& operator= (const s_cl_ignorerc& r) {
-			if (&r == this)
-			    return *this;
+                        s_cl_struct::operator= (r);
+                        check = r.check;
+                        return *this;
+                    }
+                };
+                //! Ignoring the rc file provided on the command line
+                struct s_cl_ignorerc : public s_cl_struct {
+                    bool ignore;
+                    inline s_cl_ignorerc() : s_cl_struct(), ignore (false) {}
+                    inline s_cl_ignorerc (const s_cl_ignorerc& r) : s_cl_struct (r) {
+                        ignore = r.ignore ;
+                    }
+                    inline const s_cl_ignorerc& operator= (const s_cl_ignorerc& r) {
+                        if (&r == this)
+                            return *this;
 
-			s_cl_struct::operator= (r);
-			ignore = r.ignore;
-			return *this;
-		    }
-		};
-		s_cl_petfile cl_petfile;
-		s_cl_timeout cl_timeout;
-		s_cl_filesecurity cl_filesecurity;
-		s_cl_ignorerc cl_ignorerc;
+                        s_cl_struct::operator= (r);
+                        ignore = r.ignore;
+                        return *this;
+                    }
+                };
+                s_cl_petfile cl_petfile;
+                s_cl_timeout cl_timeout;
+                s_cl_filesecurity cl_filesecurity;
+                s_cl_ignorerc cl_ignorerc;
 
-		//! Removes two or more consecutive slashes from the path
-		std::string cleanupPath (const std::string& s) const;
+                //! Removes two or more consecutive slashes from the path
+                std::string cleanupPath (const std::string& s) const;
 
-	    public:
-		static std::string getDefPetfile();
-		static unsigned int getDefTimeout();
-		static bool getDefFilesecurity();
-		static bool getDefIgnorerc();
+            public:
+                static std::string getDefPetfile();
+                static unsigned int getDefTimeout();
+                static bool getDefFilesecurity();
+                static bool getDefIgnorerc();
+                static size_t getDefPWLength();
+                static int getDefCharPools();
+		static bool getDefCPoolLetters();
+		static bool getDefCPoolDigits();
+		static bool getDefCPoolPunct();
+		static bool getDefCPoolSpecial();
+		static bool getDefCPoolOther();
 
-		Config();
-		Config (const Config& c);
-		~Config();
+                Config();
+                Config (const Config& c);
+                ~Config();
 
-		void loadConfigFile (std::string filename = "");
+                void loadConfigFile (std::string filename = "");
 
-		/**
-		 * @brief Set the file to open upon start of YAPET.
-		 *
-		 * Set the file to open upon start of YAPET. It will also make sure
-		 * that the proper suffix is appended.
-		 *
-		 * @param s the file path of the file.
-		 */
-		inline void setPetFile (std::string s) {
-		    cl_petfile.set_on_cl = true;
-		    cl_petfile.name = s;
+                /**
+                 * @brief Set the file to open upon start of YAPET.
+                 *
+                 * Set the file to open upon start of YAPET. It will also make sure
+                 * that the proper suffix is appended.
+                 *
+                 * @param s the file path of the file.
+                 */
+                inline void setPetFile (std::string s) {
+                    cl_petfile.set_on_cl = true;
+                    cl_petfile.name = s;
 
-		    if ( cl_petfile.name.find (YAPETCONSTS::Consts::getDefaultSuffix(),
-					       cl_petfile.name.length() -
-					       YAPETCONSTS::Consts::getDefaultSuffix().length() )
-			    == std::string::npos )
-			cl_petfile.name += YAPETCONSTS::Consts::getDefaultSuffix();
+                    if ( cl_petfile.name.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
+                                               cl_petfile.name.length() -
+                                               YAPET::CONSTS::Consts::getDefaultSuffix().length() )
+                            == std::string::npos )
+                        cl_petfile.name += YAPET::CONSTS::Consts::getDefaultSuffix();
 
-		    cl_petfile.name = cleanupPath (cl_petfile.name);
-		}
-		inline void setTimeout (int i) {
-		    cl_timeout.set_on_cl = true;
-		    cl_timeout.amount = i;
-		}
-		inline void setFilesecurity (bool b) {
-		    cl_filesecurity.set_on_cl = true;
-		    cl_filesecurity.check = b;
-		}
-		inline void setIgnorerc (bool b) {
-		    cl_ignorerc.set_on_cl = true;
-		    cl_ignorerc.ignore = b;
-		}
+                    cl_petfile.name = cleanupPath (cl_petfile.name);
+                }
+                inline void setTimeout (int i) {
+                    cl_timeout.set_on_cl = true;
+                    cl_timeout.amount = i;
+                }
+                inline void setFilesecurity (bool b) {
+                    cl_filesecurity.set_on_cl = true;
+                    cl_filesecurity.check = b;
+                }
+                inline void setIgnorerc (bool b) {
+                    cl_ignorerc.set_on_cl = true;
+                    cl_ignorerc.ignore = b;
+                }
 
-		//! Return the file to open upon start of YAPET.
-		std::string getPetFile() const;
-		int getTimeout() const;
-		bool getFilesecurity() const;
+                //! Return the file to open upon start of YAPET.
+                std::string getPetFile() const;
+                int getTimeout() const;
+                bool getFilesecurity() const;
+		size_t getPWGenPWLen() const;
+		int getCharPools() const;
 
-		const Config& operator= (const Config& c);
-	};
+                const Config& operator= (const Config& c);
+        };
 
     }
 

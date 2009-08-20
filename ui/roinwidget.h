@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008, 2009  Rafael Ostertag
+// Copyright (C) 2009  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -20,8 +20,8 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _PASSWORDWIDGET_H
-#define _PASSWORDWIDGET_H
+#ifndef _ROINWIDGET_H
+#define _ROINWIDGET_H
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -44,24 +44,27 @@ namespace YAPET {
     namespace UI {
 
         /**
-         * @brief A password input widget.
+         * @brief A read-only input widget.
          *
-         * Basically the same as \c InputWidget, but shows asterisks \c '*' instead
-         * of the characters typed by the user.
+         * Basically the same as \c InputWidget, but does not allow editing. Good
+         * for showing stuff that doesn't fit on the visible width of the widget.
          */
-        class PasswordWidget : public InputWidget {
+        class ROInWidget : public InputWidget {
             private:
-                inline const PasswordWidget& operator= (const PasswordWidget&) {
+                inline const ROInWidget& operator= (const ROInWidget&) {
                     return *this;
                 }
 
-            public:
-                PasswordWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
-                virtual ~PasswordWidget();
+            protected:
+                virtual inline void processBackspace() throw (UIException) { /* Simply do nothing */ }
+                virtual inline void processDelete() throw (UIException) { /* Simply do nothing */ }
+                virtual inline void processInput (int ) throw (UIException) { /* Simply do nothing */ }
 
-                virtual void refresh() throw (UIException);
+            public:
+                ROInWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
+                virtual ~ROInWidget();
         };
 
     }
 }
-#endif // _PASSWORDWIDGET_H
+#endif // _ROINWIDGET_H

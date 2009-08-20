@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008, 2009  Rafael Ostertag
+// Copyright (C) 2009  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -20,11 +20,11 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _PASSWORDWIDGET_H
-#define _PASSWORDWIDGET_H
+#ifndef _INTINWIDGET_H
+#define _INTINWIDGET_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_NCURSES_H
@@ -38,30 +38,41 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#ifdef HAVE_CMATH
+# include <cmath>
+#endif
+
 #include "inputwidget.h"
 
 namespace YAPET {
     namespace UI {
 
+        template<class t> int getDigitsForType() {
+            return std::floor ( std::log10 (std::pow (2, (double) sizeof (t) *8 ) ) ) + 1;;
+        }
+
         /**
-         * @brief A password input widget.
+         * @brief An input widget accepting only digits.
          *
-         * Basically the same as \c InputWidget, but shows asterisks \c '*' instead
-         * of the characters typed by the user.
+         * Basically the same as \c InputWidget, but does only allow digits as
+         * input.
          */
-        class PasswordWidget : public InputWidget {
+        class IntInWidget : public InputWidget {
             private:
-                inline const PasswordWidget& operator= (const PasswordWidget&) {
+                inline const IntInWidget& operator= (const IntInWidget&) {
                     return *this;
                 }
 
-            public:
-                PasswordWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
-                virtual ~PasswordWidget();
+            protected:
+                virtual void processInput (int ch) throw (UIException);
 
-                virtual void refresh() throw (UIException);
+            public:
+                IntInWidget (int sx, int sy, int w, int ml = getDigitsForType<unsigned long>() ) throw (UIException);
+                virtual ~IntInWidget();
+                unsigned long getInt() const;
+		void setInt(unsigned long i);
         };
 
     }
 }
-#endif // _PASSWORDWIDGET_H
+#endif // _INTINWIDGET_

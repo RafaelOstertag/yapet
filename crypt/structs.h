@@ -48,35 +48,35 @@
 namespace YAPET {
 
     enum {
-	/**
-	 * The length of the control string used to check whether
-	 * decryption was successful
-	 */
-	HEADER_CONTROL_SIZE = 20,
-	/**
-	 * The maximum length of the name string of a password record.
-	 */
-	NAME_SIZE = 128,
-	/**
-	 * The maximum length of the host string of a password
-	 * records.
-	 */
-	HOST_SIZE = 256,
-	/**
-	 * The maximum length of the user name string of a password
-	 * record.
-	 */
-	USERNAME_SIZE = 256,
-	/**
-	 * The maximum length of the password string of a password
-	 * record.
-	 */
-	PASSWORD_SIZE = 256,
-	/**
-	 * The maximum length of the comment string of a password
-	 * record.
-	 */
-	COMMENT_SIZE = 512
+        /**
+         * The length of the control string used to check whether
+         * decryption was successful
+         */
+        HEADER_CONTROL_SIZE = 20,
+        /**
+         * The maximum length of the name string of a password record.
+         */
+        NAME_SIZE = 128,
+        /**
+         * The maximum length of the host string of a password
+         * records.
+         */
+        HOST_SIZE = 256,
+        /**
+         * The maximum length of the user name string of a password
+         * record.
+         */
+        USERNAME_SIZE = 256,
+        /**
+         * The maximum length of the password string of a password
+         * record.
+         */
+        PASSWORD_SIZE = 256,
+        /**
+         * The maximum length of the comment string of a password
+         * record.
+         */
+        COMMENT_SIZE = 512
     };
 
     /**
@@ -85,30 +85,30 @@ namespace YAPET {
      * This is the file header structure.
      */
     struct FileHeader {
-	    /**
-	     * @brief Version
-	     *
-	     * Holds the version of the file structure.
-	     */
-	    uint8_t version;
-	    /**
-	     * @brief Control string
-	     *
-	     * Holds the control string used to verify the decryption
-	     * of the file. It is filled with a known sequence of
-	     * characters before encryption. After decryption the
-	     * sequence of characters stored in this field and the
-	     * predefined are compared. If they are identical, the
-	     * decryption is assumed to be successful.
-	     */
-	    uint8_t control[HEADER_CONTROL_SIZE];
-	    /**
-	     * @brief The date the key has first been used.
-	     *
-	     * Holds the date the key has first been used to encrypt
-	     * the file. Has to be stored in big-endian order.
-	     */
-	    time_t pwset;
+        /**
+         * @brief Version
+         *
+         * Holds the version of the file structure.
+         */
+        uint8_t version;
+        /**
+         * @brief Control string
+         *
+         * Holds the control string used to verify the decryption
+         * of the file. It is filled with a known sequence of
+         * characters before encryption. After decryption the
+         * sequence of characters stored in this field and the
+         * predefined are compared. If they are identical, the
+         * decryption is assumed to be successful.
+         */
+        uint8_t control[HEADER_CONTROL_SIZE];
+        /**
+         * @brief The date the key has first been used.
+         *
+         * Holds the date the key has first been used to encrypt
+         * the file. Has to be stored in big-endian order.
+         */
+        time_t pwset;
     };
 
     /**
@@ -117,38 +117,38 @@ namespace YAPET {
      * The structure of a password records.
      */
     struct PasswordRecord {
-	    /**
-	     * @brief Name of the record.
-	     *
-	     * Name of the password records. \c PartDec decrypts the
-	     * record to get this field. It is used to give the user
-	     * an idea about the content of the record.
-	     */
-	    uint8_t name[NAME_SIZE];
-	    /**
-	     * @brief The host for which the password is used
-	     *
-	     * Holds the host name for which the password is used.
-	     */
-	    uint8_t host[HOST_SIZE];
-	    /**
-	     * @brief The user name
-	     *
-	     * The user name for the password.
-	     */
-	    uint8_t username[USERNAME_SIZE];
-	    /**
-	     * @brief The password.
-	     *
-	     * The password.
-	     */
-	    uint8_t password[PASSWORD_SIZE];
-	    /**
-	     * @brief A comment.
-	     *
-	     * An additional comment.
-	     */
-	    uint8_t comment[COMMENT_SIZE];
+        /**
+         * @brief Name of the record.
+         *
+         * Name of the password records. \c PartDec decrypts the
+         * record to get this field. It is used to give the user
+         * an idea about the content of the record.
+         */
+        uint8_t name[NAME_SIZE];
+        /**
+         * @brief The host for which the password is used
+         *
+         * Holds the host name for which the password is used.
+         */
+        uint8_t host[HOST_SIZE];
+        /**
+         * @brief The user name
+         *
+         * The user name for the password.
+         */
+        uint8_t username[USERNAME_SIZE];
+        /**
+         * @brief The password.
+         *
+         * The password.
+         */
+        uint8_t password[PASSWORD_SIZE];
+        /**
+         * @brief A comment.
+         *
+         * An additional comment.
+         */
+        uint8_t comment[COMMENT_SIZE];
     };
 }
 

@@ -22,88 +22,95 @@
 #include "messagebox.h"
 #include "colors.h"
 
-using namespace YAPETUI;
+using namespace YAPET::UI;
 
 void
-MessageBox::createWindow() throw(UIException) {
+MessageBox::createWindow() throw (UIException) {
     if (window != NULL)
-	throw UIException(_("May you consider deleting the window before reallocating"));
+        throw UIException (_ ("May you consider deleting the window before reallocating") );
+
     if (okbutton != NULL)
-	throw UIException(_("May you consider deleting the button before reallocating"));
+        throw UIException (_ ("May you consider deleting the button before reallocating") );
 
-    window = newwin(BASE_HEIGHT,
-		    getWidth(),
-		    getStartY(),
-		    getStartX());
+    window = newwin (BASE_HEIGHT,
+                     getWidth(),
+                     getStartY(),
+                     getStartX() );
+
     if (window == NULL)
-	throw UIException(_("Error creating message window"));
+        throw UIException (_ ("Error creating message window") );
 
-    okbutton = new Button(_("OK"), getStartX() + 1, getStartY() + BASE_HEIGHT -2);
+    okbutton = new Button (_ ("OK"), getStartX() + 1, getStartY() + BASE_HEIGHT - 2);
 }
 
-MessageBox::MessageBox(std::string t, std::string m) throw(UIException) : window(NULL),
-									  okbutton(NULL),
-									  title(t),
-									  message(m) {
+MessageBox::MessageBox (std::string t, std::string m) throw (UIException) : window (NULL),
+        okbutton (NULL),
+        title (t),
+        message (m) {
     createWindow();
 }
 
 MessageBox::~MessageBox() {
     delete okbutton;
-    wclear(window);
-    delwin(window);
+    wclear (window);
+    delwin (window);
 }
 
 int
-MessageBox::run() throw(UIException) {
+MessageBox::run() throw (UIException) {
     refresh();
     int ch;
-    while ( (ch = okbutton->focus()) == KEY_REFRESH )
-	BaseWindow::refreshAll();
+
+    while ( (ch = okbutton->focus() ) == KEY_REFRESH )
+        BaseWindow::refreshAll();
+
     return ch;
 }
 
 void
-MessageBox::resize() throw(UIException) {
+MessageBox::resize() throw (UIException) {
     delete okbutton;
+    int retval = delwin (window);
 
-    int retval = delwin(window);
     if (retval == ERR)
-	throw UIException(_("Error deleting message box"));
+        throw UIException (_ ("Error deleting message box") );
 
     okbutton = NULL;
     window = NULL;
-
     createWindow();
 }
 
 void
-MessageBox::refresh() throw(UIException) {
-    Colors::setcolor(window, MESSAGEBOX);
+MessageBox::refresh() throw (UIException) {
+    Colors::setcolor (window, MESSAGEBOX);
+    int retval = werase (window);
 
-    int retval = werase(window);
     if (retval == ERR)
-	throw UIException(_("Error erasing window"));
+        throw UIException (_ ("Error erasing window") );
 
-    retval = box(window, 0, 0);
-    if (retval == ERR)
-	throw UIException(_("Error creating box around message window"));
+    retval = box (window, 0, 0);
 
-    Colors::setcolor(window, MESSAGEBOX);
-    retval = mymvwaddstr(window, 2, 2, message.c_str());
     if (retval == ERR)
-	throw UIException(_("Error printing message"));
+        throw UIException (_ ("Error creating box around message window") );
+
+    Colors::setcolor (window, MESSAGEBOX);
+    retval = mymvwaddstr (window, 2, 2, message.c_str() );
+
+    if (retval == ERR)
+        throw UIException (_ ("Error printing message") );
 
     // Title
-    Colors::setcolor(window, MESSAGEBOX_TITLE);
-    retval = mymvwaddstr(window, 0, 2, title.c_str());
-    if (retval == ERR)
-	throw UIException(_("Error printing title"));
+    Colors::setcolor (window, MESSAGEBOX_TITLE);
+    retval = mymvwaddstr (window, 0, 2, title.c_str() );
 
-    Colors::setcolor(window, MESSAGEBOX);
-    retval = wrefresh(window);
     if (retval == ERR)
-	throw UIException(_("Error refreshing message box"));
+        throw UIException (_ ("Error printing title") );
+
+    Colors::setcolor (window, MESSAGEBOX);
+    retval = wrefresh (window);
+
+    if (retval == ERR)
+        throw UIException (_ ("Error refreshing message box") );
 
     okbutton->refresh();
 }

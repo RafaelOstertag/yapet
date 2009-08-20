@@ -43,89 +43,89 @@ namespace YAPET {
 
     namespace PWGEN {
 
-	enum RNGENGINE {
-	    DEVRANDOM = (1 << 0),
-	    DEVURANDOM = (1 << 1),
-	    LRAND48 = (1 << 2),
-	    RAND = (1 << 3),
-	    NONE = 0
-	};
+        enum RNGENGINE {
+            DEVRANDOM = (1 << 0),
+            DEVURANDOM = (1 << 1),
+            LRAND48 = (1 << 2),
+            RAND = (1 << 3),
+            NONE = 0
+        };
 
-	/**
-	 * @brief class for interfacing random number generators.
-	 *
-	 * Class for interfacing random number generators. It tries the
-	 * following random generators:
-	 *
-	 * - /dev/random
-	 * - /dev/urandom
-	 * - lrand48
-	 * - rand
-	 *
-	 * The random numbers are in the range of \c size_t, since this is the
-	 * range of the pool \c CharacterPool.
-	 *
-	 * @see CharacterPool
-	 */
-	class RNG {
-	    private:
-		/**
-		 * @brief file descriptor
-		 *
-		 * File descriptor, used with /dev/[u]random.
-		 */
-		int fd;
+        /**
+         * @brief class for interfacing random number generators.
+         *
+         * Class for interfacing random number generators. It tries the
+         * following random generators:
+         *
+         * - /dev/random
+         * - /dev/urandom
+         * - lrand48
+         * - rand
+         *
+         * The random numbers are in the range of \c size_t, since this is the
+         * range of the pool \c CharacterPool.
+         *
+         * @see CharacterPool
+         */
+        class RNG {
+            private:
+                /**
+                 * @brief file descriptor
+                 *
+                 * File descriptor, used with /dev/[u]random.
+                 */
+                int fd;
 
-		/**
-		 * @brief is rng initialized
-		 *
-		 * Indicates that whatever steps are need to initialize the
-		 * rng, they have been taken.
-		 */
-		bool rng_initialized;
+                /**
+                 * @brief is rng initialized
+                 *
+                 * Indicates that whatever steps are need to initialize the
+                 * rng, they have been taken.
+                 */
+                bool rng_initialized;
 
-		/**
-		 * @brief which rng is used
-		 *
-		 * stores which rng is used.
-		 */
-		RNGENGINE rng_used;
+                /**
+                 * @brief which rng is used
+                 *
+                 * stores which rng is used.
+                 */
+                RNGENGINE rng_used;
 
-		/**
-		 * @brief which rng are available
-		 *
-		 * stores which rng are available.
-		 */
-		int rng_available;
+                /**
+                 * @brief which rng are available
+                 *
+                 * stores which rng are available.
+                 */
+                int rng_available;
 
-		void check_availability() throw (PWGenException);
-		//! Initializes the given engine.
-		void init_rng (RNGENGINE request) throw (PWGenException);
+                void check_availability() throw (PWGenException);
+                //! Initializes the given engine.
+                void init_rng (RNGENGINE request) throw (PWGenException);
 
 
-		size_t devrandom (size_t ceil) throw (PWGenException);
-		size_t _lrand48 (size_t ceil) throw();
-		size_t _rand (size_t ceil) throw();
+                size_t devrandom (size_t ceil) throw (PWGenException);
+                size_t _lrand48 (size_t ceil) throw();
+                size_t _rand (size_t ceil) throw();
 
-	    public:
-		//! Initializes automatically
-		RNG() throw (PWGenException);
-		//! Try a specific RNG Engine
-		RNG (RNGENGINE request) throw (PWGenException);
-		RNG (const RNG& r) throw (PWGenException);
-		virtual ~RNG() throw();
+            public:
+                //! Initializes automatically
+                RNG() throw (PWGenException);
+                //! Try a specific RNG Engine
+                RNG (RNGENGINE request) throw (PWGenException);
+                RNG (const RNG& r) throw (PWGenException);
+                virtual ~RNG() throw();
 
-		size_t getRandomNumber (size_t ceil) throw (PWGenException);
+                size_t getRandomNumber (size_t ceil) throw (PWGenException);
 
-		RNGENGINE getRNGEngineUsed() const throw() {
-		    return rng_used;
-		}
+                RNGENGINE getRNGEngineUsed() const throw() {
+                    return rng_used;
+                }
 
-		inline size_t operator() (size_t ceil) throw (PWGenException) {
-		    return getRandomNumber (ceil);
-		}
-		const RNG& operator= (const RNG& r) throw();
-	};
+                inline size_t operator() (size_t ceil) throw (PWGenException) {
+                    return getRandomNumber (ceil);
+                }
+                const RNG& operator= (const RNG& r) throw();
+        };
     }
 }
 

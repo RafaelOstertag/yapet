@@ -68,6 +68,9 @@
 #include "passworddialog.h"
 #include "passwordrecord.h"
 #include "searchdialog.h"
+#ifdef ENABLE_PWGEN
+# include "pwgendialog.h"
+#endif
 
 /**
  * @brief Structure defining a key for the \c MainWindow.
@@ -132,6 +135,9 @@ KeyDesc keys[] = { {3, 2, "S", _ ("Save File") },
     {11, 2, "C", _ ("Change Password") },
     {12, 2, "^L", _ ("Redraw Screen") },
     {13, 2, "Q", _ ("Quit") },
+#ifdef ENABLE_PWGEN
+    {14, 2, "G", _ ("Password Generator") },
+#endif
     {0, 0, NULL, NULL}
 };
 #undef _
@@ -151,30 +157,30 @@ KeyDesc keys[] = { {3, 2, "S", _ ("Save File") },
  * This class is passed to \c BaseWindow::setTimeout() as class for calling the
  * signal handler of \c MainWindow.
  */
-class Alarm : public YAPETUI::BaseWindow::AlarmFunction {
+class Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
     private:
-	MainWindow& ref;
+        MainWindow& ref;
     public:
-	inline Alarm (MainWindow& r) : ref (r) {}
-	inline void process (int signo) {
-	    ref.handle_signal (signo);
-	}
+        inline Alarm (MainWindow& r) : ref (r) {}
+        inline void process (int signo) {
+            ref.handle_signal (signo);
+        }
 };
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 void
-MainWindow::printTitle() throw (YAPETUI::UIException) {
-    YAPETUI::Colors::setcolor (stdscr, YAPETUI::DEFAULT);
+MainWindow::printTitle() throw (YAPET::UI::UIException) {
+    YAPET::UI::Colors::setcolor (stdscr, YAPET::UI::DEFAULT);
     // Clear the previous title
     int retval = wmove (stdscr, 0, 0);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error moving cursor") );
+        throw YAPET::UI::UIException (_ ("Error moving cursor") );
 
     retval = wclrtoeol (stdscr);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error clearing line") );
+        throw YAPET::UI::UIException (_ ("Error clearing line") );
 
     // Title
     char title[100];
@@ -183,37 +189,37 @@ MainWindow::printTitle() throw (YAPETUI::UIException) {
     retval = wmove (stdscr, 0, maxX() / 2 - strlen (title) / 2);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error moving cursor") );
+        throw YAPET::UI::UIException (_ ("Error moving cursor") );
 
     retval = mywaddstr (stdscr, title);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error printing title") );
+        throw YAPET::UI::UIException (_ ("Error printing title") );
 
     std::string terminal_title;
 
     if ( file != NULL )
-	terminal_title = "YAPET (" + file->getFilename() + ")";
+        terminal_title = "YAPET (" + file->getFilename() + ")";
     else
-	terminal_title = "YAPET";
+        terminal_title = "YAPET";
 
     setTerminalTitle (terminal_title);
 }
 
 void
-MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
+MainWindow::topRightWinContent() throw (YAPET::UI::UIException) {
     int max_y, max_x;
     getmaxyx (toprightwin, max_y, max_x);
     int start_title_x = max_x / 2 - strlen (_ ("K E Y S") ) / 2;
     int retval = mymvwaddstr (toprightwin, 1, start_title_x, _ ("K E Y S") );
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("mvwaddstr() blew it") );
+        throw YAPET::UI::UIException (_ ("mvwaddstr() blew it") );
 
     retval = wmove (toprightwin, 2, 1);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("wmove() blew it") );
+        throw YAPET::UI::UIException (_ ("wmove() blew it") );
 
 #if defined(_XOPEN_CURSES) && !defined(__NCURSES_H)
     retval = whline (toprightwin, '-', max_x - 2);
@@ -222,47 +228,47 @@ MainWindow::topRightWinContent() throw (YAPETUI::UIException) {
 #endif
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("whline() blew it") );
+        throw YAPET::UI::UIException (_ ("whline() blew it") );
 
     KeyDesc* ptr = keys;
 
     while (ptr->key != NULL
-	    && ptr->desc != NULL) {
-	wattron (toprightwin, A_REVERSE);
-	retval = mvwprintw (toprightwin, ptr->y, ptr->x, "  %0-2s  ", ptr->key);
+            && ptr->desc != NULL) {
+        wattron (toprightwin, A_REVERSE);
+        retval = mvwprintw (toprightwin, ptr->y, ptr->x, "  %0-2s  ", ptr->key);
 
-	if (retval == ERR)
-	    throw YAPETUI::UIException (_ ("mvprintw() blew it") );
+        if (retval == ERR)
+            throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
 
-	wattroff (toprightwin, A_REVERSE);
-	// The translation of the keys is done here
-	retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, _ (ptr->desc) );
+        wattroff (toprightwin, A_REVERSE);
+        // The translation of the keys is done here
+        retval = mymvwaddstr (toprightwin, ptr->y, ptr->x + 8, _ (ptr->desc) );
 
-	if (retval == ERR)
-	    throw YAPETUI::UIException (_ ("waddstr() blew it") );
+        if (retval == ERR)
+            throw YAPET::UI::UIException (_ ("waddstr() blew it") );
 
-	ptr++;
+        ptr++;
     }
 }
 
 void
-MainWindow::bottomRightWinContent() throw (YAPETUI::UIException) {
+MainWindow::bottomRightWinContent() throw (YAPET::UI::UIException) {
     if (key == NULL || recordlist == NULL) return;
 
     int retval = 0;
 
     if (usefsecurity)
-	retval = mymvwaddstr (bottomrightwin, 1, 2, _ ("File permission check: enabled") );
+        retval = mymvwaddstr (bottomrightwin, 1, 2, _ ("File permission check: enabled") );
     else
-	retval = mymvwaddstr (bottomrightwin, 1, 2, _ ("File permission check: disabled") );
+        retval = mymvwaddstr (bottomrightwin, 1, 2, _ ("File permission check: disabled") );
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("waddstr() blew it") );
+        throw YAPET::UI::UIException (_ ("waddstr() blew it") );
 
     retval = mvwprintw (bottomrightwin, 2, 2, _ ("Screen lock time-out: %u sec"), locktimeout);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("mvprintw() blew it") );
+        throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
 
     // The %s in the format string is used for indicating whether or not
     // records have been altered, added, and or removed.
@@ -272,30 +278,30 @@ MainWindow::bottomRightWinContent() throw (YAPETUI::UIException) {
     retval = mvwprintw (bottomrightwin, 3, 2, _ ("%d entries %s"), recordlist->size(), (records_changed ? "(+)" : "   ") );
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("mvprintw() blew it") );
+        throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
 
 #if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
 
     if (file != NULL) {
-	try {
-	    time_t t = file->getMasterPWSet (*key);
-	    retval = mvwprintw (bottomrightwin, 4, 2, _ ("PW set: %s"),
-				asctime (localtime (&t) ) );
+        try {
+            time_t t = file->getMasterPWSet (*key);
+            retval = mvwprintw (bottomrightwin, 4, 2, _ ("PW set: %s"),
+                                asctime (localtime (&t) ) );
 
-	    if (retval == ERR)
-		throw YAPETUI::UIException (_ ("mvprintw() blew it") );
-	} catch (YAPET::YAPETException& ex) {
-	    statusbar.putMsg (ex.what() );
-	}
+            if (retval == ERR)
+                throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
+        } catch (YAPET::YAPETException& ex) {
+            statusbar.putMsg (ex.what() );
+        }
     }
 
 #endif
 }
 
 void
-MainWindow::createWindow() throw (YAPETUI::UIException) {
+MainWindow::createWindow() throw (YAPET::UI::UIException) {
     if (toprightwin != NULL || bottomrightwin != NULL)
-	throw YAPETUI::UIException (_ ("May you consider deleting the window before reallocating") );
+        throw YAPET::UI::UIException (_ ("May you consider deleting the window before reallocating") );
 
     int middleX = maxX() / 2;
     int thirdY = maxY() / 3 - 1;
@@ -306,13 +312,13 @@ MainWindow::createWindow() throw (YAPETUI::UIException) {
     toprightwin = newwin (maxY() - thirdY - 1 , maxX() - middleX, 1, middleX);
 
     if (toprightwin == NULL)
-	throw YAPETUI::UIException (_ ("newwin() returned NULL") );
+        throw YAPET::UI::UIException (_ ("newwin() returned NULL") );
 
-    YAPETUI::Colors::setcolor (toprightwin, YAPETUI::DEFAULT);
+    YAPET::UI::Colors::setcolor (toprightwin, YAPET::UI::DEFAULT);
     int retval = box (toprightwin, 0, 0);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("box() blew it") );
+        throw YAPET::UI::UIException (_ ("box() blew it") );
 
     topRightWinContent();
     //
@@ -321,45 +327,45 @@ MainWindow::createWindow() throw (YAPETUI::UIException) {
     bottomrightwin = newwin (thirdY - 1 , maxX() - middleX, maxY() - thirdY, middleX);
 
     if (bottomrightwin == NULL)
-	throw YAPETUI::UIException (_ ("newwin() returned NULL") );
+        throw YAPET::UI::UIException (_ ("newwin() returned NULL") );
 
-    YAPETUI::Colors::setcolor (bottomrightwin, YAPETUI::DEFAULT);
+    YAPET::UI::Colors::setcolor (bottomrightwin, YAPET::UI::DEFAULT);
     retval = werase (bottomrightwin);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("werase() blew it") );
+        throw YAPET::UI::UIException (_ ("werase() blew it") );
 
     retval = box (bottomrightwin, 0, 0);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("box() blew it") );
+        throw YAPET::UI::UIException (_ ("box() blew it") );
 
     //
     // List widget on the left
     //
     if (recordlist == NULL) {
-	std::list<YAPET::PartDec> emptylist;
-	recordlist = new YAPETUI::ListWidget<YAPET::PartDec> (emptylist,
-		0,
-		1,
-		maxX() / 2,
-		maxY() - 2);
+        std::list<YAPET::PartDec> emptylist;
+        recordlist = new YAPET::UI::ListWidget<YAPET::PartDec> (emptylist,
+                0,
+                1,
+                maxX() / 2,
+                maxY() - 2);
     }
 
     bottomRightWinContent();
 }
 
 void
-MainWindow::resize() throw (YAPETUI::UIException) {
+MainWindow::resize() throw (YAPET::UI::UIException) {
     int retval = delwin (toprightwin);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("delwin() blew it") );
+        throw YAPET::UI::UIException (_ ("delwin() blew it") );
 
     retval = delwin (bottomrightwin);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("delwin() blew it") );
+        throw YAPET::UI::UIException (_ ("delwin() blew it") );
 
     toprightwin = NULL;
     bottomrightwin = NULL;
@@ -368,138 +374,138 @@ MainWindow::resize() throw (YAPETUI::UIException) {
 }
 
 void
-MainWindow::refresh() throw (YAPETUI::UIException) {
+MainWindow::refresh() throw (YAPET::UI::UIException) {
     printTitle();
     int retval = wrefresh (stdscr);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error refreshing stdscr") );
+        throw YAPET::UI::UIException (_ ("Error refreshing stdscr") );
 
     topRightWinContent();
     bottomRightWinContent();
     retval = box (toprightwin, 0, 0);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error setting border") );
+        throw YAPET::UI::UIException (_ ("Error setting border") );
 
     retval = box (bottomrightwin, 0, 0);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error setting border") );
+        throw YAPET::UI::UIException (_ ("Error setting border") );
 
     retval = wrefresh (toprightwin);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error refreshing top right window") );
+        throw YAPET::UI::UIException (_ ("Error refreshing top right window") );
 
     retval = wrefresh (bottomrightwin);
 
     if (retval == ERR)
-	throw YAPETUI::UIException (_ ("Error refreshing bottom right window") );
+        throw YAPET::UI::UIException (_ ("Error refreshing bottom right window") );
 
     recordlist->refresh();
     statusbar.refresh();
 }
 
 void
-MainWindow::createFile (std::string& filename) throw (YAPETUI::UIException) {
+MainWindow::createFile (std::string& filename) throw (YAPET::UI::UIException) {
     closeFile();
     PasswordDialog* pwdia = NULL;
 
     try {
-	pwdia = new PasswordDialog (NEW_PW, filename);
-	pwdia->run();
-	key = pwdia->getKey();
-	delete pwdia;
-    } catch (YAPETUI::UIException&) {
-	if (pwdia != NULL)
-	    delete pwdia;
+        pwdia = new PasswordDialog (NEW_PW, filename);
+        pwdia->run();
+        key = pwdia->getKey();
+        delete pwdia;
+    } catch (YAPET::UI::UIException&) {
+        if (pwdia != NULL)
+            delete pwdia;
 
-	statusbar.putMsg (_ ("Error while asking for password") );
-	return;
+        statusbar.putMsg (_ ("Error while asking for password") );
+        return;
     }
 
     if (key == NULL) {
-	statusbar.putMsg (_ ("Creation of file canceled") );
-	return;
+        statusbar.putMsg (_ ("Creation of file canceled") );
+        return;
     }
 
     try {
-	file = new YAPET::File (filename, *key, true, usefsecurity);
-	statusbar.putMsg (filename + _ (" created") );
-	records_changed = false;
+        file = new YAPET::File (filename, *key, true, usefsecurity);
+        statusbar.putMsg (filename + _ (" created") );
+        records_changed = false;
     } catch (YAPET::YAPETException& ex) {
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), ex.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
 
-	closeFile();
+        closeFile();
     }
 }
 
 void
-MainWindow::openFile (std::string filename) throw (YAPETUI::UIException) {
+MainWindow::openFile (std::string filename) throw (YAPET::UI::UIException) {
     struct stat st;
     int retval = stat (filename.c_str(), &st);
 
     if (retval == -1 && errno == ENOENT) {
-	// Ask user whether or not he wants to create a new file
-	YAPETUI::DialogBox* question =
-	    new YAPETUI::DialogBox (_ ("Q U E S T I O N"),
-				    _ ("The file does not exist. Do you want to create it?") );
-	question->run();
-	YAPETUI::ANSWER a = question->getAnswer();
-	delete question;
+        // Ask user whether or not he wants to create a new file
+        YAPET::UI::DialogBox* question =
+            new YAPET::UI::DialogBox (_ ("Q U E S T I O N"),
+                                      _ ("The file does not exist. Do you want to create it?") );
+        question->run();
+        YAPET::UI::ANSWER a = question->getAnswer();
+        delete question;
 
-	if ( a == YAPETUI::ANSWER_OK) {
-	    createFile (filename);
-	    return;
-	} else {
-	    statusbar.putMsg (_ ("File creation canceled") );
-	    return;
-	}
+        if ( a == YAPET::UI::ANSWER_OK) {
+            createFile (filename);
+            return;
+        } else {
+            statusbar.putMsg (_ ("File creation canceled") );
+            return;
+        }
     } else if (retval == -1) {
-	// Inform user about other error
-	YAPETUI::MessageBox* errmsg = NULL;
+        // Inform user about other error
+        YAPET::UI::MessageBox* errmsg = NULL;
 
-	try {
-	    errmsg = new YAPETUI::MessageBox (_ ("E R R O R"), strerror (errno) );
-	    errmsg->run();
-	    delete errmsg;
-	} catch (YAPETUI::UIException&) {
-	    if (errmsg != NULL)
-		delete errmsg;
-	}
+        try {
+            errmsg = new YAPET::UI::MessageBox (_ ("E R R O R"), strerror (errno) );
+            errmsg->run();
+            delete errmsg;
+        } catch (YAPET::UI::UIException&) {
+            if (errmsg != NULL)
+                delete errmsg;
+        }
 
-	refresh();
-	return;
+        refresh();
+        return;
     }
 
     // We were able to stat the file, now make sure it is a file and open it
     // using the password
     if (!S_ISREG (st.st_mode) ) {
-	YAPETUI::MessageBox* errmsg = NULL;
+        YAPET::UI::MessageBox* errmsg = NULL;
 
-	try {
-	    errmsg = new YAPETUI::MessageBox (_ ("E R R O R"),
-					      _ ("The specified file is not a regular file") );
-	    errmsg->run();
-	    delete errmsg;
-	} catch (YAPETUI::UIException&) {
-	    if (errmsg != NULL)
-		delete errmsg;
-	}
+        try {
+            errmsg = new YAPET::UI::MessageBox (_ ("E R R O R"),
+                                                _ ("The specified file is not a regular file") );
+            errmsg->run();
+            delete errmsg;
+        } catch (YAPET::UI::UIException&) {
+            if (errmsg != NULL)
+                delete errmsg;
+        }
 
-	return;
+        return;
     }
 
     closeFile();
@@ -507,50 +513,50 @@ MainWindow::openFile (std::string filename) throw (YAPETUI::UIException) {
     PasswordDialog* pwdia = NULL;
 
     try {
-	pwdia = new PasswordDialog (EXISTING_PW, filename);
-	pwdia->run();
-	key = pwdia->getKey();
-	delete pwdia;
-    } catch (YAPETUI::UIException&) {
-	if (pwdia != NULL)
-	    delete pwdia;
+        pwdia = new PasswordDialog (EXISTING_PW, filename);
+        pwdia->run();
+        key = pwdia->getKey();
+        delete pwdia;
+    } catch (YAPET::UI::UIException&) {
+        if (pwdia != NULL)
+            delete pwdia;
 
-	statusbar.putMsg (_ ("UI error while asking for password") );
+        statusbar.putMsg (_ ("UI error while asking for password") );
     }
 
     // Open file
     if (key != NULL) {
-	try {
-	    file = new YAPET::File (filename, *key, false, usefsecurity);
-	    std::list<YAPET::PartDec> tmp_list = file->read (*key);
-	    recordlist->setList (tmp_list);
-	    statusbar.putMsg (filename + _ (" opened") );
-	    return;
-	} catch (YAPET::YAPETException& e) {
-	    if (file != NULL)
-		delete file;
+        try {
+            file = new YAPET::File (filename, *key, false, usefsecurity);
+            std::list<YAPET::PartDec> tmp_list = file->read (*key);
+            recordlist->setList (tmp_list);
+            statusbar.putMsg (filename + _ (" opened") );
+            return;
+        } catch (YAPET::YAPETException& e) {
+            if (file != NULL)
+                delete file;
 
-	    YAPETUI::MessageBox* msgbox = NULL;
+            YAPET::UI::MessageBox* msgbox = NULL;
 
-	    try {
-		msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), e.what() );
-		msgbox->run();
-		delete msgbox;
-	    } catch (YAPETUI::UIException&) {
-		if (msgbox != NULL)
-		    delete msgbox;
+            try {
+                msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), e.what() );
+                msgbox->run();
+                delete msgbox;
+            } catch (YAPET::UI::UIException&) {
+                if (msgbox != NULL)
+                    delete msgbox;
 
-		statusbar.putMsg (_ ("Error while trying to show error") );
-	    }
+                statusbar.putMsg (_ ("Error while trying to show error") );
+            }
 
-	    delete key;
-	    key = NULL;
-	    file = NULL;
-	    statusbar.putMsg (_ ("Error opening file") );
-	    return;
-	}
+            delete key;
+            key = NULL;
+            file = NULL;
+            statusbar.putMsg (_ ("Error opening file") );
+            return;
+        }
     } else {
-	statusbar.putMsg (_ ("Opening of ") + filename + _ (" canceled") );
+        statusbar.putMsg (_ ("Opening of ") + filename + _ (" canceled") );
     }
 }
 
@@ -559,29 +565,29 @@ MainWindow::saveFile() {
     if (key == NULL || file == NULL) return;
 
     try {
-	file->save (recordlist->getList() );
-	records_changed = false;
-	statusbar.putMsg (file->getFilename() + _ (" saved") );
-	// This is because the status has to be updated on the right bottom win
-	// regarding whether or not changes to be saved are pending
-	bottomRightWinContent();
-	int retval = wrefresh (bottomrightwin);
+        file->save (recordlist->getList() );
+        records_changed = false;
+        statusbar.putMsg (file->getFilename() + _ (" saved") );
+        // This is because the status has to be updated on the right bottom win
+        // regarding whether or not changes to be saved are pending
+        bottomRightWinContent();
+        int retval = wrefresh (bottomrightwin);
 
-	if (retval == ERR)
-	    throw YAPETUI::UIException (_ ("Error refreshing bottom right window") );
+        if (retval == ERR)
+            throw YAPET::UI::UIException (_ ("Error refreshing bottom right window") );
     } catch (YAPET::YAPETException& ex) {
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), ex.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 }
 
@@ -589,13 +595,13 @@ void
 MainWindow::closeFile() {
     // Remove key and close file
     if (key != NULL) {
-	delete key;
-	key = NULL;
+        delete key;
+        key = NULL;
     }
 
     if (file != NULL) {
-	delete file;
-	file = NULL;
+        delete file;
+        file = NULL;
     }
 
     // Clear list
@@ -610,41 +616,41 @@ MainWindow::addNewRecord() {
     PasswordRecord* pwentry = NULL;
 
     try {
-	pwentry = new PasswordRecord (*key, NULL);
-	pwentry->run();
+        pwentry = new PasswordRecord (*key, NULL);
+        pwentry->run();
 
-	if (pwentry->entryChanged() &&
-		pwentry->getEncEntry() != NULL) {
-	    recordlist->getList().push_back (*pwentry->getEncEntry() );
-	    recordlist->setSortOrder();
-	    delete pwentry->getEncEntry();
-	    records_changed = true;
-	    statusbar.putMsg (_ ("New record added") );
-	} else {
-	    statusbar.putMsg (_ ("Record addition canceled") );
-	}
+        if (pwentry->entryChanged() &&
+                pwentry->getEncEntry() != NULL) {
+            recordlist->getList().push_back (*pwentry->getEncEntry() );
+            recordlist->setSortOrder();
+            delete pwentry->getEncEntry();
+            records_changed = true;
+            statusbar.putMsg (_ ("New record added") );
+        } else {
+            statusbar.putMsg (_ ("Record addition canceled") );
+        }
 
-	delete pwentry;
-    } catch (YAPETUI::UIException& ex) {
-	if (pwentry != NULL) {
-	    if (pwentry->getEncEntry() != NULL)
-		delete pwentry->getEncEntry();
+        delete pwentry;
+    } catch (YAPET::UI::UIException& ex) {
+        if (pwentry != NULL) {
+            if (pwentry->getEncEntry() != NULL)
+                delete pwentry->getEncEntry();
 
-	    delete pwentry;
-	}
+            delete pwentry;
+        }
 
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), _ ("Error adding password entry") );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Error adding password entry") );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 
     ::refresh();
@@ -654,48 +660,48 @@ MainWindow::addNewRecord() {
 void
 MainWindow::editSelectedRecord() {
     if (key == NULL ||
-	    file == NULL ||
-	    recordlist->size() == 0) return;
+            file == NULL ||
+            recordlist->size() == 0) return;
 
     PasswordRecord* pwentry = NULL;
 
     try {
-	YAPET::PartDec pd = recordlist->getSelectedItem();
-	pwentry = new PasswordRecord (*key, &pd);
-	pwentry->run();
+        YAPET::PartDec pd = recordlist->getSelectedItem();
+        pwentry = new PasswordRecord (*key, &pd);
+        pwentry->run();
 
-	if (pwentry->entryChanged() &&
-		pwentry->getEncEntry() != NULL) {
-	    recordlist->replaceCurrentItem (*pwentry->getEncEntry() );
-	    recordlist->setSortOrder();
-	    records_changed = true;
-	    statusbar.putMsg (_ ("Record edited") );
-	    delete pwentry->getEncEntry();
-	} else {
-	    statusbar.putMsg (_ ("Record edition canceled") );
-	}
+        if (pwentry->entryChanged() &&
+                pwentry->getEncEntry() != NULL) {
+            recordlist->replaceCurrentItem (*pwentry->getEncEntry() );
+            recordlist->setSortOrder();
+            records_changed = true;
+            statusbar.putMsg (_ ("Record edited") );
+            delete pwentry->getEncEntry();
+        } else {
+            statusbar.putMsg (_ ("Record edition canceled") );
+        }
 
-	delete pwentry;
-    } catch (YAPETUI::UIException& ex) {
-	if (pwentry != NULL) {
-	    if (pwentry->getEncEntry() != NULL)
-		delete pwentry->getEncEntry();
+        delete pwentry;
+    } catch (YAPET::UI::UIException& ex) {
+        if (pwentry != NULL) {
+            if (pwentry->getEncEntry() != NULL)
+                delete pwentry->getEncEntry();
 
-	    delete pwentry;
-	}
+            delete pwentry;
+        }
 
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), _ ("Error adding password entry") );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Error adding password entry") );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 
     ::refresh();
@@ -703,43 +709,43 @@ MainWindow::editSelectedRecord() {
 }
 
 void
-MainWindow::deleteSelectedRecord() throw (YAPETUI::UIException) {
+MainWindow::deleteSelectedRecord() throw (YAPET::UI::UIException) {
     if (recordlist->size() < 1) return;
 
-    YAPETUI::DialogBox* dialog = NULL;
+    YAPET::UI::DialogBox* dialog = NULL;
 
     try {
-	dialog = new YAPETUI::DialogBox (_ ("Q U E S T I O N"), _ ("Delete selected record?") );
-	dialog->run();
-	YAPETUI::ANSWER a = dialog->getAnswer();
+        dialog = new YAPET::UI::DialogBox (_ ("Q U E S T I O N"), _ ("Delete selected record?") );
+        dialog->run();
+        YAPET::UI::ANSWER a = dialog->getAnswer();
 
-	if (a == YAPETUI::ANSWER_OK) {
-	    recordlist->deleteSelectedItem();
-	    records_changed = true;
-	    recordlist->refresh();
-	    statusbar.putMsg (_ ("Record deleted") );
-	    records_changed = true;
-	} else {
-	    statusbar.putMsg ("");
-	}
+        if (a == YAPET::UI::ANSWER_OK) {
+            recordlist->deleteSelectedItem();
+            records_changed = true;
+            recordlist->refresh();
+            statusbar.putMsg (_ ("Record deleted") );
+            records_changed = true;
+        } else {
+            statusbar.putMsg ("");
+        }
 
-	delete dialog;
-    } catch (YAPETUI::UIException&) {
-	if (dialog != NULL)
-	    delete dialog;
+        delete dialog;
+    } catch (YAPET::UI::UIException&) {
+        if (dialog != NULL)
+            delete dialog;
 
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), _ ("Error showing dialog") );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Error showing dialog") );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 
     refresh();
@@ -748,75 +754,75 @@ MainWindow::deleteSelectedRecord() throw (YAPETUI::UIException) {
 void
 MainWindow::setSortOrder() {
     try {
-	switch (recordlist->getSortOrder() ) {
-	    case (YAPETUI::ListWidget<YAPET::PartDec>::ASCENDING) :
-		recordlist->setSortOrder (YAPETUI::ListWidget<YAPET::PartDec>::DESCENDING);
-		statusbar.putMsg (_ ("Set sort order descending") );
-		break;
-	    case (YAPETUI::ListWidget<YAPET::PartDec>::DESCENDING) :
-		recordlist->setSortOrder (YAPETUI::ListWidget<YAPET::PartDec>::ASCENDING);
-		statusbar.putMsg (_ ("Set sort order ascending") );
-		break;
-	};
+        switch (recordlist->getSortOrder() ) {
+            case (YAPET::UI::ListWidget<YAPET::PartDec>::ASCENDING) :
+                recordlist->setSortOrder (YAPET::UI::ListWidget<YAPET::PartDec>::DESCENDING);
+                statusbar.putMsg (_ ("Set sort order descending") );
+                break;
+            case (YAPET::UI::ListWidget<YAPET::PartDec>::DESCENDING) :
+                recordlist->setSortOrder (YAPET::UI::ListWidget<YAPET::PartDec>::ASCENDING);
+                statusbar.putMsg (_ ("Set sort order ascending") );
+                break;
+        };
 
-	recordlist->refresh();
+        recordlist->refresh();
     } catch (std::exception& ex) {
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), ex.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 }
 
 void
 MainWindow::searchTerm() {
     if (key == NULL ||
-	    file == NULL ||
-	    recordlist->size() == 0) return;
+            file == NULL ||
+            recordlist->size() == 0) return;
 
     SearchDialog* searchdialog = NULL;
 
     try {
-	searchdialog = new SearchDialog();
-	searchdialog->run();
+        searchdialog = new SearchDialog();
+        searchdialog->run();
 
-	if (!searchdialog->isCanceled() ) {
-	    if (recordlist->searchTerm (searchdialog->getSearchTerm() ) ) {
-		// simply clear the status bar
-		statusbar.putMsg ("");
-	    } else {
-		statusbar.putMsg (_ ("Search term not found") );
-	    }
-	} else {
-	    statusbar.putMsg (_ ("Search canceled") );
-	}
+        if (!searchdialog->isCanceled() ) {
+            if (recordlist->searchTerm (searchdialog->getSearchTerm() ) ) {
+                // simply clear the status bar
+                statusbar.putMsg ("");
+            } else {
+                statusbar.putMsg (_ ("Search term not found") );
+            }
+        } else {
+            statusbar.putMsg (_ ("Search canceled") );
+        }
 
-	delete searchdialog;
-    } catch (YAPETUI::UIException& ex) {
-	if (searchdialog != NULL) {
-	    delete searchdialog;
-	}
+        delete searchdialog;
+    } catch (YAPET::UI::UIException& ex) {
+        if (searchdialog != NULL) {
+            delete searchdialog;
+        }
 
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), ex.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+        }
     }
 
     ::refresh();
@@ -826,14 +832,14 @@ MainWindow::searchTerm() {
 void
 MainWindow::searchNext() {
     if (key == NULL ||
-	    file == NULL ||
-	    recordlist->size() == 0) return;
+            file == NULL ||
+            recordlist->size() == 0) return;
 
     if (recordlist->searchNext() ) {
-	// simply clear the status bar
-	statusbar.putMsg ("");
+        // simply clear the status bar
+        statusbar.putMsg ("");
     } else {
-	statusbar.putMsg (_ ("Search term not found") );
+        statusbar.putMsg (_ ("Search term not found") );
     }
 }
 
@@ -843,149 +849,149 @@ MainWindow::quit() {
      * @bug find out how to clear the terminal title properly.
      */
     if (!records_changed) {
-	// Clear the terminal title
-	setTerminalTitle ("");
-	return true;
+        // Clear the terminal title
+        setTerminalTitle ("");
+        return true;
     }
 
-    YAPETUI::DialogBox* dialogbox = NULL;
+    YAPET::UI::DialogBox* dialogbox = NULL;
 
     try {
-	dialogbox = new YAPETUI::DialogBox (_ ("Q U E S T I O N"), _ ("Save before quitting?") );
-	dialogbox->run();
-	YAPETUI::ANSWER a = dialogbox->getAnswer();
-	delete dialogbox;
-	// Clear the terminal title
-	setTerminalTitle ("");
+        dialogbox = new YAPET::UI::DialogBox (_ ("Q U E S T I O N"), _ ("Save before quitting?") );
+        dialogbox->run();
+        YAPET::UI::ANSWER a = dialogbox->getAnswer();
+        delete dialogbox;
+        // Clear the terminal title
+        setTerminalTitle ("");
 
-	if (a == YAPETUI::ANSWER_OK) {
-	    saveFile();
-	    return true;
-	}
+        if (a == YAPET::UI::ANSWER_OK) {
+            saveFile();
+            return true;
+        }
 
-	return true;
-    } catch (YAPETUI::UIException&) {
-	if (dialogbox != NULL)
-	    delete dialogbox;
+        return true;
+    } catch (YAPET::UI::UIException&) {
+        if (dialogbox != NULL)
+            delete dialogbox;
 
-	statusbar.putMsg (_ ("Error showing error message") );
-	refresh();
-	return false;
+        statusbar.putMsg (_ ("Error showing error message") );
+        refresh();
+        return false;
     }
 }
 
 void
-MainWindow::lockScreen() const throw (YAPETUI::UIException) {
+MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
     if (key == NULL) return;
 
     int ch;
 
     while (true) {
-	WINDOW* lockwin = newwin (0, 0, 0, 0);
+        WINDOW* lockwin = newwin (0, 0, 0, 0);
 
-	if (lockwin == NULL)
-	    throw YAPETUI::UIException (_ ("Error creating lock window") );
+        if (lockwin == NULL)
+            throw YAPET::UI::UIException (_ ("Error creating lock window") );
 
-	int retval = werase (lockwin);
+        int retval = werase (lockwin);
 
-	if (retval == ERR) {
-	    delwin (lockwin);
-	    throw YAPETUI::UIException (_ ("Error erasing window") );
-	}
+        if (retval == ERR) {
+            delwin (lockwin);
+            throw YAPET::UI::UIException (_ ("Error erasing window") );
+        }
 
-	retval = wrefresh (lockwin);
+        retval = wrefresh (lockwin);
 
-	if (retval == ERR) {
-	    delwin (lockwin);
-	    throw YAPETUI::UIException (_ ("Error refreshing window") );
-	}
+        if (retval == ERR) {
+            delwin (lockwin);
+            throw YAPET::UI::UIException (_ ("Error refreshing window") );
+        }
 
-	std::string locked_title (_ ("YAPET -- Locked --") );
-	setTerminalTitle (locked_title);
-	ch = wgetch (lockwin);
+        std::string locked_title (_ ("YAPET -- Locked --") );
+        setTerminalTitle (locked_title);
+        ch = wgetch (lockwin);
 #ifdef HAVE_WRESIZE
 
-	if (ch == KEY_RESIZE) {
-	    delwin (lockwin);
-	    YAPETUI::BaseWindow::resizeAll();
-	    continue;
-	}
+        if (ch == KEY_RESIZE) {
+            delwin (lockwin);
+            YAPET::UI::BaseWindow::resizeAll();
+            continue;
+        }
 
 #endif
-	PasswordDialog* pwdia = NULL;
-	YAPET::Key* testkey = NULL;
+        PasswordDialog* pwdia = NULL;
+        YAPET::Key* testkey = NULL;
 
-	try {
-	    pwdia = new PasswordDialog (EXISTING_PW, file->getFilename() );
-	    pwdia->run();
-	    testkey = pwdia->getKey();
-	    delete pwdia;
-	} catch (YAPETUI::UIException&) {
-	    if (pwdia != NULL)
-		delete pwdia;
+        try {
+            pwdia = new PasswordDialog (EXISTING_PW, file->getFilename() );
+            pwdia->run();
+            testkey = pwdia->getKey();
+            delete pwdia;
+        } catch (YAPET::UI::UIException&) {
+            if (pwdia != NULL)
+                delete pwdia;
 
-	    if (testkey != NULL)
-		delete testkey;
+            if (testkey != NULL)
+                delete testkey;
 
-	    delwin (lockwin);
-	    continue;
-	}
+            delwin (lockwin);
+            continue;
+        }
 
-	if (testkey == NULL) {
-	    delwin (lockwin);
-	    continue;
-	}
+        if (testkey == NULL) {
+            delwin (lockwin);
+            continue;
+        }
 
-	if (*testkey != *key) {
-	    YAPETUI::MessageBox* msgbox = NULL;
+        if (*testkey != *key) {
+            YAPET::UI::MessageBox* msgbox = NULL;
 
-	    try {
-		msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), _ ("Wrong password") );
-		msgbox->run();
-		delete msgbox;
-	    } catch (YAPETUI::UIException&) {
-		if (msgbox != NULL)
-		    delete msgbox;
-	    }
-	} else {
-	    delete testkey;
-	    delwin (lockwin);
-	    return;
-	}
+            try {
+                msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Wrong password") );
+                msgbox->run();
+                delete msgbox;
+            } catch (YAPET::UI::UIException&) {
+                if (msgbox != NULL)
+                    delete msgbox;
+            }
+        } else {
+            delete testkey;
+            delwin (lockwin);
+            return;
+        }
 
-	delete testkey;
-	delwin (lockwin);
+        delete testkey;
+        delwin (lockwin);
     }
 }
 
 void
-MainWindow::changePassword() throw (YAPETUI::UIException) {
+MainWindow::changePassword() throw (YAPET::UI::UIException) {
     if (file == NULL || key == NULL) return;
 
     // Make sure there are no unsaved entries
     if (records_changed) {
-	YAPETUI::DialogBox* dialogbox = NULL;
+        YAPET::UI::DialogBox* dialogbox = NULL;
 
-	try {
-	    dialogbox = new YAPETUI::DialogBox (_ ("Q U E S T I O N"), _ ("Save before changing password?") );
-	    dialogbox->run();
-	    YAPETUI::ANSWER a = dialogbox->getAnswer();
-	    delete dialogbox;
+        try {
+            dialogbox = new YAPET::UI::DialogBox (_ ("Q U E S T I O N"), _ ("Save before changing password?") );
+            dialogbox->run();
+            YAPET::UI::ANSWER a = dialogbox->getAnswer();
+            delete dialogbox;
 
-	    if (a == YAPETUI::ANSWER_OK) {
-		saveFile();
-	    } else {
-		statusbar.putMsg (_ ("Password change aborted") );
-		return;
-	    }
-	} catch (YAPETUI::UIException&) {
-	    if (dialogbox != NULL)
-		delete dialogbox;
+            if (a == YAPET::UI::ANSWER_OK) {
+                saveFile();
+            } else {
+                statusbar.putMsg (_ ("Password change aborted") );
+                return;
+            }
+        } catch (YAPET::UI::UIException&) {
+            if (dialogbox != NULL)
+                delete dialogbox;
 
-	    statusbar.putMsg (_ ("Error showing error message") );
-	    refresh();
-	    return;
-	}
+            statusbar.putMsg (_ ("Error showing error message") );
+            refresh();
+            return;
+        }
     }
 
     // Prompt for the new password
@@ -993,41 +999,41 @@ MainWindow::changePassword() throw (YAPETUI::UIException) {
     YAPET::Key* newkey;
 
     try {
-	pwdia = new PasswordDialog (NEW_PW, file->getFilename() );
-	pwdia->run();
-	newkey = pwdia->getKey();
-	delete pwdia;
-    } catch (YAPETUI::UIException&) {
-	if (pwdia != NULL)
-	    delete pwdia;
+        pwdia = new PasswordDialog (NEW_PW, file->getFilename() );
+        pwdia->run();
+        newkey = pwdia->getKey();
+        delete pwdia;
+    } catch (YAPET::UI::UIException&) {
+        if (pwdia != NULL)
+            delete pwdia;
 
-	statusbar.putMsg (_ ("Error while asking for password") );
-	return;
+        statusbar.putMsg (_ ("Error while asking for password") );
+        return;
     }
 
     // Make sure the key has been generated
     if (newkey == NULL) {
-	statusbar.putMsg (_ ("Password change canceled") );
-	return;
+        statusbar.putMsg (_ ("Password change canceled") );
+        return;
     }
 
     // Change the password
     try {
-	file->setNewKey (*key, *newkey);
+        file->setNewKey (*key, *newkey);
     } catch (std::exception& ex) {
-	delete newkey;
-	YAPETUI::MessageBox* msgbox = NULL;
+        delete newkey;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), ex.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
-	}
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
+        }
 
-	return;
+        return;
     }
 
     delete key;
@@ -1035,46 +1041,46 @@ MainWindow::changePassword() throw (YAPETUI::UIException) {
 
     // Read records from file
     try {
-	std::list<YAPET::PartDec> tmp_list = file->read (*key);
-	recordlist->setList (tmp_list);
+        std::list<YAPET::PartDec> tmp_list = file->read (*key);
+        recordlist->setList (tmp_list);
     } catch (YAPET::YAPETException& e) {
-	if (file != NULL)
-	    delete file;
+        if (file != NULL)
+            delete file;
 
-	YAPETUI::MessageBox* msgbox = NULL;
+        YAPET::UI::MessageBox* msgbox = NULL;
 
-	try {
-	    msgbox = new YAPETUI::MessageBox (_ ("E R R O R"), e.what() );
-	    msgbox->run();
-	    delete msgbox;
-	} catch (YAPETUI::UIException&) {
-	    if (msgbox != NULL)
-		delete msgbox;
+        try {
+            msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), e.what() );
+            msgbox->run();
+            delete msgbox;
+        } catch (YAPET::UI::UIException&) {
+            if (msgbox != NULL)
+                delete msgbox;
 
-	    statusbar.putMsg (_ ("Error while trying to show error") );
-	}
+            statusbar.putMsg (_ ("Error while trying to show error") );
+        }
 
-	delete key;
-	key = NULL;
-	file = NULL;
-	statusbar.putMsg (_ ("Error reading from file") );
-	return;
+        delete key;
+        key = NULL;
+        file = NULL;
+        statusbar.putMsg (_ ("Error reading from file") );
+        return;
     }
 
     statusbar.putMsg (_ ("Password successfully changed") );
 }
 
 MainWindow::MainWindow (unsigned int timeout,
-			bool fsecurity) throw (YAPETUI::UIException) : BaseWindow(),
-	toprightwin (NULL),
-	bottomrightwin (NULL),
-	recordlist (NULL),
-	statusbar(),
-	records_changed (false),
-	key (NULL),
-	file (NULL),
-	locktimeout (timeout),
-	usefsecurity (fsecurity) {
+                        bool fsecurity) throw (YAPET::UI::UIException) : BaseWindow(),
+        toprightwin (NULL),
+        bottomrightwin (NULL),
+        recordlist (NULL),
+        statusbar(),
+        records_changed (false),
+        key (NULL),
+        file (NULL),
+        locktimeout (timeout),
+        usefsecurity (fsecurity) {
     locktimeout = locktimeout < 10 ? 10 : locktimeout;
     createWindow();
 }
@@ -1087,159 +1093,181 @@ MainWindow::~MainWindow() {
     delwin (bottomrightwin);
 
     if (key != NULL)
-	delete key;
+        delete key;
 
     if (file != NULL)
-	delete file;
+        delete file;
 }
 
 void
-MainWindow::run() throw (YAPETUI::UIException) {
+MainWindow::run() throw (YAPET::UI::UIException) {
     if (file == NULL || key == NULL)
-	statusbar.putMsg (_ ("No file loaded") );
+        statusbar.putMsg (_ ("No file loaded") );
 
     if (file != NULL && key != NULL)
-	statusbar.putMsg (file->getFilename() + _ (" loaded") );
+        statusbar.putMsg (file->getFilename() + _ (" loaded") );
 
     refresh();
     Alarm alrm (*this);
     int ch;
 
     while (true) {
-	try {
+        try {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    BaseWindow::setTimeout (&alrm, locktimeout);
+            BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
-	    while ( (ch = recordlist->focus() ) ) {
+            while ( (ch = recordlist->focus() ) ) {
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-		YAPETUI::BaseWindow::suspendTimeout();
+                YAPET::UI::BaseWindow::suspendTimeout();
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
-		switch (ch) {
-		    case '\n':
-			editSelectedRecord();
-			break;
-		    case 3: // ^C
-		    case 'Q':
-		    case 'q':
+                switch (ch) {
+                    case '\n':
+                        editSelectedRecord();
+                        break;
+                    case 3: // ^C
+                    case 'Q':
+                    case 'q':
 
-			if (quit() ) return;
+                        if (quit() ) return;
 
-			break;
+                        break;
 #ifdef HAVE_WRESIZE
-		    case KEY_RESIZE:
-			YAPETUI::BaseWindow::resizeAll();
-			break;
+                    case KEY_RESIZE:
+                        YAPET::UI::BaseWindow::resizeAll();
+                        break;
 #endif // HAVE_WRESIZE
-		    case KEY_REFRESH:
+                    case KEY_REFRESH:
 #ifdef HAVE_WRESIZE
-			YAPETUI::BaseWindow::resizeAll();
+                        YAPET::UI::BaseWindow::resizeAll();
 #endif // HAVE_WRESIZE
-			YAPETUI::BaseWindow::refreshAll();
-			break;
-		    case 'S':
-		    case 's':
-			saveFile();
-			break;
-		    case 'R':
-		    case 'r': {
-			FileOpen* tmp = NULL;
+                        YAPET::UI::BaseWindow::refreshAll();
+                        break;
+                    case 'S':
+                    case 's':
+                        saveFile();
+                        break;
+                    case 'R':
+                    case 'r': {
+                        FileOpen* tmp = NULL;
 
-			try {
-			    tmp = new FileOpen (_ ("O P E N  F I L E") );
-			    tmp->run();
+                        try {
+                            tmp = new FileOpen (_ ("O P E N  F I L E") );
+                            tmp->run();
 
-			    if (!tmp->isCanceled() ) {
-				openFile (tmp->getFilepath() );
-			    }
+                            if (!tmp->isCanceled() ) {
+                                openFile (tmp->getFilepath() );
+                            }
 
-			    delete tmp;
-			} catch (std::exception& ex2) {
-			    statusbar.putMsg (ex2.what() );
+                            delete tmp;
+                        } catch (std::exception& ex2) {
+                            statusbar.putMsg (ex2.what() );
 
-			    if (file != NULL)
-				delete file;
+                            if (file != NULL)
+                                delete file;
 
-			    if (key != NULL)
-				delete key;
+                            if (key != NULL)
+                                delete key;
 
-			    if (tmp != NULL)
-				delete tmp;
+                            if (tmp != NULL)
+                                delete tmp;
 
-			    file = NULL;
-			    key = NULL;
-			}
+                            file = NULL;
+                            key = NULL;
+                        }
 
-			::refresh();
-			YAPETUI::BaseWindow::refreshAll();
-		    }
-		    break;
-		    case 'L':
-		    case 'l':
-			lockScreen();
-			::refresh();
-			YAPETUI::BaseWindow::refreshAll();
-			break;
-		    case 'A':
-		    case 'a':
-			addNewRecord();
-			break;
-		    case 'D':
-		    case 'd':
-			deleteSelectedRecord();
-			break;
-		    case 'O':
-		    case 'o':
-			setSortOrder();
-			break;
-		    case '/':
-			searchTerm();
-			break;
-		    case 'N':
-		    case 'n':
-			searchNext();
-			break;
-		    case 'c':
-		    case 'C':
-			changePassword();
-			::refresh();
-			YAPETUI::BaseWindow::refreshAll();
-			break;
-		}
+                        ::refresh();
+                        YAPET::UI::BaseWindow::refreshAll();
+                    }
+                    break;
+                    case 'L':
+                    case 'l':
+                        lockScreen();
+                        ::refresh();
+                        YAPET::UI::BaseWindow::refreshAll();
+                        break;
+                    case 'A':
+                    case 'a':
+                        addNewRecord();
+                        break;
+                    case 'D':
+                    case 'd':
+                        deleteSelectedRecord();
+                        break;
+                    case 'O':
+                    case 'o':
+                        setSortOrder();
+                        break;
+                    case '/':
+                        searchTerm();
+                        break;
+                    case 'N':
+                    case 'n':
+                        searchNext();
+                        break;
+                    case 'c':
+                    case 'C':
+                        changePassword();
+                        ::refresh();
+                        YAPET::UI::BaseWindow::refreshAll();
+                        break;
+#ifdef ENABLE_PWGEN
+                    case 'G':
+                    case 'g': {
+                        PWGenDialog* tmp = NULL;
 
+                        try {
+                            tmp = new PWGenDialog ();
+                            tmp->run();
+                            delete tmp;
+                        } catch (std::exception& ex2) {
+                            statusbar.putMsg (ex2.what() );
+
+                            if (tmp != NULL)
+                                delete tmp;
+                        }
+
+                        ::refresh();
+                        YAPET::UI::BaseWindow::refreshAll();
+                        break;
+                    }
+#endif
+                }
+
+                // Hmm, what's this doing here?? Not sure, I'll leave it...
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-		YAPETUI::BaseWindow::setTimeout (&alrm, 600);
+                YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	    }
-	} catch (std::exception& ex) {
-	    statusbar.putMsg (ex.what() );
-	}
+            }
+        } catch (std::exception& ex) {
+            statusbar.putMsg (ex.what() );
+        }
     }
 }
 
 void
 MainWindow::run (std::string fn) {
     if (fn.empty() ) {
-	run();
-	return;
+        run();
+        return;
     }
 
     refresh();
 
     try {
-	openFile (fn);
+        openFile (fn);
     } catch (std::exception& ex2) {
-	statusbar.putMsg (ex2.what() );
+        statusbar.putMsg (ex2.what() );
 
-	if (file != NULL)
-	    delete file;
+        if (file != NULL)
+            delete file;
 
-	if (key != NULL)
-	    delete key;
+        if (key != NULL)
+            delete key;
 
-	file = NULL;
-	key = NULL;
+        file = NULL;
+        key = NULL;
     }
 
     ::refresh();
@@ -1250,9 +1278,9 @@ MainWindow::run (std::string fn) {
 void
 MainWindow::handle_signal (int signo) {
     if (signo == SIGALRM) {
-	lockScreen();
-	::refresh();
-	YAPETUI::BaseWindow::refreshAll();
+        lockScreen();
+        ::refresh();
+        YAPET::UI::BaseWindow::refreshAll();
     }
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

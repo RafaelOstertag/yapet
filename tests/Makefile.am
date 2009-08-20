@@ -3,16 +3,28 @@
 DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
 test9.pet
-EXTRA_DIST = corrupt.pet foreign.pet test1.csv test2.csv test3.csv test4.csv	\
-test5.csv test6.csv test7.csv test8.csv test9.csv
+EXTRA_DIST = corrupt.pet.in foreign.pet.in test1.csv test2.csv test3.csv test4.csv	\
+test5.csv test6.csv test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc
+
+# Listed as _DEPENDENCIES for corrupt and foreign
+corrupt.pet: corrupt.pet.in
+	cp $< $(builddir)/$@
+	chmod u=rw $(builddir)/$@
+
+foreign.pet: foreign.pet.in
+	cp $<  $(builddir)/$@
+	chmod u=rw $(builddir)/$@
 
 check_PROGRAMS = key record bdbuffer enc partdec file file2 file3 file4 file5	\
-corrupt foreign
+corrupt foreign cfgfile1
+
+# Checks when building csv2yapet
 if BUILDCSV2YAPET
 check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
 import8 import9 import10 import11 import12 import13 import14
 endif
 
+# Checks when using builtin passwordgenerator
 if BUILDPWGEN
 check_PROGRAMS += charpool1 rng1 pwgen1
 endif
@@ -32,9 +44,11 @@ endif
 
 corrupt_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 corrupt_SOURCES = corrupt.cc tests.h
+corrupt_DEPENDENCIES = corrupt.pet
 
 foreign_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 foreign_SOURCES = foreign.cc tests.h
+foreign_DEPENDENCIES = foreign.pet
 
 key_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 key_SOURCES = key.cc tests.h
@@ -65,6 +79,13 @@ file4_SOURCES = file4.cc tests.h
 
 file5_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 file5_SOURCES = file5.cc tests.h
+
+cfgfile1_LDADD = @LIBINTL@
+cfgfile1_CPPFLAGS = -I$(top_srcdir)/yapet
+cfgfile1_SOURCES = cfgfile1.cc $(top_srcdir)/yapet/cfg.h	\
+$(top_srcdir)/yapet/cfgfile.h $(top_srcdir)/yapet/consts.h	\
+$(top_srcdir)/yapet/cfg.cc $(top_srcdir)/yapet/cfgfile.cc	\
+$(top_srcdir)/yapet/consts.cc
 
 if BUILDCSV2YAPET
 
@@ -127,3 +148,4 @@ endif
 
 clean-local:
 	rm -rf SunWS_cache
+	rm -f corrupt.pet foreign.pet

@@ -75,116 +75,121 @@
 #include "fileopen.h"
 
 void
-FileOpen::createWindows() throw (YAPETUI::UIException) {
-    if (window != NULL) return;
+FileOpen::createWindows() throw (YAPET::UI::UIException) {
+    if (window != NULL)
+        throw YAPET::UI::UIException (_ ("May you consider deleting the window before reallocating") );
 
-    window = newwin (windowHeight(), windowWidth(), startY(), startX());
+    // return;
+    window = newwin (windowHeight(), windowWidth(), startY(), startX() );
+
     if (window == NULL)
-	throw YAPETUI::UIException (_("Error creating file open window"));
+        throw YAPET::UI::UIException (_ ("Error creating file open window") );
 
-    std::list<YAPETUI::secstring> dir_list;
-    std::list<YAPETUI::secstring> file_list;
-    getEntries(dir_list, file_list);
-    dir = new YAPETUI::ListWidget<YAPETUI::secstring>(dir_list,
-						  startX()+1,
-						  startY()+2,
-						  windowWidth()/2-1,
-						  windowHeight()-6);
-
-    files = new YAPETUI::ListWidget<YAPETUI::secstring>(file_list,
-						    startX() + windowWidth()/2 ,
-						    startY() + 2,
-						    windowWidth()/2-1,
-						    windowHeight()-6);
-
-    input = new YAPETUI::InputWidget(startX()+1,
-				   startY()+windowHeight()-3,
-				   windowWidth()-2);
-
-    okbutton = new YAPETUI::Button(_("OK"),
-				 startX()+1,
-				 startY()+windowHeight()-2);
-
-    cancelbutton = new YAPETUI::Button(_("Cancel"),
-				     startX()+8,
-				     startY()+windowHeight()-2);
-
+    std::list<YAPET::UI::secstring> dir_list;
+    std::list<YAPET::UI::secstring> file_list;
+    getEntries (dir_list, file_list);
+    dir = new YAPET::UI::ListWidget<YAPET::UI::secstring> (dir_list,
+            startX() + 1,
+            startY() + 2,
+            windowWidth() / 2 - 1,
+            windowHeight() - 6);
+    files = new YAPET::UI::ListWidget<YAPET::UI::secstring> (file_list,
+            startX() + windowWidth() / 2 ,
+            startY() + 2,
+            windowWidth() / 2 - 1,
+            windowHeight() - 6);
+    input = new YAPET::UI::InputWidget (startX() + 1,
+                                        startY() + windowHeight() - 3,
+                                        windowWidth() - 2);
+    okbutton = new YAPET::UI::Button (_ ("OK"),
+                                      startX() + 1,
+                                      startY() + windowHeight() - 2);
+    cancelbutton = new YAPET::UI::Button (_ ("Cancel"),
+                                          startX() + 8,
+                                          startY() + windowHeight() - 2);
 }
 
 void
-FileOpen::getEntries(std::list<YAPETUI::secstring>& d,
-		     std::list<YAPETUI::secstring>& f)
-    throw(YAPETUI::UIException) {
+FileOpen::getEntries (std::list<YAPET::UI::secstring>& d,
+                      std::list<YAPET::UI::secstring>& f)
+throw (YAPET::UI::UIException) {
+    DIR* dir_ptr = opendir (directory.c_str() );
 
-    DIR* dir_ptr = opendir(directory.c_str());
     if (dir_ptr == NULL)
-	throw YAPETUI::UIException(strerror(errno));
+        throw YAPET::UI::UIException (strerror (errno) );
 
     struct dirent* de;
     struct stat st;
 
-    while ( (de = readdir(dir_ptr)) != NULL) {
-	int retval = stat( YAPETUI::secstring(directory +"/"+de->d_name).c_str(), &st);
-	if (retval != 0) {
-	    continue;
-	}
+    while ( (de = readdir (dir_ptr) ) != NULL) {
+        int retval = stat ( YAPET::UI::secstring (directory + "/" + de->d_name).c_str(), &st);
 
-	if (S_ISDIR(st.st_mode)) {
-	    d.push_back(de->d_name);
-	} else if (S_ISREG(st.st_mode)) {
-	    std::string tmp(de->d_name);
-	    if (endswith(tmp, YAPETCONSTS::Consts::getDefaultSuffix()) )
-		f.push_back(de->d_name);
-	}
+        if (retval != 0) {
+            continue;
+        }
+
+        if (S_ISDIR (st.st_mode) ) {
+            d.push_back (de->d_name);
+        } else if (S_ISREG (st.st_mode) ) {
+            std::string tmp (de->d_name);
+
+            if (endswith (tmp, YAPET::CONSTS::Consts::getDefaultSuffix() ) )
+                f.push_back (de->d_name);
+        }
     }
-    closedir(dir_ptr);
 
+    closedir (dir_ptr);
     d.sort();
     f.sort();
 }
 
 void
-FileOpen::printTitle() throw(YAPETUI::UIException) {
-    int retval = mymvwaddstr(window, 0, 2, title.c_str());
+FileOpen::printTitle() throw (YAPET::UI::UIException) {
+    int retval = mymvwaddstr (window, 0, 2, title.c_str() );
+
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error printing title"));
+        throw YAPET::UI::UIException (_ ("Error printing title") );
 }
 
 void
-FileOpen::printCWD() throw(YAPETUI::UIException) {
+FileOpen::printCWD() throw (YAPET::UI::UIException) {
     char format[50];
-    snprintf(format, 50, "%%-%ds", (windowWidth()-2));
+    snprintf (format, 50, "%%-%ds", (windowWidth() - 2) );
+    int retval = mvwprintw (window, 1, 1, format, " ");
 
-    int retval = mvwprintw(window, 1, 1, format, " ");
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error clearing line"));
+        throw YAPET::UI::UIException (_ ("Error clearing line") );
 
-    retval = mymvwaddstr(window, 1, 1, directory.c_str());
-    if (retval == ERR)
-	throw YAPETUI::UIException(_("Error printing cwd"));
+    retval = mymvwaddstr (window, 1, 1, directory.c_str() );
 
-    retval = wrefresh(window);
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error refreshing cwd"));
+        throw YAPET::UI::UIException (_ ("Error printing cwd") );
+
+    retval = wrefresh (window);
+
+    if (retval == ERR)
+        throw YAPET::UI::UIException (_ ("Error refreshing cwd") );
 }
 
 void
-FileOpen::getcwd() throw (YAPETUI::UIException) {
+FileOpen::getcwd() throw (YAPET::UI::UIException) {
     long size = 0;
 #ifdef HAVE_PATHCONF
-	size = pathconf (".", _PC_PATH_MAX);
+    size = pathconf (".", _PC_PATH_MAX);
     size = size < 1 ? FALLBACK_PATH_MAX : size;
 #else
-	size = MAX_PATH;
+    size = MAX_PATH;
 #endif
     char* buf = (char *) malloc ( (size_t) size);
+
     if (buf == NULL)
-	throw YAPETUI::UIException (_("Error allocating memory"));
+        throw YAPET::UI::UIException (_ ("Error allocating memory") );
 
     char* ptr = ::getcwd (buf, (size_t) size);
+
     if (ptr == NULL) {
-	free (buf);
-	throw YAPETUI::UIException (strerror (errno));
+        free (buf);
+        throw YAPET::UI::UIException (strerror (errno) );
     }
 
     directory = ptr;
@@ -192,161 +197,165 @@ FileOpen::getcwd() throw (YAPETUI::UIException) {
 }
 
 void
-FileOpen::cd (const YAPETUI::secstring d) throw (YAPETUI::UIException) {
-    int retval = chdir (d.c_str());
+FileOpen::cd (const YAPET::UI::secstring d) throw (YAPET::UI::UIException) {
+    int retval = chdir (d.c_str() );
+
     if (retval != 0)
-	throw YAPETUI::UIException (strerror (errno));
+        throw YAPET::UI::UIException (strerror (errno) );
 
     getcwd();
 }
 
-FileOpen::FileOpen(std::string t) throw(YAPETUI::UIException) : BaseWindow(),
-						       title(t),
-						       window (NULL),
-						       dir (NULL),
-						       files (NULL),
-						       input(NULL),
-						       okbutton(NULL),
-						       cancelbutton(NULL),
-						       canceled(true) {
+FileOpen::FileOpen (std::string t) throw (YAPET::UI::UIException) : BaseWindow(),
+        title (t),
+        window (NULL),
+        dir (NULL),
+        files (NULL),
+        input (NULL),
+        okbutton (NULL),
+        cancelbutton (NULL),
+        canceled (true) {
     getcwd();
     createWindows();
-
 }
 
 FileOpen::~FileOpen() {
-	wclear(window);
-	delwin (window);
-	delete dir;
-	delete files;
-	delete input;
-	delete okbutton;
-	delete cancelbutton;
+    wclear (window);
+    delwin (window);
+    delete dir;
+    delete files;
+    delete input;
+    delete okbutton;
+    delete cancelbutton;
 }
 
 void
-FileOpen::run() throw (YAPETUI::UIException) {
-    std::list<YAPETUI::secstring> file_list;
-    std::list<YAPETUI::secstring> dir_list;
-
+FileOpen::run() throw (YAPET::UI::UIException) {
+    std::list<YAPET::UI::secstring> file_list;
+    std::list<YAPET::UI::secstring> dir_list;
     refresh();
-
     int ch;
+
     // The big loop
-    while(true){
-
-	// The event handler for the directory list
-	while ( (ch= dir->focus()) != '\t') {
-	    switch (ch) {
+    while (true) {
+        // The event handler for the directory list
+        while ( (ch = dir->focus() ) != '\t') {
+            switch (ch) {
 #ifdef HAVE_WRESIZE
-	    case KEY_RESIZE:
-		YAPETUI::BaseWindow::resizeAll();
-		break;
+                case KEY_RESIZE:
+                    YAPET::UI::BaseWindow::resizeAll();
+                    break;
 #endif // HAVE_WRESIZE
-	    case KEY_ESC:
-		canceled = true;
-		return;
-	    case KEY_ENTER:
-	    case '\n': {
-		try {
-		    file_list.clear();
-		    dir_list.clear();
-		    cd(dir->getSelectedItem());
-		    getEntries(dir_list, file_list);
-		    files->setList(file_list);
-		    dir->setList(dir_list);
-		    printCWD();
-		} catch (YAPETUI::UIException& ex) {
-		    YAPETUI::MessageBox* tmp =
-			new YAPETUI::MessageBox(_("E R R O R"), ex.what());
-		    tmp->run();
-		    delete tmp;
-		    this->refresh();
-		}
-	    }
-		break;
-	    }
-	}
+                case KEY_ESC:
+                    canceled = true;
+                    return;
+                case KEY_ENTER:
+                case '\n': {
+                    try {
+                        file_list.clear();
+                        dir_list.clear();
+                        cd (dir->getSelectedItem() );
+                        getEntries (dir_list, file_list);
+                        files->setList (file_list);
+                        dir->setList (dir_list);
+                        printCWD();
+                    } catch (YAPET::UI::UIException& ex) {
+                        YAPET::UI::MessageBox* tmp =
+                            new YAPET::UI::MessageBox (_ ("E R R O R"), ex.what() );
+                        tmp->run();
+                        delete tmp;
+                        this->refresh();
+                    }
+                }
+                break;
+            }
+        }
 
-	// The event handler for the file list
-	while ( (ch = files->focus()) != '\t') {
-	    switch (ch) {
+        // The event handler for the file list
+        while ( (ch = files->focus() ) != '\t') {
+            switch (ch) {
 #ifdef HAVE_WRESIZE
-	    case KEY_RESIZE:
-		YAPETUI::BaseWindow::resizeAll();
-		break;
+                case KEY_RESIZE:
+                    YAPET::UI::BaseWindow::resizeAll();
+                    break;
 #endif // HAVE_WRESIZE
-	    case KEY_ESC:
-		canceled = true;
-		return;
-	    case KEY_ENTER:
-	    case '\n':
-		filename = files->getSelectedItem();
-		input->setText(filename);
-		break;
-	    }
-	}
+                case KEY_ESC:
+                    canceled = true;
+                    return;
+                case KEY_ENTER:
+                case '\n':
+                    filename = files->getSelectedItem();
+                    input->setText (filename);
+                    break;
+            }
+        }
 
 #ifdef HAVE_WRESIZE
-	while ( (ch = input->focus()) == KEY_RESIZE)
-	    YAPETUI::BaseWindow::resizeAll();
+
+        while ( (ch = input->focus() ) == KEY_RESIZE)
+            YAPET::UI::BaseWindow::resizeAll();
+
 #else // HAVE_WRESIZE
-	ch = input->focus();
+        ch = input->focus();
 #endif // HAVE_WRESIZE
-	if (ch == KEY_ESC) {
-	    canceled = true;
-	    return;
-	}
-	filename = input->getText();
 
+        if (ch == KEY_ESC) {
+            canceled = true;
+            return;
+        }
 
-	// The ok button
+        filename = input->getText();
+        // The ok button
 #ifdef HAVE_WRESIZE
-	while ( (ch = okbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::BaseWindow::resizeAll();
-#else // HAVE_WRESIZE
-	ch = okbutton->focus();
-#endif // HAVE_WRESIZE
-	switch (ch) {
-	case KEY_ESC:
-	    canceled = true;
-	    return;
-	case '\n':
-	case KEY_ENTER:
-	    canceled = false;
-	    return;
-	}
 
-	// The cancel button
-#ifdef HAVE_WRESIZE
-	while ( (ch = cancelbutton->focus()) == KEY_RESIZE)
-	    YAPETUI::BaseWindow::resizeAll();
+        while ( (ch = okbutton->focus() ) == KEY_RESIZE)
+            YAPET::UI::BaseWindow::resizeAll();
+
 #else // HAVE_WRESIZE
-	ch = cancelbutton->focus();
+        ch = okbutton->focus();
 #endif // HAVE_WRESIZE
-	if (ch == '\n' || ch == KEY_ENTER || ch == KEY_ESC) {
-	    canceled = true;
-	    return;
-	}
+
+        switch (ch) {
+            case KEY_ESC:
+                canceled = true;
+                return;
+            case '\n':
+            case KEY_ENTER:
+                canceled = false;
+                return;
+        }
+
+        // The cancel button
+#ifdef HAVE_WRESIZE
+
+        while ( (ch = cancelbutton->focus() ) == KEY_RESIZE)
+            YAPET::UI::BaseWindow::resizeAll();
+
+#else // HAVE_WRESIZE
+        ch = cancelbutton->focus();
+#endif // HAVE_WRESIZE
+
+        if (ch == '\n' || ch == KEY_ENTER || ch == KEY_ESC) {
+            canceled = true;
+            return;
+        }
     }
 }
 
 void
-FileOpen::refresh() throw (YAPETUI::UIException) {
-    YAPETUI::Colors::setcolor(window, YAPETUI::MESSAGEBOX);
+FileOpen::refresh() throw (YAPET::UI::UIException) {
+    YAPET::UI::Colors::setcolor (window, YAPET::UI::MESSAGEBOX);
+    int retval = box (window, 0, 0);
 
-
-
-    int retval = box(window, 0, 0);
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error drawing box"));
+        throw YAPET::UI::UIException (_ ("Error drawing box") );
 
     printTitle();
     printCWD();
-
     retval = wrefresh (window);
+
     if (retval == ERR)
-	throw YAPETUI::UIException (_("Error refreshing window"));
+        throw YAPET::UI::UIException (_ ("Error refreshing window") );
 
     dir->refresh();
     files->refresh();
@@ -356,16 +365,16 @@ FileOpen::refresh() throw (YAPETUI::UIException) {
 }
 
 void
-FileOpen::resize() throw (YAPETUI::UIException) {
+FileOpen::resize() throw (YAPET::UI::UIException) {
     delete dir;
     delete files;
     delete input;
     delete okbutton;
     delete cancelbutton;
+    int retval = delwin (window);
 
-    int retval = delwin(window);
     if (retval == ERR)
-	throw YAPETUI::UIException(_("Error deleting window"));
+        throw YAPET::UI::UIException (_ ("Error deleting window") );
 
     window = NULL;
     dir = NULL;
@@ -373,19 +382,19 @@ FileOpen::resize() throw (YAPETUI::UIException) {
     input = NULL;
     okbutton = NULL;
     cancelbutton = NULL;
-
     createWindows();
 }
 
 std::string
 FileOpen::getFilepath() {
-    if (!endswith(filename, YAPETCONSTS::Consts::getDefaultSuffix().c_str()))
-	filename+=YAPETCONSTS::Consts::getDefaultSuffix().c_str();
+    if (!endswith (filename, YAPET::CONSTS::Consts::getDefaultSuffix().c_str() ) )
+        filename += YAPET::CONSTS::Consts::getDefaultSuffix().c_str();
 
-    std::string tmp_filename(filename.c_str());
-    std::string tmp_directory(directory.c_str());
+    std::string tmp_filename (filename.c_str() );
+    std::string tmp_directory (directory.c_str() );
+
     if (tmp_directory == "/")
-	return tmp_directory + tmp_filename;
+        return tmp_directory + tmp_filename;
 
     return tmp_directory + "/" + tmp_filename;
 }

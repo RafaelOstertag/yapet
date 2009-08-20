@@ -33,41 +33,42 @@
 # include <algorithm>
 #endif
 
-using namespace YAPETUI;
+using namespace YAPET::UI;
 
 class RemoveByAddr {
     private:
-	const BaseWindow* ptr;
+        const BaseWindow* ptr;
 
     public:
-	inline RemoveByAddr(const BaseWindow* p) : ptr(p) {}
-	inline bool operator()(const BaseWindow* p) const {
-	    if (ptr == p)
-		return true;
-	    return false;
-	}
+        inline RemoveByAddr (const BaseWindow* p) : ptr (p) {}
+        inline bool operator() (const BaseWindow* p) const {
+            if (ptr == p)
+                return true;
+
+            return false;
+        }
 };
 
 class DeleteIt {
     public:
-	inline void operator()(BaseWindow* p) const {
-	    if (p != NULL)
-		delete p;
-	}
+        inline void operator() (BaseWindow* p) const {
+            if (p != NULL)
+                delete p;
+        }
 };
 
 class ResizeIt {
     public:
-	inline void operator()(BaseWindow* p) const {
-	    p->resize();
-	}
+        inline void operator() (BaseWindow* p) const {
+            p->resize();
+        }
 };
 
 class RefreshIt {
     public:
-	inline void operator()(BaseWindow* p) const {
-	    p->refresh();
-	}
+        inline void operator() (BaseWindow* p) const {
+            p->refresh();
+        }
 };
 
 //
@@ -78,49 +79,49 @@ BaseWindow::AlarmFunction* BaseWindow::alarm_fun = NULL;
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 void
-BaseWindow::sig_handler(int signo) {
+BaseWindow::sig_handler (int signo) {
     switch (signo) {
-    case SIGALRM:
-	if (alarm_fun != NULL)
-	    alarm_fun->process(signo);
-	break;
-    case SIGHUP:
-    case SIGINT:
-    case SIGQUIT:
-    case SIGTERM:
-    case SIGKILL:
-	deleteAll();
-	endCurses();
-	abort();
+        case SIGALRM:
+
+            if (alarm_fun != NULL)
+                alarm_fun->process (signo);
+
+            break;
+        case SIGHUP:
+        case SIGINT:
+        case SIGQUIT:
+        case SIGTERM:
+        case SIGKILL:
+            deleteAll();
+            endCurses();
+            abort();
     }
 }
 
 void
 BaseWindow::init_signal() {
     sigset_t sigset;
-    sigemptyset(&sigset);
+    sigemptyset (&sigset);
     // Get the current sigprocmask
-    sigprocmask(SIG_SETMASK, NULL, &sigset);
+    sigprocmask (SIG_SETMASK, NULL, &sigset);
     // enable the signals we want
-    sigaddset(&sigset, SIGALRM);
-    sigaddset(&sigset, SIGTERM);
-    sigaddset(&sigset, SIGKILL);
-    sigaddset(&sigset, SIGQUIT);
-    sigaddset(&sigset, SIGINT);
-    sigaddset(&sigset, SIGHUP);
-    sigprocmask(SIG_UNBLOCK, &sigset, NULL);
-
+    sigaddset (&sigset, SIGALRM);
+    sigaddset (&sigset, SIGTERM);
+    sigaddset (&sigset, SIGKILL);
+    sigaddset (&sigset, SIGQUIT);
+    sigaddset (&sigset, SIGINT);
+    sigaddset (&sigset, SIGHUP);
+    sigprocmask (SIG_UNBLOCK, &sigset, NULL);
     struct sigaction sa;
-    sigemptyset(&sa.sa_mask);
+    sigemptyset (&sa.sa_mask);
     sa.sa_flags = 0;
     sa.sa_handler = BaseWindow::sig_handler;
-
-    sigaction(SIGALRM, &sa, NULL);
-    sigaction(SIGTERM, &sa, NULL);
-    sigaction(SIGKILL, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGHUP, &sa, NULL);
+    sigaction (SIGALRM, &sa, NULL);
+    sigaction (SIGTERM, &sa, NULL);
+    sigaction (SIGKILL, &sa, NULL);
+    sigaction (SIGQUIT, &sa, NULL);
+    sigaction (SIGINT, &sa, NULL);
+    sigaction (SIGHUP, &sa, NULL);
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
@@ -130,10 +131,9 @@ BaseWindow::initCurses() {
     raw();
     noecho();
     ::refresh();
-    curs_set(0);
+    curs_set (0);
     keypad (stdscr, TRUE);
-
-    YAPETUI::Colors::initColors();
+    YAPET::UI::Colors::initColors();
     init_signal();
 }
 
@@ -145,56 +145,57 @@ BaseWindow::endCurses() {
 }
 
 void
-BaseWindow::registerBaseWindow(BaseWindow* r) {
-    basewindow_list.push_back(r);
+BaseWindow::registerBaseWindow (BaseWindow* r) {
+    basewindow_list.push_back (r);
 }
 
 void
-BaseWindow::unregisterBaseWindow(BaseWindow* r) {
+BaseWindow::unregisterBaseWindow (BaseWindow* r) {
     std::list<BaseWindow*>::iterator it =
-	std::remove_if(basewindow_list.begin(),
-		       basewindow_list.end(),
-		       RemoveByAddr(r));
-
-    basewindow_list.erase(it, basewindow_list.end());
+        std::remove_if (basewindow_list.begin(),
+                        basewindow_list.end(),
+                        RemoveByAddr (r) );
+    basewindow_list.erase (it, basewindow_list.end() );
 }
 
 void
 BaseWindow::deleteAll() {
-    std::for_each(basewindow_list.rbegin(),
-		  basewindow_list.rend(),
-		  DeleteIt());
+    std::for_each (basewindow_list.rbegin(),
+                   basewindow_list.rend(),
+                   DeleteIt() );
 }
 
 void
 BaseWindow::resizeAll() {
     int max_x, max_y;
-    getmaxyx(stdscr, max_y, max_x);
+    getmaxyx (stdscr, max_y, max_x);
+
     if (max_y < MIN_Y ||
-	max_x < MIN_X) return;
-    std::for_each(basewindow_list.begin(),
-		  basewindow_list.end(),
-		  ResizeIt());
+            max_x < MIN_X) return;
+
+    std::for_each (basewindow_list.begin(),
+                   basewindow_list.end(),
+                   ResizeIt() );
     refreshAll();
 }
 
 void
 BaseWindow::refreshAll() {
-    std::for_each(basewindow_list.begin(),
-		  basewindow_list.end(),
-		  RefreshIt());
+    std::for_each (basewindow_list.begin(),
+                   basewindow_list.end(),
+                   RefreshIt() );
 }
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 void
-BaseWindow::setTimeout(AlarmFunction* af, int sec) {
+BaseWindow::setTimeout (AlarmFunction* af, int sec) {
     alarm_fun = af;
-    alarm(sec);
+    alarm (sec);
 }
 
 void
 BaseWindow::suspendTimeout() {
-    alarm(0);
+    alarm (0);
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
@@ -202,9 +203,9 @@ BaseWindow::suspendTimeout() {
 // Non-Static
 //
 BaseWindow::BaseWindow() {
-    BaseWindow::registerBaseWindow(this);
+    BaseWindow::registerBaseWindow (this);
 }
 
 BaseWindow::~BaseWindow() {
-    BaseWindow::unregisterBaseWindow(this);
+    BaseWindow::unregisterBaseWindow (this);
 }

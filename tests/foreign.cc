@@ -19,7 +19,6 @@
 #include <file.h>
 
 #include "tests.h"
-#include "testpaths.h"
 
 #ifdef ROUNDS
 #undef ROUNDS
@@ -32,7 +31,7 @@ int main (int, char**) {
 
     try {
         YAPET::Key key ("foreign");
-        YAPET::File file (SRCDIR"/foreign.pet", key, false, false);
+        YAPET::File file ("foreign.pet", key, false, false);
         std::list<YAPET::PartDec> list = file.read (key);
 
         if (list.size() != ROUNDS) {

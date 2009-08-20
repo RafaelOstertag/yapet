@@ -72,181 +72,199 @@ namespace YAPET {
      * the md5 algorithm and taking only the first eight bytes.
      */
     class Key {
-	private:
-	    enum {
-		/**
-		 * The max length of the blowfish key in bytes (448 bits)
-		 */
-		KEYLENGTH = 56,
-		/**
-		 * The length of the output of md5 (128 bits)
-		 */
-		MD5_LEN = 16,
+        private:
+            enum {
+                /**
+                 * The max length of the blowfish key in bytes (448 bits)
+                 */
+                KEYLENGTH = 56,
+                /**
+                 * The length of the output of md5 (128 bits)
+                 */
+                MD5_LEN = 16,
 
-		/**
-		 * The length of the output of sha1 (160 bits)
-		 */
-		SHA1_LEN = 20,
-		/**
-		 * The lenght of the output of ripemd-160 (160 bits)
-		 */
-		RIPEMD160_LEN = 20,
-		/**
-		 * The length of the initialization vector
-		 */
-		IVECLENGTH = 8
-	    };
+                /**
+                 * The length of the output of sha1 (160 bits)
+                 */
+                SHA1_LEN = 20,
+                /**
+                 * The lenght of the output of ripemd-160 (160 bits)
+                 */
+                RIPEMD160_LEN = 20,
+                /**
+                 * The length of the initialization vector
+                 */
+                IVECLENGTH = 8
+            };
 
-	    /**
-	     * @brief Holds the key
-	     *
-	     * This is the key used to encrypt and decrypt data.
-	     */
-	    uint8_t key[KEYLENGTH];
-	    /**
-	     * @brief Holds the initialization vector
-	     *
-	     * The initialization vector used for encryption and
-	     * decryption.
-	     */
-	    uint8_t IVec[IVECLENGTH];
+            /**
+             * @brief Holds the key
+             *
+             * This is the key used to encrypt and decrypt data.
+             */
+            uint8_t key[KEYLENGTH];
+            /**
+             * @brief Holds the initialization vector
+             *
+             * The initialization vector used for encryption and
+             * decryption.
+             */
+            uint8_t IVec[IVECLENGTH];
 
-	    //! Cleanup routine
-	    void cleanup();
+            //! Cleanup routine
+            void cleanup();
 
-	public:
-	    //! Initializes the key
-	    Key(const char* password) throw(YAPETException);
-	    Key(const Key& k);
-	    ~Key();
+        public:
+            //! Initializes the key
+            Key (const char* password) throw (YAPETException);
+            Key (const Key& k);
+            ~Key();
 
-	    /**
-	     * @brief Gets the pointer to the key
-	     *
-	     * Returns the key and its length. The key is not
-	     * terminated by \c \\0. So make sure you read only \c
-	     * key_len bytes from the pointer returned.
-	     *
-	     * @param key_len reference to an integer receiving the
-	     * key length in bytes
-	     *
-	     * @return pointer to the array of unsigned 8bit integers
-	     * holding the key.
-	     */
-	    inline const uint8_t* getKey(int& key_len) const {
-		key_len = KEYLENGTH;
-		return key;
-	    }
+            /**
+             * @brief Gets the pointer to the key
+             *
+             * Returns the key and its length. The key is not
+             * terminated by \c \\0. So make sure you read only \c
+             * key_len bytes from the pointer returned.
+             *
+             * @param key_len reference to an integer receiving the
+             * key length in bytes
+             *
+             * @return pointer to the array of unsigned 8bit integers
+             * holding the key.
+             */
+            inline const uint8_t* getKey (int& key_len) const {
+                key_len = KEYLENGTH;
+                return key;
+            }
 
-	    /**
-	     * @brief Gets the pointer to the key
-	     *
-	     * Returns the key only. Please note that the key is not
-	     * terminated by \c \\0, so make sure you read only as many
-	     * bytes as returned by \c size().
-	     *
-	     * @return pointer to the array of usigned 8bit integers
-	     * holding the key.
-	     */
-	    inline const uint8_t* getKey() const { return key; }
+            /**
+             * @brief Gets the pointer to the key
+             *
+             * Returns the key only. Please note that the key is not
+             * terminated by \c \\0, so make sure you read only as many
+             * bytes as returned by \c size().
+             *
+             * @return pointer to the array of usigned 8bit integers
+             * holding the key.
+             */
+            inline const uint8_t* getKey() const {
+                return key;
+            }
 
-	    /**
-	     * @brief Gets the pointer to the initialization vector
-	     *
-	     * Gets the initialization vector and its length. Please
-	     * remember that the initialization vector is not \c \\0
-	     * terminated. So make sure you read only \c ivec_len
-	     * bytes from the pointer returned.
-	     *
-	     * @param ivec_len a reference to an integer receiving the
-	     * length of the initialization vector.
-	     *
-	     * @return pointer to the array of unsigned 8bit integers
-	     * holding the initialization vector.
-	     */
-	    inline const uint8_t* getIVec(int& ivec_len) const {
-		ivec_len = IVECLENGTH;
-		return IVec;
-	    }
+            /**
+             * @brief Gets the pointer to the initialization vector
+             *
+             * Gets the initialization vector and its length. Please
+             * remember that the initialization vector is not \c \\0
+             * terminated. So make sure you read only \c ivec_len
+             * bytes from the pointer returned.
+             *
+             * @param ivec_len a reference to an integer receiving the
+             * length of the initialization vector.
+             *
+             * @return pointer to the array of unsigned 8bit integers
+             * holding the initialization vector.
+             */
+            inline const uint8_t* getIVec (int& ivec_len) const {
+                ivec_len = IVECLENGTH;
+                return IVec;
+            }
 
-	    /**
-	     * @brief Gets the initialization vector
-	     *
-	     * Gets the initialization vector. Please remember that
-	     * the initialization vector is not \c \\0 terminated. So
-	     * make sure you read only as many bytes as returned by \c
-	     * ivec_size().
-	     *
-	     * @return pointer to the array of unsigned 8bit integers
-	     * holding the initialization vector.
-	     */
-	    inline const uint8_t* getIVec() const { return IVec; }
+            /**
+             * @brief Gets the initialization vector
+             *
+             * Gets the initialization vector. Please remember that
+             * the initialization vector is not \c \\0 terminated. So
+             * make sure you read only as many bytes as returned by \c
+             * ivec_size().
+             *
+             * @return pointer to the array of unsigned 8bit integers
+             * holding the initialization vector.
+             */
+            inline const uint8_t* getIVec() const {
+                return IVec;
+            }
 
-	    /**
-	     * @brief Returns the key length in bytes
-	     *
-	     * Returns the key length in bytes
-	     *
-	     * @return key length in bytes.
-	     */
-	    inline uint32_t size() const { return KEYLENGTH; }
+            /**
+             * @brief Returns the key length in bytes
+             *
+             * Returns the key length in bytes
+             *
+             * @return key length in bytes.
+             */
+            inline uint32_t size() const {
+                return KEYLENGTH;
+            }
 
-	    /**
-	     * @brief Returns the length of the initialization vector
-	     *
-	     * Returns the length of the initialization vector in
-	     * bytes.
-	     *
-	     * @return the size of the initialization vector in bytes.
-	     */
-	    inline uint32_t ivec_size() const { return IVECLENGTH; }
+            /**
+             * @brief Returns the length of the initialization vector
+             *
+             * Returns the length of the initialization vector in
+             * bytes.
+             *
+             * @return the size of the initialization vector in bytes.
+             */
+            inline uint32_t ivec_size() const {
+                return IVECLENGTH;
+            }
 
-	    /**
-	     * @brief Gets the pointer to the key
-	     *
-	     * Returns the key and its length. The key is not
-	     * terminated by \c \\0. So make sure you read only \c
-	     * key_len bytes from the pointer returned.
-	     *
-	     * @param key_len reference to an integer receiving the
-	     * key length in bytes
-	     *
-	     * @return pointer to the array of unsigned 8bit integers
-	     * holding the key.
-	     */
-	    inline const uint8_t* operator()(int& key_len) const { return getKey(key_len); }
+            /**
+             * @brief Gets the pointer to the key
+             *
+             * Returns the key and its length. The key is not
+             * terminated by \c \\0. So make sure you read only \c
+             * key_len bytes from the pointer returned.
+             *
+             * @param key_len reference to an integer receiving the
+             * key length in bytes
+             *
+             * @return pointer to the array of unsigned 8bit integers
+             * holding the key.
+             */
+            inline const uint8_t* operator() (int& key_len) const {
+                return getKey (key_len);
+            }
 
-	    /**
-	     * @brief Gets the pointer to the key
-	     *
-	     * Returns the key only. Please note that the key is not
-	     * terminated by \c \\0, so make sure you read only as many
-	     * bytes as returned by \c size().
-	     *
-	     * @return pointer to the array of usigned 8bit integers
-	     * holding the key.
-	     */
-	    inline const uint8_t* operator()() const { return key; }
+            /**
+             * @brief Gets the pointer to the key
+             *
+             * Returns the key only. Please note that the key is not
+             * terminated by \c \\0, so make sure you read only as many
+             * bytes as returned by \c size().
+             *
+             * @return pointer to the array of usigned 8bit integers
+             * holding the key.
+             */
+            inline const uint8_t* operator() () const {
+                return key;
+            }
 
-	    /**
-	     * @brief Cast operator
-	     *
-	     * Returns the pointer to the key.
-	     */
-	    inline operator uint8_t*() { return key; }
+            /**
+             * @brief Cast operator
+             *
+             * Returns the pointer to the key.
+             */
+            inline operator uint8_t*() {
+                return key;
+            }
 
-	    /**
-	     * @brief Cast operator
-	     *
-	     * Returns the pointer to the key.
-	     */
-	    inline operator const uint8_t*() const { return key; }
+            /**
+             * @brief Cast operator
+             *
+             * Returns the pointer to the key.
+             */
+            inline operator const uint8_t*() const {
+                return key;
+            }
 
-	    const Key& operator=(const Key& k);
-	    //! Compares two keys for equality
-	    bool operator==(const Key& k) const;
-	    //! Compares two keys for inequality
-	    bool operator!=(const Key& k) const { return !operator==(k); }
+            const Key& operator= (const Key& k);
+            //! Compares two keys for equality
+            bool operator== (const Key& k) const;
+            //! Compares two keys for inequality
+            bool operator!= (const Key& k) const {
+                return !operator== (k);
+            }
     };
 
 }

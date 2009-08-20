@@ -56,61 +56,61 @@
  * is called after a certain number of seconds using the \c
  * BaseWindow::setTimeout() method.
  */
-class MainWindow : protected YAPETUI::BaseWindow {
+class MainWindow : protected YAPET::UI::BaseWindow {
     private:
-	WINDOW* toprightwin;
-	WINDOW* bottomrightwin;
-	YAPETUI::ListWidget<YAPET::PartDec>* recordlist;
-	StatusBar statusbar;
-	bool records_changed;
+        WINDOW* toprightwin;
+        WINDOW* bottomrightwin;
+        YAPET::UI::ListWidget<YAPET::PartDec>* recordlist;
+        StatusBar statusbar;
+        bool records_changed;
 
-	YAPET::Key* key;
-	YAPET::File* file;
+        YAPET::Key* key;
+        YAPET::File* file;
 
-	unsigned int locktimeout;
+        unsigned int locktimeout;
 
-	bool usefsecurity;
+        bool usefsecurity;
 
-	inline MainWindow (const MainWindow&) {}
-	inline const MainWindow& operator= (const MainWindow&) {
-	    return *this;
-	}
+        inline MainWindow (const MainWindow&) {}
+        inline const MainWindow& operator= (const MainWindow&) {
+            return *this;
+        }
 
     protected:
-	void printTitle() throw (YAPETUI::UIException);
+        void printTitle() throw (YAPET::UI::UIException);
 
-	void topRightWinContent() throw (YAPETUI::UIException);
+        void topRightWinContent() throw (YAPET::UI::UIException);
 
-	void bottomRightWinContent() throw (YAPETUI::UIException);
+        void bottomRightWinContent() throw (YAPET::UI::UIException);
 
-	void createWindow() throw (YAPETUI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
 
-	void refresh() throw (YAPETUI::UIException);
+        void refresh() throw (YAPET::UI::UIException);
 
-	void createFile (std::string& filename) throw (YAPETUI::UIException);
-	void openFile (std::string filename) throw (YAPETUI::UIException);
-	void saveFile();
-	void closeFile();
+        void createFile (std::string& filename) throw (YAPET::UI::UIException);
+        void openFile (std::string filename) throw (YAPET::UI::UIException);
+        void saveFile();
+        void closeFile();
 
-	void addNewRecord();
-	void editSelectedRecord();
-	void deleteSelectedRecord() throw (YAPETUI::UIException);
-	void setSortOrder();
-	void searchTerm();
-	void searchNext();
-	bool quit();
-	void lockScreen() const throw (YAPETUI::UIException);
-	void changePassword() throw (YAPETUI::UIException);
+        void addNewRecord();
+        void editSelectedRecord();
+        void deleteSelectedRecord() throw (YAPET::UI::UIException);
+        void setSortOrder();
+        void searchTerm();
+        void searchNext();
+        bool quit();
+        void lockScreen() const throw (YAPET::UI::UIException);
+        void changePassword() throw (YAPET::UI::UIException);
     public:
-	MainWindow (unsigned int timeout, bool fsecurity) throw (YAPETUI::UIException);
-	virtual ~MainWindow();
+        MainWindow (unsigned int timeout, bool fsecurity) throw (YAPET::UI::UIException);
+        virtual ~MainWindow();
 
-	void run() throw (YAPETUI::UIException);
-	void run (std::string fn);
-	void resize() throw (YAPETUI::UIException);
+        void run() throw (YAPET::UI::UIException);
+        void run (std::string fn);
+        void resize() throw (YAPET::UI::UIException);
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	void handle_signal (int signo);
+        void handle_signal (int signo);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 

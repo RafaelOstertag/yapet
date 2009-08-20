@@ -79,87 +79,91 @@ enum PWTYPE {
  * If \c PWTYPE is \c EXISTING_PW, only one widget for entering the password is
  * displayed. The same rules as for \c NEW_PW apply in regard to the key.
  */
-class PasswordDialog : protected YAPETUI::BaseWindow {
+class PasswordDialog : protected YAPET::UI::BaseWindow {
     private:
-	enum {
-	    HEIGHT_NEW = 9,
-	    HEIGHT_EX = 7
-	};
+        enum {
+            HEIGHT_NEW = 9,
+            HEIGHT_EX = 7
+        };
 
-	WINDOW* window;
-	YAPETUI::PasswordWidget* pwidget1;
-	YAPETUI::PasswordWidget* pwidget2;
-	YAPETUI::Button* okbutton;
-	YAPETUI::Button* cancelbutton;
-	PWTYPE pwtype;
-	YAPET::Key* key;
+        WINDOW* window;
+        YAPET::UI::PasswordWidget* pwidget1;
+        YAPET::UI::PasswordWidget* pwidget2;
+        YAPET::UI::Button* okbutton;
+        YAPET::UI::Button* cancelbutton;
+        PWTYPE pwtype;
+        YAPET::Key* key;
 
-	std::string filename;
+        std::string filename;
 
-	inline PasswordDialog(const PasswordDialog&) {}
-	inline const PasswordDialog& operator=(const PasswordDialog&) { return *this; }
+        inline PasswordDialog (const PasswordDialog&) {}
+        inline const PasswordDialog& operator= (const PasswordDialog&) {
+            return *this;
+        }
 
-	inline int getWidth() const {
-	    return maxX() - 8;
-	}
+        inline int getWidth() const {
+            return maxX() - 8;
+        }
 
-	inline int getHeight() const {
-	    if (pwtype == NEW_PW)
-		return HEIGHT_NEW;
-	    else
-		return HEIGHT_EX;
-	}
+        inline int getHeight() const {
+            if (pwtype == NEW_PW)
+                return HEIGHT_NEW;
+            else
+                return HEIGHT_EX;
+        }
 
-	inline int getStartX() const {
-	    return maxX()/2 - getWidth()/2;
-	}
+        inline int getStartX() const {
+            return maxX() / 2 - getWidth() / 2;
+        }
 
-	inline int getStartY() const {
-	    return maxY()/2 - getHeight()/2;
-	}
+        inline int getStartY() const {
+            return maxY() / 2 - getHeight() / 2;
+        }
 
-	void createWindow() throw(YAPETUI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
 
     public:
-	/**
-	 * @brief Constructor.
-	 *
-	 * Sets up the dialog, but does not show it. Use \c run() to display
-	 * the dialog to the user.
-	 *
-	 * @param pt the type of the dialog. \c NEW_PW for asking for a new
-	 * password with confirmation, or \c EXISTING_PW for asking for an
-	 * existing password.
-	 *
-	 * @param fn the filename of the file for which the password is asked.
-	 */
-	PasswordDialog(PWTYPE pt, std::string fn) throw(YAPETUI::UIException);
-	~PasswordDialog();
+        /**
+         * @brief Constructor.
+         *
+         * Sets up the dialog, but does not show it. Use \c run() to display
+         * the dialog to the user.
+         *
+         * @param pt the type of the dialog. \c NEW_PW for asking for a new
+         * password with confirmation, or \c EXISTING_PW for asking for an
+         * existing password.
+         *
+         * @param fn the filename of the file for which the password is asked.
+         */
+        PasswordDialog (PWTYPE pt, std::string fn) throw (YAPET::UI::UIException);
+        ~PasswordDialog();
 
-	/**
-	 * @brief Displays the password dialog.
-	 *
-	 * Displays the password dialog. Use \c getKey() for obtaining the key
-	 * generated from the password.
-	 */
-	void run() throw(YAPETUI::UIException);
-	/**
-	 * @brief Returns the key generated from the password.
-	 *
-	 * Use this function to get the key generated from the password
-	 * entered. If the dialog has been canceled or the passwords do not
-	 * match in case of entering a fresh password, \c NULL is returned.
-	 *
-	 * The caller is responsible for freeing the memory occupied by the
-	 * key.
-	 *
-	 * @return the pointer to the key or \c NULL if no key was/could be
-	 * generated. The memory occupied by the key has to be freed by the
-	 * caller.
-	 */
-	YAPET::Key* getKey() const { return key; }
-	void resize() throw(YAPETUI::UIException);
-	void refresh() throw(YAPETUI::UIException);
+        /**
+         * @brief Displays the password dialog.
+         *
+         * Displays the password dialog. Use \c getKey() for obtaining the key
+         * generated from the password.
+         */
+        void run() throw (YAPET::UI::UIException);
+        /**
+         * @brief Returns the key generated from the password.
+         *
+         * Use this function to get the key generated from the password
+         * entered. If the dialog has been canceled or the passwords do not
+         * match in case of entering a fresh password, \c NULL is returned.
+         *
+         * The caller is responsible for freeing the memory occupied by the
+         * key.
+         *
+         * @return the pointer to the key or \c NULL if no key was/could be
+         * generated. The memory occupied by the key has to be freed by the
+         * caller.
+         */
+        YAPET::Key* getKey() const {
+            return key;
+        }
+        void resize() throw (YAPET::UI::UIException);
+        void refresh() throw (YAPET::UI::UIException);
 };
 
 #endif // _PASSWORDDIALOG_H

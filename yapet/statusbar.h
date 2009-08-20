@@ -52,26 +52,30 @@
  * can be showed to the user by calling \c putMsg(). The message stays visible
  * until a new message is put.
  */
-class StatusBar : protected YAPETUI::BaseWindow {
+class StatusBar : protected YAPET::UI::BaseWindow {
     private:
-	WINDOW* statusbar;
-	std::string message;
+        WINDOW* statusbar;
+        std::string message;
 
-	inline StatusBar(const StatusBar&) {}
-	inline const StatusBar& operator=(const StatusBar&) { return *this; }
+        inline StatusBar (const StatusBar&) {}
+        inline const StatusBar& operator= (const StatusBar&) {
+            return *this;
+        }
 
     protected:
-	void createWindow() throw(YAPETUI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
 
     public:
-	StatusBar() throw(YAPETUI::UIException);
-	virtual ~StatusBar();
+        StatusBar() throw (YAPET::UI::UIException);
+        virtual ~StatusBar();
 
-	void putMsg(std::string msg) throw(YAPETUI::UIException);
-	std::string getMsg() const { return message; }
-	void refresh();
+        void putMsg (std::string msg) throw (YAPET::UI::UIException);
+        std::string getMsg() const {
+            return message;
+        }
+        void refresh();
 
-	void resize();
+        void resize();
 };
 
 #endif // _STATUSBAR_H

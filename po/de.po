@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.4\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-08-19 22:33+0200\n"
+"POT-Creation-Date: 2009-08-20 03:03+0200\n"
 "PO-Revision-Date: 2009-08-19 22:39+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: yapet/searchdialog.cc:28 yapet/mainwindow.cc:304 yapet/pwgendialog.cc:92
+#: yapet/searchdialog.cc:28 yapet/mainwindow.cc:304 yapet/pwgendialog.cc:94
 #: yapet/passwordrecord.cc:42 yapet/fileopen.cc:80 yapet/passworddialog.cc:29
 #: ui/messagebox.cc:30
 msgid "May you consider deleting the window before reallocating"
@@ -28,13 +28,13 @@ msgstr "Zuerst Fenster löschen bevor wiederallozieren"
 msgid "Error creating search dialog"
 msgstr "Fehler beim Erstellen des Suchdialogs"
 
-#: yapet/searchdialog.cc:38 yapet/pwgendialog.cc:116
+#: yapet/searchdialog.cc:38 yapet/pwgendialog.cc:118
 #: yapet/passwordrecord.cc:69 yapet/fileopen.cc:104 yapet/passworddialog.cc:45
 #: ui/messagebox.cc:43
 msgid "OK"
 msgstr "Ok"
 
-#: yapet/searchdialog.cc:41 yapet/pwgendialog.cc:119
+#: yapet/searchdialog.cc:41 yapet/pwgendialog.cc:121
 #: yapet/passwordrecord.cc:72 yapet/fileopen.cc:107 yapet/passworddialog.cc:48
 #: ui/dialogbox.cc:30 ui/dialogbox.cc:83
 msgid "Cancel"
@@ -136,7 +136,7 @@ msgstr "Fehler beim verschieben des Cursors"
 msgid "Error clearing line"
 msgstr "Fehler beim Löschen der Zeile"
 
-#: yapet/mainwindow.cc:197 yapet/pwgendialog.cc:137 yapet/fileopen.cc:151
+#: yapet/mainwindow.cc:197 yapet/pwgendialog.cc:139 yapet/fileopen.cc:151
 #: ui/messagebox.cc:107 ui/checkboxgroup.cc:171
 msgid "Error printing title"
 msgstr "Fehler beim Titel anzeigen"
@@ -237,7 +237,7 @@ msgstr " erstellt"
 #: yapet/mainwindow.cc:542 yapet/mainwindow.cc:582 yapet/mainwindow.cc:645
 #: yapet/mainwindow.cc:696 yapet/mainwindow.cc:740 yapet/mainwindow.cc:773
 #: yapet/mainwindow.cc:817 yapet/mainwindow.cc:949 yapet/mainwindow.cc:1028
-#: yapet/mainwindow.cc:1053 yapet/pwgendialog.cc:270 yapet/pwgendialog.cc:286
+#: yapet/mainwindow.cc:1053 yapet/pwgendialog.cc:288 yapet/pwgendialog.cc:304
 #: yapet/passwordrecord.cc:161 yapet/passwordrecord.cc:308
 #: yapet/fileopen.cc:264 yapet/passworddialog.cc:131
 msgid "E R R O R"
@@ -354,7 +354,7 @@ msgstr "Fehler beim Erstellen des Sperrfensters"
 msgid "Error erasing window"
 msgstr "Fehler beim Löschen des Fensters"
 
-#: yapet/mainwindow.cc:906 yapet/pwgendialog.cc:364
+#: yapet/mainwindow.cc:906 yapet/pwgendialog.cc:382
 #: yapet/passwordrecord.cc:451 yapet/fileopen.cc:358 ui/listwidget.h:419
 #: ui/listwidget.h:755
 msgid "Error refreshing window"
@@ -400,48 +400,48 @@ msgstr " geladen"
 msgid "O P E N  F I L E"
 msgstr "D A T E I  Ö F F N E N"
 
-#: yapet/pwgendialog.cc:56
+#: yapet/pwgendialog.cc:58
 msgid "rand() (not good)"
 msgstr "rand() (ungenügend)"
 
-#: yapet/pwgendialog.cc:97
+#: yapet/pwgendialog.cc:99
 msgid "Error creating password generator window"
 msgstr "Fehler beim Erstellen des Passwortgeneratorfensters"
 
-#: yapet/pwgendialog.cc:106
+#: yapet/pwgendialog.cc:108
 msgid "Character Pools"
 msgstr "Zeichenvorrat"
 
-#: yapet/pwgendialog.cc:113
+#: yapet/pwgendialog.cc:115
 msgid "Regenerate"
 msgstr "Regenerieren"
 
-#: yapet/pwgendialog.cc:134
+#: yapet/pwgendialog.cc:136
 msgid "P A S S W O R D  G E N E R A T O R"
 msgstr "P A S S W O R T  G E N E R A T O R"
 
-#: yapet/pwgendialog.cc:140
+#: yapet/pwgendialog.cc:142
 #, c-format
 msgid "Generated Password (using %s):"
 msgstr "Generiertes Passwort (mit %s):"
 
-#: yapet/pwgendialog.cc:144 yapet/pwgendialog.cc:151
+#: yapet/pwgendialog.cc:146 yapet/pwgendialog.cc:153
 msgid "Error printing label"
 msgstr "Fehler beim Label zeigen"
 
-#: yapet/pwgendialog.cc:148
+#: yapet/pwgendialog.cc:150
 msgid "Password Length"
 msgstr "Passwortlänge"
 
-#: yapet/pwgendialog.cc:270
+#: yapet/pwgendialog.cc:288
 msgid "You need to select at least one Character Pool"
 msgstr "Mindestens ein Zeichenvorrat muss ausgewählt sein"
 
-#: yapet/pwgendialog.cc:286
+#: yapet/pwgendialog.cc:304
 msgid "Password must have at least one character"
 msgstr "Passwort muss mindestens ein Zeichen haben"
 
-#: yapet/pwgendialog.cc:358 yapet/fileopen.cc:351
+#: yapet/pwgendialog.cc:376 yapet/fileopen.cc:351
 msgid "Error drawing box"
 msgstr "Fehler beim Zeichnen des Rahmens"
 
@@ -515,76 +515,76 @@ msgstr "Fehler beim Speicher allozieren"
 msgid "Error deleting window"
 msgstr "Fehler beim Fensterlöschen"
 
-#: yapet/main.cc:129
+#: yapet/main.cc:130
 msgid "Failed to suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:131
+#: yapet/main.cc:132
 msgid "The error message is: "
 msgstr "Die Fehlermeldung ist: "
 
-#: yapet/main.cc:133 yapet/main.cc:145
+#: yapet/main.cc:134 yapet/main.cc:146
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 "Falls eine Core Datei erstellt wird, kann sie Klartextpasswörter enthalten."
 
-#: yapet/main.cc:136 yapet/main.cc:148
+#: yapet/main.cc:137 yapet/main.cc:149
 msgid "Press <ENTER> to continue"
 msgstr "Drücke <EINGABE> um weiterzumachen"
 
-#: yapet/main.cc:143
+#: yapet/main.cc:144
 msgid "Cannot suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: yapet/main.cc:158
+#: yapet/main.cc:159
 msgid "SSL Version: "
 msgstr "SSL Version: "
 
-#: yapet/main.cc:161 yapet/main.cc:164 yapet/main.cc:166
+#: yapet/main.cc:162 yapet/main.cc:165 yapet/main.cc:167
 msgid "Curses Implementation: "
 msgstr "Curses Implementation: "
 
-#: yapet/main.cc:170
+#: yapet/main.cc:171
 msgid "Compiled with support for terminal title"
 msgstr "Kompiliert mit Unterstützung für Konsolen Title"
 
-#: yapet/main.cc:172
+#: yapet/main.cc:173
 msgid "Compiled without support for terminal title"
 msgstr "Kompiliert ohne Unterstützung für Konsolen Title"
 
-#: yapet/main.cc:175
+#: yapet/main.cc:176
 msgid "Compiled with password generator"
 msgstr "Kompiliert mit Passwort Generator"
 
-#: yapet/main.cc:177
+#: yapet/main.cc:178
 msgid "Compiled without password generator"
 msgstr "Kompiliert ohne Passwort Generator"
 
-#: yapet/main.cc:180
+#: yapet/main.cc:181
 msgid "Support for file security NOT available"
 msgstr "Unterstützung für Dateisicherheit _nicht_ verfügbar"
 
-#: yapet/main.cc:183
+#: yapet/main.cc:184
 msgid "Creation of core file is suppressed"
 msgstr "Erstellen der Core-Datei unterdrückt"
 
-#: yapet/main.cc:185
+#: yapet/main.cc:186
 msgid "Creation of core files is NOT suppressed"
 msgstr "Erstellen der Core-Datei _nicht_ unterdrückt."
 
-#: yapet/main.cc:200
+#: yapet/main.cc:201
 msgid "show copyright information"
 msgstr "zeige Urheberechtsinformationen"
 
-#: yapet/main.cc:203
+#: yapet/main.cc:204
 msgid "show this help text"
 msgstr "zeige diesen Hilfetext"
 
-#: yapet/main.cc:206
+#: yapet/main.cc:207
 msgid "do not read the configuration file."
 msgstr "liest die Konfigurationsdatei nicht."
 
-#: yapet/main.cc:209
+#: yapet/main.cc:210
 msgid ""
 "read the configuration file specified by <rcfile>.\n"
 "\t\t\tIf this option is not provided, it defaults to\n"
@@ -595,7 +595,7 @@ msgstr ""
 "\t\t\t$HOME/.yapet per Default gelesen, ausser es\n"
 "\t\t\twurde die -i Option angegeben."
 
-#: yapet/main.cc:214
+#: yapet/main.cc:215
 msgid ""
 "disable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
@@ -606,7 +606,7 @@ msgstr ""
 "\t\t\tDateien wird die Dateiberechtigung auf\n"
 "\t\t\t0644 gesetzt."
 
-#: yapet/main.cc:219
+#: yapet/main.cc:220
 msgid ""
 "enable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
@@ -616,7 +616,7 @@ msgstr ""
 "\t\t\teinschalten. Beim Erstellen von neuen Dateien\n"
 "\t\t\twird die Dateiberechtigung auf 0600 gesetzt."
 
-#: yapet/main.cc:224
+#: yapet/main.cc:225
 msgid ""
 "the time-out in seconds until the screen is locked.\n"
 "\t\t\tDefault: 600 sec."
@@ -624,15 +624,15 @@ msgstr ""
 "die Zeit in Sekunden bis der Bildschirm gesperrt wird.\n"
 "\t\t\tDefault: 600 sek."
 
-#: yapet/main.cc:228
+#: yapet/main.cc:229
 msgid "show the version of "
 msgstr "zeige die Version von "
 
-#: yapet/main.cc:231
+#: yapet/main.cc:232
 msgid "open the specified file <filename>"
 msgstr "öffne die angegebene Datei <filename>"
 
-#: yapet/main.cc:235
+#: yapet/main.cc:236
 #, c-format
 msgid ""
 "%s stores passwords encrypted on disk using the blowfish encryption\n"
@@ -643,11 +643,11 @@ msgstr ""
 "Blowfish Verschlüsselungsalgorithmus. Gehe auf mit dem Browser auf\n"
 "http://www.guengel.ch/myapps/yapet/ um mehr über %s zu erfahren."
 
-#: yapet/main.cc:303
+#: yapet/main.cc:304
 msgid " without argument"
 msgstr " ohne Argument"
 
-#: yapet/main.cc:307
+#: yapet/main.cc:308
 msgid "unknown argument"
 msgstr "unbekanntes argument"
 

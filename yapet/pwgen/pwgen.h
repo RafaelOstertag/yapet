@@ -75,6 +75,14 @@ namespace YAPET {
                 void setNewPool (int p) throw (std::runtime_error);
                 void generatePassword (size_t len) throw (std::logic_error);
                 const char* getPassword() const throw();
+                inline RNGENGINE getRNGUsed() const {
+                    return rng.getRNGEngineUsed();
+                }
+		inline int getCharacterPools() const {
+		    if (cp != NULL)
+			return cp->getPoolsUsed();
+		    return 0;
+		}
 
                 const PWGen& operator= (const PWGen& pw) throw();
         };

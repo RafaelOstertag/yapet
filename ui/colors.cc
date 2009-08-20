@@ -18,9 +18,17 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "colors.h"
 
-using namespace YAPETUI;
+using namespace YAPET::UI;
 
 bool Colors::initialized = false;
 
@@ -40,7 +48,13 @@ color Colors::colors[] = {
     // Button focus
     {7, COLOR_BLACK, COLOR_GREEN, A_REVERSE},
     // List widget
-    {8, COLOR_WHITE, COLOR_BLUE, A_NORMAL}
+    {8, COLOR_WHITE, COLOR_BLUE, A_NORMAL},
+    // Check Box Group
+    {9, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
+    // Check Box Group Title
+    {10, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
+    // The marker of the end
+    {0, 0, 0, 0}
 };
 
 
@@ -50,72 +64,47 @@ Colors::initColors() {
     if (initialized) return;
 
     if (has_colors() == FALSE) {
-	initialized = true;
-	return;
+        initialized = true;
+        return;
     }
 
     start_color();
-    init_pair(colors[DEFAULT].no,
-	      colors[DEFAULT].fg,
-	      colors[DEFAULT].bg);
+    assert (colors[CHECKBOXGROUP_TITLE+1].no == 0);
 
-    init_pair(colors[MESSAGEBOX_TITLE].no,
-	      colors[MESSAGEBOX_TITLE].fg,
-	      colors[MESSAGEBOX_TITLE].bg);
-
-    init_pair(colors[MESSAGEBOX].no,
-	      colors[MESSAGEBOX].fg,
-	      colors[MESSAGEBOX].bg);
-
-    init_pair(colors[INPUTWIDGET_NOFOCUS].no,
-	      colors[INPUTWIDGET_NOFOCUS].fg,
-	      colors[INPUTWIDGET_NOFOCUS].bg);
-
-    init_pair(colors[INPUTWIDGET_FOCUS].no,
-	      colors[INPUTWIDGET_FOCUS].fg,
-	      colors[INPUTWIDGET_FOCUS].bg);
-
-    init_pair(colors[BUTTON_NOFOCUS].no,
-	      colors[BUTTON_NOFOCUS].fg,
-	      colors[BUTTON_NOFOCUS].bg);
-
-    init_pair(colors[BUTTON_FOCUS].no,
-	      colors[BUTTON_FOCUS].fg,
-	      colors[BUTTON_FOCUS].bg);
-
-    init_pair(colors[LISTWIDGET].no,
-	      colors[LISTWIDGET].fg,
-	      colors[LISTWIDGET].bg);
-
+    for (int i = 0; colors[i].no != 0; i++)
+        init_pair (colors[i].no,
+                   colors[i].fg,
+                   colors[i].bg);
 
     initialized = true;
 }
 
 void
-Colors::setcolor(WINDOW* w, COLORS c) {
+Colors::setcolor (WINDOW* w, COLORS c) {
     if (has_colors() == TRUE) {
-	wattron(w, COLOR_PAIR(colors[c].no));
-	wbkgd(w, ' ' | COLOR_PAIR(colors[c].no));
+        wattron (w, COLOR_PAIR (colors[c].no) );
+        wbkgd (w, ' ' | COLOR_PAIR (colors[c].no) );
     } else {
-	wattron(w, colors[c].attr);
-	wbkgd(w, ' ' | colors[c].attr);
+        wattron (w, colors[c].attr);
+        wbkgd (w, ' ' | colors[c].attr);
     }
 }
 
 short
-Colors::getcolor(COLORS c) {
+Colors::getcolor (COLORS c) {
     if (has_colors() == TRUE) {
-	return colors[c].no;
+        return colors[c].no;
     }
+
     return 0;
 }
 
 void
-Colors::unsetcolor(WINDOW* w, COLORS c) {
+Colors::unsetcolor (WINDOW* w, COLORS c) {
     if (has_colors() == TRUE)
-	wattroff(w, COLOR_PAIR(colors[c].no));
+        wattroff (w, COLOR_PAIR (colors[c].no) );
     else
-	wattroff(w, colors[c].attr);
+        wattroff (w, colors[c].attr);
 
-    wbkgd(w, ' ');
+    wbkgd (w, ' ');
 }

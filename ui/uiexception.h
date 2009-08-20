@@ -37,36 +37,38 @@
 
 #include "../intl.h"
 
-namespace YAPETUI {
-    /**
-     * @brief User interface exception.
-     *
-     * Exception class used by the user interface.
-     */
-    class UIException : public std::exception {
-	private:
-	    std::string message;
+namespace YAPET {
+    namespace UI {
+        /**
+         * @brief User interface exception.
+         *
+         * Exception class used by the user interface.
+         */
+        class UIException : public std::exception {
+            private:
+                std::string message;
 
-	public:
-	    inline UIException() throw() : exception(),
-					   message(_("Generic UI exception")) {}
-	    inline UIException(std::string msg) throw() : exception(),
-							  message(msg) {}
-	    inline UIException(const UIException& ex) throw() {
-		message = ex.message;
-	    }
-	    inline virtual ~UIException() throw() { /* empty */ }
-	    inline const UIException& operator=(const UIException& ex)
-		throw() {
-		if (this == &ex) return *this;
-		message = ex.message;
-		return *this;
-	    }
-	    inline virtual const char* what() const throw() {
-		return message.c_str();
-	    }
-    };
+            public:
+                inline UIException() throw() : exception(),
+                        message (_ ("Generic UI exception") ) {}
+                inline UIException (std::string msg) throw() : exception(),
+                        message (msg) {}
+                inline UIException (const UIException& ex) throw() {
+                    message = ex.message;
+                }
+                inline virtual ~UIException() throw() { /* empty */ }
+                inline const UIException& operator= (const UIException& ex)
+                throw() {
+                    if (this == &ex) return *this;
 
+                    message = ex.message;
+                    return *this;
+                }
+                inline virtual const char* what() const throw() {
+                    return message.c_str();
+                }
+        };
+
+    }
 }
-
 #endif // _UIEXCEPTION_H

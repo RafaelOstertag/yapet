@@ -79,7 +79,7 @@ AC_ARG_ENABLE([csv2yapet],
 	[my_buildcsv2yapet=$enableval],
 	[my_buildcsv2yapet=yes])
 AC_ARG_ENABLE([pwgen],
-	[AS_HELP_STRING([--disable-pwgen],[disable password generator (Default: no)])],
+	[AS_HELP_STRING([--disable-pwgen],[disable built-in password generator (Default: no)])],
 	[my_enablepwgen=$enableval],
 	[my_enablepwgen=yes])
 
@@ -118,7 +118,7 @@ AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if 
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
-AC_CHECK_HEADERS([algorithm exception fstream functional iostream iterator list memory sstream stdexcept string vector],
+AC_CHECK_HEADERS([algorithm cmath exception fstream functional iostream iterator list memory sstream stdexcept string vector],
 		       [],
 		       [AC_MSG_ERROR([your system is missing a required C++ header file])])
 
@@ -136,7 +136,8 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isspace localtime lrand48 memset pathconf rand rename setrlimit sigaction srand srand48 strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr tcgetattr tcsetattr time tolower])
+AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isdigit isspace localtime lrand48 memset pathconf rand rename setrlimit sigaction srand srand48 strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower])
+AC_CHECK_FUNCS([floor log10 pow])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])

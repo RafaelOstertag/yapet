@@ -18,25 +18,17 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "consts.h"
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
 
-using namespace YAPET::CONSTS;
+#include "../intl.h"
+#include "roinwidget.h"
 
-const std::string Consts::default_suffix (".pet");
-const std::string Consts::default_rcfilename (".yapet");
-const size_t Consts::max_pwlen(256);
+using namespace YAPET::UI;
 
-const std::string&
-Consts::getDefaultSuffix() {
-    return default_suffix;
-}
+ROInWidget::ROInWidget (int sx, int sy, int w, int ml)
+throw (UIException) : InputWidget (sx, sy, w, ml) {}
 
-const std::string&
-Consts::getDefaultRCFilename() {
-    return default_rcfilename;
-}
-
-size_t
-Consts::getMaxPWLength() {
-    return max_pwlen;
+ROInWidget::~ROInWidget() {
 }

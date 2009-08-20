@@ -46,59 +46,63 @@
 #include "basewindow.h"
 #include "button.h"
 
-namespace YAPETUI {
-    /**
-     * @brief Displays a message in a window on the screen.
-     *
-     * Displays a message in a separate window on the screen. A button will be
-     * available to quit the message.
-     *
-     * Line breaks in the message string are not handled at all. So try to
-     * avoid them.
-     */
-    class MessageBox : protected BaseWindow {
-	private:
-	    enum {
-		BASE_HEIGHT=6,
-		BASE_WIDTH=4
-	    };
-	    WINDOW* window;
-	    Button* okbutton;
+namespace YAPET {
+    namespace UI {
+        /**
+         * @brief Displays a message in a window on the screen.
+         *
+         * Displays a message in a separate window on the screen. A button will be
+         * available to quit the message.
+         *
+         * Line breaks in the message string are not handled at all. So try to
+         * avoid them.
+         */
+        class MessageBox : protected BaseWindow {
+            private:
+                enum {
+                    BASE_HEIGHT = 6,
+                    BASE_WIDTH = 4
+                };
+                WINDOW* window;
+                Button* okbutton;
 
-	    std::string title;
-	    std::string message;
+                std::string title;
+                std::string message;
 
-	    void createWindow() throw(UIException);
+                void createWindow() throw (UIException);
 
-	protected:
-	    inline int getBaseHeight() const { return BASE_HEIGHT; }
+            protected:
+                inline int getBaseHeight() const {
+                    return BASE_HEIGHT;
+                }
 
-	    inline int getWidth() const {
-		return BASE_WIDTH + message.length();
-	    }
+                inline int getWidth() const {
+                    return BASE_WIDTH + message.length();
+                }
 
-	    inline int getStartX() const {
-		return maxX()/2 - getWidth()/2;
-	    }
+                inline int getStartX() const {
+                    return maxX() / 2 - getWidth() / 2;
+                }
 
-	    inline int getStartY() const {
-		return maxY()/2 - BASE_HEIGHT/2;
-	    }
+                inline int getStartY() const {
+                    return maxY() / 2 - BASE_HEIGHT / 2;
+                }
 
-	    inline int getOkButtonLength() const {
-		if (okbutton == NULL) return -1;
-		return okbutton->getLength();
-	    }
+                inline int getOkButtonLength() const {
+                    if (okbutton == NULL) return -1;
 
-	public:
-	    MessageBox(std::string t, std::string m) throw(UIException);
-	    virtual ~MessageBox();
+                    return okbutton->getLength();
+                }
 
-	    virtual int run() throw(UIException) ;
-	    virtual void resize() throw(UIException);
-	    virtual void refresh() throw(UIException);
-    };
+            public:
+                MessageBox (std::string t, std::string m) throw (UIException);
+                virtual ~MessageBox();
 
+                virtual int run() throw (UIException) ;
+                virtual void resize() throw (UIException);
+                virtual void refresh() throw (UIException);
+        };
+
+    }
 }
-
 #endif // _MESSAGEBOX_H

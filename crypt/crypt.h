@@ -69,223 +69,228 @@ namespace YAPET {
      * @sa Key, BDBuffer, Record
      */
     class Crypt {
-	private:
-	    /**
-	     * @brief Pointer to the cipher used for
-	     * encryption/decryption
-	     *
-	     * Pointer the cipher implemented in the openssl
-	     * library. Currently, blowfish is used for
-	     * encryption/decryption.
-	     */
-	    const EVP_CIPHER* cipher;
-	    /**
-	     * @brief Length of the initialization vector
-	     *
-	     * Length of the initialization vector as expected by the
-	     * cipher implementation in bytes.
-	     */
-	    uint32_t iv_length;
-	    /**
-	     * @brief Length of the encryption/decryption key
-	     *
-	     * Length of the encryption/decryption key as expected by
-	     * the cipher implementation in bytes.
-	     */
-	    uint32_t key_length;
-	    /**
-	     * @brief the key used for encryption/decryption
-	     *
-	     * The key used for encryption/decryption.
-	     */
-	    Key key;
+        private:
+            /**
+             * @brief Pointer to the cipher used for
+             * encryption/decryption
+             *
+             * Pointer the cipher implemented in the openssl
+             * library. Currently, blowfish is used for
+             * encryption/decryption.
+             */
+            const EVP_CIPHER* cipher;
+            /**
+             * @brief Length of the initialization vector
+             *
+             * Length of the initialization vector as expected by the
+             * cipher implementation in bytes.
+             */
+            uint32_t iv_length;
+            /**
+             * @brief Length of the encryption/decryption key
+             *
+             * Length of the encryption/decryption key as expected by
+             * the cipher implementation in bytes.
+             */
+            uint32_t key_length;
+            /**
+             * @brief the key used for encryption/decryption
+             *
+             * The key used for encryption/decryption.
+             */
+            Key key;
 
-	public:
-	    //! Constructor
-	    Crypt(const Key& k) throw(YAPETException);
-	    Crypt(const Crypt& c);
-	    inline ~Crypt() {}
+        public:
+            //! Constructor
+            Crypt (const Key& k) throw (YAPETException);
+            Crypt (const Crypt& c);
+            inline ~Crypt() {}
 
-	    /**
-	     * @brief Returns the length of the initialization vector
-	     *
-	     * Returns the length in bytes of the initialization
-	     * vector the cipher algorithm expects
-	     *
-	     * @return the length of the initialization vector in
-	     * bytes.
-	     */
-	    inline uint32_t getIVLength() const { return iv_length; }
-	    /**
-	     * @brief Returns the length of the key
-	     *
-	     * Returns the length in bytes of the key the cipher
-	     * algorithm expects.
-	     *
-	     * @return the length of the key in bytes.
-	     */
-	    inline uint32_t getKeyLength() const { return key_length; }
+            /**
+             * @brief Returns the length of the initialization vector
+             *
+             * Returns the length in bytes of the initialization
+             * vector the cipher algorithm expects
+             *
+             * @return the length of the initialization vector in
+             * bytes.
+             */
+            inline uint32_t getIVLength() const {
+                return iv_length;
+            }
+            /**
+             * @brief Returns the length of the key
+             *
+             * Returns the length in bytes of the key the cipher
+             * algorithm expects.
+             *
+             * @return the length of the key in bytes.
+             */
+            inline uint32_t getKeyLength() const {
+                return key_length;
+            }
 
-	    /**
-	     * @brief Encrypts data
-	     *
-	     * Encrypts the data provided in \c data which has to be
-	     * an instance of the \c Record template.
-	     *
-	     * The encrypted data is returned as \c BDBuffer with the
-	     * size set exactly to the size of the encrypted data. The
-	     * memory occupied by this object has to be freed by the
-	     * caller.
-	     *
-	     * @param data the data to be encrypted.
-	     *
-	     * @return pointer to a \c BDBuffer holding the encrypted
-	     * data. The caller is responsible for freeing the memory
-	     * occupied by the object returned.
-	     *
-	     * @throw YAPETException
-	     *
-	     * @throw YAPETEncryptionException
-	     *
-	     * @sa Record, BDBuffer
-	     */
-	    template<class T>
-	    BDBuffer* encrypt(const Record<T>& data)
-		throw(YAPETException, YAPETEncryptionException) {
-		if (key.ivec_size() != iv_length)
-		    throw YAPETException(_("IVec length missmatch"));
+            /**
+             * @brief Encrypts data
+             *
+             * Encrypts the data provided in \c data which has to be
+             * an instance of the \c Record template.
+             *
+             * The encrypted data is returned as \c BDBuffer with the
+             * size set exactly to the size of the encrypted data. The
+             * memory occupied by this object has to be freed by the
+             * caller.
+             *
+             * @param data the data to be encrypted.
+             *
+             * @return pointer to a \c BDBuffer holding the encrypted
+             * data. The caller is responsible for freeing the memory
+             * occupied by the object returned.
+             *
+             * @throw YAPETException
+             *
+             * @throw YAPETEncryptionException
+             *
+             * @sa Record, BDBuffer
+             */
+            template<class T>
+            BDBuffer* encrypt (const Record<T>& data)
+            throw (YAPETException, YAPETEncryptionException) {
+                if (key.ivec_size() != iv_length)
+                    throw YAPETException (_ ("IVec length missmatch") );
 
-		EVP_CIPHER_CTX ctx;
-		EVP_CIPHER_CTX_init(&ctx);
+                EVP_CIPHER_CTX ctx;
+                EVP_CIPHER_CTX_init (&ctx);
+                int retval = EVP_EncryptInit_ex (&ctx,
+                                                 cipher,
+                                                 NULL,
+                                                 key,
+                                                 key.getIVec() );
 
-		int retval = EVP_EncryptInit_ex(&ctx,
-						cipher,
-						NULL,
-						key,
-						key.getIVec());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETEncryptionException(_("Error initializing encryption engine"));
-		}
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    throw YAPETEncryptionException (_ ("Error initializing encryption engine") );
+                }
 
-		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETException(_("Error setting the key length"));
-		}
+                retval = EVP_CIPHER_CTX_set_key_length (&ctx, key.size() );
 
-		BDBuffer* encdata =
-		    new BDBuffer(data.size() + EVP_MAX_BLOCK_LENGTH);
-		int outlen;
-		retval = EVP_EncryptUpdate(&ctx,
-					   *encdata,
-					   &outlen,
-					   data,
-					   data.size());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    delete encdata;
-		    throw YAPETEncryptionException(_("Error encrypting data"));
-		}
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    throw YAPETException (_ ("Error setting the key length") );
+                }
 
-		int tmplen;
-		retval = EVP_EncryptFinal_ex(&ctx,
-					     encdata->at(outlen),
-					     &tmplen);
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    delete encdata;
-		    throw YAPETEncryptionException(_("Error finalizing encryption"));
-		}
+                BDBuffer* encdata =
+                    new BDBuffer (data.size() + EVP_MAX_BLOCK_LENGTH);
+                int outlen;
+                retval = EVP_EncryptUpdate (&ctx,
+                                            *encdata,
+                                            &outlen,
+                                            data,
+                                            data.size() );
 
-		encdata->resize(outlen+tmplen);
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    delete encdata;
+                    throw YAPETEncryptionException (_ ("Error encrypting data") );
+                }
 
-		EVP_CIPHER_CTX_cleanup(&ctx);
+                int tmplen;
+                retval = EVP_EncryptFinal_ex (&ctx,
+                                              encdata->at (outlen),
+                                              &tmplen);
 
-		return encdata;
-	    }
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    delete encdata;
+                    throw YAPETEncryptionException (_ ("Error finalizing encryption") );
+                }
 
-	    /**
-	     * @brief Decrypts data
-	     *
-	     * Decrypts the data supplied in the \c BDBuffer. It
-	     * returns the decrypted data as a \c Record of the
-	     * specified type.
-	     *
-	     * The \c Record has to be freed by the caller.
-	     *
-	     * @param data the \c BDBuffer to decrypt.
-	     *
-	     * @return pointer to a \c Record of the specified type,
-	     * holding the decrypted data. The caller is responsible
-	     * for freeing the memory occupied by the object returned.
-	     *
-	     * @throw YAPETException
-	     *
-	     * @throw YAPETEncryptionException
-	     *
-	     * @sa Record, BDBuffer
-	     */
-	    template<class T>
-	    Record<T>* decrypt(const BDBuffer& data)
-		throw(YAPETException, YAPETEncryptionException) {
-		if ( ((unsigned int)key.ivec_size()) != iv_length)
-		    throw YAPETException(_("IVec length missmatch"));
+                encdata->resize (outlen + tmplen);
+                EVP_CIPHER_CTX_cleanup (&ctx);
+                return encdata;
+            }
 
-		EVP_CIPHER_CTX ctx;
-		EVP_CIPHER_CTX_init(&ctx);
+            /**
+             * @brief Decrypts data
+             *
+             * Decrypts the data supplied in the \c BDBuffer. It
+             * returns the decrypted data as a \c Record of the
+             * specified type.
+             *
+             * The \c Record has to be freed by the caller.
+             *
+             * @param data the \c BDBuffer to decrypt.
+             *
+             * @return pointer to a \c Record of the specified type,
+             * holding the decrypted data. The caller is responsible
+             * for freeing the memory occupied by the object returned.
+             *
+             * @throw YAPETException
+             *
+             * @throw YAPETEncryptionException
+             *
+             * @sa Record, BDBuffer
+             */
+            template<class T>
+            Record<T>* decrypt (const BDBuffer& data)
+            throw (YAPETException, YAPETEncryptionException) {
+                if ( ( (unsigned int) key.ivec_size() ) != iv_length)
+                    throw YAPETException (_ ("IVec length missmatch") );
 
-		int retval = EVP_DecryptInit_ex(&ctx,
-						cipher,
-						NULL,
-						key,
-						key.getIVec());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETEncryptionException(_("Error initializing encryption engine"));
-		}
+                EVP_CIPHER_CTX ctx;
+                EVP_CIPHER_CTX_init (&ctx);
+                int retval = EVP_DecryptInit_ex (&ctx,
+                                                 cipher,
+                                                 NULL,
+                                                 key,
+                                                 key.getIVec() );
 
-		retval = EVP_CIPHER_CTX_set_key_length(&ctx, key.size());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    throw YAPETException(_("Error setting the key length"));
-		}
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    throw YAPETEncryptionException (_ ("Error initializing encryption engine") );
+                }
 
-		BDBuffer* decdata = new BDBuffer(data.size());
-		int outlen;
-		retval = EVP_DecryptUpdate(&ctx,
-					   *decdata,
-					   &outlen,
-					   data,
-					   data.size());
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    delete decdata;
-		    throw YAPETEncryptionException(_("Error decrypting data"));
-		}
+                retval = EVP_CIPHER_CTX_set_key_length (&ctx, key.size() );
 
-		int tmplen;
-		retval = EVP_DecryptFinal_ex(&ctx,
-					     decdata->at(outlen),
-					     &tmplen);
-		if (retval == 0) {
-		    EVP_CIPHER_CTX_cleanup(&ctx);
-		    delete decdata;
-		    throw YAPETEncryptionException(_("Error finalizing decryption"));
-		}
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    throw YAPETException (_ ("Error setting the key length") );
+                }
 
-		decdata->resize(outlen+tmplen);
+                BDBuffer* decdata = new BDBuffer (data.size() );
+                int outlen;
+                retval = EVP_DecryptUpdate (&ctx,
+                                            *decdata,
+                                            &outlen,
+                                            data,
+                                            data.size() );
 
-		EVP_CIPHER_CTX_cleanup(&ctx);
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    delete decdata;
+                    throw YAPETEncryptionException (_ ("Error decrypting data") );
+                }
 
-		Record<T>* r = new Record<T>;
-		*r=*decdata;
+                int tmplen;
+                retval = EVP_DecryptFinal_ex (&ctx,
+                                              decdata->at (outlen),
+                                              &tmplen);
 
-		delete decdata;
-		return r;
-	    }
+                if (retval == 0) {
+                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    delete decdata;
+                    throw YAPETEncryptionException (_ ("Error finalizing decryption") );
+                }
 
-	    const Crypt& operator=(const Crypt& c);
+                decdata->resize (outlen + tmplen);
+                EVP_CIPHER_CTX_cleanup (&ctx);
+                Record<T>* r = new Record<T>;
+                *r = *decdata;
+                delete decdata;
+                return r;
+            }
+
+            const Crypt& operator= (const Crypt& c);
     };
 }
 

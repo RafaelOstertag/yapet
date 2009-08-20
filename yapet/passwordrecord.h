@@ -42,12 +42,15 @@
 # include <string>
 #endif
 
-#include <key.h>
-#include <partdec.h>
+#include "key.h"
+#include "partdec.h"
 
-#include <basewindow.h>
-#include <button.h>
-#include <passwordwidget.h>
+#include "basewindow.h"
+#include "button.h"
+#include "passwordwidget.h"
+#ifdef ENABLE_PWGEN
+# include "pwgendialog.h"
+#endif
 
 /**
  * @brief A window that displays all the information associated with a
@@ -70,99 +73,112 @@
  * In any case, the memory occupied by the pointer returned by \c getEncEntry()
  * has to be freed by the caller. The class does not take care of this.
  */
-class PasswordRecord : protected YAPETUI::BaseWindow {
+class PasswordRecord : protected YAPET::UI::BaseWindow {
     private:
-	enum {
-	    HEIGHT = 14
-	};
+        enum {
+            HEIGHT = 14
+        };
 
-	WINDOW* window;
-	YAPETUI::InputWidget* name;
-	YAPETUI::InputWidget* host;
-	YAPETUI::InputWidget* username;
-	YAPETUI::InputWidget* password;
-	YAPETUI::InputWidget* comment;
-	YAPETUI::Button* okbutton;
-	YAPETUI::Button* cancelbutton;
-	YAPET::Key* key;
-	YAPET::PartDec* encentry;
+        WINDOW* window;
+        YAPET::UI::InputWidget* name;
+        YAPET::UI::InputWidget* host;
+        YAPET::UI::InputWidget* username;
+        YAPET::UI::InputWidget* password;
+        YAPET::UI::InputWidget* comment;
+        YAPET::UI::Button* okbutton;
+        YAPET::UI::Button* cancelbutton;
+#ifdef ENABLE_PWGEN
+        YAPET::UI::Button* pwgenbutton;
+#endif
+        YAPET::Key* key;
+        YAPET::PartDec* encentry;
+        YAPET::UI::secstring s_name;
+        YAPET::UI::secstring s_host;
+        YAPET::UI::secstring s_username;
+        YAPET::UI::secstring s_password;
+        YAPET::UI::secstring s_comment;
+        bool namechanged;
+        bool hostchanged;
+        bool usernamechanged;
+        bool passwordchanged;
+        bool commentchanged;
 
-	inline PasswordRecord(const PasswordRecord&) {}
-	inline const PasswordRecord& operator=(const PasswordRecord&) { return *this; }
+        inline PasswordRecord (const PasswordRecord&) {}
+        inline const PasswordRecord& operator= (const PasswordRecord&) {
+            return *this;
+        }
 
-	inline int getWidth() const {
-	    return maxX() - 8;
-	}
+        inline int getWidth() const {
+            return maxX() - 8;
+        }
 
-	inline int getHeight() const {
-	    return HEIGHT;
-	}
+        inline int getHeight() const {
+            return HEIGHT;
+        }
 
-	inline int getStartX() const {
-	    return maxX()/2 - getWidth()/2;
-	}
+        inline int getStartX() const {
+            return maxX() / 2 - getWidth() / 2;
+        }
 
-	inline int getStartY() const {
-	    return maxY()/2 - getHeight()/2;
-	}
+        inline int getStartY() const {
+            return maxY() / 2 - getHeight() / 2;
+        }
 
-	void createWindow() throw(YAPETUI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
+
+        //! Asks the user whether or not he want to cancel
+        bool sureToCancel() throw (YAPET::UI::UIException);
 
     public:
-	/**
-	 * @brief Constructor.
-	 *
-	 * Depending on the value passed in \c pe, either an empty record is
-	 * showed or the decrypted password record including the password
-	 * stored in the record in plain text is showed.
-	 *
-	 * @param k the key used to decrypt/encrypt the password record.
-	 *
-	 * @param pe pointer to a \c PartDec which will be displayed, or \c
-	 * NULL in order to obtain a new password record.
-	 */
-	PasswordRecord(YAPET::Key& k, YAPET::PartDec* pe) throw(YAPETUI::UIException);
-	~PasswordRecord();
+        /**
+         * @brief Constructor.
+         *
+         * Depending on the value passed in \c pe, either an empty record is
+         * showed or the decrypted password record including the password
+         * stored in the record in plain text is showed.
+         *
+         * @param k the key used to decrypt/encrypt the password record.
+         *
+         * @param pe pointer to a \c PartDec which will be displayed, or \c
+         * NULL in order to obtain a new password record.
+         */
+        PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe) throw (YAPET::UI::UIException);
+        ~PasswordRecord();
 
-	/**
-	 * @brief Shows the dialog and handles user input.
-	 *
-	 * Shows the dialog and handles user input.
-	 *
-	 * Call \c getEncEntry() for obtaining the encrypted password record.
-	 */
-	void run() throw(YAPETUI::UIException);
-	void resize() throw(YAPETUI::UIException);
-	void refresh() throw(YAPETUI::UIException);
-	/**
-	 * @brief Returns the password record.
-	 *
-	 * Returns the new or altered password record as \c PartDec object. The
-	 * caller is responsible for freeing the memory associated with the pointer returned.
-	 *
-	 * It returns \c NULL if the dialog has been canceled.
-	 *
-	 * @return pointer to the new or altered password record, or \c NULL if
-	 * the dialog has been canceled. The caller is responsible for freeing
-	 * the memory associated with the pointer returned.
-	 */
-	inline YAPET::PartDec* getEncEntry() const { return encentry; }
+        /**
+         * @brief Shows the dialog and handles user input.
+         *
+         * Shows the dialog and handles user input.
+         *
+         * Call \c getEncEntry() for obtaining the encrypted password record.
+         */
+        void run() throw (YAPET::UI::UIException);
+        void resize() throw (YAPET::UI::UIException);
+        void refresh() throw (YAPET::UI::UIException);
+        /**
+         * @brief Returns the password record.
+         *
+         * Returns the new or altered password record as \c PartDec object. The
+         * caller is responsible for freeing the memory associated with the pointer returned.
+         *
+         * It returns \c NULL if the dialog has been canceled.
+         *
+         * @return pointer to the new or altered password record, or \c NULL if
+         * the dialog has been canceled. The caller is responsible for freeing
+         * the memory associated with the pointer returned.
+         */
+        inline YAPET::PartDec* getEncEntry() const {
+            return encentry;
+        }
 
-	/**
-	 * @brief Indicates whether or not the record has been changed.
-	 *
-	 * Indicates whether or not the record has been changed.
-	 *
-	 * @return \c true if the record has been changed, \c false otherwise.
-	 */
-	inline bool entryChanged() const {
-	    return name->isTextChanged() ||
-		host->isTextChanged() ||
-		username->isTextChanged() ||
-		password->isTextChanged() ||
-		comment->isTextChanged();
-	}
-
+        /**
+         * @brief Indicates whether or not the record has been changed.
+         *
+         * Indicates whether or not the record has been changed.
+         *
+         * @return \c true if the record has been changed, \c false otherwise.
+         */
+        bool entryChanged() const;
 };
 
 #endif // _PASSWORDRECORD_H
