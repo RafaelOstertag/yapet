@@ -136,8 +136,7 @@ void set_rlimit() {
                   << std::endl
                   << _ ("Press <ENTER> to continue")
                   << std::endl;
-        char tmp;
-        std::cin >> tmp;
+        std::cin.ignore(1,'\n');
     }
 
 #else
@@ -148,8 +147,7 @@ void set_rlimit() {
               << std::endl
               << _ ("Press <ENTER> to continue")
               << std::endl;
-    char tmp;
-    std::cin >> tmp;
+    std::cin.ignore(1,'\n');
 #endif
 }
 
