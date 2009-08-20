@@ -2,9 +2,11 @@
 
 if !DISABLEINSTALLDOC
 htmldoc_DATA = README.html DESIGN.html yapet.html
+
 if BUILDCSV2YAPET
 htmldoc_DATA += csv2yapet.html
 endif # BUILDCSV2YAPET
+
 htmldocdir = $(docdir)/html
 
 dist_man1_MANS = yapet.1
@@ -22,8 +24,26 @@ pwrecord.sgml license.sgml bugreport.sgml
 
 sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
 $(sgml_static_files)
+
+# The value of _BEGIN and _END variables will be used to replace markers in the
+# xml documention with either nothin, or xml comments. This way we can
+# include/exclude stuff from the docs without using conditional processing of
+# the xml files.
 if BUILDCSV2YAPET
 sgml_files += csv2yapet.sgml
+DOCCSV2YAPET_BEGIN =
+DOCCSV2YAPET_END =
+else
+DOCCSV2YAPET_BEGIN = <!--
+DOCCSV2YAPET_END = -->
+endif
+
+if BUILDPWGEN
+DOCPWGEN_BEGIN =
+DOCPWGEN_END =
+else
+DOCPWGEN_BEGIN = <!--
+DOCPWGEN_END = -->
 endif
 
 doxycfg_src = Doxyfile.in
@@ -37,15 +57,27 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_TARNAME[@]|$(PACKAGE_TARNAME)|g' \
 	-e 's|@srcdir[@]|$(srcdir)|g' \
 	-e 's|@top_srcdir[@]|$(top_srcdir)|g' \
-	-e 's|@top_builddir[@]|$(top_builddir)|g'
-	-e 's|@builddir[@]|$(builddir)|g'
+	-e 's|@top_builddir[@]|$(top_builddir)|g' \
+	-e 's|@builddir[@]|$(builddir)|g' \
+	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
+	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
+	-e 's|<!--[ \t]*PWGEN_BEGIN[ \t]*-->|$(DOCPWGEN_BEGIN)|g' \
+	-e 's|<!--[ \t]*PWGEN_END[ \t]*-->|$(DOCPWGEN_END)|g'
+
 
 if BUILDDOC
 
 # Those files are fed to xsltproc
-sgml_html = README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml yapet.sgml csv2yapet.sgml
+sgml_html = README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
+if BUILDCSV2YAPET
+sgml_html +=  csv2yapet.sgml
+endif
+
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
-sgml_man = yapet.sgml csv2yapet.sgml
+sgml_man = yapet.sgml
+if BUILDCSV2YAPET
+sgml_man += csv2yapet.sgml
+endif
 
 docbook_docbook_xsl = @DOCBOOKXSL@/xhtml/docbook.xsl
 docbook_man_xsl = @DOCBOOKXSL@/manpages/docbook.xsl
