@@ -39,15 +39,28 @@ DATESTARTED=`date "+%FT%T"`
 GLOBALLOGFILE=${TESTBASE_DIR}/testlog-${DATESTARTED}
 MAKETARGETS=(all check clean)
 
+COMPILERPROFILES=""
+if [ ! -z "$2" && -f "$2" ]
+then
+    COMPILERPROFILES=$2
+else
+    if [ -f ${SCRIPTDIR}/compiler.profiles ]
+    then
+	COMPILERPROFILES="${SCRIPTDIR}"/compiler.profiles
+    else
+	echo "No compiler profile found".
+	exit 1
+    fi
+fi
 # Suck in the compiler profiles
-. ${SCRIPTDIR}/compiler.profiles
+. ${COMPILERPROFILES}
 
 cmdhelp() {
-    echo "disttest <pathtosource>";
+    echo "disttest <pathtosource> [<compilerprofile>]";
     echo ""
 }
 
-if [ $# -ne 1 ] ;
+if [ $# -lt 1 ] ;
 then
     cmdhelp
     exit 1
