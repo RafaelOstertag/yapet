@@ -7,7 +7,7 @@ libypwgen_a_SOURCES = pwgenexception.h charpool.cc charpool.h rng.cc rng.h pwgen
 libypwgen_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 
 if USE_INCLUDED_LIBINTL
-libypwgen_a_CPPFLAGS += -I$(top_srcdir)/intl 
+libypwgen_a_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 if DISABLE_ASSERT

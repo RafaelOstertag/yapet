@@ -11,7 +11,7 @@ roinwidget.cc intinwidget.h intinwidget.cc
 libui_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 
 if USE_INCLUDED_LIBINTL
-libui_a_CPPFLAGS += -I$(top_srcdir)/intl
+libui_a_CPPFLAGS += -I$(top_builddir)/intl
 endif
 
 if DISABLE_ASSERT

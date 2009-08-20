@@ -7,7 +7,7 @@ csv2yapet_SOURCES = main.cc csvimport.h csvimport.cc $(top_srcdir)/yapet/consts.
 csv2yapet_CPPFLAGS = -I$(top_srcdir)/yapet -I$(top_srcdir)/crypt -DLOCALEDIR=\"$(localedir)\"
 
 if USE_INCLUDED_LIBINTL
-csv2yapet_CPPFLAGS += -I$(top_srcdir)/intl 
+csv2yapet_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 if DISABLE_ASSERT

@@ -15,7 +15,7 @@ yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(locale
 yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
 
 if USE_INCLUDED_LIBINTL
-yapet_CPPFLAGS += -I$(top_srcdir)/intl 
+yapet_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 if BUILDPWGEN
