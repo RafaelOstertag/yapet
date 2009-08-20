@@ -81,7 +81,7 @@ file5_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
 file5_SOURCES = file5.cc tests.h
 
 cfgfile1_LDADD = @LIBINTL@
-cfgfile1_CPPFLAGS = -I$(top_srcdir)/yapet
+cfgfile1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet
 cfgfile1_SOURCES = cfgfile1.cc $(top_srcdir)/yapet/cfg.h	\
 $(top_srcdir)/yapet/cfgfile.h $(top_srcdir)/yapet/consts.h	\
 $(top_srcdir)/yapet/cfg.cc $(top_srcdir)/yapet/cfgfile.cc	\
