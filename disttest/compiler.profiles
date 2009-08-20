@@ -1,0 +1,69 @@
+# -*- sh -*-
+#
+# This file holds the compiler profiles.  It additionally needs to specify how
+# many compiler profiles it holds in the NUMCOMPILERPROFILES and what
+# environment variables to clean in ENVVARSUSED.
+#
+# Compiler profiles are functions in the form of
+#
+# compilerprofile_#N () {
+#  ...
+# }
+#
+# Where #N is a number from 1 to ${NUMCOMPILERPROFILES}. There have to be a
+# compiler profile for each #N.
+#
+# Refer also to disttest for more information on those variables.
+
+NUMCOMPILERPROFILES=1
+ENVVARSUSED="PATH TMPDIR MAKE SH CC CXX FC F77 AS RANLIB AR CPPFLAGS CXXFLAGS FFLAGS FCFLAGS LDFLAGS LD_LIBRARY_PATH PKG_CONFIG_PATH PKG_CONFIG JAVA_HOME NM STRIP OBJCOPY OBJDUMP LD OPTS"
+
+compilerprofile_1 () {
+    export TMPDIR=/var/tmp
+    export PATH=/opt/sunstudio12.1/bin:/opt/guengel/bin:/usr/ccs/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin
+    export MAKE=gmake
+    export SH=/usr/bin/bash
+    export CC=/opt/sunstudio12.1/bin/cc
+    export CXX=/opt/sunstudio12.1/bin/CC
+    export FC=/opt/sunstudio12.1/bin/f95
+    export F77=/opt/sunstudio12.1/bin/f77
+    export AS=/usr/ccs/bin/as
+    export RANLIB=/usr/ccs/bin/ranlib
+    export AR=/usr/ccs/bin/ar
+    export CPPFLAGS='-I/opt/SUNWmlib/include -I/opt/guengel/include -I/usr/sfw/include -I/usr/openwin/include -I/usr/X11/include'
+    export CFLAGS="-g -xtemp=/var/tmp"
+    export CXXFLAGS="-g +w2 -temp=/var/tmp"
+    export FFLAGS="-g"
+    export FCFLAGS="-g"
+    export LDFLAGS="-L/opt/SUNWmlib/lib/sse2 -R/opt/SUNWmlib/lib/sse2 -L/opt/sunstudio12.1/prod/lib -L/opt/sunstudio12.1/prod/lib/sse2 -L/opt/guengel/lib -L/usr/sfw/lib -L/usr/openwin/lib -L/usr/openwin/sfw/lib -L/usr/X11/lib -R/opt/sunstudio12.1/prod/lib -R/opt/sunstudio12.1/prod/lib/sse2 -R/opt/guengel/lib -R/usr/sfw/lib -R/usr/openwin/lib -R/usr/openwin/sfw/lib -R/usr/X11/lib"
+    export PKG_CONFIG_PATH="/opt/guengel/lib/pkgconfig:/usr/lib/pkgconfig:/usr/sfw/lib/pkgconfig"
+    export PKG_CONFIG="/opt/guengel/bin/pkg-config"
+    export JAVA_HOME=/usr/java
+}
+
+compilerprofile_2 () {
+    export PATH=/opt/guengel/sbin/gcc_sbin:/opt/guengel/qt4.5_gcc/bin:/opt/guengel/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin:/usr/ccs/bin
+    export MAKE=/opt/guengel/bin/gmake
+    export SH=/usr/bin/bash
+    export CC=/opt/guengel/bin/gcc
+    export CXX=/opt/guengel/bin/g++
+    export AS=/opt/guengel/bin/gas
+    export AR=/opt/guengel/bin/gar
+    export NM=/opt/guengel/bin/gnm
+    export RANLIB=/opt/guengel/bin/granlib
+    export STRIP=/opt/guengel/bin/gstrip
+    export OBJCOPY=/opt/guengel/bin/gobjcopy
+    export OBJDUMP=/opt/guengel/bin/gobjdump
+    export LD=/opt/guengel/bin/gld
+    export FC=/opt/guengel/bin/gfortran
+    export F77=/opt/guengel/bin/gfortran
+    export OPTS="-g -O0 -pedantic -Wall"
+    export FFLAGS="${OPTS}"
+    export FCFLAGS="${OPTS}"
+    export CPPFLAGS='-I/opt/guengel/include/gcc -I/opt/guengel/qt4.5_gcc/include -I/opt/guengel/include -I/usr/sfw/include -I/usr/openwin/include -I/usr/X11/include'
+    export CFLAGS="${OPTS}"
+    export CXXFLAGS="${OPTS} -std=c++0x"
+    export LDFLAGS="-L/opt/SUNWspro/prod/lib/sse2 -L/opt/SUNWspro/prod/lib -L/opt/guengel/lib/gcc -L/opt/guengel/qt4.5_gcc/lib -L/opt/guengel/lib -L/usr/sfw/lib -L/usr/openwin/lib -L/usr/openwin/sfw/lib -L/usr/X11/lib -R/opt/SUNWspro/prod/lib -R/opt/SUNWspro/prod/lib/sse2 -R/opt/guengel/lib/gcc -R/opt/guengel/qt4.5_gcc/lib -R/opt/guengel/lib -R/usr/sfw/lib -R/usr/openwin/lib -R/usr/openwin/sfw/lib -R/usr/X11/lib -R/opt/SUNWspro/prod/lib"
+    export PKG_CONFIG_PATH="/opt/guengel/qt4.5_gcc/lib/pkgconfig:/opt/guengel/lib/pkgconfig:/usr/lib/pkgconfig:/usr/sfw/lib/pkgconfig"
+    export PKG_CONFIG="/opt/guengel/bin/pkg-config"
+}

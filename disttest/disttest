@@ -1,0 +1,259 @@
+#!/usr/bin/bash
+#
+# $Id$
+#
+
+#
+# The base directory where building and installing will be performed
+#
+TESTBASE_DIR=/tmp/yapet-disttest
+TESTLOGS_DIR=${TESTBASE_DIR}/logs
+TESTBUILD_DIR=${TESTBASE_DIR}/build
+TESTINST_DIR=${TESTBASE_DIR}/inst
+#
+# Used in case compiler profile does not specify ${MAKE}
+#
+MYMAKE=gmake
+CONFCOMMONOPTS="--prefix=${TESTINST_DIR} --with-docbook-xsl=/opt/guengel/share/docbook/xsl"
+#
+# The enables that will be toggled to test the dists
+#
+#CONFENABLES="--enable-assert --enable-build-doc --enable-install-doc --enable-source-doc --enable-terminal-title --enable-csv2yapet --enable-pwgen --enable-nls --enable-threads"
+CONFENABLES="--enable-foo --enable-bar"
+
+#
+# Set this in the compiler.profiles
+# 
+NUMCOMPILERPROFILES=0
+#
+# These WILL BE unset before each compiler profile is loaded!!!
+# ${PATH} will be saved, so it can be listed here
+#
+# Set this in compiler.profiles
+#
+ENVVARSUSED=""
+SAVEDPATH="${PATH}"
+CWD=`pwd`
+SCRIPTDIR=`dirname $0`
+DATESTARTED=`date "+%FT%T"`
+GLOBALLOGFILE=${TESTBASE_DIR}/testlog-${DATESTARTED}
+MAKETARGETS=(all check clean)
+
+# Suck in the compiler profiles
+. ${SCRIPTDIR}/compiler.profiles
+
+cmdhelp() {
+    echo "disttest <pathtosource>";
+    echo ""
+}
+
+if [ $# -ne 1 ] ;
+then
+    cmdhelp
+    exit 1
+fi
+
+SOURCEDIR="$1"
+
+#
+# Log into the global log
+#
+logglobal () {
+    if [ -z ${GLOBALLOGFILE} ]
+    then
+	echo "Global logfile not specified"
+	exit 1
+    fi
+    echo "`date '+%F %T'`  $@" >> ${GLOBALLOGFILE}
+    echo "`date '+%F %T'`  $@"
+}
+
+#
+# Writes the environment variables to the file specified.
+#
+# The specified file will be delete prior logging if it exists!
+#
+logenv () {
+    if [ $# -ne 1 ]
+    then
+	echo "Wrong number of arguments"
+	exit 1
+    fi
+
+    if [ -f $1 ]
+    then
+	rm -f $1
+    fi
+
+    for ev in ${ENVVARSUSED}
+    do
+	echo "$ev=`eval echo '$'${ev}`" >> $1
+    done
+    unset ev
+}
+
+#
+# Clear the environment. PATH will be preserved.
+#
+clearenv () {
+    for ev in ${ENVVARSUSED}
+    do
+	usnet ${ev}
+    done
+
+    # reset the path again
+    export PATH=${SAVEDPATH}
+}
+
+#
+# Create the necessary directories if needed
+#
+prepare () {
+    echo "Preparing..."
+    if [ ! -d "${TESTBASE_DIR}" ]
+    then
+	echo "Creating ${TESTBASE_DIR}"
+	mkdir -p "${TESTBASE_DIR}"
+    fi
+    if [ ! -d "${TESTLOGS_DIR}" ]
+    then
+	echo "Creating ${TESTLOGS_DIR}"
+	mkdir "${TESTLOGS_DIR}"
+    fi
+}
+
+cleantestbuild () {
+    if [ -d "${TESTBUILD_DIR}" ]
+    then
+	rm -rf "${TESTBUILD_DIR}"
+    fi
+    if [ -d "${TESTINST_DIR}" ]
+    then
+	rm -rf "${TESTINST_DIR}"
+    fi
+}
+
+#
+# test the build procedure of the distribution.
+#
+# The first argument has to be the prefix of the log file to use. Any further
+# arguments are interpreted as --enable flags to configure.
+#
+# There must be at least two arguments
+# 
+testbuild () {
+    if [ $# -lt 2 ]
+    then
+	echo "Error: wrong argument count"
+	exit 1
+    fi
+
+    local logfile_prefix="$1"
+
+    shift
+# Do read: "my conf used", not "my confused"
+
+    local myconfused="${CONFCOMMONOPTS} $@"
+
+    if [ -d "${TESTBUILD_DIR}" ]
+    then
+	echo "* Removing ${TESTBUILD_DIR}"
+	rm -rf ${TESTBUILD_DIR}
+    fi
+
+    echo "* Creating ${TESTBUILD_DIR}"
+    mkdir "${TESTBUILD_DIR}"
+
+    cd "${TESTBUILD_DIR}"
+    echo "* Configuring ${logfile_prefix}"
+    echo "## ${SOURCEDIR}/configure ${myconfused}" > ${TESTLOGS_DIR}/${logfile_prefix}-configure
+    ${SOURCEDIR}/configure ${myconfused} >> ${TESTLOGS_DIR}/${logfile_prefix}-configure 2>&1 || return 1
+
+    if [ -z ${MAKE} ]
+    then
+	MAKE=${MYMAKE}
+    fi
+    local numtargets=`echo ${MAKETARGETS[*]} | wc -w `
+    let $((numtargets--))
+    for targetno in `seq 0 ${numtargets}`
+    do
+	local target=${MAKETARGETS[${targetno}]}
+	echo "* Building ${logfile_prefix} target ${target}"
+	echo "## Configure used: " > ${TESTLOGS_DIR}/${logfile_prefix}-make_${target}
+	echo "## ${SOURCEDIR}/configure ${myconfused}" >> ${TESTLOGS_DIR}/${logfile_prefix}-make_${target}
+	echo "##"  >> ${TESTLOGS_DIR}/${logfile_prefix}-make_${target}
+	${MAKE} ${target} >>${TESTLOGS_DIR}/${logfile_prefix}-make_${target}  2>&1 || return ${target_no}
+
+    done
+    return 0
+}
+
+prepare
+
+NUMENABLES=`echo "${CONFENABLES}" | wc -w`
+
+logglobal "- Started"
+
+for cpno in `seq 1 ${NUMCOMPILERPROFILES}`
+do
+    logglobal "- Loading Compiler Profile ${cpno}"
+    compilerprofile_${cpno}
+    logenv ${TESTLOGS_DIR}/compilerprof${cpno}-env
+    for i in `seq 1 ${NUMENABLES}`
+    do
+	logglobal "- Starting test run $i using compiler profile ${cpno}"
+
+	testbuild "compilerprof${cpno}-subtest1-run${i}" `${SCRIPTDIR}/toggle.pl $i $i "${CONFENABLES}"`
+	retval=$?
+	if [ ${retval} -ne 0 ]
+	then
+	    if [ ${retval} -eq 1 ]
+	    then
+		logglobal ":( compilerprof${cpno}-subtest1-run${i}: error in configure"
+	    else
+		logglobal ":( compilerprof${cpno}-subtest1-run${i}: error in make ${MAKETARGET[$retval]}"
+	    fi
+	else 
+	    logglobal ":) compilerprof${cpno}-subtest1-run${i}: Success"
+	fi
+	cd ${CWD}
+	cleantestbuild
+
+	testbuild "compilerprof${cpno}-subtest2-run${i}" `${SCRIPTDIR}/toggle.pl 1 $i "${CONFENABLES}"`
+	retval=$?
+	if [ ${retval} -ne 0 ]
+	then
+	    if [ ${retval} -eq 1 ]
+	    then
+		logglobal ":( compilerprof${cpno}-subtest2-run${i}: error in configure"
+	    else
+		logglobal ":( compilerprof${cpno}-subtest2-run${i}: error in make ${MAKETARGET[$retval]}"
+	    fi
+	else 
+	    logglobal ":) compilerprof${cpno}-subtest2-run${i}: Success"
+	fi
+	cd ${CWD}
+	cleantestbuild
+
+	testbuild "compilerprof${cpno}-subtest3-run${i}" `${SCRIPTDIR}/toggle.pl $i ${NUMENABLES} "${CONFENABLES}"`
+	retval=$?
+	if [ ${retval} -ne 0 ]
+	then
+	    if [ ${retval} -eq 1 ]
+	    then
+		logglobal ":( compilerprof${cpno}-subtest3-run${i}: error in configure"
+	    else
+		logglobal ":( compilerprof${cpno}-subtest3-run${i}: error in make ${MAKETARGET[$retval]}"
+	    fi
+	else 
+	    logglobal ":) compilerprof${cpno}-subtest3-run${i}: Success"
+	fi
+	cd ${CWD}
+	cleantestbuild
+
+    done
+    globallog "- Clear Environment for Compiler Profile ${cpno}"
+    clearenv
+done
+
+logglobal "- Finished"
