@@ -15,9 +15,12 @@
 #
 # Refer also to disttest for more information on those variables.
 
-NUMCOMPILERPROFILES=1
-ENVVARSUSED="PATH TMPDIR MAKE SH CC CXX FC F77 AS RANLIB AR CPPFLAGS CXXFLAGS FFLAGS FCFLAGS LDFLAGS LD_LIBRARY_PATH PKG_CONFIG_PATH PKG_CONFIG JAVA_HOME NM STRIP OBJCOPY OBJDUMP LD OPTS"
+NUMCOMPILERPROFILES=4
+ENVVARSUSED="PATH TMPDIR MAKE SH CC CXX FC F77 AS RANLIB AR CPPFLAGS CXXFLAGS FFLAGS FCFLAGS LDFLAGS LD_LIBRARY_PATH PKG_CONFIG_PATH PKG_CONFIG JAVA_HOME NM STRIP OBJCOPY OBJDUMP LD OPTS myOPTS"
 
+#
+# GUENGEL Sunstudio Debug
+#
 compilerprofile_1 () {
     export TMPDIR=/var/tmp
     export PATH=/opt/sunstudio12.1/bin:/opt/guengel/bin:/usr/ccs/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin
@@ -41,6 +44,9 @@ compilerprofile_1 () {
     export JAVA_HOME=/usr/java
 }
 
+#
+# GUENGEL GUENGEL-gcc Debug
+#
 compilerprofile_2 () {
     export PATH=/opt/guengel/sbin/gcc_sbin:/opt/guengel/qt4.5_gcc/bin:/opt/guengel/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin:/usr/ccs/bin
     export MAKE=/opt/guengel/bin/gmake
@@ -66,4 +72,50 @@ compilerprofile_2 () {
     export LDFLAGS="-L/opt/SUNWspro/prod/lib/sse2 -L/opt/SUNWspro/prod/lib -L/opt/guengel/lib/gcc -L/opt/guengel/qt4.5_gcc/lib -L/opt/guengel/lib -L/usr/sfw/lib -L/usr/openwin/lib -L/usr/openwin/sfw/lib -L/usr/X11/lib -R/opt/SUNWspro/prod/lib -R/opt/SUNWspro/prod/lib/sse2 -R/opt/guengel/lib/gcc -R/opt/guengel/qt4.5_gcc/lib -R/opt/guengel/lib -R/usr/sfw/lib -R/usr/openwin/lib -R/usr/openwin/sfw/lib -R/usr/X11/lib -R/opt/SUNWspro/prod/lib"
     export PKG_CONFIG_PATH="/opt/guengel/qt4.5_gcc/lib/pkgconfig:/opt/guengel/lib/pkgconfig:/usr/lib/pkgconfig:/usr/sfw/lib/pkgconfig"
     export PKG_CONFIG="/opt/guengel/bin/pkg-config"
+}
+
+#
+# SFWNCurses SunStudio Optimized 
+#
+compilerprofile_3 () {
+    export TMPDIR=/var/tmp
+    export PATH=/opt/sunstudio12.1/bin:/usr/ccs/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin
+    export MAKE=gmake
+    export SH=/usr/bin/bash
+    export CC=/opt/sunstudio12.1/bin/cc
+    export CXX=/opt/sunstudio12.1/bin/CC
+    export FC=/opt/sunstudio12.1/bin/f95
+    export F77=/opt/sunstudio12.1/bin/f77
+    export AS=/usr/ccs/bin/as
+    export myOPTS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -erroff=%all -xvector=simd -xdepend=yes -xprefetch=yes -xinline=%auto"
+    export CPPFLAGS='-I/opt/SUNWmlib/include -I/usr/sfw/include -I/opt/sfw/include -I/opt/sfw/include/ncurses'
+    export CFLAGS="${myOPTS} -features=extensions -xtemp=/var/tmp"
+    export CXXFLAGS="${myOPTS} -features=%all,extensions,tmplife,nestedaccess -temp=/var/tmp"
+    export FFLAGS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -xdepend=yes -xprefetch=yes -xinline=%auto -erroff=%all -xvector=simd,lib"
+    export FCFLAGS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -xdepend=yes -xprefetch=yes -xinline=%auto -erroff=%all -xvector=simd,lib"
+    export LDFLAGS="-L/opt/SUNWmlib/lib/sse2 -R/opt/SUNWmlib/lib/sse2 -L/opt/sunstudio12.1/prod/lib -L/opt/sunstudio12.1/prod/lib/sse2 -L/usr/sfw/lib -L/opt/sfw/lib -R/opt/sunstudio12.1/prod/lib -R/opt/sunstudio12.1/prod/lib/sse2 -R/usr/sfw/lib -R/opt/sfw/lib"
+    export JAVA_HOME=/usr/java
+}
+
+#
+# SystemCurses SunStudio Optimized 
+#
+compilerprofile_4 () {
+    export TMPDIR=/var/tmp
+    export PATH=/opt/sunstudio12.1/bin:/usr/ccs/bin:/usr/sfw/bin:/usr/openwin/bin:/opt/texlive/2008/bin/i386-solaris:/usr/bin:/usr/sbin
+    export MAKE=gmake
+    export SH=/usr/bin/bash
+    export CC=/opt/sunstudio12.1/bin/cc
+    export CXX=/opt/sunstudio12.1/bin/CC
+    export FC=/opt/sunstudio12.1/bin/f95
+    export F77=/opt/sunstudio12.1/bin/f77
+    export AS=/usr/ccs/bin/as
+    export myOPTS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -erroff=%all -xvector=simd -xdepend=yes -xprefetch=yes -xinline=%auto"
+    export CPPFLAGS='-I/opt/SUNWmlib/include -I/usr/sfw/include'
+    export CFLAGS="${myOPTS} -features=extensions -xtemp=/var/tmp"
+    export CXXFLAGS="${myOPTS} -features=%all,extensions,tmplife,nestedaccess -temp=/var/tmp"
+    export FFLAGS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -xdepend=yes -xprefetch=yes -xinline=%auto -erroff=%all -xvector=simd,lib"
+    export FCFLAGS="-xO5 -fast -xchip=pentium4 -xarch=sse2 -xlibmil -xlibmopt -xdepend=yes -xprefetch=yes -xinline=%auto -erroff=%all -xvector=simd,lib"
+    export LDFLAGS="-L/opt/SUNWmlib/lib/sse2 -R/opt/SUNWmlib/lib/sse2 -L/opt/sunstudio12.1/prod/lib -L/opt/sunstudio12.1/prod/lib/sse2 -L/usr/sfw/lib -R/opt/sunstudio12.1/prod/lib -R/opt/sunstudio12.1/prod/lib/sse2 -R/usr/sfw/lib"
+    export JAVA_HOME=/usr/java
 }
