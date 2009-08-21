@@ -80,7 +80,7 @@ namespace YAPET {
                 }
 		inline int getCharacterPools() const {
 		    if (cp != NULL)
-			return cp->getPoolsUsed();
+			return cp->getAllocatedPools();
 		    return 0;
 		}
 
