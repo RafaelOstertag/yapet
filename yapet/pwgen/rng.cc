@@ -288,6 +288,8 @@ RNG::~RNG() throw() {
 
 size_t
 RNG::getRandomNumber (size_t ceil) throw (PWGenException) {
+    assert(ceil > 0);
+    if (ceil == 0) return 0;
     assert (rng_initialized == true);
 
     switch (rng_used) {
