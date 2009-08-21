@@ -1092,7 +1092,9 @@ msgstr "Fehler beim Auffrischen des Suchdialogs"
 #: yapet/pwgen/pwgen.cc:99
 msgid ""
 "Cannot get character from unused pool because no unused pools are available"
-msgstr "Kann kein Zeichen von unbenutzten Zeichenbereichen erhalten, da keine vorhanden"
+msgstr ""
+"Kann kein Zeichen von unbenutzten Zeichenbereichen erhalten, da keine "
+"vorhanden"
 
 #: yapet/pwgen/charpool.h:166
 msgid "NULL pointer passed."
