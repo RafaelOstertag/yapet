@@ -136,7 +136,7 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isdigit isspace localtime lrand48 memset pathconf rand rename setrlimit sigaction srand srand48 strcasestr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower])
+AC_CHECK_FUNCS([access asctime fchmod fchown fflush fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isdigit isspace localtime lrand48 memset pathconf rand rename setrlimit sigaction srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower])
 AC_CHECK_FUNCS([floor log10 pow])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
