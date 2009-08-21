@@ -69,7 +69,7 @@ namespace YAPET {
              * Other characters
              */
             OTHER = (1 << 4),
-            ALL = LETTERS | DIGITS | PUNCT | SPECIAL
+            ALL = LETTERS | DIGITS | PUNCT | SPECIAL | OTHER
         };
         /**
          * @brief Generate character pools.
