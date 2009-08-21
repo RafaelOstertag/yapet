@@ -239,7 +239,7 @@ PWGenDialog::run() throw (YAPET::UI::UIException) {
             return;
         }
 
-        pwlen = pwleninput->getInt() > YAPET::CONFIG::Config::getDefPWLength() ? 
+        pwlen = pwleninput->getInt() > YAPET::CONSTS::Consts::getMaxPWLength() ? 
 	    pwleninput->setInt(YAPET::CONFIG::Config::getDefPWLength()),
 	    YAPET::CONFIG::Config::getDefPWLength() :
 	    pwleninput->getInt();
