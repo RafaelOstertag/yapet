@@ -26,7 +26,7 @@ endif
 
 # Checks when using builtin passwordgenerator
 if BUILDPWGEN
-check_PROGRAMS += charpool1 rng1 pwgen1
+check_PROGRAMS += charpool1 charpool2 rng1 pwgen1
 endif
 
 TESTS = $(check_PROGRAMS)
@@ -137,6 +137,9 @@ if BUILDPWGEN
 
 charpool1_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
 charpool1_SOURCES = charpool1.cc
+
+charpool2_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
+charpool2_SOURCES = charpool2.cc
 
 rng1_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
 rng1_SOURCES = rng1.cc
