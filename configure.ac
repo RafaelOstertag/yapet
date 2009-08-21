@@ -205,6 +205,7 @@ AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
 AM_CONDITIONAL([BUILDSOURCEDOC], [test x$my_buildsourcedoc = xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
 AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
+AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AM_CONDITIONAL([BUILDPWGEN], [test x$my_enablepwgen = xyes])
@@ -245,6 +246,7 @@ echo "Set Terminal Title  : $my_settitle"
 echo "Build csv2yapet     : $my_buildcsv2yapet"
 echo "Build with pwgen    : $my_enablepwgen"
 echo ""
+echo "Use NLS             : $USE_NLS"
 echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""
 echo "******************************************************************"
