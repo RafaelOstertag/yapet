@@ -153,7 +153,9 @@ throw (UIException) : window (NULL),
 
 InputWidget::~InputWidget() {
     clearText();
-    wclear (window);
+    // Commented out because clearText() has already done this.
+    // wclear (window);
+
     // To be sure we don't have any sensitive information on the screen and
     // buffers (hopefully)
     wrefresh (window);
