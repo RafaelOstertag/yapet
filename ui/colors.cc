@@ -32,6 +32,7 @@ using namespace YAPET::UI;
 
 bool Colors::initialized = false;
 
+#ifndef _GIRLYCOLORS
 color Colors::colors[] = {
     // Normal
     {1, COLOR_WHITE, COLOR_BLUE, A_NORMAL},
@@ -56,7 +57,35 @@ color Colors::colors[] = {
     // The marker of the end
     {0, 0, 0, 0}
 };
-
+#else
+//
+// Don't ask, my wife insisted... ;)
+//
+color Colors::colors[] = {
+    // Normal
+    {1, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
+    // Message box title
+    {2, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
+    // Message box
+    {3, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
+    // Input widget no focus
+    {4, COLOR_BLACK, COLOR_WHITE, A_REVERSE},
+    // Input widget focus
+    {5, COLOR_WHITE, COLOR_MAGENTA, A_REVERSE},
+    // Button no focus
+    {6, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
+    // Button focus
+    {7, COLOR_CYAN, COLOR_MAGENTA, A_REVERSE},
+    // List widget
+    {8, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
+    // Check Box Group
+    {9, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
+    // Check Box Group Title
+    {10, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
+    // The marker of the end
+    {0, 0, 0, 0}
+};
+#endif
 
 
 void
