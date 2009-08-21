@@ -5,6 +5,10 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #ifdef HAVE_IOSTREAM
 # include <iostream>
 #endif
@@ -33,10 +37,34 @@ int main (int, char**) {
         pwgen4 = pwgen3;
         PWGen *pwgen;
 
+	//
+	// Make sure we don't waste /dev/random if possible
+	//
+	YAPET::PWGEN::RNGENGINE rngengine;
+#ifdef HAVE__DEV_RANDOM
+# ifdef HAVE__DEV_URANDOM
+	rngengine = DEVURANDOM;
+# else
+#  ifdef HAVE_LRAND48
+	rngengine = LRAND48;
+#  else
+#   ifdef HAVE_RAND
+	rngengine = RAND;
+#   else
+#    error "NO PASSWORD GENERATOR FOUND ON SYSTEM"
+#   endif
+#  endif
+# endif
+#else
+	rngengine = AUTO;
+#endif
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> LETTERS (size " << size << "): " ;
-            pwgen = new PWGen (LETTERS);
+            pwgen = new PWGen (LETTERS,  rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
 
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
@@ -50,8 +78,10 @@ int main (int, char**) {
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> DIGITS (size " << size << "): " ;
-            pwgen = new PWGen (DIGITS);
-
+            pwgen = new PWGen (DIGITS, rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
                 std::cout << pwgen->getPassword() << " ";
@@ -64,8 +94,10 @@ int main (int, char**) {
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> PUNCT (size " << size << "): " ;
-            pwgen = new PWGen (PUNCT);
-
+            pwgen = new PWGen (PUNCT, rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
                 std::cout << pwgen->getPassword() << " ";
@@ -78,8 +110,10 @@ int main (int, char**) {
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> SPECIAL (size " << size << "): " ;
-            pwgen = new PWGen (SPECIAL);
-
+            pwgen = new PWGen (SPECIAL, rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
                 std::cout << pwgen->getPassword() << " ";
@@ -92,8 +126,10 @@ int main (int, char**) {
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> OTHER (size " << size << "): " ;
-            pwgen = new PWGen (OTHER);
-
+            pwgen = new PWGen (OTHER, rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
                 std::cout << pwgen->getPassword() << " ";
@@ -106,8 +142,10 @@ int main (int, char**) {
         // Loop for iterating the password length
         for (int size = 1; size <= 20; size++) {
             std::cout << " ==> ALL (size " << size << "): " ;
-            pwgen = new PWGen (ALL);
-
+            pwgen = new PWGen (ALL, rngengine);
+#if defined(HAVE__DEV_RANDOM) && (defined(HAVE__DEV_URANDOM) || defined(HAVE_LRAND48) || defined(HAVE_RAND))
+	    assert(pwgen->getRNGUsed() != DEVRANDOM);
+#endif
             for (int i = 0; i < 5; i++) {
                 pwgen->generatePassword (size);
                 std::cout << pwgen->getPassword() << " ";
