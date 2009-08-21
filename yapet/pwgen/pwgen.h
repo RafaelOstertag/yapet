@@ -64,8 +64,8 @@ namespace YAPET {
                 const char* password;
                 size_t password_len;
 
-		void PWGen::sanitize_password() throw(std::logic_error);
-		char PWGen::getCharFromUnusedPools() throw(std::logic_error);
+		void sanitize_password() throw(std::logic_error);
+		char getCharFromUnusedPools() throw(std::logic_error);
                 void init (int p) throw (std::runtime_error);
 
             public:
