@@ -177,6 +177,11 @@ namespace YAPET {
                 virtual ~CharacterPool() throw();
                 CharacterPool (const CharacterPool& cp) throw (std::runtime_error);
 
+		/**
+		 * Returns the number of pools allocated.
+		 */
+		int numPoolsAllocated() const;
+
                 inline int getAllocatedPools() const {
                     return pools_allocated;
                 }
@@ -214,7 +219,7 @@ namespace YAPET {
 
 		//! The position and length of the pool.
 		size_t getPoolPos(SUBPOOLS p, size_t* start) const;
-		    
+   
                 inline size_t getPoolLength() const throw() {
                     return pool_length;
                 }
@@ -228,7 +233,7 @@ namespace YAPET {
 
                 const CharacterPool& operator= (const CharacterPool& cp) throw (std::runtime_error);
 #ifdef DEBUG
-                void print_pools_allocated() const;
+                int print_pools_allocated() const;
 #endif
         };
 

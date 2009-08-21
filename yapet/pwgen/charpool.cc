@@ -165,6 +165,16 @@ CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error
 }
 
 int
+CharacterPool::numPoolsAllocated() const {
+    int tmp=0;
+    for (int i=LETTERS; i<=OTHER; i=i<<1)
+	if (isPoolAllocated((SUBPOOLS)i))
+	    tmp++;
+
+    return tmp;
+}
+
+int
 CharacterPool::numPoolsNotRead() const {
     int retval = 0;
     
@@ -272,21 +282,35 @@ CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
 }
 
 #ifdef DEBUG
-void
+int
 CharacterPool::print_pools_allocated() const {
-    if  (pools_allocated & LETTERS)
+    // Used to count the pools used
+    int tmp = 0;
+    if  (pools_allocated & LETTERS) {
         std::cout << "LETTERS (" << LETTERS << ")" << std::endl;
+	tmp++;
+    }
 
-    if  (pools_allocated & DIGITS)
+    if  (pools_allocated & DIGITS) {
         std::cout << "DIGITS (" << DIGITS << ")" << std::endl;
+	tmp++;
+    }
 
-    if  (pools_allocated & PUNCT)
+    if  (pools_allocated & PUNCT) {
         std::cout << "PUNCT (" << PUNCT << ")" << std::endl;
+	tmp++;
+    }
 
-    if  (pools_allocated & SPECIAL)
+    if  (pools_allocated & SPECIAL) {
         std::cout << "SPECIAL (" << SPECIAL << ")" << std::endl;
+	tmp++;
+    }
 
-    if  (pools_allocated & OTHER)
+    if  (pools_allocated & OTHER) {
         std::cout << "OTHER (" << OTHER << ")" << std::endl;
+	tmp++;
+    }
+    assert(tmp == numPoolsAllocated());
+    return tmp;
 }
 #endif
