@@ -101,6 +101,76 @@
 
     <para>Errors during the conversion process will be displayed unless the
     <option>-q</option> option is provided.</para>
+
+    <!--
+	-
+	- SOURCE FILE FORMAT
+	-
+    -->
+    <refsect2 id="sourcefileformat">
+      <title>Source File Format</title>
+      
+      <para>The source file <replaceable>src</replaceable> to be converted has
+      to be organized as CSV file. The default character for delimiting the
+      fields is ',' (comma) unless specified differently on the command line
+      providing the <option>-s</option> option (refer to <xref
+      linkend="options" />).</para>
+
+      <para>Fields containing the field separator character have to be enclosed
+      in double quotes (").</para>
+
+      <para>Double quote characters to be converted literally, has each to be
+      preceded by another double quote character (see <xref linkend="examples"
+      />).</para>
+
+      <para>The following table will describe the fields of the source CSV file
+      as expected by &csv2yapet;:</para>
+
+      <table pgwide="1">
+	<title>Source file format</title>
+
+	<tgroup cols="2">
+	  <colspec colname="colnum" align="center" />
+	  <colspec colname="desc" align="left" />
+	  
+	  <thead>
+	    <row>
+	      <entry>Column #</entry>
+	      <entry align="left">&YP; record field</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>1</entry>
+	      <entry align="left">Name</entry>
+	    </row>
+	    
+	    <row>
+	      <entry>2</entry>
+	      <entry>Host</entry>
+	    </row>
+	    
+	    <row>
+	    <entry>3</entry>
+	    <entry>Username</entry>
+	    </row>
+	    
+	    <row>
+	    <entry>4</entry>
+	    <entry>Password</entry>
+	    </row>
+	    
+	  <row>
+	    <entry>5</entry>
+	    <entry>Comment</entry>
+	  </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      
+      <para>See <xref linkend="examples" /> for an example CSV file.</para>
+    
+    </refsect2>
   </refsect1>
 
   <!--
@@ -211,73 +281,64 @@
     </variablelist>
   </refsect1>
 
+
   <!--
-      -
-      - SOURCE FILE FORMAT
-      -
+  -
+  - EXAMPLES
+  -
   -->
-  <refsect1 id="sourcefileformat">
-    <title>SOURCE FILE FORMAT</title>
 
-    <para>The source file <replaceable>src</replaceable> to be converted has to
-    be organized as CSV file. The default character for delimiting the fields
-    is ',' (comma) unless specified differently on the command line providing
-    the <option>-s</option> option (refer to <xref linkend="options"
-    />).</para>
+  <refsect1 id="examples">
+    <title>EXAMPLES</title>
 
-    <para>Fields containing the field separator character have to be enclosed
-    in double quotes (").</para>
+    <example id="ex.csv1">
+      <title>An example of a CSV file accepted by &csv2yapet;.</title>
 
-    <para>Double quote characters to be converted literally, has each to be
-    preceded by another double quote character (see <xref linkend="examples"
-    />).</para>
+      <para>The following example shows an excerpt of a CSV file as accepted
+      for conversion by &csv2yapet;.</para>
 
-    <para>The following table will describe the fields of the source CSV file
-    as expected by &csv2yapet;:</para>
+      <para>As the second line shows, fields can be blank but the separator may
+      not be omitted.</para>
+<screen>
+ssh host,host.example.org,johndoe,secret,linux machine
+mail account,imap.email.org,john_doe,secret,
+&hellip;
+</screen>
+    </example>
 
-    <table pgwide="1">
-      <title>Source file format</title>
+    <example id="ex.csv2">
+      <title>An example of a CSV file accepted by &csv2yapet; using double quotes.</title>
 
-      <tgroup cols="2">
-	<colspec colname="colnum" align="center" />
-	<colspec colname="desc" align="left" />
+      <para>The following example shows an excerpt of a CSV file as accepted
+      for conversion by &csv2yapet;.</para>
 
-	<thead>
-	  <row>
-	    <entry>Column #</entry>
-	    <entry align="left">&YP; record field</entry>
-	  </row>
-	</thead>
-	<tbody>
-	  <row>
-	    <entry>1</entry>
-	    <entry align="left">Name</entry>
-	  </row>
+      <para>The first line demonstrates how to double quote fields containing
+      the separator character. The second line shows how to literally convert
+      double quote characters.</para>
 
-	  <row>
-	    <entry>2</entry>
-	    <entry>Host</entry>
-	  </row>
+<screen>
+"ssh, ftp, and http server",server.example.org,johndoe,secret,linux machine
+mail account,imap.email.org,john_doe,secret,"John ""the Unknown"" Doe"
+&hellip;
+</screen>
+    </example>
 
-	  <row>
-	    <entry>3</entry>
-	    <entry>Username</entry>
-	  </row>
+    <example id="ex.invoc1">
+      <title>Invoking &csv2yapet;.</title>
 
-	  <row>
-	    <entry>4</entry>
-	    <entry>Password</entry>
-	  </row>
+      <para>The following example shows how to invoke &csv2yapet; in order to
+      convert a CSV file to an &YP; file. If the <option>-s</option> option is
+      not given, &csv2yapet; will ask for a password as shown:</para>
 
-	  <row>
-	    <entry>5</entry>
-	    <entry>Comment</entry>
-	  </row>
-	</tbody>
-      </tgroup>
-    </table>
+<screen>
+<prompt>$</prompt> &csv2yapet; <filename>passwords.csv</filename> <filename>passwords.pet</filename>
+Please enter the password for passwords.pet:
+Please re-type the password:
 
-    <para>See <xref linkend="examples" /> for an example CSV file.</para>
+passwords.pet successfully created.
+$
+</screen>
+    </example>
 
   </refsect1>
 
@@ -354,65 +415,6 @@
     &bugreport;
   </refsect1>
 
-  <!--
-  -
-  - EXAMPLES
-  -
-  -->
-
-  <refsect1 id="examples">
-    <title>EXAMPLES</title>
-
-    <example id="ex.csv1">
-      <title>An example of a CSV file accepted by &csv2yapet;.</title>
-
-      <para>The following example shows an excerpt of a CSV file as accepted
-      for conversion by &csv2yapet;.</para>
-
-      <para>As the second line shows, fields can be blank but the separator may
-      not be omitted.</para>
-<screen>
-ssh host,host.example.org,johndoe,secret,linux machine
-mail account,imap.email.org,john_doe,secret,
-&hellip;
-</screen>
-    </example>
-
-    <example id="ex.csv2">
-      <title>An example of a CSV file accepted by &csv2yapet; using double quotes.</title>
-
-      <para>The following example shows an excerpt of a CSV file as accepted
-      for conversion by &csv2yapet;.</para>
-
-      <para>The first line demonstrates how to double quote fields containing
-      the separator character. The second line shows how to literally convert
-      double quote characters.</para>
-
-<screen>
-"ssh, ftp, and http server",server.example.org,johndoe,secret,linux machine
-mail account,imap.email.org,john_doe,secret,"John ""the Unknown"" Doe"
-&hellip;
-</screen>
-    </example>
-
-    <example id="ex.invoc1">
-      <title>Invoking &csv2yapet;.</title>
-
-      <para>The following example shows how to invoke &csv2yapet; in order to
-      convert a CSV file to an &YP; file. If the <option>-s</option> option is
-      not given, &csv2yapet; will ask for a password as shown:</para>
-
-<screen>
-<prompt>$</prompt> &csv2yapet; <filename>passwords.csv</filename> <filename>passwords.pet</filename>
-Please enter the password for passwords.pet:
-Please re-type the password:
-
-passwords.pet successfully created.
-$
-</screen>
-    </example>
-
-  </refsect1>
 
   <!--
   -
