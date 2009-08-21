@@ -32,6 +32,76 @@
 
 using namespace YAPET::PWGEN;
 
+/**
+ * If possible, replaces multiple characters from same pool with character from
+ * unused pools.
+ *
+ * Use only on zero terminated passwords!
+ */
+void
+PWGen::sanitize_password() throw(std::logic_error) {
+    if ( (cp->numPoolsAllocated() > password_len) ||
+	 (cp->numPoolsNotRead() == 0))  /* No can do */ return;
+
+    for (register size_t pwit_outer = 0; pwit_outer < password_len; pwit_outer++) {
+	assert(password[pwit_outer] != '\0');
+
+	char c_outer = password[pwit_outer];
+	SUBPOOLS c_outer_pool = cp->fromPool(c_outer);
+	// Search for characters from same pool
+	for (register size_t pwit_inner = 0; pwit_inner < password_len; pwit_inner++) {
+	    if (cp->numPoolsNotRead() == 0) return;
+	    assert(password[pwit_inner] != '\0');
+	    char c_inner = password[pwit_inner];
+	    if (pwit_inner != pwit_outer &&
+		c_outer_pool == cp->fromPool(c_inner)) {
+		const_cast<char*>(password)[pwit_outer] = getCharFromUnusedPools();
+		break;
+	    }
+	}
+	if (cp->numPoolsNotRead() == 0) return;
+    }
+}
+
+char
+PWGen::getCharFromUnusedPools() throw(std::logic_error) {
+    char suggestion = 0;
+    if (cp->numPoolsNotRead() > 0) {
+	// Find out which one(s) are not read
+	int not_read = cp->getAllocatedPools() & 
+	    ~ cp->getPoolsWithRead();
+	
+	// Iterate over the bits, until we find a pool from
+	// which we will grab a character. And since this pool
+	// was never used before, we don't even have to care
+	// about duplicates...
+	for (int pool_it=YAPET::PWGEN::LETTERS;
+	     pool_it <= YAPET::PWGEN::OTHER;
+	     pool_it = pool_it << 1) {
+	    if ( not_read & pool_it) {
+		size_t pool_start;
+		// Since cp->getPoolPos the length of the pool
+		// returns, we use this to get the random
+		// number which we simply can add to
+		// pool_start.
+		//
+		// We must not forget to subtract 1 from the
+		// return value, else we might get an out of
+		// range error
+		size_t random_val =rng(cp->getPoolPos((YAPET::PWGEN::SUBPOOLS)pool_it,
+						      &pool_start)-1); 
+		suggestion = (*cp)[pool_start + random_val];
+		return suggestion;
+	    } 
+	} // for (int i=...
+    } else {
+	assert(0);
+	throw std::logic_error(_("Cannot get character from unused pool because no unused pools are available"));
+    }
+    assert(0);
+    return -1;
+}
+
 void
 PWGen::init (int p) throw (std::runtime_error) {
     cp = new CharacterPool (p);
@@ -60,7 +130,7 @@ PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(pw.rng), password (NULL)
         password = new char[pw.password_len + 1];
         memcpy ( (void*) password, pw.password, pw.password_len);
         // Don't forget to zero terminate!
-        ( (char*) password) [pw.password_len + 1] = '\0';
+        const_cast<char*>(password) [pw.password_len + 1] = '\0';
         password_len = pw.password_len;
     }
 }
@@ -102,71 +172,32 @@ PWGen::generatePassword (size_t len) throw (std::logic_error) {
     size_t check_for_missing_charpools = password_len / 2;
     for (size_t pw_it = 0; pw_it < password_len; pw_it++) {
 RESTART:
-        char suggestion = 0;
-
-	// Do need to check for unused character pools?
-	if (pw_it > check_for_missing_charpools) {
-	    // Do we have any pools not read
-	    if (cp->numPoolsNotRead() > 0) {
-		// Find out which one(s)
-		int not_read = cp->getAllocatedPools() & 
-		    ~ cp->getPoolsWithRead();
-
-		// Iterate over the bits, until we find a pool from which we
-		// will grab a character. And since this pool was never used
-		// before, we don't even have to care about duplicates...
-		for (int pool_it=YAPET::PWGEN::LETTERS;
-		     pool_it <= YAPET::PWGEN::OTHER;
-		     pool_it = pool_it << 1) {
-		    if ( not_read & pool_it) {
-			size_t pool_start;
-			// Since cp->getPoolPos the length of the pool returns,
-			// we use this to get the random number which we simply
-			// can add to pool_start.
-			//
-			// We must not forget to subtract 1 from the return
-			// value, else we might get an out of range error
-			size_t random_val =rng(cp->getPoolPos((YAPET::PWGEN::SUBPOOLS)pool_it,
-							      &pool_start)-1); 
-			suggestion = (*cp)[pool_start + random_val];
+        char suggestion = (*cp) [rng (cp->getPoolLength() ) ];
+	if (cp->getPoolLength() >= password_len) {
+	    // We can avoid repeating characters
+	    for (size_t pos = 0; pos < pw_it; pos++) {
+		if (suggestion == password[pos]) {
+		    //
+		    // We found a duplicate
+		    //
+		    if (cp->numPoolsAllocated() >= password_len &&
+			cp->numPoolsNotRead() > 0) {
+			// make sure all pools are read from
+			suggestion = getCharFromUnusedPools();
 			break;
-		    } // if ( not_read & i)
-		} // for (int i=...
-	    } //if (cp->numPoolsNotRead() > 0)
-	}
-
-	// suggestion != 0 means the code above has already choosen a character
-	// for the password
-	if (suggestion == 0) {
-	    if (cp->getPoolLength() >= password_len) {
-		// We can avoid repeating characters
-		bool character_repeat;
-		
-		do {
-		    character_repeat = false;
-		    suggestion = (*cp) [rng (cp->getPoolLength() ) ];
-		    
-		    for (size_t pos = 0; pos < pw_it; pos++) {
-			if (suggestion == password[pos]) {
-			    character_repeat = true;
-			    break;
-			}
 		    }
-		} while (character_repeat);
-	    } else {
-		// We can't avoid repeating characters
-		suggestion = (*cp) [rng (cp->getPoolLength() ) ];
+		}
 	    }
-	} // (suggentsion != 0)
-	
+	}
+    	
         // We want to avoid spaces at the beginning or end of the password
         if ( (pw_it == 0) || (pw_it == password_len - 1) ) {
 #if defined(HAVE_ISBLANK) || defined(HAVE_ISSPACE)
 # ifdef HAVE_ISBLANK
-
+	    
             if (isblank (suggestion) != 0)
                 goto RESTART;
-
+	    
 # else
 
             if (isspace (suggestion) != 0)
@@ -181,11 +212,19 @@ RESTART:
 #endif // defined(HAVE_ISBLANK) || defined(HAVE_ISSPACE)
         } // if ( (i == 0) || (i == password_len - 1) ) 
 
-        ( (char*) password) [pw_it] = suggestion;
+        const_cast<char*>(password) [pw_it] = suggestion;
     } // for (size_t i = 0; i < password_len; i++) 
 
     // Don't forget to zero terminate!
-    ( (char*) password) [password_len] = '\0';
+    const_cast<char*>(password) [password_len] = '\0';
+
+    sanitize_password();
+#ifndef NDEBUG
+    // Make sure we used at least one character from each pool
+    if (cp->numPoolsAllocated() <= password_len) {
+	assert(cp->numPoolsNotRead() == 0);
+    }
+#endif
 }
 
 const char*
@@ -220,7 +259,7 @@ PWGen::operator= (const PWGen & pw) throw() {
         password = new char[pw.password_len];
         memcpy ( (void*) password, pw.password, pw.password_len);
         // Don't forget to zero terminate
-        ( (char*) password) [pw.password_len + 1] = '\0';
+        const_cast<char*>(password) [pw.password_len + 1] = '\0';
         password_len = pw.password_len;
     }
 
