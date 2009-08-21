@@ -36,27 +36,28 @@
   <sect1 id="intro">
     <title>Introduction</title>
 
-    <para>&YP; is a curses based password encryption tool using the Blowfish
+    <para>&YP; is a text based password encryption tool using the Blowfish
     encryption algorithm to store password records encrypted on disk. Its
     primary aim is to provide a safe way to store passwords in a file on disk
     while having a small footprint, and compiling and running under today's
-    most popular Unixes, such as &SOLARIS;, &FREEBSD;, and Linux.</para>
+    most popular Unixes.</para>
 
-    <para>If you are looking for a fully fledged password encryption tool
-    having a graphical user interface, I recommend you start with revelation
-    (<ulink
-    url="http://oss.codepoet.no/revelation/">http://oss.codepoet.no/revelation/</ulink>). &YP;
-    is text based and less feature rich in comparison to revelation.</para>
-  </sect1>
+    <para>&YP; stores passwords and associated information in files encrypted
+    on disk.</para>
 
-  <sect1 id="motivation">
-    <title>Motivation</title>
+    <para>&YP; does not impose a limit of password records per file. Passwords
+    can be grouped in files. &YP; can only display the password records of one
+    file at a time, though.</para>
 
-    <para>
-      Using several different Unixes, I wanted to have a single application
-      running on all Unixes for storing my passwords in a secure manner and
-      running easily over a secure shell connection.
+    <para>The password entries are protected by a master password. The master
+    password is used to encrypt and decrypt the password records. If the master
+    password is lost, so are the records.</para>
+
+    <para>&YP; relies on OpenSSL for encrypting and decrypting password
+    records. The cipher for encryption and decryption is Blowfish with a 448
+    bits key.
     </para>
+
   </sect1>
 
   <sect1 id="platforms">
@@ -94,7 +95,7 @@
 
 	<listitem>
 
-	  <para>is only dependent of two libraries: openssl (<ulink
+	  <para>only dependent of two libraries: openssl (<ulink
 	      url="http://www.openssl.org">http://www.openssl.org</ulink>)
 	      and curses or ncurses (<ulink
 	      url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>).</para>
@@ -108,6 +109,10 @@
 
 	<listitem>
 	  <para>a utility to convert CSV files to the native &YP; format.</para>
+	</listitem>
+
+	<listitem>
+	  <para>built-in password generator.</para>
 	</listitem>
       </itemizedlist>
     </para>
