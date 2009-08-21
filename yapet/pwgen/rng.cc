@@ -75,7 +75,9 @@ RNG::check_availability() throw (PWGenException) {
 }
 
 /**
- * Initializes the given engine. Calls \c check_availabilit().
+ * Initializes the given engine.
+ *
+ * Expects \c check_availabilit() is already called.
  *
  * @param request the engine requested.
  */
@@ -114,6 +116,9 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
             srand (time (NULL) );
 #endif
             break;
+        case AUTO:
+            assert (0);
+            throw PWGenException (_ ("Unexpected RNG Engine (AUTO)") );
             // To make the compiler (gcc -pedantic) happy
         case NONE:
             throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
@@ -189,7 +194,11 @@ RNG::_rand (size_t ceil) throw() {
 }
 
 /**
- * Automatically initializes a suitable random number generator. It uses the order shown below:
+ * Try to initialize the given RNG Engine.
+ *
+ * If the AUTO Engine is requested (the default value) the constructor
+ * utomatically initializes a suitable random number generator using the
+ * order shown below:
  *
  * - /dev/random
  * - /dev/urandom
@@ -197,38 +206,43 @@ RNG::_rand (size_t ceil) throw() {
  * - rand
  *
  * It takes the first it finds from the list above.
+ *
+ * @param request the requested engine or AUTO for auto determination.
  */
-RNG::RNG() throw (PWGenException) : fd (-1), rng_initialized (false), rng_used (NONE), rng_available (0) {
+RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
+        rng_initialized (false),
+        rng_used (NONE),
+        rng_available (0) {
     check_availability();
-    assert (rng_available != 0);
 
-    if (rng_available & DEVRANDOM) {
-        init_rng (DEVRANDOM);
-        return;
-    }
+    if (request != AUTO) {
+        init_rng (request);
+    } else {
+        assert (rng_available != 0);
 
-    if (rng_available & DEVURANDOM) {
-        init_rng (DEVURANDOM);
-        return;
-    }
+        if (rng_available & DEVRANDOM) {
+            init_rng (DEVRANDOM);
+            return;
+        }
 
-    if (rng_available & LRAND48) {
-        init_rng (LRAND48);
-        return;
-    }
+        if (rng_available & DEVURANDOM) {
+            init_rng (DEVURANDOM);
+            return;
+        }
 
-    if (rng_available & RAND) {
-        init_rng (RAND);
-        return;
+        if (rng_available & LRAND48) {
+            init_rng (LRAND48);
+            return;
+        }
+
+        if (rng_available & RAND) {
+            init_rng (RAND);
+            return;
+        }
     }
 
     // Should not happen
     assert (0);
-}
-
-RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1), rng_initialized (false), rng_used (NONE), rng_available (0) {
-    check_availability();
-    init_rng (request);
 }
 
 //
@@ -285,9 +299,11 @@ RNG::getRandomNumber (size_t ceil) throw (PWGenException) {
         case RAND:
             return _rand (ceil);
             // To make the compiler (gcc -pedantic) happy
+        case AUTO:
+            assert (0);
+            throw PWGenException (_ ("Unexpected RNG Engine (AUTO)") );
         case NONE:
             throw PWGenException (_ ("The requested RNG Engine (NONE) is invalid.") );
-            break;
     }
 
     // To make the compiler even more happy

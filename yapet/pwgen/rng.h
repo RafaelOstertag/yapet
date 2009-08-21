@@ -48,6 +48,7 @@ namespace YAPET {
             DEVURANDOM = (1 << 1),
             LRAND48 = (1 << 2),
             RAND = (1 << 3),
+            AUTO = (1 << 4),
             NONE = 0
         };
 
@@ -108,10 +109,8 @@ namespace YAPET {
                 size_t _rand (size_t ceil) throw();
 
             public:
-                //! Initializes automatically
-                RNG() throw (PWGenException);
-                //! Try a specific RNG Engine
-                RNG (RNGENGINE request) throw (PWGenException);
+                //! Try a specific RNG Engine or use automatically determination
+                RNG (RNGENGINE request = AUTO) throw (PWGenException);
                 RNG (const RNG& r) throw (PWGenException);
                 virtual ~RNG() throw();
 
