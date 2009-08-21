@@ -63,20 +63,10 @@ CharacterPool::init (int p) throw (std::runtime_error) {
     if (p == 0)
         throw std::runtime_error (_ ("Subpools may not be zero") );
 
-    if (pools_used & LETTERS)
-        pool_length += pool_letters_len();
-
-    if (pools_used & DIGITS)
-        pool_length += pool_digits_len();
-
-    if (pools_used & PUNCT)
-        pool_length += pool_punct_len();
-
-    if (pools_used & SPECIAL)
-        pool_length += pool_special_len();
-
-    if (pools_used & OTHER)
-        pool_length += pool_other_len();
+    for (int i=LETTERS; i <= OTHER; i = i << 1) {
+	if (isPoolAllocated((SUBPOOLS)i))
+	    pool_length += pool_len((SUBPOOLS)i);
+    }
 
     pool = new char[pool_length];
 #ifdef DEBUG
@@ -91,27 +81,38 @@ CharacterPool::init (int p) throw (std::runtime_error) {
 #endif
     size_t copy_pos = 0;
 
-    if  (pools_used & LETTERS) {
+    //
+    //
+    //
+    //               .::!! HEY YOU WITH THE EDITOR !!::.
+    //
+    // Do not carelessly change the order of allocation of the pools. The
+    // operator[] and getPoolPos() rely on the exact order to calculate which
+    // pools have been read so far.
+    //
+    //
+    //
+    if  (isPoolAllocated(LETTERS)) {
         memcpy ( (void*) (pool + copy_pos), (void*) letters, pool_letters_len() );
         copy_pos += pool_letters_len();
     }
 
-    if  (pools_used & DIGITS) {
+    if  (isPoolAllocated(DIGITS)) {
         memcpy ( (void*) (pool + copy_pos), (void*) digits, pool_digits_len() );
         copy_pos += pool_digits_len();
     }
 
-    if  (pools_used & PUNCT) {
+    if  (isPoolAllocated(PUNCT)) {
         memcpy ( (void*) (pool + copy_pos), (void*) punct, pool_punct_len() );
         copy_pos += pool_punct_len();
     }
 
-    if  (pools_used & SPECIAL) {
+    if  (isPoolAllocated(SPECIAL)) {
         memcpy ( (void*) (pool + copy_pos), (void*) special, pool_special_len() );
         copy_pos += pool_special_len();
     }
 
-    if  (pools_used & OTHER) {
+    if  (isPoolAllocated(OTHER)) {
         memcpy ( (void*) (pool + copy_pos), (void*) other, pool_other_len() );
         copy_pos += pool_other_len();
     }
@@ -120,14 +121,18 @@ CharacterPool::init (int p) throw (std::runtime_error) {
 }
 
 CharacterPool::CharacterPool (int p)  throw (std::runtime_error) : pool (NULL),
-        pool_length (0),
-        pools_used (p) {
+								   pool_length (0),
+								   pools_allocated (p),
+								   pools_reads(0)
+{
     init (p);
 }
 
 CharacterPool::CharacterPool (SUBPOOLS p)  throw (std::runtime_error) : pool (NULL),
-        pool_length (0),
-        pools_used (p) {
+									pool_length (0),
+									pools_allocated (p),
+									pools_reads(0)
+{
     init (p);
 }
 
@@ -141,7 +146,8 @@ CharacterPool::~CharacterPool() throw() {
 //
 CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error) :     pool (NULL),
         pool_length (cp.pool_length),
-        pools_used (cp.pools_used) {
+											pools_allocated (cp.pools_allocated),
+											pools_reads (cp.pools_reads) {
     assert (cp.pool != NULL);
     assert (cp.pool_length > 0);
     pool = new char[pool_length];
@@ -158,6 +164,53 @@ CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error
     memcpy ( (void*) pool, (void*) cp.pool, pool_length);
 }
 
+int
+CharacterPool::getNumPoolsNotRead() const {
+    int retval = 0;
+    
+    for (int i=LETTERS; i <= OTHER; i = i << 1)
+	if ( isPoolAllocated((SUBPOOLS)i) &&
+	     ! hadPoolReads((SUBPOOLS)i) )
+	    retval++;
+
+    return retval;
+}
+
+/**
+ * Return the position and length of the pool.
+ *
+ * Returns 0 and sets \c start=0 if the pool \c p is not allocated.
+ *
+ * Remember that start+length is not the last character of the pool in
+ * question, but the first character of the adjacent pool (if any!!).
+ *
+ * @param p the pool in question.
+ *
+ * @param start pointer to size_t where the start position will be stored.
+ *
+ * @return the length of the pool. If zero, an error occured.
+ */
+size_t
+CharacterPool::getPoolPos(SUBPOOLS p, size_t* start) const {
+    if (start == NULL)
+	return 0;
+
+    if (!isPoolAllocated(p)) {
+	*start=0;
+	return 0;
+    }
+
+    *start = 0;
+    int i = 0;
+    for (i=LETTERS; i < p; i = i<<1) {
+	if (isPoolAllocated((SUBPOOLS)i) ) {
+	    (*start)+=pool_len((SUBPOOLS)i);
+	    
+	}
+    }
+    return pool_len((SUBPOOLS)i);
+}
+
 /**
  * Return the character at the postion \c pos specified from the pool.
  *
@@ -172,6 +225,22 @@ CharacterPool::operator[] (size_t pos) throw (std::logic_error) {
     if (pos >= pool_length)
         throw std::out_of_range (_ ("No character at given position") );
 
+    // Update the pools_reads variable. This relies on the knowledge of the
+    // order we internally allocate pools
+    size_t offset = 0;
+    // We need to update the offset regardless of the position to be retrieved
+    for (int i=LETTERS; i <= OTHER; i = i<<1) {
+	if (isPoolAllocated((SUBPOOLS)i)) {
+	    size_t start;
+	    size_t len = getPoolPos((SUBPOOLS)i, &start);
+
+	    if (start<=pos && 
+		(start+len) > pos)
+		pools_reads |= i;
+	}
+    }
+    // Finished updating pools_reads.
+
     return pool[pos];
 }
 
@@ -185,7 +254,8 @@ CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
     //CharacterPool::CharacterPool(cp);
     assert (cp.pool_length > 0);
     pool_length = cp.pool_length;
-    pools_used = cp.pools_used;
+    pools_allocated = cp.pools_allocated;
+    pools_reads = cp.pools_reads;
     pool = new char[pool_length];
 #ifdef DEBUG
     assert (pool != NULL);
@@ -203,20 +273,20 @@ CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
 
 #ifdef DEBUG
 void
-CharacterPool::print_pools_used() const {
-    if  (pools_used & LETTERS)
+CharacterPool::print_pools_allocated() const {
+    if  (pools_allocated & LETTERS)
         std::cout << "LETTERS (" << LETTERS << ")" << std::endl;
 
-    if  (pools_used & DIGITS)
+    if  (pools_allocated & DIGITS)
         std::cout << "DIGITS (" << DIGITS << ")" << std::endl;
 
-    if  (pools_used & PUNCT)
+    if  (pools_allocated & PUNCT)
         std::cout << "PUNCT (" << PUNCT << ")" << std::endl;
 
-    if  (pools_used & SPECIAL)
+    if  (pools_allocated & SPECIAL)
         std::cout << "SPECIAL (" << SPECIAL << ")" << std::endl;
 
-    if  (pools_used & OTHER)
+    if  (pools_allocated & OTHER)
         std::cout << "OTHER (" << OTHER << ")" << std::endl;
 }
 #endif

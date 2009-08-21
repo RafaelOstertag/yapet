@@ -97,7 +97,15 @@ namespace YAPET {
 
                 size_t pool_length;
 
-                int pools_used;
+		/**
+		 * The pools that have been allocated.
+		 */
+                int pools_allocated;
+
+		/**
+		 * Keeps track of which pools had at least one read.
+		 */
+		int pools_reads;
 
                 void init (int p) throw (std::runtime_error);
 
@@ -123,6 +131,29 @@ namespace YAPET {
                 inline size_t pool_other_len() const {
                     return strlen (other);
                 }
+		inline size_t pool_len(SUBPOOLS p) const {
+		    switch (p) {
+		    case LETTERS:
+			return pool_letters_len();
+		    case DIGITS:
+			return pool_digits_len();
+		    case PUNCT:
+			return pool_punct_len();
+		    case SPECIAL:
+			return pool_special_len();
+		    case OTHER:
+			return pool_other_len();
+		    case ALL:
+			return pool_letters_len() +
+			    pool_digits_len() +
+			    pool_punct_len() +
+			    pool_special_len() +
+			    pool_other_len();
+		    default:
+			assert(0);
+			return -1;
+		    }
+		}
 
                 inline const char* getPool (size_t* len) const throw (std::runtime_error) {
 #ifndef NDEBUG
@@ -146,13 +177,44 @@ namespace YAPET {
                 virtual ~CharacterPool() throw();
                 CharacterPool (const CharacterPool& cp) throw (std::runtime_error);
 
-                inline int getPoolsUsed() const {
-                    return pools_used;
+                inline int getAllocatedPools() const {
+                    return pools_allocated;
                 }
-                inline bool isPoolUsed (SUBPOOLS p) const {
-                    return (pools_used & p) ? true : false;
+                inline bool isPoolAllocated (SUBPOOLS p) const {
+                    return (pools_allocated & p) ? true : false;
                 }
+		inline bool hadPoolReads (SUBPOOLS p) const {
+		    return (pools_reads & p) ? true : false;
+		}
+		/**
+		 * @brief Which pools had been read from.
+		 *
+		 * Return the pools that had at least one read so far.
+		 *
+		 * @return bitmask of the pools with reads.
+		 */
+		inline int getPoolsWithRead() const {
+		    return pools_reads;
+		}
+		/**
+		 * @brief Reset the bitmask of pools that have reads
+		 *
+		 * Reset (set to zero) the bitmask of the pools that have been
+		 * read from.
+		 */
+		inline void resetPoolsWithRead() {
+		    pools_reads = 0;
+		}
+		/**
+		 * @brief Number of pools not read
+		 *
+		 * Return the number of pools from which not have been read so far
+		 */
+		int getNumPoolsNotRead () const;
 
+		//! The position and length of the pool.
+		size_t getPoolPos(SUBPOOLS p, size_t* start) const;
+		    
                 inline size_t getPoolLength() const throw() {
                     return pool_length;
                 }
@@ -166,7 +228,7 @@ namespace YAPET {
 
                 const CharacterPool& operator= (const CharacterPool& cp) throw (std::runtime_error);
 #ifdef DEBUG
-                void print_pools_used() const;
+                void print_pools_allocated() const;
 #endif
         };
 
