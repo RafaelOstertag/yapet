@@ -71,7 +71,7 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@builddir[@]|$(builddir)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
-	$(DOCPWGEN) $(DOCNOTPWGEN)
+	$(DOCPWGEN) $(DOCNOTPWGEN) $(DOCNLS)
 
 if BUILDDOC
 
