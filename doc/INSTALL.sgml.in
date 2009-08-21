@@ -204,38 +204,6 @@
 
       <varlistentry>
 	<term>
-	  <option>--enable-terminal-title</option>
-	</term>
-
-	<listitem>
-	  <para>Instructs the build process to compile &YP; with support for
-	  setting the terminal title in XTerm and friends.</para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>
-	  <option>--disable-csv2yapet</option>
-	</term>
-
-	<listitem>
-	  <para>If given the <command>csv2yapet</command> import utility
-	  will not be built.</para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>
-	  <option>--disable-nls</option>
-	</term>
-
-	<listitem>
-	  <para>Disables the Native Language Support.</para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term>
 	  <option>--enable-build-doc</option>
 	</term>
 
@@ -243,7 +211,7 @@
 	  <para>Instructs the build system to (re-)generate the documentation
 	  files. You usually do not need this, since the source distribution
 	  ships with pre-built documentation files.</para>
-	  
+
 	  <para>This option depends on the two applications
 	  <command>xsltproc</command> and <command>lynx</command>. They need to
 	  be installed on the system and to be found by
@@ -269,9 +237,53 @@
 	  <para>The source code documentation will not be installed. It is
 	  located in the <filename>doc/</filename> directory of the build
 	  directory.</para>
-	  
+
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-terminal-title</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs the build process to compile &YP; with support for
+	  setting the terminal title in XTerm and friends. Enabled by default.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-csv2yapet</option>
+	</term>
+
+	<listitem>
+	  <para>If given the <command>csv2yapet</command> import utility
+	  will not be built.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-pwgen</option>
+	</term>
+
+	<listitem>
+	  <para>Disables built-in password generator.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-nls</option>
+	</term>
+
+	<listitem>
+	  <para>Disables the Native Language Support.</para>
+	</listitem>
+      </varlistentry>
+
+
 
     </variablelist>
   </sect1>
@@ -279,10 +291,9 @@
   <sect1 id="wgi">
     <title>What gets installed?</title>
 
-    <para>Upon
-    issuing <command>make <option>install</option></command> the
+    <para>Upon issuing <command>make <option>install</option></command> the
     following files are installed in <replaceable>&lt;PATH&gt;</replaceable>
-    (assuming you did not change the destination of the files)</para>
+   </para>
 
     <variablelist>
 
@@ -306,7 +317,11 @@
 	  <para>The manual page for &YP;.</para>
 
 	  <para><filename>csv2yapet.1</filename> will be installed only when
-	  the build of <command>csv2yapet</command> has not been disabled.</para>
+	  the build of <command>csv2yapet</command> has not been
+	  disabled.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
 	</listitem>
       </varlistentry>
 
@@ -317,17 +332,26 @@
 
       <varlistentry>
 	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|LICENSE|README]</filename></term>
-	<listitem><para>Various documentation files.</para></listitem>
+	<listitem>
+	  <para>Various documentation files.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
+	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html|csv2yapet.html]</filename></term>
+
 	<listitem>
 	  <para>Various documentation files in HTML format.</para>
 
 	  <para><filename>csv2yapet.html</filename> will be installed only when
 	  the build of <command>csv2yapet</command> has not been
 	  disabled.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
 	</listitem>
       </varlistentry>
 
