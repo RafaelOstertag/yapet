@@ -37,13 +37,23 @@ else
 DOCCSV2YAPET_BEGIN = <!--
 DOCCSV2YAPET_END = -->
 endif
-
-if BUILDPWGEN
-DOCPWGEN_BEGIN =
-DOCPWGEN_END =
+# Used to conditionally include documentation for NLS support.
+#
+# Please not that the xml comments have to include a block of text.
+if USE_NLS
+DOCNLS = 
 else
-DOCPWGEN_BEGIN = <!--
-DOCPWGEN_END = -->
+DOCNLS = -e '/<!--[ \t]*NLS_BEGIN[ \t]*-->/,/<!--[ \t]*NLS_END[ \t]*-->/d'
+endif
+# Used to conditionally include documentation for password generator.
+#
+# Please not that the xml comments have to include a block of text.
+if BUILDPWGEN
+DOCPWGEN= 
+DOCNOTPWGEN = -e '/<!--[ \t]*NOTPWGEN_BEGIN[ \t]*-->/,/<!--[ \t]*NOTPWGEN_END[ \t]*-->/d'
+else
+DOCPWGEN = -e '/<!--[ \t]*PWGEN_BEGIN[ \t]*-->/,/<!--[ \t]*PWGEN_END[ \t]*-->/d'
+DOCNOTPWGEN =
 endif
 
 doxycfg_src = Doxyfile.in
@@ -61,9 +71,7 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@builddir[@]|$(builddir)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
-	-e 's|<!--[ \t]*PWGEN_BEGIN[ \t]*-->|$(DOCPWGEN_BEGIN)|g' \
-	-e 's|<!--[ \t]*PWGEN_END[ \t]*-->|$(DOCPWGEN_END)|g'
-
+	$(DOCPWGEN) $(DOCNOTPWGEN)
 
 if BUILDDOC
 
