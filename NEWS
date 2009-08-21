@@ -6,7 +6,7 @@ YAPET 0.5
       New Features:
       -------------
 
-      * Builtin password generator
+      * Built-in password generator
 
       * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
         navigating the password record list.
