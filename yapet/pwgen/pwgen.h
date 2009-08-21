@@ -67,8 +67,8 @@ namespace YAPET {
                 void init (int p) throw (std::runtime_error);
 
             public:
-                PWGen (SUBPOOLS p) throw (std::runtime_error);
-                PWGen (int p) throw (std::runtime_error);
+                PWGen (SUBPOOLS p, RNGENGINE rnge=AUTO) throw (std::runtime_error);
+                PWGen (int p, RNGENGINE rnge=AUTO) throw (std::runtime_error);
                 PWGen (const PWGen& pw) throw();
                 virtual ~PWGen() throw();
 
