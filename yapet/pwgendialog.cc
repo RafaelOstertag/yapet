@@ -201,7 +201,6 @@ PWGenDialog::~PWGenDialog() {
     delete regenbutton;
     delete okbutton;
     delete cancelbutton;
-    delete pwleninput;
 }
 
 void
