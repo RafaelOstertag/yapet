@@ -240,9 +240,6 @@ RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
             return;
         }
     }
-
-    // Should not happen
-    assert (0);
 }
 
 //
