@@ -1163,6 +1163,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
 				if (a == YAPET::UI::ANSWER_OK) {
 				    saveFile();
 				} else {
+				    refresh();
 				    break;
 				}
 				
@@ -1202,7 +1203,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                             key = NULL;
                         }
 
-                        ::refresh();
+                        //::refresh();
                         YAPET::UI::BaseWindow::refreshAll();
                     }
                     break;
@@ -1253,7 +1254,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                                 delete tmp;
                         }
 
-                        ::refresh();
+			//                        ::refresh();
                         YAPET::UI::BaseWindow::refreshAll();
                         break;
                     }
