@@ -165,7 +165,7 @@ CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error
 }
 
 int
-CharacterPool::getNumPoolsNotRead() const {
+CharacterPool::numPoolsNotRead() const {
     int retval = 0;
     
     for (int i=LETTERS; i <= OTHER; i = i << 1)

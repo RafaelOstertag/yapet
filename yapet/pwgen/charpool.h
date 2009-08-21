@@ -210,7 +210,7 @@ namespace YAPET {
 		 *
 		 * Return the number of pools from which not have been read so far
 		 */
-		int getNumPoolsNotRead () const;
+		int numPoolsNotRead () const;
 
 		//! The position and length of the pool.
 		size_t getPoolPos(SUBPOOLS p, size_t* start) const;

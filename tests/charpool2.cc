@@ -43,7 +43,7 @@ int main (int, char**) {
 
 	if (tmp1.getPoolsWithRead() != 0)
 	    return 1;
-	if (tmp1.getNumPoolsNotRead() != 3)
+	if (tmp1.numPoolsNotRead() != 3)
 	    return 1;
 
 	size_t start;
@@ -57,7 +57,7 @@ int main (int, char**) {
 	    return 1;
 	if (!tmp1.hadPoolReads(LETTERS))
 	    return 1;
-	if (tmp1.getNumPoolsNotRead() != 2)
+	if (tmp1.numPoolsNotRead() != 2)
 	    return 1;
 
 	len = tmp1.getPoolPos(PUNCT, &start);
@@ -69,7 +69,7 @@ int main (int, char**) {
 	    return 1;
 	if (!tmp1.hadPoolReads(PUNCT))
 	    return 1;
-	if (tmp1.getNumPoolsNotRead() != 1)
+	if (tmp1.numPoolsNotRead() != 1)
 	    return 1;
 	
 	len = tmp1.getPoolPos(OTHER, &start);
@@ -81,7 +81,7 @@ int main (int, char**) {
 	    return 1;
 	if (!tmp1.hadPoolReads(OTHER))
 	    return 1;
-	if (tmp1.getNumPoolsNotRead() != 0)
+	if (tmp1.numPoolsNotRead() != 0)
 	    return 1;
 
 	len = tmp1.getPoolPos(DIGITS, &start);
