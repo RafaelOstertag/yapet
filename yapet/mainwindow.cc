@@ -849,8 +849,6 @@ MainWindow::quit() {
      * @bug find out how to clear the terminal title properly.
      */
     if (!records_changed) {
-        // Clear the terminal title
-        setTerminalTitle ("");
         return true;
     }
 
@@ -861,8 +859,6 @@ MainWindow::quit() {
         dialogbox->run();
         YAPET::UI::ANSWER a = dialogbox->getAnswer();
         delete dialogbox;
-        // Clear the terminal title
-        setTerminalTitle ("");
 
         if (a == YAPET::UI::ANSWER_OK) {
             saveFile();
@@ -1150,6 +1146,35 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                         break;
                     case 'R':
                     case 'r': {
+			//
+			// Check if we have unsaved changes
+			//
+			if (records_changed) {
+			    YAPET::UI::DialogBox* dialogbox = NULL;
+			    
+			    try {
+				dialogbox = new YAPET::UI::DialogBox (_ ("Q U E S T I O N"), _ ("Save before loading other file?") );
+				dialogbox->run();
+				YAPET::UI::ANSWER a = dialogbox->getAnswer();
+				delete dialogbox;
+				// Clear the terminal title
+				setTerminalTitle ("");
+				
+				if (a == YAPET::UI::ANSWER_OK) {
+				    saveFile();
+				} else {
+				    break;
+				}
+				
+			    } catch (YAPET::UI::UIException&) {
+				if (dialogbox != NULL)
+				    delete dialogbox;
+				
+				statusbar.putMsg (_ ("Error showing error message") );
+				refresh();
+				break;;
+			    }
+			}
                         FileOpen* tmp = NULL;
 
                         try {
