@@ -69,7 +69,9 @@ namespace YAPET {
              * Other characters
              */
             OTHER = (1 << 4),
-            ALL = LETTERS | DIGITS | PUNCT | SPECIAL | OTHER
+            ALL = LETTERS | DIGITS | PUNCT | SPECIAL | OTHER,
+	    // Used only by fromPool()
+	    NOPOOL = 0
         };
         /**
          * @brief Generate character pools.
@@ -219,6 +221,9 @@ namespace YAPET {
 
 		//! The position and length of the pool.
 		size_t getPoolPos(SUBPOOLS p, size_t* start) const;
+
+		//! Return the pool the character belongs to
+		SUBPOOLS fromPool(char c) const;
    
                 inline size_t getPoolLength() const throw() {
                     return pool_length;

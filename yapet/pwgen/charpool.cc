@@ -221,6 +221,22 @@ CharacterPool::getPoolPos(SUBPOOLS p, size_t* start) const {
     return pool_len((SUBPOOLS)i);
 }
 
+SUBPOOLS
+CharacterPool::fromPool(char c) const {
+    if (strchr(letters, c))
+	return LETTERS;
+    if (strchr(digits, c))
+	return DIGITS;
+    if (strchr(punct, c))
+	return PUNCT;
+    if (strchr(special, c))
+	return SPECIAL;
+    if (strchr(other, c))
+	return OTHER;
+    assert(0);
+    return NOPOOL;
+}
+
 /**
  * Return the character at the postion \c pos specified from the pool.
  *
