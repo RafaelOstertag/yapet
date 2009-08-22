@@ -1,14 +1,10 @@
 YAPET To Do
 ===========
 
-* Translate the options, copyright etc.
+* Translate the copyright.
 
-* Fix the display of the selection bar in list widgets upon page down/up.
-
-* Make screen lock lock the screen even if a dialog is open.
-
-* Fix the logic detecting the field delimiter in csv2yapet so that it doesn't
-  choke on separator characters in the field value.
+* Make screen lock lock the screen even if a dialog is open. See also Bug #2
+  (http://bugs.guengel.ch/show_bug.cgi?id=2)
 
 $Id$
 Local Variables:
