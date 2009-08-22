@@ -84,13 +84,16 @@
     <para>&yp; stores passwords and associated information (refered to as
     <firstterm>password records</firstterm>) in files encrypted on disk.</para>
 
-    <para>&yp; does not impose a limit of password records per file. Passwords
-    can be grouped in files. &yp; can only display the password records of one
-    file at a time, though.</para>
+    <para>&yp; does not impose a limit of password records per file and the
+    number of files the passwords are stored in, although &yp; is able to
+    display password records of one file at a time.</para>
 
-    <para>The password entries are protected by a master password. The master
-    password is used to encrypt and decrypt the password records. If the master
-    password is lost, so are the records.</para>
+    <para>For convenience, &yp; provides a search function for password records
+    of the currently displayed password file.</para>
+
+    <para>The password records are protected by a master password. The master
+    password is used to encrypt and decrypt the password records. Remember, if
+    the master password is lost, so are the records.</para>
 
     <para>&yp; relies on OpenSSL for encrypting and decrypting password
     records. The cipher for encryption and decryption is Blowfish with a 448
@@ -175,9 +178,8 @@ No file loaded
     for details about the function keys.</para>
 
     <para>The empty frame on the left side of the main screen will display the
-    list of the password records' <guilabel>Name</guilabel> field (see <xref
-    linkend="passwordrecord" />). The selection can be moved as explained in
-    <xref linkend="selectionmovement" />.</para>
+    list of password records. The selection can be moved as explained in <xref
+    linkend="selectionmovement" />.</para>
 
     <para>If no key is pressed for more than ten minutes (the default) or the
     amount of time specified using the <option>-t</option> option, &yp; will
@@ -306,7 +308,7 @@ No file loaded
 	    </para>
 
 	    <para>Before this function can be used an existing file has to be
-	    loaded, or a new file has to be created by pressing
+	    loaded or a new file has to be created by pressing
 	    <keycap>R</keycap>.
 	    </para>
 	  </listitem>
@@ -623,7 +625,7 @@ No file loaded
 
 	    <para>A <envar>~</envar> (tilde) sign as the first character of the
 	    file path will be replaced by the home directory of the user running
-	    &yp;</para>
+	    &yp;.</para>
 
 	    <para>Default: not set</para>
 	  </listitem>

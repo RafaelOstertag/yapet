@@ -36,22 +36,21 @@
   <sect1 id="intro">
     <title>Introduction</title>
 
-    <para>&YP; is a text based password encryption tool using the Blowfish
-    encryption algorithm to store password records encrypted on disk. Its
-    primary aim is to provide a safe way to store passwords in a file on disk
-    while having a small footprint, and compiling and running under today's
-    most popular Unixes.</para>
+    <para>&YP; is a text based password manager using the Blowfish
+    encryption algorithm to store password and associated information encrypted
+    on disk. Its primary aim is to provide a safe way to store passwords in a
+    file on disk while having a small footprint, and compiling and running
+    under today's most popular Unix Systems.</para>
 
-    <para>&YP; stores passwords and associated information in files encrypted
-    on disk.</para>
+    <para>&YP; does not impose a limit of password records per file and the
+    number of files the passwords are stored in, although &YP; is only able to
+    display password records of one file at a time.</para>
 
-    <para>&YP; does not impose a limit of password records per file. Passwords
-    can be grouped in files. &YP; can only display the password records of one
-    file at a time, though.</para>
+    <para>For convenience, &YP; provides a search function for password records
+    of the currently displayed password file.</para>
 
-    <para>The password entries are protected by a master password. The master
-    password is used to encrypt and decrypt the password records. If the master
-    password is lost, so are the records.</para>
+    <para>The password records are protected by a master password. The master
+    password is used to encrypt and decrypt the password records.</para>
 
     <para>&YP; relies on OpenSSL for encrypting and decrypting password
     records. The cipher for encryption and decryption is Blowfish with a 448
@@ -133,7 +132,7 @@
     <para>&YP; is kept simple. You should not find it difficult to
     use. The user interface has some quirks, though.</para>
 
-    <para>See the manual page &ypman; after installing &YP; for a minimal usage
+    <para>See the manual page &ypman; after installing &YP; for a minimal user
     guide.</para>
   </sect1>
 
