@@ -89,13 +89,13 @@
     display password records of one file at a time.</para>
 
     <para>For convenience, &yp; provides a search function for password records
-    of the currently displayed password file.</para>
+    of the currently loaded password file.</para>
 
     <para>The password records are protected by a master password. The master
     password is used to encrypt and decrypt the password records. Remember, if
     the master password is lost, so are the records.</para>
 
-    <para>&yp; relies on OpenSSL for encrypting and decrypting password
+    <para>&yp; relies on OpenSSL for encryption and decryption of password
     records. The cipher for encryption and decryption is Blowfish with a 448
     bits key.
     </para>
@@ -106,13 +106,16 @@
     <filename>.pet</filename> to the file name unless the file name includes
     the suffix.</para>
 
-    <para>Invoking &yp; without command line arguments given will show a screen
-    as shown in <xref linkend="fig.mainscreen" />.</para>
+    <refsect2 id="mainscreen">
+      <title>Main Screen</title>
 
-<figure id="fig.mainscreen">
-  <title>Main Screen</title>
-  <mediaobject>
-    <textobject>
+      <para>Invoking &yp; without command line arguments given will show a
+      screen as shown in <xref linkend="fig.mainscreen" />.</para>
+
+      <figure id="fig.mainscreen">
+	<title>Main Screen</title>
+	<mediaobject>
+	  <textobject>
 <!-- PWGEN_BEGIN -->
 <screen format="linespecific">
                   ..::|| YAPET @PACKAGE_VERSION@ ||::..
@@ -169,23 +172,22 @@ No file loaded
 No file loaded
 </screen>
 <!-- NOTPWGEN_END -->
-    </textobject>
-  </mediaobject>
-</figure>
+	  </textobject>
+	</mediaobject>
+      </figure>
 
-    <para>The upper right frame in <xref linkend="fig.mainscreen" /> shows
-    the function keys recognized by &yp;. See <xref linkend="functionkeys" />
-    for details about the function keys.</para>
+      <para>The upper right frame in <xref linkend="fig.mainscreen" /> shows
+      the function keys recognized by &yp;. See <xref linkend="functionkeys" />
+      for details about the function keys.</para>
 
-    <para>The empty frame on the left side of the main screen will display the
-    list of password records. The selection can be moved as explained in <xref
-    linkend="selectionmovement" />.</para>
+      <para>The empty frame on the left side of the main screen will display
+      the list of password records. The selection of the record to be viewed
+      can be moved as explained in <xref linkend="selectionmovement" />.</para>
 
-    <para>If no key is pressed for more than ten minutes (the default) or the
-    amount of time specified using the <option>-t</option> option, &yp; will
-    blank and lock the screen. It will prompt for the password of the currently
-    load file when a key is pressed. This is the same behavior as seen by
-    pressing the key <keycap>L</keycap>.</para>
+      <para>Only when a a password file is loaded, the lower right frame will
+      display some status information as shown explained in <xref
+      linkend="statusframe" />.</para>
+    </refsect2>
 
     <!--
 	-
@@ -758,6 +760,48 @@ No file loaded
       <para>Options are case-sensitive. Spaces are not allowed before or after
       the equal sign. Syntax errors and unrecognized options are ignored
       silently.</para>
+    </refsect2>
+
+    <refsect2 id="statusframe">
+      <title>Status Frame</title>
+
+      <para>When a password file is loaded, &yp; displays some status
+      information in the lower right frame as shown in <xref
+      linkend="fig.statusframe" /></para>
+
+      <figure id="fig.statusframe">
+	<title>The Status Frame</title>
+	<mediaobject>
+	  <textobject>
+<screen>
++--------------------------------------+
+| File permission check: enabled       |
+| Screen lock time-out: 600 sec        |
+| 1 entries (+)                        |
+| PW set: Sat Aug 22 11:49:46 2009     |
++--------------------------------------+
+</screen>
+	  </textobject>
+	</mediaobject>
+      </figure>
+
+      <para><guilabel>File permission check</guilabel> is explained in <xref
+      linkend="options" /> under the <option>-s</option> and
+      <option>-S</option> options.</para>
+
+      <para>The next line labeled <guilabel>Screen lock time-out</guilabel>
+      displays how long &yp; will wait for a key press until the screen is
+      locked.</para>
+
+      <para>The third line is giving a count of the password records in the
+      currently loaded file. The the <guilabel>(+)</guilabel> sign indicates
+      that there are unsaved modifications in one or more password
+      records. Absence of this sign indicates that no changes have been made to
+      the records.</para>
+      
+      <para>The fourth and last line shows the date the current master password
+      has been set.</para>
+
     </refsect2>
 
     <!--
