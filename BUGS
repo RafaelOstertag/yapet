@@ -5,13 +5,13 @@ BUGS
 Closed Bugs
 ===========
 
-You can view closed bug reports on http://bugs.guengel.ch.
+You can view closed bug reports on http://bugs.guengel.ch/.
 
 
 YAPET 0.5
 ---------
 
-YAPET 0.5 fixes following bugs:
+YAPET 0.5 fixes the following bugs:
 
       * Bug #3: load option in ~/.yapet does not append the suffix
 
