@@ -20,8 +20,8 @@ YAPET 0.5
       * A ~ (tilde) sign in the load option of configuration files is expanded
         to the home directory of the user.
 
-      * A visual mark will indicate whether records have been altered and need
-        to be written to disk.
+      * A visual mark next to the number of password records indicates whether
+        or not unsaved records exist.
 
 
       Fixes:
@@ -34,7 +34,11 @@ YAPET 0.5
       * Case-insensitive search available even when strcasestr() is not
         supported on build platform.
 
-      * Password Record more reliable now
+      * Canceling the Password Record Dialog having changes will display a
+        confirmation dialog.
+
+      * Loading a file while the current file having unsaved changes will
+        display a confirmation dialog.
 
 
 YAPET 0.4
