@@ -22,6 +22,10 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_ERRNO_H
+# include <errno.h>
+#endif
+
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -143,10 +147,40 @@ RNG::devrandom (size_t ceil) throw (PWGenException) {
     assert (rng_used == DEVRANDOM || rng_used == DEVURANDOM);
     assert (fd > -1);
     size_t buff;
-    int retval = read (fd, &buff, sizeof (size_t) );
+    // This is an attempt to circumvent short reads appearing on some lx systems.
+    //
+    // Code courtesy of Richard W. Stevens. Thanks man!
+    size_t nleft;
+    ssize_t nread;
+    size_t *ptr;
 
-    if (retval < (int) sizeof (size_t) )
-        throw PWGenException (_ ("Read to few bytes on /dev/[u]random.") );
+    ptr = &buff;
+    nleft = sizeof(size_t);
+    while( nleft > 0) {
+	errno = 0;
+	if ( (nread = read (fd, ptr, nleft )) < 0) {
+	    // Error
+	    switch (errno) {
+		case EAGAIN:
+		case EINTR:
+		    // Just ignore and try again
+		    break;
+		default: {
+		    char errmsg[1024];
+		    snprintf(errmsg, 1024, "%s (%s)", _ ("Read to few bytes on /dev/[u]random."),
+			     strerror(errno));
+		    throw PWGenException ( errmsg );
+		}
+	    };
+	} else {
+	    if (nread == 0) {
+		// EOF
+		break;
+	    }
+	}
+	nleft -= nread;
+	ptr += nread;
+    }
 
     if (buff > ceil)
         return buff % ceil;
