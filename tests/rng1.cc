@@ -13,6 +13,24 @@
 # include <string.h>
 #endif
 
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
 #include <typeinfo>
 
 #include <rng.h>
@@ -57,12 +75,16 @@ int main (int, char**) {
 
 #define MYCEILING 20
 #ifdef HAVE__DEV_RANDOM
+# ifdef DEBUG
         std::cout << " ==> /dev/random: ";
 
         for (int i = 0; i < MYCEILING; i++)
             std::cout << devrandom (MYCEILING) << " ";
-
+# else
+	std::cout << " ==> /dev/random will only be tested in debug mode.";
+# endif
         std::cout << std::endl;
+
 #endif
 #ifdef HAVE__DEV_URANDOM
         std::cout << " ==> /dev/urandom: ";
