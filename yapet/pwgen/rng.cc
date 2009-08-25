@@ -177,9 +177,9 @@ RNG::devrandom (size_t ceil) throw (PWGenException) {
 		// EOF
 		break;
 	    }
+	    nleft -= nread;
+	    ptr += nread;
 	}
-	nleft -= nread;
-	ptr += nread;
     }
 
     if (buff > ceil)
