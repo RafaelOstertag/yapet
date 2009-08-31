@@ -8,7 +8,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <unistd.h>
 #include <typeinfo>
 #include <iostream>
 #include <file.h>
@@ -16,6 +16,9 @@
 #define FN "corrupt.pet"
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {

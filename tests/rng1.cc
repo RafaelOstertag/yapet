@@ -40,6 +40,9 @@
 using namespace YAPET::PWGEN;
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {
@@ -78,35 +81,38 @@ int main (int, char**) {
 # ifdef DEBUG
         std::cout << " ==> /dev/random: ";
 
-        for (int i = 0; i < MYCEILING; i++)
+        for (int i = 0; i < MYCEILING; i++) {
             std::cout << devrandom (MYCEILING) << " ";
+	}
 # else
 	std::cout << " ==> /dev/random will only be tested in debug mode.";
 # endif
         std::cout << std::endl;
-
 #endif
 #ifdef HAVE__DEV_URANDOM
         std::cout << " ==> /dev/urandom: ";
 
-        for (int i = 0; i < MYCEILING; i++)
+        for (int i = 0; i < MYCEILING; i++) {
             std::cout << devurandom (MYCEILING) << " ";
+	}
 
         std::cout << std::endl;
 #endif
 #ifdef HAVE_LRAND48
         std::cout << " ==> lrand48(): ";
 
-        for (int i = 0; i < MYCEILING; i++)
+        for (int i = 0; i < MYCEILING; i++) {
             std::cout << _lrand48 (MYCEILING) << " ";
+	}
 
         std::cout << std::endl;
 #endif
 #ifdef HAVE_RAND
         std::cout << " ==> rand(): ";
 
-        for (int i = 0; i < MYCEILING; i++)
+        for (int i = 0; i < MYCEILING; i++) {
             std::cout << _rand (MYCEILING) << " ";
+	}
 
         std::cout << std::endl;
 #endif

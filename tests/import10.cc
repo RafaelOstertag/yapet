@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 #include <string.h>
-
+#include <unistd.h>
 #include <iostream>
 
 #include <key.h>
@@ -28,6 +28,9 @@
 #include "testpaths.h"
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
     std::cout << " ==> Check if import9 worked... " << std::endl;
 

@@ -1,15 +1,19 @@
 // $Id$
 
-#include "cfgfile.h"
-#include "testpaths.h"
 #include <typeinfo>
 #include <stdio.h>
 #include <iostream>
 #include <exception>
+#include <unistd.h>
+#include "cfgfile.h"
+#include "testpaths.h"
 
 using namespace YAPET::CONFIG;
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {
@@ -63,7 +67,7 @@ int main (int, char**) {
 	if (cfgfile2.getPWGenOther() != false)
 	    return 1;
     } catch (std::exception& ex) {
-		std::cout << " ==> " << typeid (ex).name() << ": " << ex.what() << std::endl;
+	std::cout << " ==> " << typeid (ex).name() << ": " << ex.what() << std::endl;
         return 1;
     }
 

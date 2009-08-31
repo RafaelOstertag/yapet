@@ -2,6 +2,7 @@
 
 #include <record.h>
 #include <iostream>
+#include <unistd.h>
 
 struct tmp {
     char v1[5];
@@ -9,6 +10,9 @@ struct tmp {
 };
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
     tmp t;
     YAPET::Record<tmp> record (t);

@@ -1,9 +1,22 @@
 // $Id$
 
-#include <typeinfo>
-#include <stdio.h>
-#include <iostream>
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_STDIO_H
+# include <stdio.h>
+#endif
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#endif
+#ifdef HAVE_EXCEPTION
 #include <exception>
+#endif
+#include <typeinfo>
 
 #include <key.h>
 
@@ -67,16 +80,20 @@ const uint8_t expected_key[] = {
 };
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {
         YAPET::Key key ("JustATestPasswordForKeepingSecret");
         std::cout << " ==> ";
 
-        for (unsigned int i = 0; i < key.size(); i++)
+        for (unsigned int i = 0; i < key.size(); i++) {
             printf ("%02x", key() [i]);
+	}
 
-        printf ("\n");
+	std::cout <<  "\n";
 
         for (unsigned int i = 0; i < key.size(); i++) {
             if (key() [i] != expected_key[i]) {

@@ -12,7 +12,7 @@
 #ifdef HAVE_STRING_H
 # include <string.h>
 #endif
-
+#include <unistd.h>
 #include <typeinfo>
 
 #include <charpool.h>
@@ -29,6 +29,9 @@ const char t_special[] = "_+\"*%&/()[]={}<>";
 const char t_other[] = "§°@#\\|$£~`^";
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {

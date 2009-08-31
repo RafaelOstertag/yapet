@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 #include <string.h>
-
+#include <unistd.h>
 #include <iostream>
 
 #include <key.h>
@@ -23,6 +23,9 @@
 #define ROUNDS 200
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
     std::cout << " ==> Check if import5 worked" << std::endl;
 

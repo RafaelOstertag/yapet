@@ -9,13 +9,16 @@
 #ifdef HAVE_IOSTREAM
 # include <iostream>
 #endif
-
+#include <unistd.h>
 #include <typeinfo>
 
 #include <csvimport.h>
 #include "testpaths.h"
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {

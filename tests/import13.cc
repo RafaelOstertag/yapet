@@ -11,7 +11,7 @@
 #ifdef HAVE_IOSTREAM
 # include <iostream>
 #endif
-
+#include <unistd.h>
 #include <typeinfo>
 
 
@@ -19,12 +19,16 @@
 #include "testpaths.h"
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {
         std::cout << " ==> Importing from test8.csv" << std::endl;
         std::cout << " ==> Testing for error recognition" << std::endl;
         CSVImport imp (SRCDIR "/test8.csv", "test8.pet", ',');
+
         imp.import ("test8");
         imp.printLog();
 

@@ -17,6 +17,10 @@
 # include <string.h>
 #endif
 
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
 #include <typeinfo>
 
 #include <pwgen.h>
@@ -26,6 +30,9 @@
 using namespace YAPET::PWGEN;
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
 
     try {
@@ -161,3 +168,4 @@ int main (int, char**) {
 
     return 0;
 }
+
