@@ -41,12 +41,32 @@
 # include <inttypes.h>
 #endif
 
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#endif
+
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
 namespace YAPET {
 
+    /**
+     * New in version 0.6
+     * 
+     * As of version 0.6, there may be different file versions. This holds the
+     * known file versions so far.
+     */
+    enum FILE_VERSION {
+        /**
+         * The header version for pre version 0.6.
+         */
+        VERSION_1 = 1,
+        /**
+         * The header version for version 0.6.
+         */
+        VERSION_2 = 2
+    };
     enum {
         /**
          * The length of the control string used to check whether
@@ -76,15 +96,37 @@ namespace YAPET {
          * The maximum length of the comment string of a password
          * record.
          */
-        COMMENT_SIZE = 512
+        COMMENT_SIZE = 512,
+        /**
+	 * New in version 0.6.
+	 *
+         * The header size of pre v. 0.6 on 32 bit arch in bytes.
+         */
+        HEADER_SIZE_32_B_PRE_0_6 = 25,
+        /**
+	 * New in version 0.6.
+	 *
+         * The header size of pre v. 0.6 on 64 bit arch in bytes.
+         */
+        HEADER_SIZE_64_B_PRE_0_6 = 29,
+        /**
+	 * New in version 0.6.
+	 *
+         * The header size of 0.6 in bytes. Please note that the header size
+         * remains the same, regardless of the architecture (32/64bit)
+         */
+        HEADER_SIZE_0_6 = 29
     };
 
     /**
-     * @brief The file header.
+     * @brief The file header for 32 bit pre version 0.6.
      *
-     * This is the file header structure.
+     * New in version 0.6.
+     *
+     * This is the file header structure 32 bit pre version 0.6. It uses
+     * uint32_t for storing the time when the password was saved.
      */
-    struct FileHeader {
+    struct FileHeader_32 {
         /**
          * @brief Version
          *
@@ -108,7 +150,43 @@ namespace YAPET {
          * Holds the date the key has first been used to encrypt
          * the file. Has to be stored in big-endian order.
          */
-        time_t pwset;
+        int32_t pwset;
+    };
+
+    /**
+     * @brief The file header for 64 bit pre version 0.6 and version 0.6.
+     *
+     * New in version 0.6.
+     *
+     * This is the file header structure 64 bit pre version 0.6 and 32/64 bit
+     * version 0.6. It uses uint64_t for storing the time when the password was
+     * saved.
+     */
+    struct FileHeader_64 {
+        /**
+         * @brief Version
+         *
+         * Holds the version of the file structure.
+         */
+        uint8_t version;
+        /**
+         * @brief Control string
+         *
+         * Holds the control string used to verify the decryption
+         * of the file. It is filled with a known sequence of
+         * characters before encryption. After decryption the
+         * sequence of characters stored in this field and the
+         * predefined are compared. If they are identical, the
+         * decryption is assumed to be successful.
+         */
+        uint8_t control[HEADER_CONTROL_SIZE];
+        /**
+         * @brief The date the key has first been used.
+         *
+         * Holds the date the key has first been used to encrypt
+         * the file. Has to be stored in big-endian order.
+         */
+        int64_t pwset;
     };
 
     /**
