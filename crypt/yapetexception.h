@@ -50,14 +50,33 @@
 namespace YAPET {
 
     /**
+     * New in version 0.6
+     *
+     * Since version 0.6 we provide an optional error specification. It is
+     * entirely optional to use it, but at the time this writing, the
+     * YAPET::File class uses it to determine whether or not retrying to
+     * decrypt the using a different structure (FileHeader_32 or FileHeader_64)
+     */
+    enum EXNUM {
+	BDBUFFER_TOO_SMALL = 1,
+	BDBUFFER_TOO_BIG = 2,
+	NOTUSED = 255
+    };
+
+    /**
      * @brief The exception class used for cryptographic classes.
+     *
+     * Modified in version 0.6.
      *
      * The exception base class used for cryptographic classes.
      */
     class YAPETException : public std::exception {
         private:
+	    EXNUM exnum;
             std::string message;
 
+	protected:
+	    inline void setExNum(EXNUM n) { exnum = n ; }
         public:
             /**
              * @brief Initializes a default exception message
@@ -66,6 +85,7 @@ namespace YAPET {
              */
             inline YAPETException()
             throw() : exception(),
+		      exnum(NOTUSED),
                     message (_ ("Generic exception message") ) {}
             /**
              * @brief Initializes with a user specified message
@@ -74,10 +94,14 @@ namespace YAPET {
              *
              * @param msg the message of the exception
              */
-            inline YAPETException (std::string msg)
-            throw() : exception(),
-                    message (msg) {}
+            inline YAPETException (std::string msg) throw() : exception(),
+							      exnum(NOTUSED),
+							      message (msg) {}
+            inline YAPETException (std::string msg, EXNUM n) throw() : exception(),
+								       exnum(n),
+								       message (msg) {}
             inline YAPETException (const YAPETException& ex) throw() {
+		exnum = ex.exnum;
                 message = ex.message;
             }
             inline virtual ~YAPETException() throw() { /* empty */ }
@@ -85,12 +109,14 @@ namespace YAPET {
             throw() {
                 if (this == &ex) return *this;
 
+		exnum = ex.exnum;
                 message = ex.message;
                 return *this;
             }
             inline virtual const char* what() const throw() {
                 return message.c_str();
             }
+	    inline EXNUM getExNum() const throw() { return exnum; }
     };
 
     /**
