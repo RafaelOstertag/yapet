@@ -285,8 +285,11 @@ namespace YAPET {
              */
             const Record<T>& operator= (const BDBuffer& bdb)
             throw (YAPETException) {
+		// As of version 0.6, the exnum is used to determine whether to use a 32 or 64 bit header
                 if (bdb.size() < _size)
-                    throw YAPETException (_ ("BDBuffer too small") );
+                    throw YAPETException (_ ("BDBuffer too small. Cannot assign to Record<T>"), BDBUFFER_TOO_SMALL );
+		if (bdb.size() > _size)
+		    throw YAPETException (_ ("BDBuffer too big. Cannot assign to Record<T>"), BDBUFFER_TOO_BIG );
 
                 free_mem();
                 // This sets _size member too
