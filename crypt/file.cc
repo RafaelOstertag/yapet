@@ -215,7 +215,7 @@ File::openNoCreate() throw (YAPETException) {
  *
  * @return a \c time_t holdign the last modification date.
  */
-time_t
+int64_t
 File::lastModified() const throw (YAPETException) {
     struct stat st_buf;
     int retval = fstat (fd, &st_buf);
@@ -298,45 +298,9 @@ File::seekDataSection() const throw (YAPETException) {
     if ( ( (size_t) retval) != sizeof (uint32_t) )
         throw YAPETException (_ ("Unable to seek to data section") );
 
-    len = uint32_from_disk (len);
+    len = int_from_disk<uint32_t> (len);
     seekCurr (len);
 }
-
-#ifndef WORDS_BIGENDIAN
-/**
- * Converts the length indicator provided to the big endian byte
- * order, suitable for writing to disk.
- *
- * @param i the length indicator in host byte order
- *
- * @return an unsigned 32 bits integer in big-endian format.
- */
-uint32_t
-File::uint32_to_disk (uint32_t i) const {
-    ENDIAN endian;
-    endian.abcd = i;
-    uint8_t tmp = endian.dword.b.b;
-    endian.dword.b.b = endian.dword.a.a;
-    endian.dword.a.a = tmp;
-    tmp = endian.dword.b.a;
-    endian.dword.b.a = endian.dword.a.b;
-    endian.dword.a.b = tmp;
-    return endian.abcd;
-}
-
-/**
- * Converts the length indicator read from the file to the host byte
- * order. The length indicator is always stored in big endian order.
- *
- * @param i the length indicator as read from the file
- *
- * @return an unsigned 32 bits integer in host byte order.
- */
-uint32_t
-File::uint32_from_disk (uint32_t i) const {
-    return uint32_to_disk (i);
-}
-#endif // WORDS_BIGENDIAN
 
 /**
  * Reads from the current position in the file. The method expects the
@@ -370,7 +334,7 @@ File::read() const throw (YAPETException) {
         throw YAPETException (_ ("Short read on file: ") + filename);
 
     // Convert len to the endianess of the architecture
-    len = uint32_from_disk (len);
+    len = int_from_disk<uint32_t> (len);
     BDBuffer* buf = new BDBuffer (len);
     retval = ::read (fd, *buf, len);
 
@@ -427,7 +391,7 @@ throw (YAPETException, YAPETRetryException) {
 
     uint32_t s = buff.size();
     // Convert s to the on-disk structure
-    s = uint32_to_disk (s);
+    s = int_to_disk<uint32_t> (s);
     int retval = ::write (fd, &s, sizeof (uint32_t) );
 
     if (retval == -1)
@@ -467,7 +431,9 @@ File::isempty() const throw (YAPETException) {
 }
 
 /**
- * Creates a header struct \c FileHeader and calls \c writeHeader. It
+ * Modified in version 0.6.
+ *
+ * As of version 0.6, creates a header struct \c FileHeader_64 and calls \c writeHeader. It
  * then reads and decrypts the header in order to verify.
  *
  * @param key reference to the key used to encrypt the header.
@@ -475,11 +441,11 @@ File::isempty() const throw (YAPETException) {
 void
 File::initFile (const Key& key) throw (YAPETException) {
     Crypt crypt (key);
-    Record<FileHeader> header;
-    FileHeader* ptr = header;
-    ptr->version = 1;
+    Record<FileHeader_64> header;
+    FileHeader_64* ptr = header;
+    ptr->version = VERSION_2;
     memcpy (ptr->control, CONTROL_STR, HEADER_CONTROL_SIZE);
-    ptr->pwset = uint32_to_disk (time (NULL) );
+    ptr->pwset = int_to_disk<int64_t> (time (NULL) );
     mtime = lastModified();
     writeHeader (header, key);
     // Sanity checks
@@ -488,8 +454,8 @@ File::initFile (const Key& key) throw (YAPETException) {
     if (buff == NULL)
         throw YAPETException (_ ("EOF encountered while reading header") );
 
-    Record<FileHeader>* dec_hdr = crypt.decrypt<FileHeader> (*buff);
-    FileHeader* ptr_dec_hdr = *dec_hdr;
+    Record<FileHeader_64>* dec_hdr = crypt.decrypt<FileHeader_64> (*buff);
+    FileHeader_64* ptr_dec_hdr = *dec_hdr;
     int retval = memcmp (ptr_dec_hdr->control, ptr->control, HEADER_CONTROL_SIZE);
 
     if (retval != 0)
@@ -500,7 +466,11 @@ File::initFile (const Key& key) throw (YAPETException) {
 }
 
 /**
+ * Modified in version 0.6.
+ *
  * Encrypts and writes the file header provided to the file.
+ *
+ * Since version 0.6 it expects by default a FileHeader_64 header.
  *
  * @param header a reference to the header. It will be encrypted using
  * the key provided.
@@ -508,7 +478,7 @@ File::initFile (const Key& key) throw (YAPETException) {
  * @param key the key used to encrypt the header provided.
  */
 void
-File::writeHeader (const Record<FileHeader>& header, const Key& key)
+File::writeHeader (const Record<FileHeader_64>& header, const Key& key)
 throw (YAPETException) {
     Crypt crypt (key);
     BDBuffer* buff = NULL;
@@ -591,6 +561,8 @@ File::readHeader() const throw (YAPETException) {
 }
 
 /**
+ * Modified in version 0.6
+ *
  * Validates the key provided by reading the file header, decrypting
  * it and comparing the control string of the file header with the
  * string \c RECOG_STR. If those operations succeed, the key is
@@ -606,32 +578,71 @@ File::validateKey (const Key& key)
 throw (YAPETException, YAPETInvalidPasswordException) {
     Crypt crypt (key);
     BDBuffer* enc_header = NULL;
-    Record<FileHeader>* dec_header = NULL;
-    FileHeader* ptr_dec_header = NULL;
+    // Expect either a 32bit or 64bit header
+    Record<FileHeader_32>* dec_header_32 = NULL;
+    Record<FileHeader_64>* dec_header_64 = NULL;
+    FileHeader_32* ptr_dec_header_32 = NULL;
+    FileHeader_64* ptr_dec_header_64 = NULL;
 
     try {
         enc_header = readHeader();
-        dec_header = crypt.decrypt<FileHeader> (*enc_header);
-        ptr_dec_header = *dec_header;
+	// First try to read a 32bit header
+	try {
+	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
+	} catch (YAPETException& ex) {
+
+	    if (dec_header_32 != NULL) {
+		delete dec_header_32;
+		dec_header_32 = NULL;
+	    }
+
+	    try {
+		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
+	    } catch (YAPETException &ex) {
+		// Ok, we got another problem
+		if (dec_header_64 != NULL) {
+		    delete dec_header_64;
+		    dec_header_64 = NULL;
+		}
+		throw;
+	    }
+	}
+	if (dec_header_32 != NULL) 
+	    ptr_dec_header_32 = *dec_header_32;
+	if (dec_header_64 != NULL)
+	    ptr_dec_header_64 = *dec_header_64;
     } catch (YAPETEncryptionException& ex) {
         if (enc_header != NULL) delete enc_header;
 
-        if (dec_header != NULL) delete dec_header;
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
 
         throw YAPETInvalidPasswordException();
     } catch (YAPETException& ex) {
         if (enc_header != NULL) delete enc_header;
 
-        if (dec_header != NULL) delete dec_header;
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
 
         throw;
     }
 
-    int retval = memcmp (ptr_dec_header->control,
+    int retval;
+    if (ptr_dec_header_32 != NULL) {
+	retval = memcmp (ptr_dec_header_32->control,
                          CONTROL_STR,
                          HEADER_CONTROL_SIZE);
+    } else {
+	assert(ptr_dec_header_64 != NULL);
+	retval = memcmp (ptr_dec_header_64->control,
+                         CONTROL_STR,
+                         HEADER_CONTROL_SIZE);
+    }
     delete enc_header;
-    delete dec_header;
+    if (dec_header_32 != NULL)
+	delete dec_header_32;
+    if (dec_header_64 != NULL)
+	delete dec_header_64;
 
     if (retval != 0)
         throw YAPETInvalidPasswordException();
@@ -837,45 +848,161 @@ File::setNewKey (const Key& oldkey,
 }
 
 /**
- * Returns the time as a \c time_t when the master password was set.
+ * Modified in version 0.6.
+ *
+ * Returns the time as a \c uint64_t when the master password was set.
  *
  * @param key the key used to decrypt the header.
  *
- * @return a \c time_t representing the time the master password was
+ * @return a \c uint64_t representing the time the master password was
  * set.
  */
-time_t
+int64_t
 File::getMasterPWSet (const Key& key) const
 throw (YAPETException, YAPETInvalidPasswordException) {
     Crypt crypt (key);
     BDBuffer* enc_header = NULL;
-    Record<FileHeader>* dec_header = NULL;
-    FileHeader* ptr_dec_header = NULL;
+    // Expect either a 32bit or 64bit header
+    Record<FileHeader_32>* dec_header_32 = NULL;
+    Record<FileHeader_64>* dec_header_64 = NULL;
+    FileHeader_32* ptr_dec_header_32 = NULL;
+    FileHeader_64* ptr_dec_header_64 = NULL;
 
     try {
         enc_header = readHeader();
-        dec_header = crypt.decrypt<FileHeader> (*enc_header);
-        ptr_dec_header = *dec_header;
+	// First try to read a 32bit header
+	try {
+	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
+	} catch (YAPETException& ex) {
+
+	    if (dec_header_32 != NULL) {
+		delete dec_header_32;
+		dec_header_32 = NULL;
+	    }
+
+	    try {
+		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
+	    } catch (YAPETException &ex) {
+		// Ok, we got another problem
+		if (dec_header_64 != NULL) {
+		    delete dec_header_64;
+		    dec_header_64 = NULL;
+		}
+		throw;
+	    }
+	}
+	if (dec_header_32 != NULL) 
+	    ptr_dec_header_32 = *dec_header_32;
+	if (dec_header_64 != NULL)
+	    ptr_dec_header_64 = *dec_header_64;
     } catch (YAPETEncryptionException& ex) {
         if (enc_header != NULL) delete enc_header;
 
-        if (dec_header != NULL) delete dec_header;
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
 
         throw YAPETInvalidPasswordException();
     } catch (YAPETException& ex) {
         if (enc_header != NULL) delete enc_header;
 
-        if (dec_header != NULL) delete dec_header;
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
 
         throw;
     }
 
-    time_t t = uint32_from_disk (ptr_dec_header->pwset);
+    int64_t t;
+    if (ptr_dec_header_32 != NULL) {
+	t = int_from_disk<int32_t> (ptr_dec_header_32->pwset);
+    } else {
+	assert(ptr_dec_header_64 != NULL);
+	t = int_from_disk<int64_t> (ptr_dec_header_64->pwset);
+    }
+
     delete enc_header;
-    delete dec_header;
+
+    if (dec_header_32 != NULL)
+	delete dec_header_32;
+    if (dec_header_64 != NULL)
+	delete dec_header_64;
+
     return t;
 }
 
+/**
+ * New since version 0.6.
+ *
+ * Return the file version.
+ */
+FILE_VERSION
+File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException) {
+    Crypt crypt (key);
+    BDBuffer* enc_header = NULL;
+    // Expect either a 32bit or 64bit header
+    Record<FileHeader_32>* dec_header_32 = NULL;
+    Record<FileHeader_64>* dec_header_64 = NULL;
+    FileHeader_32* ptr_dec_header_32 = NULL;
+    FileHeader_64* ptr_dec_header_64 = NULL;
+
+    try {
+        enc_header = readHeader();
+	// First try to read a 32bit header
+	try {
+	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
+	} catch (YAPETException& ex) {
+
+	    if (dec_header_32 != NULL) {
+		delete dec_header_32;
+		dec_header_32 = NULL;
+	    }
+	    try {
+		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
+	    } catch (YAPETException &ex) {
+		// Ok, we got another problem
+		if (dec_header_64 != NULL) {
+		    delete dec_header_64;
+		    dec_header_64 = NULL;
+		}
+		throw;
+	    }
+	}
+	if (dec_header_32 != NULL) 
+	    ptr_dec_header_32 = *dec_header_32;
+	if (dec_header_64 != NULL)
+	    ptr_dec_header_64 = *dec_header_64;
+    } catch (YAPETEncryptionException& ex) {
+        if (enc_header != NULL) delete enc_header;
+
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
+
+        throw YAPETInvalidPasswordException();
+    } catch (YAPETException& ex) {
+        if (enc_header != NULL) delete enc_header;
+
+        if (dec_header_32 != NULL) delete dec_header_32;
+	if (dec_header_64 != NULL) delete dec_header_64;
+
+        throw;
+    }
+
+    FILE_VERSION v;
+    if (ptr_dec_header_32 != NULL) {
+	v = static_cast<FILE_VERSION>(ptr_dec_header_32->version);
+    } else {
+	assert(ptr_dec_header_64 != NULL);
+	v = static_cast<FILE_VERSION>(ptr_dec_header_64->version);
+    }
+
+    delete enc_header;
+
+    if (dec_header_32 != NULL)
+	delete dec_header_32;
+    if (dec_header_64 != NULL)
+	delete dec_header_64;
+
+    return v;
+}
 
 const File&
 File::operator= (const File & f) throw (YAPETException) {
