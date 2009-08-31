@@ -125,6 +125,7 @@ AC_CHECK_HEADERS([algorithm cmath exception fstream functional iostream iterator
 # Types
 AC_MSG_NOTICE([Checking types])
 AC_TYPE_INT32_T
+AC_TYPE_INT64_T
 AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
@@ -132,8 +133,6 @@ AC_TYPE_SSIZE_T
 AC_TYPE_UID_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
-AC_TYPE_INT64_T
-AC_TYPE_UNSIGNED_LONG_LONG_INT
 
 # library functions
 AC_MSG_NOTICE([Checking functions])
