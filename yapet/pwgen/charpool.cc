@@ -253,8 +253,6 @@ CharacterPool::operator[] (size_t pos) throw (std::logic_error) {
 
     // Update the pools_reads variable. This relies on the knowledge of the
     // order we internally allocate pools
-    size_t offset = 0;
-    // We need to update the offset regardless of the position to be retrieved
     for (int i=LETTERS; i <= OTHER; i = i<<1) {
 	if (isPoolAllocated((SUBPOOLS)i)) {
 	    size_t start;
