@@ -5,4 +5,8 @@
  * $Id$
  */
 
+#define TOPSRCDIR "@top_srcdir@"
 #define SRCDIR "@srcdir@"
+#define TOPBUILDDIR "@top_builddir@"
+#define BUILDDIR "@builddir@"
+
