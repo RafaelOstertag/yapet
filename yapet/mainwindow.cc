@@ -275,7 +275,13 @@ MainWindow::bottomRightWinContent() throw (YAPET::UI::UIException) {
     //
     // The empty string containing of spaces is used to erase any previous
     // status indications.
-    retval = mvwprintw (bottomrightwin, 3, 2, _ ("%d entries %s"), recordlist->size(), (records_changed ? "(+)" : "   ") );
+    //
+    // (V: %d) displays the version if a file is loaded.
+    int version = 0;
+    if (file != NULL && key != NULL) 
+	version = (int)file->getFileVersion(*key);
+
+    retval = mvwprintw (bottomrightwin, 3, 2, _ ("%d entries %s (V: %d)"), recordlist->size(), (records_changed ? "(+)" : "   "), version );
 
     if (retval == ERR)
         throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
@@ -284,9 +290,9 @@ MainWindow::bottomRightWinContent() throw (YAPET::UI::UIException) {
 
     if (file != NULL) {
         try {
-            time_t t = file->getMasterPWSet (*key);
-            retval = mvwprintw (bottomrightwin, 4, 2, _ ("PW set: %s"),
-                                asctime (localtime (&t) ) );
+            time_t t = static_cast<time_t>(file->getMasterPWSet (*key));
+	    retval = mvwprintw (bottomrightwin, 4, 2, _ ("PW set: %s"),
+				asctime (localtime (&t) ) );
 
             if (retval == ERR)
                 throw YAPET::UI::UIException (_ ("mvprintw() blew it") );
