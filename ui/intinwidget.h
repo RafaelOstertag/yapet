@@ -48,7 +48,7 @@ namespace YAPET {
     namespace UI {
 
         template<class t> int getDigitsForType() {
-            return std::floor ( std::log10 (std::pow (2, (double) sizeof (t) *8 ) ) ) + 1;;
+            return static_cast<int>(std::floor ( std::log10 (std::pow (2, (double) sizeof (t) *8 ) ) ) + 1);
         }
 
         /**
