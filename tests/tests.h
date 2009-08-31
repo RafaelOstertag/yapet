@@ -38,34 +38,9 @@
 # define COMMENT "Test comment %d"
 #endif
 
-
 inline
 void progress() {
     static int n = 0;
-    /*
-    switch (n) {
-    case 0:
-    case 1:
-    std::cout << "\\";
-    break;
-    case 2:
-    case 3:
-    std::cout << "|";
-    break;
-    case 4:
-    case 5:
-    std::cout << "/";
-    break;
-    case 6:
-    case 7:
-    std::cout << "-";
-    break;
-    case 8:
-    case 9:
-    std::cout << "|";
-    n=-1;
-    break;
-    }*/
 
     // I change the progress indicator to somewhat less verbose, since the
     // above indicator looks terrible in build logs of automated builds, e.g.:
