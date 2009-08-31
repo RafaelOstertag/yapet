@@ -254,13 +254,14 @@ RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
     } else {
         assert (rng_available != 0);
 
-        if (rng_available & DEVRANDOM) {
-            init_rng (DEVRANDOM);
+	// Since version 0.6, /dev/urandom is the default rng used.
+        if (rng_available & DEVURANDOM) {
+            init_rng (DEVURANDOM);
             return;
         }
 
-        if (rng_available & DEVURANDOM) {
-            init_rng (DEVURANDOM);
+        if (rng_available & DEVRANDOM) {
+            init_rng (DEVRANDOM);
             return;
         }
 
