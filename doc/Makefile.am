@@ -1,5 +1,11 @@
 # $Id$
 
+# For fixing bug #22
+dist_man1_MANS = yapet.1
+if BUILDCSV2YAPET
+dist_man1_MANS += csv2yapet.1
+endif # BUILDCSV2YAPET
+
 if !DISABLEINSTALLDOC
 htmldoc_DATA = README.html DESIGN.html yapet.html
 
@@ -9,11 +15,6 @@ endif # BUILDCSV2YAPET
 
 htmldocdir = $(docdir)/html
 
-dist_man1_MANS = yapet.1
-
-if BUILDCSV2YAPET
-dist_man1_MANS += csv2yapet.1
-endif # BUILDCSV2YAPET
 endif # !DISABLEINSTALLDOC
 
 sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
@@ -132,6 +133,11 @@ source-doc: Doxyfile
 	$(DOXYGEN)
 
 endif # HAVEDOXYGEN
+
+# For fixing bug #22
+if DISABLEINSTALLDOC
+all-local: $(dist_man1_MANS)
+endif
 
 if !DISABLEINSTALLDOC
 if BUILDDOC
