@@ -3,7 +3,7 @@
 #include <typeinfo>
 
 #include <string.h>
-
+#include <unistd.h>
 #include <file.h>
 
 #include "tests.h"
@@ -13,12 +13,16 @@
 // specified in testpaths.h since this breaks 'make distcheck'
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
     std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
 
     try {
         YAPET::Key key ("JustAPassword");
         YAPET::File file (FN, key, true);
+	assert(file.getFileVersion(key) == YAPET::VERSION_2);
         std::list<YAPET::PartDec> list;
 
         for (int i = 0; i < ROUNDS; i++) {
@@ -45,6 +49,7 @@ int main (int, char**) {
     try {
         YAPET::Key key ("JustAPassword");
         YAPET::File file (FN, key, false);
+	assert(file.getFileVersion(key) == YAPET::VERSION_2);
         std::list<YAPET::PartDec> list = file.read (key);
 
         if (list.size() != ROUNDS) {

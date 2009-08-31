@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 #include <string.h>
-
+#include <unistd.h>
 #include <iostream>
 
 #include <key.h>
@@ -22,6 +22,9 @@
 // specified in testpaths.h since this breaks 'make distcheck'
 
 int main (int, char**) {
+#ifndef TESTS_VERBOSE
+    close(STDOUT_FILENO);
+#endif
     std::cout << std::endl;
     std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
 
@@ -29,6 +32,7 @@ int main (int, char**) {
         YAPET::Key oldkey ("JustAPassword");
         YAPET::Key newkey ("JustANewPassword");
         YAPET::File file (FN, oldkey, false);
+	assert(file.getFileVersion(oldkey) == YAPET::VERSION_2);
         file.setNewKey (oldkey, newkey);
         std::list<YAPET::PartDec> list = file.read (newkey);
 
