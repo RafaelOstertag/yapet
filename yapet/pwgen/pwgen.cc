@@ -40,7 +40,7 @@ using namespace YAPET::PWGEN;
  */
 void
 PWGen::sanitize_password() throw(std::logic_error) {
-    if ( (cp->numPoolsAllocated() > password_len) ||
+    if ( (static_cast<size_t>(cp->numPoolsAllocated()) > password_len) ||
 	 (cp->numPoolsNotRead() == 0))  /* No can do */ return;
 
     for (register size_t pwit_outer = 0; pwit_outer < password_len; pwit_outer++) {
@@ -169,18 +169,17 @@ PWGen::generatePassword (size_t len) throw (std::logic_error) {
     password = new char[password_len + 1];
     cp->resetPoolsWithRead();
     
-    size_t check_for_missing_charpools = password_len / 2;
     for (size_t pw_it = 0; pw_it < password_len; pw_it++) {
 RESTART:
         char suggestion = (*cp) [rng (cp->getPoolLength() ) ];
-	if (cp->getPoolLength() >= password_len) {
+	if (static_cast<size_t>(cp->getPoolLength()) >= password_len) {
 	    // We can avoid repeating characters
 	    for (size_t pos = 0; pos < pw_it; pos++) {
 		if (suggestion == password[pos]) {
 		    //
 		    // We found a duplicate
 		    //
-		    if (cp->numPoolsAllocated() >= password_len &&
+		    if (static_cast<size_t>(cp->numPoolsAllocated()) >= password_len &&
 			cp->numPoolsNotRead() > 0) {
 			// make sure all pools are read from
 			suggestion = getCharFromUnusedPools();
