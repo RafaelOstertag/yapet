@@ -58,6 +58,8 @@ PWGenDialog::getNameOfRNG() const {
             return _ ("rand() (not good)");
         case YAPET::PWGEN::NONE:
             return "none!";
+        case YAPET::PWGEN::AUTO:
+	    return "auto";
     }
 
     assert (0);
