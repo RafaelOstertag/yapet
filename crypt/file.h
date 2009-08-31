@@ -37,6 +37,10 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #ifdef HAVE_STRING
 # include <string>
 #endif
@@ -54,15 +58,14 @@
 
 namespace YAPET {
     /**
-     * @brief Class for storing and retrieving encrypted data to and
-     * from disk
+     * @brief Class for storing and retrieving encrypted data to and from disk
      *
-     * This class takes care of storing and retrieving encrypted
-     * password records to and from disk.
+     * This class takes care of storing and retrieving encrypted password
+     * records to and from disk.
      *
-     * Each file created by this class starts with a unencrypted
-     * recognition string which currently consists of the 8 bytes
-     * "YAPET1.0" as depicted below.
+     * Each file created by this class starts with a unencrypted recognition
+     * string which currently consists of the 8 bytes "YAPET1.0" as depicted
+     * below.
      *
     @verbatim
     +--------+--------+--------+--------+--------+--------+--------+--------+
@@ -71,10 +74,9 @@ namespace YAPET {
     +--------+--------+--------+--------+--------+--------+--------+--------+
     @endverbatim
      *
-     * After the recognition string a 4 byte unsigned integer which is
-     * stored in big-endian order follows. This indicator is read to
-     * determine how many bytes to read in order to get the encrypted
-     * header.
+     * After the recognition string a 4 byte unsigned integer which is stored
+     * in big-endian order follows. This indicator is read to determine how
+     * many bytes to read in order to get the encrypted header.
      *
     @verbatim
     +--------+--------+--------+--------+
@@ -86,12 +88,11 @@ namespace YAPET {
     +--------+--------+--------+--------+--...---+
     @endverbatim
      *
-     * The decrypted header is 25 bytes in size. The first byte
-     * indicates the version of the file. The next 20 bytes are used
-     * as control string. After decryption, the control string is
-     * compared to the predefined clear text control string, in order
-     * to find out whether or not the key used to decrypt was the same
-     * used to encrypt.
+     * The decrypted header is 25 bytes in size (pre version 0.6). The first
+     * byte indicates the version of the file. The next 20 bytes are used as
+     * control string. After decryption, the control string is compared to the
+     * predefined clear text control string, in order to find out whether or
+     * not the key used to decrypt was the same used to encrypt.
      *
     @verbatim
     +--------+
@@ -106,11 +107,27 @@ namespace YAPET {
     +--------+--------+--------+
     @endverbatim
     *
-    * Each encrypted password record is prefixed by a 4 byte unsigned
-    * integer which is stored in big-endian order. The methods take
-    * care returning them in the appropriate order of the host
-    * system. That integer is used to indicate the length of the
-    * following encrypted data chunk.
+    * As of version 0.6, it File reads headers using a time_t value of 32 or 64
+    * bits (see above for 32 bits header). It writes always a header with 64
+    * bits as shown below. The header size is 29 bytes.
+    *
+    @verbatim
+    +--------+
+    |Version |
+    | 1 byte |
+    +--------+--------+--------+--...---+
+    |          Control String           |
+    |             20 bytes              |
+    +--------+--------+--------+--...---+--------+--------+--------+--------+
+    |             Time when the Password was set (8 bytes)                  |
+    |                                                                       |
+    +--------+--------+--------+--------+--------+--------+--------+--------+
+    @endverbatim
+    *
+    * Each encrypted password record is prefixed by a 4 byte unsigned integer
+    * which is stored in big-endian order. The methods take care returning them
+    * in the appropriate order of the host system. That integer is used to
+    * indicate the length of the following encrypted data chunk.
     *
     @verbatim
     +--------+--------+--------+--------+
@@ -129,8 +146,8 @@ namespace YAPET {
           [ . . . ]
     @endverbatim
     *
-    * Putting this together, an encrypted file created by this class
-    * looks like this
+    * Putting this together, an encrypted file created by this class looks like
+    * this
     *
     @verbatim
     +--------+--------+--------+--------+--------+--------+--------+--------+
@@ -158,12 +175,12 @@ namespace YAPET {
           [ . . . ]
     @endverbatim
     *
-    * Instances of this class keeps the file open for the lifetime
-    * of the instance.
+    * Instances of this class keeps the file open for the lifetime of the
+    * instance.
     *
-    * When saving a password record list, the file is reopened with
-    * the \c O_TRUNC specified. The recognition string and header are
-    * copied over from the former version of the file.
+    * When saving a password record list, the file is reopened with the \c
+    * O_TRUNC specified. The recognition string and header are copied over from
+    * the former version of the file.
     *
     * @sa Record, FileHeader, PasswordRecord
     */
@@ -189,8 +206,10 @@ namespace YAPET {
              *
              * This is used to detect file modification made outside
              * this class.
+	     *
+	     * As of version 0.6, a 64 bit variable is used
              */
-            time_t mtime;
+	    int64_t mtime;
 
             /**
              * @brief Flag for enabling file security.
@@ -216,7 +235,7 @@ namespace YAPET {
             //! Opens an existing file
             void openNoCreate() throw (YAPETException);
             //! Returns the last modification time of the open file
-            time_t lastModified() const throw (YAPETException);
+            int64_t lastModified() const throw (YAPETException);
             //! Seek to a position relative to the current offset
             void seekCurr (off_t offset) const throw (YAPETException);
             //! Seek to an absolute offset
@@ -225,51 +244,97 @@ namespace YAPET {
             void preparePWSave() throw (YAPETException);
 
         protected:
-            /**
-             * @brief A 16 bits word
-             *
-             * Represents a word of 16 bits. Used for little-big
-             * endian conversion.
-             */
-            struct WORD {
-                uint8_t a;
-                uint8_t b;
+	    template <class t>
+            union ENDIAN {
+		    /**
+		     * @brief  bits unsigned integer in host order.
+		     *
+		     * 32 bits unsigned integer in host order.
+		     */
+		    t value;
+		    uint8_t fields[sizeof(t)];
             };
-
-            /**
-             * @brief A 32 bits double word.
+	    /**
+             * @brief Used for 16 bits little-big endian conversion.
              *
-             * Represents a double word of 32 bits. Used for
-             * little-big endian conversion.
-             */
-            struct DWORD {
-                WORD a;
-                WORD b;
-            };
-
-            /**
-             * @brief Used for little-big endian conversion.
-             *
-             * Union for converting between little and big endian
+             * Union for converting between 16 bits little and big endian
              * order.
              */
-            union ENDIAN {
+            union ENDIAN16 {
                 /**
-                 * @brief 32 bits unsigned integer in host order.
+                 * @brief  bits unsigned integer in host order.
                  *
                  * 32 bits unsigned integer in host order.
                  */
-                uint32_t abcd;
-                DWORD dword;
+                uint16_t value;
+                uint8_t fields[2];
+            };
+	    /**
+             * @brief Used for 32 bits little-big endian conversion.
+             *
+             * Union for converting between 32 bits little and big endian
+             * order.
+             */
+            union ENDIAN32 {
+                /**
+                 * @brief  bits unsigned integer in host order.
+                 *
+                 * 32 bits unsigned integer in host order.
+                 */
+                uint32_t value;
+                uint8_t fields[4];
+            };
+	    /**
+             * @brief Used for 64 bits little-big endian conversion.
+             *
+             * Union for converting between 64 bits little and big endian
+             * order.
+             */
+            union ENDIAN64 {
+                /**
+                 * @brief  bits unsigned integer in host order.
+                 *
+                 * 32 bits unsigned integer in host order.
+                 */
+                uint64_t value;
+                uint8_t fields[8];
             };
 
 #ifndef WORDS_BIGENDIAN
-            //! The given integer will be converted to big endian
-            //! format
-            uint32_t uint32_to_disk (uint32_t i) const;
-            //! The given integer will be converted to the endianess
-            //! of the host
-            uint32_t uint32_from_disk (uint32_t i) const;
+	    /**
+	     * @brief The given integer will be converted to big endian format
+	     *
+	     * Converts the length indicator provided to the big endian byte
+	     * order, suitable for writing to disk.
+	     *
+	     * @param i the length indicator in host byte order
+	     *
+	     * @return an unsigned integer in big-endian format.
+	     */
+	    template<class t>
+            t int_to_disk (t le) const {
+		ENDIAN<t> in;
+		ENDIAN<t> out;
+		in.value = le;
+		out.value = 0;
+		for (register unsigned int i=0; i < sizeof(t); i++)
+		    out.fields[(sizeof(t)-1)-i] = in.fields[i];
+		return out.value;
+	    }
+	    /**
+	     * @brief The given integer will be converted to the endianess of the host
+	     *
+	     * Converts the length indicator read from the file to the host byte
+	     * order. The length indicator is always stored in big endian order.
+	     *
+	     * @param i the length indicator as read from the file
+	     *
+	     * @return an unsigned 32 bits integer in host byte order.
+	     */
+	    template<class t>
+	    t int_from_disk (t i) const {
+		return int_to_disk<t>(i);
+	    }
 #else
             /**
              * @brief The given integer will be converted to big
@@ -280,9 +345,10 @@ namespace YAPET {
              *
              * @param i the length indicator in host byte order
              *
-             * @return an unsigned 32 bits integer in big-endian format.
+             * @return an unsigned integer in big-endian format.
              */
-            inline uint32_t uint32_to_disk (uint32_t i) const {
+	    template<class t>
+            t int_to_disk (t i) const {
                 return i;
             }
             /**
@@ -295,9 +361,10 @@ namespace YAPET {
              *
              * @param i the length indicator as read from the file
              *
-             * @return an unsigned 32 bits integer in host byte order.
+             * @return an unsigned integer in host byte order.
              */
-            inline uint32_t uint32_from_disk (uint32_t i) const {
+	    template<class t>
+            t int_from_disk (t i) const {
                 return i;
             }
 #endif // WORDS_BIGENDIAN
@@ -318,7 +385,7 @@ namespace YAPET {
             //! Initializes an empty file
             void initFile (const Key& key) throw (YAPETException);
             //! Writes the given header encrypted to the file
-            void writeHeader (const Record<FileHeader>& header,
+            void writeHeader (const Record<FileHeader_64>& header,
                               const Key& key)
             throw (YAPETException);
             //! Writes the given encrypted header to the file
@@ -348,10 +415,10 @@ namespace YAPET {
                 return filename;
             }
             //! Sets a new encryption key for the current file.
-            void setNewKey (const Key& oldkey, const Key& newkey)
-            throw (YAPETException);
-            time_t getMasterPWSet (const Key& key) const
-            throw (YAPETException, YAPETInvalidPasswordException);
+            void setNewKey (const Key& oldkey, const Key& newkey) throw (YAPETException);
+            int64_t getMasterPWSet (const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
+	    //! Return the file version
+	    FILE_VERSION getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
             //! Returns the time the master password was set
             const File& operator= (const File& f) throw (YAPETException);
 
