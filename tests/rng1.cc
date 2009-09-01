@@ -86,7 +86,7 @@ int main (int, char**) {
             std::cout << devrandom (MYCEILING) << " ";
 	}
 # else
-	std::cout << " ==> /dev/random will only be tested in debug mode.";
+	std::cout << " ==> /dev/random will only be tested if explicitely requested.";
 # endif
         std::cout << std::endl;
 #endif
