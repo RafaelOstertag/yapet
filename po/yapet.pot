@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yapet 0.5\n"
+"Project-Id-Version: yapet 0.6alpha1\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-08-21 22:37+0200\n"
+"POT-Creation-Date: 2009-09-01 17:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ui/messagebox.cc:30 yapet/passwordrecord.cc:42 yapet/mainwindow.cc:304
-#: yapet/pwgendialog.cc:94 yapet/fileopen.cc:80 yapet/passworddialog.cc:29
+#: ui/messagebox.cc:30 yapet/passwordrecord.cc:42 yapet/mainwindow.cc:310
+#: yapet/pwgendialog.cc:96 yapet/fileopen.cc:80 yapet/passworddialog.cc:29
 #: yapet/searchdialog.cc:28
 msgid "May you consider deleting the window before reallocating"
 msgstr ""
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Error creating message window"
 msgstr ""
 
-#: ui/messagebox.cc:43 yapet/passwordrecord.cc:69 yapet/pwgendialog.cc:118
+#: ui/messagebox.cc:43 yapet/passwordrecord.cc:69 yapet/pwgendialog.cc:120
 #: yapet/fileopen.cc:104 yapet/passworddialog.cc:45 yapet/searchdialog.cc:38
 msgid "OK"
 msgstr ""
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Error deleting message box"
 msgstr ""
 
-#: ui/messagebox.cc:89 ui/checkboxgroup.cc:157 yapet/mainwindow.cc:895
+#: ui/messagebox.cc:89 ui/checkboxgroup.cc:157 yapet/mainwindow.cc:901
 msgid "Error erasing window"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgid "Error printing message"
 msgstr ""
 
 #: ui/messagebox.cc:107 ui/checkboxgroup.cc:171 yapet/mainwindow.cc:197
-#: yapet/pwgendialog.cc:139 yapet/fileopen.cc:151
+#: yapet/pwgendialog.cc:141 yapet/fileopen.cc:151
 msgid "Error printing title"
 msgstr ""
 
@@ -112,12 +112,12 @@ msgstr ""
 msgid "No idea of the dimension of the widget"
 msgstr ""
 
-#: ui/checkboxgroup.cc:162 yapet/mainwindow.cc:389 yapet/mainwindow.cc:394
+#: ui/checkboxgroup.cc:162 yapet/mainwindow.cc:395 yapet/mainwindow.cc:400
 msgid "Error setting border"
 msgstr ""
 
 #: ui/dialogbox.cc:30 ui/dialogbox.cc:83 yapet/passwordrecord.cc:72
-#: yapet/pwgendialog.cc:121 yapet/fileopen.cc:107 yapet/passworddialog.cc:48
+#: yapet/pwgendialog.cc:123 yapet/fileopen.cc:107 yapet/passworddialog.cc:48
 #: yapet/searchdialog.cc:41
 msgid "Cancel"
 msgstr ""
@@ -189,7 +189,7 @@ msgid "Error move cursor"
 msgstr ""
 
 #: ui/listwidget.h:419 ui/listwidget.h:755 yapet/passwordrecord.cc:453
-#: yapet/mainwindow.cc:902 yapet/pwgendialog.cc:381 yapet/fileopen.cc:358
+#: yapet/mainwindow.cc:908 yapet/pwgendialog.cc:383 yapet/fileopen.cc:358
 msgid "Error refreshing window"
 msgstr ""
 
@@ -257,27 +257,31 @@ msgstr ""
 msgid "Error finalizing decryption"
 msgstr ""
 
-#: crypt/record.h:97 crypt/bdbuffer.cc:59 crypt/file.cc:575
+#: crypt/record.h:97 crypt/bdbuffer.cc:59 crypt/file.cc:545
 msgid "Memory exhausted"
 msgstr ""
 
-#: crypt/record.h:289
-msgid "BDBuffer too small"
+#: crypt/record.h:290
+msgid "BDBuffer too small. Cannot assign to Record<T>"
 msgstr ""
 
-#: crypt/yapetexception.h:69 yapet/pwgen/pwgenexception.h:54
+#: crypt/record.h:292
+msgid "BDBuffer too big. Cannot assign to Record<T>"
+msgstr ""
+
+#: crypt/yapetexception.h:90 yapet/pwgen/pwgenexception.h:54
 msgid "Generic exception message"
 msgstr ""
 
-#: crypt/yapetexception.h:107
+#: crypt/yapetexception.h:134
 msgid "Retry"
 msgstr ""
 
-#: crypt/yapetexception.h:132
+#: crypt/yapetexception.h:159
 msgid "Encryption error"
 msgstr ""
 
-#: crypt/yapetexception.h:159
+#: crypt/yapetexception.h:186
 msgid "Invalid password"
 msgstr ""
 
@@ -321,32 +325,40 @@ msgstr ""
 msgid "Unable to seek to data section"
 msgstr ""
 
-#: crypt/file.cc:370 crypt/file.cc:387
+#: crypt/file.cc:334 crypt/file.cc:351
 msgid "Short read on file: "
 msgstr ""
 
-#: crypt/file.cc:419
+#: crypt/file.cc:383
 msgid "File has been modified"
 msgstr ""
 
-#: crypt/file.cc:437 crypt/file.cc:445 crypt/file.cc:551
+#: crypt/file.cc:401 crypt/file.cc:409 crypt/file.cc:521
 msgid "Short write on file: "
 msgstr ""
 
-#: crypt/file.cc:489
+#: crypt/file.cc:455
 msgid "EOF encountered while reading header"
 msgstr ""
 
-#: crypt/file.cc:496
+#: crypt/file.cc:462
 msgid "Sanity check for control field failed"
 msgstr ""
 
-#: crypt/file.cc:528
+#: crypt/file.cc:498
 msgid "Unknown exception catched"
 msgstr ""
 
-#: crypt/file.cc:583 crypt/file.cc:588
+#: crypt/file.cc:553 crypt/file.cc:558
 msgid "File type not recognized"
+msgstr ""
+
+#: crypt/file.cc:594
+msgid "Null pointer passed in ptr32"
+msgstr ""
+
+#: crypt/file.cc:596
+msgid "Null pointer passed in ptr64"
 msgstr ""
 
 #: crypt/key.cc:66
@@ -442,8 +454,8 @@ msgstr ""
 msgid "Generate Password"
 msgstr ""
 
-#: yapet/passwordrecord.cc:95 yapet/mainwindow.cc:463 yapet/mainwindow.cc:718
-#: yapet/mainwindow.cc:858 yapet/mainwindow.cc:972 yapet/mainwindow.cc:1156
+#: yapet/passwordrecord.cc:95 yapet/mainwindow.cc:469 yapet/mainwindow.cc:724
+#: yapet/mainwindow.cc:864 yapet/mainwindow.cc:978 yapet/mainwindow.cc:1162
 msgid "Q U E S T I O N"
 msgstr ""
 
@@ -452,11 +464,11 @@ msgid "Entries modified. Really cancel?"
 msgstr ""
 
 #: yapet/passwordrecord.cc:161 yapet/passwordrecord.cc:308
-#: yapet/mainwindow.cc:441 yapet/mainwindow.cc:481 yapet/mainwindow.cc:499
-#: yapet/mainwindow.cc:542 yapet/mainwindow.cc:582 yapet/mainwindow.cc:645
-#: yapet/mainwindow.cc:696 yapet/mainwindow.cc:740 yapet/mainwindow.cc:773
-#: yapet/mainwindow.cc:817 yapet/mainwindow.cc:945 yapet/mainwindow.cc:1024
-#: yapet/mainwindow.cc:1049 yapet/pwgendialog.cc:287 yapet/pwgendialog.cc:303
+#: yapet/mainwindow.cc:447 yapet/mainwindow.cc:487 yapet/mainwindow.cc:505
+#: yapet/mainwindow.cc:548 yapet/mainwindow.cc:588 yapet/mainwindow.cc:651
+#: yapet/mainwindow.cc:702 yapet/mainwindow.cc:746 yapet/mainwindow.cc:779
+#: yapet/mainwindow.cc:823 yapet/mainwindow.cc:951 yapet/mainwindow.cc:1030
+#: yapet/mainwindow.cc:1055 yapet/pwgendialog.cc:289 yapet/pwgendialog.cc:305
 #: yapet/fileopen.cc:264 yapet/passworddialog.cc:131
 msgid "E R R O R"
 msgstr ""
@@ -574,8 +586,8 @@ msgstr ""
 msgid "whline() blew it"
 msgstr ""
 
-#: yapet/mainwindow.cc:241 yapet/mainwindow.cc:271 yapet/mainwindow.cc:281
-#: yapet/mainwindow.cc:292
+#: yapet/mainwindow.cc:241 yapet/mainwindow.cc:271 yapet/mainwindow.cc:287
+#: yapet/mainwindow.cc:298
 msgid "mvprintw() blew it"
 msgstr ""
 
@@ -596,200 +608,200 @@ msgstr ""
 msgid "Screen lock time-out: %u sec"
 msgstr ""
 
-#: yapet/mainwindow.cc:278
+#: yapet/mainwindow.cc:284
 #, c-format
-msgid "%d entries %s"
+msgid "%d entries %s (V: %d)"
 msgstr ""
 
-#: yapet/mainwindow.cc:288
+#: yapet/mainwindow.cc:294
 #, c-format
 msgid "PW set: %s"
 msgstr ""
 
-#: yapet/mainwindow.cc:315 yapet/mainwindow.cc:330
+#: yapet/mainwindow.cc:321 yapet/mainwindow.cc:336
 msgid "newwin() returned NULL"
 msgstr ""
 
-#: yapet/mainwindow.cc:321 yapet/mainwindow.cc:341
+#: yapet/mainwindow.cc:327 yapet/mainwindow.cc:347
 msgid "box() blew it"
 msgstr ""
 
-#: yapet/mainwindow.cc:336
+#: yapet/mainwindow.cc:342
 msgid "werase() blew it"
 msgstr ""
 
-#: yapet/mainwindow.cc:363 yapet/mainwindow.cc:368
+#: yapet/mainwindow.cc:369 yapet/mainwindow.cc:374
 msgid "delwin() blew it"
 msgstr ""
 
-#: yapet/mainwindow.cc:382
+#: yapet/mainwindow.cc:388
 msgid "Error refreshing stdscr"
 msgstr ""
 
-#: yapet/mainwindow.cc:399
+#: yapet/mainwindow.cc:405
 msgid "Error refreshing top right window"
 msgstr ""
 
-#: yapet/mainwindow.cc:404 yapet/mainwindow.cc:577
+#: yapet/mainwindow.cc:410 yapet/mainwindow.cc:583
 msgid "Error refreshing bottom right window"
 msgstr ""
 
-#: yapet/mainwindow.cc:424 yapet/mainwindow.cc:1006
+#: yapet/mainwindow.cc:430 yapet/mainwindow.cc:1012
 msgid "Error while asking for password"
 msgstr ""
 
-#: yapet/mainwindow.cc:429
+#: yapet/mainwindow.cc:435
 msgid "Creation of file canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:435
+#: yapet/mainwindow.cc:441
 msgid " created"
 msgstr ""
 
-#: yapet/mainwindow.cc:448 yapet/mainwindow.cc:589 yapet/mainwindow.cc:652
-#: yapet/mainwindow.cc:703 yapet/mainwindow.cc:747 yapet/mainwindow.cc:780
-#: yapet/mainwindow.cc:824 yapet/mainwindow.cc:873 yapet/mainwindow.cc:987
-#: yapet/mainwindow.cc:1174
+#: yapet/mainwindow.cc:454 yapet/mainwindow.cc:595 yapet/mainwindow.cc:658
+#: yapet/mainwindow.cc:709 yapet/mainwindow.cc:753 yapet/mainwindow.cc:786
+#: yapet/mainwindow.cc:830 yapet/mainwindow.cc:879 yapet/mainwindow.cc:993
+#: yapet/mainwindow.cc:1180
 msgid "Error showing error message"
 msgstr ""
 
-#: yapet/mainwindow.cc:464
+#: yapet/mainwindow.cc:470
 msgid "The file does not exist. Do you want to create it?"
 msgstr ""
 
-#: yapet/mainwindow.cc:473
+#: yapet/mainwindow.cc:479
 msgid "File creation canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:500
+#: yapet/mainwindow.cc:506
 msgid "The specified file is not a regular file"
 msgstr ""
 
-#: yapet/mainwindow.cc:524
+#: yapet/mainwindow.cc:530
 msgid "UI error while asking for password"
 msgstr ""
 
-#: yapet/mainwindow.cc:533
+#: yapet/mainwindow.cc:539
 msgid " opened"
 msgstr ""
 
-#: yapet/mainwindow.cc:549 yapet/mainwindow.cc:1056
+#: yapet/mainwindow.cc:555 yapet/mainwindow.cc:1062
 msgid "Error while trying to show error"
 msgstr ""
 
-#: yapet/mainwindow.cc:555
+#: yapet/mainwindow.cc:561
 msgid "Error opening file"
 msgstr ""
 
-#: yapet/mainwindow.cc:559
+#: yapet/mainwindow.cc:565
 msgid "Opening of "
 msgstr ""
 
-#: yapet/mainwindow.cc:559
+#: yapet/mainwindow.cc:565
 msgid " canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:570
+#: yapet/mainwindow.cc:576
 msgid " saved"
 msgstr ""
 
-#: yapet/mainwindow.cc:628
+#: yapet/mainwindow.cc:634
 msgid "New record added"
 msgstr ""
 
-#: yapet/mainwindow.cc:630
+#: yapet/mainwindow.cc:636
 msgid "Record addition canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:645 yapet/mainwindow.cc:696
+#: yapet/mainwindow.cc:651 yapet/mainwindow.cc:702
 msgid "Error adding password entry"
 msgstr ""
 
-#: yapet/mainwindow.cc:678
+#: yapet/mainwindow.cc:684
 msgid "Record edited"
 msgstr ""
 
-#: yapet/mainwindow.cc:681
+#: yapet/mainwindow.cc:687
 msgid "Record edition canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:718
+#: yapet/mainwindow.cc:724
 msgid "Delete selected record?"
 msgstr ""
 
-#: yapet/mainwindow.cc:726
+#: yapet/mainwindow.cc:732
 msgid "Record deleted"
 msgstr ""
 
-#: yapet/mainwindow.cc:740
+#: yapet/mainwindow.cc:746
 msgid "Error showing dialog"
 msgstr ""
 
-#: yapet/mainwindow.cc:760
+#: yapet/mainwindow.cc:766
 msgid "Set sort order descending"
 msgstr ""
 
-#: yapet/mainwindow.cc:764
+#: yapet/mainwindow.cc:770
 msgid "Set sort order ascending"
 msgstr ""
 
-#: yapet/mainwindow.cc:802 yapet/mainwindow.cc:842
+#: yapet/mainwindow.cc:808 yapet/mainwindow.cc:848
 msgid "Search term not found"
 msgstr ""
 
-#: yapet/mainwindow.cc:805
+#: yapet/mainwindow.cc:811
 msgid "Search canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:858
+#: yapet/mainwindow.cc:864
 msgid "Save before quitting?"
 msgstr ""
 
-#: yapet/mainwindow.cc:889
+#: yapet/mainwindow.cc:895
 msgid "Error creating lock window"
 msgstr ""
 
-#: yapet/mainwindow.cc:905
+#: yapet/mainwindow.cc:911
 msgid "YAPET -- Locked --"
 msgstr ""
 
-#: yapet/mainwindow.cc:945
+#: yapet/mainwindow.cc:951
 msgid "Wrong password"
 msgstr ""
 
-#: yapet/mainwindow.cc:972
+#: yapet/mainwindow.cc:978
 msgid "Save before changing password?"
 msgstr ""
 
-#: yapet/mainwindow.cc:980
+#: yapet/mainwindow.cc:986
 msgid "Password change aborted"
 msgstr ""
 
-#: yapet/mainwindow.cc:1012
+#: yapet/mainwindow.cc:1018
 msgid "Password change canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:1062
+#: yapet/mainwindow.cc:1068
 msgid "Error reading from file"
 msgstr ""
 
-#: yapet/mainwindow.cc:1066
+#: yapet/mainwindow.cc:1072
 msgid "Password successfully changed"
 msgstr ""
 
-#: yapet/mainwindow.cc:1101
+#: yapet/mainwindow.cc:1107
 msgid "No file loaded"
 msgstr ""
 
-#: yapet/mainwindow.cc:1104
+#: yapet/mainwindow.cc:1110
 msgid " loaded"
 msgstr ""
 
-#: yapet/mainwindow.cc:1156
+#: yapet/mainwindow.cc:1162
 msgid "Save before loading other file?"
 msgstr ""
 
-#: yapet/mainwindow.cc:1182
+#: yapet/mainwindow.cc:1188
 msgid "O P E N  F I L E"
 msgstr ""
 
@@ -797,44 +809,44 @@ msgstr ""
 msgid "rand() (not good)"
 msgstr ""
 
-#: yapet/pwgendialog.cc:99
+#: yapet/pwgendialog.cc:101
 msgid "Error creating password generator window"
 msgstr ""
 
-#: yapet/pwgendialog.cc:108
+#: yapet/pwgendialog.cc:110
 msgid "Character Pools"
 msgstr ""
 
-#: yapet/pwgendialog.cc:115
+#: yapet/pwgendialog.cc:117
 msgid "Regenerate"
 msgstr ""
 
-#: yapet/pwgendialog.cc:136
+#: yapet/pwgendialog.cc:138
 msgid "P A S S W O R D  G E N E R A T O R"
 msgstr ""
 
-#: yapet/pwgendialog.cc:142
+#: yapet/pwgendialog.cc:144
 #, c-format
 msgid "Generated Password (using %s):"
 msgstr ""
 
-#: yapet/pwgendialog.cc:146 yapet/pwgendialog.cc:153
+#: yapet/pwgendialog.cc:148 yapet/pwgendialog.cc:155
 msgid "Error printing label"
 msgstr ""
 
-#: yapet/pwgendialog.cc:150
+#: yapet/pwgendialog.cc:152
 msgid "Password Length"
 msgstr ""
 
-#: yapet/pwgendialog.cc:287
+#: yapet/pwgendialog.cc:289
 msgid "You need to select at least one Character Pool"
 msgstr ""
 
-#: yapet/pwgendialog.cc:303
+#: yapet/pwgendialog.cc:305
 msgid "Password must have at least one character"
 msgstr ""
 
-#: yapet/pwgendialog.cc:375 yapet/fileopen.cc:351
+#: yapet/pwgendialog.cc:377 yapet/fileopen.cc:351
 msgid "Error drawing box"
 msgstr ""
 
@@ -874,102 +886,106 @@ msgstr ""
 msgid "Cannot suppress the creation of core file."
 msgstr ""
 
-#: yapet/main.cc:157
+#: yapet/main.cc:156
+msgid "Architecture: "
+msgstr ""
+
+#: yapet/main.cc:167
 msgid "SSL Version: "
 msgstr ""
 
-#: yapet/main.cc:160 yapet/main.cc:163 yapet/main.cc:165
+#: yapet/main.cc:170 yapet/main.cc:173 yapet/main.cc:175
 msgid "Curses Implementation: "
 msgstr ""
 
-#: yapet/main.cc:169
+#: yapet/main.cc:179
 msgid "Compiled with support for terminal title"
 msgstr ""
 
-#: yapet/main.cc:171
+#: yapet/main.cc:181
 msgid "Compiled without support for terminal title"
 msgstr ""
 
-#: yapet/main.cc:174
+#: yapet/main.cc:184
 msgid "Compiled with password generator"
 msgstr ""
 
-#: yapet/main.cc:176
+#: yapet/main.cc:186
 msgid "Compiled without password generator"
 msgstr ""
 
-#: yapet/main.cc:179
+#: yapet/main.cc:189
 msgid "Support for file security NOT available"
 msgstr ""
 
-#: yapet/main.cc:182
+#: yapet/main.cc:192
 msgid "Creation of core file is suppressed"
 msgstr ""
 
-#: yapet/main.cc:184
+#: yapet/main.cc:194
 msgid "Creation of core files is NOT suppressed"
 msgstr ""
 
-#: yapet/main.cc:199
+#: yapet/main.cc:209
 msgid "show copyright information"
 msgstr ""
 
-#: yapet/main.cc:202
+#: yapet/main.cc:212
 msgid "show this help text"
 msgstr ""
 
-#: yapet/main.cc:205
+#: yapet/main.cc:215
 msgid "do not read the configuration file."
 msgstr ""
 
-#: yapet/main.cc:208
+#: yapet/main.cc:218
 msgid ""
 "read the configuration file specified by <rcfile>.\n"
 "\t\t\tIf this option is not provided, it defaults to\n"
 "\t\t\t$HOME/.yapet unless -i is specified."
 msgstr ""
 
-#: yapet/main.cc:213
+#: yapet/main.cc:223
 msgid ""
 "disable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
 "\t\t\tto 0644."
 msgstr ""
 
-#: yapet/main.cc:218
+#: yapet/main.cc:228
 msgid ""
 "enable check of owner and file permissions.\n"
 "\t\t\tWhen creating new files, the file mode is set\n"
 "\t\t\tto 0600."
 msgstr ""
 
-#: yapet/main.cc:223
+#: yapet/main.cc:233
 msgid ""
 "the time-out in seconds until the screen is locked.\n"
 "\t\t\tDefault: 600 sec."
 msgstr ""
 
-#: yapet/main.cc:227
+#: yapet/main.cc:237
 msgid "show the version of "
 msgstr ""
 
-#: yapet/main.cc:230
+#: yapet/main.cc:240
 msgid "open the specified file <filename>"
 msgstr ""
 
-#: yapet/main.cc:234
+#: yapet/main.cc:244
 #, c-format
 msgid ""
 "%s stores passwords encrypted on disk using the blowfish encryption\n"
 "algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
-"for more informationabout %s."
+"for more information about %s."
 msgstr ""
 
-#: yapet/main.cc:302
+#: yapet/main.cc:312
 msgid " without argument"
 msgstr ""
 
-#: yapet/main.cc:306
+#: yapet/main.cc:316
 msgid "unknown argument"
 msgstr ""
 
@@ -1090,35 +1106,35 @@ msgstr ""
 msgid "The requested RNG is not available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:89
+#: yapet/pwgen/rng.cc:97
 msgid "Unable to initialize RNG when none is available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:99
+#: yapet/pwgen/rng.cc:107
 msgid "Unable to open /dev/random"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:106
+#: yapet/pwgen/rng.cc:114
 msgid "Unable to open /dev/urandom"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:121 yapet/pwgen/rng.cc:303
+#: yapet/pwgen/rng.cc:129 yapet/pwgen/rng.cc:342
 msgid "Unexpected RNG Engine (AUTO)"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:124 yapet/pwgen/rng.cc:305
+#: yapet/pwgen/rng.cc:132 yapet/pwgen/rng.cc:344
 msgid "The requested RNG Engine (NONE) is invalid."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:149
+#: yapet/pwgen/rng.cc:174
 msgid "Read to few bytes on /dev/[u]random."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:170
+#: yapet/pwgen/rng.cc:208
 msgid "lrand48() not available on system"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:190
+#: yapet/pwgen/rng.cc:228
 msgid "rand() not available on system"
 msgstr ""
 
@@ -1127,7 +1143,7 @@ msgid "Subpools may not be zero"
 msgstr ""
 
 #: yapet/pwgen/charpool.cc:78 yapet/pwgen/charpool.cc:160
-#: yapet/pwgen/charpool.cc:292
+#: yapet/pwgen/charpool.cc:290
 msgid "Out of memory"
 msgstr ""
 
