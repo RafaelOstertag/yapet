@@ -53,7 +53,7 @@ namespace YAPET {
         class PWGen {
             private:
                 CharacterPool* cp;
-                RNG rng;
+                RNG* rng;
                 /**
                  * @brief will hold the password.
                  *
@@ -66,7 +66,7 @@ namespace YAPET {
 
 		void sanitize_password() throw(std::logic_error);
 		char getCharFromUnusedPools() throw(std::logic_error);
-                void init (int p) throw (std::runtime_error);
+                void init (int p, RNGENGINE rnge) throw (std::runtime_error);
 
             public:
                 PWGen (SUBPOOLS p, RNGENGINE rnge=AUTO) throw (std::runtime_error);
@@ -75,10 +75,11 @@ namespace YAPET {
                 virtual ~PWGen() throw();
 
                 void setNewPool (int p) throw (std::runtime_error);
+		void setNewRNG (RNGENGINE rnge) throw (std::runtime_error);
                 void generatePassword (size_t len) throw (std::logic_error);
                 const char* getPassword() const throw();
                 inline RNGENGINE getRNGUsed() const {
-                    return rng.getRNGEngineUsed();
+                    return rng->getRNGEngineUsed();
                 }
 		inline int getCharacterPools() const {
 		    if (cp != NULL)

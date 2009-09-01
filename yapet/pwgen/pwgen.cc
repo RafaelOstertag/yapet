@@ -88,7 +88,7 @@ PWGen::getCharFromUnusedPools() throw(std::logic_error) {
 		// We must not forget to subtract 1 from the
 		// return value, else we might get an out of
 		// range error
-		size_t random_val =rng(cp->getPoolPos((YAPET::PWGEN::SUBPOOLS)pool_it,
+		size_t random_val = (*rng)(cp->getPoolPos((YAPET::PWGEN::SUBPOOLS)pool_it,
 						      &pool_start)-1); 
 		suggestion = (*cp)[pool_start + random_val];
 		return suggestion;
@@ -103,27 +103,35 @@ PWGen::getCharFromUnusedPools() throw(std::logic_error) {
 }
 
 void
-PWGen::init (int p) throw (std::runtime_error) {
+PWGen::init (int p, RNGENGINE rnge) throw (std::runtime_error) {
     cp = new CharacterPool (p);
+    rng = new RNG(rnge);
 }
 
-PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(rnge), password (NULL), password_len (0) {
-    init (p);
+PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(NULL), password (NULL), password_len (0) {
+    init (p, rnge);
     assert (cp != NULL);
+    assert (rng != NULL);
     assert (password == NULL);
 }
 
-PWGen::PWGen (int p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(rnge), password (NULL), password_len (0) {
-    init (p);
+PWGen::PWGen (int p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(NULL), password (NULL), password_len (0) {
+    init (p, rnge);
     assert (cp != NULL);
+    assert (rng != NULL);
     assert (password == NULL);
 }
 
 //
 // Copy Constructor
 //
-PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(pw.rng), password (NULL), password_len (0) {
+PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(NULL), password (NULL), password_len (0) {
+    assert (pw.cp != NULL);
+    assert (pw.rng != NULL);
     cp = new CharacterPool (* (pw.cp) );
+    rng = new RNG(*(pw.rng));
+    assert (cp != NULL);
+    assert (rng != NULL);
 
     if (pw.password != NULL) {
         assert (pw.password_len > 0);
@@ -137,7 +145,9 @@ PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(pw.rng), password (NULL)
 
 PWGen::~PWGen() throw() {
     assert (cp != NULL);
+    assert (rng != NULL);
     delete cp;
+    delete rng;
 
     if (password_len != 0) assert (password != NULL);
 
@@ -153,6 +163,15 @@ PWGen::setNewPool (int p) throw (std::runtime_error) {
     assert (cp != NULL);
     delete cp;
     cp = new CharacterPool (p);
+    assert (cp != NULL);
+}
+
+void
+PWGen::setNewRNG (RNGENGINE rnge) throw (std::runtime_error) {
+    assert (rng != NULL);
+    delete rng;
+    rng = new RNG (rnge);
+    assert (rng != NULL);
 }
 
 void
@@ -171,7 +190,7 @@ PWGen::generatePassword (size_t len) throw (std::logic_error) {
     
     for (size_t pw_it = 0; pw_it < password_len; pw_it++) {
 RESTART:
-        char suggestion = (*cp) [rng (cp->getPoolLength() ) ];
+        char suggestion = (*cp) [(*rng) (cp->getPoolLength() ) ];
 	if (static_cast<size_t>(cp->getPoolLength()) >= password_len) {
 	    // We can avoid repeating characters
 	    for (size_t pos = 0; pos < pw_it; pos++) {
@@ -240,12 +259,14 @@ PWGen::getPassword() const throw() {
 const PWGen&
 PWGen::operator= (const PWGen & pw) throw() {
     assert (cp != NULL);
+    assert (rng != NULL);
 
     if (&pw == this) return *this;
 
     delete cp;
     cp = new CharacterPool (* (pw.cp) );
-    rng = pw.rng;
+    delete rng;
+    rng = new RNG (* (pw.rng) );
 
     if (password != NULL) {
         assert (password_len > 0);
