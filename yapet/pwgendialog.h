@@ -126,8 +126,6 @@ class PWGenDialog : protected YAPET::UI::BaseWindow {
 	 * YAPET::GLOBALS::Globals
 	 */
         PWGenDialog() throw (YAPET::UI::UIException);
-	PWGenDialog(size_t pwlen) throw (YAPET::UI::UIException);
-        PWGenDialog (int pools, size_t pwlen) throw (YAPET::UI::UIException);
         virtual ~PWGenDialog();
 
         void run() throw (YAPET::UI::UIException);
