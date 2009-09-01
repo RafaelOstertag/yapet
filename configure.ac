@@ -194,6 +194,7 @@ AC_MSG_NOTICE([Checking support functions])
 AC_CHECK_FUNCS([SSLeay_version])
 
 AC_MSG_NOTICE([Checking miscellaneous properties of platform])
+AC_CHECK_SIZEOF([int *])
 AC_C_BIGENDIAN
 # Mainly used by the RNG test in tests/rng*
 AC_CHECK_FILES([/dev/urandom /dev/random])
