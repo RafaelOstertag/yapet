@@ -182,6 +182,12 @@ namespace YAPET {
     * O_TRUNC specified. The recognition string and header are copied over from
     * the former version of the file.
     *
+    * The term 32bit header refers to the FileHeader_32 struct, because of the
+    * use of int32_t for storing the time the password was set.
+    *
+    * The term 64bit header refers to the FileHeader_64 struct, because of the
+    * use of int64_t for storing the time the password was set.
+    *
     * @sa Record, FileHeader, PasswordRecord
     */
     class File {
@@ -347,6 +353,8 @@ namespace YAPET {
             void writeHeader (const BDBuffer& enc_header) throw (YAPETException);
             //! Reads the encrypted header
             BDBuffer* readHeader() const throw (YAPETException);
+	    //! Reads the encrypted header and return it decrypted
+	    void readHeader(const Key& key, FileHeader_32** ptr32, FileHeader_64** ptr64) throw(YAPETException);
             //! Validates the given key
             void validateKey (const Key& key)
             throw (YAPETException, YAPETInvalidPasswordException);
