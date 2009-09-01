@@ -153,6 +153,16 @@ void set_rlimit() {
 
 void show_version() {
     std::cout << PACKAGE_STRING << std::endl;
+    std::cout << _("Architecture: ");
+#ifdef SIZEOF_INT_P
+    std::cout << 8 * SIZEOF_INT_P << "bits";
+#endif
+#ifdef WORDS_BIGENDIAN
+    std::cout << " big endian" << std::endl;
+#else
+    std::cout << " little endian" << std::endl;
+#endif
+
 #ifdef HAVE_SSLEAY_VERSION
     std::cout << _ ("SSL Version: ") << SSLeay_version (SSLEAY_VERSION) << std::endl;
 #endif
