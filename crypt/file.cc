@@ -970,7 +970,6 @@ File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPa
     readHeader(key, &dec_header_32, &dec_header_64);
     assert(dec_header_32 != NULL || dec_header_64 != NULL);
 
-
     FileHeader_32* ptr_dec_header_32 = 
 	(dec_header_32 != NULL) ? static_cast<FileHeader_32*>(*dec_header_32) : NULL;
     FileHeader_64* ptr_dec_header_64 = 
