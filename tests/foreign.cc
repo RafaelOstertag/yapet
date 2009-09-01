@@ -41,6 +41,13 @@ int main (int, char**) {
     YAPET::File *file = NULL;
     int retval = 0;
 
+    //
+    //
+    // ################# pre 0.6 tests #################
+    //
+    //
+
+
     /*
      * 32bit little endian pre 0.6
      */
@@ -167,6 +174,174 @@ int main (int, char**) {
         key = new YAPET::Key("test1");
         file = new YAPET::File(BUILDDIR "/f64be0.5.pet", *key, false, false);
 	assert(file->getFileVersion(*key) == YAPET::VERSION_1);
+        std::list<YAPET::PartDec> list = file->read (*key);
+
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " --> no" << std::endl;
+            return 1;
+        }
+
+        std::list<YAPET::PartDec>::iterator it = list.begin();
+
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, *key, i);
+            it++;
+        }
+	delete file;
+	delete key;
+	std::cout << std::endl;
+	std::cout << " --> yes" << std::endl;
+    } catch (std::exception& ex) {
+	if (file != NULL)
+	    delete key;
+	if (key != NULL)
+	    delete key;
+        std::cout << std::endl;
+        std::cout << " --> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+
+	retval = 1;
+    }
+    file = NULL;
+    key = NULL;
+
+
+    //
+    //
+    // ################# 0.6 tests #################
+    //
+    //
+
+
+    /*
+     * 32bit little endian 0.6
+     */
+    try {
+	std::cout << " ==> 32bit little endian 0.6 (f32le0.6.pet)" << std::endl;
+        key = new YAPET::Key("test1");
+        file = new YAPET::File(BUILDDIR "/f32le0.6.pet", *key, false, false);
+	assert(file->getFileVersion(*key) == YAPET::VERSION_2);
+        std::list<YAPET::PartDec> list = file->read (*key);
+
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " --> no" << std::endl;
+            return 1;
+        }
+
+        std::list<YAPET::PartDec>::iterator it = list.begin();
+
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, *key, i);
+            it++;
+        }
+	delete file;
+	delete key;
+	std::cout << std::endl;
+	std::cout << " --> yes" << std::endl;
+    } catch (std::exception& ex) {
+	if (file != NULL)
+	    delete key;
+	if (key != NULL)
+	    delete key;
+        std::cout << std::endl;
+        std::cout << " --> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+	retval = 1;
+    }
+    file = NULL;
+    key = NULL;
+
+    /*
+     * 32bit big endian 0.6
+     */
+    try {
+	std::cout << " ==> 32bit little endian 0.6 (f32be0.6.pet)" << std::endl;
+        key = new YAPET::Key("test1");
+        file = new YAPET::File(BUILDDIR "/f32be0.6.pet", *key, false, false);
+	assert(file->getFileVersion(*key) == YAPET::VERSION_2);
+        std::list<YAPET::PartDec> list = file->read (*key);
+
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " --> no" << std::endl;
+            return 1;
+        }
+
+        std::list<YAPET::PartDec>::iterator it = list.begin();
+
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, *key, i);
+            it++;
+        }
+	delete file;
+	delete key;
+	std::cout << std::endl;
+	std::cout << " --> yes" << std::endl;
+    } catch (std::exception& ex) {
+	if (file != NULL)
+	    delete key;
+	if (key != NULL)
+	    delete key;
+        std::cout << std::endl;
+        std::cout << " --> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+	retval = 1;
+    }
+    file = NULL;
+    key = NULL;
+
+    /*
+     * 64bit little endian 0.6
+     */
+    try {
+	std::cout << " ==> 64bit little endian 0.6 (f64le0.6.pet)" << std::endl;
+
+        key = new YAPET::Key("test1");
+        file = new YAPET::File(BUILDDIR "/f64le0.6.pet", *key, false, false);
+	assert(file->getFileVersion(*key) == YAPET::VERSION_2);
+        std::list<YAPET::PartDec> list = file->read (*key);
+
+        if (list.size() != ROUNDS) {
+            std::cout << std::endl;
+            std::cout << " --> no" << std::endl;
+            return 1;
+        }
+
+        std::list<YAPET::PartDec>::iterator it = list.begin();
+
+        for (int i = 0; it != list.end(); i++) {
+            check_record (*it, *key, i);
+            it++;
+        }
+	delete file;
+	delete key;
+	std::cout << std::endl;
+	std::cout << " --> yes" << std::endl;
+    } catch (std::exception& ex) {
+	if (file != NULL)
+	    delete key;
+	if (key != NULL)
+	    delete key;
+        std::cout << std::endl;
+        std::cout << " --> no" << std::endl;
+        std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
+
+	retval = 1;
+    }
+    file = NULL;
+    key = NULL;
+
+    /*
+     * 64bit big endian 0.6
+     */
+    try {
+	std::cout << " ==> 64bit big endian 0.6 (f64be0.6.pet)" << std::endl;
+
+        key = new YAPET::Key("test1");
+        file = new YAPET::File(BUILDDIR "/f64be0.6.pet", *key, false, false);
+	assert(file->getFileVersion(*key) == YAPET::VERSION_2);
         std::list<YAPET::PartDec> list = file->read (*key);
 
         if (list.size() != ROUNDS) {
