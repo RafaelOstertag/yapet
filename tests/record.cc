@@ -2,6 +2,9 @@
 
 #include <record.h>
 #include <iostream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 struct tmp {
@@ -11,7 +14,8 @@ struct tmp {
 
 int main (int, char**) {
 #ifndef TESTS_VERBOSE
-    close(STDOUT_FILENO);
+    int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
+    dup2(stdout_redir_fd,STDOUT_FILENO);
 #endif
     std::cout << std::endl;
     tmp t;
@@ -25,4 +29,5 @@ int main (int, char**) {
     YAPET::Record<tmp> record3 (t);
     record3 = record2 = record;
     return 0;
+
 }

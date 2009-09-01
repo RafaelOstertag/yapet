@@ -10,6 +10,9 @@
 # include <iostream>
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <typeinfo>
 
@@ -19,7 +22,8 @@
 
 int main (int, char**) {
 #ifndef TESTS_VERBOSE
-    close(STDOUT_FILENO);
+    int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
+    dup2(stdout_redir_fd,STDOUT_FILENO);
 #endif
     std::cout << std::endl;
 
@@ -39,4 +43,5 @@ int main (int, char**) {
     }
 
     return 0;
+
 }

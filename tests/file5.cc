@@ -5,7 +5,12 @@
 #include <typeinfo>
 
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
+
+
 #include <iostream>
 
 #include <key.h>
@@ -23,7 +28,8 @@
 
 int main (int, char**) {
 #ifndef TESTS_VERBOSE
-    close(STDOUT_FILENO);
+    int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
+    dup2(stdout_redir_fd,STDOUT_FILENO);
 #endif
     std::cout << std::endl;
     std::cout << " ==> Be patient, this test may take a few moments ..." << std::endl;
@@ -56,4 +62,5 @@ int main (int, char**) {
 
     std::cout << std::endl;
     return 0;
+
 }
