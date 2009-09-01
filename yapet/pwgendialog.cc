@@ -168,6 +168,13 @@ PWGenDialog::PWGenDialog() throw (YAPET::UI::UIException) :
         pwlen (YAPET::GLOBALS::Globals::getPasswordLength() ),
         ckbox_options (YAPET::GLOBALS::Globals::getCharacterPools() ),
         canceled (true) {
+
+    YAPET::PWGEN::RNGENGINE requested_rng = YAPET::GLOBALS::Globals::getPWGenRNG();
+    int available_rngs = YAPET::PWGEN::RNG::getAvailableRNGs();
+    if (available_rngs & requested_rng) {
+	pwgen.setNewRNG(requested_rng);
+    }
+	
     createWindows();
 }
 
@@ -320,7 +327,7 @@ RESTART_GENBUTTON:
                 pwdisplay->setText (pwgen.getPassword() );
                 // Fall thru
             default:
-                // We want to keep on the button unless the user presses a tab key
+                // We want to stay on the button unless the user presses a tab key
                 goto RESTART_GENBUTTON;
         }
 
