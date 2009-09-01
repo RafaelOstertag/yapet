@@ -284,8 +284,16 @@ namespace YAPET {
 
                 decdata->resize (outlen + tmplen);
                 EVP_CIPHER_CTX_cleanup (&ctx);
-                Record<T>* r = new Record<T>;
-                *r = *decdata;
+		Record<T>* r = NULL;
+		try {
+		    r = new Record<T>;
+		    *r = *decdata;
+		} catch (...) {
+		    if ( r != NULL)
+			delete r;
+		    delete decdata;
+		    throw;
+		}
                 delete decdata;
                 return r;
             }
