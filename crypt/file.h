@@ -254,51 +254,6 @@ namespace YAPET {
 		    t value;
 		    uint8_t fields[sizeof(t)];
             };
-	    /**
-             * @brief Used for 16 bits little-big endian conversion.
-             *
-             * Union for converting between 16 bits little and big endian
-             * order.
-             */
-            union ENDIAN16 {
-                /**
-                 * @brief  bits unsigned integer in host order.
-                 *
-                 * 32 bits unsigned integer in host order.
-                 */
-                uint16_t value;
-                uint8_t fields[2];
-            };
-	    /**
-             * @brief Used for 32 bits little-big endian conversion.
-             *
-             * Union for converting between 32 bits little and big endian
-             * order.
-             */
-            union ENDIAN32 {
-                /**
-                 * @brief  bits unsigned integer in host order.
-                 *
-                 * 32 bits unsigned integer in host order.
-                 */
-                uint32_t value;
-                uint8_t fields[4];
-            };
-	    /**
-             * @brief Used for 64 bits little-big endian conversion.
-             *
-             * Union for converting between 64 bits little and big endian
-             * order.
-             */
-            union ENDIAN64 {
-                /**
-                 * @brief  bits unsigned integer in host order.
-                 *
-                 * 32 bits unsigned integer in host order.
-                 */
-                uint64_t value;
-                uint8_t fields[8];
-            };
 
 #ifndef WORDS_BIGENDIAN
 	    /**
