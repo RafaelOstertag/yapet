@@ -46,8 +46,16 @@ int main (int, char**) {
         PWGen pwgen3 (LETTERS);
         PWGen pwgen4 (DIGITS);
         pwgen4 = pwgen3;
-        PWGen *pwgen;
 
+
+	// Test switching of charpools and rng
+	PWGen *pwgen5 = new PWGen(ALL);
+	pwgen5->setNewPool(LETTERS);
+	pwgen5->setNewRNG(RAND); // Will fail if RAND is not available, but I
+				 // hardly doubt that RAND is not available
+	delete pwgen5;
+
+        PWGen *pwgen;
 	//
 	// Make sure we don't waste /dev/random if possible
 	//
