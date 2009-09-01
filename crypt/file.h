@@ -354,7 +354,7 @@ namespace YAPET {
             //! Reads the encrypted header
             BDBuffer* readHeader() const throw (YAPETException);
 	    //! Reads the encrypted header and return it decrypted
-	    void readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) throw(YAPETException);
+	    void readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const throw(YAPETException);
             //! Validates the given key
             void validateKey (const Key& key)
             throw (YAPETException, YAPETInvalidPasswordException);
