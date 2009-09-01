@@ -47,6 +47,8 @@ int main (int, char**) {
 	    return 1;
 	if (cfgfile1.getPWGenOther() != true)
 	    return 1;
+	if (cfgfile1.getPWGenRNG() != YAPET::PWGEN::AUTO)
+	    return 1;
 
 	std::cout << " ==> Reading file " SRCDIR "/cfgfile2.rc" << std::endl;
 	ConfigFile cfgfile2( SRCDIR "/cfgfile2.rc" );
@@ -71,6 +73,8 @@ int main (int, char**) {
 	if (cfgfile2.getPWGenSpecial() != true)
 	    return 1;
 	if (cfgfile2.getPWGenOther() != false)
+	    return 1;
+	if (cfgfile2.getPWGenRNG() != YAPET::PWGEN::RAND)
 	    return 1;
     } catch (std::exception& ex) {
 	std::cout << " ==> " << typeid (ex).name() << ": " << ex.what() << std::endl;
