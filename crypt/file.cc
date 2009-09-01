@@ -561,6 +561,114 @@ File::readHeader() const throw (YAPETException) {
 }
 
 /**
+ * New in version 0.6.
+ *
+ * It returns the header decrypted. The caller have to check the pointers
+ * returned for null values in order to determine which header to use, e.g.
+ *
+ @verbatim
+ if (ptr32 != NULL) {
+    // do something
+ } else if (ptr64 != NULL) {
+    // do something
+ } else {
+    // error
+ }
+ @endverbatim
+ *
+ * The memory allocated by the method for the records have to be freed by the
+ * caller.
+ *
+ * @param key reference to a Key object used to decrypt the header.
+ *
+ * @param ptr32 the 32bit header record. If the yapet file does not contain a
+ * FileHeader_32, NULL is returned.
+ *
+ * @param ptr64 the 64bit header record. If the yapet file does not contain a
+ * FileHeader_64, NULL is returned.
+ */
+void
+File::readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const throw(YAPETException) {
+    assert(ptr32 != NULL && ptr64 != NULL);
+    if (ptr32 == NULL)
+	throw YAPETException(_("Null pointer passed in ptr32"), NULLPOINTER);
+    if (ptr64 == NULL)
+	throw YAPETException(_("Null pointer passed in ptr64"), NULLPOINTER);
+
+    Crypt crypt (key);
+    BDBuffer* enc_header = NULL;
+
+    try {
+        enc_header = readHeader();
+	// First try to read a 32bit header
+	try {
+	    *ptr32 = crypt.decrypt<FileHeader_32> (*enc_header);
+	} catch (YAPETException& ex) {
+
+	    if (*ptr32 != NULL) {
+		delete *ptr32;
+		*ptr32 = NULL;
+	    }
+
+	    try {
+		*ptr64 = crypt.decrypt<FileHeader_64> (*enc_header);
+	    } catch (YAPETEncryptionException& ex) { // Catch invalid password
+		if (enc_header != NULL) {
+		    delete enc_header;
+		    enc_header = NULL;
+		}
+		
+		if (*ptr32 != NULL) {
+		    delete *ptr32;
+		    *ptr32 = NULL;
+		}
+		if (*ptr64 != NULL) {
+		    delete *ptr64;
+		    *ptr64 = NULL;
+		}
+		
+		throw YAPETInvalidPasswordException();
+	    } catch (YAPETException &ex) {
+		// Ok, we got another problem
+		if (*ptr64 != NULL) {
+		    delete *ptr64;
+		    *ptr64 = NULL;
+		}
+		throw;
+	    }
+	}
+    } catch (YAPETEncryptionException& ex) { // Catch invalid password
+        if (enc_header != NULL) delete enc_header;
+
+        if (*ptr32 != NULL) {
+	    delete *ptr32;
+	    *ptr32 = NULL;
+	}
+	if (*ptr64 != NULL) {
+	    delete *ptr64;
+	    *ptr64 = NULL;
+	}
+
+        throw YAPETInvalidPasswordException();
+    } catch (YAPETException& ex) {
+        if (enc_header != NULL) delete enc_header;
+
+        if (*ptr32 != NULL) {
+	    delete *ptr32;
+	    *ptr32 = NULL;
+	}
+	if (*ptr64 != NULL) {
+	    delete *ptr64;
+	    *ptr64 = NULL;
+	}
+
+        throw;
+    }
+
+    delete enc_header;
+}
+
+/**
  * Modified in version 0.6
  *
  * Validates the key provided by reading the file header, decrypting
@@ -576,56 +684,17 @@ File::readHeader() const throw (YAPETException) {
 void
 File::validateKey (const Key& key)
 throw (YAPETException, YAPETInvalidPasswordException) {
-    Crypt crypt (key);
-    BDBuffer* enc_header = NULL;
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = NULL;
     Record<FileHeader_64>* dec_header_64 = NULL;
-    FileHeader_32* ptr_dec_header_32 = NULL;
-    FileHeader_64* ptr_dec_header_64 = NULL;
 
-    try {
-        enc_header = readHeader();
-	// First try to read a 32bit header
-	try {
-	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
-	} catch (YAPETException& ex) {
+    readHeader(key, &dec_header_32, &dec_header_64);
+    assert(dec_header_32 != NULL || dec_header_64 != NULL);
 
-	    if (dec_header_32 != NULL) {
-		delete dec_header_32;
-		dec_header_32 = NULL;
-	    }
-
-	    try {
-		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
-	    } catch (YAPETException &ex) {
-		// Ok, we got another problem
-		if (dec_header_64 != NULL) {
-		    delete dec_header_64;
-		    dec_header_64 = NULL;
-		}
-		throw;
-	    }
-	}
-	if (dec_header_32 != NULL) 
-	    ptr_dec_header_32 = *dec_header_32;
-	if (dec_header_64 != NULL)
-	    ptr_dec_header_64 = *dec_header_64;
-    } catch (YAPETEncryptionException& ex) {
-        if (enc_header != NULL) delete enc_header;
-
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw YAPETInvalidPasswordException();
-    } catch (YAPETException& ex) {
-        if (enc_header != NULL) delete enc_header;
-
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw;
-    }
+    FileHeader_32* ptr_dec_header_32 = 
+	(dec_header_32 != NULL) ? static_cast<FileHeader_32*>(*dec_header_32) : NULL;
+    FileHeader_64* ptr_dec_header_64 = 
+	(dec_header_64 != NULL) ? static_cast<FileHeader_64*>(*dec_header_64) : NULL;
 
     int retval;
     if (ptr_dec_header_32 != NULL) {
@@ -638,7 +707,6 @@ throw (YAPETException, YAPETInvalidPasswordException) {
                          CONTROL_STR,
                          HEADER_CONTROL_SIZE);
     }
-    delete enc_header;
     if (dec_header_32 != NULL)
 	delete dec_header_32;
     if (dec_header_64 != NULL)
@@ -860,56 +928,17 @@ File::setNewKey (const Key& oldkey,
 int64_t
 File::getMasterPWSet (const Key& key) const
 throw (YAPETException, YAPETInvalidPasswordException) {
-    Crypt crypt (key);
-    BDBuffer* enc_header = NULL;
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = NULL;
     Record<FileHeader_64>* dec_header_64 = NULL;
-    FileHeader_32* ptr_dec_header_32 = NULL;
-    FileHeader_64* ptr_dec_header_64 = NULL;
 
-    try {
-        enc_header = readHeader();
-	// First try to read a 32bit header
-	try {
-	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
-	} catch (YAPETException& ex) {
+    readHeader(key, &dec_header_32, &dec_header_64);
+    assert(dec_header_32 != NULL || dec_header_64 != NULL);
 
-	    if (dec_header_32 != NULL) {
-		delete dec_header_32;
-		dec_header_32 = NULL;
-	    }
-
-	    try {
-		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
-	    } catch (YAPETException &ex) {
-		// Ok, we got another problem
-		if (dec_header_64 != NULL) {
-		    delete dec_header_64;
-		    dec_header_64 = NULL;
-		}
-		throw;
-	    }
-	}
-	if (dec_header_32 != NULL) 
-	    ptr_dec_header_32 = *dec_header_32;
-	if (dec_header_64 != NULL)
-	    ptr_dec_header_64 = *dec_header_64;
-    } catch (YAPETEncryptionException& ex) {
-        if (enc_header != NULL) delete enc_header;
-
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw YAPETInvalidPasswordException();
-    } catch (YAPETException& ex) {
-        if (enc_header != NULL) delete enc_header;
-
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw;
-    }
+    FileHeader_32* ptr_dec_header_32 = 
+	(dec_header_32 != NULL) ? static_cast<FileHeader_32*>(*dec_header_32) : NULL;
+    FileHeader_64* ptr_dec_header_64 = 
+	(dec_header_64 != NULL) ? static_cast<FileHeader_64*>(*dec_header_64) : NULL;
 
     int64_t t;
     if (ptr_dec_header_32 != NULL) {
@@ -918,8 +947,6 @@ throw (YAPETException, YAPETInvalidPasswordException) {
 	assert(ptr_dec_header_64 != NULL);
 	t = int_from_disk<int64_t> (ptr_dec_header_64->pwset);
     }
-
-    delete enc_header;
 
     if (dec_header_32 != NULL)
 	delete dec_header_32;
@@ -936,55 +963,18 @@ throw (YAPETException, YAPETInvalidPasswordException) {
  */
 FILE_VERSION
 File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException) {
-    Crypt crypt (key);
-    BDBuffer* enc_header = NULL;
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = NULL;
     Record<FileHeader_64>* dec_header_64 = NULL;
-    FileHeader_32* ptr_dec_header_32 = NULL;
-    FileHeader_64* ptr_dec_header_64 = NULL;
 
-    try {
-        enc_header = readHeader();
-	// First try to read a 32bit header
-	try {
-	    dec_header_32 = crypt.decrypt<FileHeader_32> (*enc_header);
-	} catch (YAPETException& ex) {
+    readHeader(key, &dec_header_32, &dec_header_64);
+    assert(dec_header_32 != NULL || dec_header_64 != NULL);
 
-	    if (dec_header_32 != NULL) {
-		delete dec_header_32;
-		dec_header_32 = NULL;
-	    }
-	    try {
-		dec_header_64 = crypt.decrypt<FileHeader_64> (*enc_header);
-	    } catch (YAPETException &ex) {
-		// Ok, we got another problem
-		if (dec_header_64 != NULL) {
-		    delete dec_header_64;
-		    dec_header_64 = NULL;
-		}
-		throw;
-	    }
-	}
-	if (dec_header_32 != NULL) 
-	    ptr_dec_header_32 = *dec_header_32;
-	if (dec_header_64 != NULL)
-	    ptr_dec_header_64 = *dec_header_64;
-    } catch (YAPETEncryptionException& ex) {
-        if (enc_header != NULL) delete enc_header;
 
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw YAPETInvalidPasswordException();
-    } catch (YAPETException& ex) {
-        if (enc_header != NULL) delete enc_header;
-
-        if (dec_header_32 != NULL) delete dec_header_32;
-	if (dec_header_64 != NULL) delete dec_header_64;
-
-        throw;
-    }
+    FileHeader_32* ptr_dec_header_32 = 
+	(dec_header_32 != NULL) ? static_cast<FileHeader_32*>(*dec_header_32) : NULL;
+    FileHeader_64* ptr_dec_header_64 = 
+	(dec_header_64 != NULL) ? static_cast<FileHeader_64*>(*dec_header_64) : NULL;
 
     FILE_VERSION v;
     if (ptr_dec_header_32 != NULL) {
@@ -993,8 +983,6 @@ File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPa
 	assert(ptr_dec_header_64 != NULL);
 	v = static_cast<FILE_VERSION>(ptr_dec_header_64->version);
     }
-
-    delete enc_header;
 
     if (dec_header_32 != NULL)
 	delete dec_header_32;
