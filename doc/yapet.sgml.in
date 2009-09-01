@@ -668,16 +668,78 @@ No file loaded
 	  <term><option>ignorerc</option></term>
 
 	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 let &yp; ignore
+	    <para>A value of 1 (one) or 0 (zero). A value of 1 lets &yp; ignore
 	    the options provided in the configuration file (see also the
-	    <option>-i</option> in <xref linkend="options" />). A value of 0 has
-	    no effect on the processing of the configuration file.</para>
+	    <option>-i</option> in <xref linkend="options" />). A value of 0
+	    has no effect on the processing of the configuration file.</para>
 
 	    <para>Default: 0</para>
 	  </listitem>
 	</varlistentry>
 
 	<!-- PWGEN_BEGIN -->
+	<varlistentry>
+	  <term><option>pwgen_rng</option></term>
+
+	  <listitem>
+	    <para>The random number generator used to generate passwords. Possible values are
+	    <variablelist>
+	      <varlistentry>
+		<term><literal>devrandom</literal></term>
+
+		<listitem>
+		  <para>Requests the use of
+		  <filename>/dev/random</filename>. This is a high-quality
+		  random number generator. However, if the system lacks
+		  entropy, reading from this device may block, thus making &yp;
+		  unresponsive.</para>
+		</listitem>
+	      </varlistentry>
+
+	      <varlistentry>
+		<term><literal>devurandom</literal></term>
+
+		<listitem>
+		  <para>Requests the use of
+		  <filename>/dev/urandom</filename>. This is a quality random
+		  number generator similar to <filename>/dev/random</filename>
+		  but not of the same quality.</para>
+
+		  <para>Using this random number generator will not block as
+		  opposite to <filename>/dev/random</filename>.</para>
+		</listitem>
+	      </varlistentry>
+
+	      <varlistentry>
+		<term><literal>lrand48</literal></term>
+
+		<listitem>
+		  <para>Requests the use of <literal>lrand48</literal>. This is
+		  low-quality random number generator and should be used only
+		  if none of the above two random number generators are
+		  available.</para>
+		</listitem>
+	      </varlistentry>
+
+	      <varlistentry>
+		<term><literal>rand</literal></term>
+
+		<listitem>
+		  <para>Requests the use of <literal>rand</literal>. This is a
+		  last resort random number generator and should not be
+		  used.</para>
+		</listitem>
+	      </varlistentry>
+	    </variablelist>
+
+	    If the random number generator requested is not available on the
+	    system, &yp; searches for a suitable alternative.
+	    </para>
+
+	    <para>Default: devurandom</para>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry>
 	  <term><option>pwgen_pwlen</option></term>
 
