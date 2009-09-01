@@ -17,21 +17,21 @@ htmldocdir = $(docdir)/html
 
 endif # !DISABLEINSTALLDOC
 
+# Needed for EXTRA_DIST
 sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
-csv2yapet.sgml.in README.Cygwin.sgml.in
+ csv2yapet.sgml.in README.Cygwin.sgml.in
 
 sgml_static_files = copyright.sgml supportedplatforms.sgml caution.sgml	\
 pwrecord.sgml license.sgml bugreport.sgml
 
-sgml_files = yapet.sgml README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml	\
-$(sgml_static_files)
+generated_sgml_files = yapet.sgml csv2yapet.sgml README.sgml README.Cygwin.sgml	\
+INSTALL.sgml DESIGN.sgml
 
 # The value of _BEGIN and _END variables will be used to replace markers in the
 # xml documention with either nothin, or xml comments. This way we can
 # include/exclude stuff from the docs without using conditional processing of
 # the xml files.
 if BUILDCSV2YAPET
-sgml_files += csv2yapet.sgml
 DOCCSV2YAPET_BEGIN =
 DOCCSV2YAPET_END =
 else
@@ -59,7 +59,7 @@ endif
 
 doxycfg_src = Doxyfile.in
 
-EXTRA_DIST = $(htmldoc_DATA) $(sgml_files) $(sed_static_files) $(sed_files) $(doxycfg_src)
+EXTRA_DIST = $(htmldoc_DATA) $(generated_sgml_files) $(sgml_static_files) $(sed_files) $(doxycfg_src)
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
@@ -76,54 +76,43 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 
 if BUILDDOC
 
-# Those files are fed to xsltproc
-sgml_html = README.sgml README.Cygwin.sgml INSTALL.sgml DESIGN.sgml yapet.sgml
-if BUILDCSV2YAPET
-sgml_html +=  csv2yapet.sgml
-endif
-
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
-sgml_man = yapet.sgml
-if BUILDCSV2YAPET
-sgml_man += csv2yapet.sgml
-endif
 
 docbook_docbook_xsl = @DOCBOOKXSL@/xhtml/docbook.xsl
 docbook_man_xsl = @DOCBOOKXSL@/manpages/docbook.xsl
 
-sed_files_target = $(sed_files:.in=)
-sgml_html_targets = $(sgml_html:.sgml=.html)
 sgml_text_target = $(sgml_text:.sgml=)
 
 if HAVEXSLTPROC
 
-$(sed_files_target): $(sed_files) Makefile
-	$(editfile) $(srcdir)/$@.in > $(builddir)/$@
+.sgml.in.sgml: Makefile
+	$(editfile) $< > $(builddir)/$@
 
-$(sgml_html_targets): $(sgml_files) $(sgml_html)
-	rm -f $(builddir)/$@
-	$(XSLTPROC) -o $(builddir)/$@ $(docbook_docbook_xsl) $(builddir)/$(@:.html=.sgml)
+.sgml.html: $(generated_sgml_files) $(sgml_static_files)
+	rm -f $@
+	$(XSLTPROC) -o $(builddir)/$@ $(docbook_docbook_xsl) $<
 
-$(sgml_text_target): $(sgml_files) $(sgml_text)
+$(sgml_text_target): $(generated_sgml_files) $(sgml_static_files) $(sgml_text)
 	$(XSLTPROC) -o $(builddir)/$@.tmp $(docbook_docbook_xsl) $(builddir)/$@.sgml
 	$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp > $(top_srcdir)/$@
 	rm $(builddir)/$@.tmp
 	touch $(builddir)/$@
 
-$(dist_man1_MANS): $(sgml_files)
+.sgml.1: $(generated_sgml_files) $(sgml_static_files)
 	rm -f $(srcdir)/$@
-	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(builddir)/$(@:.1=.sgml)
+	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(builddir)/$<
 
 clean-local:
 	rm -f $(sgml_text_target)
-	rm -f $(sgml_html_targets)
-	rm -f $(sed_files_target)
+	rm -f $(htmldoc_DATA)
+	rm -f $(generated_sgml_files)
+	rm -f Doxyfile
 
 endif # HAVEXSLTPROC
 
 endif # BUILDDOC
 
-dist-hook: $(sgml_html_targets) $(dist_man1_MANS) $(sgml_text_target)
+dist-hook: $(sgml_text_target)
 
 if HAVEDOXYGEN
 Doxyfile: Doxyfile.in
@@ -134,19 +123,16 @@ source-doc: Doxyfile
 
 endif # HAVEDOXYGEN
 
-# For fixing bug #22
-if DISABLEINSTALLDOC
-all-local: $(dist_man1_MANS)
-endif
-
 if !DISABLEINSTALLDOC
 if BUILDDOC
 
 if BUILDSOURCEDOC
-all-local: $(sgml_html_targets) $(sgml_text_target) source-doc $(dist_man1_MANS)
+all-local: $(htmldoc_DATA) $(sgml_text_target) source-doc $(dist_man1_MANS)
 else
-all-local: $(sgml_html_targets) $(sgml_text_target) $(dist_man1_MANS)
+all-local: $(htmldoc_DATA) $(sgml_text_target) $(dist_man1_MANS)
 endif # BUILDSOURCEDOC
+
+SUFFIXES = .sgml .sgml.in .html .1
 
 else # BUILDDOC
 
@@ -155,8 +141,12 @@ all-local: source-doc
 endif #BUILDSOURCEDOC
 
 endif # BUILDDOC
+else # !DISABLEINSTALLDOC
+# For fixing bug #22
+all-local: $(dist_man1_MANS)
 endif # !DISABLEINSTALLDOC
 
 maintainer-clean-local:
 	rm -rf source-doc
-	rm -f $(sgml_html_targets) $(sgml_text_target) $(sed_files_target) $(dist_man1_MANS)
+	rm -f $(dist_man1_MANS)
+
