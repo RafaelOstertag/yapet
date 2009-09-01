@@ -340,6 +340,7 @@ int main (int argc, char** argv) {
     MainWindow* mainwin = NULL;
 
     try {
+	YAPET::GLOBALS::Globals::setPWGenRNG(config.getPWGenRNG());
 	YAPET::GLOBALS::Globals::setCharacterPools(config.getCharPools());
 	YAPET::GLOBALS::Globals::setPasswordLength(config.getPWGenPWLen());
         mainwin = new MainWindow (config.getTimeout(), config.getFilesecurity() );
