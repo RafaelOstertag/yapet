@@ -148,6 +148,35 @@ ConfigFile::parseFile() {
 	    if (readOption<bool>(l, "ignorerc=", ignorerc) != OPTION_NOT_FOUND)
 		continue;
 
+	    std::string tmp;
+	    if ( (res = readOption<std::string>(l, "pwgen_rng=", tmp)) != OPTION_NOT_FOUND) {
+		if (res == OPTION_EMPTY)
+		    continue;
+
+		if (tmp == "devrandom") {
+		    pwgen_rng = YAPET::PWGEN::DEVRANDOM;
+		    continue;
+		}
+
+		if (tmp == "devurandom") {
+		    pwgen_rng = YAPET::PWGEN::DEVURANDOM;
+		    continue;
+		}
+		    
+		if (tmp == "lrand48") {
+		    pwgen_rng = YAPET::PWGEN::LRAND48;
+		    continue;
+		}
+
+		if (tmp == "rand") {
+		    pwgen_rng = YAPET::PWGEN::RAND;
+		    continue;
+		}
+
+		pwgen_rng = YAPET::PWGEN::AUTO;
+		continue;
+	    }
+
 	    if (readOption<size_t>(l, "pwgen_pwlen=", pwgen_pwlen) != OPTION_NOT_FOUND)
 		continue;
 
@@ -185,6 +214,7 @@ ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile
 					       pwgen_punct(Config::getDefCPoolPunct()),
 					       pwgen_special(Config::getDefCPoolSpecial()),
 					       pwgen_other(Config::getDefCPoolOther()),
+					       pwgen_rng(Config::getDefPWGenRNG()),
 					       pwgen_pwlen(Config::getDefPWLength())
 					       
 {
@@ -221,18 +251,19 @@ ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile
     parseFile();
 }
 
-ConfigFile::ConfigFile (const ConfigFile& cfgfile) {
-    filetoload = cfgfile.filetoload;
-    usefsecurity = cfgfile.usefsecurity;
-    locktimeout = cfgfile.locktimeout;
-    cfgfilepath = cfgfile.cfgfilepath;
-    opensuccess = cfgfile.opensuccess;
-    pwgen_letters = cfgfile.pwgen_letters;
-    pwgen_digits = cfgfile.pwgen_digits;
-    pwgen_punct = cfgfile.pwgen_punct;
-    pwgen_special = cfgfile.pwgen_special;
-    pwgen_other = cfgfile.pwgen_other;
-    pwgen_pwlen = cfgfile.pwgen_pwlen;
+ConfigFile::ConfigFile (const ConfigFile& cfgfile) : 
+    filetoload (cfgfile.filetoload),
+    usefsecurity(cfgfile.usefsecurity),
+    locktimeout (cfgfile.locktimeout),
+    cfgfilepath (cfgfile.cfgfilepath),
+    opensuccess (cfgfile.opensuccess),
+    pwgen_letters (cfgfile.pwgen_letters),
+    pwgen_digits (cfgfile.pwgen_digits),
+    pwgen_punct (cfgfile.pwgen_punct),
+    pwgen_special (cfgfile.pwgen_special),
+    pwgen_other (cfgfile.pwgen_other),
+    pwgen_rng (cfgfile.pwgen_rng),
+    pwgen_pwlen (cfgfile.pwgen_pwlen) {
 }
 
 const ConfigFile&
@@ -250,6 +281,7 @@ ConfigFile::operator= (const ConfigFile & cfgfile) {
     pwgen_punct = cfgfile.pwgen_punct;
     pwgen_special = cfgfile.pwgen_special;
     pwgen_other = cfgfile.pwgen_other;
+    pwgen_rng = cfgfile.pwgen_rng;
     pwgen_pwlen = cfgfile.pwgen_pwlen;
 
     return *this;

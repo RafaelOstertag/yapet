@@ -35,6 +35,9 @@
 # include <string>
 #endif
 
+// Used for the YAPET::PWGEN::RNGENGINE type
+#include "pwgen/rng.h"
+
 /**
  * @brief All YAPET configuration stuff is contained herein.
  *
@@ -75,6 +78,7 @@ namespace YAPET {
 		bool pwgen_punct;
 		bool pwgen_special;
 		bool pwgen_other;
+		YAPET::PWGEN::RNGENGINE pwgen_rng;
 		size_t pwgen_pwlen;
 
                 std::string getHomeDir() const;
@@ -127,6 +131,9 @@ namespace YAPET {
                 inline bool getIgnoreRC() const {
                     return ignorerc ;
                 }
+		inline YAPET::PWGEN::RNGENGINE getPWGenRNG() const {
+		    return pwgen_rng;
+		}
 		inline size_t getPWGenPWLen() const {
 		    return pwgen_pwlen;
 		}

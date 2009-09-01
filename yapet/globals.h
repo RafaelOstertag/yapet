@@ -37,6 +37,8 @@
 # include <sys/types.h>
 #endif
 
+#include "pwgen/rng.h"
+
 namespace YAPET {
     /**
      * Holding values that are globally read- and writable.
@@ -45,6 +47,7 @@ namespace YAPET {
 
         class Globals {
             private:
+		static YAPET::PWGEN::RNGENGINE pwgen_rng;
 		static int selected_character_pools;
 		static size_t selected_password_length;
                 inline Globals() {}
@@ -55,6 +58,8 @@ namespace YAPET {
                 }
 
             public:
+		static void setPWGenRNG(YAPET::PWGEN::RNGENGINE e);
+		static YAPET::PWGEN::RNGENGINE getPWGenRNG();
 		static void setCharacterPools(int cp);
 		static int getCharacterPools();
 		static void setPasswordLength(size_t pl);

@@ -42,6 +42,7 @@ const int Config::def_timeout (600);
 const bool Config::def_filesecurity (true);
 //! Default for ignoring the rc file
 const bool Config::def_ignorerc (false);
+const YAPET::PWGEN::RNGENGINE Config::def_pwgen_rng (YAPET::PWGEN::AUTO);
 const size_t Config::def_pwlen (10);
 const int Config::def_character_pools (YAPET::PWGEN::LETTERS |
 				       YAPET::PWGEN::DIGITS |
@@ -62,6 +63,10 @@ Config::getDefFilesecurity() {
 bool
  Config::getDefIgnorerc() {
     return def_ignorerc;
+}
+YAPET::PWGEN::RNGENGINE
+Config::getDefPWGenRNG() {
+    return def_pwgen_rng;
 }
 size_t
 Config::getDefPWLength() {
@@ -318,8 +323,17 @@ Config::getFilesecurity() const {
     return Config::def_filesecurity;
 }
 
-// This function is trivial, since at the time being it can only be set in the
+// These functions are trivial, since at the time being it can only be set in the
 // configuration file.
+YAPET::PWGEN::RNGENGINE
+Config::getPWGenRNG() const {
+    if (cfgfile != NULL) {
+	return cfgfile->getPWGenRNG();
+    } else {
+	return def_pwgen_rng;
+    }
+}
+
 size_t
 Config::getPWGenPWLen() const {
     if (cfgfile != NULL) {
@@ -350,9 +364,6 @@ Config::getCharPools() const {
 	return def_character_pools;
     }
 }
-
-
-
 
 const Config&
 Config::operator= (const Config & c) {

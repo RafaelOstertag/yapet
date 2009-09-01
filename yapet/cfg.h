@@ -35,6 +35,7 @@
 # include <sys/types.h>
 #endif
 
+#include "pwgen/rng.h"
 #include "consts.h"
 #include "cfgfile.h"
 
@@ -60,6 +61,8 @@ namespace YAPET {
                 static const bool def_ignorerc;
 		//! The default password length
 		static const size_t def_pwlen;
+		//! Default rng
+		static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
                 //! The default character subpools to use
                 static const int def_character_pools;
 
@@ -156,6 +159,7 @@ namespace YAPET {
                 static unsigned int getDefTimeout();
                 static bool getDefFilesecurity();
                 static bool getDefIgnorerc();
+		static YAPET::PWGEN::RNGENGINE getDefPWGenRNG();
                 static size_t getDefPWLength();
                 static int getDefCharPools();
 		static bool getDefCPoolLetters();
@@ -207,6 +211,7 @@ namespace YAPET {
                 std::string getPetFile() const;
                 int getTimeout() const;
                 bool getFilesecurity() const;
+		YAPET::PWGEN::RNGENGINE getPWGenRNG() const;
 		size_t getPWGenPWLen() const;
 		int getCharPools() const;
 

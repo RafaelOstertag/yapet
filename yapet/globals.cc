@@ -24,8 +24,19 @@
 
 using namespace YAPET::GLOBALS;
 
+YAPET::PWGEN::RNGENGINE Globals::pwgen_rng(YAPET::CONFIG::Config::getDefPWGenRNG());
 int Globals::selected_character_pools(YAPET::CONFIG::Config::getDefCharPools());
 size_t Globals::selected_password_length(YAPET::CONFIG::Config::getDefPWLength());
+
+void
+Globals::setPWGenRNG(YAPET::PWGEN::RNGENGINE e) {
+    pwgen_rng = e;
+}
+
+YAPET::PWGEN::RNGENGINE
+Globals::getPWGenRNG() {
+    return pwgen_rng;
+}
 
 void
 Globals::setCharacterPools(int cp) {
