@@ -1,6 +1,18 @@
 News
 ====
 
+YAPET 0.6
+
+      * Fixed serious bug preventing exchange of YAPET files between 32/64 bits
+        architectures.
+
+      * /dev/urandom is the default random number generator used for generating
+        passwords.
+
+      * The random number generator used for generating passwords can be
+        selected in the ~/.yapet configuration file.
+
+
 YAPET 0.5
 
       New Features:
