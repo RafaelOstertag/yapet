@@ -1,6 +1,6 @@
 # $Id$
 
-DISTCLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
+CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
 test9.pet endianess.pet corrupt.pet f32le0.5.pet f32be0.5.pet f64le0.5.pet	\
 f64be0.5.pet
@@ -159,6 +159,5 @@ endif
 
 clean-local:
 	rm -rf SunWS_cache
-	rm -f corrupt.pet foreign.pet
 
 SUFFIXES = .pet .pet.in
