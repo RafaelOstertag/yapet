@@ -239,7 +239,7 @@ RESTART:
     sanitize_password();
 #ifndef NDEBUG
     // Make sure we used at least one character from each pool
-    if (cp->numPoolsAllocated() <= password_len) {
+    if (static_cast<size_t>(cp->numPoolsAllocated()) <= password_len) {
 	assert(cp->numPoolsNotRead() == 0);
     }
 #endif
