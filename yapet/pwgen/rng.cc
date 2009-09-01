@@ -62,6 +62,8 @@
 
 using namespace YAPET::PWGEN;
 
+int RNG::rng_available = 0;
+
 void
 RNG::check_availability() throw (PWGenException) {
     if (access ("/dev/random", R_OK) == 0)
@@ -80,6 +82,12 @@ RNG::check_availability() throw (PWGenException) {
 
     if (rng_available == 0)
         throw PWGenNoRNGException();
+}
+
+int
+RNG::getAvailableRNGs() {
+    check_availability();
+    return rng_available;
 }
 
 /**
@@ -249,8 +257,7 @@ RNG::_rand (size_t ceil) throw() {
  */
 RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
         rng_initialized (false),
-        rng_used (NONE),
-        rng_available (0) {
+        rng_used (NONE) {
     check_availability();
 
     if (request != AUTO) {

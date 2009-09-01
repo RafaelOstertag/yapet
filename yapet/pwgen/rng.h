@@ -97,9 +97,9 @@ namespace YAPET {
                  *
                  * stores which rng are available.
                  */
-                int rng_available;
+                static int rng_available;
 
-                void check_availability() throw (PWGenException);
+                static void check_availability() throw (PWGenException);
                 //! Initializes the given engine.
                 void init_rng (RNGENGINE request) throw (PWGenException);
 
@@ -115,6 +115,8 @@ namespace YAPET {
                 virtual ~RNG() throw();
 
                 size_t getRandomNumber (size_t ceil) throw (PWGenException);
+
+		static int getAvailableRNGs();
 
                 RNGENGINE getRNGEngineUsed() const throw() {
                     return rng_used;
