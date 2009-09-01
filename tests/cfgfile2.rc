@@ -5,6 +5,7 @@ load=test.pet
 pwgen_pwlen=15
 pwgen_letters=0
 pwgen_digits=1
+pwgen_rng=rand
 pwgen_punct=0
 pwgen_special=1
 pwgen_other=0
