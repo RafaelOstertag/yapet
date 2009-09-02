@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yapet 0.6alpha1\n"
+"Project-Id-Version: yapet 0.6\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-09-01 17:55+0200\n"
+"POT-Creation-Date: 2009-09-01 19:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,7 +189,7 @@ msgid "Error move cursor"
 msgstr ""
 
 #: ui/listwidget.h:419 ui/listwidget.h:755 yapet/passwordrecord.cc:453
-#: yapet/mainwindow.cc:908 yapet/pwgendialog.cc:383 yapet/fileopen.cc:358
+#: yapet/mainwindow.cc:908 yapet/pwgendialog.cc:390 yapet/fileopen.cc:358
 msgid "Error refreshing window"
 msgstr ""
 
@@ -468,7 +468,7 @@ msgstr ""
 #: yapet/mainwindow.cc:548 yapet/mainwindow.cc:588 yapet/mainwindow.cc:651
 #: yapet/mainwindow.cc:702 yapet/mainwindow.cc:746 yapet/mainwindow.cc:779
 #: yapet/mainwindow.cc:823 yapet/mainwindow.cc:951 yapet/mainwindow.cc:1030
-#: yapet/mainwindow.cc:1055 yapet/pwgendialog.cc:289 yapet/pwgendialog.cc:305
+#: yapet/mainwindow.cc:1055 yapet/pwgendialog.cc:296 yapet/pwgendialog.cc:312
 #: yapet/fileopen.cc:264 yapet/passworddialog.cc:131
 msgid "E R R O R"
 msgstr ""
@@ -838,15 +838,15 @@ msgstr ""
 msgid "Password Length"
 msgstr ""
 
-#: yapet/pwgendialog.cc:289
+#: yapet/pwgendialog.cc:296
 msgid "You need to select at least one Character Pool"
 msgstr ""
 
-#: yapet/pwgendialog.cc:305
+#: yapet/pwgendialog.cc:312
 msgid "Password must have at least one character"
 msgstr ""
 
-#: yapet/pwgendialog.cc:377 yapet/fileopen.cc:351
+#: yapet/pwgendialog.cc:384 yapet/fileopen.cc:351
 msgid "Error drawing box"
 msgstr ""
 
@@ -1106,35 +1106,35 @@ msgstr ""
 msgid "The requested RNG is not available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:97
+#: yapet/pwgen/rng.cc:105
 msgid "Unable to initialize RNG when none is available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:107
+#: yapet/pwgen/rng.cc:115
 msgid "Unable to open /dev/random"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:114
+#: yapet/pwgen/rng.cc:122
 msgid "Unable to open /dev/urandom"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:129 yapet/pwgen/rng.cc:342
+#: yapet/pwgen/rng.cc:137 yapet/pwgen/rng.cc:349
 msgid "Unexpected RNG Engine (AUTO)"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:132 yapet/pwgen/rng.cc:344
+#: yapet/pwgen/rng.cc:140 yapet/pwgen/rng.cc:351
 msgid "The requested RNG Engine (NONE) is invalid."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:174
+#: yapet/pwgen/rng.cc:182
 msgid "Read to few bytes on /dev/[u]random."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:208
+#: yapet/pwgen/rng.cc:216
 msgid "lrand48() not available on system"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:228
+#: yapet/pwgen/rng.cc:236
 msgid "rand() not available on system"
 msgstr ""
 
