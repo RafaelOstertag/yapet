@@ -117,6 +117,159 @@
     </para>
   </sect1>
 
+  <sect1 id="importantchanges">
+    <title>Important Changes</title>
+
+    <sect2 id="changesversion0.6">
+      <title>Version 0.6</title>
+
+      <warning>
+	<para>
+	  The file structure of &YP; files has changed in version 0.6. You are
+	  strongly encouraged to make backup copies of your files before using
+	  &YP; 0.6.
+	</para>
+      </warning>
+
+      <para>A design flaw in &YP; may prevent the exchange of &YP; files
+      between different processor architectures (64/32 bit) due to varying
+      header sizes in &YP; files.</para>
+
+      <para>All &YP; versions prior &YP; 0.6 are affected by this issue.</para>
+
+      <para>Starting with &YP; 0.6, the header size of &YP; files remains
+      stable across processor architectures, thus exchanging &YP; files is
+      possible unimpeded.</para>
+
+      <para>&YP; 0.6 will read and write version 0.5 or earlier files. Reading,
+      deleting, and/or adding records won't update the file structure to
+      version 0.6. However, changing the master password (or setting the same
+      password again, for this matter) using &YP; 0.6 will update the file
+      version to 0.6.</para>
+
+      <para>&YP; prior version 0.6 can read and write version 0.6 files, but it
+      might be observed that the date when the master password was last changed
+      is displayed incorrectly. &YP; prior 0.5 will update the file structure
+      to pre-version 0.6 upon master password change. See <xref
+      linkend="tab.ver0.5compatsmall" /> for an overview of the compatibility
+      issues in &YP; 0.5 or earlier.</para>
+
+      <para>&YP; 0.6 has no troubles reading files created on any architecture
+      using any &YP; version.</para>
+
+      <para>Refer to the <filename>DESIGN</filename> file for further
+      information on this issue.</para>
+
+      <table id="tab.ver0.5compatsmall">
+	<title>File Compatibility Matrix of &YP; 0.5 or earlier</title>
+
+	<tgroup cols="9" align="left" colsep="1" rowsep="1">
+	  <colspec colname="proc" />
+	  <colspec colname="f32le0.5" align="center" />
+	  <colspec colname="f64le0.5" align="center" />
+	  <colspec colname="f32be0.5" align="center" />
+	  <colspec colname="f64be0.5" align="center" />
+	  <colspec colname="f32le0.6" align="center" />
+	  <colspec colname="f64le0.6" align="center" />
+	  <colspec colname="f32be0.6" align="center" />
+	  <colspec colname="f64be0.6" align="center" />
+
+	  <thead>
+	    <row>
+	      <entry colname="proc" morerows="2">
+		&YP; running on
+	      </entry>
+	      <entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier Files</entry>
+	      <entry namest="f32le0.6" nameend="f64be0.6">Version 0.6 files</entry>
+	    </row>
+	    <!-- Endianess header -->
+	    <row>
+	      <entry namest="f32le0.5" nameend="f64le0.5">Little Endian</entry>
+	      <entry namest="f32be0.5" nameend="f64be0.5">Big Endian</entry>
+	      <entry namest="f32le0.6" nameend="f64le0.6">Little Endian</entry>
+	      <entry namest="f32be0.6" nameend="f64be0.6">Big Endian</entry>
+	    </row>
+	    <!-- 32/64bit -->
+	    <row>
+	      <entry colname="f32le0.5">32bit</entry>
+	      <entry colname="f64le0.5">64bit</entry>
+	      <entry colname="f32be0.5">32bit</entry>
+	      <entry colname="f64be0.5">64bit</entry>
+	      <entry colname="f32le0.6">32bit</entry>
+	      <entry colname="f64le0.6">64bit</entry>
+	      <entry colname="f32be0.6">32bit</entry>
+	      <entry colname="f64be0.6">64bit</entry>
+	    </row>
+	  </thead>
+
+	  <!-- Compatibility (Data) -->
+	  <tbody>
+
+	    <!-- 32 bit little endian -->
+
+	    <row>
+	      <entry colname="proc">Little Endian 32bit</entry>
+	      <entry colname="f32le0.5">yes</entry>
+	      <entry colname="f64le0.5">yes</entry>
+	      <entry colname="f32be0.5">yes</entry>
+	      <entry colname="f64be0.5">yes</entry>
+	      <entry colname="f32le0.6">yes</entry>
+	      <entry colname="f64le0.6">yes</entry>
+	      <entry colname="f32be0.6">yes</entry>
+	      <entry colname="f64be0.6">yes</entry>
+	    </row>
+
+	    <!-- 64 bit little endian -->
+
+	    <row>
+	      <entry colname="proc">Little Endian 64bit</entry>
+	      <entry colname="f32le0.5">no</entry>
+	      <entry colname="f64le0.5">yes</entry>
+	      <entry colname="f32be0.5">no</entry>
+	      <entry colname="f64be0.5">yes</entry>
+	      <entry colname="f32le0.6">yes</entry>
+	      <entry colname="f64le0.6">yes</entry>
+	      <entry colname="f32be0.6">yes</entry>
+	      <entry colname="f64be0.6">yes</entry>
+	    </row>
+
+	    <!-- 32 bit big endian -->
+
+	    <row>
+	      <entry colname="proc">Big Endian 32bit</entry>
+	      <entry colname="f32le0.5">yes</entry>
+	      <entry colname="f64le0.5">yes</entry>
+	      <entry colname="f32be0.5">yes</entry>
+	      <entry colname="f64be0.5">yes</entry>
+	      <entry colname="f32le0.6">yes</entry>
+	      <entry colname="f64le0.6">yes</entry>
+	      <entry colname="f32be0.6">yes</entry>
+	      <entry colname="f64be0.6">yes</entry>
+	    </row>
+
+	    <!-- 64 bit big endian -->
+
+	    <row>
+	      <entry colname="proc">Big Endian 64bit</entry>
+	      <entry colname="f32le0.5">no</entry>
+	      <entry colname="f64le0.5">yes</entry>
+	      <entry colname="f32be0.5">no</entry>
+	      <entry colname="f64be0.5">yes</entry>
+	      <entry colname="f32le0.6">yes</entry>
+	      <entry colname="f64le0.6">yes</entry>
+	      <entry colname="f32be0.6">yes</entry>
+	      <entry colname="f64be0.6">yes</entry>
+	    </row>
+
+	  </tbody>
+
+	</tgroup>
+
+      </table>
+
+    </sect2>
+  </sect1>
+
   <sect1 id="installation">
     <title>Installation</title>
 
