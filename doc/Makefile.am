@@ -85,22 +85,43 @@ sgml_text_target = $(sgml_text:.sgml=)
 
 if HAVEXSLTPROC
 
+# For silent rules
+sed_verbose = $(sed_verbose_$(V))
+sed_verbose_ = $(sed_verbose_$(AM_DEFAULT_VERBOSITY))
+sed_verbose_0 = @echo "  SED    $<";
+# For silent rules
+rm_verbose = $(rm_verbose_$(V))
+rm_verbose_ = $(rm_verbose_$(AM_DEFAULT_VERBOSITY))
+rm_verbose_0 = @echo "  RM     $@";
+# For silent rules
+xsl_verbose = $(xsl_verbose_$(V))
+xsl_verbose_ = $(xsl_verbose_$(AM_DEFAULT_VERBOSITY))
+xsl_verbose_0 = @echo "  XSLT   $@";
+# For silent rules
+touch_verbose = $(touch_verbose_$(V))
+touch_verbose_ = $(touch_verbose_$(AM_DEFAULT_VERBOSITY))
+touch_verbose_0 = @echo "  TOUCH  $@";
+# For silent rules
+lynx_verbose = $(lynx_verbose_$(V))
+lynx_verbose_ = $(lynx_verbose_$(AM_DEFAULT_VERBOSITY))
+lynx_verbose_0 = @echo "  LYNX   $@";
+
 .sgml.in.sgml: Makefile
-	$(editfile) $< > $(builddir)/$@
+	$(sed_verbose)$(editfile) $< > $(builddir)/$@
 
 .sgml.html: $(generated_sgml_files) $(sgml_static_files)
-	rm -f $@
-	$(XSLTPROC) -o $(builddir)/$@ $(docbook_docbook_xsl) $<
+	$(rm_verbose)rm -f $@
+	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@ $(docbook_docbook_xsl) $<
 
 $(sgml_text_target): $(generated_sgml_files) $(sgml_static_files) $(sgml_text)
-	$(XSLTPROC) -o $(builddir)/$@.tmp $(docbook_docbook_xsl) $(builddir)/$@.sgml
-	$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp > $(top_srcdir)/$@
-	rm $(builddir)/$@.tmp
-	touch $(builddir)/$@
+	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@.tmp $(docbook_docbook_xsl) $(builddir)/$@.sgml
+	$(lynx_verbose)$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp > $(top_srcdir)/$@
+	$(rm_verbose)rm $(builddir)/$@.tmp
+	$(touch_verbose)touch $(builddir)/$@
 
 .sgml.1: $(generated_sgml_files) $(sgml_static_files)
-	rm -f $(srcdir)/$@
-	$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(builddir)/$<
+	$(rm_verbose)rm -f $(srcdir)/$@
+	$(xsl_verbose)$(XSLTPROC) -o $(srcdir)/$@ $(docbook_man_xsl) $(builddir)/$<
 
 clean-local:
 	rm -f $(sgml_text_target)
