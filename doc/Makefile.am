@@ -105,6 +105,10 @@ touch_verbose_0 = @echo "  TOUCH  $@";
 lynx_verbose = $(lynx_verbose_$(V))
 lynx_verbose_ = $(lynx_verbose_$(AM_DEFAULT_VERBOSITY))
 lynx_verbose_0 = @echo "  LYNX   $@";
+# For silent rules
+w3m_verbose = $(w3m_verbose_$(V))
+w3m_verbose_ = $(w3m_verbose_$(AM_DEFAULT_VERBOSITY))
+w3m_verbose_0 = @echo "  W3M    $@";
 
 .sgml.in.sgml: Makefile
 	$(sed_verbose)$(editfile) $< > $(builddir)/$@
@@ -114,9 +118,13 @@ lynx_verbose_0 = @echo "  LYNX   $@";
 	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@ $(docbook_docbook_xsl) $<
 
 $(sgml_text_target): $(generated_sgml_files) $(sgml_static_files) $(sgml_text)
-	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@.tmp $(docbook_docbook_xsl) $(builddir)/$@.sgml
-	$(lynx_verbose)$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp > $(top_srcdir)/$@
-	$(rm_verbose)rm $(builddir)/$@.tmp
+	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@.tmp.html $(docbook_docbook_xsl) $(builddir)/$@.sgml
+if HAVEW3M
+	$(w3m_verbose)$(W3M) -S -dump $(builddir)/$@.tmp.html > $(top_srcdir)/$@
+else
+	$(lynx_verbose)$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp.html > $(top_srcdir)/$@
+endif
+	$(rm_verbose)rm $(builddir)/$@.tmp.html
 	$(touch_verbose)touch $(builddir)/$@
 
 .sgml.1: $(generated_sgml_files) $(sgml_static_files)
@@ -128,6 +136,7 @@ clean-local:
 	rm -f $(htmldoc_DATA)
 	rm -f $(generated_sgml_files)
 	rm -f Doxyfile
+	rm -f *.tmp.html
 
 endif # HAVEXSLTPROC
 
