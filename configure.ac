@@ -185,7 +185,7 @@ AC_COMPILE_IFELSE(
 	AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
 
 AC_MSG_NOTICE([Checking encryption functions])
-AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_iv_length EVP_CIPHER_CTX_key_length EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
+AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
 	[],
 	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
 AC_MSG_NOTICE([Checking support functions])
