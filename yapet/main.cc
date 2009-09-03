@@ -155,7 +155,7 @@ void show_version() {
     std::cout << PACKAGE_STRING << std::endl;
     std::cout << _("Architecture: ");
 #ifdef SIZEOF_INT_P
-    std::cout << 8 * SIZEOF_INT_P << "bits";
+    std::cout << 8 * SIZEOF_INT_P << "bit";
 #endif
 #ifdef WORDS_BIGENDIAN
     std::cout << " big endian" << std::endl;
