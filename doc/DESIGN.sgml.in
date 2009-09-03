@@ -152,17 +152,20 @@
 	</mediaobject>
       </figure>
 
-      <para>The decrypted header
-	(<xref linkend="fig.decryptedheader"/>) is 25 bytes in
-	size. The first byte indicates the version of the file. The
-	next 20 bytes are used as control string. After decryption,
-	the control string is compared to the predefined clear text
-	control string, in order to find out whether or not the key
-	used to decrypt was the same used to encrypt.</para>
+      <sect3 id="prev0.6_header">
+	<title>Pre Version 0.6 Header</title>
 
-      <figure id="fig.decryptedheader">
-	<title>Decrypted Header</title>
-	<mediaobject>
+	<para>The decrypted header (<xref
+	linkend="fig.decryptedheaderpre0.6"/>) is 25 bytes in size. The first
+	byte indicates the version of the file. The next 20 bytes are used as
+	control string. After decryption, the control string is compared to the
+	predefined clear text control string, in order to find out whether or
+	not the key used to decrypt was the same used to encrypt. The control
+	string holds all characters from A to Z.</para>
+
+	<figure id="fig.decryptedheaderpre0.6">
+	  <title>Pre Version 0.6 Decrypted Header</title>
+	  <mediaobject>
 	  <textobject>
 <screen>
 +--------+
@@ -177,8 +180,406 @@
 +--------+--------+--------+
 </screen>
 	  </textobject>
-	</mediaobject>
-      </figure>
+	  </mediaobject>
+	</figure>
+
+	<para>The Version field holds the value 1
+	(<varname>YAPET::VERSION_1</varname>).</para>
+
+	<para>The length of the header is either 25 bytes on 32bit
+	architectures, or 29 bytes on 64bit architectures.</para>
+
+	<para>This is considered as design flaw, thus starting from &YP; 0.6,
+	the version 0.6 header was introduced, providing a stable size across
+	platforms (see <xref linkend="v0.6_header" />).</para>
+      </sect3>
+
+      <sect3 id="v0.6_header">
+	<title>Version 0.6 Header</title>
+
+	<para>The pre version 0.6 header was designed with the uneducated
+	assumption that <varname>time_t</varname> is always 4 bytes in
+	size. This is not the case. Therefore, the version 0.6 header uses 64
+	bits for the password set field, regardless of the architecture, as
+	shown in <xref linkend="fig.decryptedheader0.6" />. The Version field
+	will hold the value 2 (<varname>YAPET::VERSION_2</varname>).</para>
+
+	<para>Thus, the new header has always a size of 29 bytes, hence being
+	stable across platforms.</para>
+
+	<figure id="fig.decryptedheader0.6">
+	  <title>Version 0.6 Decrypted Header</title>
+	  <mediaobject>
+	  <textobject>
+<screen>
++--------+
+|Version |
+| 1 byte |
++--------+--------+--------+--------+--------+--------+--...---+
+|                     Control String                           |
+|                        20 bytes                              |
++--------+--------+--------+--------+--------+--------+--...---+--------+
+|            Time when the Password was set (8 bytes)                   |
+|                                                                       |
++--------+--------+--------+--------+--------+--------+--------+--------+
+</screen>
+	  </textobject>
+	  </mediaobject>
+	</figure>
+
+	<para>&YP; 0.6 or later is still able to read pre-version 0.6 headers
+	in order to maintain backwards compatibility with earlier releases. It
+	will however write a version 0.6 header upon password change.</para>
+
+	<para>&YP; 0.5 or earlier is able to read version 0.6 headers. If the
+	master password on a version 0.6 file is changed using &YP; 0.5 or earlier,
+	it will automatically become a pre-version 0.6 file, and the
+	restrictions for version 0.5 applies.</para>
+
+	<para><xref linkend="tab.ver0.5compat"/> lists the compatibility
+	between different processor architectures and &YP; 0.5.</para>
+
+	<para>The tests were conducted mainly on Linux boxes.</para>
+
+	<table id="tab.ver0.5compat">
+	  <title>File Compatibility Matrix of &YP; 0.5 or earlier</title>
+
+	  <tgroup cols="11" align="left" colsep="1" rowsep="1">
+	    <colspec colname="vendianess" />
+	    <colspec colname="vbits" />
+	    <colspec colname="proc" />
+	    <colspec colname="f32le0.5" align="center" />
+	    <colspec colname="f64le0.5" align="center" />
+	    <colspec colname="f32be0.5" align="center" />
+	    <colspec colname="f64be0.5" align="center" />
+	    <colspec colname="f32le0.6" align="center" />
+	    <colspec colname="f64le0.6" align="center" />
+	    <colspec colname="f32be0.6" align="center" />
+	    <colspec colname="f64be0.6" align="center" />
+
+	    <thead>
+	      <!-- Version header -->
+	      <row>
+		<entry namest="vendianiess" nameend="proc" morerows="2">
+		  &YP; running on
+		</entry>
+		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier Files</entry>
+		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6 files</entry>
+	      </row>
+	      <!-- Endianess header -->
+	      <row>
+		<entry namest="f32le0.5" nameend="f64le0.5">Little Endian</entry>
+		<entry namest="f32be0.5" nameend="f64be0.5">Big Endian</entry>
+		<entry namest="f32le0.6" nameend="f64le0.6">Little Endian</entry>
+		<entry namest="f32be0.6" nameend="f64be0.6">Big Endian</entry>
+	      </row>
+	      <!-- 32/64bit -->
+	      <row>
+		<entry colname="f32le0.5">32bit</entry>
+		<entry colname="f64le0.5">64bit</entry>
+		<entry colname="f32be0.5">32bit</entry>
+		<entry colname="f64be0.5">64bit</entry>
+		<entry colname="f32le0.6">32bit</entry>
+		<entry colname="f64le0.6">64bit</entry>
+		<entry colname="f32be0.6">32bit</entry>
+		<entry colname="f64be0.6">64bit</entry>
+	      </row>
+	    </thead>
+
+	    <!-- Compatibility (Data) -->
+	    <tbody>
+
+	      <!-- 32 bit little endian -->
+
+	      <row>
+		<entry colname="vendianess" morerows="5">
+		  <simpara>Little</simpara>
+		  <simpara>Endian</simpara>
+		</entry>
+		<entry colname="vbits"  morerows="2">
+		  32bit
+		</entry>
+		<entry colname="proc">ARM XScale</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnote
+		id="fnote.dateissue"><para>The password set field will be
+		incorrectly read and displayed as <literal>Thu Jan 1 01:00:00
+		1970</literal> in &YP;.</para></footnote></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">i386</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">MIPS Loongson</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <!-- 64 bit little endian -->
+
+	      <row>
+		<entry colname="vbits"  morerows="2">
+		  64bit
+		</entry>
+		<entry colname="proc">AMD Opteron</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">IA64</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+
+	      <row>
+		<entry colname="proc">Xeon</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+
+	      <!-- 32 bit big endian -->
+
+	      <row>
+		<entry colname="vendianess" morerows="5">
+		  <simpara>Big</simpara>
+		  <simpara>Endian</simpara>
+		</entry>
+		<entry colname="vbits"  morerows="3">
+		  32bit
+		</entry>
+		<entry colname="proc">PA-RISC</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">PowerPC G4</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">PowerPC G5</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">SPARC</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64le0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f64be0.6">yes<footnoteref linkend="fnote.dateissue" /></entry>
+	      </row>
+
+	      <!-- 64 bit big endian -->
+
+	      <row>
+		<entry colname="vbits"  morerows="1">
+		  64bit
+		</entry>
+		<entry colname="proc">PowerPC G5</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	      <row>
+		<entry colname="proc">SPARC</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes<footnoteref linkend="fnote.dateissue" /></entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	    </tbody>
+	  </tgroup>
+	</table>
+
+	<para><xref linkend="tab.ver0.5compat" /> boils down to <xref linkend="tab.ver0.5compatsmall" /></para>
+
+	<table id="tab.ver0.5compatsmall">
+	  <title>Summary of File Compatibility Matrix of &YP; 0.5 or earlier</title>
+
+	  <tgroup cols="9" align="left" colsep="1" rowsep="1">
+	    <colspec colname="proc" />
+	    <colspec colname="f32le0.5" align="center" />
+	    <colspec colname="f64le0.5" align="center" />
+	    <colspec colname="f32be0.5" align="center" />
+	    <colspec colname="f64be0.5" align="center" />
+	    <colspec colname="f32le0.6" align="center" />
+	    <colspec colname="f64le0.6" align="center" />
+	    <colspec colname="f32be0.6" align="center" />
+	    <colspec colname="f64be0.6" align="center" />
+	    
+	    <thead>
+	      <row>
+		<entry colname="proc" morerows="2">
+		  &YP; running on
+		</entry>
+		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier Files</entry>
+		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6 files</entry>
+	      </row>
+	      <!-- Endianess header -->
+	      <row>
+		<entry namest="f32le0.5" nameend="f64le0.5">Little Endian</entry>
+		<entry namest="f32be0.5" nameend="f64be0.5">Big Endian</entry>
+		<entry namest="f32le0.6" nameend="f64le0.6">Little Endian</entry>
+		<entry namest="f32be0.6" nameend="f64be0.6">Big Endian</entry>
+	      </row>
+	      <!-- 32/64bit -->
+	      <row>
+		<entry colname="f32le0.5">32bit</entry>
+		<entry colname="f64le0.5">64bit</entry>
+		<entry colname="f32be0.5">32bit</entry>
+		<entry colname="f64be0.5">64bit</entry>
+		<entry colname="f32le0.6">32bit</entry>
+		<entry colname="f64le0.6">64bit</entry>
+		<entry colname="f32be0.6">32bit</entry>
+		<entry colname="f64be0.6">64bit</entry>
+	      </row>
+	    </thead>
+	      
+	    <!-- Compatibility (Data) -->
+	    <tbody>
+
+	      <!-- 32 bit little endian -->
+
+	      <row>
+		<entry colname="proc">Little Endian 32bit</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	      <!-- 64 bit little endian -->
+
+	      <row>
+		<entry colname="proc">Little Endian 64bit</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	      <!-- 32 bit big endian -->
+
+	      <row>
+		<entry colname="proc">Big Endian 32bit</entry>
+		<entry colname="f32le0.5">yes</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">yes</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	      <!-- 64 bit big endian -->
+
+	      <row>
+		<entry colname="proc">Big Endian 64bit</entry>
+		<entry colname="f32le0.5">no</entry>
+		<entry colname="f64le0.5">yes</entry>
+		<entry colname="f32be0.5">no</entry>
+		<entry colname="f64be0.5">yes</entry>
+		<entry colname="f32le0.6">yes</entry>
+		<entry colname="f64le0.6">yes</entry>
+		<entry colname="f32be0.6">yes</entry>
+		<entry colname="f64be0.6">yes</entry>
+	      </row>
+
+	    </tbody>
+
+	  </tgroup>
+
+	</table>
+      </sect3>
+
     </sect2>
 
     <sect2 id="passwordrecord">
