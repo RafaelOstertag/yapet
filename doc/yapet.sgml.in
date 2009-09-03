@@ -839,7 +839,7 @@ No file loaded
 +--------------------------------------+
 | File permission check: enabled       |
 | Screen lock time-out: 600 sec        |
-| 1 entries (+)                        |
+| 1 entries (+)  (V: 1)                |
 | PW set: Sat Aug 22 11:49:46 2009     |
 +--------------------------------------+
 </screen>
@@ -856,10 +856,16 @@ No file loaded
       locked.</para>
 
       <para>The third line is giving a count of the password records in the
-      currently loaded file. The the <guilabel>(+)</guilabel> sign indicates
+      currently loaded file. The <guilabel>(+)</guilabel> sign indicates
       that there are unsaved modifications in one or more password
       records. Absence of this sign indicates that no changes have been made to
       the records.</para>
+
+      <para>The <guilabel>(V: 1)</guilabel> label indicates that the file
+      currently loaded was created with &yp; version 0.5 or earlier. A file
+      created with version 0.6 or a file created with &yp; version prior 0.6
+      having its master password changed using &yp; 0.6 will display
+      <guilabel>(V: 2)</guilabel>.</para>
       
       <para>The fourth and last line shows the date the current master password
       has been set.</para>
