@@ -1,5 +1,14 @@
 # $Id$
 
+# For silent rules
+cpy_verbose = $(cpy_verbose_$(V))
+cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
+cpy_verbose_0 = @echo "  CPY    $@";
+# For silent rules
+chmod_verbose = $(chmod_verbose_$(V))
+chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
+chmod_verbose_0 = @echo "  CHMOD  $@";
+
 CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
 test9.pet endianess.pet corrupt.pet f32le0.5.pet f32be0.5.pet f64le0.5.pet	\
@@ -23,8 +32,8 @@ test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
-	cp $< $(builddir)/$@
-	chmod u=rw $(builddir)/$@
+	$(cpy_verbose)cp $< $(builddir)/$@
+	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
 check_PROGRAMS = endianess key record bdbuffer enc partdec file file2 file3 file4 file5	\
 corrupt foreign cfgfile1
