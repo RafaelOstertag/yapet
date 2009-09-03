@@ -9,6 +9,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_ARG_VAR([AR], [ar command])
 AC_ARG_VAR([DOXYGEN],[doxygen command])
 AC_ARG_VAR([LYNX], [lynx command])
+AC_ARG_VAR([W3M], [w3m command])
 AC_ARG_VAR([XSLTPROC], [xsltproc command])
 
 # Progs
@@ -23,6 +24,7 @@ AC_PROG_MKDIR_P
 AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
+AC_CHECK_PROG([W3M], [w3m], [w3m], [no])
 AC_USE_SYSTEM_EXTENSIONS
 AC_LANG([C++])
 
@@ -90,7 +92,7 @@ if test x$my_enablepwgen = xyes ; then
    AC_DEFINE([ENABLE_PWGEN],[1], [Define if you want to build support for the password generator])
 fi
 
-if test x$LYNX = xno || test x$XSLTPROC = xno ; then
+if ( test x$LYNX = xno && test x$W3M = xno ) || test x$XSLTPROC = xno ; then
    my_builddoc=no
 fi
 
@@ -204,7 +206,8 @@ AM_GNU_GETTEXT
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
 AM_CONDITIONAL([BUILDSOURCEDOC], [test x$my_buildsourcedoc = xyes])
 AM_CONDITIONAL([HAVEDOXYGEN], [test x$DOXYGEN != xno])
-AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno -a x$LYNX != xno])
+AM_CONDITIONAL([HAVEXSLTPROC], [test x$XSLTPROC != xno && ( test x$LYNX != xno || test x$W3M != xno ) ])
+AM_CONDITIONAL([HAVEW3M], [ test x$W3M != xno ])
 AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
@@ -236,6 +239,7 @@ echo ""
 echo "Doxygen             : $DOXYGEN"
 echo "xsltproc            : $XSLTPROC"
 echo "Lynx                : $LYNX"
+echo "w3m                 : $W3M"
 echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
 echo "Enable assert       : $my_assert"
