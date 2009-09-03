@@ -213,8 +213,9 @@
 	  ships with pre-built documentation files.</para>
 
 	  <para>This option depends on the two applications
-	  <command>xsltproc</command> and <command>lynx</command>. They need to
-	  be installed on the system and to be found by
+	  <command>xsltproc</command> and
+	  <command>lynx</command>/<command>w3m</command> . They need to be
+	  installed on the system and to be found by
 	  <command>configure</command> else setting this option won't have any
 	  effect.</para>
 	</listitem>
