@@ -1,7 +1,6 @@
 # $Id$
 
-AUTOMAKE_OPTIONS = check-news dist-bzip2
-DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc --enable-install-doc --enable-pwgen --enable-assert
+DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc --enable-install-doc --enable-pwgen --enable-assert --enable-silent-rules
 
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
 INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h BUGS
