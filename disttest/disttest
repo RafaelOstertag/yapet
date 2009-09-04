@@ -37,7 +37,7 @@ CWD=`pwd`
 SCRIPTDIR=`dirname $0`
 DATESTARTED=`date "+%FT%T"`
 GLOBALLOGFILE=${TESTBASE_DIR}/testlog-${DATESTARTED}
-MAKETARGETS=(all check clean)
+MAKETARGETS=(all check install install-check clean)
 
 COMPILERPROFILES=""
 if [ ! -z "$2" -a -f "$2" ]
