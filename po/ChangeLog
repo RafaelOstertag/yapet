@@ -1,8 +1,14 @@
+2009-09-04  Rafael Ostertag  <rafi@guengel.ch>
+
+	* de_CH.po, de_DE.po, de_AT.po: Have been dropped and replaced by
+	de.po (as of version 0.5)
+	* de.po: The only translation file for German (as of version 0.5)
+
 2009-04-11  Rafael Ostertag  <rafi@guengel.ch>
 
 	* de_CH.po: German translation.
-	* de_AT.po: Transient austrian translation using de_CH.po.
-	* de_DE.po: Transient german translation using de_CH.po.
+	* de_AT.po: Transient Austrian translation using de_CH.po.
+	* de_DE.po: Transient German translation using de_CH.po.
 
 2009-03-26  gettextize  <bug-gnu-gettext@gnu.org>
 
