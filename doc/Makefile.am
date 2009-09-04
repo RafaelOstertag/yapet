@@ -142,7 +142,7 @@ endif # HAVEXSLTPROC
 
 endif # BUILDDOC
 
-dist-hook: $(sgml_text_target)
+dist-hook: $(sgml_text_target) $(htmldoc_DATA) $(dist_man1_MANS)
 
 if HAVEDOXYGEN
 Doxyfile: Doxyfile.in
