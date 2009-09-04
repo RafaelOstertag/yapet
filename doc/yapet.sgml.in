@@ -81,7 +81,7 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para>&yp; stores passwords and associated information (refered to as
+    <para>&yp; stores passwords and associated information (referred to as
     <firstterm>password records</firstterm>) in files encrypted on disk.</para>
 
     <para>&yp; does not impose a limit of password records per file and the
@@ -745,7 +745,7 @@ No file loaded
 
 	  <listitem>
 	    <para>A positive integer greater than zero specifying the default
-	    password lenght used by the Password Generator Dialog.</para>
+	    password length used by the Password Generator Dialog.</para>
 
 	    <para>Default: 10</para>
 	  </listitem>
@@ -866,7 +866,7 @@ No file loaded
       created with version 0.6 or a file created with &yp; version prior 0.6
       having its master password changed using &yp; 0.6 will display
       <guilabel>(V: 2)</guilabel>.</para>
-      
+
       <para>The fourth and last line shows the date the current master password
       has been set.</para>
 

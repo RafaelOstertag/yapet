@@ -109,7 +109,7 @@
     -->
     <refsect2 id="sourcefileformat">
       <title>Source File Format</title>
-      
+
       <para>The source file <replaceable>src</replaceable> to be converted has
       to be organized as CSV file. The default character for delimiting the
       fields is ',' (comma) unless specified differently on the command line
@@ -132,7 +132,7 @@
 	<tgroup cols="2">
 	  <colspec colname="colnum" align="center" />
 	  <colspec colname="desc" align="left" />
-	  
+
 	  <thead>
 	    <row>
 	      <entry>Column #</entry>
@@ -144,22 +144,22 @@
 	      <entry>1</entry>
 	      <entry align="left">Name</entry>
 	    </row>
-	    
+
 	    <row>
 	      <entry>2</entry>
 	      <entry>Host</entry>
 	    </row>
-	    
+
 	    <row>
 	    <entry>3</entry>
 	    <entry>Username</entry>
 	    </row>
-	    
+
 	    <row>
 	    <entry>4</entry>
 	    <entry>Password</entry>
 	    </row>
-	    
+
 	  <row>
 	    <entry>5</entry>
 	    <entry>Comment</entry>
@@ -167,9 +167,9 @@
 	  </tbody>
 	</tgroup>
       </table>
-      
+
       <para>See <xref linkend="examples" /> for an example CSV file.</para>
-    
+
     </refsect2>
   </refsect1>
 
@@ -300,7 +300,7 @@
       <para>As the second line shows, fields can be blank but the separator may
       not be omitted.</para>
 <screen>
-ssh host,host.example.org,johndoe,secret,linux machine
+ssh host,host.example.org,johndoe,secret,Linux machine
 mail account,imap.email.org,john_doe,secret,
 &hellip;
 </screen>
@@ -317,7 +317,7 @@ mail account,imap.email.org,john_doe,secret,
       double quote characters.</para>
 
 <screen>
-"ssh, ftp, and http server",server.example.org,johndoe,secret,linux machine
+"ssh, ftp, and http server",server.example.org,johndoe,secret,Linux machine
 mail account,imap.email.org,john_doe,secret,"John ""the Unknown"" Doe"
 &hellip;
 </screen>

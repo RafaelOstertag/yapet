@@ -18,7 +18,7 @@
   <varlistentry>
     <term><guilabel>Username</guilabel></term>
     <listitem>
-      <simpara>The username the password is associated with.</simpara>
+      <simpara>The user name the password is associated with.</simpara>
     </listitem>
   </varlistentry>
 

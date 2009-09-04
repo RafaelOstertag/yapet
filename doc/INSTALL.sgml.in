@@ -43,7 +43,7 @@
       <para>
 	<itemizedlist>
 	  <listitem>
-	    <simpara>openssl (<ulink
+	    <simpara>OpenSSL (<ulink
 	    url="http://www.openssl.org">http://www.openssl.org</ulink>)</simpara></listitem>
 	  <listitem>
 	    <simpara>curses or ncurses (<ulink
@@ -183,7 +183,7 @@
 
 	<listitem>
 	  <para>This options tells the compiler where to find the header files
-	  of openssl. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  of OpenSSL. <replaceable>&lt;PATH&gt;</replaceable> has to be the
 	  directory where the header files are located, not the file name of
 	  the header file.</para>
 	</listitem>
@@ -195,7 +195,7 @@
 	</term>
 
 	<listitem>
-	  <para>This option tells the linker where to find the openssl shared
+	  <para>This option tells the linker where to find the OpenSSL shared
 	  library. <replaceable>&lt;PATH&gt;</replaceable> has to be the
 	  directory where the shared library is located, not the file name of
 	  the shared library.</para>

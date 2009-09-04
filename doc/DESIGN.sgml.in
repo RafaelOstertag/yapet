@@ -100,7 +100,7 @@
       <listitem><simpara>&hellip;</simpara></listitem>
     </orderedlist>
 
-    <para>The prefixes are stored in big-endian order, regardless of
+    <para>The prefixes are stored in big endian order, regardless of
     the endianess of the platform &YP; is running.</para>
 
     <sect2 id="recogstring">
@@ -227,13 +227,13 @@
 	  </mediaobject>
 	</figure>
 
-	<para>&YP; 0.6 or later is still able to read pre-version 0.6 headers
+	<para>&YP; 0.6 or later is still able to read pre version 0.6 headers
 	in order to maintain backwards compatibility with earlier releases. It
 	will however write a version 0.6 header upon password change.</para>
 
 	<para>&YP; 0.5 or earlier is able to read version 0.6 headers. If the
 	master password on a version 0.6 file is changed using &YP; 0.5 or earlier,
-	it will automatically become a pre-version 0.6 file, and the
+	it will automatically become a pre version 0.6 file, and the
 	restrictions for version 0.5 applies.</para>
 
 	<para><xref linkend="tab.ver0.5compat"/> lists the compatibility
@@ -260,11 +260,16 @@
 	    <thead>
 	      <!-- Version header -->
 	      <row>
-		<entry namest="vendianiess" nameend="proc" morerows="2">
+		<entry namest="vendianiess" nameend="proc" morerows="3">
 		  &YP; running on
 		</entry>
-		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier Files</entry>
-		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6 files</entry>
+		<entry namest="f32le0.5" nameend="f64be0.6">
+		  File created
+		</entry>
+	      </row>
+	      <row>
+		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier</entry>
+		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6</entry>
 	      </row>
 	      <!-- Endianess header -->
 	      <row>
@@ -485,14 +490,19 @@
 	    <colspec colname="f64le0.6" align="center" />
 	    <colspec colname="f32be0.6" align="center" />
 	    <colspec colname="f64be0.6" align="center" />
-	    
+
 	    <thead>
 	      <row>
-		<entry colname="proc" morerows="2">
+		<entry namest="vendianiess" nameend="proc" morerows="3">
 		  &YP; running on
 		</entry>
-		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier Files</entry>
-		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6 files</entry>
+		<entry namest="f32le0.5" nameend="f64be0.6">
+		  File created
+		</entry>
+	      </row>
+	      <row>
+		<entry namest="f32le0.5" nameend="f64be0.5">Version 0.5 or earlier</entry>
+		<entry namest="f32le0.6" nameend="f64be0.6">Version 0.6</entry>
 	      </row>
 	      <!-- Endianess header -->
 	      <row>
@@ -513,7 +523,7 @@
 		<entry colname="f64be0.6">64bit</entry>
 	      </row>
 	    </thead>
-	      
+
 	    <!-- Compatibility (Data) -->
 	    <tbody>
 
