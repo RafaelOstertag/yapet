@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 0.6\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2009-09-01 19:36+0200\n"
+"POT-Creation-Date: 2010-06-23 20:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1106,35 +1106,35 @@ msgstr ""
 msgid "The requested RNG is not available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:105
+#: yapet/pwgen/rng.cc:109
 msgid "Unable to initialize RNG when none is available"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:115
+#: yapet/pwgen/rng.cc:119
 msgid "Unable to open /dev/random"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:122
+#: yapet/pwgen/rng.cc:126
 msgid "Unable to open /dev/urandom"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:137 yapet/pwgen/rng.cc:349
+#: yapet/pwgen/rng.cc:141 yapet/pwgen/rng.cc:353
 msgid "Unexpected RNG Engine (AUTO)"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:140 yapet/pwgen/rng.cc:351
+#: yapet/pwgen/rng.cc:144 yapet/pwgen/rng.cc:355
 msgid "The requested RNG Engine (NONE) is invalid."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:182
+#: yapet/pwgen/rng.cc:186
 msgid "Read to few bytes on /dev/[u]random."
 msgstr ""
 
-#: yapet/pwgen/rng.cc:216
+#: yapet/pwgen/rng.cc:220
 msgid "lrand48() not available on system"
 msgstr ""
 
-#: yapet/pwgen/rng.cc:236
+#: yapet/pwgen/rng.cc:240
 msgid "rand() not available on system"
 msgstr ""
 

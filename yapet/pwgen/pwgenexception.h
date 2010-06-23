@@ -82,8 +82,8 @@ namespace YAPET {
                 inline virtual ~PWGenNoRNGException() throw() {}
                 inline const PWGenNoRNGException& operator= (const PWGenNoRNGException& ex)
                 throw() {
-                    PWGenException::PWGenException (dynamic_cast<const PWGenException&> (ex) );
-                    return *this;
+		    PWGenException::operator= ( ex );
+		    return *this;
                 }
         };
 
@@ -100,7 +100,7 @@ namespace YAPET {
                 inline virtual ~PWGenRNGNotAvailable() throw() {}
                 inline const PWGenRNGNotAvailable& operator= (const PWGenRNGNotAvailable& ex)
                 throw() {
-                    PWGenException::PWGenException (dynamic_cast<const PWGenException&> (ex) );
+                    PWGenException::operator= ( ex );
                     return *this;
                 }
         };
