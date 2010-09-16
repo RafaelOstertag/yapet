@@ -27,10 +27,10 @@ pwrecord.sgml license.sgml bugreport.sgml
 generated_sgml_files = yapet.sgml csv2yapet.sgml README.sgml README.Cygwin.sgml	\
 INSTALL.sgml DESIGN.sgml
 
-# The value of _BEGIN and _END variables will be used to replace markers in the
-# xml documention with either nothin, or xml comments. This way we can
-# include/exclude stuff from the docs without using conditional processing of
-# the xml files.
+# The value of _BEGIN and _END variables will be used to replace
+# markers in the xml documentation with either nothing, or xml
+# comments. This way we can include/exclude stuff from the docs
+# without using conditional processing of the xml files.
 if BUILDCSV2YAPET
 DOCCSV2YAPET_BEGIN =
 DOCCSV2YAPET_END =
