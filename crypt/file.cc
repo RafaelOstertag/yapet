@@ -83,16 +83,15 @@
 # include <malloc.h>
 # define alloca _alloca
 #else // HAVE_ALLOCA_H
-# ifdef __FreeBSD__
-#  error "FreeBSD"
+# ifdef HAVE_ALLOCA
 #  include <stdlib.h>
-# else // __FreeBSD__
+# else // HAVE_ALLOCA
 #  include <stddef.h>
 #  ifdef  __cplusplus
 extern "C"
 #  endif // __cplusplus
 void *alloca (size_t);
-# endif // __FreeBSD__
+# endif // HAVE_ALLOCA
 #endif // HAVE_ALLOCA_H
 
 using namespace YAPET;

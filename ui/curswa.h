@@ -230,15 +230,15 @@ inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {
 # include <malloc.h>
 # define alloca _alloca
 #else // HAVE_ALLOCA_H
-# ifdef __FreeBSD__
+# ifdef HAVE_ALLOCA
 #  include <stdlib.h>
-# else // __FreeBSD__
+# else // HAVE_ALLOCA
 #  include <stddef.h>
 #  ifdef  __cplusplus
 extern "C"
 #  endif // __cplusplus
 void *alloca (size_t);
-# endif // __FreeBSD__
+# endif // HAVE_ALLOCA
 #endif // HAVE_ALLOCA_H
 
 inline int _mvwchgat_ (WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
