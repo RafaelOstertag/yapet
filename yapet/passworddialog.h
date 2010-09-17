@@ -46,10 +46,6 @@
 # include <signal.h>
 #endif
 
-#ifdef HAVE_SETJMP_H
-# include <setjmp.h>
-#endif
-
 #include <key.h>
 
 #include <basewindow.h>
@@ -113,7 +109,7 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
 	sigset_t old_sigset;
 	struct sigaction my_sigaction;
 	struct sigaction old_sigaction;
-
+	
         inline PasswordDialog (const PasswordDialog&) {}
         inline const PasswordDialog& operator= (const PasswordDialog&) {
             return *this;
@@ -193,8 +189,5 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
 
 	inline bool wantsQuit() const { return quit_pressed; }
 };
-
-sigjmp_buf password_dialog_sig_jmp_buf;
-
 
 #endif // _PASSWORDDIALOG_H

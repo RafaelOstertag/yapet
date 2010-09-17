@@ -27,6 +27,12 @@
 # include <assert.h>
 #endif
 
+#ifdef HAVE_SETJMP_H
+# include <setjmp.h>
+#endif
+
+sigjmp_buf password_dialog_sig_jmp_buf;
+
 extern "C" void __alarm_handler(int) {
     siglongjmp(password_dialog_sig_jmp_buf, 1);
 }
