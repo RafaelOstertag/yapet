@@ -59,6 +59,7 @@ namespace YAPET {
                 PasswordWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
                 virtual ~PasswordWidget();
 
+		virtual int focus() throw (UIException);
                 virtual void refresh() throw (UIException);
         };
 

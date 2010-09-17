@@ -20,6 +20,8 @@
 
 #include "../intl.h"
 #include "passwordwidget.h"
+#include "basewindow.h"
+#include "colors.h"
 
 #ifdef HAVE_STDLIB_H
 # include <stdlib.h>
@@ -31,6 +33,75 @@ PasswordWidget::PasswordWidget (int sx, int sy, int w, int ml)
 throw (UIException) : InputWidget (sx, sy, w, ml) {}
 
 PasswordWidget::~PasswordWidget() {
+}
+
+int
+PasswordWidget::focus() throw (UIException) {
+    Colors::setcolor (getWindow(), INPUTWIDGET_FOCUS);
+    int retval = wrefresh (getWindow());
+
+    if (retval == ERR)
+        throw UIException (_ ("Error refreshing the widget") );
+
+    retval = wmove (getWindow(), 0, getPos());
+
+    if (retval == ERR)
+        throw UIException (_ ("Error moving cursor for widget") );
+
+    visibleCursor (true);
+    int ch;
+
+    while (true) {
+        ch = wgetch (getWindow());
+
+        switch (ch) {
+                // Bailout keys
+#ifdef HAVE_WRESIZE
+	    case KEY_RESIZE:
+#endif // HAVE_WRESIZE
+            case '\n':
+            case KEY_TAB:
+            case KEY_ESC:
+	    case KEY_CTRL_E:
+                goto BAILOUT;
+                // Motion and other keys
+            case KEY_UP:
+            case KEY_LEFT:
+	    case KEY_DOWN:
+            case KEY_RIGHT:
+	    case KEY_END:
+            case KEY_A1:
+	    case KEY_HOME:
+            case KEY_C1:
+                break;
+            case KEY_ENTER:
+                ungetch ('\n');
+                break;
+            case KEY_DC:
+                processDelete();
+                break;
+            case KEY_BACKSPACE:
+            case 127:
+                processBackspace();
+                break;
+            case KEY_REFRESH:
+                BaseWindow::refreshAll();
+                break;
+            default:
+                processInput (ch);
+                break;
+        }
+    }
+
+BAILOUT:
+    visibleCursor (false);
+    Colors::setcolor (getWindow(), INPUTWIDGET_NOFOCUS);
+    retval = wrefresh (getWindow());
+
+    if (retval == ERR)
+        throw UIException (_ ("Error refreshing the widget") );
+
+    return ch;
 }
 
 void
