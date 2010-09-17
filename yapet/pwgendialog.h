@@ -116,7 +116,7 @@ class PWGenDialog : protected YAPET::UI::BaseWindow {
 
         void initCheckBoxItems();
 
-        void createWindows() throw (YAPET::UI::UIException);
+        void createWindow() throw (YAPET::UI::UIException);
 
         void printTitles() throw (YAPET::UI::UIException);
 
