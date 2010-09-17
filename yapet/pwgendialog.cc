@@ -101,9 +101,10 @@ PWGenDialog::createWindow() throw (YAPET::UI::UIException) {
         throw YAPET::UI::UIException (_ ("Error creating password generator window") );
 
     initCheckBoxItems();
-    pwdisplay = new YAPET::UI::ROInWidget (startX() + 1,
-                                           startY() + 2,
-                                           windowWidth() - 3);
+    pwdisplay = new YAPET::UI::InputWidget (startX() + 1,
+					    startY() + 2,
+					    windowWidth() - 3,
+					    true);
     pwleninput = new YAPET::UI::IntInWidget (startX() + 1,
             startY() + 4,
             windowWidth() - 3);

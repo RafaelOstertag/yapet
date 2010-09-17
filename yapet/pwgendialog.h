@@ -59,7 +59,6 @@
 #include "button.h"
 #include "checkboxgroup.h"
 #include "intinwidget.h"
-#include "roinwidget.h"
 #include "pwgen/pwgen.h"
 
 /**
@@ -72,7 +71,7 @@ class PWGenDialog : protected YAPET::UI::BaseWindow {
     private:
         WINDOW* window;
         YAPET::UI::CheckBoxGroup* ckbxgroup;
-        YAPET::UI::ROInWidget* pwdisplay;
+        YAPET::UI::InputWidget* pwdisplay;
         YAPET::UI::IntInWidget* pwleninput;
         YAPET::UI::Button* regenbutton;
         YAPET::UI::Button* okbutton;
