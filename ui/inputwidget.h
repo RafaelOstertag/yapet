@@ -42,6 +42,10 @@
 # include <string>
 #endif
 
+#ifdef HAVE_STDEXCEPT
+# include <stdexcept>
+#endif
+
 #include "uiexception.h"
 #include "secstring.h"
 
