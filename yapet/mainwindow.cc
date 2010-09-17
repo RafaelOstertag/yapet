@@ -924,14 +924,18 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 #endif
         PasswordDialog* pwdia = NULL;
         YAPET::Key* testkey = NULL;
+	bool wants_quit = false;
 
         try {
 	    // Flush pending input
 	    flushinp();
 
-            pwdia = new PasswordDialog (EXISTING_PW, file->getFilename(), 30);
+	    bool show_quit = records_changed ? false : true;
+
+            pwdia = new PasswordDialog (EXISTING_PW, file->getFilename(), 30, show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
+	    wants_quit = pwdia->wantsQuit();
             delete pwdia;
         } catch (YAPET::UI::UIException&) {
             if (pwdia != NULL)
@@ -946,6 +950,11 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 
         if (testkey == NULL) {
             delwin (lockwin);
+	    // Do we have to quit
+	    if (wants_quit) {
+		ungetch('q');
+		return;
+	    }
             continue;
         }
 
@@ -1136,7 +1145,6 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                     case 3: // ^C
                     case 'Q':
                     case 'q':
-
                         if (quit() ) return;
 
                         break;
@@ -1265,7 +1273,6 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                                 delete tmp;
                         }
 
-			//                        ::refresh();
                         YAPET::UI::BaseWindow::refreshAll();
                         break;
                     }

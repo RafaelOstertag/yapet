@@ -23,6 +23,10 @@
 #include "passworddialog.h"
 #include "messagebox.h"
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 extern "C" void __alarm_handler(int) {
     siglongjmp(password_dialog_sig_jmp_buf, 1);
 }
@@ -52,18 +56,28 @@ PasswordDialog::createWindow() throw (YAPET::UI::UIException) {
     cancelbutton = new YAPET::UI::Button (_ ("Cancel"),
 					  getStartX() + okbutton->getLength() + 2,
 					  getStartY() + getHeight() - 2);
+    if (has_quitbutton) {
+	quitbutton = new YAPET::UI::Button (_("Quit"),
+					    getStartX() + 
+					    okbutton->getLength() + 1 +
+					    cancelbutton->getLength() + 2,
+					    getStartY() + getHeight() - 2);
+    }
 }
 
-PasswordDialog::PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout)
+PasswordDialog::PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout, bool qb)
     throw (YAPET::UI::UIException) : window (NULL),
 				     pwidget1 (NULL),
 				     pwidget2 (NULL),
 				     okbutton (NULL),
 				     cancelbutton (NULL),
+				     quitbutton (NULL),
 				     pwtype (pt),
 				     key (NULL),
 				     filename (fn),
-				     input_timeout (tout) {
+				     input_timeout (tout),
+				     has_quitbutton (qb),
+				     quit_pressed (false) {
     createWindow();
 }
 
@@ -75,6 +89,10 @@ PasswordDialog::~PasswordDialog() {
 
     delete okbutton;
     delete cancelbutton;
+    if (has_quitbutton) {
+	assert(quitbutton != NULL);
+	delete quitbutton;
+    }
     wclear (window);
     delwin (window);
 }
@@ -204,16 +222,30 @@ PasswordDialog::run() throw (YAPET::UI::UIException) {
 	}
 
 #ifdef HAVE_WRESIZE
-
 	while ( (ch = cancelbutton->focus() ) == KEY_RESIZE)
 	    YAPET::UI::BaseWindow::resizeAll();
-
 #else // HAVE_WRESIZE
 	ch = cancelbutton->focus();
 #endif // HAVE_WRESIZE
-
 	if (ch == '\n' || ch == KEY_ENTER || ch == KEY_ESC)
 	    goto BAILOUT;
+
+	if (has_quitbutton) {
+#ifdef HAVE_WRESIZE
+	    while ( (ch = quitbutton->focus() ) == KEY_RESIZE)
+		YAPET::UI::BaseWindow::resizeAll();
+#else // HAVE_WRESIZE
+	    ch = quitbutton->focus();
+#endif // HAVE_WRESIZE
+	    if (ch == '\n' || ch == KEY_ENTER) {
+		quitPressed(true);
+		goto BAILOUT;
+	    }
+	    if (ch == KEY_ESC) {
+		quitPressed(false);
+		goto BAILOUT;
+	    }
+	}
     }
 
  BAILOUT:
@@ -241,11 +273,15 @@ PasswordDialog::resize() throw (YAPET::UI::UIException) {
 
     delete okbutton;
     delete cancelbutton;
+    if (has_quitbutton) {
+	delete quitbutton;
+    }
     window = NULL;
     pwidget1 = NULL;
     pwidget2 = NULL;
     okbutton = NULL;
     cancelbutton = NULL;
+    quitbutton = NULL;
     createWindow();
 }
 
@@ -302,4 +338,6 @@ PasswordDialog::refresh() throw (YAPET::UI::UIException) {
 
     okbutton->refresh();
     cancelbutton->refresh();
+    if (has_quitbutton)
+	quitbutton->refresh();
 }

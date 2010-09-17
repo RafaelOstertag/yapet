@@ -99,11 +99,14 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
         YAPET::UI::PasswordWidget* pwidget2;
         YAPET::UI::Button* okbutton;
         YAPET::UI::Button* cancelbutton;
+	YAPET::UI::Button* quitbutton;
         PWTYPE pwtype;
         YAPET::Key* key;
 
         std::string filename;
 	unsigned int input_timeout;
+	bool has_quitbutton;
+	bool quit_pressed;
 
 	// For timeout stuff
 	sigset_t my_sigset;
@@ -137,6 +140,8 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
 
         void createWindow() throw (YAPET::UI::UIException);
 
+	inline void quitPressed(bool b) { quit_pressed = b; }
+
     public:
         /**
          * @brief Constructor.
@@ -153,8 +158,10 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
 	 * @param tout amount of time to wait for password input. Only used
 	 * if \c pt is \c EXISTING_PW. A value of 0 disables the timeout in any
 	 * case.
+	 *
+	 * @param qb if \c true, presents a quit button.
          */
-        PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout = 0) throw (YAPET::UI::UIException);
+        PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout = 0, bool qb = false) throw (YAPET::UI::UIException);
         ~PasswordDialog();
 
         /**
@@ -183,6 +190,8 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
         }
         void resize() throw (YAPET::UI::UIException);
         void refresh() throw (YAPET::UI::UIException);
+
+	inline bool wantsQuit() const { return quit_pressed; }
 };
 
 sigjmp_buf password_dialog_sig_jmp_buf;
