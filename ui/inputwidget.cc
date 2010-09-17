@@ -75,7 +75,6 @@ InputWidget::moveEnd() throw (UIException) {
     refresh();
 }
 
-
 void
 InputWidget::processInput (int ch) throw (UIException) {
     if (buffer.length() + 1 > ( (secstring::size_type) max_length) ) return;
