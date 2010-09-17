@@ -42,6 +42,14 @@
 # include <string>
 #endif
 
+#ifdef HAVE_SIGNAL_H
+# include <signal.h>
+#endif
+
+#ifdef HAVE_SETJMP_H
+# include <setjmp.h>
+#endif
+
 #include <key.h>
 
 #include <basewindow.h>
@@ -95,6 +103,13 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
         YAPET::Key* key;
 
         std::string filename;
+	unsigned int input_timeout;
+
+	// For timeout stuff
+	sigset_t my_sigset;
+	sigset_t old_sigset;
+	struct sigaction my_sigaction;
+	struct sigaction old_sigaction;
 
         inline PasswordDialog (const PasswordDialog&) {}
         inline const PasswordDialog& operator= (const PasswordDialog&) {
@@ -134,8 +149,12 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
          * existing password.
          *
          * @param fn the filename of the file for which the password is asked.
+	 *
+	 * @param tout amount of time to wait for password input. Only used
+	 * if \c pt is \c EXISTING_PW. A value of 0 disables the timeout in any
+	 * case.
          */
-        PasswordDialog (PWTYPE pt, std::string fn) throw (YAPET::UI::UIException);
+        PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout = 0) throw (YAPET::UI::UIException);
         ~PasswordDialog();
 
         /**
@@ -165,5 +184,8 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
         void resize() throw (YAPET::UI::UIException);
         void refresh() throw (YAPET::UI::UIException);
 };
+
+sigjmp_buf password_dialog_sig_jmp_buf;
+
 
 #endif // _PASSWORDDIALOG_H
