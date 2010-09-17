@@ -49,23 +49,28 @@ PasswordRecord::createWindow() throw (YAPET::UI::UIException) {
     name = new YAPET::UI::InputWidget (getStartX() + 1,
                                        getStartY() + 2,
                                        getWidth() - 2,
-                                       YAPET::NAME_SIZE);
+                                       YAPET::NAME_SIZE,
+				       readonly);
     host = new YAPET::UI::InputWidget (getStartX() + 1,
                                        getStartY() + 4,
                                        getWidth() - 2,
-                                       YAPET::HOST_SIZE);
+                                       YAPET::HOST_SIZE,
+				       readonly);
     username = new YAPET::UI::InputWidget (getStartX() + 1,
                                            getStartY() + 6,
                                            getWidth() - 2,
-                                           YAPET::USERNAME_SIZE);
+                                           YAPET::USERNAME_SIZE,
+					   readonly);
     password = new YAPET::UI::InputWidget (getStartX() + 1,
                                            getStartY() + 8,
                                            getWidth() - 2,
-                                           YAPET::PASSWORD_SIZE);
+                                           YAPET::PASSWORD_SIZE,
+					   readonly);
     comment = new YAPET::UI::InputWidget (getStartX() + 1,
                                           getStartY() + 10,
                                           getWidth() - 2,
-                                          YAPET::COMMENT_SIZE);
+                                          YAPET::COMMENT_SIZE,
+					  readonly);
     okbutton = new YAPET::UI::Button (_ ("OK"),
                                       getStartX() + 1,
                                       getStartY() + 12);
@@ -75,7 +80,8 @@ PasswordRecord::createWindow() throw (YAPET::UI::UIException) {
 #ifdef ENABLE_PWGEN
     pwgenbutton = new YAPET::UI::Button (_ ("Generate Password"),
                                          getStartX() + okbutton->getLength() + cancelbutton->getLength() + 3,
-                                         getStartY() + 12);
+                                         getStartY() + 12,
+					 readonly);
 #endif
     refresh();
 }
@@ -114,30 +120,31 @@ PasswordRecord::sureToCancel() throw (YAPET::UI::UIException) {
     }
 }
 
-PasswordRecord::PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe)
+PasswordRecord::PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe, bool ro)
 throw (YAPET::UI::UIException) : window (NULL),
-        name (NULL),
-        host (NULL),
-        username (NULL),
-        password (NULL),
-        comment (NULL),
-        okbutton (NULL),
-        cancelbutton (NULL),
+				 name (NULL),
+				 host (NULL),
+				 username (NULL),
+				 password (NULL),
+				 comment (NULL),
+				 okbutton (NULL),
+				 cancelbutton (NULL),
 #ifdef ENABLE_PWGEN
-        pwgenbutton (NULL),
+				 pwgenbutton (NULL),
 #endif
-        key (&k),
-        encentry (pe),
-        s_name (""),
-        s_host (""),
-        s_username (""),
-        s_password (""),
-        s_comment (""),
-        namechanged (false),
-        hostchanged (false),
-        usernamechanged (false),
-        passwordchanged (false),
-        commentchanged (false) {
+				 key (&k),
+				 encentry (pe),
+				 s_name (""),
+				 s_host (""),
+				 s_username (""),
+				 s_password (""),
+				 s_comment (""),
+				 namechanged (false),
+				 hostchanged (false),
+				 usernamechanged (false),
+				 passwordchanged (false),
+				 commentchanged (false),
+				 readonly (ro) {
     if (encentry != NULL) {
         YAPET::Record<YAPET::PasswordRecord>* dec_rec = NULL;
 
@@ -192,14 +199,26 @@ void
 PasswordRecord::run() throw (YAPET::UI::UIException) {
     while (true) {
         int ch = 0;
+
+
+        while ( ch = name->focus() ) {
+	    switch (ch) {
 #ifdef HAVE_WRESIZE
-
-        while ( (ch = name->focus() ) == KEY_RESIZE)
-            YAPET::UI::BaseWindow::resizeAll();
-
-#else // HAVE_WRESIZE
-        ch = name->focus();
+	    case KEY_RESIZE:
+		YAPET::UI::BaseWindow::resizeAll();
+		continue;
+		break;
 #endif // HAVE_WRESIZE
+	    case KEY_CTRL_E: 
+		setReadonly(false);
+		// For getting the title right
+		refresh();
+		continue;
+		break;
+	    }
+	    break;
+	}
+		
         s_name = name->getText();
         namechanged = name->isTextChanged();
 
@@ -207,14 +226,24 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
+        while ( ch = host->focus() ) {
+	    switch (ch) {
 #ifdef HAVE_WRESIZE
-
-        while ( (ch = host->focus() ) == KEY_RESIZE)
-            YAPET::UI::BaseWindow::resizeAll();
-
-#else // HAVE_WRESIZE
-        ch = host->focus();
+	    case KEY_RESIZE:
+		YAPET::UI::BaseWindow::resizeAll();
+		continue;
+		break;
 #endif // HAVE_WRESIZE
+	    case KEY_CTRL_E: 
+		setReadonly(false);
+		// For getting the title right
+		refresh();
+		continue;
+		break;
+	    }
+	    break;
+	}
+
         s_host = host->getText();
         hostchanged = host->isTextChanged();
 
@@ -222,14 +251,24 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
+        while ( ch = username->focus() ) {
+	    switch (ch) {
 #ifdef HAVE_WRESIZE
-
-        while ( (ch = username->focus() ) == KEY_RESIZE)
-            YAPET::UI::BaseWindow::resizeAll();
-
-#else // HAVE_WRESIZE
-        ch = username->focus();
+	    case KEY_RESIZE:
+		YAPET::UI::BaseWindow::resizeAll();
+		continue;
+		break;
 #endif // HAVE_WRESIZE
+	    case KEY_CTRL_E: 
+		setReadonly(false);
+		// For getting the title right
+		refresh();
+		continue;
+		break;
+	    }
+	    break;
+	}
+
         s_username = username->getText();
         usernamechanged = username->isTextChanged();
 
@@ -237,14 +276,24 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
+        while ( ch = password->focus() )  {
+	    switch (ch) {
 #ifdef HAVE_WRESIZE
-
-        while ( (ch = password->focus() ) == KEY_RESIZE)
-            YAPET::UI::BaseWindow::resizeAll();
-
-#else // HAVE_WRESIZE
-        ch = password->focus();
+	    case KEY_RESIZE:
+		YAPET::UI::BaseWindow::resizeAll();
+		continue;
+		break;
 #endif // HAVE_WRESIZE
+	    case KEY_CTRL_E: 
+		setReadonly(false);
+		// For getting the title right
+		refresh();
+		continue;
+		break;
+	    }
+	    break;
+	}
+
         s_password = password->getText();
         passwordchanged = password->isTextChanged();
 
@@ -252,14 +301,24 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
+        while ( ch = comment->focus() )  {
+	    switch (ch) {
 #ifdef HAVE_WRESIZE
-
-        while ( (ch = comment->focus() ) == KEY_RESIZE)
-            YAPET::UI::BaseWindow::resizeAll();
-
-#else // HAVE_WRESIZE
-        ch = comment->focus();
+	    case KEY_RESIZE:
+		YAPET::UI::BaseWindow::resizeAll();
+		continue;
+		break;
 #endif // HAVE_WRESIZE
+	    case KEY_CTRL_E: 
+		setReadonly(false);
+		// For getting the title right
+		refresh();
+		continue;
+		break;
+	    }
+	    break;
+	}
+
         s_comment = comment->getText();
         commentchanged = comment->isTextChanged();
 
@@ -417,7 +476,10 @@ PasswordRecord::refresh() throw (YAPET::UI::UIException) {
     if (retval == ERR)
         throw YAPET::UI::UIException (_ ("Error adding box") );
 
-    retval = mymvwaddstr (window, 0, 2, _ ("P A S S W O R D  R E C O R D") );
+    if ( readonly )
+	retval = mymvwaddstr (window, 0, 2, _ ("P A S S W O R D  R E C O R D (Read-Only)") );
+    else
+	retval = mymvwaddstr (window, 0, 2, _ ("P A S S W O R D  R E C O R D") );
 
     if (retval == ERR)
         throw YAPET::UI::UIException (_ ("Error setting label") );
@@ -481,4 +543,18 @@ PasswordRecord::entryChanged() const {
            username->isTextChanged() ||
            password->isTextChanged() ||
            comment->isTextChanged();
+}
+
+void
+PasswordRecord::setReadonly(bool ro) {
+    readonly = ro;
+    name->setReadonly(readonly);
+    host->setReadonly(readonly);
+    username->setReadonly(readonly);
+    password->setReadonly(readonly);
+    comment->setReadonly(readonly);
+#ifdef ENABLE_PWGEN
+    pwgenbutton->setReadonly(readonly);
+#endif
+
 }

@@ -102,11 +102,14 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         bool usernamechanged;
         bool passwordchanged;
         bool commentchanged;
+	bool readonly;
 
         inline PasswordRecord (const PasswordRecord&) {}
         inline const PasswordRecord& operator= (const PasswordRecord&) {
             return *this;
         }
+
+    protected:
 
         inline int getWidth() const {
             return maxX() - 8;
@@ -142,7 +145,7 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          * @param pe pointer to a \c PartDec which will be displayed, or \c
          * NULL in order to obtain a new password record.
          */
-        PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe) throw (YAPET::UI::UIException);
+        PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe, bool ro = false) throw (YAPET::UI::UIException);
         ~PasswordRecord();
 
         /**
@@ -179,6 +182,10 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          * @return \c true if the record has been changed, \c false otherwise.
          */
         bool entryChanged() const;
+
+	void setReadonly(bool ro);
+
+	inline bool getReadonly() const { return readonly; }
 };
 
 #endif // _PASSWORDRECORD_H

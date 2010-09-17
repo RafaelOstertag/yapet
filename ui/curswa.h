@@ -93,6 +93,8 @@ enum {
      */
     KEY_SPACE = ' ',
 #endif // KEY_SPACE
+    /* Used by InputWidget to indicate that the read-only mode should be
+       left */
     KEY_CTRL_E = 5
 };
 

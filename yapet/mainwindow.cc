@@ -622,7 +622,8 @@ MainWindow::addNewRecord() {
     PasswordRecord* pwentry = NULL;
 
     try {
-        pwentry = new PasswordRecord (*key, NULL);
+	// Open the dialog in read-write mode by default
+        pwentry = new PasswordRecord (*key, NULL, false);
         pwentry->run();
 
         if (pwentry->entryChanged() &&
@@ -673,7 +674,8 @@ MainWindow::editSelectedRecord() {
 
     try {
         YAPET::PartDec pd = recordlist->getSelectedItem();
-        pwentry = new PasswordRecord (*key, &pd);
+	// Open the dialog in read-only mode by default
+        pwentry = new PasswordRecord (*key, &pd, true);
         pwentry->run();
 
         if (pwentry->entryChanged() &&

@@ -199,11 +199,12 @@ InputWidget::focus() throw (UIException) {
         switch (ch) {
                 // Bailout keys
 #ifdef HAVE_WRESIZE
-            case KEY_RESIZE:
+	    case KEY_RESIZE:
 #endif // HAVE_WRESIZE
             case '\n':
             case KEY_TAB:
             case KEY_ESC:
+	    case KEY_CTRL_E:
                 goto BAILOUT;
                 // Motion and other keys
             case KEY_UP:
