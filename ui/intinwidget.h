@@ -67,7 +67,9 @@ namespace YAPET {
                 virtual void processInput (int ch) throw (UIException);
 
             public:
-                IntInWidget (int sx, int sy, int w, int ml = getDigitsForType<unsigned long>() ) throw (UIException);
+                IntInWidget (int sx, int sy, int w, int ml = getDigitsForType<unsigned long>(), bool ro = false ) throw (UIException);
+		inline IntInWidget (int sx, int sy, int w, bool ro ) throw (UIException) :
+		    InputWidget (sx, sy, w, getDigitsForType<unsigned long>() , ro) {}
                 virtual ~IntInWidget();
                 unsigned long getInt() const;
 		void setInt(unsigned long i);

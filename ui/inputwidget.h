@@ -69,6 +69,7 @@ namespace YAPET {
                 int pos;
                 int width;
                 bool text_changed;
+		bool readonly;
 
                 inline InputWidget (const InputWidget&) {}
                 inline const InputWidget& operator= (const InputWidget&) {
@@ -108,7 +109,10 @@ namespace YAPET {
                 }
 
             public:
-                InputWidget (int sx, int sy, int w, int ml = 512) throw (UIException);
+                InputWidget (int sx, int sy, int w, int ml = 512, bool ro = false) throw (UIException);
+                inline InputWidget (int sx, int sy, int w, bool ro) throw (UIException) {
+		    InputWidget(sx, sy, w, 512, ro);
+		}
                 virtual ~InputWidget();
 
                 virtual int focus() throw (UIException);
@@ -133,7 +137,12 @@ namespace YAPET {
                 inline bool hasText() const {
                     return !buffer.empty();
                 }
-
+		inline void setReadonly(bool ro) {
+		    readonly = ro;
+		}
+		inline bool getReadonly() const {
+		    return readonly;
+		}
         };
 
     }

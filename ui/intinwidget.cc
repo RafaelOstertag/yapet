@@ -35,8 +35,8 @@
 
 using namespace YAPET::UI;
 
-IntInWidget::IntInWidget (int sx, int sy, int w, int ml)
-throw (UIException) : InputWidget (sx, sy, w, ml) {
+IntInWidget::IntInWidget (int sx, int sy, int w, int ml, bool ro)
+    throw (UIException) : InputWidget (sx, sy, w, ml, ro) {
 }
 
 IntInWidget::~IntInWidget() {

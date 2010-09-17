@@ -79,6 +79,7 @@ InputWidget::moveEnd() throw (UIException) {
 void
 InputWidget::processInput (int ch) throw (UIException) {
     if (buffer.length() + 1 > ( (secstring::size_type) max_length) ) return;
+    if (readonly) return;
 
     if ( ( (secstring::size_type) start_pos + pos) > buffer.length() )
         buffer.append ("" + ch);
@@ -93,6 +94,7 @@ InputWidget::processInput (int ch) throw (UIException) {
 void
 InputWidget::processBackspace() throw (UIException) {
     if (pos + start_pos == 0) return;
+    if (readonly) return;
 
     moveBackward();
     processDelete();
@@ -101,6 +103,7 @@ InputWidget::processBackspace() throw (UIException) {
 void
 InputWidget::processDelete() throw (UIException) {
     if ( ( (secstring::size_type) pos + start_pos) == buffer.length() ) return;
+    if (readonly) return;
 
     buffer.erase (pos + start_pos, 1);
 
@@ -141,13 +144,14 @@ InputWidget::createWindow (int sx, int sy, int w) throw (UIException) {
     //refresh();
 }
 
-InputWidget::InputWidget (int sx, int sy, int w, int ml)
+InputWidget::InputWidget (int sx, int sy, int w, int ml, bool ro)
 throw (UIException) : window (NULL),
-        max_length (ml),
-        start_pos (0),
-        pos (0),
-        width (w),
-        text_changed (false) {
+		      max_length (ml),
+		      start_pos (0),
+		      pos (0),
+		      width (w),
+		      readonly (ro),
+		      text_changed (false) {
     createWindow (sx, sy, w);
 }
 
