@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.4\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2010-06-23 20:44+0200\n"
-"PO-Revision-Date: 2009-09-02 13:13+0200\n"
+"POT-Creation-Date: 2010-09-17 13:35+0200\n"
+"PO-Revision-Date: 2010-09-17 13:37+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -162,6 +162,11 @@ msgstr "Kann das Listen-Widget nicht auffrischen"
 msgid "Error deleting input widget"
 msgstr "Fehler beim Fensterlöschen"
 
+#: ui/basewindow.cc:145
+#, c-format
+msgid "Need at least a resolution of %dx%d."
+msgstr "Benötige mindestens eine Auflösung von %dx%d"
+
 #: ui/listwidget.h:308 yapet/passwordrecord.cc:413
 msgid "Error clearing window"
 msgstr "Fehler beim Löschen des Fensters"
@@ -259,7 +264,7 @@ msgstr "Fehler beim Entschlüsseln der Daten"
 msgid "Error finalizing decryption"
 msgstr "Fehler beim Abschliessen der Entschlüsselung"
 
-#: crypt/record.h:97 crypt/bdbuffer.cc:59 crypt/file.cc:545
+#: crypt/record.h:97 crypt/bdbuffer.cc:59 crypt/file.cc:554
 msgid "Memory exhausted"
 msgstr "Speicher aufgebraucht"
 
@@ -299,67 +304,67 @@ msgstr "Kann die Verschlüsselung nicht ermitteln"
 msgid "Error initializing cipher"
 msgstr "Fehler beim Initialisieren der Verschlüsselung"
 
-#: crypt/file.cc:131
+#: crypt/file.cc:140
 msgid "You are not the owner of "
 msgstr "Sie sind nicht der Eigner von "
 
-#: crypt/file.cc:136
+#: crypt/file.cc:145
 msgid "Permissions of "
 msgstr "Zugriffsrechte von "
 
-#: crypt/file.cc:137
+#: crypt/file.cc:146
 msgid " not secure."
 msgstr " nicht sicher."
 
-#: crypt/file.cc:163
+#: crypt/file.cc:172
 msgid "Cannot set the owner of "
 msgstr "Kann Eigentümer nicht setzen:"
 
-#: crypt/file.cc:170
+#: crypt/file.cc:179
 msgid "Cannot set file permissions on "
 msgstr "Zugriffsrechte setzen nicht möglich: "
 
-#: crypt/file.cc:257
+#: crypt/file.cc:266
 msgid "Error seeking within file: "
 msgstr "Fehler beim Positionieren innerhalb von: "
 
-#: crypt/file.cc:299
+#: crypt/file.cc:308
 msgid "Unable to seek to data section"
 msgstr "Kann den Datenabschnitt nicht finden"
 
-#: crypt/file.cc:334 crypt/file.cc:351
+#: crypt/file.cc:343 crypt/file.cc:360
 msgid "Short read on file: "
 msgstr "Abruptes Ende beim Lesen von: "
 
-#: crypt/file.cc:383
+#: crypt/file.cc:392
 msgid "File has been modified"
 msgstr "Datei wurde verändert"
 
-#: crypt/file.cc:401 crypt/file.cc:409 crypt/file.cc:521
+#: crypt/file.cc:410 crypt/file.cc:418 crypt/file.cc:530
 msgid "Short write on file: "
 msgstr "Abruptes Ende beim Schreiben von: "
 
-#: crypt/file.cc:455
+#: crypt/file.cc:464
 msgid "EOF encountered while reading header"
 msgstr "Ende der Datei während lesen des Dateikopfes erreicht"
 
-#: crypt/file.cc:462
+#: crypt/file.cc:471
 msgid "Sanity check for control field failed"
 msgstr "Plausibiltätskontrolle für Kontrollfeld fehlgeschlagen"
 
-#: crypt/file.cc:498
+#: crypt/file.cc:507
 msgid "Unknown exception catched"
 msgstr "Unbekannte Ausnahme aufgetreten"
 
-#: crypt/file.cc:553 crypt/file.cc:558
+#: crypt/file.cc:562 crypt/file.cc:567
 msgid "File type not recognized"
 msgstr "Filetyp unbekannt"
 
-#: crypt/file.cc:594
+#: crypt/file.cc:603
 msgid "Null pointer passed in ptr32"
 msgstr "Null Zeiger in ptr32 übergeben."
 
-#: crypt/file.cc:596
+#: crypt/file.cc:605
 msgid "Null pointer passed in ptr64"
 msgstr "Null Zeiger in ptr64 übergeben."
 
