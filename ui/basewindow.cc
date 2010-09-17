@@ -142,7 +142,7 @@ BaseWindow::initCurses() throw(UIException) {
     if (max_y < MIN_Y ||
 	max_x < MIN_X) {
 	char msg[1024];
-	::snprintf(msg, 1024, "Need at least a resolution of %dx%d.", MIN_X, MIN_Y);
+	::snprintf(msg, 1024, _("Need at least a resolution of %dx%d."), MIN_X, MIN_Y);
 	throw UIException(msg);
     }
 
