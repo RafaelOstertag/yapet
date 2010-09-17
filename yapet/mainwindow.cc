@@ -926,6 +926,9 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
         YAPET::Key* testkey = NULL;
 
         try {
+	    // Flush pending input
+	    flushinp();
+
             pwdia = new PasswordDialog (EXISTING_PW, file->getFilename() );
             pwdia->run();
             testkey = pwdia->getKey();
