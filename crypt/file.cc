@@ -82,9 +82,18 @@
 #elif defined _MSC_VER
 # include <malloc.h>
 # define alloca _alloca
-#else
-# include <stddef.h>
-#endif
+#else // HAVE_ALLOCA_H
+# ifdef __FreeBSD__
+#  error "FreeBSD"
+#  include <stdlib.h>
+# else // __FreeBSD__
+#  include <stddef.h>
+#  ifdef  __cplusplus
+extern "C"
+#  endif // __cplusplus
+void *alloca (size_t);
+# endif // __FreeBSD__
+#endif // HAVE_ALLOCA_H
 
 using namespace YAPET;
 

@@ -227,13 +227,17 @@ inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {
 #elif defined _MSC_VER
 # include <malloc.h>
 # define alloca _alloca
-#else
-# include <stddef.h>
-# ifdef  __cplusplus
+#else // HAVE_ALLOCA_H
+# ifdef __FreeBSD__
+#  include <stdlib.h>
+# else // __FreeBSD__
+#  include <stddef.h>
+#  ifdef  __cplusplus
 extern "C"
-# endif
+#  endif // __cplusplus
 void *alloca (size_t);
-#endif
+# endif // __FreeBSD__
+#endif // HAVE_ALLOCA_H
 
 inline int _mvwchgat_ (WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
     char* buff = (char*) alloca (n);
