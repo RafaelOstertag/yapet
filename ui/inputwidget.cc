@@ -155,6 +155,17 @@ throw (UIException) : window (NULL),
     createWindow (sx, sy, w);
 }
 
+InputWidget::InputWidget (int sx, int sy, int w, bool ro)
+throw (UIException) : window (NULL),
+		      max_length (DEFAULT_TEXT_LEN),
+		      start_pos (0),
+		      pos (0),
+		      width (w),
+		      readonly (ro),
+		      text_changed (false) {
+    createWindow (sx, sy, w);
+}
+
 InputWidget::~InputWidget() {
     clearText();
     // Commented out because clearText() has already done this.

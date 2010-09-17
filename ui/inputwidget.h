@@ -71,6 +71,17 @@ namespace YAPET {
                 bool text_changed;
 		bool readonly;
 
+		/**
+		 * Using the default constructor will lead to SIGSEGV. This is
+		 * due to the way we handle initialization of curses stuff.
+		 *
+		 * You will have to explicitely write every constructor as
+		 * shown below.
+		 */
+		inline InputWidget() throw (std::runtime_error) {
+		    throw std::runtime_error(_("Default constructor must not be used!"));
+		}
+
                 inline InputWidget (const InputWidget&) {}
                 inline const InputWidget& operator= (const InputWidget&) {
                     return *this;
@@ -80,6 +91,10 @@ namespace YAPET {
                 void moveForward() throw (UIException);
                 void moveHome() throw (UIException);
                 void moveEnd() throw (UIException);
+
+		enum {
+		    DEFAULT_TEXT_LEN=512
+		};
 
             protected:
                 virtual void processBackspace() throw (UIException);
@@ -109,10 +124,9 @@ namespace YAPET {
                 }
 
             public:
-                InputWidget (int sx, int sy, int w, int ml = 512, bool ro = false) throw (UIException);
-                inline InputWidget (int sx, int sy, int w, bool ro) throw (UIException) {
-		    InputWidget(sx, sy, w, 512, ro);
-		}
+                InputWidget (int sx, int sy, int w, int ml = DEFAULT_TEXT_LEN, bool ro = false) throw (UIException);
+                InputWidget (int sx, int sy, int w, bool ro) throw (UIException);
+
                 virtual ~InputWidget();
 
                 virtual int focus() throw (UIException);
