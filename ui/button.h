@@ -81,13 +81,14 @@ namespace YAPET {
 
                 int start_x;
                 int start_y;
+		bool readonly;
 
             protected:
                 inline virtual void onClick() {};
                 void createWindow() throw (UIException);
 
             public:
-                Button (std::string l, int x, int y);
+                Button (std::string l, int x, int y, bool ro = false);
                 virtual ~Button();
 
                 void setLabel (std::string l) throw (UIException);
@@ -117,6 +118,9 @@ namespace YAPET {
                 inline int getLength() const {
                     return BASE_SIZE + label.length();
                 }
+
+		inline void setReadonly(bool ro) { readonly = ro; }
+		inline bool getReadonly() const { return readonly; }
         };
     }
 }

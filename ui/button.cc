@@ -35,10 +35,11 @@ Button::createWindow() throw (UIException) {
     //refresh();
 }
 
-Button::Button (std::string l, int x, int y) : window (NULL),
-        label (l),
-        start_x (x),
-        start_y (y) {
+Button::Button (std::string l, int x, int y, bool ro) : window (NULL),
+							label (l),
+							start_x (x),
+							start_y (y),
+							readonly (ro) {
     createWindow();
 }
 
@@ -102,6 +103,11 @@ Button::focus() throw (UIException) {
         throw UIException (_ ("Error setting keypad") );
 
     int ch;
+    if (readonly) {
+	// Simulate a tab key and bail out
+	ch = '\t';
+	goto BAILOUT;
+    }
 
     while (true) {
         ch = wgetch (window);
