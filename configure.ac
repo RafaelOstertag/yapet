@@ -107,7 +107,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h])
+AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h setjmp.h])
 
 AC_CHECK_HEADER([ncurses.h],
 	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
@@ -138,7 +138,7 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isdigit isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit sigaction srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower])
+AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank isdigit isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit sigaction srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower sigsetjmp siglongjmp])
 
 AC_MSG_NOTICE([Checking (n)curses functions])
 AC_CHECK_FUNCS([wresize mvwchgat termname])
