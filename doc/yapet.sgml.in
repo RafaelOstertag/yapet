@@ -86,14 +86,13 @@
 
     <para>&yp; does not impose a limit of password records per file and the
     number of files the passwords are stored in, although &yp; is able to
-    display password records of one file at a time.</para>
+    display only password records of one file at a time.</para>
 
     <para>For convenience, &yp; provides a search function for password records
     of the currently loaded password file.</para>
 
     <para>The password records are protected by a master password. The master
-    password is used to encrypt and decrypt the password records. Remember, if
-    the master password is lost, so are the records.</para>
+    password is used to encrypt and decrypt the password records.</para>
 
     <para>&yp; relies on OpenSSL for encryption and decryption of password
     records. The cipher for encryption and decryption is Blowfish with a 448
@@ -104,7 +103,7 @@
     <filename>.pet</filename>. This cannot be changed. Also, if a file is
     loaded using the command line, &yp; appends the suffix
     <filename>.pet</filename> to the file name unless the file name includes
-    the suffix.</para>
+    this suffix already.</para>
 
     <refsect2 id="mainscreen">
       <title>Main Screen</title>
@@ -185,7 +184,7 @@ No file loaded
       can be moved as explained in <xref linkend="selectionmovement" />.</para>
 
       <para>Only when a a password file is loaded, the lower right frame will
-      display some status information as shown explained in <xref
+      display some status information as explained in <xref
       linkend="statusframe" />.</para>
     </refsect2>
 
@@ -592,6 +591,19 @@ No file loaded
 
     </refsect2>
 
+    <refsect2 id="editingpasswordrecords">
+	<title>Editing Password Records</title>
+
+	<para>When a password record is openend by pressing
+	<keycap>Enter</keycap>, it is opened in read-only mode in order to
+	prevent accidental modification.</para>
+
+	<para>After opening a password record, the read-only mode can be left
+	by pressing <keycombo
+	action='simul'><keycap>Ctrl</keycap><keycap>e</keycap></keycombo> in
+	any of the text fields.</para>
+    </refsect2>
+
     <!--
 	-
 	-  CONFIGURATION FILE
@@ -644,6 +656,18 @@ No file loaded
 	    invoking &yp;.</para>
 
 	    <para>Default: 600</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>allowlockquit</option></term>
+
+	  <listitem>
+	    <para>A value of 1 (one) or 0 (zero). A value of 1 allows to quit
+	    &yp; from the locked screen (if no changes are pending). A value of
+	    0 does not allow to quit &yp; from the locked screen.</para>
+
+	    <para>Default: 1</para>
 	  </listitem>
 	</varlistentry>
 
@@ -1158,6 +1182,9 @@ pwgen_pwlen=8</literallayout>
   -->
   <refsect1 id="bugs">
     <title>BUGS</title>
+
+    <para>If a password record is open, the screen lock will not activate,
+    leaving &yp; unprotected.</para>
 
     &bugreport;
   </refsect1>
