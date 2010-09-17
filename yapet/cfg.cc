@@ -48,6 +48,7 @@ const int Config::def_character_pools (YAPET::PWGEN::LETTERS |
 				       YAPET::PWGEN::DIGITS |
 				       YAPET::PWGEN::PUNCT |
 				       YAPET::PWGEN::SPECIAL);
+const bool Config::def_allow_lock_quit (true);
 std::string
 Config::getDefPetfile() {
     return def_petfile;
@@ -75,6 +76,10 @@ Config::getDefPWLength() {
 int
 Config::getDefCharPools() {
     return def_character_pools;
+}
+bool
+Config::getDefAllowLockQuit() {
+    return def_allow_lock_quit;
 }
 bool
 Config::getDefCPoolLetters() {
@@ -365,6 +370,15 @@ Config::getCharPools() const {
     }
 }
 
+bool
+Config::getAllowLockQuit() const {
+   if (cfgfile != NULL) {
+	return cfgfile->getAllowLockQuit();
+    } else {
+	return def_allow_lock_quit;
+    }
+}
+
 const Config&
 Config::operator= (const Config & c) {
     if (&c == this)
@@ -377,7 +391,7 @@ Config::operator= (const Config & c) {
     }
 
     if (c.cfgfile == NULL &&
-            cfgfile != NULL ) {
+	cfgfile != NULL ) {
         delete cfgfile;
         cfgfile = NULL;
     } else {

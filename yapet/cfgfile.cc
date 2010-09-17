@@ -144,6 +144,9 @@ ConfigFile::parseFile() {
 	    if (readOption<bool>(l, "checkfsecurity=", usefsecurity) != OPTION_NOT_FOUND)
 		continue;
 
+	    if (readOption<bool>(l, "allowlockquit=", allowlockquit) != OPTION_NOT_FOUND)
+		continue;
+
             // Yes, the file can say that it should be ignored!
 	    if (readOption<bool>(l, "ignorerc=", ignorerc) != OPTION_NOT_FOUND)
 		continue;
@@ -206,6 +209,7 @@ ConfigFile::parseFile() {
 ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile() ),
 					       usefsecurity (Config::getDefFilesecurity() ),
 					       locktimeout (Config::getDefTimeout() ),
+					       allowlockquit (Config::getDefAllowLockQuit() ),
 					       ignorerc (false),
 					       cfgfilepath (""),
 					       opensuccess (true),

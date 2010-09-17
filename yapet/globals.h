@@ -50,6 +50,7 @@ namespace YAPET {
 		static YAPET::PWGEN::RNGENGINE pwgen_rng;
 		static int selected_character_pools;
 		static size_t selected_password_length;
+		static bool allow_lock_quit;
                 inline Globals() {}
                 inline ~Globals() {}
                 inline Globals (const Globals&) {}
@@ -64,6 +65,8 @@ namespace YAPET {
 		static int getCharacterPools();
 		static void setPasswordLength(size_t pl);
 		static size_t getPasswordLength();
+		static void setAllowLockQuit(bool b);
+		static bool getAllowLockQuit();
         };
 
     }

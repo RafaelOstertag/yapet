@@ -349,6 +349,7 @@ int main (int argc, char** argv) {
 	YAPET::GLOBALS::Globals::setPWGenRNG(config.getPWGenRNG());
 	YAPET::GLOBALS::Globals::setCharacterPools(config.getCharPools());
 	YAPET::GLOBALS::Globals::setPasswordLength(config.getPWGenPWLen());
+	YAPET::GLOBALS::Globals::setAllowLockQuit(config.getAllowLockQuit());
         mainwin = new MainWindow (config.getTimeout(), config.getFilesecurity() );
         // filename may be empty
         mainwin->run (config.getPetFile() );

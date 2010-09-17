@@ -27,6 +27,7 @@ using namespace YAPET::GLOBALS;
 YAPET::PWGEN::RNGENGINE Globals::pwgen_rng(YAPET::CONFIG::Config::getDefPWGenRNG());
 int Globals::selected_character_pools(YAPET::CONFIG::Config::getDefCharPools());
 size_t Globals::selected_password_length(YAPET::CONFIG::Config::getDefPWLength());
+bool Globals::allow_lock_quit(YAPET::CONFIG::Config::getDefAllowLockQuit());
 
 void
 Globals::setPWGenRNG(YAPET::PWGEN::RNGENGINE e) {
@@ -56,4 +57,14 @@ Globals::setPasswordLength(size_t pl) {
 size_t
 Globals::getPasswordLength() {
     return selected_password_length;
+}
+
+void
+Globals::setAllowLockQuit(bool b) {
+    allow_lock_quit = b;
+}
+
+bool
+Globals::getAllowLockQuit() {
+    return allow_lock_quit;
 }

@@ -65,6 +65,8 @@ namespace YAPET {
 		static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
                 //! The default character subpools to use
                 static const int def_character_pools;
+		//! Show the Quit button when unlocking screen
+		static const bool def_allow_lock_quit;
 
                 struct s_cl_struct {
                     // For indicating whether or not it has been set on the command
@@ -162,6 +164,7 @@ namespace YAPET {
 		static YAPET::PWGEN::RNGENGINE getDefPWGenRNG();
                 static size_t getDefPWLength();
                 static int getDefCharPools();
+		static bool getDefAllowLockQuit();
 		static bool getDefCPoolLetters();
 		static bool getDefCPoolDigits();
 		static bool getDefCPoolPunct();
@@ -214,6 +217,7 @@ namespace YAPET {
 		YAPET::PWGEN::RNGENGINE getPWGenRNG() const;
 		size_t getPWGenPWLen() const;
 		int getCharPools() const;
+		bool getAllowLockQuit() const;
 
                 const Config& operator= (const Config& c);
         };

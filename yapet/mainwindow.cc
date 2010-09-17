@@ -71,6 +71,7 @@
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
 #endif
+#include "globals.h"
 
 /**
  * @brief Structure defining a key for the \c MainWindow.
@@ -931,6 +932,8 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 	    flushinp();
 
 	    bool show_quit = records_changed ? false : true;
+	    // In case the user does not want to show the quit button
+	    show_quit = YAPET::GLOBALS::Globals::getAllowLockQuit() ? show_quit : false;
 
             pwdia = new PasswordDialog (EXISTING_PW, file->getFilename(), 30, show_quit);
             pwdia->run();
