@@ -10,6 +10,7 @@ ui/inputwidget.cc
 ui/misc.cc
 ui/passwordwidget.cc
 ui/basewindow.h
+ui/basewindow.cc
 ui/checkboxgroup.h
 ui/curswa.h
 ui/dialogbox.h
