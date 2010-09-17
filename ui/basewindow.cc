@@ -29,8 +29,16 @@
 # include <unistd.h>
 #endif
 
+#ifdef HAVE_STDIO_H
+# include <stdio.h>
+#endif
+
 #ifdef HAVE_ALGORITHM
 # include <algorithm>
+#endif
+
+#ifdef HAVE_STRING
+# include <string>
 #endif
 
 using namespace YAPET::UI;
@@ -126,8 +134,18 @@ BaseWindow::init_signal() {
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 void
-BaseWindow::initCurses() {
+BaseWindow::initCurses() throw(UIException) {
     initscr();
+    /* We need at least 80x24 for startup */
+    int max_y, max_x;
+    getmaxyx (stdscr, max_y, max_x);
+    if (max_y < MIN_Y ||
+	max_x < MIN_X) {
+	char msg[1024];
+	::snprintf(msg, 1024, "Need at least a resolution of %dx%d.", MIN_X, MIN_Y);
+	throw UIException(msg);
+    }
+
     raw();
     noecho();
     ::refresh();

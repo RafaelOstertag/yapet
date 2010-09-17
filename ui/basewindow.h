@@ -38,6 +38,8 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#include "uiexception.h"
+
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -198,7 +200,7 @@ namespace YAPET {
                  *
                  * Initializes curses and sets up the signal handlers.
                  */
-                static void initCurses();
+                static void initCurses() throw(UIException);
                 /**
                  * @brief Ends the curses mode.
                  *

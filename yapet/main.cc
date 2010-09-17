@@ -336,7 +336,13 @@ int main (int argc, char** argv) {
     // Make sure we have a cleaned up file path
     assert (_tmp__.find ("//", 0) == std::string::npos);
 #ifndef CFGDEBUG
-    YAPET::UI::BaseWindow::initCurses();
+    try {
+	YAPET::UI::BaseWindow::initCurses();
+    } catch (YAPET::UI::UIException &ex) {
+	YAPET::UI::BaseWindow::endCurses();
+	std::cerr << ex.what() << std::endl;
+	return 1;
+    }
     MainWindow* mainwin = NULL;
 
     try {
