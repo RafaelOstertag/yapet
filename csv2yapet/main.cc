@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2009  Rafael Ostertag
+// Copyright (C) 2009-2010  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -102,7 +102,7 @@ enum {
     MAX_FILEPATH = 1024
 };
 
-const char COPYRIGHT[] = "\nCopyright (C) 2009  Rafael Ostertag\n"  \
+const char COPYRIGHT[] = "\nCopyright (C) 2009-2010  Rafael Ostertag\n"  \
                          "\n"                                \
                          "csv2yapet is part of YAPET.\n"                 \
                          "\n"                                \
