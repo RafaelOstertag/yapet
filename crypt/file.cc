@@ -75,24 +75,7 @@
 
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
-#elif defined __GNUC__
-# define alloca __builtin_alloca
-#elif defined _AIX
-# define alloca __alloca
-#elif defined _MSC_VER
-# include <malloc.h>
-# define alloca _alloca
-#else // HAVE_ALLOCA_H
-# ifdef HAVE_ALLOCA
-#  include <stdlib.h>
-# else // HAVE_ALLOCA
-#  include <stddef.h>
-#  ifdef  __cplusplus
-extern "C"
-#  endif // __cplusplus
-void *alloca (size_t);
-# endif // HAVE_ALLOCA
-#endif // HAVE_ALLOCA_H
+#endif
 
 using namespace YAPET;
 
