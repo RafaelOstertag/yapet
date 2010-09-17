@@ -277,7 +277,7 @@ RESTART_GENBUTTON:
             YAPET::UI::BaseWindow::resizeAll();
 
 #else // HAVE_WRESIZE
-        ch = okbutton->focus();
+        ch = regenbutton->focus();
 #endif // HAVE_WRESIZE
 
         switch (ch) {
