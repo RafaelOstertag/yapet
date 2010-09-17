@@ -93,7 +93,7 @@ enum {
      */
     KEY_SPACE = ' ',
 #endif // KEY_SPACE
-    SPACER_TO_AVOID_COMPILER_WARNINGS
+    KEY_CTRL_E = 5
 };
 
 /**
