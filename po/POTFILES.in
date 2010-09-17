@@ -18,11 +18,9 @@ ui/inputwidget.h
 ui/listwidget.h
 ui/messagebox.h
 ui/passwordwidget.h
-ui/roinwidget.h
 ui/secstring.h
 ui/basewindow.cc
 ui/colors.h
-ui/roinwidget.cc
 ui/intinwidget.h
 ui/uiexception.h
 crypt/crypt.h
