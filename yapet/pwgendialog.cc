@@ -91,7 +91,7 @@ PWGenDialog::initCheckBoxItems() {
 }
 
 void
-PWGenDialog::createWindows() throw (YAPET::UI::UIException) {
+PWGenDialog::createWindow() throw (YAPET::UI::UIException) {
     if (window != NULL)
         throw YAPET::UI::UIException (_ ("May you consider deleting the window before reallocating") );
 
@@ -124,7 +124,7 @@ PWGenDialog::createWindows() throw (YAPET::UI::UIException) {
                                           startX() + regenbutton->getLength() + okbutton->getLength() + 4,
                                           startY() + windowHeight() - 2);
     //
-    // The initial password will here be computed.
+    // The initial password will be computed here.
     //
     // Do not move this into refresh(). That might be tempting, but we don't
     // want to alter the password everytime the window is refreshed...
@@ -175,7 +175,7 @@ PWGenDialog::PWGenDialog() throw (YAPET::UI::UIException) :
 	pwgen.setNewRNG(requested_rng);
     }
 	
-    createWindows();
+    createWindow();
 }
 
 PWGenDialog::~PWGenDialog() {
@@ -418,5 +418,5 @@ PWGenDialog::resize() throw (YAPET::UI::UIException) {
     regenbutton = NULL;
     okbutton = NULL;
     cancelbutton = NULL;
-    createWindows();
+    createWindow();
 }
