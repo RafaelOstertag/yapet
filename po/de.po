@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.7\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2010-09-17 23:27+0200\n"
+"POT-Creation-Date: 2010-09-18 23:15+0200\n"
 "PO-Revision-Date: 2010-09-17 23:34+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ui/messagebox.cc:30 yapet/passwordrecord.cc:42 yapet/mainwindow.cc:311
@@ -471,7 +471,7 @@ msgid "Generate Password"
 msgstr "Generate Password"
 
 #: yapet/passwordrecord.cc:101 yapet/mainwindow.cc:470 yapet/mainwindow.cc:727
-#: yapet/mainwindow.cc:867 yapet/mainwindow.cc:995 yapet/mainwindow.cc:1178
+#: yapet/mainwindow.cc:867 yapet/mainwindow.cc:998 yapet/mainwindow.cc:1181
 msgid "Q U E S T I O N"
 msgstr "F R A G E"
 
@@ -483,8 +483,8 @@ msgstr "Einträge geändert. Wirklich abbrechen?"
 #: yapet/mainwindow.cc:448 yapet/mainwindow.cc:488 yapet/mainwindow.cc:506
 #: yapet/mainwindow.cc:549 yapet/mainwindow.cc:589 yapet/mainwindow.cc:653
 #: yapet/mainwindow.cc:705 yapet/mainwindow.cc:749 yapet/mainwindow.cc:782
-#: yapet/mainwindow.cc:826 yapet/mainwindow.cc:968 yapet/mainwindow.cc:1047
-#: yapet/mainwindow.cc:1072 yapet/pwgendialog.cc:297 yapet/pwgendialog.cc:313
+#: yapet/mainwindow.cc:826 yapet/mainwindow.cc:971 yapet/mainwindow.cc:1050
+#: yapet/mainwindow.cc:1075 yapet/pwgendialog.cc:297 yapet/pwgendialog.cc:313
 #: yapet/fileopen.cc:264 yapet/passworddialog.cc:210
 msgid "E R R O R"
 msgstr "F E H L E R"
@@ -666,7 +666,7 @@ msgstr "Fehler beim Auffrischen des oberen rechten Fensters"
 msgid "Error refreshing bottom right window"
 msgstr "Fehler beim Auffrischen des unteren rechten Fensters"
 
-#: yapet/mainwindow.cc:431 yapet/mainwindow.cc:1029
+#: yapet/mainwindow.cc:431 yapet/mainwindow.cc:1032
 msgid "Error while asking for password"
 msgstr "Fehler beim Abfragen des Passwortes"
 
@@ -680,8 +680,8 @@ msgstr " erstellt"
 
 #: yapet/mainwindow.cc:455 yapet/mainwindow.cc:596 yapet/mainwindow.cc:660
 #: yapet/mainwindow.cc:712 yapet/mainwindow.cc:756 yapet/mainwindow.cc:789
-#: yapet/mainwindow.cc:833 yapet/mainwindow.cc:882 yapet/mainwindow.cc:1010
-#: yapet/mainwindow.cc:1196
+#: yapet/mainwindow.cc:833 yapet/mainwindow.cc:882 yapet/mainwindow.cc:1013
+#: yapet/mainwindow.cc:1199
 msgid "Error showing error message"
 msgstr "Fehler beim Anzeigen der Fehlermeldung"
 
@@ -705,7 +705,7 @@ msgstr "UI Fehler währen Passwortabfrage"
 msgid " opened"
 msgstr " geöffnet"
 
-#: yapet/mainwindow.cc:556 yapet/mainwindow.cc:1079
+#: yapet/mainwindow.cc:556 yapet/mainwindow.cc:1082
 msgid "Error while trying to show error"
 msgstr "Fehler beim Fehleranzeigen"
 
@@ -785,43 +785,43 @@ msgstr "Fehler beim Erstellen des Sperrfensters"
 msgid "YAPET -- Locked --"
 msgstr "YAPET -- Gesperrt --"
 
-#: yapet/mainwindow.cc:968
+#: yapet/mainwindow.cc:971
 msgid "Wrong password"
 msgstr "Falsches Passwort"
 
-#: yapet/mainwindow.cc:995
+#: yapet/mainwindow.cc:998
 msgid "Save before changing password?"
 msgstr "Speichern bevor Passwort geändert wird?"
 
-#: yapet/mainwindow.cc:1003
+#: yapet/mainwindow.cc:1006
 msgid "Password change aborted"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:1035
+#: yapet/mainwindow.cc:1038
 msgid "Password change canceled"
 msgstr "Passwortwechsel abgebrochen"
 
-#: yapet/mainwindow.cc:1085
+#: yapet/mainwindow.cc:1088
 msgid "Error reading from file"
 msgstr "Fehler beim Lesen der Datei"
 
-#: yapet/mainwindow.cc:1089
+#: yapet/mainwindow.cc:1092
 msgid "Password successfully changed"
 msgstr "Passwort erfolgreich geändert"
 
-#: yapet/mainwindow.cc:1124
+#: yapet/mainwindow.cc:1127
 msgid "No file loaded"
 msgstr "Keine Datei geladen"
 
-#: yapet/mainwindow.cc:1127
+#: yapet/mainwindow.cc:1130
 msgid " loaded"
 msgstr " geladen"
 
-#: yapet/mainwindow.cc:1178
+#: yapet/mainwindow.cc:1181
 msgid "Save before loading other file?"
 msgstr "Speichern bevor andere Datei geladen wird?"
 
-#: yapet/mainwindow.cc:1204
+#: yapet/mainwindow.cc:1207
 msgid "O P E N  F I L E"
 msgstr "D A T E I  Ö F F N E N"
 

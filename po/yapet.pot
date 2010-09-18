@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 0.7\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2010-09-17 23:27+0200\n"
+"POT-Creation-Date: 2010-09-18 23:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -467,7 +466,7 @@ msgid "Generate Password"
 msgstr ""
 
 #: yapet/passwordrecord.cc:101 yapet/mainwindow.cc:470 yapet/mainwindow.cc:727
-#: yapet/mainwindow.cc:867 yapet/mainwindow.cc:995 yapet/mainwindow.cc:1178
+#: yapet/mainwindow.cc:867 yapet/mainwindow.cc:998 yapet/mainwindow.cc:1181
 msgid "Q U E S T I O N"
 msgstr ""
 
@@ -479,8 +478,8 @@ msgstr ""
 #: yapet/mainwindow.cc:448 yapet/mainwindow.cc:488 yapet/mainwindow.cc:506
 #: yapet/mainwindow.cc:549 yapet/mainwindow.cc:589 yapet/mainwindow.cc:653
 #: yapet/mainwindow.cc:705 yapet/mainwindow.cc:749 yapet/mainwindow.cc:782
-#: yapet/mainwindow.cc:826 yapet/mainwindow.cc:968 yapet/mainwindow.cc:1047
-#: yapet/mainwindow.cc:1072 yapet/pwgendialog.cc:297 yapet/pwgendialog.cc:313
+#: yapet/mainwindow.cc:826 yapet/mainwindow.cc:971 yapet/mainwindow.cc:1050
+#: yapet/mainwindow.cc:1075 yapet/pwgendialog.cc:297 yapet/pwgendialog.cc:313
 #: yapet/fileopen.cc:264 yapet/passworddialog.cc:210
 msgid "E R R O R"
 msgstr ""
@@ -662,7 +661,7 @@ msgstr ""
 msgid "Error refreshing bottom right window"
 msgstr ""
 
-#: yapet/mainwindow.cc:431 yapet/mainwindow.cc:1029
+#: yapet/mainwindow.cc:431 yapet/mainwindow.cc:1032
 msgid "Error while asking for password"
 msgstr ""
 
@@ -676,8 +675,8 @@ msgstr ""
 
 #: yapet/mainwindow.cc:455 yapet/mainwindow.cc:596 yapet/mainwindow.cc:660
 #: yapet/mainwindow.cc:712 yapet/mainwindow.cc:756 yapet/mainwindow.cc:789
-#: yapet/mainwindow.cc:833 yapet/mainwindow.cc:882 yapet/mainwindow.cc:1010
-#: yapet/mainwindow.cc:1196
+#: yapet/mainwindow.cc:833 yapet/mainwindow.cc:882 yapet/mainwindow.cc:1013
+#: yapet/mainwindow.cc:1199
 msgid "Error showing error message"
 msgstr ""
 
@@ -701,7 +700,7 @@ msgstr ""
 msgid " opened"
 msgstr ""
 
-#: yapet/mainwindow.cc:556 yapet/mainwindow.cc:1079
+#: yapet/mainwindow.cc:556 yapet/mainwindow.cc:1082
 msgid "Error while trying to show error"
 msgstr ""
 
@@ -781,43 +780,43 @@ msgstr ""
 msgid "YAPET -- Locked --"
 msgstr ""
 
-#: yapet/mainwindow.cc:968
+#: yapet/mainwindow.cc:971
 msgid "Wrong password"
 msgstr ""
 
-#: yapet/mainwindow.cc:995
+#: yapet/mainwindow.cc:998
 msgid "Save before changing password?"
 msgstr ""
 
-#: yapet/mainwindow.cc:1003
+#: yapet/mainwindow.cc:1006
 msgid "Password change aborted"
 msgstr ""
 
-#: yapet/mainwindow.cc:1035
+#: yapet/mainwindow.cc:1038
 msgid "Password change canceled"
 msgstr ""
 
-#: yapet/mainwindow.cc:1085
+#: yapet/mainwindow.cc:1088
 msgid "Error reading from file"
 msgstr ""
 
-#: yapet/mainwindow.cc:1089
+#: yapet/mainwindow.cc:1092
 msgid "Password successfully changed"
 msgstr ""
 
-#: yapet/mainwindow.cc:1124
+#: yapet/mainwindow.cc:1127
 msgid "No file loaded"
 msgstr ""
 
-#: yapet/mainwindow.cc:1127
+#: yapet/mainwindow.cc:1130
 msgid " loaded"
 msgstr ""
 
-#: yapet/mainwindow.cc:1178
+#: yapet/mainwindow.cc:1181
 msgid "Save before loading other file?"
 msgstr ""
 
-#: yapet/mainwindow.cc:1204
+#: yapet/mainwindow.cc:1207
 msgid "O P E N  F I L E"
 msgstr ""
 
