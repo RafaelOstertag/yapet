@@ -201,7 +201,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
         int ch = 0;
 
 
-        while ( ch = name->focus() ) {
+        while ( (ch = name->focus()) ) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -226,7 +226,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
-        while ( ch = host->focus() ) {
+        while ( (ch = host->focus()) ) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -251,7 +251,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
-        while ( ch = username->focus() ) {
+        while ( (ch = username->focus()) ) {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -276,7 +276,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
-        while ( ch = password->focus() )  {
+        while ( (ch = password->focus()) )  {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -301,7 +301,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
             return;
         }
 
-        while ( ch = comment->focus() )  {
+        while ( (ch = comment->focus()) )  {
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
