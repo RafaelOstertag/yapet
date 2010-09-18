@@ -103,7 +103,7 @@
     <filename>.pet</filename>. This cannot be changed. Also, if a file is
     loaded using the command line, &yp; appends the suffix
     <filename>.pet</filename> to the file name unless the file name includes
-    this suffix already.</para>
+    this suffix.</para>
 
     <refsect2 id="mainscreen">
       <title>Main Screen</title>
@@ -594,7 +594,7 @@ No file loaded
     <refsect2 id="editingpasswordrecords">
 	<title>Editing Password Records</title>
 
-	<para>When a password record is openend by pressing
+	<para>When a password record is opened by pressing
 	<keycap>Enter</keycap>, it is opened in read-only mode in order to
 	prevent accidental modification.</para>
 
@@ -612,7 +612,7 @@ No file loaded
     <refsect2 id="configurationfile">
       <title>Configuration File</title>
 
-      <para>If the file &DEFRCFILE; exists, &yp; reads by default options
+      <para>If the file &DEFRCFILE; exists, &yp; reads options
       provided in this file. You may specify a different configuration file by
       using the <option>-r</option> option (see <xref linkend="options"
       />). Options given on the command line have precedence over options given
@@ -656,6 +656,17 @@ No file loaded
 	    invoking &yp;.</para>
 
 	    <para>Default: 600</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>pwinputtimeout</option></term>
+
+	  <listitem>
+	    <para>A positive integer specifying the time of inactivity in seconds
+	    until the password prompt for unlocking the screen will disappear.</para>
+
+	    <para>Default: 60</para>
 	  </listitem>
 	</varlistentry>
 
