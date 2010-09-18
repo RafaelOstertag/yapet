@@ -10,6 +10,10 @@ YAPET 0.7
         unsaved changes are pending. This feature can be disabled in the
         configuration file.
 
+      * The password prompt for unlocking the screen disappears after
+        60 seconds of inactivity. The time-out can be changed in the
+        configuration file.
+
       * Compiles with gcc 4.4 or later.
 
 
@@ -28,9 +32,6 @@ YAPET 0.6
 
 YAPET 0.5
 
-      New Features:
-      -------------
-
       * Built-in password generator
 
       * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
@@ -47,10 +48,6 @@ YAPET 0.5
 
       * A visual mark next to the number of password records indicates whether
 	or not unsaved records exist.
-
-
-      Fixes:
-      ------
 
       * csv2yapet can handle field delimiters in field values.
 
