@@ -149,8 +149,8 @@ throw (UIException) : window (NULL),
 		      start_pos (0),
 		      pos (0),
 		      width (w),
-		      readonly (ro),
-		      text_changed (false) {
+		      text_changed (false),
+		      readonly (ro) {
     createWindow (sx, sy, w);
 }
 
@@ -160,8 +160,8 @@ throw (UIException) : window (NULL),
 		      start_pos (0),
 		      pos (0),
 		      width (w),
-		      readonly (ro),
-		      text_changed (false) {
+		      text_changed (false),
+		      readonly (ro) {
     createWindow (sx, sy, w);
 }
 
