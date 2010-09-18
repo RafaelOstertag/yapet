@@ -28,6 +28,7 @@ YAPET::PWGEN::RNGENGINE Globals::pwgen_rng(YAPET::CONFIG::Config::getDefPWGenRNG
 int Globals::selected_character_pools(YAPET::CONFIG::Config::getDefCharPools());
 size_t Globals::selected_password_length(YAPET::CONFIG::Config::getDefPWLength());
 bool Globals::allow_lock_quit(YAPET::CONFIG::Config::getDefAllowLockQuit());
+unsigned int Globals::pw_input_timeout(YAPET::CONFIG::Config::getDefPwInputTimeout());
 
 void
 Globals::setPWGenRNG(YAPET::PWGEN::RNGENGINE e) {
@@ -67,4 +68,14 @@ Globals::setAllowLockQuit(bool b) {
 bool
 Globals::getAllowLockQuit() {
     return allow_lock_quit;
+}
+
+void
+Globals::setPwInputTimeout(unsigned int i) {
+    pw_input_timeout = i;
+}
+
+unsigned int
+Globals::getPwInputTimeout() {
+    return pw_input_timeout;
 }

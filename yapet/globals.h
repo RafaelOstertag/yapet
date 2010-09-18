@@ -51,6 +51,7 @@ namespace YAPET {
 		static int selected_character_pools;
 		static size_t selected_password_length;
 		static bool allow_lock_quit;
+		static unsigned int pw_input_timeout;
                 inline Globals() {}
                 inline ~Globals() {}
                 inline Globals (const Globals&) {}
@@ -67,6 +68,8 @@ namespace YAPET {
 		static size_t getPasswordLength();
 		static void setAllowLockQuit(bool b);
 		static bool getAllowLockQuit();
+		static void setPwInputTimeout(unsigned int i);
+		static unsigned int getPwInputTimeout();
         };
 
     }

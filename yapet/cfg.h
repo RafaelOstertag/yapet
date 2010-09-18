@@ -67,6 +67,8 @@ namespace YAPET {
                 static const int def_character_pools;
 		//! Show the Quit button when unlocking screen
 		static const bool def_allow_lock_quit;
+		//! Default for password input timeout
+		static const unsigned int def_pw_input_timeout;
 
                 struct s_cl_struct {
                     // For indicating whether or not it has been set on the command
@@ -165,6 +167,7 @@ namespace YAPET {
                 static size_t getDefPWLength();
                 static int getDefCharPools();
 		static bool getDefAllowLockQuit();
+		static unsigned int getDefPwInputTimeout();
 		static bool getDefCPoolLetters();
 		static bool getDefCPoolDigits();
 		static bool getDefCPoolPunct();
@@ -218,6 +221,7 @@ namespace YAPET {
 		size_t getPWGenPWLen() const;
 		int getCharPools() const;
 		bool getAllowLockQuit() const;
+		unsigned int getPwInputTimeout() const;
 
                 const Config& operator= (const Config& c);
         };

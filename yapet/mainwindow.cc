@@ -935,7 +935,10 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 	    // In case the user does not want to show the quit button
 	    show_quit = YAPET::GLOBALS::Globals::getAllowLockQuit() ? show_quit : false;
 
-            pwdia = new PasswordDialog (EXISTING_PW, file->getFilename(), 30, show_quit);
+            pwdia = new PasswordDialog (EXISTING_PW,
+					file->getFilename(),
+					YAPET::GLOBALS::Globals::getPwInputTimeout(),
+					show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
 	    wants_quit = pwdia->wantsQuit();

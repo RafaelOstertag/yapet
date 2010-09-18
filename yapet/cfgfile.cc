@@ -147,6 +147,9 @@ ConfigFile::parseFile() {
 	    if (readOption<bool>(l, "allowlockquit=", allowlockquit) != OPTION_NOT_FOUND)
 		continue;
 
+	    if (readOption<unsigned int>(l, "pwinputtimeout=", pwinputtimeout) != OPTION_NOT_FOUND)
+		continue;
+
             // Yes, the file can say that it should be ignored!
 	    if (readOption<bool>(l, "ignorerc=", ignorerc) != OPTION_NOT_FOUND)
 		continue;
@@ -205,10 +208,10 @@ ConfigFile::parseFile() {
     }
 }
 
-
 ConfigFile::ConfigFile (std::string cfgfile) : filetoload (Config::getDefPetfile() ),
 					       usefsecurity (Config::getDefFilesecurity() ),
 					       locktimeout (Config::getDefTimeout() ),
+					       pwinputtimeout (Config::getDefPwInputTimeout() ),
 					       allowlockquit (Config::getDefAllowLockQuit() ),
 					       ignorerc (false),
 					       cfgfilepath (""),
@@ -259,6 +262,8 @@ ConfigFile::ConfigFile (const ConfigFile& cfgfile) :
     filetoload (cfgfile.filetoload),
     usefsecurity(cfgfile.usefsecurity),
     locktimeout (cfgfile.locktimeout),
+    pwinputtimeout (cfgfile.pwinputtimeout),
+    allowlockquit (cfgfile.allowlockquit),
     cfgfilepath (cfgfile.cfgfilepath),
     opensuccess (cfgfile.opensuccess),
     pwgen_letters (cfgfile.pwgen_letters),
@@ -278,6 +283,8 @@ ConfigFile::operator= (const ConfigFile & cfgfile) {
     filetoload = cfgfile.filetoload;
     usefsecurity = cfgfile.usefsecurity;
     locktimeout = cfgfile.locktimeout;
+    pwinputtimeout = cfgfile.pwinputtimeout;
+    allowlockquit = cfgfile.allowlockquit;
     cfgfilepath = cfgfile.cfgfilepath;
     opensuccess = cfgfile.opensuccess;
     pwgen_letters = cfgfile.pwgen_letters;

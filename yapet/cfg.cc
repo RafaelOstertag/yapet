@@ -49,6 +49,7 @@ const int Config::def_character_pools (YAPET::PWGEN::LETTERS |
 				       YAPET::PWGEN::PUNCT |
 				       YAPET::PWGEN::SPECIAL);
 const bool Config::def_allow_lock_quit (true);
+const unsigned int Config::def_pw_input_timeout (60); // in seconds
 std::string
 Config::getDefPetfile() {
     return def_petfile;
@@ -80,6 +81,10 @@ Config::getDefCharPools() {
 bool
 Config::getDefAllowLockQuit() {
     return def_allow_lock_quit;
+}
+unsigned int
+Config::getDefPwInputTimeout() {
+    return def_pw_input_timeout;
 }
 bool
 Config::getDefCPoolLetters() {
@@ -376,6 +381,16 @@ Config::getAllowLockQuit() const {
 	return cfgfile->getAllowLockQuit();
     } else {
 	return def_allow_lock_quit;
+    }
+}
+
+unsigned int
+Config::getPwInputTimeout() const {
+    if (cfgfile != NULL) {
+	return cfgfile->getPwInputTimeout() > 5 ? 
+	    cfgfile->getPwInputTimeout() : 5;
+    } else {
+	return def_pw_input_timeout;
     }
 }
 

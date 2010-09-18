@@ -65,6 +65,7 @@ namespace YAPET {
                 std::string filetoload;
                 bool usefsecurity;
                 unsigned int locktimeout;
+		unsigned int pwinputtimeout;
 		bool allowlockquit;
                 // Yes, the file can say that it should be ignored!
                 bool ignorerc;
@@ -132,6 +133,9 @@ namespace YAPET {
                 inline bool getIgnoreRC() const {
                     return ignorerc ;
                 }
+		inline unsigned int getPwInputTimeout() const {
+		    return pwinputtimeout;
+		}
 		inline bool getAllowLockQuit() const {
 		    return allowlockquit;
 		}
