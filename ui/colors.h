@@ -39,6 +39,7 @@
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
 #ifdef __CYGWIN__
+// Cygwin #defines COLORS which leads to compile errors.
 # ifdef COLORS
 #  undef COLORS
 # endif
