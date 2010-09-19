@@ -120,6 +120,19 @@
   <sect1 id="importantchanges">
     <title>Important Changes</title>
 
+    <sect2 id="changesversion0.7">
+	<title>Version 0.7</title>
+
+	<para>Password records are opened in read-only mode by default for
+	viewing in order to prevent accidental changes. Pressing <keycombo
+	action="simul"><keycap>Ctrl</keycap><keycap>e</keycap></keycombo> in
+	any text field will switch to read-write mode for editing password
+	records.</para>
+
+	<para>The password prompt of the lock screen will now time-out. The
+	time-out can be specified in the configuration file.</para>
+    </sect2>
+
     <sect2 id="changesversion0.6">
       <title>Version 0.6</title>
 
