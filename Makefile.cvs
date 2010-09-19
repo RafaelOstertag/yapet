@@ -1,7 +1,7 @@
 # -*- makefile -*-
 #
 # $Id$
-BINDIR=/usr/bin
+BINDIR=/opt/guengel/bin
 ACLOCAL=$(BINDIR)/aclocal
 AUTOCONF=$(BINDIR)/autoconf
 AUTOHEADER=$(BINDIR)/autoheader
