@@ -38,6 +38,12 @@
 #endif // HAVE_NCURSES_H
 #include "curswa.h" // Leave this here. It depends on the above includes.
 
+#ifdef __CYGWIN__
+# ifdef COLORS
+#  undef COLORS
+# endif
+#endif
+
 namespace YAPET {
     namespace UI {
         /**
