@@ -52,8 +52,8 @@
       Prior building YAPET under Cygwin, you need to install following Cygwin
       Packages in addition the base system packages:
       <itemizedlist>
-	<listitem><simpara>gcc-core</simpara></listitem>
-	<listitem><simpara>gcc-g++</simpara></listitem>
+	<listitem><simpara>gcc4-core</simpara></listitem>
+	<listitem><simpara>gcc4-g++</simpara></listitem>
 	<listitem><simpara>libncurses-devel</simpara></listitem>
 	<listitem><simpara>make</simpara></listitem>
 	<listitem><simpara>openssl</simpara></listitem>
@@ -69,7 +69,7 @@
     <option>CC</option> and <option>CXX</option> variables as shown
     below</para>
 
-    <screen>./configure CXX=g++ CC=gcc</screen>
+    <screen>./configure CXX=g++ CC=gcc --with-curses-include=/usr/include/ncurses</screen>
 
     <para>You may want to specify an different prefix with
     <option>--prefix</option>.</para>
