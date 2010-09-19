@@ -49,7 +49,8 @@
     <title>Prerequisite Cygwin Packages</title>
 
     <para>
-      Prior building YAPET under Cygwin, you need to install following Cygwin Packages in addition the base system packages:
+      Prior building YAPET under Cygwin, you need to install following Cygwin
+      Packages in addition the base system packages:
       <itemizedlist>
 	<listitem><simpara>gcc-core</simpara></listitem>
 	<listitem><simpara>gcc-g++</simpara></listitem>
