@@ -113,6 +113,7 @@ InputWidget::processDelete() throw (UIException) {
             start_pos--;
     }
 
+    wdelch(window);
     refresh();
     // Mark the text as changed
     text_changed = true;
@@ -140,7 +141,6 @@ InputWidget::createWindow (int sx, int sy, int w) throw (UIException) {
     if (retval == ERR)
         throw UIException (_ ("Error setting keypad on input widget") );
 
-    //refresh();
 }
 
 InputWidget::InputWidget (int sx, int sy, int w, int ml, bool ro)
@@ -254,10 +254,7 @@ BAILOUT:
 
 void
 InputWidget::refresh() throw (UIException) {
-    int retval = werase (window);
-
-    if (retval == ERR)
-        throw UIException (_ ("Error clearing input widget") );
+    int retval;
 
     if (buffer.length() > 0) {
         secstring sub = buffer.substr (start_pos, width);
