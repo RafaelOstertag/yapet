@@ -788,7 +788,7 @@ File::save (std::list<PartDec>& records) throw (YAPETException) {
 
     while (it != records.end() ) {
         write ( it->getEncRecord() );
-        it++;
+        ++it;
     }
 }
 
@@ -894,7 +894,7 @@ File::setNewKey (const Key& oldkey,
                 throw;
             }
 
-            it++;
+            ++it;
         }
     } catch (YAPETException& ex) {
         if (oldfile != NULL)
