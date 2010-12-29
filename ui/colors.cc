@@ -44,16 +44,18 @@ color Colors::colors[] = {
     {4, COLOR_BLACK, COLOR_WHITE, A_REVERSE},
     // Input widget focus
     {5, COLOR_BLACK, COLOR_YELLOW, A_REVERSE},
+    // Input widget hidden
+    {6, COLOR_YELLOW, COLOR_YELLOW, A_NORMAL},
     // Button no focus
-    {6, COLOR_WHITE, COLOR_BLACK, A_NORMAL},
+    {7, COLOR_WHITE, COLOR_BLACK, A_NORMAL},
     // Button focus
-    {7, COLOR_BLACK, COLOR_GREEN, A_REVERSE},
+    {8, COLOR_BLACK, COLOR_GREEN, A_REVERSE},
     // List widget
-    {8, COLOR_WHITE, COLOR_BLUE, A_NORMAL},
+    {9, COLOR_WHITE, COLOR_BLUE, A_NORMAL},
     // Check Box Group
-    {9, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
+    {10, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
     // Check Box Group Title
-    {10, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
+    {11, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
     // The marker of the end
     {0, 0, 0, 0}
 };
@@ -72,16 +74,18 @@ color Colors::colors[] = {
     {4, COLOR_BLACK, COLOR_WHITE, A_REVERSE},
     // Input widget focus
     {5, COLOR_WHITE, COLOR_MAGENTA, A_REVERSE},
+    // Input widget text hidden
+    {6, COLOR_MAGENTA, COLOR_MAGENTA, A_REVERSE},
     // Button no focus
-    {6, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
+    {7, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
     // Button focus
-    {7, COLOR_CYAN, COLOR_MAGENTA, A_REVERSE},
+    {8, COLOR_CYAN, COLOR_MAGENTA, A_REVERSE},
     // List widget
-    {8, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
+    {9, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
     // Check Box Group
-    {9, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
+    {10, COLOR_BLACK, COLOR_CYAN, A_NORMAL},
     // Check Box Group Title
-    {10, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
+    {11, COLOR_CYAN, COLOR_BLACK, A_NORMAL},
     // The marker of the end
     {0, 0, 0, 0}
 };

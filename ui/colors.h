@@ -73,6 +73,10 @@ namespace YAPET {
              * Color for an input widget with focus.
              */
             INPUTWIDGET_FOCUS,
+	    /**
+	     * Color for hidden text in input widget.
+	     */
+	    INPUTWIDGET_HIDDEN,
             /**
              * Color of buttons without focus.
              */
