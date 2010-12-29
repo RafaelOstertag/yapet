@@ -30,7 +30,7 @@
  * - \c box
  * - \c clear
  * - \c erase
- * - \c move
+* - \c move
  * - \c refresh
  *
  * and replaces them by inline functions.
@@ -167,9 +167,11 @@ inline int refresh() {
 #endif
 
 inline int waddstr_c (WINDOW* win, const char* str) {
-    char* tmp_ptr = (char*) malloc (strlen (str) + 1);
-    memcpy (tmp_ptr, str, strlen (str) + 1);
+    size_t len = strlen (str) + 1;
+    char* tmp_ptr = (char*) malloc (len);
+    memcpy (tmp_ptr, str, len);
     int retval = waddstr (win, tmp_ptr);
+    memset (tmp_ptr, 0, len);
     free (tmp_ptr);
     return retval;
 }
@@ -187,9 +189,11 @@ inline int waddstr_c (WINDOW* win, const char* str) {
 #endif
 
 inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
-    char* tmp_ptr = (char*) malloc (strlen (str) + 1);
-    memcpy (tmp_ptr, str, strlen (str) + 1);
+    size_t len = strlen (str) + 1;
+    char* tmp_ptr = (char*) malloc (len);
+    memcpy (tmp_ptr, str, len);
     int retval = mvwaddstr (win, y, x, tmp_ptr);
+    memset(tmp_ptr, 0, len);
     free (tmp_ptr);
     return retval;
 }
@@ -207,9 +211,11 @@ inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
 #endif
 
 inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {
-    char* tmp_ptr = (char*) malloc (strlen (str) + 1);
-    memcpy (tmp_ptr, str, strlen (str) + 1);
+    size_t len = strlen (str) + 1;
+    char* tmp_ptr = (char*) malloc (len);
+    memcpy (tmp_ptr, str, len);
     int retval = mvwaddnstr (win, y, x, tmp_ptr, n);
+    memset (tmp_ptr, 0, n);
     free (tmp_ptr);
     return retval;
 }
@@ -246,6 +252,7 @@ inline int _mvwchgat_ (WINDOW* w, int y, int x, int n, int attr, short color, co
         return retval;
 
     retval = wattroff (w, attr | COLOR_PAIR (color) );
+    memset (buff, 0, n);
 
     if (retval == ERR)
         return retval;
