@@ -66,6 +66,8 @@ yapet/pwgen/rng.h
 yapet/pwgen/rng.cc
 yapet/pwgen/charpool.cc
 yapet/searchdialog.h
+yapet/lockscreen.h
+yapet/lockscreen.cc
 csv2yapet/csvimport.h
 csv2yapet/csvimport.cc
 csv2yapet/main.cc
