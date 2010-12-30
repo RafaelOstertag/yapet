@@ -47,7 +47,7 @@ CheckBoxGroup::ItemsUsableHeight() const {
 inline int
 CheckBoxGroup::lastItemPos() const {
     int max_pos = items.size() > (std::vector<std::string>::size_type) ItemsUsableHeight() ?
-                  ItemsUsableHeight() : items.size();
+		  ItemsUsableHeight() : items.size();
     return max_pos > MAX_ITEMS ? MAX_ITEMS : max_pos;
 }
 
@@ -55,24 +55,24 @@ void
 CheckBoxGroup::addCheckBox (int pos) throw (UIException) {
     assert ( (pos > -1) &&  (pos <= lastItemPos() ) );
     int retval = mymvwaddstr (window,
-                              1 + pos,
-                              2,
-                              "[ ]");
+			      1 + pos,
+			      2,
+			      "[ ]");
 
     if (retval == ERR)
-        throw UIException (_ ("Error printing check box") );
+	throw UIException (_ ("Error printing check box") );
 }
 
 void
 CheckBoxGroup::setCheckMark (int pos, bool mark) throw (UIException) {
     assert ( (pos > -1) &&  (pos <= lastItemPos() ) );
     int retval = mymvwaddstr (window,
-                              1 + pos,
-                              3,
-                              (mark ? "X" : " ") );
+			      1 + pos,
+			      3,
+			      (mark ? "X" : " ") );
 
     if (retval == ERR)
-        throw UIException (_ ("Error printing check box") );
+	throw UIException (_ ("Error printing check box") );
 }
 
 void
@@ -87,22 +87,22 @@ CheckBoxGroup::setCursor (int pos) throw (UIException) {
     int retval = wmove (window, 1 + pos, 3);
 
     if (retval == ERR)
-        throw UIException (_ ("Error moving cursor for widget") );
+	throw UIException (_ ("Error moving cursor for widget") );
 }
 
 void
 CheckBoxGroup::displayItems() throw (UIException) {
     for (int i = 0; i < lastItemPos(); i++) {
-        addCheckBox (i);
-        setCheckMark (i);
-        int retval = mymvwaddnstr (window,
-                                   1 + i,
-                                   6,
-                                   items[i].c_str(),
-                                   ItemsUsableWidth() );
+	addCheckBox (i);
+	setCheckMark (i);
+	int retval = mymvwaddnstr (window,
+				   1 + i,
+				   6,
+				   items[i].c_str(),
+				   ItemsUsableWidth() );
 
-        if (retval == ERR)
-            throw UIException (_ ("Error printing check box item") );
+	if (retval == ERR)
+	    throw UIException (_ ("Error printing check box item") );
     }
 }
 
@@ -111,37 +111,37 @@ CheckBoxGroup::createWindow() throw (UIException) {
     window = newwin (height, width, start_y, start_x);
 
     if (window == NULL)
-        throw UIException (_ ("Error creating checkbox window") );
+	throw UIException (_ ("Error creating checkbox window") );
 
     Colors::setcolor (window, CHECKBOXGROUP);
 #ifdef KEYPAD_RETURN_INT
     int retval = keypad (window, TRUE);
     if (retval == ERR)
-        throw UIException (_ ("Error enabling keypad") );
+	throw UIException (_ ("Error enabling keypad") );
 #else
     keypad (window, TRUE);
 #endif
 }
 
 CheckBoxGroup::CheckBoxGroup (std::string t,
-                              const std::vector<std::string>& it,
-                              uint16_t o,
-                              int x,
-                              int y,
-                              int w,
-                              int h) throw (UIException) : title (t),
-        items (it),
-        options (o),
-        start_x (x),
-        start_y (y),
-        width (w),
-        height (h) {
+			      const std::vector<std::string>& it,
+			      uint16_t o,
+			      int x,
+			      int y,
+			      int w,
+			      int h) throw (UIException) : title (t),
+	items (it),
+	options (o),
+	start_x (x),
+	start_y (y),
+	width (w),
+	height (h) {
     // Copy/Paste from listwidget.h. Don't ask me why this is checked...
     if ( x == -1 ||
-            y == -1 ||
-            width == -1 ||
-            height == -1 )
-        throw UIException (_ ("No idea of the dimension of the widget") );
+	    y == -1 ||
+	    width == -1 ||
+	    height == -1 )
+	throw UIException (_ ("No idea of the dimension of the widget") );
 
     createWindow();
 }
@@ -157,28 +157,28 @@ CheckBoxGroup::refresh() throw (UIException) {
     int retval = werase (window);
 
     if (retval == ERR)
-        throw UIException (_ ("Error erasing window") );
+	throw UIException (_ ("Error erasing window") );
 
     retval = box (window, 0, 0);
 
     if (retval == ERR)
-        throw UIException (_ ("Error setting border") );
+	throw UIException (_ ("Error setting border") );
 
     Colors::setcolor (window, CHECKBOXGROUP_TITLE);
     retval = mymvwaddstr (window,
-                          0,
-                          2,
-                          title.c_str() );
+			  0,
+			  2,
+			  title.c_str() );
 
     if (retval == ERR)
-        throw UIException (_ ("Error printing title") );
+	throw UIException (_ ("Error printing title") );
 
     Colors::setcolor (window, MESSAGEBOX);
     displayItems();
     retval = wrefresh (window);
 
     if (retval == ERR)
-        throw UIException (_ ("Error refreshing message box") );
+	throw UIException (_ ("Error refreshing message box") );
 }
 
 /**
@@ -200,55 +200,55 @@ CheckBoxGroup::focus() throw (UIException) {
     int retval = 0;
 
     while (1) {
-        retval = wmove (window, 1 + cur_pos, 3);
+	retval = wmove (window, 1 + cur_pos, 3);
 
-        if (retval == ERR)
-            throw UIException (_ ("Error moving cursor for widget") );
+	if (retval == ERR)
+	    throw UIException (_ ("Error moving cursor for widget") );
 
-        ch = wgetch (window);
+	ch = wgetch (window);
 
-        switch (ch) {
-                // Bailout keys
+	switch (ch) {
+		// Bailout keys
 #ifdef HAVE_WRESIZE
-            case KEY_RESIZE:
+	    case KEY_RESIZE:
 #endif // HAVE_WRESIZE
-            case KEY_ESC:
-            case KEY_TAB:
-                goto BAILOUT;
-            case KEY_UP:
-            case 'k': // vi key
+	    case KEY_ESC:
+	    case KEY_TAB:
+		goto BAILOUT;
+	    case KEY_UP:
+	    case 'k': // vi key
 
-                if ( cur_pos == 0 ) {
-                    // Wrap around
-                    cur_pos = lastItemPos();
-                } else {
-                    cur_pos --;
-                }
+		if ( cur_pos == 0 ) {
+		    // Wrap around
+		    cur_pos = lastItemPos();
+		} else {
+		    cur_pos --;
+		}
 
-                break;
-            case KEY_DOWN:
-            case 'j': // vi key
+		break;
+	    case KEY_DOWN:
+	    case 'j': // vi key
 
-                if ( cur_pos < lastItemPos() - 1  ) {
-                    // Wrap around
-                    cur_pos ++;
-                } else {
-                    cur_pos = 0;
-                }
+		if ( cur_pos < lastItemPos() - 1  ) {
+		    // Wrap around
+		    cur_pos ++;
+		} else {
+		    cur_pos = 0;
+		}
 
-                break;
-            case KEY_ENTER:
-            case KEY_SPACE:
-            case '\n':
-                options ^= (1 << cur_pos);
-                setCheckMark (cur_pos);
-                break;
-            case KEY_REFRESH:
-                BaseWindow::refreshAll();
-                break;
-            default:
-                break;
-        }
+		break;
+	    case KEY_ENTER:
+	    case KEY_SPACE:
+	    case '\n':
+		options ^= (1 << cur_pos);
+		setCheckMark (cur_pos);
+		break;
+	    case KEY_REFRESH:
+		BaseWindow::refreshAll();
+		break;
+	    default:
+		break;
+	}
     }
 
 BAILOUT:
@@ -261,7 +261,7 @@ CheckBoxGroup::resize (int sx, int sy, int w, int h) throw (UIException) {
     int retval = delwin (window);
 
     if (retval == ERR)
-        throw UIException (_ ("Error deleting message box") );
+	throw UIException (_ ("Error deleting message box") );
 
     start_x = sx;
     start_y = sy;
