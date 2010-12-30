@@ -70,16 +70,17 @@ PasswordRecord::handle_signal (int signo) {
 
 	lockscreen->run();
 
-	// The lock screen has to be removed before calling refreshAll(), or it
-	// will throw an exception.
+	// The lock screen has to be removed before calling refreshAll(), or
+	// the lock screen throws an exception, hence we have to save the value.
 	bool b1 = lockscreen->getDoQuit();
-	bool b2 = lockscreen->getResizeDue();
+
+	// We let other methods handle the resize. Calling the
+	// BaseWindow::resizeAll() method here leads to SEGV.
+	resize_due = lockscreen->getResizeDue();
+
 	delete lockscreen;
 
-	if (b2)
-	    YAPET::UI::BaseWindow::resizeAll();
-	else
-	    YAPET::UI::BaseWindow::refreshAll();
+	YAPET::UI::BaseWindow::refreshAll();
 	if (b1) {
 	    flushinp();
 	    ungetch('q');
@@ -198,6 +199,7 @@ PasswordRecord::PasswordRecord (YAPET::Key& k, const YAPET::File& f, YAPET::Part
 				     passwordchanged (false),
 				     commentchanged (false),
 				     readonly (ro),
+				     resize_due (false),
 				     locktimeout (timeout) {
     assert (file != NULL);
     assert (key != NULL);
@@ -264,6 +266,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
         while ( (ch = name->focus()) ) {
+	    resize_as_needed();
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -295,6 +298,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
 	YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
         while ( (ch = host->focus()) ) {
+	    resize_as_needed();
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -325,6 +329,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
 	YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
         while ( (ch = username->focus()) ) {
+	    resize_as_needed();
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -356,6 +361,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
 	YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
         while ( (ch = password->focus()) )  {
+	    resize_as_needed();
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -387,6 +393,7 @@ PasswordRecord::run() throw (YAPET::UI::UIException) {
 	YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
         while ( (ch = comment->focus()) )  {
+	    resize_as_needed();
 	    switch (ch) {
 #ifdef HAVE_WRESIZE
 	    case KEY_RESIZE:
@@ -564,6 +571,9 @@ PasswordRecord::resize() throw (YAPET::UI::UIException) {
     pwgenbutton = NULL;
 #endif
     createWindow();
+
+    // Reset the resize_due attribute
+    resize_due = false;
 }
 
 void

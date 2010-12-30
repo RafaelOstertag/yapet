@@ -92,7 +92,8 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         YAPET::UI::Button* pwgenbutton;
 #endif
         YAPET::Key* key;
-	const YAPET::File* file; // Only for locking the screen
+	const YAPET::File* file; // Only used when locking the screen for
+				 // displaying the file name
         YAPET::PartDec* encentry;
         YAPET::UI::secstring s_name;
         YAPET::UI::secstring s_host;
@@ -105,6 +106,14 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         bool passwordchanged;
         bool commentchanged;
 	bool readonly;
+	/**
+	 * Used to inform the focus method to resize all windows. This is set
+	 * by PasswordRecord::handle_signal.
+	 *
+	 * This attribute has been introduced because letting the signal
+	 * handler resizing all windows leads to SEGV.
+	 */
+	volatile bool resize_due;
 	unsigned int locktimeout;
 
         inline PasswordRecord (const PasswordRecord&) { assert (0); }
@@ -112,6 +121,16 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
 	    assert (0);
             return *this;
         }
+
+	/**
+	 * Helper function that calls BaseWindow::resizeAll() if resize_due is
+	 * true. This function does not reset the resize_due attribute since
+	 * this is the responsibility of ::resize();
+	 */
+	inline void resize_as_needed() {
+	    if (resize_due)
+		BaseWindow::resizeAll();
+	}
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 	class Alarm;
