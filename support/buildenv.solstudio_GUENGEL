@@ -1,0 +1,8 @@
+XML_CATALOG_FILES=/opt/guengel/etc/xml/catalog.xml
+CC=cc
+CXX=CC
+CPPFLAGS='-I/opt/guengel/include -I/opt/guengel/include/ncurses'
+CXXFLAGS='-xO0 -g +w'
+LDFLAGS='-L/opt/guengel/lib -R/opt/guengel/lib'
+PATH=/opt/guengel/bin:/usr/bin:/usr/sbin:/usr/ccs/bin
+export XML_CATALOG_FILES CC CXX CPPFLAGS CXXFLAGS LDFLAGS PATH
