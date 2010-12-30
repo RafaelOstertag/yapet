@@ -524,6 +524,7 @@ PasswordRecord::refresh() throw (YAPET::UI::UIException) {
     username->setTextChanged (usernamechanged);
     username->refresh();
     password->setText (s_password);
+    password->setHidden(readonly);
     password->setTextChanged (passwordchanged);
     password->refresh();
     comment->setText (s_comment);
@@ -552,9 +553,9 @@ PasswordRecord::setReadonly(bool ro) {
     host->setReadonly(readonly);
     username->setReadonly(readonly);
     password->setReadonly(readonly);
+    password->setHidden(readonly);
     comment->setReadonly(readonly);
 #ifdef ENABLE_PWGEN
     pwgenbutton->setReadonly(readonly);
 #endif
-
 }
