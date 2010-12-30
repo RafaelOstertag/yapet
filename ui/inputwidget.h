@@ -46,6 +46,10 @@
 # include <stdexcept>
 #endif
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "uiexception.h"
 #include "secstring.h"
 
@@ -101,8 +105,9 @@ namespace YAPET {
 		    throw std::runtime_error(_("Default constructor must not be used!"));
 		}
 
-                inline InputWidget (const InputWidget&) {}
+                inline InputWidget (const InputWidget&) { assert(0); }
                 inline const InputWidget& operator= (const InputWidget&) {
+		    assert(0);
                     return *this;
                 }
 
