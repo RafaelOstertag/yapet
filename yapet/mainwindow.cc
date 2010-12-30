@@ -68,6 +68,7 @@
 #include "passworddialog.h"
 #include "passwordrecord.h"
 #include "searchdialog.h"
+#include "lockscreen.h"
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
 #endif
@@ -886,106 +887,6 @@ MainWindow::quit() {
 }
 
 void
-MainWindow::lockScreen() throw (YAPET::UI::UIException) {
-    if (key == NULL) return;
-
-    int ch;
-
-    while (true) {
-        WINDOW* lockwin = newwin (0, 0, 0, 0);
-
-        if (lockwin == NULL)
-            throw YAPET::UI::UIException (_ ("Error creating lock window") );
-
-        int retval = werase (lockwin);
-
-        if (retval == ERR) {
-            delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error erasing window") );
-        }
-
-        retval = wrefresh (lockwin);
-
-        if (retval == ERR) {
-            delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error refreshing window") );
-        }
-
-        std::string locked_title (_ ("YAPET -- Locked --") );
-        setTerminalTitle (locked_title);
-        ch = wgetch (lockwin);
-#ifdef HAVE_WRESIZE
-
-        if (ch == KEY_RESIZE) {
-            delwin (lockwin);
-            YAPET::UI::BaseWindow::resizeAll();
-            continue;
-        }
-
-#endif
-        PasswordDialog* pwdia = NULL;
-        YAPET::Key* testkey = NULL;
-
-        try {
-	    // Flush pending input
-	    flushinp();
-
-	    bool show_quit = records_changed ? false : true;
-	    // In case the user does not want to show the quit button
-	    show_quit = YAPET::GLOBALS::Globals::getAllowLockQuit() ? show_quit : false;
-
-            pwdia = new PasswordDialog (EXISTING_PW,
-					file->getFilename(),
-					YAPET::GLOBALS::Globals::getPwInputTimeout(),
-					show_quit);
-            pwdia->run();
-            testkey = pwdia->getKey();
-	    do_quit = pwdia->wantsQuit();
-            delete pwdia;
-        } catch (YAPET::UI::UIException&) {
-            if (pwdia != NULL)
-                delete pwdia;
-
-            if (testkey != NULL)
-                delete testkey;
-
-            delwin (lockwin);
-            continue;
-        }
-
-        if (testkey == NULL) {
-            delwin (lockwin);
-	    // Do we have to quit
-	    if (do_quit) {
-		ungetch('q');
-		return;
-	    }
-            continue;
-        }
-
-        if (*testkey != *key) {
-            YAPET::UI::MessageBox* msgbox = NULL;
-
-            try {
-                msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Wrong password") );
-                msgbox->run();
-                delete msgbox;
-            } catch (YAPET::UI::UIException&) {
-                if (msgbox != NULL)
-                    delete msgbox;
-            }
-        } else {
-            delete testkey;
-            delwin (lockwin);
-            return;
-        }
-
-        delete testkey;
-        delwin (lockwin);
-    }
-}
-
-void
 MainWindow::changePassword() throw (YAPET::UI::UIException) {
     if (file == NULL || key == NULL) return;
 
@@ -1091,18 +992,17 @@ MainWindow::changePassword() throw (YAPET::UI::UIException) {
     statusbar.putMsg (_ ("Password successfully changed") );
 }
 
-MainWindow::MainWindow (unsigned int timeout,
-                        bool fsecurity) throw (YAPET::UI::UIException) : BaseWindow(),
-        toprightwin (NULL),
-        bottomrightwin (NULL),
-        recordlist (NULL),
-        statusbar(),
-        records_changed (false),
-        key (NULL),
-        file (NULL),
-        locktimeout (timeout),
-									 usefsecurity (fsecurity),
-									 do_quit (false) {
+MainWindow::MainWindow (unsigned int timeout, bool fsecurity) 
+    throw (YAPET::UI::UIException) : BaseWindow(),
+				     toprightwin (NULL),
+				     bottomrightwin (NULL),
+				     recordlist (NULL),
+				     statusbar(),
+				     records_changed (false),
+				     key (NULL),
+				     file (NULL),
+				     locktimeout (timeout),
+				     usefsecurity (fsecurity){
     locktimeout = locktimeout < 10 ? 10 : locktimeout;
     createWindow();
 }
@@ -1132,6 +1032,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
     refresh();
     Alarm alrm (*this);
     int ch;
+    LockScreen* lockscreen;
 
     while (true) {
         try {
@@ -1234,7 +1135,10 @@ MainWindow::run() throw (YAPET::UI::UIException) {
                     break;
                     case 'L':
                     case 'l':
-                        lockScreen();
+			lockscreen = new LockScreen(key, file, records_changed);
+			assert (lockscreen != 0);
+			lockscreen->run();
+			delete lockscreen;
                         ::refresh();
                         YAPET::UI::BaseWindow::refreshAll();
                         break;
@@ -1328,13 +1232,16 @@ MainWindow::run (std::string fn) {
 void
 MainWindow::handle_signal (int signo) {
     if (signo == SIGALRM) {
-        lockScreen();
+	LockScreen* lockscreen = new LockScreen(key, file, records_changed);
+	assert(lockscreen != NULL);
+	lockscreen->run();
         ::refresh();
         YAPET::UI::BaseWindow::refreshAll();
-	if (do_quit) {
+	if (lockscreen->getDoQuit()) {
 	    flushinp();
 	    ungetch('q');
 	}
+	delete lockscreen;
     }
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
