@@ -18,12 +18,16 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifdef HAVE_CONFIG
+#ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
 
 #ifdef HAVE_STRING_H
 # include <string.h>
+#endif
+
+#ifdef HAVE_SIGNAL_H
+# include <signal.h>
 #endif
 
 #include <structs.h>
