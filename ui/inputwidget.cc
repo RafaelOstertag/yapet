@@ -18,6 +18,10 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#ifdef HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+
 #include "../intl.h"
 #include "basewindow.h"
 #include "inputwidget.h"
@@ -86,6 +90,9 @@ InputWidget::hide(bool h) throw (UIException) {
 
 void
 InputWidget::processInput (int ch) throw (UIException) {
+#ifdef HAVE_ISPRINT
+    if (!isprint(ch)) return;
+#endif
     if (buffer.length() + 1 > ( (secstring::size_type) max_length) ) return;
     if (readonly) return;
 
@@ -147,7 +154,7 @@ InputWidget::createWindow () throw (UIException) {
 
     int retval;
 
-    if ( hidden && readonly )	
+    if ( hidden && readonly )
 	Colors::setcolor (window, INPUTWIDGET_HIDDEN);
     else
 	Colors::setcolor (window, INPUTWIDGET_NOFOCUS);
@@ -310,7 +317,7 @@ InputWidget::refresh() throw (UIException) {
 		      0,
 		      sub.c_str(),
 		      width);
-	
+
 	if (pos >= width - 1 )
 	    retval = wmove (window, 0, width - 1);
 	else
@@ -369,13 +376,13 @@ InputWidget::clearText() {
     buffer.clear();
     wclear (window);
 }
-		
+
 void
 InputWidget::setReadonly(bool ro) {
     readonly = ro;
     // Hidden is coupled with readonly, so we call hide
     hide(hidden);
-	
+
     refresh();
 }
 
@@ -383,4 +390,3 @@ void
 InputWidget::setHidden(bool h) {
     hide(h);
 }
-	
