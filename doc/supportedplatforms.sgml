@@ -5,6 +5,7 @@
        <itemizedlist>
 	 <listitem><simpara>&FREEBSD;</simpara></listitem>
 	 <listitem><simpara>OpenBSD</simpara></listitem>
+	 <listitem><simpara>NetBSD</simpara></listitem>
 	 <listitem><simpara>&SOLARIS; x86</simpara></listitem>
 	 <listitem><simpara>Linux</simpara></listitem>
 	 <listitem><simpara>Cygwin</simpara></listitem>

@@ -120,6 +120,18 @@
   <sect1 id="importantchanges">
     <title>Important Changes</title>
 
+    <sect2 id="changesversion0.8">
+	<title>Version 0.8</title>
+
+	<para>On terminals supporting colors, passwords are hidden when viewing
+	password records in read-only mode. Switching to edit mode will display
+	the password clear text. Selection of hidden passwords still
+	possible.</para>
+
+	<para>The screen is now also locked when a password record is open for
+	reading or editing.</para>
+    </sect2>
+
     <sect2 id="changesversion0.7">
 	<title>Version 0.7</title>
 
