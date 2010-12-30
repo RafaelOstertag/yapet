@@ -115,11 +115,11 @@ CheckBoxGroup::createWindow() throw (UIException) {
 
     Colors::setcolor (window, CHECKBOXGROUP);
 #ifdef KEYPAD_RETURN_INT
-    int retval = keypad (window, true);
+    int retval = keypad (window, TRUE);
     if (retval == ERR)
         throw UIException (_ ("Error enabling keypad") );
 #else
-    keypad (window, true);
+    keypad (window, TRUE);
 #endif
 }
 
