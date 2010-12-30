@@ -523,8 +523,10 @@ namespace YAPET {
                         throw UIException (_ ("Error creating list window") );
 
                     Colors::setcolor (window, LISTWIDGET);
+
+		    int retval;
 #ifdef KEYPAD_RETURN_INT
-                    int retval = keypad (window, TRUE);
+                    retval = keypad (window, TRUE);
 
                     if (retval == ERR)
                         throw UIException (_ ("Error enabling keypad") );
