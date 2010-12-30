@@ -138,12 +138,15 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          *
          * Depending on the value passed in \c pe, either an empty record is
          * showed or the decrypted password record including the password
-         * stored in the record in plain text is showed.
+         * stored in the record in plain text is showed except the password
+         * record is displaying in read-only mode.
          *
          * @param k the key used to decrypt/encrypt the password record.
          *
          * @param pe pointer to a \c PartDec which will be displayed, or \c
          * NULL in order to obtain a new password record.
+	 *
+	 * @param ro specify whether or not the dialog is readonly.
          */
         PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe, bool ro = false) throw (YAPET::UI::UIException);
         ~PasswordRecord();
