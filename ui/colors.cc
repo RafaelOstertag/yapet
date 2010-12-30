@@ -75,7 +75,7 @@ color Colors::colors[] = {
     // Input widget focus
     {5, COLOR_WHITE, COLOR_MAGENTA, A_REVERSE},
     // Input widget text hidden
-    {6, COLOR_MAGENTA, COLOR_MAGENTA, A_REVERSE},
+    {6, COLOR_MAGENTA, COLOR_MAGENTA, A_NORMAL},
     // Button no focus
     {7, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
     // Button focus
@@ -97,17 +97,17 @@ Colors::initColors() {
     if (initialized) return;
 
     if (has_colors() == FALSE) {
-        initialized = true;
-        return;
+	initialized = true;
+	return;
     }
 
     start_color();
     assert (colors[CHECKBOXGROUP_TITLE+1].no == 0);
 
     for (int i = 0; colors[i].no != 0; i++)
-        init_pair (colors[i].no,
-                   colors[i].fg,
-                   colors[i].bg);
+	init_pair (colors[i].no,
+		   colors[i].fg,
+		   colors[i].bg);
 
     initialized = true;
 }
@@ -115,18 +115,18 @@ Colors::initColors() {
 void
 Colors::setcolor (WINDOW* w, COLORS c) {
     if (has_colors() == TRUE) {
-        wattron (w, COLOR_PAIR (colors[c].no) );
-        wbkgd (w, ' ' | COLOR_PAIR (colors[c].no) );
+	wattron (w, COLOR_PAIR (colors[c].no) );
+	wbkgd (w, ' ' | COLOR_PAIR (colors[c].no) );
     } else {
-        wattron (w, colors[c].attr);
-        wbkgd (w, ' ' | colors[c].attr);
+	wattron (w, colors[c].attr);
+	wbkgd (w, ' ' | colors[c].attr);
     }
 }
 
 short
 Colors::getcolor (COLORS c) {
     if (has_colors() == TRUE) {
-        return colors[c].no;
+	return colors[c].no;
     }
 
     return 0;
@@ -135,9 +135,9 @@ Colors::getcolor (COLORS c) {
 void
 Colors::unsetcolor (WINDOW* w, COLORS c) {
     if (has_colors() == TRUE)
-        wattroff (w, COLOR_PAIR (colors[c].no) );
+	wattroff (w, COLOR_PAIR (colors[c].no) );
     else
-        wattroff (w, colors[c].attr);
+	wattroff (w, colors[c].attr);
 
     wbkgd (w, ' ');
 }
