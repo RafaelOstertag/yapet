@@ -229,6 +229,10 @@ inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
 #endif
+// To make it compile under NetBSD, we have to include stdlib.h
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
 
 inline int _mvwchgat_ (WINDOW* w, int y, int x, int n, int attr, short color, const void*) {
     char* buff = (char*) alloca (n);

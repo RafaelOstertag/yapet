@@ -1,6 +1,6 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.7],[rafi@guengel.ch])
+AC_INIT([YAPET],[0.8pre],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests std-options])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -185,6 +185,19 @@ AC_COMPILE_IFELSE(
 	[AC_MSG_RESULT([yes])],
 	[AC_MSG_RESULT([no])
 	AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
+AC_MSG_CHECKING([whether keypad() return int])
+AC_COMPILE_IFELSE(
+	[AC_LANG_PROGRAM([[
+	#ifdef HAVE_NCURSES_H
+	#include <ncurses.h>
+	#else
+	#include <curses.h>
+	#endif
+	int retval=100;]],
+				  [[initscr(); retval = keypad(stdscr, TRUE); endwin();]])],
+	[AC_MSG_RESULT([yes])
+	AC_DEFINE([KEYPAD_RETURN_INT],[1],[Set to 1 if keypad has a return value])],
+	[AC_MSG_RESULT([no])])
 
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],

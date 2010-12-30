@@ -97,10 +97,14 @@ Button::focus() throw (UIException) {
     if (retval == ERR)
         throw UIException (_ ("Error refreshing button") );
 
+#ifdef KEYPAD_RETURN_INT
     retval = keypad (window, TRUE);
 
     if (retval == ERR)
         throw UIException (_ ("Error setting keypad") );
+#else
+    keypad (window, TRUE);
+#endif
 
     int ch;
     if (readonly) {

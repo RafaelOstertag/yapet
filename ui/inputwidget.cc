@@ -157,10 +157,14 @@ InputWidget::createWindow () throw (UIException) {
     if (retval == ERR)
 	throw UIException (_ ("Error clearing input widget") );
 
+#ifdef KEYPAD_RETURN_INT
     retval = keypad (window, TRUE);
 
     if (retval == ERR)
 	throw UIException (_ ("Error setting keypad on input widget") );
+#else
+    keypad (window, TRUE);
+#endif
 
 }
 
