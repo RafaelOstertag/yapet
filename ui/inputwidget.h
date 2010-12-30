@@ -60,6 +60,9 @@ namespace YAPET {
          * The text is stored in a \c secstring.
          *
          * To activate the widget, call \c focus().
+	 *
+	 * If the widget is set hidden, it will not display the text. Useful
+	 * for passwords.
          *
          * @sa secstring
          */
@@ -71,9 +74,21 @@ namespace YAPET {
                 int max_length;
                 int start_pos;
                 int pos;
+		int start_x;
+		int start_y;
+		// This is a variable width which is used to display hidden
+		// text
                 int width;
+		// This has all time to hold the max width of the widget
+		int full_width;
                 bool text_changed;
 		bool readonly;
+		/**
+		 * Hidden indicates that the foreground color is the same as
+		 * the background color. It is not to be confused with the
+		 * widget being hidden or the passwordinput wideget.
+		 */
+		bool hidden;
 
 		/**
 		 * Using the default constructor will lead to SIGSEGV. This is
@@ -95,6 +110,7 @@ namespace YAPET {
                 void moveForward() throw (UIException);
                 void moveHome() throw (UIException);
                 void moveEnd() throw (UIException);
+		void hide(bool h) throw(UIException);
 
 		enum {
 		    DEFAULT_TEXT_LEN=512
@@ -104,7 +120,7 @@ namespace YAPET {
                 virtual void processBackspace() throw (UIException);
                 virtual void processDelete() throw (UIException);
                 virtual void processInput (int ch) throw (UIException);
-                virtual void createWindow (int sx, int sy, int w) throw (UIException);
+                virtual void createWindow () throw (UIException);
                 virtual inline const WINDOW* getWindow() const {
                     return window;
                 }
@@ -128,8 +144,8 @@ namespace YAPET {
                 }
 
             public:
-                InputWidget (int sx, int sy, int w, int ml = DEFAULT_TEXT_LEN, bool ro = false) throw (UIException);
-                InputWidget (int sx, int sy, int w, bool ro) throw (UIException);
+                InputWidget (int sx, int sy, int w, int ml = DEFAULT_TEXT_LEN, bool ro = false, bool h = false) throw (UIException);
+                InputWidget (int sx, int sy, int w, bool ro, bool h) throw (UIException);
 
                 virtual ~InputWidget();
 
@@ -155,11 +171,16 @@ namespace YAPET {
                 inline bool hasText() const {
                     return !buffer.empty();
                 }
-		inline void setReadonly(bool ro) {
-		    readonly = ro;
-		}
+
+		void setReadonly(bool ro);
+
 		inline bool getReadonly() const {
 		    return readonly;
+		}
+
+		void setHidden(bool h);
+		inline bool getHidden() const {
+		    return hidden;
 		}
         };
 
