@@ -40,12 +40,15 @@
 #include "globals.h"
 #include "lockscreen.h"
 
-LockScreen::LockScreen(const YAPET::Key* k, const YAPET::File* f, bool rec_ch) :
+LockScreen::LockScreen(const YAPET::Key* k, const YAPET::File* f, bool daq) :
     lockwin (NULL),
     do_quit (false),
-    records_changed (rec_ch),
+    dont_allow_quit (daq),
+    resize_due (false),
     key (k),
     file (f) {
+    assert (f->getFilename().length() > 0);
+    assert (file->getFilename().length() > 0);
     }
 
 LockScreen::~LockScreen() {
@@ -68,14 +71,14 @@ LockScreen::run() throw(YAPET::UI::UIException) {
 
         if (retval == ERR) {
             delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error erasing window") );
+            throw YAPET::UI::UIException (_ ("Error erasing lock window") );
         }
 
         retval = wrefresh (lockwin);
 
         if (retval == ERR) {
             delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error refreshing window") );
+            throw YAPET::UI::UIException (_ ("Error refreshing lock window") );
         }
 
         std::string locked_title (_ ("YAPET -- Locked --") );
@@ -85,7 +88,11 @@ LockScreen::run() throw(YAPET::UI::UIException) {
 
         if (ch == KEY_RESIZE) {
             delwin (lockwin);
-            YAPET::UI::BaseWindow::resizeAll();
+	    // We do not resize all windows, this leads to flicker and might
+	    // show sensitive information. Instead we set a flag indicating
+	    // that a resize is required.
+	    resize_due = true;
+	    //            YAPET::UI::BaseWindow::resizeAll();
             continue;
         }
 
@@ -97,7 +104,7 @@ LockScreen::run() throw(YAPET::UI::UIException) {
 	    // Flush pending input
 	    flushinp();
 
-	    bool show_quit = records_changed ? false : true;
+	    bool show_quit = dont_allow_quit ? false : true;
 	    // In case the user does not want to show the quit button
 	    show_quit = YAPET::GLOBALS::Globals::getAllowLockQuit() ? show_quit : false;
 
@@ -169,7 +176,7 @@ LockScreen::resize() {
 
         if (retval == ERR) {
             delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error erasing window") );
+            throw YAPET::UI::UIException (_ ("Error erasing lock window") );
         }
 }
 
@@ -178,6 +185,6 @@ LockScreen::refresh() {
     int retval = wrefresh (lockwin);
     if (retval == ERR) {
 	delwin (lockwin);
-	throw YAPET::UI::UIException (_ ("Error refreshing window") );
+	throw YAPET::UI::UIException (_ ("Error refreshing lock window") );
     }
 }

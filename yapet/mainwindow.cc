@@ -159,7 +159,8 @@ KeyDesc keys[] = { {3, 2, "S", _ ("Save File") },
  * This class is passed to \c BaseWindow::setTimeout() as class for calling the
  * signal handler of \c MainWindow.
  */
-class Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
+class 
+MainWindow::Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
     private:
         MainWindow& ref;
     public:
@@ -168,6 +169,34 @@ class Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
             ref.handle_signal (signo);
         }
 };
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+void
+MainWindow::handle_signal (int signo) {
+    if (signo == SIGALRM) {
+	LockScreen* lockscreen = new LockScreen(key, file, records_changed);
+	assert(lockscreen != NULL);
+
+	lockscreen->run();
+
+	// The lock screen has to be removed before calling refreshAll(), or it
+	// will throw an exception.
+	bool b1 = lockscreen->getDoQuit();
+	bool b2 = lockscreen->getResizeDue();
+	delete lockscreen;
+
+        //::refresh();
+	if (b2)
+	    YAPET::UI::BaseWindow::resizeAll();
+	else
+	    YAPET::UI::BaseWindow::refreshAll();
+	if (b1) {
+	    flushinp();
+	    ungetch('q');
+	}
+    }
+}
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 void
@@ -625,7 +654,7 @@ MainWindow::addNewRecord() {
 
     try {
 	// Open the dialog in read-write mode by default
-        pwentry = new PasswordRecord (*key, NULL, false);
+        pwentry = new PasswordRecord (*key, *file, NULL, locktimeout, false);
         pwentry->run();
 
         if (pwentry->entryChanged() &&
@@ -677,7 +706,7 @@ MainWindow::editSelectedRecord() {
     try {
         YAPET::PartDec pd = recordlist->getSelectedItem();
 	// Open the dialog in read-only mode by default
-        pwentry = new PasswordRecord (*key, &pd, true);
+        pwentry = new PasswordRecord (*key, *file, &pd, locktimeout, true);
         pwentry->run();
 
         if (pwentry->entryChanged() &&
@@ -1033,6 +1062,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
     Alarm alrm (*this);
     int ch;
     LockScreen* lockscreen;
+    bool resize_due;
 
     while (true) {
         try {
@@ -1138,9 +1168,12 @@ MainWindow::run() throw (YAPET::UI::UIException) {
 			lockscreen = new LockScreen(key, file, records_changed);
 			assert (lockscreen != 0);
 			lockscreen->run();
+			resize_due = lockscreen->getResizeDue();
 			delete lockscreen;
-                        ::refresh();
-                        YAPET::UI::BaseWindow::refreshAll();
+			if (resize_due)
+			    YAPET::UI::BaseWindow::resizeAll();
+			else
+			    YAPET::UI::BaseWindow::refreshAll();
                         break;
                     case 'A':
                     case 'a':
@@ -1189,7 +1222,6 @@ MainWindow::run() throw (YAPET::UI::UIException) {
 #endif
                 }
 
-                // Hmm, what's this doing here?? Not sure, I'll leave it...
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
                 YAPET::UI::BaseWindow::setTimeout (&alrm, locktimeout);
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
@@ -1227,21 +1259,3 @@ MainWindow::run (std::string fn) {
     ::refresh();
     run();
 }
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-void
-MainWindow::handle_signal (int signo) {
-    if (signo == SIGALRM) {
-	LockScreen* lockscreen = new LockScreen(key, file, records_changed);
-	assert(lockscreen != NULL);
-	lockscreen->run();
-        ::refresh();
-        YAPET::UI::BaseWindow::refreshAll();
-	if (lockscreen->getDoQuit()) {
-	    flushinp();
-	    ungetch('q');
-	}
-	delete lockscreen;
-    }
-}
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

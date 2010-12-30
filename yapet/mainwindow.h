@@ -76,6 +76,13 @@ class MainWindow : protected YAPET::UI::BaseWindow {
             return *this;
         }
 
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	// Forward declaration
+	class Alarm;
+
+        void handle_signal (int signo);
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+
     protected:
         void printTitle() throw (YAPET::UI::UIException);
 
@@ -109,7 +116,7 @@ class MainWindow : protected YAPET::UI::BaseWindow {
         void resize() throw (YAPET::UI::UIException);
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-        void handle_signal (int signo);
+	friend class Alarm;
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 

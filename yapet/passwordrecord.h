@@ -42,6 +42,7 @@
 # include <string>
 #endif
 
+#include "file.h"
 #include "key.h"
 #include "partdec.h"
 
@@ -91,6 +92,7 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         YAPET::UI::Button* pwgenbutton;
 #endif
         YAPET::Key* key;
+	const YAPET::File* file; // Only for locking the screen
         YAPET::PartDec* encentry;
         YAPET::UI::secstring s_name;
         YAPET::UI::secstring s_host;
@@ -103,11 +105,18 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         bool passwordchanged;
         bool commentchanged;
 	bool readonly;
+	unsigned int locktimeout;
 
-        inline PasswordRecord (const PasswordRecord&) {}
+        inline PasswordRecord (const PasswordRecord&) { assert (0); }
         inline const PasswordRecord& operator= (const PasswordRecord&) {
+	    assert (0);
             return *this;
         }
+
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	class Alarm;
+        void handle_signal (int signo);
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
     protected:
 
@@ -142,13 +151,15 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          * record is displaying in read-only mode.
          *
          * @param k the key used to decrypt/encrypt the password record.
+	 *
+	 * @param f the password file. This is only used for locking the screen.
          *
          * @param pe pointer to a \c PartDec which will be displayed, or \c
          * NULL in order to obtain a new password record.
 	 *
 	 * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord (YAPET::Key& k, YAPET::PartDec* pe, bool ro = false) throw (YAPET::UI::UIException);
+        PasswordRecord (YAPET::Key& k, const YAPET::File& f, YAPET::PartDec* pe, unsigned int timeout, bool ro) throw (YAPET::UI::UIException);
         ~PasswordRecord();
 
         /**
@@ -189,6 +200,9 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
 	void setReadonly(bool ro);
 
 	inline bool getReadonly() const { return readonly; }
+#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+	friend class Alarm;
+#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
 #endif // _PASSWORDRECORD_H

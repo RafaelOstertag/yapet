@@ -42,6 +42,8 @@
 # include <string>
 #endif
 
+#include <file.h>
+
 #include "basewindow.h"
 
 class LockScreen : protected YAPET::UI::BaseWindow {
@@ -50,17 +52,26 @@ class LockScreen : protected YAPET::UI::BaseWindow {
 	//! Used to indicate handle_signal() that the user wishes to quit from
 	//! the lock screen
 	volatile bool do_quit;
-	bool records_changed;
+	bool dont_allow_quit;
+	//! indicate whether or not a resize happened during the runtime of the
+	//! screen lock.
+	volatile bool resize_due;
 	const YAPET::Key* key;
 	const YAPET::File* file;
 
+	LockScreen(const LockScreen&) { assert(0); }
+	const LockScreen& operator=(const LockScreen&) { assert(0); return *this; }
+
     public:
-	LockScreen(const YAPET::Key* k, const YAPET::File* f, bool rec_ch);
+	LockScreen(const YAPET::Key* k, const YAPET::File* f, bool daq);
 	~LockScreen();
 	void run() throw(YAPET::UI::UIException);
 	virtual void resize();
 	virtual void refresh();
 
+	inline bool getResizeDue() const {
+	    return resize_due;
+	}
 	inline bool getDoQuit() const {
 	    return do_quit;
 	}
