@@ -71,6 +71,10 @@ class MainWindow : protected YAPET::UI::BaseWindow {
 
         bool usefsecurity;
 
+	//! Used to indicate handle_signal() that the user wishes to quit from
+	//! the lock screen
+	volatile bool do_quit;
+
         inline MainWindow (const MainWindow&) {}
         inline const MainWindow& operator= (const MainWindow&) {
             return *this;
@@ -99,7 +103,7 @@ class MainWindow : protected YAPET::UI::BaseWindow {
         void searchTerm();
         void searchNext();
         bool quit();
-        void lockScreen() const throw (YAPET::UI::UIException);
+        void lockScreen() throw (YAPET::UI::UIException);
         void changePassword() throw (YAPET::UI::UIException);
     public:
         MainWindow (unsigned int timeout, bool fsecurity) throw (YAPET::UI::UIException);

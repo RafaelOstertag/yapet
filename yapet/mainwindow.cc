@@ -886,7 +886,7 @@ MainWindow::quit() {
 }
 
 void
-MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
+MainWindow::lockScreen() throw (YAPET::UI::UIException) {
     if (key == NULL) return;
 
     int ch;
@@ -925,7 +925,6 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 #endif
         PasswordDialog* pwdia = NULL;
         YAPET::Key* testkey = NULL;
-	bool wants_quit = false;
 
         try {
 	    // Flush pending input
@@ -941,7 +940,7 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
 					show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
-	    wants_quit = pwdia->wantsQuit();
+	    do_quit = pwdia->wantsQuit();
             delete pwdia;
         } catch (YAPET::UI::UIException&) {
             if (pwdia != NULL)
@@ -957,7 +956,7 @@ MainWindow::lockScreen() const throw (YAPET::UI::UIException) {
         if (testkey == NULL) {
             delwin (lockwin);
 	    // Do we have to quit
-	    if (wants_quit) {
+	    if (do_quit) {
 		ungetch('q');
 		return;
 	    }
@@ -1102,7 +1101,8 @@ MainWindow::MainWindow (unsigned int timeout,
         key (NULL),
         file (NULL),
         locktimeout (timeout),
-        usefsecurity (fsecurity) {
+									 usefsecurity (fsecurity),
+									 do_quit (false) {
     locktimeout = locktimeout < 10 ? 10 : locktimeout;
     createWindow();
 }
@@ -1331,6 +1331,10 @@ MainWindow::handle_signal (int signo) {
         lockScreen();
         ::refresh();
         YAPET::UI::BaseWindow::refreshAll();
+	if (do_quit) {
+	    flushinp();
+	    ungetch('q');
+	}
     }
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
