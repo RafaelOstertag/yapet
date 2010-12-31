@@ -7,7 +7,7 @@ AUTOCONF=$(BINDIR)/autoconf
 AUTOHEADER=$(BINDIR)/autoheader
 AUTOMAKE=$(BINDIR)/automake
 SVN2CL=$(BINDIR)/svn2cl
-SVN2CLOPTS=--group-by-day --separate-daylogs --reparagraph --authors=/opt/guengel/share/svn2cl/authors.xml -o ChangeLog
+SVN2CLOPTS=--group-by-day --separate-daylogs --reparagraph --authors=/opt/guengel/share/svn2cl/authors.xml -i -o ChangeLog
 
 all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
 
