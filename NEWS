@@ -1,6 +1,20 @@
 News
 ====
 
+YAPET 0.8pre
+
+      * Fixed grave bug #46 (http://bugs.guengel.ch/show_bug.cgi?id=46).
+
+      * Passwords are hidden when viewing password records in read-only
+        mode. (Works only on terminals supporting colors)
+
+      * No flicker when resizing the terminal window while the screen lock is
+        active.
+
+      * Screen lock also activates when password record is open.
+
+      * Builds on NetBSD.
+
 YAPET 0.7
 
       * When opening password records, no editing is possible until pressing
