@@ -3,9 +3,6 @@ YAPET To Do
 
 * Translate the copyright.
 
-* Make screen lock lock the screen even if a dialog is open. See also Bug #2
-  (http://bugs.guengel.ch/show_bug.cgi?id=2)
-
 $Id$
 Local Variables:
 mode: text
