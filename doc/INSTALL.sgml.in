@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
+[
+<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
+<!ENTITY preamble SYSTEM "@srcdir@/preamble.sgml">
+<!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SUN "<trademark class='trademark'>Sun</trademark>">
+<!ENTITY SOLARIS "&SUN; <trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+]>
+<article>
+
+  <articleinfo>
+    <title>&YP; - Yet Another Password Encryption Tool &YPVER;</title>
+    <subtitle>Installation Instructions</subtitle>
+    <author>
+      <firstname>Rafael</firstname>
+      <surname>Ostertag</surname>
+    </author>
+    &cpr;
+    <releaseinfo>
+      $Id$
+    </releaseinfo>
+  </articleinfo>
+
+  <sect1 id="prereq">
+    <title>Build Prerequisites</title>
+
+    <para>&YP; was designed to have only few library dependencies, and
+      to build on most popular Unixes.</para>
+
+      <para>&YP; depends on two libraries</para>
+
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    <simpara>OpenSSL (<ulink
+	    url="http://www.openssl.org">http://www.openssl.org</ulink>)</simpara></listitem>
+	  <listitem>
+	    <simpara>curses or ncurses (<ulink
+		url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>)</simpara>
+	  </listitem>
+	</itemizedlist>
+      </para>
+
+      <para>As of version 0.3 &YP; uses GNU Gettext for internationalization,
+      hence GNU Gettext is an optional dependency. In case GNU Gettext is not
+      available on the build system, the GNU Gettext version included in the
+      source distribution is used.</para>
+
+    <sect2 id="supportedplatforms">
+      <title>Supported Platforms</title>
+
+      &supplatforms;
+    </sect2>
+
+    <sect2 id="compilers">
+      <title>Supported Compilers</title>
+
+      <para>&YP; is written in C++, so you obviously need a C++
+	compiler to compile. It compiles out of the box using the
+	following compilers</para>
+
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    <simpara>&SUN; Studio 11/12 C++ Compiler (only tested under
+	    &SOLARIS; 10 x86)</simpara>
+	  </listitem>
+	  <listitem>
+	    <simpara>GNU GCC</simpara>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </sect2>
+
+  </sect1>
+
+  <sect1 id="buildinstr">
+    <title>Brief Build Instructions</title>
+
+    <para>&YP; uses a <command>configure</command> script as generated
+      by <command>autoconf</command> and friends for configuring the
+      build process of &YP;. Change to the directory where you
+      unpacked <filename>&YPPKG;</filename> and simply type</para>
+
+    <para>
+<screen>
+  <prompt>#</prompt> <literal>./configure</literal>
+</screen>
+    </para>
+
+    <para>on the command line. The <command>configure</command> script will then check
+      the system and prepare for the build process.
+    </para>
+
+    <para>If the <command>configure</command> script successfully
+    finishes, type</para>
+
+    <para>
+<screen>
+  <prompt>#</prompt> <literal>make</literal>
+</screen>
+    </para>
+
+    <para>&YP; will now be built. After the build has finished,
+      switch to the root user if not done already, and type</para>
+
+    <para>
+<screen>
+  <prompt>#</prompt> <literal>make install</literal>
+</screen>
+    </para>
+
+    <para>This will install &YP; into the <filename>/usr/local/bin</filename>
+    directory, if the prefix has not been changed by providing
+    <option>--prefix=<replaceable>&lt;PATH&gt;</replaceable></option> to the
+    <command>configure</command> script.</para>
+
+    <para>To start &YP; issue
+      <filename>/usr/local/bin</filename>/&yp; on
+      the command line.</para>
+  </sect1>
+
+  <sect1 id="confoptions">
+    <title>Brief configure Options Description</title>
+
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <option>--prefix=</option><replaceable>&lt;PATH&gt;</replaceable>
+	</term>
+
+	<listitem>
+	  <para><replaceable>&lt;PATH&gt;</replaceable> is the base directory
+	    where &YP; will be installed. The executable is installed
+	    in
+	    <replaceable>&lt;PATH&gt;</replaceable><filename>/bin</filename>.
+	  </para>
+	</listitem>
+
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--with-curses-include=</option><replaceable>&lt;PATH&gt;</replaceable>
+	</term>
+
+	<listitem><para>This option tells the compiler where to find
+	    the header files of
+	    curses/ncurses. <replaceable>&lt;PATH&gt;</replaceable> has to be
+	    the directory where the header files are located, not the
+	    file name of the header file.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--with-curses-lib=</option><replaceable>&lt;PATH&gt;</replaceable>
+	</term>
+
+	<listitem>
+	  <para>This option tells the linker where to find the curses/ncurses
+	  shared library. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the shared library is located, not the file name of
+	  the shared library.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--with-openssl-include=</option><replaceable>&lt;PATH&gt;</replaceable>
+	</term>
+
+	<listitem>
+	  <para>This options tells the compiler where to find the header files
+	  of OpenSSL. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the header files are located, not the file name of
+	  the header file.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--with-openssl-lib=</option><replaceable>&lt;PATH&gt;</replaceable>
+	</term>
+
+	<listitem>
+	  <para>This option tells the linker where to find the OpenSSL shared
+	  library. <replaceable>&lt;PATH&gt;</replaceable> has to be the
+	  directory where the shared library is located, not the file name of
+	  the shared library.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-build-doc</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs the build system to (re-)generate the documentation
+	  files. You usually do not need this, since the source distribution
+	  ships with pre-built documentation files.</para>
+
+	  <para>This option depends on the two applications
+	  <command>xsltproc</command> and
+	  <command>lynx</command>/<command>w3m</command> . They need to be
+	  installed on the system and to be found by
+	  <command>configure</command> else setting this option won't have any
+	  effect.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-source-doc</option>
+	</term>
+
+	<listitem>
+	  <para>Providing this option will make the build system to generate
+	  the source code documentation using
+	  <command>doxygen</command>.</para>
+
+	  <para>This options has only effect if <command>doxygen</command> is
+	  installed on the system and found by
+	  <command>configure</command>.</para>
+
+	  <para>The source code documentation will not be installed. It is
+	  located in the <filename>doc/</filename> directory of the build
+	  directory.</para>
+
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--enable-terminal-title</option>
+	</term>
+
+	<listitem>
+	  <para>Instructs the build process to compile &YP; with support for
+	  setting the terminal title in XTerm and friends. Enabled by default.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-csv2yapet</option>
+	</term>
+
+	<listitem>
+	  <para>If given the <command>csv2yapet</command> import utility
+	  will not be built.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-pwgen</option>
+	</term>
+
+	<listitem>
+	  <para>Disables built-in password generator.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <option>--disable-nls</option>
+	</term>
+
+	<listitem>
+	  <para>Disables the Native Language Support.</para>
+	</listitem>
+      </varlistentry>
+
+
+
+    </variablelist>
+  </sect1>
+
+  <sect1 id="wgi">
+    <title>What gets installed?</title>
+
+    <para>Upon issuing <command>make <option>install</option></command> the
+    following files are installed in <replaceable>&lt;PATH&gt;</replaceable>
+   </para>
+
+    <variablelist>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/yapet</filename></term>
+	<listitem><para>The &YP; binary.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/csv2yapet</filename></term>
+	<listitem><para>Utility for converting CSV files into &YP; files.</para>
+
+	<para>Will be installed only when the build of
+	<command>csv2yapet</command> has not been disabled.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/man/man1/[yapet.1|csv2yapet.1]</filename></term>
+
+	<listitem>
+	  <para>The manual page for &YP;.</para>
+
+	  <para><filename>csv2yapet.1</filename> will be installed only when
+	  the build of <command>csv2yapet</command> has not been
+	  disabled.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/applications/yapet.desktop</filename></term>
+	<listitem><para>The desktop file for GNOME et al.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/[AUTHORS|COPYING|DESIGN|LICENSE|README]</filename></term>
+	<listitem>
+	  <para>Various documentation files.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html|csv2yapet.html]</filename></term>
+
+	<listitem>
+	  <para>Various documentation files in HTML format.</para>
+
+	  <para><filename>csv2yapet.html</filename> will be installed only when
+	  the build of <command>csv2yapet</command> has not been
+	  disabled.</para>
+
+	  <para>Files won't be installed when installation of documentation
+	  files has been disabled.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/locale/<replaceable>LANG</replaceable></filename></term>
+	<listitem><para>The translation files.</para></listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect1>
+
+  <sect1 id="furtherinfo">
+    <title>Further Information</title>
+
+    <para>For more detailed information about the configure script, read the
+    file <filename>INSTALL.generic</filename> which comes along with the
+    tarball of &YP;.</para>
+  </sect1>
+
+</article>

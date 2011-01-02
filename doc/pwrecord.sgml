@@ -1,0 +1,39 @@
+<!-- $Id$ -->
+<variablelist>
+
+  <varlistentry>
+    <term><guilabel>Name</guilabel></term>
+    <listitem>
+      <simpara>The name displayed in the Main Screen.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><guilabel>Host</guilabel></term>
+    <listitem>
+      <simpara>The host on which the password is used.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><guilabel>Username</guilabel></term>
+    <listitem>
+      <simpara>The user name the password is associated with.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><guilabel>Password</guilabel></term>
+    <listitem>
+      <simpara>The password to protect.</simpara>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><guilabel>Comment</guilabel></term>
+    <listitem>
+      <simpara>A comment.</simpara>
+    </listitem>
+  </varlistentry>
+
+</variablelist>
