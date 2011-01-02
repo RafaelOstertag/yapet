@@ -1,0 +1,14 @@
+THANKS
+======
+
+First and foremost to my wife Anic, for her patience during my hacking
+sessions.
+
+Further I would like to thank Salvatore Bonaccorso for maintaining the official
+Debian packages (the ones found in the Debian distro, not the ones on my web
+site).
+
+Laurent Guerby also deserves a big thank-you for maintaining the GCC Compile
+Farm, which I use to test YAPET on different processor architectures.
+
+And of course all users of YAPET...
