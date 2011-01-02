@@ -65,6 +65,9 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_ASSERT_H
+# include <assert.h>
+#endif
 
 enum {
 #ifdef KEY_REFRESH
@@ -168,8 +171,9 @@ inline int refresh() {
 
 inline int waddstr_c (WINDOW* win, const char* str) {
     size_t len = strlen (str) + 1;
-    char* tmp_ptr = (char*) malloc (len);
+    char* tmp_ptr = (char*) malloc (len + 1);
     memcpy (tmp_ptr, str, len);
+    tmp_ptr [ len ] = '\0';
     int retval = waddstr (win, tmp_ptr);
     memset (tmp_ptr, 0, len);
     free (tmp_ptr);
@@ -190,8 +194,9 @@ inline int waddstr_c (WINDOW* win, const char* str) {
 
 inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
     size_t len = strlen (str) + 1;
-    char* tmp_ptr = (char*) malloc (len);
+    char* tmp_ptr = (char*) malloc (len + 1);
     memcpy (tmp_ptr, str, len);
+    tmp_ptr [ len ] = '\0';
     int retval = mvwaddstr (win, y, x, tmp_ptr);
     memset(tmp_ptr, 0, len);
     free (tmp_ptr);
@@ -212,10 +217,11 @@ inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
 
 inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {
     size_t len = strlen (str) + 1;
-    char* tmp_ptr = (char*) malloc (len);
+    char* tmp_ptr = (char*) malloc (len + 1);
     memcpy (tmp_ptr, str, len);
+    tmp_ptr [ len ] = '\0';
     int retval = mvwaddnstr (win, y, x, tmp_ptr, n);
-    memset (tmp_ptr, 0, n);
+    memset (tmp_ptr, 0, len);
     free (tmp_ptr);
     return retval;
 }
