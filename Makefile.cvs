@@ -1,0 +1,34 @@
+# -*- makefile -*-
+#
+# $Id$
+BINDIR=/opt/guengel/bin
+ACLOCAL=$(BINDIR)/aclocal
+AUTOCONF=$(BINDIR)/autoconf
+AUTOHEADER=$(BINDIR)/autoheader
+AUTOMAKE=$(BINDIR)/automake
+SVN2CL=$(BINDIR)/svn2cl
+SVN2CLOPTS=--group-by-day --separate-daylogs --reparagraph --authors=/opt/guengel/share/svn2cl/authors.xml -i -o ChangeLog
+
+all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
+
+README:
+	touch README
+
+ChangeLog:
+	svn update
+	$(SVN2CL) $(SVN2CLOPTS)
+
+aclocal.m4: configure.ac
+	$(ACLOCAL) -I m4
+
+configure: configure.ac
+	$(AUTOCONF)
+
+config.h.in: configure.ac
+	$(AUTOHEADER)
+
+Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac yapet/pwgen/Makefile.am
+	$(AUTOMAKE) -a -c -f --gnu
+	$(ACLOCAL) -I m4
+
+.PHONY: ChangeLog
