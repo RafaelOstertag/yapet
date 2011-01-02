@@ -1,0 +1,15 @@
+Maintainer Information
+======================
+
+A brief remark for maintainers. To build the doc files (including the
+man page) from sgml sources you need the docbook-xsl style sheets,
+xsltproc, and lynx. Invoke the configure script like this
+
+      $ ./configure --enable-build-doc --with-docbook-xsl=<path>
+
+where <path> is the path where the docbook style sheets are installed.
+
+$Id$
+Local Variables:
+mode: text
+End:
