@@ -220,7 +220,7 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
 
 	inline bool getReadonly() const { return readonly; }
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	friend class Alarm;
+	friend class PasswordRecord::Alarm;
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
