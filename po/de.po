@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.8\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2010-12-30 21:47+0100\n"
+"POT-Creation-Date: 2011-01-02 19:28+0100\n"
 "PO-Revision-Date: 2010-12-30 21:48+0100\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -1005,11 +1005,11 @@ msgstr ""
 "Blowfish Verschlüsselungsalgorithmus. Gehe auf mit dem Browser auf\n"
 "http://www.guengel.ch/myapps/yapet/ um mehr über %s zu erfahren."
 
-#: yapet/main.cc:312
+#: yapet/main.cc:313
 msgid " without argument"
 msgstr " ohne Argument"
 
-#: yapet/main.cc:316
+#: yapet/main.cc:317
 msgid "unknown argument"
 msgstr "unbekanntes argument"
 
