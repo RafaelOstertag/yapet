@@ -256,7 +256,7 @@ PasswordRecord::~PasswordRecord() {
 
 void
 PasswordRecord::run() throw (YAPET::UI::UIException) {
-    Alarm alrm (*this);
+    PasswordRecord::Alarm alrm (*this);
 
     while (true) {
         int ch = 0;
