@@ -44,8 +44,8 @@ color Colors::colors[] = {
     {4, COLOR_BLACK, COLOR_WHITE, A_REVERSE},
     // Input widget focus
     {5, COLOR_BLACK, COLOR_YELLOW, A_REVERSE},
-    // Input widget hidden
-    {6, COLOR_YELLOW, COLOR_YELLOW, A_NORMAL},
+    // Input widget hidden (Only works with colors)
+    {6, COLOR_YELLOW, COLOR_YELLOW, A_REVERSE},
     // Button no focus
     {7, COLOR_WHITE, COLOR_BLACK, A_NORMAL},
     // Button focus
@@ -74,8 +74,8 @@ color Colors::colors[] = {
     {4, COLOR_BLACK, COLOR_WHITE, A_REVERSE},
     // Input widget focus
     {5, COLOR_WHITE, COLOR_MAGENTA, A_REVERSE},
-    // Input widget text hidden
-    {6, COLOR_MAGENTA, COLOR_MAGENTA, A_NORMAL},
+    // Input widget text hidden (Only works with colors)
+    {6, COLOR_MAGENTA, COLOR_MAGENTA, A_REVERSE},
     // Button no focus
     {7, COLOR_BLUE, COLOR_CYAN, A_NORMAL},
     // Button focus
