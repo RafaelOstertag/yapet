@@ -1,0 +1,129 @@
+News
+====
+
+YAPET 0.8pre
+
+      * Fixed grave bug #46 (http://bugs.guengel.ch/show_bug.cgi?id=46).
+
+      * Passwords are hidden when viewing password records in read-only
+        mode. (Works only on terminals supporting colors)
+
+      * No flicker when resizing the terminal window while the screen lock is
+        active.
+
+      * Screen lock also activates when password record is open.
+
+      * Builds on NetBSD.
+
+YAPET 0.7
+
+      * When opening password records, no editing is possible until pressing
+	Ctrl-e in order to prevent changing password records accidentally.
+
+      * Quitting YAPET is now possible even if the screen is locked, unless no
+        unsaved changes are pending. This feature can be disabled in the
+        configuration file.
+
+      * The password prompt for unlocking the screen disappears after
+        60 seconds of inactivity. The time-out can be changed in the
+        configuration file.
+
+      * Compiles with gcc 4.4 or later.
+
+
+YAPET 0.6
+
+      * Fixed serious bug preventing exchange of YAPET files between 32/64 bit
+	architectures. Please see the README file for more information.
+	(fix for bug #18; http://bugs.guengel.ch/show_bug.cgi?id=18)
+
+      * /dev/urandom is the default random number generator used for generating
+	passwords (fix for bug #19; http://bugs.guengel.ch/show_bug.cgi?id=19)
+
+      * The random number generator used for generating passwords can be
+	selected in the ~/.yapet configuration file.
+
+
+YAPET 0.5
+
+      * Built-in password generator
+
+      * VI keys 'k' (scroll up) and 'j' (scroll down) can be used for
+	navigating the password record list.
+
+      * Added command line option for disabling the processing of the per-user
+      	configuration file.
+
+      * Added command line option for specifying different configuration files
+	to be loaded.
+
+      * A ~ (tilde) sign in the load option of configuration files is expanded
+	to the home directory of the user.
+
+      * A visual mark next to the number of password records indicates whether
+	or not unsaved records exist.
+
+      * csv2yapet can handle field delimiters in field values.
+
+      * File suffix can be omitted in ~/.yapet per-user configuration file.
+
+      * Case-insensitive search available even when strcasestr() is not
+	supported on build platform.
+
+      * Canceling the Password Record Dialog having changes will display a
+	confirmation dialog.
+
+      * Loading a file while the current file having unsaved changes will
+	display a confirmation dialog.
+
+
+YAPET 0.4
+
+      * Dialogs and message boxes can be closed by pressing the escape key.
+
+      * Bug allowing to create files named only '.pet' fixed.
+
+      * File owner and permissions will be checked as an additional security
+	measure.
+
+      * Time-out until screen is locked can be configured.
+
+      * Can read start-up options from configuration file.
+
+      * New utility csv2yapet to convert CSV file to YAPET files.
+
+
+YAPET 0.3a
+
+      * Added waiver on GPL for the OpenSSL library.
+
+      * Syntax of yapet.desktop is now conforming to the specification of
+	freedesktop.org.
+
+
+YAPET 0.3
+
+      * Patch for building with gcc 4.3 or later applied.
+
+      * Patch for displaying cursor and backspace behavior applied.
+
+      * Internationalization enabled. Translation for de_CH, de_DE (partially),
+	and de_AT (partially) added.
+
+      * Terminal title in XTerm and friends is updated by YAPET.
+
+
+YAPET 0.2:
+
+      * Password entries are now sorted and can be searched.
+
+
+YAPET 0.1:
+
+      * Version 0.1 released.
+
+
+$Id$
+Local Variables:
+mode: text
+End:
