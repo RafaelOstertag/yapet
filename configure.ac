@@ -1,6 +1,6 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.8pre],[rafi@guengel.ch])
+AC_INIT([YAPET],[0.8pre2],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests std-options])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
