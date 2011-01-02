@@ -1059,7 +1059,7 @@ MainWindow::run() throw (YAPET::UI::UIException) {
         statusbar.putMsg (file->getFilename() + _ (" loaded") );
 
     refresh();
-    Alarm alrm (*this);
+    MainWindow::Alarm alrm (*this);
     int ch;
     LockScreen* lockscreen;
     bool resize_due;
