@@ -250,6 +250,8 @@ void show_help (char* prgname) {
 }
 
 int main (int argc, char** argv) {
+    unsigned int timeout = 0;
+
     set_rlimit();
 #ifdef ENABLE_NLS
     setlocale (LC_MESSAGES, "");
@@ -304,7 +306,6 @@ int main (int argc, char** argv) {
 		config.setFilesecurity (true);
 		break;
 	    case 't':
-		unsigned int timeout;
 		sscanf (optarg, "%u", &timeout);
 		config.setTimeout (timeout);
 		break;
