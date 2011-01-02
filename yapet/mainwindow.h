@@ -116,7 +116,7 @@ class MainWindow : protected YAPET::UI::BaseWindow {
         void resize() throw (YAPET::UI::UIException);
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	friend class Alarm;
+	friend class MainWindow::Alarm;
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
