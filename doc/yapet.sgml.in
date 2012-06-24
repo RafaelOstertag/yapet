@@ -674,9 +674,9 @@ No file loaded
 	  <term><option>allowlockquit</option></term>
 
 	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 allows to quit
+	    <para>A value of 1 (one) or 0 (zero). A value of 1 allows the user to quit
 	    &yp; from the locked screen (if no changes are pending). A value of
-	    0 does not allow to quit &yp; from the locked screen.</para>
+	    0 prevents the user from quitting &yp; when the screen is locked.</para>
 
 	    <para>Default: 1</para>
 	  </listitem>
