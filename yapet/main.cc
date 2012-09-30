@@ -91,7 +91,6 @@
 #include "mainwindow.h"
 #include "cfg.h"
 #include "consts.h"
-#include "globals.h"
 
 /**
  * @file
@@ -103,7 +102,7 @@
  */
 
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
-			 "Copyright (C) 2008-2010  Rafael Ostertag\n"               \
+			 "Copyright (C) 2008-2012  Rafael Ostertag\n"               \
 			 "\n"                                \
 			 "This program is free software: you can redistribute it and/or modify\n" \
 			 "it under the terms of the GNU General Public License as published by\n" \
@@ -253,15 +252,17 @@ int main (int argc, char** argv) {
     unsigned int timeout = 0;
 
     set_rlimit();
+
 #ifdef ENABLE_NLS
     setlocale (LC_MESSAGES, "");
     bindtextdomain (PACKAGE, LOCALEDIR);
     textdomain (PACKAGE);
 #endif
-    YAPET::CONFIG::Config config;
+
     // If empty, default is taken
     std::string cfgfilepath;
     int c;
+
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
 	{ (char*) "copyright", no_argument, NULL, 'c'},
@@ -291,7 +292,8 @@ int main (int argc, char** argv) {
 		show_help (argv[0]);
 		return 0;
 	    case 'i':
-		config.setIgnorerc (true);
+		YAPET::CONFIG::config.ignorerc.set (true);
+		YAPET::CONFIG::config.ignorerc.lock();
 		break;
 	    case 'r':
 		cfgfilepath = optarg;
@@ -300,14 +302,17 @@ int main (int argc, char** argv) {
 		show_version();
 		return 0;
 	    case 's':
-		config.setFilesecurity (false);
+		YAPET::CONFIG::config.filesecurity.set (false);
+		YAPET::CONFIG::config.filesecurity.lock();
 		break;
 	    case 'S':
-		config.setFilesecurity (true);
+		YAPET::CONFIG::config.filesecurity.set (true);
+		YAPET::CONFIG::config.filesecurity.lock ();
 		break;
 	    case 't':
 		sscanf (optarg, "%u", &timeout);
-		config.setTimeout (timeout);
+		YAPET::CONFIG::config.timeout.set (timeout);
+		YAPET::CONFIG::config.timeout.lock ();
 		break;
 	    case ':':
 		std::cerr << "-" << (char) optopt << _ (" without argument")
@@ -321,13 +326,13 @@ int main (int argc, char** argv) {
     }
 
     if (optind < argc) {
-	config.setPetFile (argv[optind]);
+	YAPET::CONFIG::config.setPetFile (argv[optind]);
     }
 
-    config.loadConfigFile (cfgfilepath);
+    YAPET::CONFIG::config.loadConfigFile (cfgfilepath);
     // Make sure the .pet suffix is there
 #ifndef NDEBUG
-    std::string _tmp__ = config.getPetFile();
+    std::string _tmp__ = YAPET::CONFIG::config.getPetFile();
 #endif
     assert (_tmp__.empty() ||
 	    _tmp__.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
@@ -346,17 +351,11 @@ int main (int argc, char** argv) {
     }
     MainWindow* mainwin = NULL;
 
-    YAPET::GLOBALS::Globals::setPWGenRNG(config.getPWGenRNG());
-    YAPET::GLOBALS::Globals::setCharacterPools(config.getCharPools());
-    YAPET::GLOBALS::Globals::setPasswordLength(config.getPWGenPWLen());
-    YAPET::GLOBALS::Globals::setAllowLockQuit(config.getAllowLockQuit());
-    YAPET::GLOBALS::Globals::setPwInputTimeout(config.getPwInputTimeout());
-
     try {
 
-	mainwin = new MainWindow (config.getTimeout(), config.getFilesecurity() );
+	mainwin = new MainWindow ();
 	// filename may be empty
-	mainwin->run (config.getPetFile() );
+	mainwin->run ();
 	delete mainwin;
     } catch (std::exception& ex) {
 	if (mainwin != NULL)

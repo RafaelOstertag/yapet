@@ -34,6 +34,11 @@
 
 using namespace YAPET::CONFIG;
 
+//
+// Global
+//
+Config config;
+
 //! The default .pet file to open
 const std::string Config::def_petfile ("");
 //! The default lock timeout
@@ -138,10 +143,15 @@ Config::cleanupPath (const std::string& s) const {
 }
 
 Config::Config() : cfgfile (NULL),
-        cl_petfile(),
-        cl_timeout(),
-        cl_filesecurity(),
-        cl_ignorerc() {
+		   petfile(""),
+		   timeout(Config::getDefTimeout()),
+		   filesecurity(Config::getDefFilesecurity()),
+		   ignorerc(Config::getDefIgnorerc()),
+		   pwlen(Config::getDefPWLength()),
+		   pwgen_rng(Config::getDefPWGenRNG()),
+		   character_pools(Config::getDefCharPools()),
+		   allow_lock_quit(Config::getDefAllowLockQuit()),
+		   pw_input_timeout(Config::getDefPwInputTimeout()){
     // Empty
 }
 
@@ -151,10 +161,15 @@ Config::Config (const Config& c) {
     else
         cfgfile = NULL;
 
-    cl_petfile = c.cl_petfile;
-    cl_timeout = c.cl_timeout;
-    cl_filesecurity = c.cl_filesecurity;
-    cl_ignorerc = c.cl_ignorerc;
+    petfile = c.petfile;
+    timeout = c.timeout;
+    filesecurity = c.filesecurity;
+    ignorerc = c.ignorerc;
+    pwgenpwlen = c.pwgenpwlen;
+    pwgen_rng = c.pwgen_rng;
+    character_pools = c.character_pools;
+    allow_lock_quit = c.allow_lock_quit;
+    pw_input_timeout = c.pw_input_timeout;
 }
 
 Config::~Config() {
@@ -173,7 +188,7 @@ Config::loadConfigFile (std::string filename) {
     std::cout << ":" << std::endl;
 #endif
 
-    if (cl_ignorerc.ignore) {
+    if (ignorerc.get()) {
 #ifdef CFGDEBUG
         std::cout << "\tadvised to ignore rc file!" << std::endl;
 #endif
@@ -206,191 +221,7 @@ Config::loadConfigFile (std::string filename) {
         }
 
 #endif
-        cl_ignorerc.ignore = cfgfile->getIgnoreRC();
-    }
-}
-
-std::string
-Config::getPetFile() const {
-#ifdef CFGDEBUG
-    std::cout << " === ";
-    std::cout << "Config::getPetFile() const";
-    std::cout << ":" << std::endl;
-#endif
-
-    if (cl_petfile.set_on_cl) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cmd line: " << cl_petfile.name << std::endl;
-#endif
-        return cl_petfile.name;
-    }
-
-    if (cl_ignorerc.ignore) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_petfile << std::endl;
-#endif
-        return Config::def_petfile;
-    }
-
-    if (cfgfile != NULL) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cfgfile: " << cfgfile->getFileToLoad() << std::endl;
-#endif
-        return std::string (cleanupPath (cfgfile->getFileToLoad() ) );
-    }
-
-#ifdef CFGDEBUG
-    else {
-        std::cout << "\tcfgfile == NULL " << std::endl;
-    }
-
-#endif
-#ifdef CFGDEBUG
-    std::cout << "\tsimply returning default value: " << Config::def_petfile << std::endl;
-#endif
-    return Config::def_petfile;
-}
-
-int
-Config::getTimeout() const {
-#ifdef CFGDEBUG
-    std::cout << " === ";
-    std::cout << "Config::getTimeout() const";
-    std::cout << ":" << std::endl;
-#endif
-
-    if (cl_timeout.set_on_cl) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cmd line: " << cl_timeout.amount << std::endl;
-#endif
-        return cl_timeout.amount;
-    }
-
-    if (cl_ignorerc.ignore) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_timeout << std::endl;
-#endif
-        return Config::def_timeout;
-    }
-
-    if (cfgfile != NULL) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cfgfile: " << cfgfile->getLockTimeout() << std::endl;
-#endif
-        return cfgfile->getLockTimeout();
-    }
-
-#ifdef CFGDEBUG
-    else {
-        std::cout << "\tcfgfile == NULL " << std::endl;
-    }
-
-#endif
-#ifdef CFGDEBUG
-    std::cout << "\tsimply returning default value: " << Config::def_timeout << std::endl;
-#endif
-    return Config::def_timeout;
-}
-
-bool
-Config::getFilesecurity() const {
-#ifdef CFGDEBUG
-    std::cout << " === ";
-    std::cout << "Config::getFilesecurity() const";
-    std::cout << ":" << std::endl;
-#endif
-
-    if (cl_filesecurity.set_on_cl) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cmd line: " << cl_filesecurity.check << std::endl;
-#endif
-        return cl_filesecurity.check;
-    }
-
-    if (cl_ignorerc.ignore) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from rc file ignored. Taking default: " << Config::def_filesecurity << std::endl;
-#endif
-        return Config::def_filesecurity;
-    }
-
-    if (cfgfile != NULL) {
-#ifdef CFGDEBUG
-        std::cout << "\tvalue from cfgfile: " << cfgfile->getUseFileSecurity() << std::endl;
-#endif
-        return cfgfile->getUseFileSecurity();
-    }
-
-#ifdef CFGDEBUG
-    else {
-        std::cout << "\tcfgfile == NULL " << std::endl;
-    }
-
-#endif
-#ifdef CFGDEBUG
-    std::cout << "\tsimply returning default value: " << Config::def_filesecurity << std::endl;
-#endif
-    return Config::def_filesecurity;
-}
-
-// These functions are trivial, since at the time being it can only be set in the
-// configuration file.
-YAPET::PWGEN::RNGENGINE
-Config::getPWGenRNG() const {
-    if (cfgfile != NULL) {
-	return cfgfile->getPWGenRNG();
-    } else {
-	return def_pwgen_rng;
-    }
-}
-
-size_t
-Config::getPWGenPWLen() const {
-    if (cfgfile != NULL) {
-	return cfgfile->getPWGenPWLen() > 0 ? cfgfile->getPWGenPWLen() :
-	def_pwlen;
-    } else {
-	return def_pwlen;
-    }
-}
-
-int
-Config::getCharPools() const {
-    if (cfgfile != NULL) {
-	int retval = 0;
-	if (cfgfile->getPWGenLetters())
-	    retval |= YAPET::PWGEN::LETTERS;
-	if (cfgfile->getPWGenDigits())
-	    retval |= YAPET::PWGEN::DIGITS;
-	if (cfgfile->getPWGenPunct())
-	    retval |= YAPET::PWGEN::PUNCT;
-	if (cfgfile->getPWGenSpecial())
-	    retval |= YAPET::PWGEN::SPECIAL;
-	if (cfgfile->getPWGenOther())
-	    retval |= YAPET::PWGEN::OTHER;
-	
-	return retval != 0 ? retval : def_character_pools;
-    } else {
-	return def_character_pools;
-    }
-}
-
-bool
-Config::getAllowLockQuit() const {
-   if (cfgfile != NULL) {
-	return cfgfile->getAllowLockQuit();
-    } else {
-	return def_allow_lock_quit;
-    }
-}
-
-unsigned int
-Config::getPwInputTimeout() const {
-    if (cfgfile != NULL) {
-	return cfgfile->getPwInputTimeout() > 5 ? 
-	    cfgfile->getPwInputTimeout() : 5;
-    } else {
-	return def_pw_input_timeout;
+        ignorerc = cfgfile->getIgnoreRC();
     }
 }
 
@@ -413,9 +244,15 @@ Config::operator= (const Config & c) {
         cfgfile = NULL;
     }
 
-    cl_petfile = c.cl_petfile;
-    cl_timeout = c.cl_timeout;
-    cl_filesecurity = c.cl_filesecurity;
-    cl_ignorerc = c.cl_ignorerc;
+    petfile = c.petfile;
+    timeout = c.timeout;
+    filesecurity = c.filesecurity;
+    ignorerc = c.ignorerc;
+    pwgenpwlen = c.pwgenpwlen;
+    pwgen_rng = c.pwgen_rng;
+    character_pools = c.character_pools;
+    allow_lock_quit = c.allow_lock_quit;
+    pw_input_timeout = c.pw_input_timeout;
+
     return *this;
 }

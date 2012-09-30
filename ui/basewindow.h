@@ -115,7 +115,7 @@ namespace YAPET {
                 /**
                  * @brief The signal handler.
                  *
-                 * This is the signal handler for the signals processed.
+                 * This is the signal handler for signals.
                  *
                  * Upon \c SIGALRM (set by \c setTimeout()) it will call the \c
                  * process method of the \c AlarmFunction class pointed to be \c
@@ -245,6 +245,16 @@ namespace YAPET {
                  */
                 static void suspendTimeout();
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
+		/**
+		 * @brief Wrapper function.
+		 *
+		 * This is a wrapper for \c wgetch. It will take care of setting and clearing lock timeouts.
+		 *
+		 * @param win pointer to the window.
+		 *
+		 * @return returns the value as received from ::wgetch
+		 */
+		static int wgetch(WINDOW *win);
                 BaseWindow();
                 virtual ~BaseWindow();
                 virtual void resize() = 0;

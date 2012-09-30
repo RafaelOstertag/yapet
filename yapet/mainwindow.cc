@@ -72,7 +72,7 @@
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
 #endif
-#include "globals.h"
+#include "cfg.h"
 
 /**
  * @brief Structure defining a key for the \c MainWindow.
@@ -1021,7 +1021,7 @@ MainWindow::changePassword() throw (YAPET::UI::UIException) {
     statusbar.putMsg (_ ("Password successfully changed") );
 }
 
-MainWindow::MainWindow (unsigned int timeout, bool fsecurity) 
+MainWindow::MainWindow ()
     throw (YAPET::UI::UIException) : BaseWindow(),
 				     toprightwin (NULL),
 				     bottomrightwin (NULL),
@@ -1030,9 +1030,10 @@ MainWindow::MainWindow (unsigned int timeout, bool fsecurity)
 				     records_changed (false),
 				     key (NULL),
 				     file (NULL),
-				     locktimeout (timeout),
-				     usefsecurity (fsecurity){
-    locktimeout = locktimeout < 10 ? 10 : locktimeout;
+				     locktimeout (YAPET::CONFIG::config.getTimeout()),
+				     usefsecurity (YAPET::CONFIG::config.getFilesecurity()) {
+    locktimeout = locktimeout < YAPET::CONSTS::Consts::getMinLockTimeout() ? 
+	YAPET::CONSTS::Consts::getMinLockTimeout() : locktimeout;
     createWindow();
 }
 
@@ -1052,6 +1053,26 @@ MainWindow::~MainWindow() {
 
 void
 MainWindow::run() throw (YAPET::UI::UIException) {
+    // See if we have to load a file as specified on the command line
+    if (!YAPET::CONFIG::config.getPetFile().empty() ) {
+
+	try {
+	    openFile (YAPET::CONFIG::config.getPetFile());
+	} catch (std::exception& ex2) {
+	    statusbar.putMsg (ex2.what() );
+	    
+	    if (file != NULL)
+		delete file;
+	    
+	    if (key != NULL)
+		delete key;
+	    
+	    file = NULL;
+	    key = NULL;
+	}
+
+    }
+
     if (file == NULL || key == NULL)
         statusbar.putMsg (_ ("No file loaded") );
 
@@ -1230,32 +1251,4 @@ MainWindow::run() throw (YAPET::UI::UIException) {
             statusbar.putMsg (ex.what() );
         }
     }
-}
-
-void
-MainWindow::run (std::string fn) {
-    if (fn.empty() ) {
-        run();
-        return;
-    }
-
-    refresh();
-
-    try {
-        openFile (fn);
-    } catch (std::exception& ex2) {
-        statusbar.putMsg (ex2.what() );
-
-        if (file != NULL)
-            delete file;
-
-        if (key != NULL)
-            delete key;
-
-        file = NULL;
-        key = NULL;
-    }
-
-    ::refresh();
-    run();
 }

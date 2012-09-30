@@ -217,6 +217,11 @@ BaseWindow::suspendTimeout() {
 }
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
+int
+BaseWindow::wgetch(WINDOW *win) {
+    
+}
+
 //
 // Non-Static
 //

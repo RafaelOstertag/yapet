@@ -52,6 +52,8 @@ namespace YAPET {
                 static const std::string default_rcfilename;
 		//! Maximum password length
 		static const size_t max_pwlen;
+		//! The minimum lock timeout
+		static const int min_locktimeout;
                 inline Consts() {}
                 inline ~Consts() {}
                 inline Consts (const Consts&) {}
@@ -63,6 +65,7 @@ namespace YAPET {
                 static const std::string& getDefaultSuffix();
                 static const std::string& getDefaultRCFilename();
 		static size_t getMaxPWLength();
+		static int getMinLockTimeout();
         };
 
     }

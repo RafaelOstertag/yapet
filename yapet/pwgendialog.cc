@@ -31,7 +31,6 @@
 #include "messagebox.h"
 #include "colors.h"
 #include "pwgendialog.h"
-#include "globals.h"
 #include "consts.h"
 #include "fileopen.h"
 #include "pwgen/pwgen.h"
@@ -165,12 +164,12 @@ PWGenDialog::PWGenDialog() throw (YAPET::UI::UIException) :
         okbutton (NULL),
         cancelbutton (NULL),
         password (""),
-        pwgen (YAPET::GLOBALS::Globals::getCharacterPools() ),
-        pwlen (YAPET::GLOBALS::Globals::getPasswordLength() ),
-        ckbox_options (YAPET::GLOBALS::Globals::getCharacterPools() ),
+        pwgen (YAPET::CONFIG::config.getCharPools() ),
+        pwlen (YAPET::CONFIG::config.getPWGenPWLen() ),
+        ckbox_options (YAPET::CONFIG::config.getCharPools() ),
         canceled (true) {
 
-    YAPET::PWGEN::RNGENGINE requested_rng = YAPET::GLOBALS::Globals::getPWGenRNG();
+    YAPET::PWGEN::RNGENGINE requested_rng = YAPET::CONFIG::config.getPWGenRNG();
     int available_rngs = YAPET::PWGEN::RNG::getAvailableRNGs();
     if (available_rngs & requested_rng) {
 	pwgen.setNewRNG(requested_rng);

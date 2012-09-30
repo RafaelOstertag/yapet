@@ -42,6 +42,56 @@
 namespace YAPET {
     namespace CONFIG {
 
+	template<class T> 
+	class CfgVal {
+	    private:
+		//! Indicates whether or not the value can be changed.
+		bool locked;
+		T val;
+		
+	    public:
+		CfgVal() : locked(false) {}
+		CfgVal(const T& v) : val(v) {}
+		CfgVal(const CfgVal& c) {
+		    locked = c.locked;
+		    val = c.val;
+		}
+		CfgVal& operator=(const CfgVal& c) {
+		    if (&c == this)
+			return *this;
+
+		    locked = c.locked;
+		    val = c.val;
+
+		    return *this;
+		}
+		CfgVal& operator=(const T& c) {
+		    if (locked) return *this;
+
+		    val = c;
+
+		    return *this;
+		}
+		void set(const T& v) {
+		    if (locked) return;
+
+		    val = v;
+		}
+		T get() const {
+		    return val;
+		}
+		void lock() {
+		    locked = true;
+		}
+		void unlock() {
+		    locked = false;
+		}
+		void isLocked() const {
+		    return locked;
+		}
+	};
+		
+
         /**
          * @brief Handle the command line and config file options.
          *
@@ -70,91 +120,6 @@ namespace YAPET {
 		//! Default for password input timeout
 		static const unsigned int def_pw_input_timeout;
 
-                struct s_cl_struct {
-                    // For indicating whether or not it has been set on the command
-                    // line
-                    bool set_on_cl;
-                    inline s_cl_struct() : set_on_cl (false) {}
-                    inline s_cl_struct (const s_cl_struct& r) {
-                        set_on_cl = r.set_on_cl;
-                    }
-                    inline const s_cl_struct& operator= (const s_cl_struct& r) {
-                        if (&r == this)
-                            return *this;
-
-                        set_on_cl = r.set_on_cl;
-                        return *this;
-                    }
-                };
-                //! The .pet file to open provided on the command line
-                struct s_cl_petfile : public s_cl_struct {
-                    std::string name;
-                    inline s_cl_petfile() : s_cl_struct(), name ("") {}
-                    inline s_cl_petfile (const s_cl_petfile& r) : s_cl_struct (r) {
-                        name = r.name ;
-                    }
-                    inline const s_cl_petfile& operator= (const s_cl_petfile& r) {
-                        if (&r == this)
-                            return *this;
-
-                        s_cl_struct::operator= (r);
-                        name = r.name;
-                        return *this;
-                    }
-                };
-                //! The lock timeout provided on the command line
-                struct s_cl_timeout : public s_cl_struct {
-                    unsigned int amount;
-                    inline s_cl_timeout() : s_cl_struct(), amount (0) {}
-                    inline s_cl_timeout (const s_cl_timeout& r) : s_cl_struct (r) {
-                        amount = r.amount ;
-                    }
-                    inline const s_cl_timeout& operator= (const s_cl_timeout& r) {
-                        if (&r == this)
-                            return *this;
-
-                        s_cl_struct::operator= (r);
-                        amount = r.amount;
-                        return *this;
-                    }
-                };
-                //! The request for checking file security on the command line
-                struct s_cl_filesecurity : public s_cl_struct {
-                    bool check;
-                    inline s_cl_filesecurity() : s_cl_struct(), check (false) {}
-                    inline s_cl_filesecurity (const s_cl_filesecurity& r) : s_cl_struct (r) {
-                        check = r.check ;
-                    }
-                    inline const s_cl_filesecurity& operator= (const s_cl_filesecurity& r) {
-                        if (&r == this)
-                            return *this;
-
-                        s_cl_struct::operator= (r);
-                        check = r.check;
-                        return *this;
-                    }
-                };
-                //! Ignoring the rc file provided on the command line
-                struct s_cl_ignorerc : public s_cl_struct {
-                    bool ignore;
-                    inline s_cl_ignorerc() : s_cl_struct(), ignore (false) {}
-                    inline s_cl_ignorerc (const s_cl_ignorerc& r) : s_cl_struct (r) {
-                        ignore = r.ignore ;
-                    }
-                    inline const s_cl_ignorerc& operator= (const s_cl_ignorerc& r) {
-                        if (&r == this)
-                            return *this;
-
-                        s_cl_struct::operator= (r);
-                        ignore = r.ignore;
-                        return *this;
-                    }
-                };
-                s_cl_petfile cl_petfile;
-                s_cl_timeout cl_timeout;
-                s_cl_filesecurity cl_filesecurity;
-                s_cl_ignorerc cl_ignorerc;
-
                 //! Removes two or more consecutive slashes from the path
                 std::string cleanupPath (const std::string& s) const;
 
@@ -168,6 +133,7 @@ namespace YAPET {
                 static int getDefCharPools();
 		static bool getDefAllowLockQuit();
 		static unsigned int getDefPwInputTimeout();
+		// Those are for convenience
 		static bool getDefCPoolLetters();
 		static bool getDefCPoolDigits();
 		static bool getDefCPoolPunct();
@@ -180,6 +146,16 @@ namespace YAPET {
 
                 void loadConfigFile (std::string filename = "");
 
+		CfgVal<std::string> petfile;
+		CfgVal<int> timeout;
+		CfgVal<bool> filesecurity;
+		CfgVal<bool> ignorerc;
+		CfgVal<size_t> pwgenpwlen;
+		CfgVal<YAPET::PWGEN::RNGENGINE> pwgen_rng;
+		CfgVal<int> character_pools;
+		CfgVal<bool> allow_lock_quit;
+		CfgVal<int> pw_input_timeout;
+
                 /**
                  * @brief Set the file to open upon start of YAPET.
                  *
@@ -189,42 +165,23 @@ namespace YAPET {
                  * @param s the file path of the file.
                  */
                 inline void setPetFile (std::string s) {
-                    cl_petfile.set_on_cl = true;
-                    cl_petfile.name = s;
-
-                    if ( cl_petfile.name.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
-                                               cl_petfile.name.length() -
-                                               YAPET::CONSTS::Consts::getDefaultSuffix().length() )
+                    
+                    if ( s.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
+				 s.length() -
+				 YAPET::CONSTS::Consts::getDefaultSuffix().length() )
                             == std::string::npos )
-                        cl_petfile.name += YAPET::CONSTS::Consts::getDefaultSuffix();
+                        s += YAPET::CONSTS::Consts::getDefaultSuffix();
 
-                    cl_petfile.name = cleanupPath (cl_petfile.name);
+                    s = cleanupPath (s);
+		    petfile = s;
+		    petfile.lock();
                 }
-                inline void setTimeout (int i) {
-                    cl_timeout.set_on_cl = true;
-                    cl_timeout.amount = i;
-                }
-                inline void setFilesecurity (bool b) {
-                    cl_filesecurity.set_on_cl = true;
-                    cl_filesecurity.check = b;
-                }
-                inline void setIgnorerc (bool b) {
-                    cl_ignorerc.set_on_cl = true;
-                    cl_ignorerc.ignore = b;
-                }
-
-                //! Return the file to open upon start of YAPET.
-                std::string getPetFile() const;
-                int getTimeout() const;
-                bool getFilesecurity() const;
-		YAPET::PWGEN::RNGENGINE getPWGenRNG() const;
-		size_t getPWGenPWLen() const;
-		int getCharPools() const;
-		bool getAllowLockQuit() const;
-		unsigned int getPwInputTimeout() const;
 
                 const Config& operator= (const Config& c);
         };
+
+	//! The global config object.
+	static Config config;
 
     }
 

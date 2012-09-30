@@ -60,10 +60,11 @@ class MainWindow : protected YAPET::UI::BaseWindow {
     private:
         WINDOW* toprightwin;
         WINDOW* bottomrightwin;
-        YAPET::UI::ListWidget<YAPET::PartDec>* recordlist;
+
         StatusBar statusbar;
         bool records_changed;
 
+        YAPET::UI::ListWidget<YAPET::PartDec>* recordlist;
         YAPET::Key* key;
         YAPET::File* file;
 
@@ -108,11 +109,10 @@ class MainWindow : protected YAPET::UI::BaseWindow {
         bool quit();
         void changePassword() throw (YAPET::UI::UIException);
     public:
-        MainWindow (unsigned int timeout, bool fsecurity) throw (YAPET::UI::UIException);
+        MainWindow () throw (YAPET::UI::UIException);
         virtual ~MainWindow();
 
         void run() throw (YAPET::UI::UIException);
-        void run (std::string fn);
         void resize() throw (YAPET::UI::UIException);
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)

@@ -37,7 +37,7 @@
 #include "messagebox.h"
 #include "dialogbox.h"
 #include "passworddialog.h"
-#include "globals.h"
+#include "cfg.h"
 #include "lockscreen.h"
 
 LockScreen::LockScreen(const YAPET::Key* k, const YAPET::File* f, bool daq) :
@@ -106,11 +106,11 @@ LockScreen::run() throw(YAPET::UI::UIException) {
 
 	    bool show_quit = dont_allow_quit ? false : true;
 	    // In case the user does not want to show the quit button
-	    show_quit = YAPET::GLOBALS::Globals::getAllowLockQuit() ? show_quit : false;
+	    show_quit = YAPET::CONFIG::config.getAllowLockQuit() ? show_quit : false;
 
             pwdia = new PasswordDialog (EXISTING_PW,
 					file->getFilename(),
-					YAPET::GLOBALS::Globals::getPwInputTimeout(),
+					YAPET::CONFIG::config.getPwInputTimeout(),
 					show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
