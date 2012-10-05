@@ -1,7 +1,7 @@
 # -*- makefile -*-
 #
 # $Id$
-PREFIX=/opt/ggl
+PREFIX=/usr
 BINDIR=$(PREFIX)/bin
 ACLOCAL=$(BINDIR)/aclocal
 AUTOCONF=$(BINDIR)/autoconf

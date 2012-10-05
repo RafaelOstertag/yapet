@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2012  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -33,11 +33,10 @@
 #include "pwgen/pwgen.h"
 
 using namespace YAPET::CONFIG;
-
 //
 // Global
 //
-Config config;
+Config YAPET::CONFIG::config;
 
 //! The default .pet file to open
 const std::string Config::def_petfile ("");
@@ -142,12 +141,11 @@ Config::cleanupPath (const std::string& s) const {
     return work_copy;
 }
 
-Config::Config() : cfgfile (NULL),
-		   petfile(""),
+Config::Config() : petfile(""),
 		   timeout(Config::getDefTimeout()),
 		   filesecurity(Config::getDefFilesecurity()),
 		   ignorerc(Config::getDefIgnorerc()),
-		   pwlen(Config::getDefPWLength()),
+		   pwgenpwlen(Config::getDefPWLength()),
 		   pwgen_rng(Config::getDefPWGenRNG()),
 		   character_pools(Config::getDefCharPools()),
 		   allow_lock_quit(Config::getDefAllowLockQuit()),
@@ -156,11 +154,6 @@ Config::Config() : cfgfile (NULL),
 }
 
 Config::Config (const Config& c) {
-    if (c.cfgfile != NULL)
-        cfgfile = new ConfigFile (* (c.cfgfile) );
-    else
-        cfgfile = NULL;
-
     petfile = c.petfile;
     timeout = c.timeout;
     filesecurity = c.filesecurity;
@@ -173,8 +166,7 @@ Config::Config (const Config& c) {
 }
 
 Config::~Config() {
-    if (cfgfile != NULL)
-        delete cfgfile;
+
 }
 
 /**
@@ -192,57 +184,43 @@ Config::loadConfigFile (std::string filename) {
 #ifdef CFGDEBUG
         std::cout << "\tadvised to ignore rc file!" << std::endl;
 #endif
-
-        if (cfgfile != NULL) {
-            delete cfgfile;
-            cfgfile = NULL;
-        }
-
         return;
     }
 
-    if (cfgfile != NULL)
-        delete cfgfile;
+    ConfigFile cfgfile(filename);
 
-    cfgfile = new ConfigFile (filename);
-
-    if (!cfgfile->isOpenSuccess() ) {
-        delete cfgfile;
-        cfgfile = NULL;
+    if (!cfgfile.isOpenSuccess() ) {
 #ifdef CFGDEBUG
         std::cout << "\topen " << filename << " was not successful" << std::endl;
 #endif
-    } else {
+    } 
+
+    ignorerc = cfgfile.getIgnoreRC();
+      
+    if (ignorerc.get() ) {
 #ifdef CFGDEBUG
-        std::cout << "\topen " << cfgfile->getConfigFilePath() << " successful" << std::endl;
-
-        if (cfgfile->getIgnoreRC() ) {
-            std::cout << "\tRC file says to ignore itself!" << std::endl;
-        }
-
+	std::cout << "\tRC file says to ignore itself!" << std::endl;
 #endif
-        ignorerc = cfgfile->getIgnoreRC();
+	return;
     }
+
+    // we use this method because it cleans up the file path
+    setPetFile(cfgfile.getFileToLoad());
+
+    filesecurity = cfgfile.getUseFileSecurity();
+    timeout = cfgfile.getLockTimeout();
+    pw_input_timeout = cfgfile.getPwInputTimeout();
+    allow_lock_quit = cfgfile.getAllowLockQuit();
+    pwgen_rng = cfgfile.getPWGenRNG();
+    pwgenpwlen = cfgfile.getPWGenPWLen();
+    character_pools = cfgfile.getCharPools();
+
 }
 
 const Config&
 Config::operator= (const Config & c) {
     if (&c == this)
         return *this;
-
-    if (c.cfgfile != NULL &&
-            cfgfile != NULL ) {
-        delete cfgfile;
-        cfgfile = new ConfigFile (* (c.cfgfile) );
-    }
-
-    if (c.cfgfile == NULL &&
-	cfgfile != NULL ) {
-        delete cfgfile;
-        cfgfile = NULL;
-    } else {
-        cfgfile = NULL;
-    }
 
     petfile = c.petfile;
     timeout = c.timeout;

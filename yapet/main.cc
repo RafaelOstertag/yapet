@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2012  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -327,12 +327,18 @@ int main (int argc, char** argv) {
 
     if (optind < argc) {
 	YAPET::CONFIG::config.setPetFile (argv[optind]);
+	YAPET::CONFIG::config.petfile.lock();
     }
 
     YAPET::CONFIG::config.loadConfigFile (cfgfilepath);
-    // Make sure the .pet suffix is there
+
+    // Unlock all configuration values, so that they can be changed
+    // again.
+    YAPET::CONFIG::config.unlockAll();
+
+    //  Make sure the .pet suffix is there
 #ifndef NDEBUG
-    std::string _tmp__ = YAPET::CONFIG::config.getPetFile();
+    std::string _tmp__ = YAPET::CONFIG::config.petfile.get();
 #endif
     assert (_tmp__.empty() ||
 	    _tmp__.find (YAPET::CONSTS::Consts::getDefaultSuffix(),

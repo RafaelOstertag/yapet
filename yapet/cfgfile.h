@@ -160,6 +160,13 @@ namespace YAPET {
 		inline bool getPWGenOther() const {
 		    return pwgen_other;
 		}
+	    inline int getCharPools() const {
+		return getPWGenLetters() |
+		    getPWGenDigits() |
+		    getPWGenPunct() |
+		    getPWGenSpecial() |
+		    getPWGenOther();
+	    }
                 inline bool isOpenSuccess() const {
                     return opensuccess;
                 }

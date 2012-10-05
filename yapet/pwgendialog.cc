@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2012  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -164,12 +164,12 @@ PWGenDialog::PWGenDialog() throw (YAPET::UI::UIException) :
         okbutton (NULL),
         cancelbutton (NULL),
         password (""),
-        pwgen (YAPET::CONFIG::config.getCharPools() ),
-        pwlen (YAPET::CONFIG::config.getPWGenPWLen() ),
-        ckbox_options (YAPET::CONFIG::config.getCharPools() ),
+        pwgen (YAPET::CONFIG::config.character_pools.get() ),
+        pwlen (YAPET::CONFIG::config.pwgenpwlen.get() ),
+        ckbox_options (YAPET::CONFIG::config.character_pools.get() ),
         canceled (true) {
 
-    YAPET::PWGEN::RNGENGINE requested_rng = YAPET::CONFIG::config.getPWGenRNG();
+    YAPET::PWGEN::RNGENGINE requested_rng = YAPET::CONFIG::config.pwgen_rng.get();
     int available_rngs = YAPET::PWGEN::RNG::getAvailableRNGs();
     if (available_rngs & requested_rng) {
 	pwgen.setNewRNG(requested_rng);
@@ -193,16 +193,16 @@ PWGenDialog::~PWGenDialog() {
     delwin (window);
     // Save the values used. If they are unreasonable, adjust to the bare
     // minimum.
-    YAPET::GLOBALS::Globals::setCharacterPools(
-					       CheckBoxOptions2Charpools(ckbxgroup->getOptions()) == 0 ?
-					       1 :
-					       CheckBoxOptions2Charpools(ckbxgroup->getOptions())
-					       );
-    YAPET::GLOBALS::Globals::setPasswordLength(
-					       pwleninput->getInt() == 0 ?
-					       1 :
-					       pwleninput->getInt()
-					       );
+    YAPET::CONFIG::config.character_pools.set(
+					      CheckBoxOptions2Charpools(ckbxgroup->getOptions()) == 0 ?
+					      1 :
+					      CheckBoxOptions2Charpools(ckbxgroup->getOptions())
+					      );
+    YAPET::CONFIG::config.pwgenpwlen.set(
+					 pwleninput->getInt() == 0 ?
+					 1 :
+					 pwleninput->getInt()
+					 );
     // Crush the widgets
     delete ckbxgroup;
     delete pwdisplay;

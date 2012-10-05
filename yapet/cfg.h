@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2012  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -41,9 +41,16 @@
 
 namespace YAPET {
     namespace CONFIG {
-
-	template<class T> 
-	class CfgVal {
+      
+      /**
+       * @brief template class used for configuration values
+       *
+       * This template class is mainly used for configuration
+       * values. It allows the values being locked, i.e. preventing
+       * the values being changed by set methods.
+       */
+      template<class T> 
+      class CfgVal {
 	    private:
 		//! Indicates whether or not the value can be changed.
 		bool locked;
@@ -66,16 +73,14 @@ namespace YAPET {
 		    return *this;
 		}
 		CfgVal& operator=(const T& c) {
-		    if (locked) return *this;
-
-		    val = c;
+		    if (!locked)
+		      val = c;
 
 		    return *this;
 		}
 		void set(const T& v) {
-		    if (locked) return;
-
-		    val = v;
+		    if (!locked)
+		      val = v;
 		}
 		T get() const {
 		    return val;
@@ -99,8 +104,6 @@ namespace YAPET {
          */
         class Config {
             private:
-                ConfigFile* cfgfile;
-
                 //! The default .pet file to open
                 static const std::string def_petfile;
                 //! The default lock timeout
@@ -126,7 +129,7 @@ namespace YAPET {
             public:
                 static std::string getDefPetfile();
                 static unsigned int getDefTimeout();
-                static bool getDefFilesecurity();
+	    static bool getDefFilesecurity();
                 static bool getDefIgnorerc();
 		static YAPET::PWGEN::RNGENGINE getDefPWGenRNG();
                 static size_t getDefPWLength();
@@ -159,8 +162,8 @@ namespace YAPET {
                 /**
                  * @brief Set the file to open upon start of YAPET.
                  *
-                 * Set the file to open upon start of YAPET. It will also make sure
-                 * that the proper suffix is appended.
+                 * Set the file to open upon start of YAPET. It will
+                 * make sure that the proper suffix is appended.
                  *
                  * @param s the file path of the file.
                  */
@@ -174,14 +177,48 @@ namespace YAPET {
 
                     s = cleanupPath (s);
 		    petfile = s;
-		    petfile.lock();
                 }
+
+	    /**
+	     * @brief lock all values
+	     *
+	     * A convenient method for locking all values.
+	     */
+	    inline void lockAll() {
+		petfile.lock();
+		timeout.lock();
+		filesecurity.lock();
+		ignorerc.lock();
+		pwgenpwlen.lock();
+		pwgen_rng.lock();
+		character_pools.lock();
+		allow_lock_quit.lock();
+		pw_input_timeout.lock();
+	    }
+
+	    /**
+	     * @brief unlock all values
+	     *
+	     * A convenient method for unlocking all values.
+	     */
+	    inline void unlockAll() {
+		petfile.unlock();
+		timeout.unlock();
+		filesecurity.unlock();
+		ignorerc.unlock();
+		pwgenpwlen.unlock();
+		pwgen_rng.unlock();
+		character_pools.unlock();
+		allow_lock_quit.unlock();
+		pw_input_timeout.unlock();
+	    }
+		    
 
                 const Config& operator= (const Config& c);
         };
 
 	//! The global config object.
-	static Config config;
+	extern Config config;
 
     }
 

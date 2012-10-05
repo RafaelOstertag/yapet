@@ -1030,10 +1030,10 @@ MainWindow::MainWindow ()
 				     records_changed (false),
 				     key (NULL),
 				     file (NULL),
-				     locktimeout (YAPET::CONFIG::config.getTimeout()),
-				     usefsecurity (YAPET::CONFIG::config.getFilesecurity()) {
+				     locktimeout (YAPET::CONFIG::config.timeout.get()),
+				     usefsecurity (YAPET::CONFIG::config.filesecurity.get()) {
     locktimeout = locktimeout < YAPET::CONSTS::Consts::getMinLockTimeout() ? 
-	YAPET::CONSTS::Consts::getMinLockTimeout() : locktimeout;
+				YAPET::CONSTS::Consts::getMinLockTimeout() : locktimeout;
     createWindow();
 }
 
@@ -1054,10 +1054,10 @@ MainWindow::~MainWindow() {
 void
 MainWindow::run() throw (YAPET::UI::UIException) {
     // See if we have to load a file as specified on the command line
-    if (!YAPET::CONFIG::config.getPetFile().empty() ) {
+    if (!YAPET::CONFIG::config.petfile.get().empty() ) {
 
 	try {
-	    openFile (YAPET::CONFIG::config.getPetFile());
+	    openFile (YAPET::CONFIG::config.petfile.get());
 	} catch (std::exception& ex2) {
 	    statusbar.putMsg (ex2.what() );
 	    

@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2010  Rafael Ostertag
+// Copyright (C) 2010-2012  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -106,11 +106,11 @@ LockScreen::run() throw(YAPET::UI::UIException) {
 
 	    bool show_quit = dont_allow_quit ? false : true;
 	    // In case the user does not want to show the quit button
-	    show_quit = YAPET::CONFIG::config.getAllowLockQuit() ? show_quit : false;
+	    show_quit = YAPET::CONFIG::config.allow_lock_quit.get() ? show_quit : false;
 
             pwdia = new PasswordDialog (EXISTING_PW,
 					file->getFilename(),
-					YAPET::CONFIG::config.getPwInputTimeout(),
+					YAPET::CONFIG::config.pw_input_timeout.get(),
 					show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
