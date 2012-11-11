@@ -211,10 +211,11 @@ InputWidget::~InputWidget() {
     clearText();
     // Commented out because clearText() has already done this.
     // wclear (window);
-
+#ifdef PARANOID
     // To be sure we don't have any sensitive information on the screen and
     // buffers (hopefully)
     wrefresh (window);
+#endif
     delwin (window);
 }
 

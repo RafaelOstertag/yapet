@@ -220,7 +220,9 @@ FileOpen::FileOpen (std::string t) throw (YAPET::UI::UIException) : BaseWindow()
 }
 
 FileOpen::~FileOpen() {
+#ifdef PARANOID
     wclear (window);
+#endif
     delwin (window);
     delete dir;
     delete files;

@@ -240,7 +240,9 @@ PasswordRecord::PasswordRecord (YAPET::Key& k, const YAPET::File& f, YAPET::Part
 }
 
 PasswordRecord::~PasswordRecord() {
+#ifdef PARANOID
     wclear (window);
+#endif
     delwin (window);
     delete name;
     delete host;

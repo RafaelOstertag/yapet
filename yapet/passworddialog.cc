@@ -99,7 +99,9 @@ PasswordDialog::~PasswordDialog() {
 	assert(quitbutton != NULL);
 	delete quitbutton;
     }
+#ifdef PARANOID
     wclear (window);
+#endif
     delwin (window);
 }
 

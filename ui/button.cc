@@ -62,10 +62,12 @@ Button::setLabel (std::string l) throw (UIException) {
     if (retval == ERR)
         throw UIException (_ ("Error refreshing button") );
 
-    retval = delwin (window);
+    // Was that right? deleting the window?
+    //
+    // retval = delwin (window);
 
-    if (retval == ERR)
-        throw UIException (_ ("Error deleting button") );
+    // if (retval == ERR)
+    //     throw UIException (_ ("Error deleting button") );
 }
 
 void

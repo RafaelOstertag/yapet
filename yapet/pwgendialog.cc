@@ -186,10 +186,12 @@ PWGenDialog::~PWGenDialog() {
     assert (regenbutton != NULL);
     assert (okbutton != NULL);
     assert (cancelbutton != NULL);
+#ifdef PARANOID
     wclear (window);
     // To be sure we don't have any sensitive information on the screen and
     // buffers (hopefully)
     wrefresh (window);
+#endif
     delwin (window);
     // Save the values used. If they are unreasonable, adjust to the bare
     // minimum.
@@ -400,10 +402,12 @@ PWGenDialog::refresh() throw (YAPET::UI::UIException) {
 
 void
 PWGenDialog::resize() throw (YAPET::UI::UIException) {
+#ifdef PARANOID
     wclear (window);
     // To be sure we don't have any sensitive information on the screen and
     // buffers (hopefully)
     wrefresh (window);
+#endif
     delwin (window);
     delete pwdisplay;
     delete pwleninput;
