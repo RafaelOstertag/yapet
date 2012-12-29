@@ -1,31 +1,40 @@
 // -*- mode: c++ -*-
+//
+// $Id$
 
 #ifndef WINDOWS_H
 #define WINDOWS_H
 
-#include "curex.h"
-
-#include <curses.h>
-#ifdef refresh
-#undef refresh
+#ifdef HAVE_CONFIG_H
+#include "config.h"
 #endif
 
-class Window {
+#include "screenobject.h"
+#include "margin.h"
+#include "curex.h"
+#include "mycurses.h"
+
+
+class Window: public ScreenObject {
     private:
-	/// Keeps track of how many instances objects have been created sharing
-	/// the same WINDOW structure
-	unsigned long instances;
-	WINDOW *w;
+	Margin margin;
+
+	bool hasframe;
 
     public:
-	Window(int nl, int nc, int y, int x) throw(NewWindowFailed);
-	Window(const Window& W) throw();
-	Window& operator=(const Window& W) throw();
-	virtual ~Window() throw(DelWindowFailed);
+	Window(const Margin& m);
+	Window();
+	Window(const Window& W);
+	Window& operator=(const Window& W);
+	inline bool operator==(const Window& W) const {
+	    return w == W.w;
+	}
+	virtual ~Window();
 
-	virtual void show() = 0;
-	virtual void refresh() = 0;
-virtual 
+	inline bool getFrame() const { return hasframe; }
+	inline void setFrame(bool b) { hasframe = b; }
+	virtual void refresh();
+	virtual void resize();
 };
 
 #endif
