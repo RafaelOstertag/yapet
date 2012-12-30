@@ -7,7 +7,6 @@
 #include "config.h"
 #endif
 
-#include "curs.h"
 #include "margin.h"
 
 class Dimension {
@@ -17,10 +16,6 @@ class Dimension {
     public:
 	inline Dimension(int nl, int nc, int _y, int _x) :
 	    nlines(nl), ncols(nc), y(_y), x(_x) {}
-
-	inline Dimension() {
-	    Dimension::Dimension(Curses::getDimension());
-	}
 
 	inline Dimension(const Dimension& d) {
 	    nlines = d.nlines;

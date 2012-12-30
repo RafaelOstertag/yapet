@@ -27,6 +27,7 @@ class BaseCurEx: public std::exception {
 		return *this;
 	    
 	    msg = c.msg;
+	    return *this;
 	}
 	
 	inline virtual 
@@ -51,7 +52,7 @@ class NotInitialized: public BaseCurEx {
 class EndWinError: public BaseCurEx {
     public:
 	EndWinError() :
-	BaseCurEx("Endwin() had an error") {};
+	BaseCurEx("Endwin() had an error") {}
 };
 
 class AlreadyInitialized: public BaseCurEx {
@@ -88,6 +89,30 @@ class DoupdateFailed: public BaseCurEx {
     public:
 	DoupdateFailed() :
 	BaseCurEx("doupdate() failed") {}
+};
+
+class AddStrFailed: public BaseCurEx {
+    public:
+	AddStrFailed() :
+	BaseCurEx("Adding string to window failed") {}
+};
+
+class EraseFailed: public BaseCurEx {
+    public:
+	EraseFailed() :
+	BaseCurEx("Erase of window failed") {}
+};
+
+class ScrollOKFailed: public BaseCurEx {
+    public:
+	ScrollOKFailed() :
+	BaseCurEx("call to scrollok() failed") {}
+};
+
+class LeaveOKFailed: public BaseCurEx {
+    public:
+	LeaveOKFailed() :
+	BaseCurEx("call to leaveok() failed") {}
 };
 
 #endif

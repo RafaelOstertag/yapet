@@ -15,14 +15,16 @@
 
 class StatusLine: public ScreenObject {
     private:
-	WINDOW
 	std::stack<std::string> messages;
+	
+	void putTopMsg();
 
     public:
+	StatusLine() : ScreenObject() { resize(); }
+	StatusLine(const StatusLine& sl) : ScreenObject(sl) {}
 	void pushMsg(const std::string& m);
 	void pushMsg(const char* m);
 	void popMsg();
-	void refresh();
 	void resize();
 };
 

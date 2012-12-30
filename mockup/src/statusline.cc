@@ -4,12 +4,27 @@
 #include "config.h"
 #endif
 
+#include "curs.h"
+#include "curex.h"
 #include "statusline.h"
 
 
 //
 // Private
 //
+
+void
+StatusLine::putTopMsg() {
+    int retval = werase(getWindow());
+    if (retval == ERR)
+	throw EraseFailed();
+
+    retval = mymvwaddstr(getWindow(),
+		       0,0, messages.top().c_str());
+    if (retval == ERR)
+	throw AddStrFailed();
+}
+    
 
 //
 // Protected
@@ -26,24 +41,19 @@ StatusLine::pushMsg(const std::string& m) {
 
 void
 StatusLine::pushMsg(const char* m) {
-#warning "Not Implemented"
-    abort();
+    messages.push(m);
+    putTopMsg();
 }
 
 void
 StatusLine::popMsg() {
-#warning "Not Implemented"
-    abort();
+    if (messages.empty()) return;
+    messages.pop();
+    if (messages.empty()) return;
+    putTopMsg();
 }
     
 void
-StatusLine::refresh() {
-#warning "Not Implemented"
-    abort();
-}
-
-void
 StatusLine::resize() {
-#warning "Not Implemented"
-    abort();
+    ScreenObject::resize(Curses::getStatusDimension());
 }

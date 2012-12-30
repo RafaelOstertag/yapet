@@ -19,10 +19,8 @@ class Margin {
 	inline Margin(int t, int b, int l, int r) :
 	    top(t), bottom(b), left(l), right(r) {}
 
-	inline Margin() {
-	    Margin::Margin(0,0,0,0);
-	}
-	    
+	inline Margin():
+	    top(0), bottom(0), left(0), right(0) {}
 
 	inline Margin(const Margin& m) {
 	    top = m.top;

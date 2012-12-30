@@ -7,23 +7,18 @@
 #include "config.h"
 #endif
 
-#include <list>
 #include <string>
-#include <stdexcept>
 
 #include "mycurses.h"
 
 #include "curex.h"
-#include "window.h"
-
-// forward declaration
-class Dimension;
+#include "statusline.h"
 
 class Curses {
     private:
-	static std::list<Window*> window_list;
 	static std::string title;
-	static WINDOW *w;
+	static WINDOW* w;
+	static StatusLine* statusline;
 	static bool initialized;
 	static bool hasstatusline;
 	static bool hastitle;
@@ -34,20 +29,22 @@ class Curses {
     
     
     public:
-	static void init();
+	static void init(bool _statusline);
 	static void end();
 
 	static void show();
-
-	static void regwin(Window* W);
-	static void unregwin(Window* W);
 
 	static void setTitle(const std::string& t);
 	static void setTitle(const char* t);
 	static std::string getTitle();
 	static void unsetTitle();
 
+	static void pushStatus(const std::string& m);
+	static void pushStatus(const char* m);
+	static void popStatus();
+
 	static Dimension getDimension();
+	static Dimension getStatusDimension();
 };
 
 #endif

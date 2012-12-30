@@ -1,5 +1,8 @@
 // $Id$
+//
 // Test reference count of window class
+#include <cstdlib>
+
 #include <iostream>
 #include <exception>
 
@@ -16,12 +19,12 @@ class TWindow: public Window {
 
 void f1(TWindow w) {
     if (w._test() != 3)
-	exit(1);
+	std::exit(1);
 }
 
 int main() {
     try {
-	Curses::init();
+	Curses::init(false);
 
 	TWindow t0;
 	if (t0._test() != 1)

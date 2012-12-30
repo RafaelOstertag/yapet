@@ -5,24 +5,20 @@
 #include "config.h"
 #endif
 
+#include "scrobjlist.h"
 #include "curs.h"
 #include "dimension.h"
 
-std::list<Window*> Curses::window_list;
+
 std::string Curses::title;
-WINDOW *Curses::w = NULL;
+WINDOW* Curses::w = NULL;
+StatusLine* Curses::statusline;
 bool Curses::initialized = false;
-bool Curses::hasstatusline = false;
+bool Curses::hasstatusline;
 bool Curses::hastitle = false;
 int Curses::nlines=0, Curses::ncols=0, Curses::y=0, Curses::x=0;
 
-/// Function object
-class RefreshWindow {
-    public:
-	inline void operator()(Window *w) {
-	    w->refresh();
-	}
-};
+
 
 //
 // Protected
@@ -32,7 +28,9 @@ Curses::putTitle() {
     int _h1 = ncols / 2;
     int _h2 = title.length() / 2;
 
-    mvwaddstr(w, 0, _h1 - _h2, title.c_str() );
+    int retval = mymvwaddstr(w, 0, _h1 - _h2, title.c_str() );
+    if (retval == ERR)
+	throw AddStrFailed();
 }
 
 
@@ -40,7 +38,7 @@ Curses::putTitle() {
 // Public
 //
 void
-Curses::init() {
+Curses::init(bool _statusline) {
     if (Curses::initialized)
 	throw AlreadyInitialized();
     
@@ -58,11 +56,19 @@ Curses::init() {
 #endif
 
     initialized = true;
+
+    if (_statusline)
+	statusline = new StatusLine();
+
+    hasstatusline = _statusline;
 }
 
 void
 Curses::end() {
     if (!initialized) throw NotInitialized();
+
+    if (statusline)
+	delete statusline;
 
     int retval = endwin();
     if (retval == ERR)
@@ -83,42 +89,14 @@ Curses::show() {
 	    throw RefreshFailed();
     }
 
-    std::for_each(window_list.begin(), window_list.end(), RefreshWindow());
+    ScreenObjectList::refreshAll();
+
 
     int retval = doupdate();
     if (retval == ERR)
 	throw DoupdateFailed();
 }
 
-void
-Curses::regwin(Window* W) {
-    if (!initialized) throw NotInitialized();
-
-    if (!W)
-	throw std::invalid_argument("Argument cannot be null ptr");
-
-    // New windows will be pushed at the back, so that they will be displayed
-    // last and not obscured by earlier windows.
-    window_list.push_back(W);
-}
-
-void
-Curses::unregwin(Window* W) {
-    // We do not check if Curses is still initialized, since that would impose
-    // a strict order of how objects have to be destroyed, for instance, the
-    // following code snippet would not work
-    //
-    // try {
-    //  Curses::init()
-    //  Window w1;
-    //  ...
-    //  Curses::end()
-    // } catch (...) {
-    //
-    // because Curses will be ended before w1 is destroyed when leaving the
-    // scope of the try-catch block
-    window_list.remove(W);
-}
 
 void
 Curses::setTitle(const std::string& t) {
@@ -143,6 +121,25 @@ Curses::unsetTitle() {
     hastitle = false;
 }
 
+void
+Curses::pushStatus(const std::string& m) {
+    pushStatus(m.c_str());
+}
+
+void
+Curses::pushStatus(const char* m) {
+    if (!statusline) return;
+
+    statusline->pushMsg(m);
+}
+
+void
+Curses::popStatus() {
+    if (!statusline) return;
+
+    statusline->popMsg();
+}
+
 Dimension
 Curses::getDimension() {
     if (!initialized) throw NotInitialized();
@@ -157,4 +154,11 @@ Curses::getDimension() {
 	_nlines--;
 
     return Dimension(_nlines, ncols, _y, x);
+}
+
+Dimension
+Curses::getStatusDimension() {
+    if (!initialized) throw NotInitialized();
+
+    return Dimension(1,ncols,nlines-1,0);
 }

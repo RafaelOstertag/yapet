@@ -4,6 +4,7 @@
 #include "config.h"
 #endif
 
+#include "scrobjlist.h"
 #include "curs.h"
 #include "screenobject.h"
 
@@ -27,13 +28,13 @@ ScreenObject::ScreenObject() : instances(NULL),
     instances = new unsigned int;
     *instances = 1;
 
-    Curses::regwin(this);
+    ScreenObjectList::regObject(this);
 }
 
 ScreenObject::ScreenObject(const ScreenObject& so) {
-    instances = W.instances;
+    instances = so.instances;
     (*instances)++;
-    w = W.w;
+    w = so.w;
 }
 
 ScreenObject::~ScreenObject() {
@@ -52,7 +53,7 @@ ScreenObject::~ScreenObject() {
 
     delete w;
 
-    Curses::unregwin(this);
+    ScreenObjectList::unregObject(this);
 }    
 
 ScreenObject&
@@ -66,4 +67,28 @@ ScreenObject::operator=(const ScreenObject& so) {
     w = so.w;
 
     return *this;
+}
+
+void
+ScreenObject::refresh() {
+    int retval = wnoutrefresh(getWindow());
+    if (retval == ERR)
+	throw RefreshFailed();
+}
+
+void
+ScreenObject::resize(const Dimension& d) {
+
+    if (*w != NULL) {
+	int retval = delwin(*w);
+	if (retval == ERR)
+	    throw DelWindowFailed();
+    }
+
+    *w = newwin(d.getLines(),
+		d.getCols(),
+		d.getY(),
+		d.getX());
+    if (*w == NULL)
+	throw NewWindowFailed();
 }

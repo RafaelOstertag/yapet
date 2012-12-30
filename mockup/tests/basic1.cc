@@ -7,11 +7,12 @@
 #include <iostream>
 
 #include "curs.h"
+#include "window.h"
 
 int main() {
     try {
-	Curses::init();
-	Curses::setTitle("TEST");
+	Curses::init(false);
+	Curses::setTitle("Basic 1");
 
 	Window w1;
 	w1.setFrame(true);

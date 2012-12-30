@@ -9,8 +9,11 @@
 #include "config.h"
 #endif
 
+#include "mycurses.h"
+#include "dimension.h"
+
 class ScreenObject {
-    protected:
+    private:
 	/// Keeps track of how many instances objects have been created sharing
 	/// the same WINDOW structure
 	unsigned int* instances;
@@ -18,11 +21,15 @@ class ScreenObject {
 	/// instances simultaneously.
 	WINDOW** w;
 
+    protected:
+	inline WINDOW* getWindow() const { return *w; }
 
 	/// Keep this. Used by tests/windowrefs.cc.
 	inline unsigned int getInstanceCount() const {
 	    return *instances;
 	}
+
+	void resize(const Dimension& d);
     public:
 	ScreenObject();
 	ScreenObject(const ScreenObject& so);
@@ -30,7 +37,7 @@ class ScreenObject {
 	ScreenObject& operator=(const ScreenObject& so);
 
 
-	virtual void refresh() = 0;
+	virtual void refresh();
 	virtual void resize() = 0;
 };
 #endif
