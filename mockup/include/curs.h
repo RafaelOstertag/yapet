@@ -7,44 +7,54 @@
 #include "config.h"
 #endif
 
+#include <signal.h>
+
 #include <string>
 
 #include "mycurses.h"
-
-#include "curex.h"
+#include "lineobject.h"
 #include "statusline.h"
+#include "window.h"
+
 
 class Curses {
     private:
-	static std::string title;
+	static sigset_t sigoldmask;
+	static struct sigaction sigoldaction;
+
 	static WINDOW* w;
 	static StatusLine* statusline;
+	static LineObject* title;
+	static Window* mainwindow;
 	static bool initialized;
-	static bool hasstatusline;
-	static bool hastitle;
-	static int nlines, ncols, y, x;
+	static Rectangle<> scrdim;
+
+	static void setupSignal();
+	static void restoreSignal();
+
+	static void signal_handler(int, siginfo_t*, void*);
 
     protected:
-	static void putTitle();
-    
     
     public:
-	static void init(bool _statusline);
+	static void init();
 	static void end();
 
 	static void show();
+	static void resize();
 
-	static void setTitle(const std::string& t);
-	static void setTitle(const char* t);
-	static std::string getTitle();
+	static void setTitle(LineObject* _title);
+	static LineObject* getTitle();
 	static void unsetTitle();
 
-	static void pushStatus(const std::string& m);
-	static void pushStatus(const char* m);
-	static void popStatus();
+	static void setStatusLine(StatusLine* _sl);
+	static StatusLine* getStatusLine();
+	static void unsetStatusLine();
 
-	static Dimension getDimension();
-	static Dimension getStatusDimension();
+	static void setWindow(Window* _w);
+	static Window* getWindow();
+	static void unsetWindow();
+	    
 };
 
 #endif

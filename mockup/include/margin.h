@@ -6,42 +6,42 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-
+template<class T=int>
 class Margin {
     private:
-	int top, bottom, left, right;
+	T top, bottom, left, right;
 
     protected:
-	inline int max(int a, int b) { return a>b ? a : b; }
-	inline int min(int a, int b) { return a<b ? a : b; }
+	T max(T a, T b) const { return a>b ? a : b; }
+	T min(T a, T b) const { return a<b ? a : b; }
 
     public:
-	inline Margin(int t, int b, int l, int r) :
+	Margin(T t, T l, T b, T r) :
 	    top(t), bottom(b), left(l), right(r) {}
 
-	inline Margin():
+	Margin():
 	    top(0), bottom(0), left(0), right(0) {}
 
-	inline Margin(const Margin& m) {
+	Margin(const Margin<>& m) {
 	    top = m.top;
 	    bottom = m.bottom;
 	    left = m.left;
 	    right = m.right;
 	}
 
-	inline ~Margin() {}
+	~Margin() {}
 	    
-	inline void setTop(int i) { top = i; }
-	inline void setBottom(int i) { bottom = i; }
-	inline void setLeft(int i) { left = i; }
-	inline void setRight(int i) { right = i; }
+	void setTop(T i) { top = i; }
+	void setBottom(T i) { bottom = i; }
+	void setLeft(T i) { left = i; }
+	void setRight(T i) { right = i; }
 
-	inline int getTop() const { return top; }
-	inline int getBottom() const { return bottom; }
-	inline int getLeft() const { return left; }
-	inline int getRight() const { return right; }
+	T getTop() const { return top; }
+	T getBottom() const { return bottom; }
+	T getLeft() const { return left; }
+	T getRight() const { return right; }
 
-	inline Margin& operator=(const Margin& m) {
+	Margin<T>& operator=(const Margin<T>& m) {
 	    if (this == &m) return *this;
 
 	    top = m.top;
@@ -51,8 +51,8 @@ class Margin {
 	    return *this;
 	}
 
-	inline Margin operator+(const Margin& m) {
-	    Margin tmp = *this;
+	Margin<T> operator+(const Margin<T>& m) const {
+	    Margin<T> tmp = *this;
 
 	    tmp.top = max(top, m.top);
 	    tmp.bottom = max(bottom, m.bottom);
@@ -62,8 +62,8 @@ class Margin {
 	    return tmp;
 	}
 
-	inline Margin operator-(const Margin& m) {
-	    Margin tmp = *this;
+	Margin<T> operator-(const Margin<T>& m) const {
+	    Margin<T> tmp = *this;
 
 	    tmp.top = min(top, m.top);
 	    tmp.bottom = min(bottom, m.bottom);
@@ -73,14 +73,16 @@ class Margin {
 	    return tmp;
 	}
 
-	inline bool operator==(const Margin& m) {
+	bool operator==(const Margin<T>& m) const {
 	    if (this == &m) return true;
 
 	    return top == m.top && bottom == m.bottom &&
 		left == m.left && right == m.right;
 	}
 
-	friend class Dimension;
+	bool operator!=(const Margin<T>& m) const {
+	    return ! operator==(m);
+	}
 };
 
 #endif

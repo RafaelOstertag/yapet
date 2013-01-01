@@ -9,7 +9,7 @@
 
 int main() {
     try {
-	Curses::init(false);
+	Curses::init();
 	sleep(1);
 	Curses::end();
     } catch (std::exception &e) {

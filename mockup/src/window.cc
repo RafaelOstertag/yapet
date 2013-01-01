@@ -8,38 +8,24 @@
 
 #include "curs.h"
 #include "window.h"
-#include "dimension.h"
+#include "rectangle.h"
 
 //
 // Private
 //
-void
-Window::__init() {
-    resize();
-
-    int retval = scrollok(getWindow(), FALSE);
-    if (retval == ERR)
-	throw ScrollOKFailed();
-
-    retval = leaveok(getWindow(), FALSE);
-    if (retval == ERR)
-	throw LeaveOKFailed();
-}
 
 //
 // Public
 //
 
-Window::Window(const Margin& m) : ScreenObject(),
-				  margin(m),
-				  hasframe(false) {
-    __init();
+Window::Window(const Margin<>& m) : ScreenObject(),
+				    margin(m),
+				    hasframe(false) {
 }
 
 Window::Window() : ScreenObject(),
-		   margin(Margin()),
+		   margin(Margin<>()),
 		   hasframe(false) {
-    __init();
 }
 
 Window::Window(const Window& W) : ScreenObject(W) {
@@ -58,19 +44,14 @@ Window::operator=(const Window& W) {
 }
 
 void
-Window::refresh() {
-    int retval;
+Window::realize(const Rectangle<>& r) {
+    ScreenObject::realize(r);
 
     if (hasframe) {
-	retval = box(getWindow(), 0, 0);
+	blocksignal();
+	int retval = box(getWindow(), 0, 0);
+	unblocksignal();
 	if (retval == ERR)
 	    throw BoxFailed();
     }
-
-    ScreenObject::refresh();
-}
-
-void
-Window::resize() {
-    ScreenObject::resize(Curses::getDimension() - margin);
 }

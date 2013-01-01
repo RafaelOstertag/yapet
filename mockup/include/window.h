@@ -18,14 +18,14 @@
 
 class Window: public ScreenObject {
     private:
-	Margin margin;
+	Margin<> margin;
 	bool hasframe;
 
 	void __init();
 
     public:
-	Window(const Margin& m);
 	Window();
+	Window(const Margin<>& m);
 	Window(const Window& W);
 	Window& operator=(const Window& W);
 	inline bool operator==(const Window& W) const {
@@ -34,8 +34,8 @@ class Window: public ScreenObject {
 
 	inline bool getFrame() const { return hasframe; }
 	inline void setFrame(bool b) { hasframe = b; }
-	void refresh();
-	void resize();
+
+	void realize(const Rectangle<>& r);
 };
 
-#endif
+#endif // WINDOWS_H

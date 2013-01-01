@@ -24,7 +24,7 @@ void f1(TWindow w) {
 
 int main() {
     try {
-	Curses::init(false);
+	Curses::init();
 
 	TWindow t0;
 	if (t0._test() != 1)

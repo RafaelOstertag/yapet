@@ -11,21 +11,19 @@
 
 #include <stack>
 
-#include "screenobject.h"
+#include "lineobject.h"
 
-class StatusLine: public ScreenObject {
+class StatusLine: public LineObject {
     private:
 	std::stack<std::string> messages;
 	
 	void putTopMsg();
 
     public:
-	StatusLine() : ScreenObject() { resize(); }
-	StatusLine(const StatusLine& sl) : ScreenObject(sl) {}
+	inline StatusLine() : LineObject(POS_BOTTOM, NULL) {}
+	inline StatusLine(const StatusLine& sl) : LineObject(sl) {}
 	void pushMsg(const std::string& m);
-	void pushMsg(const char* m);
 	void popMsg();
-	void resize();
 };
 
 #endif

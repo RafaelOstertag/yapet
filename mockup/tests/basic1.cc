@@ -7,20 +7,28 @@
 #include <iostream>
 
 #include "curs.h"
+#include "lineobject.h"
 #include "window.h"
 
 int main() {
     try {
-	Curses::init(false);
-	Curses::setTitle("Basic 1");
+	Curses::init();
 
-	Window w1;
-	w1.setFrame(true);
+	LineObject* title = new LineObject(LineObject::POS_TOP,
+					   NULL, "Basic 1");
+	Curses::setTitle(title);
+
+	Window* w1 = new Window;
+	w1->setFrame(true);
+
+	Curses::setWindow(w1);
 
 	Curses::show();
 
 	sleep(2);
 
+	delete title;
+	delete w1;
 	Curses::end();
     } catch (std::exception& e) {
 	std::cerr << e.what() << std::endl;
