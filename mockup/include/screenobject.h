@@ -9,7 +9,9 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
+#endif // HAVE_SIGNAL_H
 
 #include "mycurses.h"
 #include "realizeable.h"
@@ -26,7 +28,9 @@ class ScreenObject : public Realizeable {
 
 #ifdef SIGWINCH
 	sigset_t block_sigset;
+	sigset_t old_sigset;
 #endif // SIGWINCH
+	bool signal_blocked;
 
     protected:
 	inline WINDOW* getWindow() const { return *w; }

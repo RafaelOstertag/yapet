@@ -5,11 +5,33 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif // HAVE_UNISTD_H
+
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
+#endif // HAVE_SIGNAL_H
+
+
+#ifdef HAVE_STROPTS_H
+#include <stropts.h>
+#endif // HAVE_STROPTS_H
+
+#ifdef HAVE_SYS_TERMIOS_H
+#include <sys/termios.h>
+#endif // HAVE_SYS_TERMIOS_H
+
+#ifdef HAVE_CERRNO
 #include <cerrno>
+#endif // HAVE_CERRNO_H
+
+#ifdef HAVE_CSTDLIB
 #include <cstdlib>
+#endif // HAVE_CSTDLIB
 
 #include "curs.h"
+#include "eventqueue.h"
 
 sigset_t Curses::sigoldmask;
 struct sigaction Curses::sigoldaction;
@@ -74,7 +96,50 @@ Curses::signal_handler(int signo, siginfo_t* info, void *d) {
 //
 // Protected
 //
+void
+Curses::inquiryScreenSize() {
+    winsize ws;
 
+    scrdim.setX(0);
+    scrdim.setY(0);
+
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) != -1) {
+	if (ws.ws_row > 0 && ws.ws_col > 0) {
+	    scrdim.setLines(ws.ws_row);
+	    scrdim.setCols(ws.ws_col);
+	} else {
+	    throw WinSizeInvalid();
+	}
+    } else {
+	char* clines = std::getenv("LINES");
+	char* ccols = std::getenv("COLUMNS");
+
+	if ( clines != NULL && ccols != NULL ) {
+	    int _lines = std::atoi(clines);
+	    int _cols = std::atoi(ccols);
+
+	    if ( _lines > 0 && _cols > 0 ) {
+		scrdim.setLines(_lines);
+		scrdim.setCols(_cols);
+	    } else {
+		throw UnableToGetWinSize();
+	    }
+	} else {
+	    throw UnableToGetWinSize();
+	}
+    }
+
+#if 0
+    int x, y, nlines, ncols;
+    getbegyx(w, y, x);
+    getmaxyx(w, nlines, ncols);
+
+    scrdim.setX(x);
+    scrdim.setY(y);
+    scrdim.setLines(nlines);
+    scrdim.setCols(ncols);
+#endif
+}
 
 //
 // Public
@@ -88,20 +153,18 @@ Curses::init() {
     if (w == NULL)
 	throw UnableToInitialize();
 
-    int x, y, nlines, ncols;
-    getbegyx(w, y, x);
-    getmaxyx(w, nlines, ncols);
+    inquiryScreenSize();
 
-    scrdim.setX(x);
-    scrdim.setY(y);
-    scrdim.setLines(nlines);
-    scrdim.setCols(ncols);
-
+    int retval;
 #if !(defined(_XOPEN_CURSES) || defined(NCURSES_VERSION))
-    int retval = wrefresh(stdscr);
+    retval = wrefresh(stdscr);
     if (retval == ERR)
 	throw RefreshFailed();
 #endif
+
+    retval = nonl();
+    if (retval == ERR)
+	throw NoNLFailed();
 
     setupSignal();
 
@@ -160,16 +223,30 @@ void
 Curses::resize() {
     if (!initialized) throw NotInitialized();
 
-    int x, y, nlines, ncols;
-    getbegyx(w, y, x);
-    getmaxyx(w, nlines, ncols);
+    inquiryScreenSize();
 
-    scrdim.setX(x);
-    scrdim.setY(y);
-    scrdim.setLines(nlines);
-    scrdim.setCols(ncols);
+    Rectangle<> rmain(scrdim);
 
-    show();
+
+    if (title) {
+	title->resize(Rectangle<>(0, 0, 1, scrdim.getCols()));
+
+	rmain-=Margin<>(1,0,0,0);
+    }
+
+    if (statusline) {
+	statusline->resize(Rectangle<>(scrdim.getLines()-1,0,1,
+					scrdim.getCols()));
+	rmain-=Margin<>(0,0,1,0);
+    }
+    
+    if (mainwindow)
+	mainwindow->resize(rmain);
+
+    int retval = doupdate();
+    if (retval == ERR)
+	throw DoupdateFailed();
+
 }
 
 void

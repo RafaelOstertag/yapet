@@ -7,10 +7,17 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_CSTRING
 #include <cstring>
+#endif // HAVE_CSTRING
 
+#ifdef HAVE_EXCEPTION
 #include <exception>
+#endif // HAVE_EXCEPTION
+
+#ifdef HAVE_STRING
 #include <string>
+#endif // HAVE_STRING
 
 class BaseCurEx: public std::exception {
     private:
@@ -117,6 +124,12 @@ class LeaveOKFailed: public BaseCurEx {
 	    BaseCurEx("call to leaveok() failed") {}
 };
 
+class NoNLFailed: public BaseCurEx {
+    public:
+	NoNLFailed() :
+	    BaseCurEx("call to nonl() failed") {}
+};
+
 class AlreadyRealized: public BaseCurEx {
     public:
 	AlreadyRealized():
@@ -133,6 +146,18 @@ class SystemError: public BaseCurEx {
     public:
 	SystemError(int _errno):
 	    BaseCurEx(strerror(_errno)) {}
+};
+
+class WinSizeInvalid: public BaseCurEx {
+    public:
+	WinSizeInvalid():
+	    BaseCurEx("TIOCGWINSZ info invalid") {}
+};
+
+class UnableToGetWinSize: public BaseCurEx {
+    public:
+	UnableToGetWinSize():
+	    BaseCurEx("Unable to get window size") {}
 };
 
 #endif // CUREX_H

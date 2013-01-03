@@ -1,10 +1,18 @@
 // $Id$
 //
 // Test initialization
-#include <unistd.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif // HAVE_UNISTD_H
+
+#if HAVE_IOSTREAM
 #include <iostream>
-#include <exception>
+#endif // HAVE_IOSTREAM
+
 #include "curs.h"
 
 int main() {

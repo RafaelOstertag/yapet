@@ -9,7 +9,9 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STACK
 #include <stack>
+#endif // HAVE_STACK
 
 #include "lineobject.h"
 

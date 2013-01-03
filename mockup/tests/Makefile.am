@@ -1,6 +1,6 @@
 # $Id$
 
-check_PROGRAMS = init windowrefs margin coordinates rectangle basic1 basic2
+check_PROGRAMS = init windowrefs margin coordinates rectangle basic1 basic2 resize1
 TESTS = $(check_PROGRAMS)
 AM_DEFAULT_SOURCE_EXT = .cc
 

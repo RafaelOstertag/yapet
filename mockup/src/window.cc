@@ -4,7 +4,9 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STDEXCEPT
 #include <stdexcept>
+#endif // HAVE_STDEXCEPT
 
 #include "curs.h"
 #include "window.h"

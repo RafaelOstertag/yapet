@@ -65,11 +65,11 @@ inline int refresh() {
 #endif // HAVE_CURSES_H
 
 #ifdef WADDSTR_USE_CHAR
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
+#ifdef HAVE_CSTDLIB
+# include <cstdlib>
 #endif
-#ifdef HAVE_STRING_H
-# include <string.h>
+#ifdef HAVE_CSTRING
+# include <cstring>
 #endif
 
 inline int waddstr_c (WINDOW* win, const char* str) {
@@ -85,11 +85,11 @@ inline int waddstr_c (WINDOW* win, const char* str) {
 #endif // WADDSTR_USE_CHAR
 
 #ifdef MVWADDSTR_USE_CHAR
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
+#ifdef HAVE_CSTDLIB
+# include <cstdlib>
 #endif
-#ifdef HAVE_STRING_H
-# include <string.h>
+#ifdef HAVE_CSTRING
+# include <cstring>
 #endif
 
 inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
@@ -105,11 +105,11 @@ inline int mvwaddstr_c (WINDOW* win, int y, int x, const char* str) {
 #endif // MVWADDSTR_USE_CHAR
 
 #ifdef MVWADDNSTR_USE_CHAR
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
+#ifdef HAVE_CSTDLIB
+# include <cstdlib>
 #endif
-#ifdef HAVE_STRING_H
-# include <string.h>
+#ifdef HAVE_CSTRING
+# include <cstring>
 #endif
 
 inline int mvwaddnstr_c (WINDOW* win, int y, int x, const char* str, int n) {

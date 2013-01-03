@@ -7,9 +7,13 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
+#endif // HAVE_SIGNAL_H
 
+#ifdef HAVE_STRING
 #include <string>
+#endif // HAVE_STRING
 
 #include "mycurses.h"
 #include "lineobject.h"
@@ -35,7 +39,8 @@ class Curses {
 	static void signal_handler(int, siginfo_t*, void*);
 
     protected:
-    
+	static void inquiryScreenSize();
+
     public:
 	static void init();
 	static void end();

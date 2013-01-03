@@ -6,6 +6,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
 template<class T=int>
 class Margin {
     private:

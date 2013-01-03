@@ -1,10 +1,17 @@
 // $Id$
 //
 // Test basic functionality of Curses class
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif // HAVE_UNISTD_H
 
+#ifdef HAVE_IOSTREAM
 #include <iostream>
+#endif // HAVE_IOSTREAM
 
 #include "curs.h"
 #include "lineobject.h"

@@ -4,7 +4,9 @@
 #include "config.h"
 #endif
 
-#include <errno.h>
+#ifdef HAVE_CERRNO
+#include <cerrno>
+#endif // HAVE_CERRNO
 
 #include "curex.h"
 #include "screenobject.h"
@@ -16,30 +18,40 @@
 //
 // Protected
 //
-#ifdef SIGWINCH
+
 void
 ScreenObject::blocksignal() {
-    int err = sigprocmask(SIG_BLOCK, &block_sigset, NULL);
+#ifdef SIGWINCH
+    if (signal_blocked) return;
+    int err = sigprocmask(SIG_BLOCK, &block_sigset, &old_sigset);
     if (err)
 	throw SystemError(errno);
+    signal_blocked = true;
+#endif // SIGWINCH
 }
 
 void
 ScreenObject::unblocksignal() {
-    int err = sigprocmask(SIG_UNBLOCK, &block_sigset, NULL);
+#ifdef SIGWINCH
+    if (!signal_blocked) return;
+    signal_blocked = false;
+
+    int err = sigprocmask(SIG_SETMASK, &old_sigset, NULL);
     if (err)
 	throw SystemError(errno);
+#endif // SIGWINCH
 }
 
-#endif // SIGWINCH
+
 //
 // Public
 //
 
 ScreenObject::ScreenObject(): Realizeable(),
-			      rect(),
-			      instances(NULL),
-			      w(NULL)
+    rect(),
+    instances(NULL),
+    w(NULL),
+    signal_blocked(false)
 {
     w = new WINDOW*;
     *w = NULL; // resize has to take care of allocating the window

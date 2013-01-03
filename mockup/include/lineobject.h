@@ -9,7 +9,9 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STRING
 #include <string>
+#endif // HAVE_STRING
 
 #include "screenobject.h"
 
