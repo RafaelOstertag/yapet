@@ -9,6 +9,10 @@
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
 
+#ifdef HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
+#endif // HAVE_SYS_IOCTL_H
+
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif // HAVE_SYS_TYPES_H

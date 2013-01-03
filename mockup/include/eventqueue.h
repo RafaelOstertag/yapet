@@ -26,8 +26,14 @@
 
 class EventQueue {
     private:
-	std::list<EventConnector<EventBase>*> evtconn_list;
-	std::stack<EventConnector<EventBase>*> evtkeyconn_list;
+	static std::queue<EventBase*> evt_queue;
+	static std::list<EventConnectorBase*> evtconn_list;
+	static std::stack<EventConnectorBase*> evtkeyconn_list;
+
+    public:
+	static void registerHandler(const EventConnectorBase& ec);
+	static void unregisterHandler(const EventConnectorBase& ec);
+	static void injectEvent(const EventBase& ev);
 };
 
 #endif // EVENTQUEUE_H
