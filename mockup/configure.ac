@@ -15,7 +15,7 @@ AM_PROG_AR
 AM_PROG_LIBTOOL
 
 AC_CHECK_HEADERS([stropts.h signal.h sys/termios.h termios.h unistd.h sys/types.h sys/ioctl.h])
-AC_CHECK_HEADERS([cerrno cstdlib cstring exception string stdexcept stack iostream cstdio queue list])
+AC_CHECK_HEADERS([cerrno cstdlib cstring exception string stdexcept stack iostream cstdio queue list algorithm functional typeinfo])
 
 AC_CHECK_HEADER([ncurses.h],
 	[

@@ -18,23 +18,16 @@
 void
 LineObject::putLine() {
     if (!isRealized()) return;
-    blocksignal();
 
     int retval = werase(getWindow());
-    if (retval == ERR) {
-	unblocksignal();
+    if (retval == ERR)
 	throw EraseFailed();
-    }
 
     retval = mymvwaddstr(getWindow(),
 			 0,0,
 			 line.c_str());
-    if (retval == ERR) {
-	unblocksignal();
+    if (retval == ERR)
 	throw AddStrFailed();
-    }
-
-    unblocksignal();
 }
 
 //

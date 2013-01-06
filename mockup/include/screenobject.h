@@ -9,10 +9,6 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_SIGNAL_H
-#include <signal.h>
-#endif // HAVE_SIGNAL_H
-
 #include "mycurses.h"
 #include "realizeable.h"
 
@@ -26,12 +22,6 @@ class ScreenObject : public Realizeable {
 	/// instances simultaneously.
 	WINDOW** w;
 
-#ifdef SIGWINCH
-	sigset_t block_sigset;
-	sigset_t old_sigset;
-#endif // SIGWINCH
-	bool signal_blocked;
-
     protected:
 	inline WINDOW* getWindow() const { return *w; }
 
@@ -39,11 +29,6 @@ class ScreenObject : public Realizeable {
 	inline unsigned int getInstanceCount() const {
 	    return *instances;
 	}
-
-#ifdef SIGWINCH
-	void blocksignal();
-	void unblocksignal();
-#endif
 
     public:
 	ScreenObject();

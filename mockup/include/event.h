@@ -11,7 +11,7 @@
 
 #include "rectangle.h"
 
-enum EVT_TYPE {
+enum EVENT_TYPE {
     EVT_QUIT,
     EVT_WINCH,
     EVT_ALARM,
@@ -20,10 +20,10 @@ enum EVT_TYPE {
 
 class EventBase {
     private:
-	EVT_TYPE  event_type;
+	EVENT_TYPE event_type;
     
     public:
-	inline EventBase(EVT_TYPE _et): event_type(_et) {}
+	inline EventBase(EVENT_TYPE _et): event_type(_et) {}
 	inline EventBase(const EventBase& _e) {
 	    event_type = _e.event_type;
 	}
@@ -35,6 +35,10 @@ class EventBase {
 	inline virtual bool operator==(const EventBase& _e) const {
 	    return event_type == _e.event_type;
 	}
+	inline EVENT_TYPE type() const { return event_type; }
+	virtual inline EventBase* clone() const {
+	    return new EventBase(*this);
+	}
 };
 
 template<class T>
@@ -43,7 +47,7 @@ class Event: public EventBase {
 	T payload;
 
     public:
-	Event(EVT_TYPE _et, const T& _v): EventBase(_et) {
+	Event(EVENT_TYPE _et, const T& _v): EventBase(_et) {
 	    payload = _v;
 	}
 	Event(const Event<T>& _e): EventBase(_e) {
@@ -54,17 +58,22 @@ class Event: public EventBase {
 	    payload = _e.payload;
 	    return *this;
 	}
-
+	Event<T>* clone() const {
+	    return new Event<T>(*this);
+	}
 	virtual T& data() { return payload; }
 };
 
 class EventWinCh: public Event<Rectangle<> > {
     public:
-	EventWinCh(const Rectangle<>& _r): Event<Rectangle<> >(EVT_WINCH, _r) {}
-	EventWinCh(const EventWinCh& _e): Event<Rectangle<> >(_e) {}
-	EventWinCh& operator=(const EventWinCh& _e) {
+	inline EventWinCh(const Rectangle<>& _r): Event<Rectangle<> >(EVT_WINCH, _r) {}
+	inline EventWinCh(const EventWinCh& _e): Event<Rectangle<> >(_e) {}
+	inline EventWinCh& operator=(const EventWinCh& _e) {
 	    Event<Rectangle<> >::operator=(_e);
 	    return *this;
+	}
+	inline EventWinCh* clone() const {
+	    return new EventWinCh(*this);
 	}
 };
 
@@ -75,6 +84,9 @@ class EventKey: public Event<int> {
 	EventKey& operator=(const EventKey& _e) {
 	    Event<int>::operator=(_e);
 	    return *this;
+	}
+	inline EventKey* clone() const {
+	    return new EventKey(*this);
 	}
 };
 

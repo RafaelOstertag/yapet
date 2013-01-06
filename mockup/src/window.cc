@@ -50,9 +50,7 @@ Window::realize(const Rectangle<>& r) {
     ScreenObject::realize(r);
 
     if (hasframe) {
-	blocksignal();
 	int retval = box(getWindow(), 0, 0);
-	unblocksignal();
 	if (retval == ERR)
 	    throw BoxFailed();
     }
