@@ -45,10 +45,10 @@ AC_ARG_WITH([docbook-xsl],
 	[AC_SUBST([DOCBOOKXSL],[$withval])])
 
 # "Enables"
-AC_ARG_ENABLE([assert],
-	[AS_HELP_STRING([--enable-assert],[enable assert statements for debugging purposes (Default: no)])],
-	[my_assert=$enableval],
-	[my_assert=no])
+AC_ARG_ENABLE([debug],
+	[AS_HELP_STRING([--enable-debug],[enable debug code (Default: no)])],
+	[my_debug=$enableval],
+	[my_debug=no])
 AC_ARG_ENABLE([build-doc],
 	[AS_HELP_STRING([--enable-build-doc],[enable rebuild of documentation (Requires xsltproc, lynx; Default: no)])],
 	[my_builddoc=$enableval],
@@ -106,9 +106,9 @@ AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if 
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
-AC_CHECK_HEADERS([algorithm cmath exception fstream functional iostream iterator list memory sstream stdexcept string vector],
-		       [],
-		       [AC_MSG_ERROR([your system is missing a required C++ header file])])
+AX_CXX_HEADER_STDCXX_98
+AS_IF([test x$ax_cv_cxx_stdcxx_98 = xno],
+	    [AC_MSG_ERROR([ISO C++ 98 not supported])])
 
 # Types
 AC_MSG_NOTICE([Checking types])
@@ -154,7 +154,7 @@ AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AM_CONDITIONAL([BUILDPWGEN], [test x$my_enablepwgen = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
-AM_CONDITIONAL([DISABLE_ASSERT], [test x$my_assert = xno])
+AM_CONDITIONAL([DISABLE_ASSERT], [test x$my_debug = xno])
 AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	crypt/Makefile
@@ -182,7 +182,7 @@ echo "Lynx                : $LYNX"
 echo "w3m                 : $W3M"
 echo "Docbook XSL         : $DOCBOOKXSL"
 echo ""
-echo "Enable assert       : $my_assert"
+echo "Enable debug code   : $my_debug"
 echo "Build Documentation : $my_builddoc"
 echo "Disable install Doc.: $my_disableinstalldoc"
 echo "Build Source Doc.   : $my_buildsourcedoc"
