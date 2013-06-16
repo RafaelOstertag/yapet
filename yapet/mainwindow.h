@@ -25,24 +25,14 @@
 
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif
 
-#ifdef HAVE_NCURSES_H
-# include <ncurses.h>
-#else // HAVE_NCURSES_H
-# ifdef HAVE_CURSES_H
-#  include <curses.h>
-# else
-#  error "Neither curses.h nor ncurses.h available"
-# endif // HAVE_CURSES_H
-#endif // HAVE_NCURSES_H
-#include "curswa.h" // Leave this here. It depends on the above includes.
-
+// Crypt
 #include <file.h>
-#include <basewindow.h>
-#include <uiexception.h>
-#include <statusbar.h>
+
+// YACURS
+#include <window.h>
 #include <listwidget.h>
 
 /**
@@ -56,45 +46,22 @@
  * is called after a certain number of seconds using the \c
  * BaseWindow::setTimeout() method.
  */
-class MainWindow : protected YAPET::UI::BaseWindow {
+class MainWindow : public YACURS::Window {
     private:
-        WINDOW* toprightwin;
-        WINDOW* bottomrightwin;
-
-        StatusBar statusbar;
         bool records_changed;
 
-        YAPET::UI::ListWidget<YAPET::PartDec>* recordlist;
+	YACURS::ListWidget<YAPET::PartDec>* recordlist;
         YAPET::Key* key;
         YAPET::File* file;
 
-        unsigned int locktimeout;
-
         bool usefsecurity;
 
-        inline MainWindow (const MainWindow&) {}
-        inline const MainWindow& operator= (const MainWindow&) {
+        MainWindow (const MainWindow&) {}
+        const MainWindow& operator= (const MainWindow&) {
             return *this;
         }
 
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	// Forward declaration
-	class Alarm;
-
-        void handle_signal (int signo);
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
     protected:
-        void printTitle() throw (YAPET::UI::UIException);
-
-        void topRightWinContent() throw (YAPET::UI::UIException);
-
-        void bottomRightWinContent() throw (YAPET::UI::UIException);
-
-        void createWindow() throw (YAPET::UI::UIException);
-
-        void refresh() throw (YAPET::UI::UIException);
-
         void createFile (std::string& filename) throw (YAPET::UI::UIException);
         void openFile (std::string filename) throw (YAPET::UI::UIException);
         void saveFile();
@@ -109,15 +76,8 @@ class MainWindow : protected YAPET::UI::BaseWindow {
         bool quit();
         void changePassword() throw (YAPET::UI::UIException);
     public:
-        MainWindow () throw (YAPET::UI::UIException);
+        MainWindow ()
         virtual ~MainWindow();
-
-        void run() throw (YAPET::UI::UIException);
-        void resize() throw (YAPET::UI::UIException);
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	friend class MainWindow::Alarm;
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
 #endif // _MAINWINDOW_H

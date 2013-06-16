@@ -34,10 +34,6 @@
 # include <sys/stat.h>
 #endif
 
-#ifdef HAVE_SIGNAL_H
-# include <signal.h>
-#endif
-
 #ifdef HAVE_ERRNO_H
 # include <errno.h>
 #endif
@@ -57,18 +53,6 @@
 # endif
 #endif // TIME_WITH_SYS_TIME
 
-#include <button.h>
-#include <dialogbox.h>
-#include <colors.h>
-#include <misc.h>
-
-#include "../intl.h"
-#include "mainwindow.h"
-#include "fileopen.h"
-#include "passworddialog.h"
-#include "passwordrecord.h"
-#include "searchdialog.h"
-#include "lockscreen.h"
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
 #endif
@@ -151,53 +135,6 @@ KeyDesc keys[] = { {3, 2, "S", _ ("Save File") },
 #define _(String) gettext(String)
 #endif
 
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-/**
- * @brief Class for calling the signal handler of \c MainWindow.
- *
- * This class is passed to \c BaseWindow::setTimeout() as class for calling the
- * signal handler of \c MainWindow.
- */
-class 
-MainWindow::Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
-    private:
-        MainWindow& ref;
-    public:
-        inline Alarm (MainWindow& r) : ref (r) {}
-        inline void process (int signo) {
-            ref.handle_signal (signo);
-        }
-};
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-void
-MainWindow::handle_signal (int signo) {
-    if (signo == SIGALRM) {
-	LockScreen* lockscreen = new LockScreen(key, file, records_changed);
-	assert(lockscreen != NULL);
-
-	lockscreen->run();
-
-	// The lock screen has to be removed before calling refreshAll(), or it
-	// will throw an exception.
-	bool b1 = lockscreen->getDoQuit();
-	bool b2 = lockscreen->getResizeDue();
-	delete lockscreen;
-
-        //::refresh();
-	if (b2)
-	    YAPET::UI::BaseWindow::resizeAll();
-	else
-	    YAPET::UI::BaseWindow::refreshAll();
-	if (b1) {
-	    flushinp();
-	    ungetch('q');
-	}
-    }
-}
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
 void
 MainWindow::printTitle() throw (YAPET::UI::UIException) {

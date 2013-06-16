@@ -29,19 +29,8 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
-
-#ifdef HAVE_NCURSES_H
-# include <ncurses.h>
-#else // HAVE_NCURSES_H
-# ifdef HAVE_CURSES_H
-#  include <curses.h>
-# else
-#  error "Neither curses.h nor ncurses.h available"
-# endif // HAVE_CURSES_H
-#endif // HAVE_NCURSES_H
-#include "curswa.h" // Leave this here. It depends on the above includes.
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -86,7 +75,8 @@
 # include <openssl/crypto.h>
 #endif
 
-#include "../intl.h"
+#include <libyacurs.h>
+
 #include "fileopen.h"
 #include "mainwindow.h"
 #include "cfg.h"
@@ -102,7 +92,7 @@
  */
 
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
-			 "Copyright (C) 2008-2012  Rafael Ostertag\n"               \
+			 "Copyright (C) 2008-2013  Rafael Ostertag\n"               \
 			 "\n"                                \
 			 "This program is free software: you can redistribute it and/or modify\n" \
 			 "it under the terms of the GNU General Public License as published by\n" \
@@ -165,15 +155,6 @@ void show_version() {
 #ifdef HAVE_SSLEAY_VERSION
     std::cout << _ ("SSL Version: ") << SSLeay_version (SSLEAY_VERSION) << std::endl;
 #endif
-#ifdef NCURSES_VERSION
-    std::cout << _ ("Curses Implementation: ") << "ncurses (" << NCURSES_VERSION << ")" << std::endl;
-#else   // NCURSES_VERSION
-#ifdef _XOPEN_CURSES
-    std::cout << _ ("Curses Implementation: ") << "XOpen Curses" << std::endl;
-#else   // _XOPEN_CURSES
-    std::cout << _ ("Curses Implementation: ") << "System Curses" << std::endl;
-#endif  // _XOPEN_CURSES
-#endif  // NCURSES_VERSION
 #if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
     std::cout << _ ("Compiled with support for terminal title") << std::endl;
 #else
@@ -349,9 +330,12 @@ int main (int argc, char** argv) {
     assert (_tmp__.find ("//", 0) == std::string::npos);
 #ifndef CFGDEBUG
     try {
-	YAPET::UI::BaseWindow::initCurses();
-    } catch (YAPET::UI::UIException &ex) {
-	YAPET::UI::BaseWindow::endCurses();
+	YACURS::Curses::init();
+    } catch (std::exception &ex) {
+	try {
+	    YACURS::Curses::end();
+	} catch (...) { /* Empty */ }
+
 	std::cerr << ex.what() << std::endl;
 	return 1;
     }
@@ -367,12 +351,14 @@ int main (int argc, char** argv) {
 	if (mainwin != NULL)
 	    delete mainwin;
 
-	YAPET::UI::BaseWindow::endCurses();
+	try {
+	    YACURS::Curses::end();
+	} catch (...) { /* Empty */ }
 	std::cerr << ex.what() << std::endl << std::endl;
 	return 1;
     }
 
-    YAPET::UI::BaseWindow::endCurses();
+    YACURS::Curses::end();
 #else
     config.getPetFile();
     config.getTimeout();

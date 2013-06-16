@@ -6,17 +6,15 @@ endif
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = mainwindow.h statusbar.h fileopen.h passworddialog.h		\
-passwordrecord.h main.cc mainwindow.cc statusbar.cc fileopen.cc			\
-passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc cfgfile.h	\
-cfgfile.cc consts.h consts.cc cfg.h cfg.cc lockscreen.h lockscreen.cc
+yapet_SOURCES = main.cc mainwindow.cc cfgfile.h cfgfile.cc consts.h consts.cc cfg.h cfg.cc 
 
-yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(localedir)\"
-yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
+# statusbar.h fileopen.h passworddialog.h		\
+# passwordrecord.h   statusbar.cc fileopen.cc			\
+# passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc 	\
+#  lockscreen.h lockscreen.cc
 
-if USE_INCLUDED_LIBINTL
-yapet_CPPFLAGS += -I$(top_builddir)/intl 
-endif
+yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/libyacurs/include -DLOCALEDIR=\"$(localedir)\"
+yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/libyacurs/src/libyacurs.la @LIBINTL@
 
 if BUILDPWGEN
 yapet_CPPFLAGS += -I$(srcdir)/pwgen
