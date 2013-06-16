@@ -1,35 +1,59 @@
 # -*- makefile -*-
 #
 # $Id$
-PREFIX=/usr
-BINDIR=$(PREFIX)/bin
-ACLOCAL=$(BINDIR)/aclocal
-AUTOCONF=$(BINDIR)/autoconf
-AUTOHEADER=$(BINDIR)/autoheader
-AUTOMAKE=$(BINDIR)/automake
-SVN2CL=$(BINDIR)/svn2cl
-SVN2CLOPTS=--group-by-day --separate-daylogs --reparagraph --authors=$(PREFIX)/share/svn2cl/authors.xml -i -o ChangeLog
 
-all: README ChangeLog aclocal.m4 configure config.h.in Makefile.in
+VPATH=.:m4
+
+all: configure libyacurs/configure
+
+libyacurs/configure:
+	cd libyacurs && make -f Makefile.boot
+
+configure: configure.ac config.h.in aclocal.m4 ltmain.sh Makefile.in missing ar-lib depcomp nls.m4 po.m4
+	autoconf -f
+
+aclocal.m4: configure.ac libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 
+	aclocal -I m4
+
+config.h.in: configure.ac aclocal.m4
+	autoheader
+
+ltmain.sh: libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4
+	libtoolize -c -i
+
+libtool.m4:
+	libtoolize -c -i
+
+ltoptions.m4:
+	libtoolize -c -i
+
+ltversion.m4:
+	libtoolize -c -i
+
+ltsugar.m4:
+	libtoolize -c -i
+
+config.rpath:
+	touch $@
+
+nls.m4 po.m4:
+	gettextize -f
+
+Makefile.in missing ar-lib depcomp: configure.ac Makefile.am NEWS README AUTHORS ChangeLog config.rpath crypt/Makefile.am tests/Makefile.am doc/Makefile.am ui/Makefile.am csv2yapet/Makefile.am yapet/pwgen/Makefile.am yapet/Makefile.am
+	automake -a -c -W all --gnu -f
+
+NEWS:
+	touch $@
 
 README:
-	touch README
+	touch $@
+
+AUTHORS:
+	touch $@
 
 ChangeLog:
-	svn update
-	$(SVN2CL) $(SVN2CLOPTS)
+	touch $@
 
-aclocal.m4: configure.ac
-	$(ACLOCAL) -I m4
-
-configure: configure.ac
-	$(AUTOCONF)
-
-config.h.in: configure.ac
-	$(AUTOHEADER)
-
-Makefile.in: yapet/Makefile.am ui/Makefile.am crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am Makefile.am configure.ac yapet/pwgen/Makefile.am
-	$(AUTOMAKE) -a -c -f --gnu
-	$(ACLOCAL) -I m4
-
-.PHONY: ChangeLog
+clean:
+	rm -f aclocal.m4 config.guess config.sub configure install-sh depcomp config.h.in missing ltmain.sh ar-lib config.status stamp-h1 Makefile.in src/Makefile.in tests/Makefile.in config.rpath
+	rm -rf autom4te.cache

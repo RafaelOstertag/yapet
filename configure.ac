@@ -1,9 +1,11 @@
 # $Id$
 AC_PREREQ(2.61)
-AC_INIT([YAPET],[0.8pre2],[rafi@guengel.ch])
+AC_INIT([YAPET],[1.0],[rafi@guengel.ch])
 AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests std-options])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SUBDIRS([libyacurs])
 
 
 AC_ARG_VAR([AR], [ar command])
@@ -16,29 +18,19 @@ AC_ARG_VAR([XSLTPROC], [xsltproc command])
 AC_MSG_NOTICE([Checking required programs])
 AC_PROG_CC
 AC_PROG_CXX
-AX_CFLAGS_SUN_OPTION([-xO2])
-AX_CXXFLAGS_SUN_OPTION([-xO2])
 AC_PROG_INSTALL
 AC_PROG_SED
-AC_PROG_RANLIB
-AC_CHECK_PROGS([AR], [ar gar], [AC_MSG_ERROR([Unable to find ar. You may set the AR environment variable to the file path of ar.])])
 AC_PROG_MKDIR_P
+AM_PROG_AR
 AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 AC_CHECK_PROG([W3M], [w3m], [w3m], [no])
-AC_USE_SYSTEM_EXTENSIONS
+LT_INIT([disable-static])
+LT_LANG([C++])
 AC_LANG([C++])
 
 # Arguments
-AC_ARG_WITH([curses-include],
-	[AS_HELP_STRING([--with-curses-include],[directory for (n)curses header files])],
-	[CPPFLAGS="-I$withval $CPPFLAGS"],
-	[])
-AC_ARG_WITH([curses-lib],
-	[AS_HELP_STRING([--with-curses-lib],[directory for (n)curses libraries])],
-	[LDFLAGS="-L$withval $LDFLAGS"],
-	[])
 AC_ARG_WITH([openssl-include],
 	[AS_HELP_STRING([--with-openssl-include],[directory for openssl header files])],
 	[CPPFLAGS="-I$withval $CPPFLAGS"],
@@ -104,19 +96,12 @@ fi
 
 # Libs
 AC_MSG_NOTICE([Searching for required libraries])
-AC_SEARCH_LIBS([initscr],[ncurses curses],[],AC_MSG_ERROR([curses not found]))
 AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found]))
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
 AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h setjmp.h])
 
-AC_CHECK_HEADER([ncurses.h],
-	[AC_DEFINE([HAVE_NCURSES_H],[1],[Set to 1 if you have ncurses.h]) my_usencurses=yes],
-	[AC_CHECK_HEADER([curses.h],
-		[AC_DEFINE([HAVE_CURSES_H],[1],[Set to 1 if you have curses.h]) my_usencurses=no],
-		[AC_MSG_ERROR([curses header not found])])]
-)
 AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if you have openssl/crypto.h])])
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
@@ -142,65 +127,6 @@ AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank iscntrl isdigit isprint isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit sigaction srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol tcgetattr tcsetattr time tolower sigsetjmp siglongjmp])
 
-AC_MSG_NOTICE([Checking (n)curses functions])
-AC_CHECK_FUNCS([wresize mvwchgat termname])
-
-# Some custom tests
-AC_MSG_CHECKING([whether waddstr() use const char*])
-AC_COMPILE_IFELSE(
-	[AC_LANG_PROGRAM([[
-	#ifdef HAVE_NCURSES_H
-	#include <ncurses.h>
-	#else
-	#include <curses.h>
-	#endif
-	const char teststr[] = "Const string";]],
-				  [[initscr(); waddstr(stdscr, teststr); endwin();]])],
-	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no])
-	AC_DEFINE([WADDSTR_USE_CHAR],[1],[Set to 1 if waddstr() doesn't use const char*])])
-
-AC_MSG_CHECKING([whether mvwaddstr() use const char*])
-AC_COMPILE_IFELSE(
-	[AC_LANG_PROGRAM([[
-	#ifdef HAVE_NCURSES_H
-	#include <ncurses.h>
-	#else
-	#include <curses.h>
-	#endif
-	const char teststr[] = "Const string";]],
-				  [[initscr(); mvwaddstr(stdscr, 2, 1, teststr); endwin();]])],
-	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no])
-	AC_DEFINE([MVWADDSTR_USE_CHAR],[1],[Set to 1 if mvwaddstr() doesn't use const char*])])
-
-AC_MSG_CHECKING([whether mvwaddnstr() use const char*])
-AC_COMPILE_IFELSE(
-	[AC_LANG_PROGRAM([[
-	#ifdef HAVE_NCURSES_H
-	#include <ncurses.h>
-	#else
-	#include <curses.h>
-	#endif
-	const char teststr[] = "Const string";]],
-				  [[initscr(); mvwaddnstr(stdscr, 2, 1, teststr, 4); endwin();]])],
-	[AC_MSG_RESULT([yes])],
-	[AC_MSG_RESULT([no])
-	AC_DEFINE([MVWADDNSTR_USE_CHAR],[1],[Set to 1 if mvwaddnstr() doesn't use const char*])])
-AC_MSG_CHECKING([whether keypad() return int])
-AC_COMPILE_IFELSE(
-	[AC_LANG_PROGRAM([[
-	#ifdef HAVE_NCURSES_H
-	#include <ncurses.h>
-	#else
-	#include <curses.h>
-	#endif
-	int retval=100;]],
-				  [[initscr(); retval = keypad(stdscr, TRUE); endwin();]])],
-	[AC_MSG_RESULT([yes])
-	AC_DEFINE([KEYPAD_RETURN_INT],[1],[Set to 1 if keypad has a return value])],
-	[AC_MSG_RESULT([no])])
-
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
 	[],
@@ -215,7 +141,7 @@ AC_C_BIGENDIAN
 AC_CHECK_FILES([/dev/urandom /dev/random])
 
 AC_MSG_NOTICE([Preparing NLS])
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
@@ -230,7 +156,6 @@ AM_CONDITIONAL([BUILDPWGEN], [test x$my_enablepwgen = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
 AM_CONDITIONAL([DISABLE_ASSERT], [test x$my_assert = xno])
 AC_CONFIG_FILES([Makefile
-	intl/Makefile
 	po/Makefile.in
 	crypt/Makefile
 	ui/Makefile
@@ -266,7 +191,6 @@ echo "Build csv2yapet     : $my_buildcsv2yapet"
 echo "Build with pwgen    : $my_enablepwgen"
 echo ""
 echo "Use NLS             : $USE_NLS"
-echo "Use included libintl: $USE_INCLUDED_LIBINTL"
 echo ""
 echo "******************************************************************"
 echo ""
