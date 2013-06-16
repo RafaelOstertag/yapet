@@ -1,6 +1,13 @@
 News
 ====
 
+YAPET 1.0
+
+      * Uses libyacurses.
+
+      * --enable-assert renamed to --enable-debug
+
+
 YAPET 0.8pre2
 
       * Fixed grave bug #46 (http://bugs.guengel.ch/show_bug.cgi?id=46).
@@ -14,6 +21,7 @@ YAPET 0.8pre2
       * Screen lock also activates when password record is open.
 
       * Builds on NetBSD.
+
 
 YAPET 0.7
 
