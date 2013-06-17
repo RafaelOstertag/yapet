@@ -34,20 +34,12 @@
 #define _FILE_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
-#endif
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
-
-#ifdef HAVE_LIST
-# include <list>
-#endif
+#include <cassert>
+#include <string>
+#include <list>
 
 #include "yapetexception.h"
 
@@ -253,7 +245,7 @@ namespace YAPET {
 	    template <class t>
             union ENDIAN {
 		    /**
-		     * @brief  bits unsigned integer in host order.
+		     * @brief 32 bits unsigned integer in host order.
 		     *
 		     * 32 bits unsigned integer in host order.
 		     */

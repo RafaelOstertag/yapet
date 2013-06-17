@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -27,17 +27,10 @@
 # include "config.h"
 #endif
 
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
-#endif
+#include <string.h>
 
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
-
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
+#include <cassert>
+#include <stdexcept>
 
 #include "../../intl.h"
 

@@ -27,13 +27,8 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_EXCEPTION
-# include <exception>
-#endif
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <exception>
+#include <string>
 
 #include "../../intl.h"
 

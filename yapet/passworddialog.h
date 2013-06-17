@@ -24,48 +24,28 @@
 #define _PASSWORDDIALOG_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_NCURSES_H
-# include <ncurses.h>
-#else // HAVE_NCURSES_H
-# ifdef HAVE_CURSES_H
-#  include <curses.h>
-# else
-#  error "Neither curses.h nor ncurses.h available"
-# endif // HAVE_CURSES_H
-#endif // HAVE_NCURSES_H
-#include "curswa.h" // Leave this here. It depends on the above includes.
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
-
-#ifdef HAVE_SIGNAL_H
-# include <signal.h>
-#endif
-
-#include <key.h>
-
-#include <basewindow.h>
-#include <button.h>
-#include <passwordwidget.h>
+#include <string>
 
 /**
  * @brief Determines the type of the password dialog.
  *
- * Determines the type of the password dialog: Either a password dialog for a
- * new password or a dialog for an existing password.
+ * Determines the type of the password dialog: Either a password
+ * dialog for a new password or a dialog for an existing password.
  */
 enum PWTYPE {
     /**
-     * Makes the \c PasswordDialog show two input widget for the password. One
-     * for the password and the other to confirm the password.
+     * Makes the \c PasswordDialog show two input widget for the
+     * password. One for the password and the other to confirm the
+     * password.
      */
     NEW_PW,
+
     /**
-     * Makes the \c PasswordDialog show only one input widget for the password.
+     * Makes the \c PasswordDialog show only one input widget for the
+     * password.
      */
     EXISTING_PW
 };
@@ -73,100 +53,41 @@ enum PWTYPE {
 /**
  * @brief Shows a dialog for entering the password.
  *
- * Depending on the \c PWTYPE, it shows either one or two password input
- * widgets. If \c PWTYPE is \c NEW_PW, it shows two input widgets, one for the
- * password and the other to confirm the password. If the passwords matches and
- * the user doesn't cancel the dialog, a \c Key is generated and put on the
- * heap. The pointer to the key can be obtained by calling \c getKey(). The
- * memory occupied by this key is NOT freed by this class.
+ * Depending on the \c PWTYPE, it shows either one or two password
+ * input widgets. If \c PWTYPE is \c NEW_PW, it shows two input
+ * widgets, one for the password and the other to confirm the
+ * password. If the passwords matches and the user doesn't cancel the
+ * dialog, a \c Key is generated and put on the heap. The pointer to
+ * the key can be obtained by calling \c getKey(). The memory occupied
+ * by this key is NOT freed by this class.
  *
- * If \c PWTYPE is \c EXISTING_PW, only one widget for entering the password is
- * displayed. The same rules as for \c NEW_PW apply in regard to the key.
+ * If \c PWTYPE is \c EXISTING_PW, only one widget for entering the
+ * password is displayed. The same rules as for \c NEW_PW apply in
+ * regard to the key.
  */
-class PasswordDialog : protected YAPET::UI::BaseWindow {
+class PasswordDialog : public YACURS::Dialog  {
     private:
-        enum {
-            HEIGHT_NEW = 9,
-            HEIGHT_EX = 7
-        };
-
-        WINDOW* window;
-        YAPET::UI::PasswordWidget* pwidget1;
-        YAPET::UI::PasswordWidget* pwidget2;
-        YAPET::UI::Button* okbutton;
-        YAPET::UI::Button* cancelbutton;
-	YAPET::UI::Button* quitbutton;
+        YACURS::Input* pwidget1;
+        YACURS::Input* pwidget2;
+        YACURS::Button* okbutton;
+        YACURS::Button* cancelbutton;
         PWTYPE pwtype;
         YAPET::Key* key;
 
         std::string filename;
-	unsigned int input_timeout;
-	bool has_quitbutton;
-	bool quit_pressed;
 
-	// For timeout stuff
-	sigset_t my_sigset;
-	sigset_t old_sigset;
-	struct sigaction my_sigaction;
-	struct sigaction old_sigaction;
-	
-        inline PasswordDialog (const PasswordDialog&) {}
-        inline const PasswordDialog& operator= (const PasswordDialog&) {
+        inline PasswordDialog(const PasswordDialog&) {
+        }
+
+        inline const PasswordDialog& operator=(const PasswordDialog&) {
             return *this;
         }
 
-        inline int getWidth() const {
-            return maxX() - 8;
-        }
-
-        inline int getHeight() const {
-            if (pwtype == NEW_PW)
-                return HEIGHT_NEW;
-            else
-                return HEIGHT_EX;
-        }
-
-        inline int getStartX() const {
-            return maxX() / 2 - getWidth() / 2;
-        }
-
-        inline int getStartY() const {
-            return maxY() / 2 - getHeight() / 2;
-        }
-
-        void createWindow() throw (YAPET::UI::UIException);
-
-	inline void quitPressed(bool b) { quit_pressed = b; }
-
     public:
-        /**
-         * @brief Constructor.
-         *
-         * Sets up the dialog, but does not show it. Use \c run() to display
-         * the dialog to the user.
-         *
-         * @param pt the type of the dialog. \c NEW_PW for asking for a new
-         * password with confirmation, or \c EXISTING_PW for asking for an
-         * existing password.
-         *
-         * @param fn the filename of the file for which the password is asked.
-	 *
-	 * @param tout amount of time to wait for password input. Only used
-	 * if \c pt is \c EXISTING_PW. A value of 0 disables the timeout in any
-	 * case.
-	 *
-	 * @param qb if \c true, presents a quit button.
-         */
-        PasswordDialog (PWTYPE pt, std::string fn, unsigned int tout = 0, bool qb = false) throw (YAPET::UI::UIException);
+        PasswordDialog(PWTYPE pt,
+                       std::string fn);
         ~PasswordDialog();
 
-        /**
-         * @brief Displays the password dialog.
-         *
-         * Displays the password dialog. Use \c getKey() for obtaining the key
-         * generated from the password.
-         */
-        void run() throw (YAPET::UI::UIException);
         /**
          * @brief Returns the key generated from the password.
          *
@@ -184,10 +105,6 @@ class PasswordDialog : protected YAPET::UI::BaseWindow {
         YAPET::Key* getKey() const {
             return key;
         }
-        void resize() throw (YAPET::UI::UIException);
-        void refresh() throw (YAPET::UI::UIException);
-
-	inline bool wantsQuit() const { return quit_pressed; }
 };
 
 #endif // _PASSWORDDIALOG_H

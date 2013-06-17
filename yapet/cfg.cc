@@ -39,80 +39,93 @@ using namespace YAPET::CONFIG;
 Config YAPET::CONFIG::config;
 
 //! The default .pet file to open
-const std::string Config::def_petfile ("");
+const std::string Config::def_petfile("");
 //! The default lock timeout
-const int Config::def_timeout (600);
+const int Config::def_timeout(600);
 //! Default for checking file security
-const bool Config::def_filesecurity (true);
+const bool Config::def_filesecurity(true);
 //! Default for ignoring the rc file
-const bool Config::def_ignorerc (false);
-const YAPET::PWGEN::RNGENGINE Config::def_pwgen_rng (YAPET::PWGEN::AUTO);
-const size_t Config::def_pwlen (10);
-const int Config::def_character_pools (YAPET::PWGEN::LETTERS |
-				       YAPET::PWGEN::DIGITS |
-				       YAPET::PWGEN::PUNCT |
-				       YAPET::PWGEN::SPECIAL);
-const bool Config::def_allow_lock_quit (true);
-const unsigned int Config::def_pw_input_timeout (60); // in seconds
+const bool Config::def_ignorerc(false);
+const YAPET::PWGEN::RNGENGINE Config::def_pwgen_rng(YAPET::PWGEN::AUTO);
+const size_t Config::def_pwlen(10);
+const int Config::def_character_pools(YAPET::PWGEN::LETTERS |
+                                      YAPET::PWGEN::DIGITS |
+                                      YAPET::PWGEN::PUNCT |
+                                      YAPET::PWGEN::SPECIAL);
+const bool Config::def_allow_lock_quit(true);
+const unsigned int Config::def_pw_input_timeout(60);  // in seconds
 std::string
 Config::getDefPetfile() {
     return def_petfile;
 }
+
 unsigned int
 Config::getDefTimeout() {
     return def_timeout;
 }
+
 bool
 Config::getDefFilesecurity() {
     return def_filesecurity;
 }
+
 bool
- Config::getDefIgnorerc() {
+Config::getDefIgnorerc() {
     return def_ignorerc;
 }
+
 YAPET::PWGEN::RNGENGINE
 Config::getDefPWGenRNG() {
     return def_pwgen_rng;
 }
+
 size_t
 Config::getDefPWLength() {
     return def_pwlen;
 }
+
 int
 Config::getDefCharPools() {
     return def_character_pools;
 }
+
 bool
 Config::getDefAllowLockQuit() {
     return def_allow_lock_quit;
 }
+
 unsigned int
 Config::getDefPwInputTimeout() {
     return def_pw_input_timeout;
 }
+
 bool
 Config::getDefCPoolLetters() {
-   return def_character_pools & YAPET::PWGEN::LETTERS ? true : false;
+    return def_character_pools & YAPET::PWGEN::LETTERS ? true : false;
 }
+
 bool
-Config::getDefCPoolDigits(){
+Config::getDefCPoolDigits() {
     return def_character_pools & YAPET::PWGEN::DIGITS ? true : false;
 }
+
 bool
-Config::getDefCPoolPunct(){
+Config::getDefCPoolPunct() {
     return def_character_pools & YAPET::PWGEN::PUNCT ? true : false;
 }
-bool 
-Config::getDefCPoolSpecial(){
+
+bool
+Config::getDefCPoolSpecial() {
     return def_character_pools & YAPET::PWGEN::SPECIAL ? true : false;
 }
+
 bool
-Config::getDefCPoolOther(){
-   return def_character_pools & YAPET::PWGEN::OTHER ? true : false;
+Config::getDefCPoolOther() {
+    return def_character_pools & YAPET::PWGEN::OTHER ? true : false;
 }
 
 std::string
-Config::cleanupPath (const std::string& s) const {
+Config::cleanupPath(const std::string& s) const {
 #ifdef CFGDEBUG
     std::cout << " === ";
     std::cout << "Config::cleanupPath(std::string)";
@@ -126,14 +139,14 @@ Config::cleanupPath (const std::string& s) const {
         return s;
     }
 
-    std::string work_copy (s);
+    std::string work_copy(s);
 #ifdef CFGDEBUG
     std::cout << "\tBefore cleanup: " << s << std::endl;
 #endif
     std::string::size_type pos;
 
-    while ( (pos = work_copy.find ("//", 0) ) != std::string::npos)
-        work_copy.erase (pos, 1);
+    while ( (pos = work_copy.find("//", 0) ) != std::string::npos)
+        work_copy.erase(pos, 1);
 
 #ifdef CFGDEBUG
     std::cout << "\tAfter cleanup: " << work_copy << std::endl;
@@ -142,18 +155,18 @@ Config::cleanupPath (const std::string& s) const {
 }
 
 Config::Config() : petfile(""),
-		   timeout(Config::getDefTimeout()),
-		   filesecurity(Config::getDefFilesecurity()),
-		   ignorerc(Config::getDefIgnorerc()),
-		   pwgenpwlen(Config::getDefPWLength()),
-		   pwgen_rng(Config::getDefPWGenRNG()),
-		   character_pools(Config::getDefCharPools()),
-		   allow_lock_quit(Config::getDefAllowLockQuit()),
-		   pw_input_timeout(Config::getDefPwInputTimeout()){
+    timeout(Config::getDefTimeout() ),
+    filesecurity(Config::getDefFilesecurity() ),
+    ignorerc(Config::getDefIgnorerc() ),
+    pwgenpwlen(Config::getDefPWLength() ),
+    pwgen_rng(Config::getDefPWGenRNG() ),
+    character_pools(Config::getDefCharPools() ),
+    allow_lock_quit(Config::getDefAllowLockQuit() ),
+    pw_input_timeout(Config::getDefPwInputTimeout() ) {
     // Empty
 }
 
-Config::Config (const Config& c) {
+Config::Config(const Config& c) {
     petfile = c.petfile;
     timeout = c.timeout;
     filesecurity = c.filesecurity;
@@ -166,21 +179,20 @@ Config::Config (const Config& c) {
 }
 
 Config::~Config() {
-
 }
 
 /**
  * @param filename the file name to load. If empty, the default file will be loaded
  */
 void
-Config::loadConfigFile (std::string filename) {
+Config::loadConfigFile(std::string filename) {
 #ifdef CFGDEBUG
     std::cout << " === ";
     std::cout << "Config::loadConfigFile(std::string)";
     std::cout << ":" << std::endl;
 #endif
 
-    if (ignorerc.get()) {
+    if (ignorerc.get() ) {
 #ifdef CFGDEBUG
         std::cout << "\tadvised to ignore rc file!" << std::endl;
 #endif
@@ -191,21 +203,22 @@ Config::loadConfigFile (std::string filename) {
 
     if (!cfgfile.isOpenSuccess() ) {
 #ifdef CFGDEBUG
-        std::cout << "\topen " << filename << " was not successful" << std::endl;
+        std::cout << "\topen " << filename << " was not successful" <<
+        std::endl;
 #endif
-    } 
+    }
 
     ignorerc = cfgfile.getIgnoreRC();
-      
+
     if (ignorerc.get() ) {
 #ifdef CFGDEBUG
-	std::cout << "\tRC file says to ignore itself!" << std::endl;
+        std::cout << "\tRC file says to ignore itself!" << std::endl;
 #endif
-	return;
+        return;
     }
 
     // we use this method because it cleans up the file path
-    setPetFile(cfgfile.getFileToLoad());
+    setPetFile(cfgfile.getFileToLoad() );
 
     filesecurity = cfgfile.getUseFileSecurity();
     timeout = cfgfile.getLockTimeout();
@@ -214,11 +227,10 @@ Config::loadConfigFile (std::string filename) {
     pwgen_rng = cfgfile.getPWGenRNG();
     pwgenpwlen = cfgfile.getPWGenPWLen();
     character_pools = cfgfile.getCharPools();
-
 }
 
 const Config&
-Config::operator= (const Config & c) {
+Config::operator=(const Config& c) {
     if (&c == this)
         return *this;
 

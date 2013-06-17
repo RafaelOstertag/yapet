@@ -39,7 +39,7 @@ config.rpath:
 nls.m4 po.m4:
 	gettextize -f
 
-Makefile.in missing ar-lib depcomp: configure.ac Makefile.am NEWS README AUTHORS ChangeLog config.rpath crypt/Makefile.am tests/Makefile.am doc/Makefile.am ui/Makefile.am csv2yapet/Makefile.am yapet/pwgen/Makefile.am yapet/Makefile.am
+Makefile.in missing ar-lib depcomp: configure.ac Makefile.am NEWS README AUTHORS ./ChangeLog config.rpath crypt/Makefile.am tests/Makefile.am doc/Makefile.am ui/Makefile.am csv2yapet/Makefile.am yapet/pwgen/Makefile.am yapet/Makefile.am
 	automake -a -c -W all --gnu -f
 
 NEWS:
@@ -51,7 +51,7 @@ README:
 AUTHORS:
 	touch $@
 
-ChangeLog:
+./ChangeLog:
 	touch $@
 
 clean:

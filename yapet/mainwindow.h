@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -23,7 +23,6 @@
 #ifndef _MAINWINDOW_H
 #define _MAINWINDOW_H
 
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -33,50 +32,52 @@
 
 // YACURS
 #include <window.h>
-#include <listwidget.h>
+#include <listbox.h>
 
 /**
- * @brief The main window.
- *
- * This is the main window class which shows the main menu in top right window,
- * some information in the lower right window and the passwords stored in the
- * file currently open in the left window.
- *
- * It handles the menu key strokes and provides a screen locking function which
- * is called after a certain number of seconds using the \c
- * BaseWindow::setTimeout() method.
  */
 class MainWindow : public YACURS::Window {
     private:
         bool records_changed;
 
-	YACURS::ListWidget<YAPET::PartDec>* recordlist;
-        YAPET::Key* key;
-        YAPET::File* file;
+        YACURS::ListBox<YAPET::PartDec>* recordlist;
 
         bool usefsecurity;
 
-        MainWindow (const MainWindow&) {}
-        const MainWindow& operator= (const MainWindow&) {
+        MainWindow(const MainWindow&) {
+        }
+
+        const MainWindow& operator=(const MainWindow&) {
             return *this;
         }
 
     protected:
-        void createFile (std::string& filename) throw (YAPET::UI::UIException);
-        void openFile (std::string filename) throw (YAPET::UI::UIException);
+        void createFile(std::string& filename);
+
+        void openFile(std::string filename);
+
         void saveFile();
+
         void closeFile();
 
         void addNewRecord();
+
         void editSelectedRecord();
-        void deleteSelectedRecord() throw (YAPET::UI::UIException);
+
+        void deleteSelectedRecord();
+
         void setSortOrder();
+
         void searchTerm();
+
         void searchNext();
+
         bool quit();
-        void changePassword() throw (YAPET::UI::UIException);
+
+        void changePassword();
+
     public:
-        MainWindow ()
+        MainWindow();
         virtual ~MainWindow();
 };
 

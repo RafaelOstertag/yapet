@@ -1,6 +1,8 @@
-// $Id$
+// -*- c++ -*-
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// $Id: mainwindow.h 5207 2013-06-16 16:33:45Z rafisol $
+//
+// Copyright (C) 2008-2010  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -18,31 +20,20 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "consts.h"
+#ifndef _GLOBALS_H
+#define _GLOBALS_H
 
-using namespace YAPET::CONSTS;
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-const std::string Consts::default_suffix(".pet");
-const std::string Consts::default_rcfilename(".yapet");
-const size_t Consts::max_pwlen(256);
-const int Consts::min_locktimeout(10);
+// Crypt
+#include <file.h>
 
-const std::string&
-Consts::getDefaultSuffix() {
-    return default_suffix;
-}
+class Globals {
+    public:
+        static YAPET::Key* key;
+        static YAPET::File* file;
+};
 
-const std::string&
-Consts::getDefaultRCFilename() {
-    return default_rcfilename;
-}
-
-size_t
-Consts::getMaxPWLength() {
-    return max_pwlen;
-}
-
-int
-Consts::getMinLockTimeout() {
-    return min_locktimeout;
-}
+#endif // _MAINWINDOW_H

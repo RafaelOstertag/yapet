@@ -74,8 +74,10 @@ class FileOpen : protected YAPET::UI::BaseWindow {
 
         bool canceled;
 
-        inline FileOpen (const FileOpen&) {}
-        inline const FileOpen& operator= (const FileOpen&) {
+        inline FileOpen(const FileOpen&) {
+        }
+
+        inline const FileOpen& operator=(const FileOpen&) {
             return *this;
         }
 
@@ -98,28 +100,30 @@ class FileOpen : protected YAPET::UI::BaseWindow {
             return minY() + 2;
         }
 
-        void createWindows() throw (YAPET::UI::UIException);
+        void createWindows() throw(YAPET::UI::UIException);
 
-        void printTitle() throw (YAPET::UI::UIException);
+        void printTitle() throw(YAPET::UI::UIException);
 
-        void printCWD() throw (YAPET::UI::UIException);
+        void printCWD() throw(YAPET::UI::UIException);
 
     protected:
-        void getEntries (std::list<YAPET::UI::secstring>& d,
-                         std::list<YAPET::UI::secstring>& f)
-        throw (YAPET::UI::UIException);
+        void getEntries(std::list<YAPET::UI::secstring>& d,
+                        std::list<YAPET::UI::secstring>& f)
+        throw(YAPET::UI::UIException);
 
-        void getcwd() throw (YAPET::UI::UIException);
-        void cd (const YAPET::UI::secstring d) throw (YAPET::UI::UIException);
+        void getcwd() throw(YAPET::UI::UIException);
+
+        void cd(const YAPET::UI::secstring d) throw(YAPET::UI::UIException);
 
     public:
-        FileOpen (std::string t) throw (YAPET::UI::UIException);
+        FileOpen(std::string t) throw(YAPET::UI::UIException);
         virtual ~FileOpen();
 
-        void run() throw (YAPET::UI::UIException);
-        void refresh() throw (YAPET::UI::UIException);
+        void run() throw(YAPET::UI::UIException);
 
-        void resize() throw (YAPET::UI::UIException);
+        void refresh() throw(YAPET::UI::UIException);
+
+        void resize() throw(YAPET::UI::UIException);
 
         std::string getFilepath();
 
@@ -129,22 +133,24 @@ class FileOpen : protected YAPET::UI::BaseWindow {
 };
 
 inline
-bool endswith (YAPET::UI::secstring h, YAPET::UI::secstring n) {
+bool
+endswith(YAPET::UI::secstring h, YAPET::UI::secstring n) {
     if (n.length() > h.length() )
         return false;
 
-    if ( h.substr (h.length() - n.length(), n.length() ) == n)
+    if (h.substr(h.length() - n.length(), n.length() ) == n)
         return true;
 
     return false;
 }
 
 inline
-bool endswith (std::string h, std::string n) {
+bool
+endswith(std::string h, std::string n) {
     if (n.length() > h.length() )
         return false;
 
-    if ( h.substr (h.length() - n.length(), n.length() ) == n)
+    if (h.substr(h.length() - n.length(), n.length() ) == n)
         return true;
 
     return false;

@@ -28,31 +28,16 @@
 #endif
 
 #ifndef ENABLE_PWGEN
-# error "This file must only be included with ENABLE_PWGEN defined in config.h"
+# error \
+    "This file must only be included with ENABLE_PWGEN defined in config.h"
 #endif
-
-#ifdef HAVE_NCURSES_H
-# include <ncurses.h>
-#else // HAVE_NCURSES_H
-# ifdef HAVE_CURSES_H
-#  include <curses.h>
-# else
-#  error "Neither curses.h nor ncurses.h available"
-# endif // HAVE_CURSES_H
-#endif // HAVE_NCURSES_H
-#include "curswa.h" // Leave this here. It depends on the above includes.
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_VECTOR
-# include <vector>
-#endif
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <vector>
+#include <string>
 
 #include "secstring.h"
 #include "basewindow.h"
@@ -84,10 +69,12 @@ class PWGenDialog : protected YAPET::UI::BaseWindow {
 
         std::vector<std::string> ckbxitems;
 
-        inline PWGenDialog (const PWGenDialog& bla) : pwgen (bla.ckbox_options) {
-            assert (0);
+        inline PWGenDialog(const PWGenDialog& bla) : pwgen(bla.ckbox_options)
+        {
+            assert(0);
         }
-        inline const PWGenDialog& operator= (const PWGenDialog&) {
+
+        inline const PWGenDialog& operator=(const PWGenDialog&) {
             return *this;
         }
 
@@ -111,26 +98,28 @@ class PWGenDialog : protected YAPET::UI::BaseWindow {
         }
 
         std::string getNameOfRNG() const;
-        int CheckBoxOptions2Charpools (uint16_t o) const;
+
+        int CheckBoxOptions2Charpools(uint16_t o) const;
 
         void initCheckBoxItems();
 
-        void createWindow() throw (YAPET::UI::UIException);
+        void createWindow() throw(YAPET::UI::UIException);
 
-        void printTitles() throw (YAPET::UI::UIException);
+        void printTitles() throw(YAPET::UI::UIException);
 
     public:
-	/**
-	 * The default password length and character pools are taken from
-	 * YAPET::GLOBALS::Globals
-	 */
-        PWGenDialog() throw (YAPET::UI::UIException);
+        /**
+         * The default password length and character pools are taken from
+         * YAPET::GLOBALS::Globals
+         */
+        PWGenDialog() throw(YAPET::UI::UIException);
         virtual ~PWGenDialog();
 
-        void run() throw (YAPET::UI::UIException);
-        void refresh() throw (YAPET::UI::UIException);
+        void run() throw(YAPET::UI::UIException);
 
-        void resize() throw (YAPET::UI::UIException);
+        void refresh() throw(YAPET::UI::UIException);
+
+        void resize() throw(YAPET::UI::UIException);
 
         inline const YAPET::UI::secstring& getPassword() {
             return password;

@@ -65,14 +65,17 @@ class SearchDialog : protected YAPET::UI::BaseWindow {
 
         bool canceled;
 
-        inline SearchDialog (const SearchDialog&) {}
-        inline const SearchDialog& operator= (const SearchDialog&) {
+        inline SearchDialog(const SearchDialog&) {
+        }
+
+        inline const SearchDialog& operator=(const SearchDialog&) {
             return *this;
         }
 
         inline int getWidth() const {
             return maxX() - 8;
         }
+
         inline int getHeight() const {
             return HEIGHT;
         }
@@ -80,23 +83,27 @@ class SearchDialog : protected YAPET::UI::BaseWindow {
         inline int getStartX() const {
             return maxX() / 2 - getWidth() / 2;
         }
+
         inline int getStartY() const {
             return maxY() / 2 - getHeight() / 2;
         }
 
-        void createWindow() throw (YAPET::UI::UIException);
+        void createWindow() throw(YAPET::UI::UIException);
 
     public:
-        SearchDialog() throw (YAPET::UI::UIException);
+        SearchDialog() throw(YAPET::UI::UIException);
         ~SearchDialog();
 
-        void run() throw (YAPET::UI::UIException);
-        void resize() throw (YAPET::UI::UIException);
-        void refresh() throw (YAPET::UI::UIException);
+        void run() throw(YAPET::UI::UIException);
+
+        void resize() throw(YAPET::UI::UIException);
+
+        void refresh() throw(YAPET::UI::UIException);
 
         inline bool isCanceled() const {
             return canceled;
         }
+
         inline const char* getSearchTerm() const {
             return searchtermw->getText().c_str();
         }

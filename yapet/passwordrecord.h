@@ -92,8 +92,8 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         YAPET::UI::Button* pwgenbutton;
 #endif
         YAPET::Key* key;
-	const YAPET::File* file; // Only used when locking the screen for
-				 // displaying the file name
+        const YAPET::File* file; // Only used when locking the screen for
+                                 // displaying the file name
         YAPET::PartDec* encentry;
         YAPET::UI::secstring s_name;
         YAPET::UI::secstring s_host;
@@ -105,40 +105,44 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
         bool usernamechanged;
         bool passwordchanged;
         bool commentchanged;
-	bool readonly;
-	/**
-	 * Used to inform the focus method to resize all windows. This is set
-	 * by PasswordRecord::handle_signal.
-	 *
-	 * This attribute has been introduced because letting the signal
-	 * handler resizing all windows leads to SEGV.
-	 */
-	volatile bool resize_due;
-	unsigned int locktimeout;
+        bool readonly;
 
-        inline PasswordRecord (const PasswordRecord&) { assert (0); }
-        inline const PasswordRecord& operator= (const PasswordRecord&) {
-	    assert (0);
+        /**
+         * Used to inform the focus method to resize all windows. This is set
+         * by PasswordRecord::handle_signal.
+         *
+         * This attribute has been introduced because letting the signal
+         * handler resizing all windows leads to SEGV.
+         */
+        volatile bool resize_due;
+        unsigned int locktimeout;
+
+        inline PasswordRecord(const PasswordRecord&) {
+            assert(0);
+        }
+
+        inline const PasswordRecord& operator=(const PasswordRecord&) {
+            assert(0);
             return *this;
         }
 
-	/**
-	 * Helper function that calls BaseWindow::resizeAll() if resize_due is
-	 * true. This function does not reset the resize_due attribute since
-	 * this is the responsibility of ::resize();
-	 */
-	inline void resize_as_needed() {
-	    if (resize_due)
-		BaseWindow::resizeAll();
-	}
+        /**
+         * Helper function that calls BaseWindow::resizeAll() if resize_due is
+         * true. This function does not reset the resize_due attribute since
+         * this is the responsibility of ::resize();
+         */
+        inline void resize_as_needed() {
+            if (resize_due)
+                BaseWindow::resizeAll();
+        }
 
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	class Alarm;
-        void handle_signal (int signo);
+        class Alarm;
+        void handle_signal(int signo);
+
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 
     protected:
-
         inline int getWidth() const {
             return maxX() - 8;
         }
@@ -155,10 +159,10 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
             return maxY() / 2 - getHeight() / 2;
         }
 
-        void createWindow() throw (YAPET::UI::UIException);
+        void createWindow() throw(YAPET::UI::UIException);
 
         //! Asks the user whether or not he want to cancel
-        bool sureToCancel() throw (YAPET::UI::UIException);
+        bool sureToCancel() throw(YAPET::UI::UIException);
 
     public:
         /**
@@ -170,15 +174,19 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          * record is displaying in read-only mode.
          *
          * @param k the key used to decrypt/encrypt the password record.
-	 *
-	 * @param f the password file. This is only used for locking the screen.
+         *
+         * @param f the password file. This is only used for locking the screen.
          *
          * @param pe pointer to a \c PartDec which will be displayed, or \c
          * NULL in order to obtain a new password record.
-	 *
-	 * @param ro specify whether or not the dialog is readonly.
+         *
+         * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord (YAPET::Key& k, const YAPET::File& f, YAPET::PartDec* pe, unsigned int timeout, bool ro) throw (YAPET::UI::UIException);
+        PasswordRecord(YAPET::Key& k,
+                       const YAPET::File& f,
+                       YAPET::PartDec* pe,
+                       unsigned int timeout,
+                       bool ro) throw(YAPET::UI::UIException);
         ~PasswordRecord();
 
         /**
@@ -188,9 +196,12 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          *
          * Call \c getEncEntry() for obtaining the encrypted password record.
          */
-        void run() throw (YAPET::UI::UIException);
-        void resize() throw (YAPET::UI::UIException);
-        void refresh() throw (YAPET::UI::UIException);
+        void run() throw(YAPET::UI::UIException);
+
+        void resize() throw(YAPET::UI::UIException);
+
+        void refresh() throw(YAPET::UI::UIException);
+
         /**
          * @brief Returns the password record.
          *
@@ -216,11 +227,14 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          */
         bool entryChanged() const;
 
-	void setReadonly(bool ro);
+        void setReadonly(bool ro);
 
-	inline bool getReadonly() const { return readonly; }
+        inline bool getReadonly() const {
+            return readonly;
+        }
+
 #if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-	friend class PasswordRecord::Alarm;
+        friend class PasswordRecord::Alarm;
 #endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 

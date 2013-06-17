@@ -6,11 +6,13 @@ endif
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = main.cc mainwindow.cc cfgfile.h cfgfile.cc consts.h consts.cc cfg.h cfg.cc 
+yapet_SOURCES = main.cc mainwindow.cc cfgfile.h cfgfile.cc consts.h \
+consts.cc cfg.h cfg.cc globals.h globals.cc passworddialog.h	    \
+passworddialog.cc
 
 # statusbar.h fileopen.h passworddialog.h		\
 # passwordrecord.h   statusbar.cc fileopen.cc			\
-# passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc 	\
+# searchdialog.h searchdialog.cc 	\
 #  lockscreen.h lockscreen.cc
 
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/libyacurs/include -DLOCALEDIR=\"$(localedir)\"

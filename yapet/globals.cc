@@ -1,6 +1,6 @@
-// $Id$
+// $Id: mainwindow.cc 5207 2013-06-16 16:33:45Z rafisol $
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2008-2010  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -18,31 +18,11 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "consts.h"
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
-using namespace YAPET::CONSTS;
+#include "globals.h"
 
-const std::string Consts::default_suffix(".pet");
-const std::string Consts::default_rcfilename(".yapet");
-const size_t Consts::max_pwlen(256);
-const int Consts::min_locktimeout(10);
-
-const std::string&
-Consts::getDefaultSuffix() {
-    return default_suffix;
-}
-
-const std::string&
-Consts::getDefaultRCFilename() {
-    return default_rcfilename;
-}
-
-size_t
-Consts::getMaxPWLength() {
-    return max_pwlen;
-}
-
-int
-Consts::getMinLockTimeout() {
-    return min_locktimeout;
-}
+static YAPET::Key* Globals::key;
+static YAPET::File* Globals::file;

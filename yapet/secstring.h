@@ -49,22 +49,20 @@
 
 namespace YAPET {
     namespace UI {
-
         /**
          * @brief Memory clearing allocator.
          *
          * This template implements a \c deallocate method which zero'es out the
          * memory released.
          */
-        template <class T>
-        class secallocator: public std::allocator<T> {
+        template<class T> class secallocator : public std::allocator<T> {
             public:
-                void deallocate (typename std::allocator<T>::pointer p,
-                                 typename std::allocator<T>::size_type n) {
-                    memset (p, '0', n*sizeof (std::allocator<T>::value_type) );
-                    std::allocator<T>::deallocate (p, n);
+                void deallocate(typename std::allocator<T>::pointer p,
+                                typename std::allocator<T>::size_type n) {
+                    memset(p, '0', n *
+                           sizeof (std::allocator<T>::value_type) );
+                    std::allocator<T>::deallocate(p, n);
                 }
-
         };
 
         /**
@@ -73,8 +71,8 @@ namespace YAPET {
          * This string class uses the \c secallocator allocator in order to clear
          * the memory occupied by the string.
          */
-        typedef std::basic_string<char, std::char_traits<char>, secallocator<char> > secstring;
-
+        typedef std::basic_string<char, std::char_traits<char>,
+                                  secallocator<char> > secstring;
     }
 }
 #endif // _SECSTRING_H

@@ -43,31 +43,38 @@
 
 namespace YAPET {
     namespace CONSTS {
-
         class Consts {
             private:
                 //! Holds the default suffix for yapet files
                 static const std::string default_suffix;
                 //! The default file name of the config file
                 static const std::string default_rcfilename;
-		//! Maximum password length
-		static const size_t max_pwlen;
-		//! The minimum lock timeout
-		static const int min_locktimeout;
-                inline Consts() {}
-                inline ~Consts() {}
-                inline Consts (const Consts&) {}
-                inline const Consts& operator= (const Consts&) {
+                //! Maximum password length
+                static const size_t max_pwlen;
+                //! The minimum lock timeout
+                static const int min_locktimeout;
+                inline Consts() {
+                }
+
+                inline ~Consts() {
+                }
+
+                inline Consts(const Consts&) {
+                }
+
+                inline const Consts& operator=(const Consts&) {
                     return *this;
                 }
 
             public:
                 static const std::string& getDefaultSuffix();
-                static const std::string& getDefaultRCFilename();
-		static size_t getMaxPWLength();
-		static int getMinLockTimeout();
-        };
 
+                static const std::string& getDefaultRCFilename();
+
+                static size_t getMaxPWLength();
+
+                static int getMinLockTimeout();
+        };
     }
 }
 #endif // _CONSTS_H

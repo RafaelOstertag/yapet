@@ -57,22 +57,26 @@ class StatusBar : protected YAPET::UI::BaseWindow {
         WINDOW* statusbar;
         std::string message;
 
-        inline StatusBar (const StatusBar&) {}
-        inline const StatusBar& operator= (const StatusBar&) {
+        inline StatusBar(const StatusBar&) {
+        }
+
+        inline const StatusBar& operator=(const StatusBar&) {
             return *this;
         }
 
     protected:
-        void createWindow() throw (YAPET::UI::UIException);
+        void createWindow() throw(YAPET::UI::UIException);
 
     public:
-        StatusBar() throw (YAPET::UI::UIException);
+        StatusBar() throw(YAPET::UI::UIException);
         virtual ~StatusBar();
 
-        void putMsg (std::string msg) throw (YAPET::UI::UIException);
+        void putMsg(std::string msg) throw(YAPET::UI::UIException);
+
         std::string getMsg() const {
             return message;
         }
+
         void refresh();
 
         void resize();

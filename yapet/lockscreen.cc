@@ -41,18 +41,18 @@
 #include "lockscreen.h"
 
 LockScreen::LockScreen(const YAPET::Key* k, const YAPET::File* f, bool daq) :
-    lockwin (NULL),
-    do_quit (false),
-    dont_allow_quit (daq),
-    resize_due (false),
-    key (k),
-    file (f) {
-    assert (f->getFilename().length() > 0);
-    assert (file->getFilename().length() > 0);
-    }
+    lockwin(NULL),
+    do_quit(false),
+    dont_allow_quit(daq),
+    resize_due(false),
+    key(k),
+    file(f) {
+    assert(f->getFilename().length() > 0);
+    assert(file->getFilename().length() > 0);
+}
 
 LockScreen::~LockScreen() {
-    assert (lockwin == NULL);
+    assert(lockwin == NULL);
 }
 
 void
@@ -62,37 +62,37 @@ LockScreen::run() throw(YAPET::UI::UIException) {
     int ch;
 
     while (true) {
-        lockwin = newwin (0, 0, 0, 0);
+        lockwin = newwin(0, 0, 0, 0);
 
         if (lockwin == NULL)
-            throw YAPET::UI::UIException (_ ("Error creating lock window") );
+            throw YAPET::UI::UIException(_("Error creating lock window") );
 
-        int retval = werase (lockwin);
-
-        if (retval == ERR) {
-            delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error erasing lock window") );
-        }
-
-        retval = wrefresh (lockwin);
+        int retval = werase(lockwin);
 
         if (retval == ERR) {
-            delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error refreshing lock window") );
+            delwin(lockwin);
+            throw YAPET::UI::UIException(_("Error erasing lock window") );
         }
 
-        std::string locked_title (_ ("YAPET -- Locked --") );
-        setTerminalTitle (locked_title);
-        ch = wgetch (lockwin);
+        retval = wrefresh(lockwin);
+
+        if (retval == ERR) {
+            delwin(lockwin);
+            throw YAPET::UI::UIException(_("Error refreshing lock window") );
+        }
+
+        std::string locked_title(_("YAPET -- Locked --") );
+        setTerminalTitle(locked_title);
+        ch = wgetch(lockwin);
 #ifdef HAVE_WRESIZE
 
         if (ch == KEY_RESIZE) {
-            delwin (lockwin);
-	    // We do not resize all windows, this leads to flicker and might
-	    // show sensitive information. Instead we set a flag indicating
-	    // that a resize is required.
-	    resize_due = true;
-	    //            YAPET::UI::BaseWindow::resizeAll();
+            delwin(lockwin);
+            // We do not resize all windows, this leads to flicker and might
+            // show sensitive information. Instead we set a flag indicating
+            // that a resize is required.
+            resize_due = true;
+            //            YAPET::UI::BaseWindow::resizeAll();
             continue;
         }
 
@@ -101,20 +101,22 @@ LockScreen::run() throw(YAPET::UI::UIException) {
         YAPET::Key* testkey = NULL;
 
         try {
-	    // Flush pending input
-	    flushinp();
+            // Flush pending input
+            flushinp();
 
-	    bool show_quit = dont_allow_quit ? false : true;
-	    // In case the user does not want to show the quit button
-	    show_quit = YAPET::CONFIG::config.allow_lock_quit.get() ? show_quit : false;
+            bool show_quit = dont_allow_quit ? false : true;
+            // In case the user does not want to show the quit button
+            show_quit =
+                YAPET::CONFIG::config.allow_lock_quit.get() ? show_quit :
+                false;
 
-            pwdia = new PasswordDialog (EXISTING_PW,
-					file->getFilename(),
-					YAPET::CONFIG::config.pw_input_timeout.get(),
-					show_quit);
+            pwdia = new PasswordDialog(EXISTING_PW,
+                                       file->getFilename(),
+                                       YAPET::CONFIG::config.pw_input_timeout.get(),
+                                       show_quit);
             pwdia->run();
             testkey = pwdia->getKey();
-	    do_quit = pwdia->wantsQuit();
+            do_quit = pwdia->wantsQuit();
             delete pwdia;
         } catch (YAPET::UI::UIException&) {
             if (pwdia != NULL)
@@ -123,18 +125,18 @@ LockScreen::run() throw(YAPET::UI::UIException) {
             if (testkey != NULL)
                 delete testkey;
 
-            delwin (lockwin);
+            delwin(lockwin);
             continue;
         }
 
         if (testkey == NULL) {
-            delwin (lockwin);
-	    lockwin = NULL;
-	    // Do we have to quit
-	    if (do_quit) {
-		ungetch('q');
-		return;
-	    }
+            delwin(lockwin);
+            lockwin = NULL;
+            // Do we have to quit
+            if (do_quit) {
+                ungetch('q');
+                return;
+            }
             continue;
         }
 
@@ -142,7 +144,9 @@ LockScreen::run() throw(YAPET::UI::UIException) {
             YAPET::UI::MessageBox* msgbox = NULL;
 
             try {
-                msgbox = new YAPET::UI::MessageBox (_ ("E R R O R"), _ ("Wrong password") );
+                msgbox =
+                    new YAPET::UI::MessageBox(_("E R R O R"),
+                                              _("Wrong password") );
                 msgbox->run();
                 delete msgbox;
             } catch (YAPET::UI::UIException&) {
@@ -151,40 +155,41 @@ LockScreen::run() throw(YAPET::UI::UIException) {
             }
         } else {
             delete testkey;
-            delwin (lockwin);
-	    lockwin = NULL;
+            delwin(lockwin);
+            lockwin = NULL;
             return;
         }
 
         delete testkey;
-        delwin (lockwin);
-	lockwin = NULL;
+        delwin(lockwin);
+        lockwin = NULL;
     }
 }
 
 void
 LockScreen::resize() {
-        delwin (lockwin);
-	lockwin = NULL;
+    delwin(lockwin);
+    lockwin = NULL;
 
-        lockwin = newwin (0, 0, 0, 0);
+    lockwin = newwin(0, 0, 0, 0);
 
-        if (lockwin == NULL)
-            throw YAPET::UI::UIException (_ ("Error creating lock window") );
+    if (lockwin == NULL)
+        throw YAPET::UI::UIException(_("Error creating lock window") );
 
-        int retval = werase (lockwin);
+    int retval = werase(lockwin);
 
-        if (retval == ERR) {
-            delwin (lockwin);
-            throw YAPET::UI::UIException (_ ("Error erasing lock window") );
-        }
+    if (retval == ERR) {
+        delwin(lockwin);
+        throw YAPET::UI::UIException(_("Error erasing lock window") );
+    }
 }
 
 void
 LockScreen::refresh() {
-    int retval = wrefresh (lockwin);
+    int retval = wrefresh(lockwin);
+
     if (retval == ERR) {
-	delwin (lockwin);
-	throw YAPET::UI::UIException (_ ("Error refreshing lock window") );
+        delwin(lockwin);
+        throw YAPET::UI::UIException(_("Error refreshing lock window") );
     }
 }

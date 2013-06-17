@@ -34,16 +34,11 @@
 #define _YAPETEXCEPTION_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_EXCEPTION
-# include <exception>
-#endif
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <exception>
+#include <string>
 
 #include "../intl.h"
 
@@ -52,10 +47,11 @@ namespace YAPET {
     /**
      * New in version 0.6
      *
-     * Since version 0.6 we provide an optional error specification. It is
-     * entirely optional to use it, but at the time this writing, the
-     * YAPET::File class uses it to determine whether or not retrying to
-     * decrypt the using a different structure (FileHeader_32 or FileHeader_64)
+     * Since version 0.6 we provide an optional error
+     * specification. It is entirely optional to use it, but at the
+     * time of this writing, the YAPET::File class uses it to
+     * determine whether or not retrying to decrypt the using a
+     * different structure (FileHeader_32 or FileHeader_64)
      */
     enum EXNUM {
 	BDBUFFER_TOO_SMALL = 1,

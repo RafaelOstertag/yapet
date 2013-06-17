@@ -41,61 +41,69 @@
 
 namespace YAPET {
     namespace CONFIG {
-      
-      /**
-       * @brief template class used for configuration values
-       *
-       * This template class is mainly used for configuration
-       * values. It allows the values being locked, i.e. preventing
-       * the values being changed by set methods.
-       */
-      template<class T> 
-      class CfgVal {
-	    private:
-		//! Indicates whether or not the value can be changed.
-		bool locked;
-		T val;
-		
-	    public:
-		CfgVal() : locked(false) {}
-		CfgVal(const T& v) : val(v) {}
-		CfgVal(const CfgVal& c) {
-		    locked = c.locked;
-		    val = c.val;
-		}
-		CfgVal& operator=(const CfgVal& c) {
-		    if (&c == this)
-			return *this;
+        /**
+         * @brief template class used for configuration values
+         *
+         * This template class is mainly used for configuration
+         * values. It allows the values being locked, i.e. preventing
+         * the values being changed by set methods.
+         */
+        template<class T> class CfgVal {
+            private:
+                //! Indicates whether or not the value can be changed.
+                bool locked;
+                T val;
 
-		    locked = c.locked;
-		    val = c.val;
+            public:
+                CfgVal() : locked(false) {
+                }
 
-		    return *this;
-		}
-		CfgVal& operator=(const T& c) {
-		    if (!locked)
-		      val = c;
+                CfgVal(const T& v) : val(v) {
+                }
 
-		    return *this;
-		}
-		void set(const T& v) {
-		    if (!locked)
-		      val = v;
-		}
-		T get() const {
-		    return val;
-		}
-		void lock() {
-		    locked = true;
-		}
-		void unlock() {
-		    locked = false;
-		}
-		void isLocked() const {
-		    return locked;
-		}
-	};
-		
+                CfgVal(const CfgVal& c) {
+                    locked = c.locked;
+                    val = c.val;
+                }
+
+                CfgVal& operator=(const CfgVal& c) {
+                    if (&c == this)
+                        return *this;
+
+                    locked = c.locked;
+                    val = c.val;
+
+                    return *this;
+                }
+
+                CfgVal& operator=(const T& c) {
+                    if (!locked)
+                        val = c;
+
+                    return *this;
+                }
+
+                void set(const T& v) {
+                    if (!locked)
+                        val = v;
+                }
+
+                T get() const {
+                    return val;
+                }
+
+                void lock() {
+                    locked = true;
+                }
+
+                void unlock() {
+                    locked = false;
+                }
+
+                void isLocked() const {
+                    return locked;
+                }
+        };
 
         /**
          * @brief Handle the command line and config file options.
@@ -112,52 +120,65 @@ namespace YAPET {
                 static const bool def_filesecurity;
                 //! Default for ignoring the rc file
                 static const bool def_ignorerc;
-		//! The default password length
-		static const size_t def_pwlen;
-		//! Default rng
-		static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
+                //! The default password length
+                static const size_t def_pwlen;
+                //! Default rng
+                static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
                 //! The default character subpools to use
                 static const int def_character_pools;
-		//! Show the Quit button when unlocking screen
-		static const bool def_allow_lock_quit;
-		//! Default for password input timeout
-		static const unsigned int def_pw_input_timeout;
+                //! Show the Quit button when unlocking screen
+                static const bool def_allow_lock_quit;
+                //! Default for password input timeout
+                static const unsigned int def_pw_input_timeout;
 
                 //! Removes two or more consecutive slashes from the path
-                std::string cleanupPath (const std::string& s) const;
+                std::string cleanupPath(const std::string& s) const;
 
             public:
                 static std::string getDefPetfile();
+
                 static unsigned int getDefTimeout();
-	    static bool getDefFilesecurity();
+
+                static bool getDefFilesecurity();
+
                 static bool getDefIgnorerc();
-		static YAPET::PWGEN::RNGENGINE getDefPWGenRNG();
+
+                static YAPET::PWGEN::RNGENGINE getDefPWGenRNG();
+
                 static size_t getDefPWLength();
+
                 static int getDefCharPools();
-		static bool getDefAllowLockQuit();
-		static unsigned int getDefPwInputTimeout();
-		// Those are for convenience
-		static bool getDefCPoolLetters();
-		static bool getDefCPoolDigits();
-		static bool getDefCPoolPunct();
-		static bool getDefCPoolSpecial();
-		static bool getDefCPoolOther();
+
+                static bool getDefAllowLockQuit();
+
+                static unsigned int getDefPwInputTimeout();
+
+                // Those are for convenience
+                static bool getDefCPoolLetters();
+
+                static bool getDefCPoolDigits();
+
+                static bool getDefCPoolPunct();
+
+                static bool getDefCPoolSpecial();
+
+                static bool getDefCPoolOther();
 
                 Config();
-                Config (const Config& c);
+                Config(const Config& c);
                 ~Config();
 
-                void loadConfigFile (std::string filename = "");
+                void loadConfigFile(std::string filename="");
 
-		CfgVal<std::string> petfile;
-		CfgVal<int> timeout;
-		CfgVal<bool> filesecurity;
-		CfgVal<bool> ignorerc;
-		CfgVal<size_t> pwgenpwlen;
-		CfgVal<YAPET::PWGEN::RNGENGINE> pwgen_rng;
-		CfgVal<int> character_pools;
-		CfgVal<bool> allow_lock_quit;
-		CfgVal<int> pw_input_timeout;
+                CfgVal<std::string> petfile;
+                CfgVal<int> timeout;
+                CfgVal<bool> filesecurity;
+                CfgVal<bool> ignorerc;
+                CfgVal<size_t> pwgenpwlen;
+                CfgVal<YAPET::PWGEN::RNGENGINE> pwgen_rng;
+                CfgVal<int> character_pools;
+                CfgVal<bool> allow_lock_quit;
+                CfgVal<int> pw_input_timeout;
 
                 /**
                  * @brief Set the file to open upon start of YAPET.
@@ -167,61 +188,58 @@ namespace YAPET {
                  *
                  * @param s the file path of the file.
                  */
-                inline void setPetFile (std::string s) {
-                    
-                    if ( s.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
-				 s.length() -
-				 YAPET::CONSTS::Consts::getDefaultSuffix().length() )
-                            == std::string::npos )
+                inline void setPetFile(std::string s) {
+                    if (s.find(YAPET::CONSTS::Consts::getDefaultSuffix(),
+                               s.length() -
+                               YAPET::CONSTS::Consts::getDefaultSuffix().
+                               length() )
+                        == std::string::npos)
                         s += YAPET::CONSTS::Consts::getDefaultSuffix();
 
-                    s = cleanupPath (s);
-		    petfile = s;
+                    s = cleanupPath(s);
+                    petfile = s;
                 }
 
-	    /**
-	     * @brief lock all values
-	     *
-	     * A convenient method for locking all values.
-	     */
-	    inline void lockAll() {
-		petfile.lock();
-		timeout.lock();
-		filesecurity.lock();
-		ignorerc.lock();
-		pwgenpwlen.lock();
-		pwgen_rng.lock();
-		character_pools.lock();
-		allow_lock_quit.lock();
-		pw_input_timeout.lock();
-	    }
+                /**
+                 * @brief lock all values
+                 *
+                 * A convenient method for locking all values.
+                 */
+                inline void lockAll() {
+                    petfile.lock();
+                    timeout.lock();
+                    filesecurity.lock();
+                    ignorerc.lock();
+                    pwgenpwlen.lock();
+                    pwgen_rng.lock();
+                    character_pools.lock();
+                    allow_lock_quit.lock();
+                    pw_input_timeout.lock();
+                }
 
-	    /**
-	     * @brief unlock all values
-	     *
-	     * A convenient method for unlocking all values.
-	     */
-	    inline void unlockAll() {
-		petfile.unlock();
-		timeout.unlock();
-		filesecurity.unlock();
-		ignorerc.unlock();
-		pwgenpwlen.unlock();
-		pwgen_rng.unlock();
-		character_pools.unlock();
-		allow_lock_quit.unlock();
-		pw_input_timeout.unlock();
-	    }
-		    
+                /**
+                 * @brief unlock all values
+                 *
+                 * A convenient method for unlocking all values.
+                 */
+                inline void unlockAll() {
+                    petfile.unlock();
+                    timeout.unlock();
+                    filesecurity.unlock();
+                    ignorerc.unlock();
+                    pwgenpwlen.unlock();
+                    pwgen_rng.unlock();
+                    character_pools.unlock();
+                    allow_lock_quit.unlock();
+                    pw_input_timeout.unlock();
+                }
 
-                const Config& operator= (const Config& c);
+                const Config& operator=(const Config& c);
         };
 
-	//! The global config object.
-	extern Config config;
-
+        //! The global config object.
+        extern Config config;
     }
-
 }
 
 #endif // _CFG_H

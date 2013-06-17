@@ -23,32 +23,34 @@
 #include "searchdialog.h"
 
 void
-SearchDialog::createWindow() throw (YAPET::UI::UIException) {
+SearchDialog::createWindow() throw(YAPET::UI::UIException) {
     if (window != NULL)
-        throw YAPET::UI::UIException (_ ("May you consider deleting the window before reallocating") );
+        throw YAPET::UI::UIException(_(
+                                         "May you consider deleting the window before reallocating") );
 
-    window = newwin (getHeight(), getWidth(), getStartY(), getStartX() );
+
+    window = newwin(getHeight(), getWidth(), getStartY(), getStartX() );
 
     if (window == NULL)
-        throw YAPET::UI::UIException (_ ("Error creating search dialog") );
+        throw YAPET::UI::UIException(_("Error creating search dialog") );
 
-    searchtermw = new YAPET::UI::InputWidget (getStartX() + 1,
-            getStartY() + 2,
-            getWidth() - 2);
-    okbutton = new YAPET::UI::Button (_ ("OK"),
-                                      getStartX() + 1,
-                                      getStartY() + getHeight() - 2);
-    cancelbutton = new YAPET::UI::Button (_ ("Cancel"),
-                                          getStartX() + okbutton->getLength() + 2,
-                                          getStartY() + getHeight() - 2);
+    searchtermw = new YAPET::UI::InputWidget(getStartX() + 1,
+                                             getStartY() + 2,
+                                             getWidth() - 2);
+    okbutton = new YAPET::UI::Button(_("OK"),
+                                     getStartX() + 1,
+                                     getStartY() + getHeight() - 2);
+    cancelbutton = new YAPET::UI::Button(_("Cancel"),
+                                         getStartX() + okbutton->getLength() + 2,
+                                         getStartY() + getHeight() - 2);
 }
 
-SearchDialog::SearchDialog() throw (YAPET::UI::UIException) : window (NULL),
-        searchtermw (NULL),
-        okbutton (NULL),
-        cancelbutton (NULL),
-        searchterm (""),
-        canceled (true) {
+SearchDialog::SearchDialog() throw(YAPET::UI::UIException) : window(NULL),
+    searchtermw(NULL),
+    okbutton(NULL),
+    cancelbutton(NULL),
+    searchterm(""),
+    canceled(true) {
     createWindow();
 }
 
@@ -56,11 +58,11 @@ SearchDialog::~SearchDialog() {
     delete searchtermw;
     delete okbutton;
     delete cancelbutton;
-    delwin (window);
+    delwin(window);
 }
 
 void
-SearchDialog::run() throw (YAPET::UI::UIException) {
+SearchDialog::run() throw(YAPET::UI::UIException) {
     refresh();
 
     while (true) {
@@ -89,12 +91,13 @@ SearchDialog::run() throw (YAPET::UI::UIException) {
 #endif // HAVE_WRESIZE
 
         switch (ch) {
-            case KEY_ESC:
-                canceled = true;
-                return;
-            case '\n':
-                canceled = false;
-                return;
+        case KEY_ESC:
+            canceled = true;
+            return;
+
+        case '\n':
+            canceled = false;
+            return;
         }
 
 #ifdef HAVE_WRESIZE
@@ -114,11 +117,12 @@ SearchDialog::run() throw (YAPET::UI::UIException) {
 }
 
 void
-SearchDialog::resize() throw (YAPET::UI::UIException) {
-    int retval = delwin (window);
+SearchDialog::resize() throw(YAPET::UI::UIException) {
+    int retval = delwin(window);
 
     if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error deleting search dialog window") );
+        throw YAPET::UI::UIException(_("Error deleting search dialog window") );
+
 
     delete searchtermw;
     delete okbutton;
@@ -131,41 +135,44 @@ SearchDialog::resize() throw (YAPET::UI::UIException) {
 }
 
 void
-SearchDialog::refresh() throw (YAPET::UI::UIException) {
-    YAPET::UI::Colors::setcolor (window, YAPET::UI::MESSAGEBOX);
-    int retval = werase (window);
+SearchDialog::refresh() throw(YAPET::UI::UIException) {
+    YAPET::UI::Colors::setcolor(window, YAPET::UI::MESSAGEBOX);
+    int retval = werase(window);
 
     if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error clearing search dialog") );
+        throw YAPET::UI::UIException(_("Error clearing search dialog") );
 
-    retval = box (window, 0, 0);
-
-    if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error adding box") );
-
-    retval = mymvwaddstr (window, 0, 2, _ ("S E A R C H") );
+    retval = box(window, 0, 0);
 
     if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error setting title") );
+        throw YAPET::UI::UIException(_("Error adding box") );
+
+    retval = mymvwaddstr(window, 0, 2, _("S E A R C H") );
+
+    if (retval == ERR)
+        throw YAPET::UI::UIException(_("Error setting title") );
 
     // The label
 #ifdef HAVE_STRCASESTR
-    retval = mymvwaddstr (window, 1, 1, _ ("Please enter the search term") );
+    retval = mymvwaddstr(window, 1, 1, _("Please enter the search term") );
 #else
 # ifdef HAVE_TOLOWER
-    retval = mymvwaddstr (window, 1, 1, _ ("Please enter the search term") );
+    retval = mymvwaddstr(window, 1, 1, _("Please enter the search term") );
 # else
-    retval = mymvwaddstr (window, 1, 1, _ ("Please enter the search term (case-sensitive)") );
+    retval =
+        mymvwaddstr(window, 1, 1, _(
+                        "Please enter the search term (case-sensitive)") );
 # endif // HAVE_TOLOWER
 #endif
 
     if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error setting label") );
+        throw YAPET::UI::UIException(_("Error setting label") );
 
-    retval = wrefresh (window);
+    retval = wrefresh(window);
 
     if (retval == ERR)
-        throw YAPET::UI::UIException (_ ("Error refreshing the search dialog") );
+        throw YAPET::UI::UIException(_("Error refreshing the search dialog") );
+
 
     searchtermw->refresh();
     okbutton->refresh();
