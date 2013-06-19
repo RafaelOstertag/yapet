@@ -24,5 +24,10 @@
 
 #include "globals.h"
 
-static YAPET::Key* Globals::key;
-static YAPET::File* Globals::file;
+using namespace YAPET;
+
+YAPET::Key* Globals::key;
+YAPET::File* Globals::file;
+bool records_changed;
+bool usefsecurity;
+

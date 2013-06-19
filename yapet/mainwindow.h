@@ -38,11 +38,7 @@
  */
 class MainWindow : public YACURS::Window {
     private:
-        bool records_changed;
-
-        YACURS::ListBox<YAPET::PartDec>* recordlist;
-
-        bool usefsecurity;
+	YACURS::ListBox<YAPET::PartDec>* recordlist;
 
         MainWindow(const MainWindow&) {
         }
@@ -50,31 +46,6 @@ class MainWindow : public YACURS::Window {
         const MainWindow& operator=(const MainWindow&) {
             return *this;
         }
-
-    protected:
-        void createFile(std::string& filename);
-
-        void openFile(std::string filename);
-
-        void saveFile();
-
-        void closeFile();
-
-        void addNewRecord();
-
-        void editSelectedRecord();
-
-        void deleteSelectedRecord();
-
-        void setSortOrder();
-
-        void searchTerm();
-
-        void searchNext();
-
-        bool quit();
-
-        void changePassword();
 
     public:
         MainWindow();

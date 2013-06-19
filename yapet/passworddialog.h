@@ -29,6 +29,8 @@
 
 #include <string>
 
+#include "yacurs.h"
+
 /**
  * @brief Determines the type of the password dialog.
  *
@@ -67,14 +69,12 @@ enum PWTYPE {
  */
 class PasswordDialog : public YACURS::Dialog  {
     private:
-        YACURS::Input* pwidget1;
-        YACURS::Input* pwidget2;
-        YACURS::Button* okbutton;
-        YACURS::Button* cancelbutton;
+        YACURS::Input* pwinput1;
+        YACURS::Input* pwinput2;
+	YACURS::Label* line1;
+	YACURS::Label* linefn;
+	YACURS::Label* line2;
         PWTYPE pwtype;
-        YAPET::Key* key;
-
-        std::string filename;
 
         inline PasswordDialog(const PasswordDialog&) {
         }
@@ -83,28 +83,13 @@ class PasswordDialog : public YACURS::Dialog  {
             return *this;
         }
 
+    protected:
+	void button_press_handler(Event& _e);
+
     public:
         PasswordDialog(PWTYPE pt,
                        std::string fn);
         ~PasswordDialog();
-
-        /**
-         * @brief Returns the key generated from the password.
-         *
-         * Use this function to get the key generated from the password
-         * entered. If the dialog has been canceled or the passwords do not
-         * match in case of entering a fresh password, \c NULL is returned.
-         *
-         * The caller is responsible for freeing the memory occupied by the
-         * key.
-         *
-         * @return the pointer to the key or \c NULL if no key was/could be
-         * generated. The memory occupied by the key has to be freed by the
-         * caller.
-         */
-        YAPET::Key* getKey() const {
-            return key;
-        }
 };
 
 #endif // _PASSWORDDIALOG_H

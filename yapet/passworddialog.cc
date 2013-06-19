@@ -19,96 +19,52 @@
 //
 
 #include "../intl.h"
-#include "colors.h"
 #include "passworddialog.h"
-#include "messagebox.h"
 
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
-#endif
-
-#ifdef HAVE_SETJMP_H
-# include <setjmp.h>
-#endif
-
-sigjmp_buf password_dialog_sig_jmp_buf;
-
-extern "C" void
-__alarm_handler(int) {
-    siglongjmp(password_dialog_sig_jmp_buf, 1);
-}
+#include <cassert>
 
 void
-PasswordDialog::createWindow() throw(YAPET::UI::UIException) {
-    if (window != NULL)
-        throw YAPET::UI::UIException(_(
-                                         "May you consider deleting the window before reallocating") );
+PasswordDialog::button_press_handler(Event& _e) {
+  
+    YACURS::EventEx<YACURS::Button*>& e =
+	dynamic_cast<YACURS::EventEx<YACURS::Buton*>&>(_e);
 
+    
+}
 
-    window = newwin(getHeight(), getWidth(), getStartY(), getStartX() );
-
-    if (window == NULL)
-        throw YAPET::UI::UIException(_("Error creating password dialog") );
-
-    pwidget1 = new YAPET::UI::PasswordWidget(getStartX() + 1,
-                                             getStartY() + 3,
-                                             getWidth() - 2);
-
-    if (pwtype == NEW_PW)
-        pwidget2 = new YAPET::UI::PasswordWidget(getStartX() + 1,
-                                                 getStartY() + 5,
-                                                 getWidth() - 2);
-
-    okbutton = new YAPET::UI::Button(_("OK"),
-                                     getStartX() + 1,
-                                     getStartY() + getHeight() - 2);
-    cancelbutton = new YAPET::UI::Button(_("Cancel"),
-                                         getStartX() + okbutton->getLength() + 2,
-                                         getStartY() + getHeight() - 2);
-    if (has_quitbutton) {
-        quitbutton = new YAPET::UI::Button(_("Quit"),
-                                           getStartX() +
-                                           okbutton->getLength() + 1 +
-                                           cancelbutton->getLength() + 2,
-                                           getStartY() + getHeight() - 2);
+PasswordDialog::PasswordDialog(PWTYPE pt) : Dialog(),
+					    pwinput1(new YACURS::Input()),
+					    pwinput2(pt==NEW_PW? new YACURS::Input() : 0),
+					    line1(new YACURS::Label(_("Enter password for "))),
+					    linefn(new YACURS::Label(fn)),
+					    line2(pt==NEW_PW? new YACURS::Label(_("Confirm password")): 0)
+					    pwtype(pt) {
+					    
+    widget(line1); // add label to dialog
+    widget(linefn); // add label to dialog
+    
+    pwinput1->obscure_input(true); 
+    widget(pwinput1);
+    
+    if (pwtype==NEW_PW) {
+	widget(line2);
+	
+	pwinput2->obscure_input(true);
+	widget(pwinput2);
     }
-}
-
-PasswordDialog::PasswordDialog(PWTYPE pt,
-                               std::string fn,
-                               unsigned int tout,
-                               bool qb)
-throw(YAPET::UI::UIException) : window(NULL),
-    pwidget1(NULL),
-    pwidget2(NULL),
-    okbutton(NULL),
-    cancelbutton(NULL),
-    quitbutton(NULL),
-    pwtype(pt),
-    key(NULL),
-    filename(fn),
-    input_timeout(tout),
-    has_quitbutton(qb),
-    quit_pressed(false) {
-    createWindow();
-}
+							    }
 
 PasswordDialog::~PasswordDialog() {
-    delete pwidget1;
+    assert(pwinput1!=0);
+    assert(line1!=0);
+    assert(linefn!=0);
 
-    if (pwtype == NEW_PW)
-        delete pwidget2;
+    delete pwinput1;
+    delete line1;
+    delete linefn;
 
-    delete okbutton;
-    delete cancelbutton;
-    if (has_quitbutton) {
-        assert(quitbutton != NULL);
-        delete quitbutton;
-    }
-#ifdef PARANOID
-    wclear(window);
-#endif
-    delwin(window);
+    if (line2!=0) delete line2;
+    if (pwinput2!=0) delete pwinput2;
 }
 
 void

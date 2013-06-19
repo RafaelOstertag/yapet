@@ -30,10 +30,14 @@
 // Crypt
 #include <file.h>
 
-class Globals {
-    public:
-        static YAPET::Key* key;
-        static YAPET::File* file;
-};
+namespace YAPET {
+    class Globals {
+	public:
+	    static YAPET::Key* key;
+	    static YAPET::File* file;
+	    static bool records_changed;
+	    static bool usefsecurity;
+    };
+}
 
 #endif // _MAINWINDOW_H

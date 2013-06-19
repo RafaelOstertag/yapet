@@ -188,7 +188,7 @@ namespace YAPET {
                  *
                  * @param s the file path of the file.
                  */
-                inline void setPetFile(std::string s) {
+                void setPetFile(std::string s) {
                     if (s.find(YAPET::CONSTS::Consts::getDefaultSuffix(),
                                s.length() -
                                YAPET::CONSTS::Consts::getDefaultSuffix().
@@ -205,7 +205,7 @@ namespace YAPET {
                  *
                  * A convenient method for locking all values.
                  */
-                inline void lockAll() {
+                void lockAll() {
                     petfile.lock();
                     timeout.lock();
                     filesecurity.lock();
@@ -222,7 +222,7 @@ namespace YAPET {
                  *
                  * A convenient method for unlocking all values.
                  */
-                inline void unlockAll() {
+                void unlockAll() {
                     petfile.unlock();
                     timeout.unlock();
                     filesecurity.unlock();
