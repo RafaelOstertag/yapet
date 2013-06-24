@@ -37,9 +37,7 @@
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_STRING
 # include <string>
-#endif
 
 namespace YAPET {
     namespace CONSTS {

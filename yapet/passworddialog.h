@@ -27,7 +27,7 @@
 # include "config.h"
 #endif
 
-#include <string>
+#include "secstring.h"
 
 #include "yacurs.h"
 
@@ -69,26 +69,23 @@ enum PWTYPE {
  */
 class PasswordDialog : public YACURS::Dialog  {
     private:
-        YACURS::Input* pwinput1;
-        YACURS::Input* pwinput2;
+        YACURS::Input<>* pwinput1;
+        YACURS::Input<>* pwinput2;
 	YACURS::Label* line1;
 	YACURS::Label* linefn;
 	YACURS::Label* line2;
         PWTYPE pwtype;
 
-        inline PasswordDialog(const PasswordDialog&) {
-        }
-
-        inline const PasswordDialog& operator=(const PasswordDialog&) {
+        const PasswordDialog& operator=(const PasswordDialog&) {
             return *this;
         }
 
     protected:
-	void button_press_handler(Event& _e);
+	void button_press_handler(YACURS::Event& _e);
 
     public:
         PasswordDialog(PWTYPE pt,
-                       std::string fn);
+		       std::string& fn);
         ~PasswordDialog();
 };
 

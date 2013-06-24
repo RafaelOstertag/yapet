@@ -57,27 +57,21 @@
 #include "cfg.h"
 #include "mainwindow.h"
 
-KeyDesc keys[] = { {3, 2, "S", _("Save File") },
-                   {4, 2, "R", _("Load File") },
-                   {5, 2, "L", _("Lock Screen") },
-                   {6, 2, "A", _("Add Entry") },
-                   {7, 2, "D", _("Delete Entry") },
-                   {8, 2, "O", _("Sort Order") },
-                   {9, 2, "/", _("Search") },
-                   {10, 2, "N", _("Search Next") },
-                   {11, 2, "C", _("Change Password") },
-                   {12, 2, "^L", _("Redraw Screen") },
-                   {13, 2, "Q", _("Quit") },
-#ifdef ENABLE_PWGEN
-                   {14, 2, "G", _("Password Generator") },
-#endif
-                   {0, 0, NULL, NULL}};
-
-
-
 //
 // Private
 //
+class HotKeyQ : public YACURS::HotKey {
+ public:
+    HotKeyQ() : HotKey('Q') {}
+    HotKeyQ(const HotKeyQ& hkq): HotKey(hkq) {}
+    void action() {
+	YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+    }
+
+    HotKey* clone() const {
+	return new HotKeyQ(*this);
+    }
+};
 
 //
 // Protected
@@ -86,3 +80,15 @@ KeyDesc keys[] = { {3, 2, "S", _("Save File") },
 //
 // Public
 //
+MainWindow::MainWindow(): Window(),
+			  recordlist(new YACURS::ListBox<YAPET::PartDec>()) {
+    Window::widget(recordlist);
+    frame(true);
+    add_hotkey(HotKeyQ() );
+}
+
+MainWindow::~MainWindow() {
+    assert(recordlist!=0);
+    delete recordlist;
+}
+

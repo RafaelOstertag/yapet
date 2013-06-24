@@ -96,3 +96,13 @@ PartDec::operator< (const PartDec& pd) const {
 
     return false;
 }
+
+bool
+PartDec::operator> (const PartDec& pd) const {
+    if (this == &pd) return false;
+
+    if (strcmp ( (const char*) name, (const char*) pd.name) > 0)
+        return true;
+
+    return false;
+}

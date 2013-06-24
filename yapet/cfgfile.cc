@@ -19,37 +19,24 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
 
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
-
 #ifdef HAVE_PWD_H
 # include <pwd.h>
 #endif
 
-#ifdef HAVE_FSTREAM
-# include <fstream>
-#endif
-
-#ifdef HAVE_SSTREAM
-# include <sstream>
-#endif
+#include <cassert>
+#include <cstdlib>
+#include <fstream>
+#include <sstream>
 
 #ifdef CFGDEBUG
-# ifdef HAVE_IOSTREAM
-#  include <iostream>
-# endif
-#endif
-
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
+# include <iostream>
 #endif
 
 #include "consts.h"

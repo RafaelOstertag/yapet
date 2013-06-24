@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2012  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -355,7 +355,7 @@ main(int argc, char** argv) {
 
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
                                                    POS_TOP,
-                                                   "YAPET <version>") );
+                                                   PACKAGE_STRING) );
 
 	YACURS::Curses::statusbar(new YACURS::StatusBar());
 
