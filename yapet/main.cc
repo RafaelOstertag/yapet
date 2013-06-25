@@ -51,10 +51,6 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
@@ -63,6 +59,7 @@
 # include <openssl/crypto.h>
 #endif
 
+#include <cstring>
 #include <cerrno>
 #include <iostream>
 #include <string>
@@ -356,8 +353,10 @@ main(int argc, char** argv) {
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
                                                    POS_TOP,
                                                    PACKAGE_STRING) );
+	YACURS::Curses::title()->alignment(YACURS::LineObject::CENTER);
 
 	YACURS::Curses::statusbar(new YACURS::StatusBar());
+	YACURS::Curses::statusbar()->push_msg(_("Press 'H' for help"));
 
 	YACURS::Curses::mainwindow(new MainWindow());
 

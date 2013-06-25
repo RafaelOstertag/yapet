@@ -29,28 +29,17 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#ifdef HAVE_STDIO_H
-# include <stdio.h>
-#endif
-
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
-
-#ifdef HAVE_FSTREAM
-# include <fstream>
-#endif
+#include <cstring>
+#include <cstdio>
+#include <iostream>
+#include <fstream>
 
 #include "csvimport.h"
 #include <structs.h>

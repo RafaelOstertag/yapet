@@ -30,9 +30,7 @@
 // Crypt
 #include <file.h>
 
-// YACURS
-#include <window.h>
-#include <listbox.h>
+#include <yacurs.h>
 
 /**
  */

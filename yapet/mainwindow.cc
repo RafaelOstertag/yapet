@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -34,10 +34,6 @@
 # include <sys/stat.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
 # include <time.h>
@@ -49,6 +45,7 @@
 # endif
 #endif // TIME_WITH_SYS_TIME
 
+#include <cstring>
 #include <cerrno>
 
 #ifdef ENABLE_PWGEN
@@ -80,10 +77,11 @@ class HotKeyQ : public YACURS::HotKey {
 //
 // Public
 //
-MainWindow::MainWindow(): Window(),
+MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
+						    0)) ,
 			  recordlist(new YACURS::ListBox<YAPET::PartDec>()) {
     Window::widget(recordlist);
-    frame(true);
+    frame(false);
     add_hotkey(HotKeyQ() );
 }
 
