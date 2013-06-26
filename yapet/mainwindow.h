@@ -32,11 +32,14 @@
 
 #include <yacurs.h>
 
+#include "help.h"
+
 /**
  */
 class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
+HelpDialog* helpdialog;
 
         MainWindow(const MainWindow&) {
         }
@@ -45,9 +48,13 @@ class MainWindow : public YACURS::Window {
             return *this;
         }
 
+void window_close_handler(YACURS::Event& e);
+
     public:
         MainWindow();
         virtual ~MainWindow();
+
+	void show_help();
 };
 
 #endif // _MAINWINDOW_H

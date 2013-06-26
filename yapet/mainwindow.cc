@@ -54,21 +54,82 @@
 #include "cfg.h"
 #include "mainwindow.h"
 
+class HotKeyQ : public YACURS::HotKey {
+    public:
+	HotKeyQ() : HotKey('Q') {}
+	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq) {}
+	void action() {
+	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyQ(*this);
+	}
+};
+
+class HotKeyq : public YACURS::HotKey {
+    public:
+	HotKeyq() : HotKey('q') {}
+	HotKeyq(const HotKeyq& hkq): HotKey(hkq) {}
+	void action() {
+	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyq(*this);
+	}
+};
+
+class HotKeyH : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyH(MainWindow* p) : HotKey('H'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyH(const HotKeyH& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_help();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyH(*this);
+	}
+};
+
+class HotKeyh : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyh(MainWindow* p) : HotKey('h'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyh(const HotKeyh& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_help();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyh(*this);
+	}
+};
+
 //
 // Private
 //
-class HotKeyQ : public YACURS::HotKey {
- public:
-    HotKeyQ() : HotKey('Q') {}
-    HotKeyQ(const HotKeyQ& hkq): HotKey(hkq) {}
-    void action() {
-	YACURS::EventQueue::submit(YACURS::EVT_QUIT);
-    }
+void
+MainWindow::window_close_handler(YACURS::Event& e) {
+    assert(e == YACURS::EVT_WINDOW_CLOSE);
+    YACURS::EventEx<YACURS::WindowBase*>& evt =
+	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
-    HotKey* clone() const {
-	return new HotKeyQ(*this);
+    if (helpdialog!=0 && evt.data()==helpdialog) {
+	delete helpdialog;
+	helpdialog=0;
     }
-};
+}
 
 //
 // Protected
@@ -79,14 +140,41 @@ class HotKeyQ : public YACURS::HotKey {
 //
 MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						    0)) ,
-			  recordlist(new YACURS::ListBox<YAPET::PartDec>()) {
+    recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+    helpdialog(0) {
     Window::widget(recordlist);
     frame(false);
+
     add_hotkey(HotKeyQ() );
+    add_hotkey(HotKeyq() );
+
+    add_hotkey(HotKeyH(this) );
+    add_hotkey(HotKeyh(this) );
+
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YACURS::
+						  EVT_WINDOW_CLOSE,
+						  this,
+						  &MainWindow::
+						  window_close_handler) );
 }
 
 MainWindow::~MainWindow() {
     assert(recordlist!=0);
     delete recordlist;
+
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
+					 MainWindow>(
+                                                     YACURS::EVT_WINDOW_CLOSE,
+                                                     this,
+                                                     &MainWindow::
+                                                     window_close_handler) );
 }
 
+void
+MainWindow::show_help() {
+    assert(helpdialog==0);
+
+    helpdialog=new HelpDialog;
+    helpdialog->show();
+}

@@ -38,69 +38,156 @@
 //
 HelpDialog::HelpDialog():
     YACURS::Dialog(_("Help"), OK_ONLY, AUTOMATIC ) {
-mainpack=new YACURS::HPack;
-leftpack=new YACURS::VPack;
-rightpack=new YACURS::VPack;
+    mainpack=new YACURS::HPack;
+    leftpack=new YACURS::VPack;
+    rightpack=new YACURS::VPack;
 
-widget(mainpack);
-mainpack->add_back(leftpack);
-mainpack->add_back(rightpack);
+    widget(mainpack);
+    mainpack->add_back(leftpack);
+    mainpack->add_back(rightpack);
 
-savekey=new YACURS::Label(" S ");
-leftpack->add_back(savekey);
-savedescr=new YACURS::Label(_("Save File"));
-rightpack->add_back(savedescr);
+    savekey=new YACURS::Label(" S ");
+    leftpack->add_back(savekey);
+    savedescr=new YACURS::Label(_("Save File"));
+    rightpack->add_back(savedescr);
 
-loadkey=new YACURS::Label(" R ");
-leftpack->add_back(loadkey);
-loaddescr=new YACURS::Label(_("Load File"));
-rightpack->add_back(loaddescr);
+    loadkey=new YACURS::Label(" R ");
+    leftpack->add_back(loadkey);
+    loaddescr=new YACURS::Label(_("Load File"));
+    rightpack->add_back(loaddescr);
 
-lockkey=new YACURS::Label(" L ");
-leftpack->add_back(lockkey);
-lockdescr=new YACURS::Label(_("Lock Screen"));
-rightpack->add_back(lockdescr);
+    lockkey=new YACURS::Label(" L ");
+    leftpack->add_back(lockkey);
+    lockdescr=new YACURS::Label(_("Lock Screen"));
+    rightpack->add_back(lockdescr);
 
-addkey=new YACURS::Label(" A ");
-leftpack->add_back(addkey);
-adddescr=new YACURS::Label(_("Add Entry"));
-rightpack->add_back(adddescr);
+    addkey=new YACURS::Label(" A ");
+    leftpack->add_back(addkey);
+    adddescr=new YACURS::Label(_("Add Entry"));
+    rightpack->add_back(adddescr);
 
-delkey=new YACURS::Label(" D ");
-leftpack->add_back(delkey);
-deldescr=new YACURS::Label(_("Delete Entry"));
-rightpack->add_back(deldescr);
+    delkey=new YACURS::Label(" D ");
+    leftpack->add_back(delkey);
+    deldescr=new YACURS::Label(_("Delete Entry"));
+    rightpack->add_back(deldescr);
 
-sortkey=new YACURS::Label(" O ");
-leftpack->add_back(sortkey);
-sortdescr=new YACURS::Label(_("Sort Order"));
-rightpack->add_back(sortdescr);
+    sortkey=new YACURS::Label(" O ");
+    leftpack->add_back(sortkey);
+    sortdescr=new YACURS::Label(_("Sort Order"));
+    rightpack->add_back(sortdescr);
 
-searchkey=new YACURS::Label(" / ");
-leftpack->add_back(searchkey);
-searchdescr=new YACURS::Label(_("Search"));
-rightpack->add_back(searchdescr);
+    searchkey=new YACURS::Label(" / ");
+    leftpack->add_back(searchkey);
+    searchdescr=new YACURS::Label(_("Search"));
+    rightpack->add_back(searchdescr);
 
-searchnkey=new YACURS::Label(" N ");
-leftpack->add_back(searchnkey);
-searchndescr=new YACURS::Label(_("Search Next"));
-rightpack->add_back(searchndescr);
+    searchnkey=new YACURS::Label(" N ");
+    leftpack->add_back(searchnkey);
+    searchndescr=new YACURS::Label(_("Search Next"));
+    rightpack->add_back(searchndescr);
 
-chpwkey=new YACURS::Label(" C ");
-leftpack->add_back(chpwkey);
-chpwdescr=new YACURS::Label(_("Change Password"));
-rightpack->add_back(chpwdescr);
+    chpwkey=new YACURS::Label(" C ");
+    leftpack->add_back(chpwkey);
+    chpwdescr=new YACURS::Label(_("Change Password"));
+    rightpack->add_back(chpwdescr);
 
-redrawkey=new YACURS::Label(" ^L ");
-leftpack->add_back(redrawkey);
-redrawdescr=new YACURS::Label(_("Redraw Screen"));
-rightpack->add_back(redrawdescr);
+    redrawkey=new YACURS::Label(" ^L ");
+    leftpack->add_back(redrawkey);
+    redrawdescr=new YACURS::Label(_("Redraw Screen"));
+    rightpack->add_back(redrawdescr);
 
+#ifdef ENABLE_PWGEN
+    pwgenkey=new YACURS::Label(" G ");
+    leftpack->add_back(pwgenkey);
+    pwgendescr=new YACURS::Label(_("Password Generator"));
+    rightpack->add_back(pwgendescr);
+#endif
 
+    quitkey=new YACURS::Label(" Q ");
+    leftpack->add_back(quitkey);
+    quitdescr=new YACURS::Label(_("Quit"));
+    rightpack->add_back(quitdescr);
 
+    savekey->color(YACURS::DIALOG);
+    savedescr->color(YACURS::DIALOG);
+   
+    loadkey->color(YACURS::DIALOG);
+    loaddescr->color(YACURS::DIALOG);
+   
+    lockkey->color(YACURS::DIALOG);
+    lockdescr->color(YACURS::DIALOG);
+
+    addkey->color(YACURS::DIALOG);
+    adddescr->color(YACURS::DIALOG);
+
+    delkey->color(YACURS::DIALOG);
+    deldescr->color(YACURS::DIALOG);
+
+    sortkey->color(YACURS::DIALOG);
+    sortdescr->color(YACURS::DIALOG);
+
+    searchkey->color(YACURS::DIALOG);
+    searchdescr->color(YACURS::DIALOG);
+
+    searchnkey->color(YACURS::DIALOG);
+    searchndescr->color(YACURS::DIALOG);
+
+    chpwkey->color(YACURS::DIALOG);
+    chpwdescr->color(YACURS::DIALOG);
+
+    redrawkey->color(YACURS::DIALOG);
+    redrawdescr->color(YACURS::DIALOG);
+
+    quitkey->color(YACURS::DIALOG);
+    quitdescr->color(YACURS::DIALOG);
+
+#ifdef ENABLE_PWGENT
+    pwgenkey->color(YACURS::DIALOG);
+    pwgendescr->color(YACURS::DIALOG);
+#endif
 }
 
 HelpDialog::~HelpDialog() {
+    delete mainpack;
+    delete leftpack;
+    delete rightpack;
 
+    delete savekey;
+    delete savedescr;
+
+    delete loadkey;
+    delete loaddescr;
+
+    delete lockkey;
+    delete lockdescr;
+
+    delete addkey;
+    delete adddescr;
+
+    delete delkey;
+    delete deldescr;
+
+    delete sortkey;
+    delete sortdescr;
+
+    delete searchkey;
+    delete searchdescr;
+
+    delete searchnkey;
+    delete searchndescr;
+
+    delete chpwkey;
+    delete chpwdescr;
+
+    delete redrawkey;
+    delete redrawdescr;
+
+#ifdef ENABLE_PWGEN
+    delete pwgenkey;
+    delete pwgendescr;
+#endif
+
+    delete quitkey;
+    delete quitdescr;
 }
 
