@@ -116,9 +116,51 @@ class HotKeyh : public YACURS::HotKey {
 	}
 };
 
+class HotKeyR : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyR(MainWindow* p) : HotKey('R'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->file_open();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyR(*this);
+	}
+
+};
+
+class HotKeyr : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyr(MainWindow* p) : HotKey('r'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->file_open();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyr(*this);
+	}
+
+};
 //
 // Private
 //
+void
+MainWindow::open(std::string& fn) {
+
+}
+
 void
 MainWindow::window_close_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_WINDOW_CLOSE);
@@ -128,6 +170,20 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     if (helpdialog!=0 && evt.data()==helpdialog) {
 	delete helpdialog;
 	helpdialog=0;
+	return;
+    }
+
+    if (fileopendialog!=0 && evt.data()==fileopendialog) {
+	if (fileopendialog->dialog_state() == YACURS::DIALOG_OK) {
+	    open(fileopendialog->filepath());
+	}
+	delete fileopendialog;
+	fileopendialog=0;
+	return;
+    }
+
+    if (passworddialog!=0 && evt.data()==passworddialog) {
+
     }
 }
 
@@ -140,8 +196,10 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 //
 MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						    0)) ,
-    recordlist(new YACURS::ListBox<YAPET::PartDec>()),
-    helpdialog(0) {
+			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+			  helpdialog(0),
+			  fileopendialog(0),
+			  passworddialog(0) {
     Window::widget(recordlist);
     frame(false);
 
@@ -150,6 +208,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     add_hotkey(HotKeyH(this) );
     add_hotkey(HotKeyh(this) );
+
+    add_hotkey(HotKeyR(this));
+    add_hotkey(HotKeyr(this));
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
@@ -177,4 +238,12 @@ MainWindow::show_help() {
 
     helpdialog=new HelpDialog;
     helpdialog->show();
+}
+
+void
+MainWindow::show_file_open() {
+    assert(fileopendialog==0);
+
+    fileopendialog=new YACURS::FileLoadDialog;
+    fileopendialog->show();
 }

@@ -33,13 +33,16 @@
 #include <yacurs.h>
 
 #include "help.h"
+#include "passworddialog.h"
 
 /**
  */
 class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
-HelpDialog* helpdialog;
+	HelpDialog* helpdialog;
+	PasswordDialog* passworddialog;
+	YACURS::FileLoadDialog* fileopendialog;
 
         MainWindow(const MainWindow&) {
         }
@@ -48,13 +51,16 @@ HelpDialog* helpdialog;
             return *this;
         }
 
-void window_close_handler(YACURS::Event& e);
+	void open(std::string& fn);
+
+	void window_close_handler(YACURS::Event& e);
 
     public:
         MainWindow();
         virtual ~MainWindow();
 
 	void show_help();
+	void show_file_open();
 };
 
 #endif // _MAINWINDOW_H
