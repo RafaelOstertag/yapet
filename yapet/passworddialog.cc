@@ -38,7 +38,7 @@ PasswordDialog::PasswordDialog(PWTYPE pt, std::string& fn) : Dialog(_("Enter Pas
 					    line1(new YACURS::Label(_("Enter password for "))),
 					    linefn(new YACURS::Label(fn)),
 							     line2(pt==NEW_PW? new YACURS::Label(_("Confirm password")): 0),
-					    pwtype(pt) {
+					    __pwtype(pt) {
 					    
     widget(line1); // add label to dialog
     widget(linefn); // add label to dialog
@@ -46,7 +46,7 @@ PasswordDialog::PasswordDialog(PWTYPE pt, std::string& fn) : Dialog(_("Enter Pas
     pwinput1->obscure_input(true); 
     widget(pwinput1);
     
-    if (pwtype==NEW_PW) {
+    if (__pwtype==NEW_PW) {
 	widget(line2);
 	
 	pwinput2->obscure_input(true);

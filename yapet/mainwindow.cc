@@ -53,6 +53,7 @@
 #endif
 #include "cfg.h"
 #include "mainwindow.h"
+#include "globals.h"
 
 class HotKeyQ : public YACURS::HotKey {
     public:
@@ -126,7 +127,7 @@ class HotKeyR : public YACURS::HotKey {
 	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    ptr->file_open();
+	    ptr->show_file_open();
 	}
 
 	HotKey* clone() const {
@@ -145,7 +146,7 @@ class HotKeyr : public YACURS::HotKey {
 	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    ptr->file_open();
+	    ptr->show_file_open();
 	}
 
 	HotKey* clone() const {
@@ -158,7 +159,10 @@ class HotKeyr : public YACURS::HotKey {
 //
 void
 MainWindow::open(std::string& fn) {
+    assert(passworddialog==0);
 
+    passworddialog=new PasswordDialog(EXISTING_PW, fn);
+    passworddialog->show();
 }
 
 void
@@ -174,8 +178,9 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (fileopendialog!=0 && evt.data()==fileopendialog) {
-	if (fileopendialog->dialog_state() == YACURS::DIALOG_OK) {
-	    open(fileopendialog->filepath());
+	if (fileopendialog->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	    std::string tmp = fileopendialog->filepath();
+	    open(tmp);
 	}
 	delete fileopendialog;
 	fileopendialog=0;
@@ -183,7 +188,28 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (passworddialog!=0 && evt.data()==passworddialog) {
+	if (passworddialog->pwtype() == EXISTING_PW &&
+	    passworddialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
+	    std::string pw=passworddialog->password(0);
+#warning "Proper implementation needed"
+	    if (YAPET::Globals::key!=0)
+		delete YAPET::Globals::key;
+	    if (YAPET::Globals::file!=0)
+		delete YAPET::Globals::file;
 
+	    try {
+		YAPET::Globals::key = new YAPET::Key(pw.c_str());
+		YAPET::Globals::file = new YAPET::File(
+	    
+	}
+	delete passworddialog;
+	passworddialog=0;
+	
+    }
+
+    if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
+	delete errormsgdialog;
+	errormsgdialog=0;
     }
 }
 
@@ -195,11 +221,12 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 // Public
 //
 MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
-						    0)) ,
-			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
-			  helpdialog(0),
-			  fileopendialog(0),
-			  passworddialog(0) {
+						0)) ,
+    recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+    helpdialog(0),
+    fileopendialog(0),
+    passworddialog(0),
+    errormsgdialog(0) {
     Window::widget(recordlist);
     frame(false);
 

@@ -69,12 +69,12 @@ enum PWTYPE {
  */
 class PasswordDialog : public YACURS::Dialog  {
     private:
-        YACURS::Input<>* pwinput1;
-        YACURS::Input<>* pwinput2;
+        YACURS::Input<std::string>* pwinput1;
+        YACURS::Input<std::string>* pwinput2;
 	YACURS::Label* line1;
 	YACURS::Label* linefn;
 	YACURS::Label* line2;
-        PWTYPE pwtype;
+        PWTYPE __pwtype;
 
         const PasswordDialog& operator=(const PasswordDialog&) {
             return *this;
@@ -87,6 +87,22 @@ class PasswordDialog : public YACURS::Dialog  {
         PasswordDialog(PWTYPE pt,
 		       std::string& fn);
         ~PasswordDialog();
+
+	PWTYPE pwtype() const { return __pwtype; }
+	
+	bool password_match() const {
+	    if (__pwtype==EXISTING_PW)
+		return pwinput1->input() == pwinput2->input();
+	    else
+		true;
+	}
+
+	std::string password(bool* match) const {
+	    if (match!=0)
+		*match = password_match();
+
+	    return pwinput1->input();
+	}
 };
 
 #endif // _PASSWORDDIALOG_H

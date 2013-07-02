@@ -40,11 +40,6 @@
 #include <string>
 
 #include "secstring.h"
-#include "basewindow.h"
-#include "button.h"
-#include "checkboxgroup.h"
-#include "intinwidget.h"
-#include "pwgen/pwgen.h"
 
 /**
  * @brief Password Generator Dialog

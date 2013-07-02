@@ -42,6 +42,7 @@ class MainWindow : public YACURS::Window {
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
 	HelpDialog* helpdialog;
 	PasswordDialog* passworddialog;
+	YACURS::MessageBox* errormsgdialog;
 	YACURS::FileLoadDialog* fileopendialog;
 
         MainWindow(const MainWindow&) {
