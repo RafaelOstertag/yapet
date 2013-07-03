@@ -103,6 +103,10 @@ namespace YAPET {
                 void isLocked() const {
                     return locked;
                 }
+
+		operator T() const {
+		    return val;
+		}
         };
 
         /**

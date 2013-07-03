@@ -45,14 +45,14 @@ class MainWindow : public YACURS::Window {
 	YACURS::MessageBox* errormsgdialog;
 	YACURS::FileLoadDialog* fileopendialog;
 
+	std::string filename;
+
         MainWindow(const MainWindow&) {
         }
 
         const MainWindow& operator=(const MainWindow&) {
             return *this;
         }
-
-	void open(std::string& fn);
 
 	void window_close_handler(YACURS::Event& e);
 

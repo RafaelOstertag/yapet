@@ -23,36 +23,32 @@
 
 #include <cassert>
 
-void
-PasswordDialog::button_press_handler(YACURS::Event& _e) {
-  
-    YACURS::EventEx<YACURS::Button*>& e =
-	dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(_e);
-
-    
-}
-
 PasswordDialog::PasswordDialog(PWTYPE pt, std::string& fn) : Dialog(_("Enter Password")),
-					    pwinput1(new YACURS::Input<>()),
+							     pwinput1(new YACURS::Input<>()),
 							     pwinput2(pt==NEW_PW? new YACURS::Input<>() : 0),
-					    line1(new YACURS::Label(_("Enter password for "))),
-					    linefn(new YACURS::Label(fn)),
+							     line1(new YACURS::Label(_("Enter password for "))),
+							     linefn(new YACURS::Label(fn)),
 							     line2(pt==NEW_PW? new YACURS::Label(_("Confirm password")): 0),
-					    __pwtype(pt) {
-					    
-    widget(line1); // add label to dialog
-    widget(linefn); // add label to dialog
-    
-    pwinput1->obscure_input(true); 
-    widget(pwinput1);
-    
+							     __pwtype(pt) {
+
     if (__pwtype==NEW_PW) {
 	widget(line2);
+
+	line2->color(YACURS::DIALOG);
 	
 	pwinput2->obscure_input(true);
 	widget(pwinput2);
     }
-							    }
+
+    pwinput1->obscure_input(true); 
+    widget(pwinput1);
+					    
+    widget(linefn); // add label to dialog
+    widget(line1); // add label to dialog
+
+    linefn->color(YACURS::DIALOG);
+    line1->color(YACURS::DIALOG);
+							     }
 
 PasswordDialog::~PasswordDialog() {
     assert(pwinput1!=0);

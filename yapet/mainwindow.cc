@@ -157,13 +157,6 @@ class HotKeyr : public YACURS::HotKey {
 //
 // Private
 //
-void
-MainWindow::open(std::string& fn) {
-    assert(passworddialog==0);
-
-    passworddialog=new PasswordDialog(EXISTING_PW, fn);
-    passworddialog->show();
-}
 
 void
 MainWindow::window_close_handler(YACURS::Event& e) {
@@ -179,8 +172,13 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 
     if (fileopendialog!=0 && evt.data()==fileopendialog) {
 	if (fileopendialog->dialog_state() == YACURS::Dialog::DIALOG_OK) {
-	    std::string tmp = fileopendialog->filepath();
-	    open(tmp);
+	    filename = fileopendialog->filepath();
+	    assert(passworddialog==0);
+
+	    passworddialog=new PasswordDialog(EXISTING_PW, filename);
+	    passworddialog->show();
+	} else {
+	    filename.clear();
 	}
 	delete fileopendialog;
 	fileopendialog=0;
@@ -188,6 +186,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (passworddialog!=0 && evt.data()==passworddialog) {
+	assert(!filename.empty());
 	if (passworddialog->pwtype() == EXISTING_PW &&
 	    passworddialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
 	    std::string pw=passworddialog->password(0);
@@ -199,17 +198,24 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 
 	    try {
 		YAPET::Globals::key = new YAPET::Key(pw.c_str());
-		YAPET::Globals::file = new YAPET::File(
+		YAPET::Globals::file = new YAPET::File(filename, *YAPET::Globals::key, false, YAPET::CONFIG::config.filesecurity);
+		recordlist->set ( YAPET::Globals::file->read (*YAPET::Globals::key));
+		YACURS::Curses::statusbar()->push_msg (filename + _ (" opened") );
+	    } catch (...) {
+#warning "To be implemented"
+		abort();
+	    }
 	    
 	}
 	delete passworddialog;
 	passworddialog=0;
-	
+	return;
     }
 
     if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
 	delete errormsgdialog;
 	errormsgdialog=0;
+	return;
     }
 }
 

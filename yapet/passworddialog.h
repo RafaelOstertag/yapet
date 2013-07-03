@@ -80,9 +80,6 @@ class PasswordDialog : public YACURS::Dialog  {
             return *this;
         }
 
-    protected:
-	void button_press_handler(YACURS::Event& _e);
-
     public:
         PasswordDialog(PWTYPE pt,
 		       std::string& fn);
