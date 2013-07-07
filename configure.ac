@@ -26,7 +26,7 @@ AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [no])
 AC_CHECK_PROG([XSLTPROC], [xsltproc], [xsltproc], [no])
 AC_CHECK_PROG([LYNX], [lynx], [lynx], [no])
 AC_CHECK_PROG([W3M], [w3m], [w3m], [no])
-LT_INIT([disable-static])
+LT_INIT
 LT_LANG([C++])
 AC_LANG([C++])
 
@@ -154,7 +154,7 @@ AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test x$USE_INCLUDED_LIBINTL = xyes])
 AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
 AM_CONDITIONAL([BUILDPWGEN], [test x$my_enablepwgen = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
-AM_CONDITIONAL([DISABLE_ASSERT], [test x$my_debug = xno])
+AM_CONDITIONAL([DISABLE_DEBUG], [test x$my_debug = xno])
 AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	crypt/Makefile

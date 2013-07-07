@@ -14,7 +14,7 @@ if USE_INCLUDED_LIBINTL
 libui_a_CPPFLAGS += -I$(top_builddir)/intl
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 libui_a_CPPFLAGS += -DNDEBUG
 else
 libui_a_CPPFLAGS += -DDEBUG

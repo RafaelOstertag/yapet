@@ -10,7 +10,7 @@ if USE_INCLUDED_LIBINTL
 libypwgen_a_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 libypwgen_a_CPPFLAGS += -DNDEBUG
 else
 libypwgen_a_CPPFLAGS += -DDEBUG

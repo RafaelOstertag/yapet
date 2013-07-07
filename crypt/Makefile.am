@@ -11,7 +11,7 @@ if USE_INCLUDED_LIBINTL
 libgpcrypt_a_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 libgpcrypt_a_CPPFLAGS += -DNDEBUG
 else
 libgpcrypt_a_CPPFLAGS += -DDEBUG

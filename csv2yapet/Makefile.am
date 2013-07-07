@@ -10,7 +10,7 @@ if USE_INCLUDED_LIBINTL
 csv2yapet_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 csv2yapet_CPPFLAGS += -DNDEBUG
 else
 csv2yapet_CPPFLAGS += -DDEBUG

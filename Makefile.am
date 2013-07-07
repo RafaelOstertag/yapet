@@ -37,22 +37,6 @@ DISTCLEANFILES = yapet.desktop
 
 ACLOCAL_AMFLAGS = -I m4
 
-if !DISABLE_ASSERT
-all-local:
-	@echo ""
-	@echo "***************************************************"
-	@echo "*                                                 *"
-	@echo "* Please note: asserts are enabled in this build, *"
-	@echo "*              it should therefore not be used    *"
-	@echo "*              for stable distributions.          *"
-	@echo "*                                                 *"
-	@echo "* You  can  disable  asserts  by  providing       *"
-	@echo "* --disable-assert when invoking configure.       *"
-	@echo "*                                                 *"
-	@echo "***************************************************"
-	@echo ""
-endif
-
 clean-local:
 	rm -rf SunWS_cache
 
