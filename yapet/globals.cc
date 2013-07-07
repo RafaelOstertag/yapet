@@ -28,6 +28,6 @@ using namespace YAPET;
 
 YAPET::Key* Globals::key;
 YAPET::File* Globals::file;
-bool records_changed;
-bool usefsecurity;
+bool Globals::records_changed;
+bool Globals::usefsecurity;
 
