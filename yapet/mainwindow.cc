@@ -219,6 +219,19 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 }
 
+void
+MainWindow::close_pet_file() {
+    if (YAPET::Globals::records_changed) {
+
+
+    }
+}
+
+void
+MainWindow::show_close_confirm_dialog() {
+    assert(closeconfirmdialog==0);    
+}
+
 //
 // Protected
 //
@@ -232,7 +245,8 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     helpdialog(0),
     fileopendialog(0),
     passworddialog(0),
-    errormsgdialog(0) {
+    errormsgdialog(0),
+    closeconfirmdialog(0) {
     Window::widget(recordlist);
     frame(false);
 

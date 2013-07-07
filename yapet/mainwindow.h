@@ -43,6 +43,7 @@ class MainWindow : public YACURS::Window {
 	HelpDialog* helpdialog;
 	PasswordDialog* passworddialog;
 	YACURS::MessageBox* errormsgdialog;
+	YACURS::MessageBox2* closeconfirmdialog;
 	YACURS::FileLoadDialog* fileopendialog;
 
 	std::string filename;
@@ -53,6 +54,10 @@ class MainWindow : public YACURS::Window {
         const MainWindow& operator=(const MainWindow&) {
             return *this;
         }
+
+	void close_pet_file();
+
+	void show_close_confirm_dialog();
 
 	void window_close_handler(YACURS::Event& e);
 
