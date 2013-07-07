@@ -24,7 +24,7 @@ yapet_LDADD += $(builddir)/pwgen/libypwgen.a
 yapet_SOURCES += pwgendialog.h pwgendialog.cc
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 yapet_CPPFLAGS += -DNDEBUG
 else
 yapet_CPPFLAGS += -DDEBUG
