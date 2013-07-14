@@ -55,9 +55,16 @@ class MainWindow : public YACURS::Window {
             return *this;
         }
 
-	void close_pet_file();
+	void save_and_close_petfile();
+	void close_petfile();
 
-	void show_close_confirm_dialog();
+	/**
+	 * @param checkchanges if \c true, check whether or not there
+	 * are changes pending is check. If changes are pending, a
+	 * dialog will be displayed asking whether or not changes
+	 * should be saved.
+	 */
+	void ui_close_pet_file(bool checkchanges=true);
 
 	void window_close_handler(YACURS::Event& e);
 

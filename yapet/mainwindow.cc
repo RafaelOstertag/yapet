@@ -127,6 +127,7 @@ class HotKeyR : public YACURS::HotKey {
 	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
+	    ptr->close_file
 	    ptr->show_file_open();
 	}
 
@@ -220,16 +221,40 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 }
 
 void
-MainWindow::close_pet_file() {
-    if (YAPET::Globals::records_changed) {
+MainWindow::save_petfile() {
+    assert(YAPET::Globals::key!=0);
+    assert(YAPET::Globals::file!=0);
 
+    YAPET::Globals::file->save(recordlist->list());
 
-    }
+    records_changed=false;    
 }
 
 void
-MainWindow::show_close_confirm_dialog() {
-    assert(closeconfirmdialog==0);    
+MainWindow::close_petfile() {
+    delete YAPET::Globals::file;
+    YAPET::Globals::file=0;
+
+    delete YAPET::Globals::key;
+    YAPET::Globals::key=0;
+
+    records_changed=false;    
+}
+
+void
+MainWindow::ui_close_pet_file(bool checkchanges=true) {
+    if (checkchanges && YAPET::Globals::records_changed) {
+	assert(closeconfirmdialog==0);
+	
+	closeconfirm=new YACURS::MessageBox2(_("Save Changes"),
+					     YAPET::Globals::file->getFilename(),
+					     _("has unsaved changes. Save?"),
+					     YACURS::YESNO);
+	closeconfirm->show();
+	return;
+    }
+
+    close_petfile();
 }
 
 //
