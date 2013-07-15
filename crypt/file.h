@@ -362,7 +362,7 @@ namespace YAPET {
             ~File();
 
             //! Saves a password record list.
-            void save (std::list<PartDec>& records) throw (YAPETException);
+            void save (const std::list<PartDec>& records) throw (YAPETException);
             //! Reads the stored password records from the file.
             std::list<PartDec> read (const Key& key) const throw (YAPETException);
             //! Returns the file name of the current file.

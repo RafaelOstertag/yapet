@@ -779,12 +779,12 @@ File::~File() {
  * @sa PartDec
  */
 void
-File::save (std::list<PartDec>& records) throw (YAPETException) {
+File::save (const std::list<PartDec>& records) throw (YAPETException) {
     if (usefsecurity)
         setFileSecurity();
 
     preparePWSave();
-    std::list<PartDec>::iterator it = records.begin();
+    std::list<PartDec>::const_iterator it = records.begin();
 
     while (it != records.end() ) {
         write ( it->getEncRecord() );
