@@ -22,171 +22,11 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#ifdef HAVE_SIGNAL_H
-# include <signal.h>
-#endif
-
-#include <structs.h>
-#include <partdec.h>
-#include <crypt.h>
-
 #include "../intl.h"
-#include "colors.h"
-#include "messagebox.h"
-#include "dialogbox.h"
+#include "globals.h"
 #include "passwordrecord.h"
-#include "lockscreen.h"
 
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
-/**
- * @brief Class for calling the signal handler of \c PasswordRecord.
- *
- * This class is passed to \c BaseWindow::setTimeout() as class for calling the
- * signal handler of \c PasswordRecord.
- */
-class
-PasswordRecord::Alarm : public YAPET::UI::BaseWindow::AlarmFunction {
-    private:
-        PasswordRecord& ref;
-    public:
-        inline Alarm(PasswordRecord& r) : ref(r) {
-        }
-
-        inline void process(int signo) {
-            ref.handle_signal(signo);
-        }
-};
-
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-void
-PasswordRecord::handle_signal(int signo) {
-    if (signo == SIGALRM) {
-        assert(file->getFilename().length() > 0);
-        LockScreen* lockscreen = new LockScreen(key, file, true);
-        assert(lockscreen != NULL);
-
-        lockscreen->run();
-
-        // The lock screen has to be removed before calling refreshAll(), or
-        // the lock screen throws an exception, hence we have to save the value.
-        bool b1 = lockscreen->getDoQuit();
-
-        // We let other methods handle the resize. Calling the
-        // BaseWindow::resizeAll() method here leads to SEGV.
-        resize_due = lockscreen->getResizeDue();
-
-        delete lockscreen;
-
-        YAPET::UI::BaseWindow::refreshAll();
-        if (b1) {
-            flushinp();
-            ungetch('q');
-        }
-    }
-}
-
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
-void
-PasswordRecord::createWindow() throw(YAPET::UI::UIException) {
-    if (window != NULL)
-        throw YAPET::UI::UIException(_(
-                                         "May you consider deleting the window before reallocating") );
-
-
-    window = newwin(getHeight(), getWidth(), getStartY(), getStartX() );
-
-    if (window == NULL)
-        throw YAPET::UI::UIException(_("Error creating password entry") );
-
-    name = new YAPET::UI::InputWidget(getStartX() + 1,
-                                      getStartY() + 2,
-                                      getWidth() - 2,
-                                      YAPET::NAME_SIZE,
-                                      readonly);
-    host = new YAPET::UI::InputWidget(getStartX() + 1,
-                                      getStartY() + 4,
-                                      getWidth() - 2,
-                                      YAPET::HOST_SIZE,
-                                      readonly);
-    username = new YAPET::UI::InputWidget(getStartX() + 1,
-                                          getStartY() + 6,
-                                          getWidth() - 2,
-                                          YAPET::USERNAME_SIZE,
-                                          readonly);
-    password = new YAPET::UI::InputWidget(getStartX() + 1,
-                                          getStartY() + 8,
-                                          getWidth() - 2,
-                                          YAPET::PASSWORD_SIZE,
-                                          readonly);
-    comment = new YAPET::UI::InputWidget(getStartX() + 1,
-                                         getStartY() + 10,
-                                         getWidth() - 2,
-                                         YAPET::COMMENT_SIZE,
-                                         readonly);
-    okbutton = new YAPET::UI::Button(_("OK"),
-                                     getStartX() + 1,
-                                     getStartY() + 12);
-    cancelbutton = new YAPET::UI::Button(_("Cancel"),
-                                         getStartX() + okbutton->getLength() + 2,
-                                         getStartY() + 12);
-#ifdef ENABLE_PWGEN
-    pwgenbutton = new YAPET::UI::Button(_("Generate Password"),
-                                        getStartX() + okbutton->getLength() + cancelbutton->getLength() + 3,
-                                        getStartY() + 12,
-                                        readonly);
-#endif
-    refresh();
-}
-
-/**
- * Ask the user whether or not he want to cancel, but only if fields have been changed.
- *
- */
-bool
-PasswordRecord::sureToCancel() throw(YAPET::UI::UIException) {
-    bool suretoexit = true;
-
-    if (entryChanged() ) {
-        YAPET::UI::DialogBox* question = NULL;
-
-        try {
-            question = new YAPET::UI::DialogBox(_("Q U E S T I O N"),
-                                                _(
-                                                    "Entries modified. Really cancel?") );
-            question->run();
-            YAPET::UI::ANSWER a = question->getAnswer();
-            suretoexit = a == YAPET::UI::ANSWER_OK ? true : false;
-            delete question;
-        } catch (YAPET::UI::UIException&) {
-            if (question != NULL)
-                delete question;
-        }
-
-        refresh();
-    }
-
-    if (suretoexit) {
-        encentry = NULL;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-PasswordRecord::PasswordRecord(YAPET::Key& k,
-                               const YAPET::File& f,
-                               YAPET::PartDec* pe,
-                               unsigned int timeout,
-                               bool ro)
-throw(YAPET::UI::UIException) : window(NULL),
+PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
     name(NULL),
     host(NULL),
     username(NULL),
@@ -197,25 +37,9 @@ throw(YAPET::UI::UIException) : window(NULL),
 #ifdef ENABLE_PWGEN
     pwgenbutton(NULL),
 #endif
-    key(&k),
-    file(&f),
     encentry(pe),
-    s_name(""),
-    s_host(""),
-    s_username(""),
-    s_password(""),
-    s_comment(""),
-    namechanged(false),
-    hostchanged(false),
-    usernamechanged(false),
-    passwordchanged(false),
-    commentchanged(false),
-    readonly(ro),
-    resize_due(false),
-    locktimeout(timeout) {
-    assert(file != NULL);
-    assert(key != NULL);
-    assert(file->getFilename().length() > 0);
+    __readonly(false) {
+    
     if (encentry != NULL) {
         YAPET::Record<YAPET::PasswordRecord>* dec_rec = NULL;
 

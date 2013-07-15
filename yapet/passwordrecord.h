@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -24,34 +24,19 @@
 #define _PASSWORDRECORD_H
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_NCURSES_H
-# include <ncurses.h>
-#else // HAVE_NCURSES_H
-# ifdef HAVE_CURSES_H
-#  include <curses.h>
-# else
-#  error "Neither curses.h nor ncurses.h available"
-# endif // HAVE_CURSES_H
-#endif // HAVE_NCURSES_H
-#include "curswa.h" // Leave this here. It depends on the above includes.
-
-#ifdef HAVE_STRING
 # include <string>
-#endif
 
 #include "file.h"
 #include "key.h"
 #include "partdec.h"
-
-#include "basewindow.h"
-#include "button.h"
-#include "passwordwidget.h"
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
 #endif
+
+#include <yacurs.h>
 
 /**
  * @brief A window that displays all the information associated with a
@@ -74,48 +59,20 @@
  * In any case, the memory occupied by the pointer returned by \c getEncEntry()
  * has to be freed by the caller. The class does not take care of this.
  */
-class PasswordRecord : protected YAPET::UI::BaseWindow {
+class PasswordRecord : protected YACURS::Dialog {
     private:
-        enum {
-            HEIGHT = 14
-        };
-
-        WINDOW* window;
-        YAPET::UI::InputWidget* name;
-        YAPET::UI::InputWidget* host;
-        YAPET::UI::InputWidget* username;
-        YAPET::UI::InputWidget* password;
-        YAPET::UI::InputWidget* comment;
-        YAPET::UI::Button* okbutton;
-        YAPET::UI::Button* cancelbutton;
+        YACURS::Input* name;
+        YACURS::Input* host;
+        YACURS::Input* username;
+        YACURS::Input* password;
+        YACURS::Input* comment;
+        YACURS::Button* okbutton;
+        YACURS::Button* cancelbutton;
 #ifdef ENABLE_PWGEN
-        YAPET::UI::Button* pwgenbutton;
+        YACURS::Button* pwgenbutton;
 #endif
-        YAPET::Key* key;
-        const YAPET::File* file; // Only used when locking the screen for
-                                 // displaying the file name
         YAPET::PartDec* encentry;
-        YAPET::UI::secstring s_name;
-        YAPET::UI::secstring s_host;
-        YAPET::UI::secstring s_username;
-        YAPET::UI::secstring s_password;
-        YAPET::UI::secstring s_comment;
-        bool namechanged;
-        bool hostchanged;
-        bool usernamechanged;
-        bool passwordchanged;
-        bool commentchanged;
-        bool readonly;
-
-        /**
-         * Used to inform the focus method to resize all windows. This is set
-         * by PasswordRecord::handle_signal.
-         *
-         * This attribute has been introduced because letting the signal
-         * handler resizing all windows leads to SEGV.
-         */
-        volatile bool resize_due;
-        unsigned int locktimeout;
+        bool __readonly;
 
         inline PasswordRecord(const PasswordRecord&) {
             assert(0);
@@ -125,44 +82,6 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
             assert(0);
             return *this;
         }
-
-        /**
-         * Helper function that calls BaseWindow::resizeAll() if resize_due is
-         * true. This function does not reset the resize_due attribute since
-         * this is the responsibility of ::resize();
-         */
-        inline void resize_as_needed() {
-            if (resize_due)
-                BaseWindow::resizeAll();
-        }
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-        class Alarm;
-        void handle_signal(int signo);
-
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-
-    protected:
-        inline int getWidth() const {
-            return maxX() - 8;
-        }
-
-        inline int getHeight() const {
-            return HEIGHT;
-        }
-
-        inline int getStartX() const {
-            return maxX() / 2 - getWidth() / 2;
-        }
-
-        inline int getStartY() const {
-            return maxY() / 2 - getHeight() / 2;
-        }
-
-        void createWindow() throw(YAPET::UI::UIException);
-
-        //! Asks the user whether or not he want to cancel
-        bool sureToCancel() throw(YAPET::UI::UIException);
 
     public:
         /**
@@ -182,25 +101,8 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          *
          * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord(YAPET::Key& k,
-                       const YAPET::File& f,
-                       YAPET::PartDec* pe,
-                       unsigned int timeout,
-                       bool ro) throw(YAPET::UI::UIException);
+        PasswordRecord(YAPET::PartDec* pe=NULL) throw(YAPET::UI::UIException);
         ~PasswordRecord();
-
-        /**
-         * @brief Shows the dialog and handles user input.
-         *
-         * Shows the dialog and handles user input.
-         *
-         * Call \c getEncEntry() for obtaining the encrypted password record.
-         */
-        void run() throw(YAPET::UI::UIException);
-
-        void resize() throw(YAPET::UI::UIException);
-
-        void refresh() throw(YAPET::UI::UIException);
 
         /**
          * @brief Returns the password record.
@@ -227,15 +129,11 @@ class PasswordRecord : protected YAPET::UI::BaseWindow {
          */
         bool entryChanged() const;
 
-        void setReadonly(bool ro);
+        void readonly(bool ro);
 
-        inline bool getReadonly() const {
+        inline bool readonly() const {
             return readonly;
         }
-
-#if defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
-        friend class PasswordRecord::Alarm;
-#endif // defined(HAVE_SIGACTION) && defined(HAVE_SIGNAL_H)
 };
 
 #endif // _PASSWORDRECORD_H

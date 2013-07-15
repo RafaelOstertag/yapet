@@ -6,9 +6,9 @@ endif
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = main.cc mainwindow.cc help.h help.cc cfgfile.h	\
-cfgfile.cc consts.h consts.cc cfg.h cfg.cc globals.h globals.cc	\
-passworddialog.h passworddialog.cc
+yapet_SOURCES = main.cc mainwindow.cc help.cc	\
+cfgfile.cc consts.cc cfg.cc globals.cc	\
+ passworddialog.cc passwordrecord.cc
 
 # statusbar.h fileopen.h passworddialog.h		\
 # passwordrecord.h   statusbar.cc fileopen.cc			\
