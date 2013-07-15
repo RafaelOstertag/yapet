@@ -55,8 +55,14 @@ class MainWindow : public YACURS::Window {
             return *this;
         }
 
-	void save_and_close_petfile();
+	void save_petfile();
 	void close_petfile();
+
+	void window_close_handler(YACURS::Event& e);
+
+    public:
+        MainWindow();
+        virtual ~MainWindow();
 
 	/**
 	 * @param checkchanges if \c true, check whether or not there
@@ -65,13 +71,6 @@ class MainWindow : public YACURS::Window {
 	 * should be saved.
 	 */
 	void ui_close_pet_file(bool checkchanges=true);
-
-	void window_close_handler(YACURS::Event& e);
-
-    public:
-        MainWindow();
-        virtual ~MainWindow();
-
 	void show_help();
 	void show_file_open();
 };

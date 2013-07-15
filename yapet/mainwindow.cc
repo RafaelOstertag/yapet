@@ -127,8 +127,12 @@ class HotKeyR : public YACURS::HotKey {
 	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    ptr->close_file
-	    ptr->show_file_open();
+	    if (YAPET::Globals::records_changed) {
+		ptr->ui_close_pet_file();
+	    } else {
+		ptr->ui_close_pet_file();
+		ptr->show_file_open();
+	    }
 	}
 
 	HotKey* clone() const {
@@ -147,7 +151,12 @@ class HotKeyr : public YACURS::HotKey {
 	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    ptr->show_file_open();
+	    if (YAPET::Globals::records_changed) {
+		ptr->ui_close_pet_file();
+	    } else {
+		ptr->ui_close_pet_file();
+		ptr->show_file_open();
+	    }
 	}
 
 	HotKey* clone() const {
@@ -191,12 +200,8 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	if (passworddialog->pwtype() == EXISTING_PW &&
 	    passworddialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
 	    std::string pw=passworddialog->password(0);
-#warning "Proper implementation needed"
-	    if (YAPET::Globals::key!=0)
-		delete YAPET::Globals::key;
-	    if (YAPET::Globals::file!=0)
-		delete YAPET::Globals::file;
-
+	    assert(YAPET::Globals::key==0);
+	    assert(YAPET::Globals::file==0);
 	    try {
 		YAPET::Globals::key = new YAPET::Key(pw.c_str());
 		YAPET::Globals::file = new YAPET::File(filename, *YAPET::Globals::key, false, YAPET::CONFIG::config.filesecurity);
@@ -227,7 +232,7 @@ MainWindow::save_petfile() {
 
     YAPET::Globals::file->save(recordlist->list());
 
-    records_changed=false;    
+    YAPET::Globals::records_changed=false;    
 }
 
 void
@@ -238,23 +243,7 @@ MainWindow::close_petfile() {
     delete YAPET::Globals::key;
     YAPET::Globals::key=0;
 
-    records_changed=false;    
-}
-
-void
-MainWindow::ui_close_pet_file(bool checkchanges=true) {
-    if (checkchanges && YAPET::Globals::records_changed) {
-	assert(closeconfirmdialog==0);
-	
-	closeconfirm=new YACURS::MessageBox2(_("Save Changes"),
-					     YAPET::Globals::file->getFilename(),
-					     _("has unsaved changes. Save?"),
-					     YACURS::YESNO);
-	closeconfirm->show();
-	return;
-    }
-
-    close_petfile();
+    YAPET::Globals::records_changed=false;    
 }
 
 //
@@ -302,6 +291,22 @@ MainWindow::~MainWindow() {
                                                      this,
                                                      &MainWindow::
                                                      window_close_handler) );
+}
+
+void
+MainWindow::ui_close_pet_file(bool checkchanges) {
+    if (checkchanges && YAPET::Globals::records_changed) {
+	assert(closeconfirmdialog==0);
+	
+	closeconfirmdialog=new YACURS::MessageBox2(_("Save Changes"),
+					     YAPET::Globals::file->getFilename(),
+					     _("has unsaved changes. Save?"),
+						   YACURS::Dialog::YESNO);
+	closeconfirmdialog->show();
+	return;
+    }
+
+    close_petfile();
 }
 
 void
