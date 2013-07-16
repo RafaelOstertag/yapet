@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -24,76 +24,113 @@
 
 #include "../intl.h"
 #include "globals.h"
+#include "crypt.h"
 #include "passwordrecord.h"
 
+void
+PasswordRecord::window_close_handler(YACURS::Event& e) {
+    assert(e == YACURS::EVT_WINDOW_CLOSE);
+    YACURS::EventEx<YACURS::WindowBase*>& evt =
+	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
+
+    if (errordialog!=0 && evt.data() == errordialog) {
+	delete errordialog;
+	errordialog=0;
+    }
+}
+
 PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
-    name(NULL),
-    host(NULL),
-    username(NULL),
-    password(NULL),
-    comment(NULL),
-    okbutton(NULL),
-    cancelbutton(NULL),
+    YACURS::Dialog(_("Password Entry")),
+    vpack(new YACURS::VPack),    
+    lname(new YACURS::Label(_("Name"))),
+    lhost(new YACURS::Label(_("Host"))),
+    lusername(new YACURS::Label(_("User Name"))),
+    lpassword(new YACURS::Label(_("Password"))),
+    lcomment(new YACURS::Label(_("Comment"))),
+    name(new YACURS::Input<std::string>(128)),
+    host(new YACURS::Input<std::string>(256)),
+    username(new YACURS::Input<std::string>(256)),
+    password(new YACURS::Input<std::string>(256)),
+    comment(new YACURS::Input<std::string>(512)),
 #ifdef ENABLE_PWGEN
-    pwgenbutton(NULL),
+    pwgenbutton(new YACURS::Button(_("Password Generator"))),
 #endif
     encentry(pe),
+    errordialog(0),
     __readonly(false) {
+
+    vpack->add_back(lname);
+    vpack->add_back(name);
+    vpack->add_back(lhost);
+    vpack->add_back(host);
+    vpack->add_back(lusername);
+    vpack->add_back(username);
+    vpack->add_back(lpassword);
+    vpack->add_back(password);
+    vpack->add_back(lcomment);
+    vpack->add_back(comment);
+#ifdef ENABLE_PWGEN
+    vpack->add_back(pwgenbutton);
+#endif
     
-    if (encentry != NULL) {
-        YAPET::Record<YAPET::PasswordRecord>* dec_rec = NULL;
+    if (encentry != 0) {
+        YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
 
         try {
-            YAPET::Crypt crypt(*key);
+            YAPET::Crypt crypt(*YAPET::Globals::key);
             dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
                 encentry->getEncRecord() );
             YAPET::PasswordRecord* ptr_rec = *dec_rec;
-            s_name = (char*)ptr_rec->name;
-            s_host = (char*)ptr_rec->host;
-            s_username = (char*)ptr_rec->username;
-            s_password = (char*)ptr_rec->password;
-            s_comment = (char*)ptr_rec->comment;
+            name->input(reinterpret_cast<char*>(ptr_rec->name));
+            host->input(reinterpret_cast<char*>(ptr_rec->host));
+            username->input(reinterpret_cast<char*>(ptr_rec->username));
+            password->input(reinterpret_cast<char*>(ptr_rec->password));
+            comment->input(reinterpret_cast<char*>(ptr_rec->comment));
             delete dec_rec;
         } catch (YAPET::YAPETException& ex) {
             if (dec_rec != NULL)
                 delete dec_rec;
 
-            YAPET::UI::MessageBox* msgbox = NULL;
-
             try {
-                msgbox =
-                    new YAPET::UI::MessageBox(_("E R R O R"), ex.what() );
-                msgbox->run();
-                delete msgbox;
-            } catch (YAPET::UI::UIException&) {
-                if (msgbox != NULL)
-                    delete msgbox;
+                errordialog =
+                    new YACURS::MessageBox(_("Error"), ex.what() );
+                errordialog->show();
+            } catch (YACURS::EXCEPTIONS::BaseCurEx&) {
+                if (errordialog != 0)
+                    delete errordialog;
 
                 // What should I do else, looks pretty screwed up??
             }
         }
     }
-
-    createWindow();
+    
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<PasswordRecord>(
+										    YACURS::EVT_WINDOW_CLOSE, this,
+							       &PasswordRecord::window_close_handler) );
 }
 
 PasswordRecord::~PasswordRecord() {
-#ifdef PARANOID
-    wclear(window);
-#endif
-    delwin(window);
+    delete lname;
+    delete lhost;
+    delete lusername;
+    delete lpassword;
+    delete lcomment;
     delete name;
     delete host;
     delete username;
     delete password;
     delete comment;
-    delete okbutton;
-    delete cancelbutton;
 #ifdef ENABLE_PWGEN
     delete pwgenbutton;
 #endif
+    delete vpack;
+
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<PasswordRecord>(
+										       YACURS::EVT_WINDOW_CLOSE, this,
+							       &PasswordRecord::window_close_handler) );
 }
 
+#if 0
 void
 PasswordRecord::run() throw(YAPET::UI::UIException) {
     PasswordRecord::Alarm alrm(*this);
@@ -526,3 +563,4 @@ PasswordRecord::setReadonly(bool ro) {
     pwgenbutton->setReadonly(readonly);
 #endif
 }
+#endif // #if 0

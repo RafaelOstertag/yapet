@@ -59,29 +59,33 @@
  * In any case, the memory occupied by the pointer returned by \c getEncEntry()
  * has to be freed by the caller. The class does not take care of this.
  */
-class PasswordRecord : protected YACURS::Dialog {
+class PasswordRecord : public YACURS::Dialog {
     private:
-        YACURS::Input* name;
-        YACURS::Input* host;
-        YACURS::Input* username;
-        YACURS::Input* password;
-        YACURS::Input* comment;
-        YACURS::Button* okbutton;
-        YACURS::Button* cancelbutton;
+	YACURS::VPack* vpack;
+	YACURS::Label* lname;
+	YACURS::Label* lhost;
+	YACURS::Label* lusername;
+	YACURS::Label* lpassword;
+	YACURS::Label* lcomment;
+        YACURS::Input<std::string>* name;
+        YACURS::Input<std::string>* host;
+        YACURS::Input<std::string>* username;
+        YACURS::Input<std::string>* password;
+        YACURS::Input<std::string>* comment;
 #ifdef ENABLE_PWGEN
         YACURS::Button* pwgenbutton;
 #endif
         YAPET::PartDec* encentry;
+	YACURS::MessageBox* errordialog;
         bool __readonly;
 
-        inline PasswordRecord(const PasswordRecord&) {
-            assert(0);
-        }
-
-        inline const PasswordRecord& operator=(const PasswordRecord&) {
+        const PasswordRecord& operator=(const PasswordRecord&) {
             assert(0);
             return *this;
         }
+
+	virtual void button_press_handler(YACURS::Event& e);
+	void window_close_handler(YACURS::Event& e);
 
     public:
         /**
@@ -101,7 +105,7 @@ class PasswordRecord : protected YACURS::Dialog {
          *
          * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord(YAPET::PartDec* pe=NULL) throw(YAPET::UI::UIException);
+        PasswordRecord(YAPET::PartDec* pe=NULL);
         ~PasswordRecord();
 
         /**
@@ -132,7 +136,7 @@ class PasswordRecord : protected YACURS::Dialog {
         void readonly(bool ro);
 
         inline bool readonly() const {
-            return readonly;
+            return __readonly;
         }
 };
 
