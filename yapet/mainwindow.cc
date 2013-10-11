@@ -164,6 +164,44 @@ class HotKeyr : public YACURS::HotKey {
 	}
 
 };
+
+class HotKeyA : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyA(MainWindow* p) : HotKey('A'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyA(const HotKeyA& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_password_record(false);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyA(*this);
+	}
+
+};
+
+class HotKeya : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeya(MainWindow* p) : HotKey('a'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeya(const HotKeya& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_password_record(false);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeya(*this);
+	}
+
+};
 //
 // Private
 //
@@ -218,6 +256,13 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    if (passwordrecord != 0 && evt.data() == passwordrecord) {
+#warning "To be implemented"
+	delete passwordrecord;
+	passwordrecord=0;
+	return;
+    }
+
     if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
 	delete errormsgdialog;
 	errormsgdialog=0;
@@ -257,10 +302,11 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						0)) ,
     recordlist(new YACURS::ListBox<YAPET::PartDec>()),
     helpdialog(0),
-    fileopendialog(0),
     passworddialog(0),
+			  passwordrecord(0),
     errormsgdialog(0),
-    closeconfirmdialog(0) {
+			  closeconfirmdialog(0),
+    fileopendialog(0) {
     Window::widget(recordlist);
     frame(false);
 
@@ -272,6 +318,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     add_hotkey(HotKeyR(this));
     add_hotkey(HotKeyr(this));
+
+    add_hotkey(HotKeyA(this));
+    add_hotkey(HotKeya(this));
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
@@ -323,4 +372,18 @@ MainWindow::show_file_open() {
 
     fileopendialog=new YACURS::FileLoadDialog;
     fileopendialog->show();
+}
+
+void
+MainWindow::show_password_record(bool selected) {
+#warning "Implement showing selected record"
+    assert(passwordrecord==0);
+ 
+    if (YAPET::Globals::key==0 ||
+	YAPET::Globals::file==0)
+	return;
+
+    passwordrecord=new PasswordRecord;
+    passwordrecord->show();
+
 }

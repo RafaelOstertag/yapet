@@ -34,6 +34,7 @@
 
 #include "help.h"
 #include "passworddialog.h"
+#include "passwordrecord.h"
 
 /**
  */
@@ -42,6 +43,7 @@ class MainWindow : public YACURS::Window {
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
 	HelpDialog* helpdialog;
 	PasswordDialog* passworddialog;
+	PasswordRecord* passwordrecord;
 	YACURS::MessageBox* errormsgdialog;
 	YACURS::MessageBox2* closeconfirmdialog;
 	YACURS::FileLoadDialog* fileopendialog;
@@ -73,6 +75,11 @@ class MainWindow : public YACURS::Window {
 	void ui_close_pet_file(bool checkchanges=true);
 	void show_help();
 	void show_file_open();
+	/**
+	 * @param selected whether or not to preload the dialog with
+	 * the currently selected password record.
+	 */
+	void show_password_record(bool selected);
 };
 
 #endif // _MAINWINDOW_H

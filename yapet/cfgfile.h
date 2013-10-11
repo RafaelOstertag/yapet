@@ -31,9 +31,8 @@
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <string>
+#include <sstream>
 
 // Used for the YAPET::PWGEN::RNGENGINE type
 #include "pwgen/rng.h"

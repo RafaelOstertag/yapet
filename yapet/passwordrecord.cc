@@ -19,7 +19,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include "../intl.h"
@@ -28,36 +28,54 @@
 #include "passwordrecord.h"
 
 void
+PasswordRecord::button_press_handler(YACURS::Event& e) {
+    Dialog::button_press_handler(e);
+
+#warning "To be implemented."
+}
+
+void
 PasswordRecord::window_close_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_WINDOW_CLOSE);
     YACURS::EventEx<YACURS::WindowBase*>& evt =
-	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
+        dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
-    if (errordialog!=0 && evt.data() == errordialog) {
-	delete errordialog;
-	errordialog=0;
+    if (errordialog != 0 && evt.data() == errordialog) {
+        delete errordialog;
+        errordialog = 0;
+        return;
+    }
+
+    if (evt.data() == this) {
+        assert(0);
     }
 }
 
-PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
-    YACURS::Dialog(_("Password Entry")),
-    vpack(new YACURS::VPack),    
-    lname(new YACURS::Label(_("Name"))),
-    lhost(new YACURS::Label(_("Host"))),
-    lusername(new YACURS::Label(_("User Name"))),
-    lpassword(new YACURS::Label(_("Password"))),
-    lcomment(new YACURS::Label(_("Comment"))),
-    name(new YACURS::Input<std::string>(128)),
-    host(new YACURS::Input<std::string>(256)),
-    username(new YACURS::Input<std::string>(256)),
-    password(new YACURS::Input<std::string>(256)),
-    comment(new YACURS::Input<std::string>(512)),
+PasswordRecord::PasswordRecord(YAPET::PartDec* pe)  :
+    YACURS::Dialog(_("Password Entry") ),
+    vpack(new YACURS::VPack),
+    lname(new YACURS::Label(_("Name") ) ),
+    lhost(new YACURS::Label(_("Host") ) ),
+    lusername(new YACURS::Label(_("User Name") ) ),
+    lpassword(new YACURS::Label(_("Password") ) ),
+    lcomment(new YACURS::Label(_("Comment") ) ),
+    name(new YACURS::Input<std::string> ),
+    host(new YACURS::Input<std::string> ),
+    username(new YACURS::Input<std::string>),
+    password(new YACURS::Input<std::string>),
+    comment(new YACURS::Input<std::string>),
 #ifdef ENABLE_PWGEN
-    pwgenbutton(new YACURS::Button(_("Password Generator"))),
+    pwgenbutton(new YACURS::Button(_("Password Generator") ) ),
 #endif
     encentry(pe),
     errordialog(0),
     __readonly(false) {
+
+    name->max_input(128);
+    host->max_input(256);
+    username->max_input(256);
+    password->max_input(256);
+    comment->max_input(512);
 
     vpack->add_back(lname);
     vpack->add_back(name);
@@ -72,7 +90,9 @@ PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
 #ifdef ENABLE_PWGEN
     vpack->add_back(pwgenbutton);
 #endif
-    
+
+    widget(vpack);
+
     if (encentry != 0) {
         YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
 
@@ -81,11 +101,11 @@ PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
             dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
                 encentry->getEncRecord() );
             YAPET::PasswordRecord* ptr_rec = *dec_rec;
-            name->input(reinterpret_cast<char*>(ptr_rec->name));
-            host->input(reinterpret_cast<char*>(ptr_rec->host));
-            username->input(reinterpret_cast<char*>(ptr_rec->username));
-            password->input(reinterpret_cast<char*>(ptr_rec->password));
-            comment->input(reinterpret_cast<char*>(ptr_rec->comment));
+            name->input(reinterpret_cast<char*>(ptr_rec->name) );
+            host->input(reinterpret_cast<char*>(ptr_rec->host) );
+            username->input(reinterpret_cast<char*>(ptr_rec->username) );
+            password->input(reinterpret_cast<char*>(ptr_rec->password) );
+            comment->input(reinterpret_cast<char*>(ptr_rec->comment) );
             delete dec_rec;
         } catch (YAPET::YAPETException& ex) {
             if (dec_rec != NULL)
@@ -103,10 +123,12 @@ PasswordRecord::PasswordRecord(YAPET::PartDec* pe) :
             }
         }
     }
-    
-    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<PasswordRecord>(
-										    YACURS::EVT_WINDOW_CLOSE, this,
-							       &PasswordRecord::window_close_handler) );
+
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
+                                          PasswordRecord>(
+                                          YACURS::EVT_WINDOW_CLOSE, this,
+                                          &PasswordRecord::
+                                          window_close_handler) );
 }
 
 PasswordRecord::~PasswordRecord() {
@@ -125,9 +147,27 @@ PasswordRecord::~PasswordRecord() {
 #endif
     delete vpack;
 
-    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<PasswordRecord>(
-										       YACURS::EVT_WINDOW_CLOSE, this,
-							       &PasswordRecord::window_close_handler) );
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
+                                             PasswordRecord>(
+                                             YACURS::EVT_WINDOW_CLOSE, this,
+                                             &PasswordRecord::
+                                             window_close_handler) );
+}
+
+bool
+PasswordRecord::changed() const {
+    if (name == 0 ||
+        host == 0 ||
+        username == 0 ||
+        password == 0 ||
+        comment == 0)
+        return false;
+
+    return name->changed() &&
+           host->changed() &&
+           username->changed() &&
+           password->changed() &&
+           comment->changed();
 }
 
 #if 0
@@ -563,4 +603,5 @@ PasswordRecord::setReadonly(bool ro) {
     pwgenbutton->setReadonly(readonly);
 #endif
 }
+
 #endif // #if 0

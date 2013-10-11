@@ -27,7 +27,8 @@
 # include "config.h"
 #endif
 
-# include <string>
+#include <string>
+#include <yacurs.h>
 
 #include "file.h"
 #include "key.h"
@@ -36,37 +37,36 @@
 # include "pwgendialog.h"
 #endif
 
-#include <yacurs.h>
-
 /**
  * @brief A window that displays all the information associated with a
  * decrypted password record.
  *
- * A window that displays all the information associated with a decrypted
- * password record. The window allows edition of the informations. If the
- * information are edited, a call to \c entryChanged() yields \c true if the
- * record has been edited.
+ * A window that displays all the information associated with a
+ * decrypted password record. The window allows edition of the
+ * informations. If the information are edited, a call to \c
+ * entryChanged() yields \c true if the record has been edited.
  *
- * To display an existing record, provide a valid pointer to \c PartDec object
- * when constructing the object. If the record has been changed, \c
- * getEncEntry() will return the pointer to the \c PartDec object holding the
- * altered record.
+ * To display an existing record, provide a valid pointer to \c
+ * PartDec object when constructing the object. If the record has been
+ * changed, \c getEncEntry() will return the pointer to the \c PartDec
+ * object holding the altered record.
  *
- * To display a window for creating a new password record, pass \c NULL to the
- * \c PartDec pointer argument when constructing. The new record can be
- * obtained by calling \c getEncEntry().
+ * To display a window for creating a new password record, pass \c
+ * NULL to the \c PartDec pointer argument when constructing. The new
+ * record can be obtained by calling \c getEncEntry().
  *
- * In any case, the memory occupied by the pointer returned by \c getEncEntry()
- * has to be freed by the caller. The class does not take care of this.
+ * In any case, the memory occupied by the pointer returned by \c
+ * getEncEntry() has to be freed by the caller. The class does not
+ * take care of this.
  */
 class PasswordRecord : public YACURS::Dialog {
     private:
-	YACURS::VPack* vpack;
-	YACURS::Label* lname;
-	YACURS::Label* lhost;
-	YACURS::Label* lusername;
-	YACURS::Label* lpassword;
-	YACURS::Label* lcomment;
+        YACURS::VPack* vpack;
+        YACURS::Label* lname;
+        YACURS::Label* lhost;
+        YACURS::Label* lusername;
+        YACURS::Label* lpassword;
+        YACURS::Label* lcomment;
         YACURS::Input<std::string>* name;
         YACURS::Input<std::string>* host;
         YACURS::Input<std::string>* username;
@@ -76,7 +76,7 @@ class PasswordRecord : public YACURS::Dialog {
         YACURS::Button* pwgenbutton;
 #endif
         YAPET::PartDec* encentry;
-	YACURS::MessageBox* errordialog;
+        YACURS::MessageBox* errordialog;
         bool __readonly;
 
         const PasswordRecord& operator=(const PasswordRecord&) {
@@ -84,58 +84,65 @@ class PasswordRecord : public YACURS::Dialog {
             return *this;
         }
 
-	virtual void button_press_handler(YACURS::Event& e);
-	void window_close_handler(YACURS::Event& e);
+        virtual void button_press_handler(YACURS::Event& e);
+
+        void window_close_handler(YACURS::Event& e);
 
     public:
         /**
          * @brief Constructor.
          *
-         * Depending on the value passed in \c pe, either an empty record is
-         * showed or the decrypted password record including the password
-         * stored in the record in plain text is showed except the password
-         * record is displaying in read-only mode.
+         * Depending on the value passed in \c pe, either an empty
+         * record is showed or the decrypted password record including
+         * the password stored in the record in plain text is showed
+         * except the password record is displaying in read-only mode.
          *
-         * @param k the key used to decrypt/encrypt the password record.
+         * @param k the key used to decrypt/encrypt the password
+         * record.
          *
-         * @param f the password file. This is only used for locking the screen.
+         * @param f the password file. This is only used for locking
+         * the screen.
          *
-         * @param pe pointer to a \c PartDec which will be displayed, or \c
-         * NULL in order to obtain a new password record.
+         * @param pe pointer to a \c PartDec which will be displayed,
+         * or \c NULL in order to obtain a new password record.
          *
          * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord(YAPET::PartDec* pe=NULL);
+        PasswordRecord(YAPET::PartDec* pe=0);
         ~PasswordRecord();
 
         /**
          * @brief Returns the password record.
          *
-         * Returns the new or altered password record as \c PartDec object. The
-         * caller is responsible for freeing the memory associated with the pointer returned.
+         * Returns the new or altered password record as \c PartDec
+         * object. The caller is responsible for freeing the memory
+         * associated with the pointer returned.
          *
          * It returns \c NULL if the dialog has been canceled.
          *
-         * @return pointer to the new or altered password record, or \c NULL if
-         * the dialog has been canceled. The caller is responsible for freeing
-         * the memory associated with the pointer returned.
+         * @return pointer to the new or altered password record, or
+         * \c NULL if the dialog has been canceled. The caller is
+         * responsible for freeing the memory associated with the
+         * pointer returned.
          */
-        inline YAPET::PartDec* getEncEntry() const {
+        YAPET::PartDec* getEncEntry() const {
             return encentry;
         }
 
         /**
-         * @brief Indicates whether or not the record has been changed.
+         * @brief Indicates whether or not the record has been
+         * changed.
          *
          * Indicates whether or not the record has been changed.
          *
-         * @return \c true if the record has been changed, \c false otherwise.
+         * @return \c true if the record has been changed, \c false
+         * otherwise.
          */
-        bool entryChanged() const;
+        bool changed() const;
 
         void readonly(bool ro);
 
-        inline bool readonly() const {
+        bool readonly() const {
             return __readonly;
         }
 };

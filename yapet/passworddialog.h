@@ -91,7 +91,7 @@ class PasswordDialog : public YACURS::Dialog  {
 	    if (__pwtype==EXISTING_PW)
 		return pwinput1->input() == pwinput2->input();
 	    else
-		true;
+		return true;
 	}
 
 	std::string password(bool* match) const {
