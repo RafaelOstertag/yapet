@@ -21,13 +21,10 @@ config.h.in: configure.ac aclocal.m4
 ltmain.sh libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4: configure.ac
 	libtoolize -c -i --force
 
-config.rpath:
-	touch $@
-
-nls.m4 po.m4:
+nls.m4 po.m4 config.rpath:
 	gettextize -f
 
-Makefile.in missing ar-lib depcomp: configure.ac Makefile.am NEWS README AUTHORS ./ChangeLog config.rpath crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am yapet/pwgen/Makefile.am yapet/Makefile.am yapet/glue/Makefile.am yapet/ui/Makefile.am
+Makefile.in missing ar-lib depcomp: config.rpath configure.ac Makefile.am NEWS README AUTHORS ./ChangeLog crypt/Makefile.am tests/Makefile.am doc/Makefile.am csv2yapet/Makefile.am yapet/Makefile.am
 	automake -a -c -W all --gnu -f
 
 NEWS:
@@ -43,5 +40,5 @@ AUTHORS:
 	touch $@
 
 clean:
-	rm -f aclocal.m4 config.guess config.sub configure install-sh depcomp config.h.in missing ltmain.sh ar-lib config.status stamp-h1 Makefile.in yapet/Makefile.in tests/Makefile.in config.rpath yapet/glue/Makefile.in yapet/pwgen/Makefile.in
+	rm -f aclocal.m4 config.guess config.sub configure install-sh depcomp config.h.in missing ltmain.sh ar-lib config.status stamp-h1 Makefile.in yapet/Makefile.in tests/Makefile.in config.rpath yapet/pwgen/Makefile.in
 	rm -rf autom4te.cache
