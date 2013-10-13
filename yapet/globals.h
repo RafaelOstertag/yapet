@@ -23,12 +23,10 @@
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 // Crypt
 #include <file.h>
+
+#include "yacurs.h"
 
 namespace YAPET {
     class Globals {
@@ -36,8 +34,22 @@ namespace YAPET {
 	    static YAPET::Key* key;
 	    static YAPET::File* file;
 	    static bool records_changed;
-	    static bool usefsecurity;
     };
+
+    /**
+     * Submitted by an object requesting self destruction.
+     *
+     * Since we're mostly event driven, we need an event in order to
+     * request self destruction. This allows for an object to be
+     * created by a class without requiring the creating class to keep
+     * track of states of said object, i.e. once the object has done
+     * its chores, it can request self destruction without having the
+     * creating class know the exact moment.
+     *
+     * @see LoadFile
+     * @see PromptPassword
+     */
+    const YACURS::EventType EVT_APOPTOSIS("EVT_APOPTOSIS");
 }
 
 #endif // _MAINWINDOW_H

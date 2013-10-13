@@ -58,6 +58,8 @@ yapet/main.cc
 yapet/passworddialog.cc
 yapet/statusbar.cc
 yapet/searchdialog.cc
+yapet/glue/loadfile.cc
+yapet/glue/promptpassword.cc
 yapet/pwgen/pwgen.cc
 yapet/pwgen/charpool.h
 yapet/pwgen/pwgen.h

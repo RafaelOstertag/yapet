@@ -1,6 +1,8 @@
-// $Id: mainwindow.cc 5207 2013-06-16 16:33:45Z rafisol $
+// -*- c++ -*-
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// $Id$
+//
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -18,14 +20,31 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#ifndef _PASSWORDDIALOG_H
+#define _PASSWORDDIALOG_H
 
-#include "globals.h"
+#include "yacurs.h"
 
-using namespace YAPET;
+/**
+ * @brief Shows a dialog for entering the password for an existsing YAPET file.
+ */
+class PasswordDialog : public YACURS::Dialog  {
+    private:
+        YACURS::Input<std::string>* pwinput1;
+	YACURS::Label* line1;
+	YACURS::Label* linefn;
 
-YAPET::Key* Globals::key;
-YAPET::File* Globals::file;
-bool Globals::records_changed;
+        const PasswordDialog& operator=(const PasswordDialog&) {
+            return *this;
+        }
+
+    public:
+        PasswordDialog(std::string& fn);
+        ~PasswordDialog();
+
+	std::string password() const {
+	    return pwinput1->input();
+	}
+};
+
+#endif // _PASSWORDDIALOG_H

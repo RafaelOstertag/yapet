@@ -42,13 +42,8 @@ class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
 	HelpDialog* helpdialog;
-	PasswordDialog* passworddialog;
 	PasswordRecord* passwordrecord;
-	YACURS::MessageBox* errormsgdialog;
-	YACURS::MessageBox2* closeconfirmdialog;
-	YACURS::FileLoadDialog* fileopendialog;
-
-	std::string filename;
+	YACURS::MessageBox2* errormsgdialog;
 
         MainWindow(const MainWindow&) {
         }
@@ -57,8 +52,7 @@ class MainWindow : public YACURS::Window {
             return *this;
         }
 
-	void save_petfile();
-	void close_petfile();
+	void apoptosis_handler(YACURS::Event& e);
 
 	void window_close_handler(YACURS::Event& e);
 
@@ -67,19 +61,26 @@ class MainWindow : public YACURS::Window {
         virtual ~MainWindow();
 
 	/**
-	 * @param checkchanges if \c true, check whether or not there
-	 * are changes pending is check. If changes are pending, a
-	 * dialog will be displayed asking whether or not changes
-	 * should be saved.
+	 * Load password file.
+	 *
+	 * Unconditionally load a password file, i.e. changes not
+	 * committed to disk on an already shown file will be lost.
+	 *
+	 * @param file YAPET file
+	 *
+	 * @param key corresponding key to @c file
 	 */
-	void ui_close_pet_file(bool checkchanges=true);
-	void show_help();
-	void show_file_open();
+	void load_password_file(YAPET::File* file, YAPET::Key* key);
+
 	/**
 	 * @param selected whether or not to preload the dialog with
 	 * the currently selected password record.
 	 */
 	void show_password_record(bool selected);
+
+	void save_records();
+
+	void show_help();
 };
 
 #endif // _MAINWINDOW_H

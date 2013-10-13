@@ -54,6 +54,7 @@
 #include "cfg.h"
 #include "mainwindow.h"
 #include "globals.h"
+#include "loadfile.h"
 
 class HotKeyQ : public YACURS::HotKey {
     public:
@@ -127,12 +128,9 @@ class HotKeyR : public YACURS::HotKey {
 	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    if (YAPET::Globals::records_changed) {
-		ptr->ui_close_pet_file();
-	    } else {
-		ptr->ui_close_pet_file();
-		ptr->show_file_open();
-	    }
+	    // LoadFile does apoptosis
+	    LoadFile* loadfile = new LoadFile(ptr);
+	    loadfile->run();
 	}
 
 	HotKey* clone() const {
@@ -151,12 +149,9 @@ class HotKeyr : public YACURS::HotKey {
 	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    if (YAPET::Globals::records_changed) {
-		ptr->ui_close_pet_file();
-	    } else {
-		ptr->ui_close_pet_file();
-		ptr->show_file_open();
-	    }
+	    // LoadFile does apoptosis
+	    LoadFile* loadfile = new LoadFile(ptr);
+	    loadfile->run();
 	}
 
 	HotKey* clone() const {
@@ -207,6 +202,20 @@ class HotKeya : public YACURS::HotKey {
 //
 
 void
+MainWindow::apoptosis_handler(YACURS::Event& e) {
+    assert(e == YAPET::EVT_APOPTOSIS);
+
+    if (typeid(e) == typeid(YACURS::EventEx<LoadFile*>)) {
+	YACURS::EventEx<LoadFile*>& evt =
+	    dynamic_cast<YACURS::EventEx<LoadFile*>&>(e);
+
+	delete evt.data();
+	evt.stop(true);
+	return;
+    }
+}
+
+void
 MainWindow::window_close_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_WINDOW_CLOSE);
     YACURS::EventEx<YACURS::WindowBase*>& evt =
@@ -215,44 +224,6 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     if (helpdialog!=0 && evt.data()==helpdialog) {
 	delete helpdialog;
 	helpdialog=0;
-	return;
-    }
-
-    if (fileopendialog!=0 && evt.data()==fileopendialog) {
-	if (fileopendialog->dialog_state() == YACURS::Dialog::DIALOG_OK) {
-	    filename = fileopendialog->filepath();
-	    assert(passworddialog==0);
-
-	    passworddialog=new PasswordDialog(EXISTING_PW, filename);
-	    passworddialog->show();
-	} else {
-	    filename.clear();
-	}
-	delete fileopendialog;
-	fileopendialog=0;
-	return;
-    }
-
-    if (passworddialog!=0 && evt.data()==passworddialog) {
-	assert(!filename.empty());
-	if (passworddialog->pwtype() == EXISTING_PW &&
-	    passworddialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
-	    std::string pw=passworddialog->password(0);
-	    assert(YAPET::Globals::key==0);
-	    assert(YAPET::Globals::file==0);
-	    try {
-		YAPET::Globals::key = new YAPET::Key(pw.c_str());
-		YAPET::Globals::file = new YAPET::File(filename, *YAPET::Globals::key, false, YAPET::CONFIG::config.filesecurity);
-		recordlist->set ( YAPET::Globals::file->read (*YAPET::Globals::key));
-		YACURS::Curses::statusbar()->push_msg (filename + _ (" opened") );
-	    } catch (...) {
-#warning "To be implemented"
-		abort();
-	    }
-	    
-	}
-	delete passworddialog;
-	passworddialog=0;
 	return;
     }
 
@@ -270,27 +241,6 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 }
 
-void
-MainWindow::save_petfile() {
-    assert(YAPET::Globals::key!=0);
-    assert(YAPET::Globals::file!=0);
-
-    YAPET::Globals::file->save(recordlist->list());
-
-    YAPET::Globals::records_changed=false;    
-}
-
-void
-MainWindow::close_petfile() {
-    delete YAPET::Globals::file;
-    YAPET::Globals::file=0;
-
-    delete YAPET::Globals::key;
-    YAPET::Globals::key=0;
-
-    YAPET::Globals::records_changed=false;    
-}
-
 //
 // Protected
 //
@@ -300,13 +250,10 @@ MainWindow::close_petfile() {
 //
 MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						0)) ,
-    recordlist(new YACURS::ListBox<YAPET::PartDec>()),
-    helpdialog(0),
-    passworddialog(0),
+			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+			  helpdialog(0),
 			  passwordrecord(0),
-    errormsgdialog(0),
-			  closeconfirmdialog(0),
-    fileopendialog(0) {
+			  errormsgdialog(0) {
     Window::widget(recordlist);
     frame(false);
 
@@ -328,6 +275,12 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						  this,
 						  &MainWindow::
 						  window_close_handler) );
+
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YAPET::EVT_APOPTOSIS,
+						  this,
+						  &MainWindow::
+						  apoptosis_handler) );
 }
 
 MainWindow::~MainWindow() {
@@ -340,22 +293,12 @@ MainWindow::~MainWindow() {
                                                      this,
                                                      &MainWindow::
                                                      window_close_handler) );
-}
 
-void
-MainWindow::ui_close_pet_file(bool checkchanges) {
-    if (checkchanges && YAPET::Globals::records_changed) {
-	assert(closeconfirmdialog==0);
-	
-	closeconfirmdialog=new YACURS::MessageBox2(_("Save Changes"),
-					     YAPET::Globals::file->getFilename(),
-					     _("has unsaved changes. Save?"),
-						   YACURS::Dialog::YESNO);
-	closeconfirmdialog->show();
-	return;
-    }
-
-    close_petfile();
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YAPET::EVT_APOPTOSIS,
+						  this,
+						  &MainWindow::
+						  apoptosis_handler) );
 }
 
 void
@@ -367,12 +310,43 @@ MainWindow::show_help() {
 }
 
 void
-MainWindow::show_file_open() {
-    assert(fileopendialog==0);
+MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
+    if (YAPET::Globals::key)
+	delete YAPET::Globals::key;
+    YAPET::Globals::key = key;
 
-    fileopendialog=new YACURS::FileLoadDialog;
-    fileopendialog->show();
+    if (YAPET::Globals::file)
+	delete YAPET::Globals::file;
+    YAPET::Globals::file = file;
+
+    YAPET::Globals::records_changed = false;
+
+    recordlist->clear();
+
+    try {
+	recordlist->set(YAPET::Globals::file->read(*YAPET::Globals::key));
+	std::string msg(_("Opened file: "));
+	YACURS::Curses::statusbar()->push_msg(msg +
+					      YAPET::Globals::file->getFilename());
+    } catch (std::exception& e) {
+	delete YAPET::Globals::key;
+	YAPET::Globals::key = 0;
+
+	delete YAPET::Globals::file;
+	YAPET::Globals::file = 0;
+
+	recordlist->clear();
+
+	assert(errormsgdialog!=0);
+
+	errormsgdialog = new YACURS::MessageBox2(_("Error"),
+						 _("Error while reading file:"),
+						 e.what(),
+						 YACURS::Dialog::OK_ONLY);
+	errormsgdialog->show();
+    }
 }
+	
 
 void
 MainWindow::show_password_record(bool selected) {
@@ -386,4 +360,24 @@ MainWindow::show_password_record(bool selected) {
     passwordrecord=new PasswordRecord;
     passwordrecord->show();
 
+}
+
+void
+MainWindow::save_records() {
+    assert(YAPET::Globals::file != 0);
+    try {
+	YAPET::Globals::file->save(recordlist->list());
+	std::string msg(_("Saved file: "));
+	YACURS::Curses::statusbar()->push_msg(msg +
+					  YAPET::Globals::file->getFilename());
+	YAPET::Globals::records_changed=false;
+    } catch (std::exception& e) {
+	assert(errormsgdialog!=0);
+
+	errormsgdialog = new YACURS::MessageBox2(_("Error"),
+						 _("Error while saving file:"),
+						 e.what(),
+						 YACURS::Dialog::OK_ONLY);
+	errormsgdialog->show();
+    }
 }

@@ -23,32 +23,19 @@
 
 #include <cassert>
 
-PasswordDialog::PasswordDialog(PWTYPE pt, std::string& fn) : Dialog(_("Enter Password")),
-							     pwinput1(new YACURS::Input<>()),
-							     pwinput2(pt==NEW_PW? new YACURS::Input<>() : 0),
-							     line1(new YACURS::Label(_("Enter password for "))),
-							     linefn(new YACURS::Label(fn)),
-							     line2(pt==NEW_PW? new YACURS::Label(_("Confirm password")): 0),
-							     __pwtype(pt) {
-
-    if (__pwtype==NEW_PW) {
-	widget(line2);
-
-	line2->color(YACURS::DIALOG);
-	
-	pwinput2->obscure_input(true);
-	widget(pwinput2);
-    }
-
+PasswordDialog::PasswordDialog(std::string& fn) : Dialog(_("Enter Password")),
+						  pwinput1(new YACURS::Input<>()),
+						  line1(new YACURS::Label(_("Enter password for "))),
+						  linefn(new YACURS::Label(fn)) {
     pwinput1->obscure_input(true); 
     widget(pwinput1);
-					    
+    
     widget(linefn); // add label to dialog
     widget(line1); // add label to dialog
-
+    
     linefn->color(YACURS::DIALOG);
     line1->color(YACURS::DIALOG);
-							     }
+}
 
 PasswordDialog::~PasswordDialog() {
     assert(pwinput1!=0);
@@ -58,7 +45,4 @@ PasswordDialog::~PasswordDialog() {
     delete pwinput1;
     delete line1;
     delete linefn;
-
-    if (line2!=0) delete line2;
-    if (pwinput2!=0) delete pwinput2;
 }

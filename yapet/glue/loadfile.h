@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -20,29 +20,39 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _MISC_H
-#define _MISC_H
+#ifndef _LOADFILE_H
+#define _LOADFILE_H
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
-#ifdef HAVE_STRING
-#include <string>
-#endif
+#include "mainwindow.h"
+#include "yacurs.h"
+#include "promptpassword.h"
 
 /**
- * @file
- * @brief Miscellaneous functions that do not fit elsewhere
- *
- * Miscellaneous functions that do not fit elsewhere
+ * 
  */
+class LoadFile {
+    private:
+	MainWindow* mainwindow;
+	PromptPassword* promptpassword;
+	YACURS::FileLoadDialog* fileloaddialog;
+	YACURS::MessageBox2* confirmsave;
+	bool ignore_unsaved_file;
 
-/** @brief Indicates whether or not the terminal is an X Terminal */
-extern bool isXTerm();
+	LoadFile(const LoadFile&) {}
 
-/** @brief Set the title on a terminal */
-extern void setTerminalTitle (const std::string& title);
+	const LoadFile& operator=(const LoadFile&) {
+	    return *this;
+	}
 
+	void apoptosis_handler(YACURS::Event& e);
 
-#endif // _MISC_H
+	void window_close_handler(YACURS::Event& e);
+
+    public:
+	LoadFile(MainWindow* mw);
+	~LoadFile();
+
+	void run();
+};
+
+#endif // _LOADFILE_H

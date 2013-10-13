@@ -158,8 +158,9 @@ AM_CONDITIONAL([DISABLE_DEBUG], [test x$my_debug = xno])
 AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	crypt/Makefile
-	ui/Makefile
 	yapet/Makefile
+	yapet/ui/Makefile
+	yapet/glue/Makefile
 	yapet/pwgen/Makefile
 	csv2yapet/Makefile
 	tests/Makefile
