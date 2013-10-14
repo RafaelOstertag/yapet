@@ -28,7 +28,20 @@
 #include "promptpassword.h"
 
 /**
- * 
+ * Handle loading a file.
+ *
+ * The class handles loading a file:
+ *
+ * 1. if the currently open file has pending changes, it asks whether
+ *    the changes should be saved, or the users wishes to cancel.
+ *
+ * 2. If the user did not cancel, or no pending changes required a
+ *    prompt, displays a file load dialog.
+ *
+ * 3. If the file dialog has not been cancelled, it uses
+ *    PromptPassword in order to obtain a password for the file. If
+ *    the password is successfully obtained,
+ *    MainWindow::load_password_file() is called.
  */
 class LoadFile {
     private:

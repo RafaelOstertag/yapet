@@ -29,7 +29,17 @@
 #include "passworddialog.h"
 
 /**
- * 
+ * Prompt for a password and try to open a given file.
+ *
+ * Prompt for a password to open a given file. If the password does
+ * not match on the file, ask the user whether to try again or cancel.
+ *
+ * Only if opening the file succeeds with a given password,
+ * PromptPassowrd::key() and PromptPassword::yapet_file() return a
+ * non-null value.
+ *
+ * Once the object has done it's job, it submits a EVT_APOPTOSIS
+ * event.
  */
 class PromptPassword {
     private:
