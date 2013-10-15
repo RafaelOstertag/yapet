@@ -82,6 +82,7 @@ class HotKeyq : public YACURS::HotKey {
 	}
 };
 
+
 class HotKeyH : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -156,6 +157,44 @@ class HotKeyr : public YACURS::HotKey {
 
 	HotKey* clone() const {
 	    return new HotKeyr(*this);
+	}
+
+};
+
+class HotKeyS : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyS(MainWindow* p) : HotKey('S'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyS(const HotKeyS& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->save_records();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyS(*this);
+	}
+
+};
+
+class HotKeys : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeys(MainWindow* p) : HotKey('s'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeys(const HotKeys& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->save_records();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeys(*this);
 	}
 
 };
@@ -241,6 +280,21 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 }
 
+void
+MainWindow::listbox_enter_handler(YACURS::Event& e) {
+    assert(e == YACURS::EVT_LISTBOX_ENTER);
+    
+    if (typeid(e) == typeid(YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>)) {
+	YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>& evt =
+	    dynamic_cast<YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>&>(e);
+	if (evt.data() != recordlist) return;
+
+	assert(passwordrecord==0);
+	show_password_record(true);
+	return;
+    }
+}
+
 //
 // Protected
 //
@@ -281,6 +335,12 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						  this,
 						  &MainWindow::
 						  apoptosis_handler) );
+
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YACURS::EVT_LISTBOX_ENTER,
+						  this,
+						  &MainWindow::
+						  listbox_enter_handler) );
 }
 
 MainWindow::~MainWindow() {
@@ -299,6 +359,12 @@ MainWindow::~MainWindow() {
 						  this,
 						  &MainWindow::
 						  apoptosis_handler) );
+
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YACURS::EVT_LISTBOX_ENTER,
+						  this,
+						  &MainWindow::
+						  listbox_enter_handler) );
 }
 
 void
@@ -357,7 +423,10 @@ MainWindow::show_password_record(bool selected) {
 	YAPET::Globals::file==0)
 	return;
 
-    passwordrecord=new PasswordRecord;
+    if (selected)
+	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
+    else
+	passwordrecord=new PasswordRecord(YAPET::Globals::key);
     passwordrecord->show();
 
 }

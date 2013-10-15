@@ -75,12 +75,12 @@ class PasswordRecord : public YACURS::Dialog {
 #ifdef ENABLE_PWGEN
         YACURS::Button* pwgenbutton;
 #endif
-        YAPET::PartDec* encentry;
         YACURS::MessageBox* errordialog;
+	const YAPET::Key* __key;
+	YAPET::PartDec* encentry;
         bool __readonly;
 
         const PasswordRecord& operator=(const PasswordRecord&) {
-            assert(0);
             return *this;
         }
 
@@ -96,19 +96,8 @@ class PasswordRecord : public YACURS::Dialog {
          * record is showed or the decrypted password record including
          * the password stored in the record in plain text is showed
          * except the password record is displaying in read-only mode.
-         *
-         * @param k the key used to decrypt/encrypt the password
-         * record.
-         *
-         * @param f the password file. This is only used for locking
-         * the screen.
-         *
-         * @param pe pointer to a \c PartDec which will be displayed,
-         * or \c NULL in order to obtain a new password record.
-         *
-         * @param ro specify whether or not the dialog is readonly.
          */
-        PasswordRecord(YAPET::PartDec* pe=0);
+        PasswordRecord( const YAPET::Key* key, const YAPET::PartDec* pe=0);
         ~PasswordRecord();
 
         /**

@@ -56,6 +56,8 @@ class MainWindow : public YACURS::Window {
 
 	void window_close_handler(YACURS::Event& e);
 
+	void listbox_enter_handler(YACURS::Event& e);
+
     public:
         MainWindow();
         virtual ~MainWindow();
