@@ -79,6 +79,12 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     password->max_input(256);
     comment->max_input(512);
 
+    lname->color(YACURS::DIALOG);
+    lhost->color(YACURS::DIALOG);
+    lusername->color(YACURS::DIALOG);
+    lpassword->color(YACURS::DIALOG);
+    lcomment->color(YACURS::DIALOG);
+
     vpack->add_back(lname);
     vpack->add_back(name);
     vpack->add_back(lhost);
