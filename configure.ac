@@ -142,6 +142,7 @@ AC_CHECK_FILES([/dev/urandom /dev/random])
 
 AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.18.2)
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
