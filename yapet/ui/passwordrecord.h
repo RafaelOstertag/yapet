@@ -76,17 +76,27 @@ class PasswordRecord : public YACURS::Dialog {
         YACURS::Button* pwgenbutton;
 #endif
         YACURS::MessageBox* errordialog;
+	YACURS::MessageBox* confirmdialog
+;	YAPET::PartDec* encentry;
 	const YAPET::Key* __key;
-	YAPET::PartDec* encentry;
+	bool __newrecord;
         bool __readonly;
+
+	/**
+	 * When @c true, dialog will be closed without asked for
+	 * confirmation if cancel has been pressed.
+	 */
+	bool __force_close;
 
         const PasswordRecord& operator=(const PasswordRecord&) {
             return *this;
         }
 
-        virtual void button_press_handler(YACURS::Event& e);
+        virtual void on_ok_button();
 
         void window_close_handler(YACURS::Event& e);
+
+	virtual bool on_close();
 
     public:
         /**
@@ -129,11 +139,13 @@ class PasswordRecord : public YACURS::Dialog {
          */
         bool changed() const;
 
-        void readonly(bool ro);
-
         bool readonly() const {
             return __readonly;
         }
+
+	bool newrecord() const {
+	    return __newrecord;
+	}
 };
 
 #endif // _PASSWORDRECORD_H

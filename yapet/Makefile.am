@@ -8,16 +8,11 @@ endif
 
 bin_PROGRAMS = yapet
 
-ui_SOURCES = ui/help.cc ui/mainwindow.cc ui/passworddialog.cc ui/passwordrecord.cc
+ui_SOURCES = ui/help.cc ui/mainwindow.cc ui/passworddialog.cc ui/passwordrecord.cc ui/newpassworddialog.cc
 
-glue_SOURCES = glue/loadfile.cc glue/promptpassword.cc
+glue_SOURCES = glue/loadfile.cc glue/promptpassword.cc glue/createfile.cc
 
 yapet_SOURCES = main.cc cfgfile.cc consts.cc cfg.cc globals.cc $(ui_SOURCES) $(glue_SOURCES)
-
-# statusbar.h fileopen.h passworddialog.h		\
-# passwordrecord.h   statusbar.cc fileopen.cc			\
-# searchdialog.h searchdialog.cc 	\
-#  lockscreen.h lockscreen.cc
 
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(srcdir)/glue -I$(srcdir)/ui -I$(top_srcdir)/libyacurs/include -DLOCALEDIR=\"$(localedir)\"
 

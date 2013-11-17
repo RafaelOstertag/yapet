@@ -356,7 +356,7 @@ main(int argc, char** argv) {
 	YACURS::Curses::title()->alignment(YACURS::LineObject::CENTER);
 
 	YACURS::Curses::statusbar(new YACURS::StatusBar());
-	YACURS::Curses::statusbar()->push_msg(_("Press 'H' for help"));
+	YACURS::Curses::statusbar()->push(_("Press 'H' for help"));
 
 	YACURS::Curses::mainwindow(new MainWindow());
 

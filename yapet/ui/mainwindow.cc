@@ -55,6 +55,7 @@
 #include "mainwindow.h"
 #include "globals.h"
 #include "loadfile.h"
+#include "createfile.h"
 
 class HotKeyQ : public YACURS::HotKey {
     public:
@@ -161,6 +162,49 @@ class HotKeyr : public YACURS::HotKey {
 
 };
 
+
+class HotKeyE : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyE(MainWindow* p) : HotKey('E'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyE(const HotKeyE& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
+
+	void action() {
+	    // CreateFile does apoptosis
+	    CreateFile* createfile = new CreateFile(ptr);
+	    createfile->run();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyE(*this);
+	}
+
+};
+
+class HotKeye : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeye(MainWindow* p) : HotKey('e'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeye(const HotKeye& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
+
+	void action() {
+	    // CreateFile does apoptosis
+	    CreateFile* createfile = new CreateFile(ptr);
+	    createfile->run();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeye(*this);
+	}
+
+};
+
 class HotKeyS : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -252,6 +296,15 @@ MainWindow::apoptosis_handler(YACURS::Event& e) {
 	evt.stop(true);
 	return;
     }
+
+    if (typeid(e) == typeid(YACURS::EventEx<CreateFile*>)) {
+	YACURS::EventEx<CreateFile*>& evt =
+	    dynamic_cast<YACURS::EventEx<CreateFile*>&>(e);
+
+	delete evt.data();
+	evt.stop(true);
+	return;
+    }
 }
 
 void
@@ -267,7 +320,18 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
+	if (passwordrecord->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	    if (passwordrecord->changed()) {
+		if (passwordrecord->newrecord())
+		    recordlist->add(*passwordrecord->getEncEntry());
+		else 
 #warning "To be implemented"
+		    // Replace existing record
+		    abort();
+	    } 
+	}
+	
+
 	delete passwordrecord;
 	passwordrecord=0;
 	return;
@@ -319,6 +383,12 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     add_hotkey(HotKeyR(this));
     add_hotkey(HotKeyr(this));
+
+    add_hotkey(HotKeyS(this));
+    add_hotkey(HotKeys(this));
+
+    add_hotkey(HotKeyE(this));
+    add_hotkey(HotKeye(this));
 
     add_hotkey(HotKeyA(this));
     add_hotkey(HotKeya(this));
@@ -392,7 +462,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
     try {
 	recordlist->set(YAPET::Globals::file->read(*YAPET::Globals::key));
 	std::string msg(_("Opened file: "));
-	YACURS::Curses::statusbar()->push_msg(msg +
+	YACURS::Curses::statusbar()->push(msg +
 					      YAPET::Globals::file->getFilename());
     } catch (std::exception& e) {
 	delete YAPET::Globals::key;
@@ -416,7 +486,6 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 
 void
 MainWindow::show_password_record(bool selected) {
-#warning "Implement showing selected record"
     assert(passwordrecord==0);
  
     if (YAPET::Globals::key==0 ||
@@ -433,11 +502,15 @@ MainWindow::show_password_record(bool selected) {
 
 void
 MainWindow::save_records() {
-    assert(YAPET::Globals::file != 0);
+    if (YAPET::Globals::file == 0) {
+	// Do nothing and return
+	return;
+    }
+
     try {
 	YAPET::Globals::file->save(recordlist->list());
 	std::string msg(_("Saved file: "));
-	YACURS::Curses::statusbar()->push_msg(msg +
+	YACURS::Curses::statusbar()->push(msg +
 					  YAPET::Globals::file->getFilename());
 	YAPET::Globals::records_changed=false;
     } catch (std::exception& e) {

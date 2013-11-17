@@ -38,7 +38,7 @@
  * PromptPassowrd::key() and PromptPassword::yapet_file() return a
  * non-null value.
  *
- * Once the object has done it's job, it submits a EVT_APOPTOSIS
+* Once the object has done it's job, it submits a EVT_APOPTOSIS
  * event.
  */
 class PromptPassword {

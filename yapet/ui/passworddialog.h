@@ -43,6 +43,7 @@ class PasswordDialog : public YACURS::Dialog  {
         ~PasswordDialog();
 
 	std::string password() const {
+	    assert(pwinput1!=0);
 	    return pwinput1->input();
 	}
 };

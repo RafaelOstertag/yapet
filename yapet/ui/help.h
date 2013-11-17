@@ -43,6 +43,9 @@ class HelpDialog : public YACURS::Dialog {
 	YACURS::Label* loadkey;
 	YACURS::Label* loaddescr;
 
+	YACURS::Label* createkey;
+	YACURS::Label* createdescr;
+
 	YACURS::Label* lockkey;
 	YACURS::Label* lockdescr;
 

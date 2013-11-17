@@ -28,11 +28,33 @@
 #include "passwordrecord.h"
 
 void
-PasswordRecord::button_press_handler(YACURS::Event& e) {
-    Dialog::button_press_handler(e);
-
-#warning "To be implemented."
+PasswordRecord::on_ok_button() {
+    YAPET::Record<YAPET::PasswordRecord> unenc_rec;
+    YAPET::PasswordRecord* ptr_rec = unenc_rec;
+    strncpy ( (char*) ptr_rec->name, name->input().c_str(), YAPET::NAME_SIZE);
+    ptr_rec->name[YAPET::NAME_SIZE-1]=0;
+    strncpy ( (char*) ptr_rec->host, host->input().c_str(), YAPET::HOST_SIZE);
+    ptr_rec->host[YAPET::HOST_SIZE-1]=0;
+    strncpy ( (char*) ptr_rec->username, username->input().c_str(), YAPET::USERNAME_SIZE);
+    ptr_rec->username[YAPET::USERNAME_SIZE-1]=0;
+    strncpy ( (char*) ptr_rec->password, password->input().c_str(), YAPET::PASSWORD_SIZE);
+    ptr_rec->password[YAPET::PASSWORD_SIZE-1]=0;
+    strncpy ( (char*) ptr_rec->comment, comment->input().c_str(), YAPET::COMMENT_SIZE);
+    ptr_rec->comment[YAPET::COMMENT_SIZE-1]=0;
+    
+    try {
+	assert(__key!=0);
+	encentry = new YAPET::PartDec (unenc_rec, *__key);
+    } catch (YAPET::YAPETException& ex) {
+	if (encentry) delete encentry;
+	errordialog = new YACURS::MessageBox (_ ("Error"), ex.what() );
+	errordialog->show();
+    }
 }
+
+//
+// Private
+//
 
 void
 PasswordRecord::window_close_handler(YACURS::Event& e) {
@@ -46,10 +68,42 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
         return;
     }
 
+    // Handle the confirmation of whether dialog should be closed
+    // (cancelled) with pending changes.
+    if (confirmdialog != 0 && evt.data() == confirmdialog) {
+	if (confirmdialog->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	    __force_close = true;
+	    close();
+	}
+	delete confirmdialog;
+	confirmdialog = 0;
+	return;
+    }
+
     if (evt.data() == this) {
         assert(0);
     }
 }
+
+bool
+PasswordRecord::on_close() {
+    if (changed() && 
+	!(__force_close || __newrecord) &&
+	dialog_state() != YACURS::Dialog::DIALOG_OK ) {
+	assert(confirmdialog==0);
+	confirmdialog = 
+	    new YACURS::MessageBox(_("Pending Changes"),
+				    _("Do you want to discard changes?"),
+				    YESNO);
+	confirmdialog->show();
+	return false;
+    }
+    return true;
+}
+
+//
+// Public
+//
 
 PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe)  :
     YACURS::Dialog(_("Password Entry") ),
@@ -68,16 +122,19 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     pwgenbutton(new YACURS::Button(_("Password Generator") ) ),
 #endif
     errordialog(0),
+    confirmdialog(0),
     encentry(0),
     __key(key),
-    __readonly(false) {
+    __newrecord(pe==0),
+    __readonly(false),
+    __force_close(false) {
     assert(__key!=0);
 
-    name->max_input(128);
-    host->max_input(256);
-    username->max_input(256);
-    password->max_input(256);
-    comment->max_input(512);
+    name->max_input(YAPET::NAME_SIZE);
+    host->max_input(YAPET::HOST_SIZE);
+    username->max_input(YAPET::USERNAME_SIZE);
+    password->max_input(YAPET::PASSWORD_SIZE);
+    comment->max_input(YAPET::COMMENT_SIZE);
 
     lname->color(YACURS::DIALOG);
     lhost->color(YACURS::DIALOG);
@@ -103,6 +160,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
 
     if (pe != 0) {
         YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
+	__readonly=true;
 
         try {
             YAPET::Crypt crypt(*__key);
@@ -110,10 +168,15 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
                 pe->getEncRecord() );
 	    YAPET::PasswordRecord* ptr_rec = *dec_rec;
             name->input(reinterpret_cast<char*>(ptr_rec->name) );
+	    name->readonly(true);
             host->input(reinterpret_cast<char*>(ptr_rec->host) );
+	    host->readonly(true);
             username->input(reinterpret_cast<char*>(ptr_rec->username) );
+	    username->readonly(true);
             password->input(reinterpret_cast<char*>(ptr_rec->password) );
+	    password->readonly(true);
             comment->input(reinterpret_cast<char*>(ptr_rec->comment) );
+	    comment->readonly(true);
             delete dec_rec;
         } catch (YAPET::YAPETException& ex) {
             if (dec_rec != 0)
@@ -155,6 +218,8 @@ PasswordRecord::~PasswordRecord() {
 #endif
     delete vpack;
 
+    if (encentry) delete encentry;
+
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
                                              PasswordRecord>(
                                              YACURS::EVT_WINDOW_CLOSE, this,
@@ -171,9 +236,9 @@ PasswordRecord::changed() const {
         comment == 0)
         return false;
 
-    return name->changed() &&
-           host->changed() &&
-           username->changed() &&
-           password->changed() &&
+    return name->changed() ||
+           host->changed() ||
+           username->changed() ||
+           password->changed() ||
            comment->changed();
 }

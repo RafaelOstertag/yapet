@@ -56,6 +56,11 @@ HelpDialog::HelpDialog():
     loaddescr=new YACURS::Label(_("Load File"));
     rightpack->add_back(loaddescr);
 
+    createkey=new YACURS::Label(" E ");
+    leftpack->add_back(createkey);
+    createdescr=new YACURS::Label(_("Create File"));
+    rightpack->add_back(createdescr);
+
     lockkey=new YACURS::Label(" L ");
     leftpack->add_back(lockkey);
     lockdescr=new YACURS::Label(_("Lock Screen"));
@@ -113,6 +118,9 @@ HelpDialog::HelpDialog():
    
     loadkey->color(YACURS::DIALOG);
     loaddescr->color(YACURS::DIALOG);
+
+    createkey->color(YACURS::DIALOG);
+    createdescr->color(YACURS::DIALOG);
    
     lockkey->color(YACURS::DIALOG);
     lockdescr->color(YACURS::DIALOG);
@@ -157,6 +165,9 @@ HelpDialog::~HelpDialog() {
 
     delete loadkey;
     delete loaddescr;
+
+    delete createkey;
+    delete createdescr;
 
     delete lockkey;
     delete lockdescr;

@@ -38,7 +38,8 @@ LoadFile::apoptosis_handler(YACURS::Event& e) {
 	    dynamic_cast<YACURS::EventEx<PromptPassword*>&>(e);
 
 	if (evt.data() == promptpassword) {
-	    // Only if key and yapet file are != 0, we pass information over to mainwindow.
+	    // Only if key and yapet file are != 0, we pass
+	    // information over to mainwindow.
 	    if (promptpassword->key() != 0 &&
 		promptpassword->yapet_file() != 0) {
 		assert(mainwindow!=0);
