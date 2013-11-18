@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 0.8\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-11-18 02:39+0100\n"
+"POT-Creation-Date: 2013-11-18 10:18+0100\n"
 "PO-Revision-Date: 2013-11-18 02:47+0100\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -512,7 +512,7 @@ msgid "Error refreshing window"
 msgstr "Kann Fenster nicht auffrischen"
 
 #: yapet/ui/passwordrecord.cc:68 yapet/ui/passwordrecord.cc:202
-#: yapet/ui/mainwindow.cc:533 yapet/ui/mainwindow.cc:578
+#: yapet/ui/mainwindow.cc:579 yapet/ui/mainwindow.cc:624
 #: yapet/glue/promptpassword.cc:61 yapet/glue/createfile.cc:69
 msgid "Error"
 msgstr ""
@@ -551,7 +551,7 @@ msgstr "Passwort"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: yapet/ui/passwordrecord.cc:140 yapet/ui/help.cc:107
+#: yapet/ui/passwordrecord.cc:140 yapet/ui/help.cc:112
 msgid "Password Generator"
 msgstr "Passwortgenerator"
 
@@ -559,39 +559,39 @@ msgstr "Passwortgenerator"
 msgid "Password Entry (Read-Only)"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:372
+#: yapet/ui/mainwindow.cc:415
 msgid "Added new Record"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:382
+#: yapet/ui/mainwindow.cc:425
 msgid "Updated Record"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:519
+#: yapet/ui/mainwindow.cc:565
 msgid "Opened file: "
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:534
+#: yapet/ui/mainwindow.cc:580
 #, fuzzy
 msgid "Error while reading file:"
 msgstr "Fehler beim Lesen der Datei"
 
-#: yapet/ui/mainwindow.cc:571
+#: yapet/ui/mainwindow.cc:617
 #, fuzzy
 msgid "Saved file: "
 msgstr "Datei speichern"
 
-#: yapet/ui/mainwindow.cc:579
+#: yapet/ui/mainwindow.cc:625
 #, fuzzy
 msgid "Error while saving file:"
 msgstr "Fehler beim Öffnen der Datei"
 
-#: yapet/ui/mainwindow.cc:598
+#: yapet/ui/mainwindow.cc:652
 #, fuzzy
 msgid "Sort Order Ascending"
 msgstr "Sortierreihenfolge aufsteigend"
 
-#: yapet/ui/mainwindow.cc:601
+#: yapet/ui/mainwindow.cc:655
 #, fuzzy
 msgid "Sort Order Descending"
 msgstr "Sortierreihenfolge absteigend"
@@ -652,10 +652,14 @@ msgid "Change Password"
 msgstr "Passwort ändern"
 
 #: yapet/ui/help.cc:101
+msgid "Information"
+msgstr ""
+
+#: yapet/ui/help.cc:106
 msgid "Redraw Screen"
 msgstr "Bildschirm neu zeichnen"
 
-#: yapet/ui/help.cc:113
+#: yapet/ui/help.cc:118
 msgid "Quit"
 msgstr "Beenden"
 
