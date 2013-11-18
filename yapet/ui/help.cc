@@ -157,7 +157,7 @@ HelpDialog::HelpDialog():
     quitkey->color(YACURS::DIALOG);
     quitdescr->color(YACURS::DIALOG);
 
-#ifdef ENABLE_PWGENT
+#ifdef ENABLE_PWGEN
     pwgenkey->color(YACURS::DIALOG);
     pwgendescr->color(YACURS::DIALOG);
 #endif
