@@ -111,7 +111,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
-	if (passwordrecord->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
 	    if (passwordrecord->changed()) {
 		if (passwordrecord->newrecord()) {
 		    recordlist->add(*passwordrecord->getEncEntry());
@@ -141,7 +141,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     }
 
     if (confirmdelete != 0 && evt.data() == confirmdelete) {
-	if (confirmdelete->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	if (confirmdelete->dialog_state() == YACURS::DIALOG_YES) {
 	    assert(record_index!= -1);
 
 	    // select the record that has been selected when
@@ -316,7 +316,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while reading file:"),
 						 e.what(),
-						 YACURS::Dialog::OK_ONLY);
+						 YACURS::OK_ONLY);
 	errormsgdialog->show();
     }
 }
@@ -361,7 +361,7 @@ MainWindow::save_records() {
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while saving file:"),
 						 e.what(),
-						 YACURS::Dialog::OK_ONLY);
+						 YACURS::OK_ONLY);
 	errormsgdialog->show();
     }
 }
@@ -388,7 +388,7 @@ MainWindow::change_password(YAPET::Key* nk) {
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while changing password:"),
 						 e.what(),
-						 YACURS::Dialog::OK_ONLY);
+						 YACURS::OK_ONLY);
 	errormsgdialog->show();
     }
 }
@@ -405,7 +405,7 @@ MainWindow::delete_selected() {
     record_index = recordlist->selected_index();
     confirmdelete=new YACURS::MessageBox(_("Confirm Deletion"),
 				 _("Do you want to delete the selected record?"),
-				 YACURS::Dialog::YESNO);
+				 YACURS::YESNO);
 
     confirmdelete->show();
 }

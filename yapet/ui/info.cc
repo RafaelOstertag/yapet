@@ -41,7 +41,7 @@
 // Public
 //
 InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
-    YACURS::Dialog(_("Information"), OK_ONLY, AUTOMATIC ) {
+    YACURS::Dialog(_("Information"), YACURS::OK_ONLY, YACURS::AUTOMATIC ) {
     mainpack=new YACURS::HPack;
     leftpack=new YACURS::VPack;
     rightpack=new YACURS::VPack;

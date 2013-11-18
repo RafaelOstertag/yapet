@@ -28,22 +28,22 @@
 //
 bool
 NewPasswordDialog::on_close() {
-    if (!match() && dialog_state() != YACURS::Dialog::DIALOG_CANCEL) {
+    if (!match() && dialog_state() != YACURS::DIALOG_CANCEL) {
 	assert(nomatchdialog==0);
 	nomatchdialog = new YACURS::MessageBox2(_("Password Missmatch"),
 						_("Passwords do not match."),
 						_("Do you want to retry?"),
-						YESNO);
+						YACURS::YESNO);
 	nomatchdialog->show();
 	return false;
     }
 
-    if (pwinput1->input().empty() && dialog_state() != YACURS::Dialog::DIALOG_CANCEL) {
+    if (pwinput1->input().empty() && dialog_state() != YACURS::DIALOG_CANCEL) {
 	assert(nomatchdialog==0);
 	nomatchdialog = new YACURS::MessageBox2(_("Password Missmatch"),
 						_("Password must not be empty."),
 						_("Do you want to retry?"),
-						YESNO);
+						YACURS::YESNO);
 	nomatchdialog->show();
 	return false;
     }
@@ -58,11 +58,11 @@ NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
     YACURS::EventEx<YACURS::WindowBase*>& evt = dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(_e);
 
     if (nomatchdialog == evt.data()) {
-	if (nomatchdialog->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	if (nomatchdialog->dialog_state() == YACURS::DIALOG_YES) {
 	    pwinput1->clear();
 	    pwinput2->clear();
 	} else {
-	    dialog_state(DIALOG_CANCEL);
+	    dialog_state(YACURS::DIALOG_CANCEL);
 	    close();
 	}
 	delete nomatchdialog;

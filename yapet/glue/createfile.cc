@@ -38,7 +38,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (evt.data() == filesavedialog) {
-	if (filesavedialog->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	if (filesavedialog->dialog_state() == YACURS::DIALOG_OK) {
 	    __filepath = filesavedialog->filepath();
 	    promptpassword = new NewPasswordDialog(__filepath);
 	    promptpassword->show();
@@ -53,7 +53,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
     }
 
     if (evt.data() == promptpassword) {
-	if (promptpassword->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
 	    assert(promptpassword->match());
 	    assert(!__filepath.empty());
 	    
@@ -74,7 +74,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 		generror = new YACURS::MessageBox2(_("Error"),
 						   _("Got following error"),
 						   ex.what(),
-						   YACURS::Dialog::OK_ONLY);
+						   YACURS::OK_ONLY);
 		generror->show();
 		
 		if (_key) delete _key;
@@ -97,15 +97,15 @@ CreateFile::window_close_handler(YACURS::Event& e) {
     
     if (evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
-	case YACURS::Dialog::DIALOG_YES: 
+	case YACURS::DIALOG_YES: 
 	    mainwindow->save_records();
 	    run();
 	    break;
-	case YACURS::Dialog::DIALOG_NO:
+	case YACURS::DIALOG_NO:
 	    ignore_unsaved_file=true;
 	    run();
 	    break;
-	case YACURS::Dialog::DIALOG_CANCEL:
+	case YACURS::DIALOG_CANCEL:
 	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
 	}
@@ -167,7 +167,7 @@ CreateFile::run() {
 	confirmsave = new YACURS::MessageBox2(_("Unsaved Changes"),
 					      YAPET::Globals::file->getFilename(),
 					      _("has unsaved changes. Do you want to save?"),
-					      YACURS::Dialog::YESNOCANCEL);
+					      YACURS::YESNOCANCEL);
 	confirmsave->show();
     } else {
 	filesavedialog = new YACURS::FileSaveDialog();

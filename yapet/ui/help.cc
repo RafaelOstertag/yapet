@@ -37,7 +37,7 @@
 // Public
 //
 HelpDialog::HelpDialog():
-    YACURS::Dialog(_("Help"), OK_ONLY, AUTOMATIC ) {
+    YACURS::Dialog(_("Help"), YACURS::OK_ONLY, YACURS::AUTOMATIC ) {
     mainpack=new YACURS::HPack;
     leftpack=new YACURS::VPack;
     rightpack=new YACURS::VPack;

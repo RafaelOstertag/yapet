@@ -89,7 +89,7 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
     // Handle the confirmation of whether dialog should be closed
     // (cancelled) with pending changes.
     if (confirmdialog != 0 && evt.data() == confirmdialog) {
-	if (confirmdialog->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	if (confirmdialog->dialog_state() == YACURS::DIALOG_YES) {
 	    __force_close = true;
 	    close();
 	}
@@ -106,13 +106,13 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
 bool
 PasswordRecord::on_close() {
     if (changed() && 
-	dialog_state() != YACURS::Dialog::DIALOG_OK &&
+	dialog_state() != YACURS::DIALOG_OK &&
 	!__force_close) {
 	assert(confirmdialog==0);
 	confirmdialog = 
 	    new YACURS::MessageBox(_("Pending Changes"),
 				    _("Do you want to discard changes?"),
-				    YESNO);
+				   YACURS::YESNO);
 	confirmdialog->show();
 	return false;
     }

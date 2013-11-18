@@ -67,7 +67,7 @@ LoadFile::window_close_handler(YACURS::Event& e) {
 	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (fileloaddialog && evt.data()==fileloaddialog) {
-	if (fileloaddialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
+	if (fileloaddialog->dialog_state()==YACURS::DIALOG_OK) {
 	    promptpassword = new PromptPassword(fileloaddialog->filepath());
 	    promptpassword->run();
 	} else {
@@ -82,15 +82,15 @@ LoadFile::window_close_handler(YACURS::Event& e) {
 
     if (confirmsave && evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
-	case YACURS::Dialog::DIALOG_YES: 
+	case YACURS::DIALOG_YES: 
 	    mainwindow->save_records();
 	    run();
 	    break;
-	case YACURS::Dialog::DIALOG_NO:
+	case YACURS::DIALOG_NO:
 	    ignore_unsaved_file=true;
 	    run();
 	    break;
-	case YACURS::Dialog::DIALOG_CANCEL:
+	case YACURS::DIALOG_CANCEL:
 	    YACURS::EventQueue::submit(YACURS::EventEx<LoadFile*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
 	}
@@ -159,7 +159,7 @@ LoadFile::run() {
 	confirmsave = new YACURS::MessageBox2(_("Unsaved Changes"),
 					      YAPET::Globals::file->getFilename(),
 					      _("has unsaved changes. Do you want to save?"),
-					      YACURS::Dialog::YESNOCANCEL);
+					      YACURS::YESNOCANCEL);
 	confirmsave->show();
     } else {
 	fileloaddialog = new YACURS::FileLoadDialog();

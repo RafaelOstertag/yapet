@@ -64,7 +64,7 @@ class NewPasswordDialog : public YACURS::Dialog  {
 
 	std::string password() const {
 	    assert(pwinput1!=0);
-	    if (dialog_state()!=DIALOG_OK ||
+	    if (dialog_state()!=YACURS::DIALOG_OK ||
 		!match()) {
 		// Now, it doesn't make sense to call password if
 		// there is no match or the dialog is not in state

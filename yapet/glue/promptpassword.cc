@@ -37,7 +37,7 @@ PromptPassword::window_close_handler(YACURS::Event& e) {
 	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (pwdialog!=0 && evt.data()==pwdialog) {
-	if (pwdialog->dialog_state()==YACURS::Dialog::DIALOG_OK) {
+	if (pwdialog->dialog_state()==YACURS::DIALOG_OK) {
 	    std::string pw=pwdialog->password();
 	    try {
 		__key = new YAPET::Key(pw.c_str());
@@ -49,7 +49,7 @@ PromptPassword::window_close_handler(YACURS::Event& e) {
 						 _("Password for file"),
 						 __filename,
 						 _("is not correct. Do you want to try again?"),
-						 YACURS::Dialog::YESNO);
+						 YACURS::YESNO);
 		pwerror->show();
 		if (__key) delete __key;
 		if (__file) delete __file;
@@ -61,7 +61,7 @@ PromptPassword::window_close_handler(YACURS::Event& e) {
 		generror = new YACURS::MessageBox2(_("Error"),
 						  _("Got following error"),
 						  ex.what(),
-						  YACURS::Dialog::OK_ONLY);
+						  YACURS::OK_ONLY);
 		generror->show();
 
 		if (__key) delete __key;
@@ -86,7 +86,7 @@ PromptPassword::window_close_handler(YACURS::Event& e) {
     }
 
     if (pwerror && evt.data() == pwerror) {
-	if (pwerror->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	if (pwerror->dialog_state() == YACURS::DIALOG_YES) {
 	    run();
 	} else {
 	    YACURS::EventQueue::submit(YACURS::EventEx<PromptPassword*>(YAPET::EVT_APOPTOSIS, this));

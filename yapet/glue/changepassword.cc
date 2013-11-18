@@ -38,7 +38,7 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (evt.data() == promptpassword) {
-	if (promptpassword->dialog_state() == YACURS::Dialog::DIALOG_OK) {
+	if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
 	    assert(promptpassword->match());
 	    assert(!__filepath.empty());
 	    assert(YAPET::Globals::file != 0);
@@ -57,7 +57,7 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 		generror = new YACURS::MessageBox2(_("Error"),
 						   _("Got following error"),
 						   ex.what(),
-						   YACURS::Dialog::OK_ONLY);
+						   YACURS::OK_ONLY);
 		generror->show();
 		
 		if (_key) delete _key;
@@ -79,11 +79,11 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
     
     if (evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
-	case YACURS::Dialog::DIALOG_YES: 
+	case YACURS::DIALOG_YES: 
 	    mainwindow->save_records();
 	    run();
 	    break;
-	case YACURS::Dialog::DIALOG_NO:
+	case YACURS::DIALOG_NO:
 	    YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
 	}
@@ -148,7 +148,7 @@ ChangePassword::run() {
 					      _("Changes in"),
 					      YAPET::Globals::file->getFilename(),
 					      _("will be saved. Do you want to continue?"),
-					      YACURS::Dialog::YESNO);
+					      YACURS::YESNO);
 	confirmsave->show();
     } else {
 	__filepath = YAPET::Globals::file->getFilename();
