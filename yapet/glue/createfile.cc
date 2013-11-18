@@ -61,9 +61,14 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	    YAPET::File* _file=0;
 	    try {
 		assert(mainwindow!=0);
+
+		// Must not be delete by CreateFile
 		_key = new YAPET::Key(promptpassword->password().c_str());
+		// Must not be delete by CreateFile
 		_file = new YAPET::File(__filepath, *_key, true, YAPET::CONFIG::config.filesecurity);
 		mainwindow->load_password_file(_file, _key);
+
+		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
 	    } catch (std::exception& ex) {
 		assert(generror==0);
 		generror = new YACURS::MessageBox2(_("Error"),
