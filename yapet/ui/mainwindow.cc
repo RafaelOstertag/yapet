@@ -259,6 +259,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     add_hotkey(HotKeyC(this));
     add_hotkey(HotKeyc(this));
 
+    add_hotkey(HotKeyL());
+    add_hotkey(HotKeyl());
+
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
 						  EVT_WINDOW_CLOSE,

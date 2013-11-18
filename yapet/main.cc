@@ -69,6 +69,8 @@
 #include "mainwindow.h"
 #include "cfg.h"
 #include "consts.h"
+#include "yapetlockscreen.h"
+#include "yapetunlockdialog.h"
 
 /**
  * @file
@@ -347,6 +349,8 @@ main(int argc, char** argv) {
     // Make sure we have a cleaned up file path
     assert(_tmp__.find("//", 0) == std::string::npos);
 #ifndef CFGDEBUG
+
+    YapetUnlockDialog* yunlockdia=0;
     try {
         YACURS::Curses::init();
 
@@ -360,11 +364,24 @@ main(int argc, char** argv) {
 
 	YACURS::Curses::mainwindow(new MainWindow());
 
+	if (YAPET::CONFIG::config.timeout>0) {
+	    yunlockdia = new YapetUnlockDialog(*YACURS::Curses::mainwindow());
+	    YACURS::EventQueue::lock_screen(new YapetLockScreen(*YACURS::Curses::mainwindow(),
+								yunlockdia,  YAPET::CONFIG::config.timeout, YAPET::CONFIG::config.pw_input_timeout));
+	}
+	    
+
 	YACURS::Curses::run();
 
         delete YACURS::Curses::mainwindow();
 	delete YACURS::Curses::title();
 	delete YACURS::Curses::statusbar();
+
+	if (YACURS::EventQueue::lock_screen())
+	    delete YACURS::EventQueue::lock_screen();
+
+	if (yunlockdia)
+	    delete yunlockdia;
     } catch (std::exception& ex) {
 	if (YACURS::Curses::mainwindow())
 	    delete YACURS::Curses::mainwindow();
@@ -374,6 +391,12 @@ main(int argc, char** argv) {
 
 	if (YACURS::Curses::statusbar())
 	    delete YACURS::Curses::statusbar();
+
+	if (YACURS::EventQueue::lock_screen())
+	    delete YACURS::EventQueue::lock_screen();
+
+	if (yunlockdia)
+	    delete yunlockdia;
 
         try {
             YACURS::Curses::end();

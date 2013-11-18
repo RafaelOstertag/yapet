@@ -421,4 +421,37 @@ class HotKeyc : public YACURS::HotKey {
 	}
 };
 
+// LOCK SCREEN
+class HotKeyL : public YACURS::HotKey {
+    public:
+	HotKeyL() : HotKey('L') {
+	}
+	HotKeyL(const HotKeyL& hkh) : HotKey(hkh) {}
+
+	void action() {
+	    // cheat by simulating an alarm event
+	    YACURS::EventQueue::submit(YACURS::EVT_SIGALRM);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyL(*this);
+	}
+};
+
+class HotKeyl : public YACURS::HotKey {
+    public:
+	HotKeyl() : HotKey('l') {
+	}
+	HotKeyl(const HotKeyl& hkh) : HotKey(hkh) {}
+
+	void action() {
+	    // cheat by simulating an alarm event
+	    YACURS::EventQueue::submit(YACURS::EVT_SIGALRM);
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyl(*this);
+	}
+};
+
 #endif // _MAINWINDOWHOTKEYS_H
