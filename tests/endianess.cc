@@ -13,12 +13,9 @@
 # include "config.h"
 #endif
 
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
-#endif
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif 
+#include <cassert>
+#include <iostream>
+
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
