@@ -110,6 +110,8 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    
+
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
 	    if (passwordrecord->changed()) {
@@ -161,6 +163,29 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    if (confirmquit != 0 && evt.data() == confirmquit) {
+	switch (confirmquit->dialog_state()) {
+	    case YACURS::DIALOG_YES:
+		assert(YAPET::Globals::key!=0);
+		assert(YAPET::Globals::file!=0);
+		save_records();
+	    case YACURS::DIALOG_NO:
+		// fall thru
+		YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+		break;
+	    case YACURS::DIALOG_CANCEL:
+		YACURS::Curses::statusbar()->set(_("Quit aborted"));
+		break;
+	    default:
+		YACURS::Curses::statusbar()->set(_("Unexpected dialog state"));
+		break;
+	}
+
+	delete confirmquit;
+	confirmquit=0;
+	return;
+    }
+
     if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
 	delete errormsgdialog;
 	errormsgdialog=0;
@@ -195,6 +220,7 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
 			  helpdialog(0),
 			  confirmdelete(0),
+			  confirmquit(0),
 			  passwordrecord(0),
 			  errormsgdialog(0),
 			  record_index(-1) {
@@ -203,8 +229,8 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     recordlist->sort_order(YACURS::ASCENDING);
 
-    add_hotkey(HotKeyQ() );
-    add_hotkey(HotKeyq() );
+    add_hotkey(HotKeyQ(this) );
+    add_hotkey(HotKeyq(this) );
 
     add_hotkey(HotKeyH(this) );
     add_hotkey(HotKeyh(this) );
@@ -260,6 +286,7 @@ MainWindow::~MainWindow() {
     if (helpdialog) delete helpdialog;
     if (infodialog) delete infodialog;
     if (confirmdelete) delete confirmdelete;
+    if (confirmquit) delete confirmquit;
     if (passwordrecord) delete passwordrecord;
     if (errormsgdialog) delete errormsgdialog;
 
@@ -425,6 +452,22 @@ MainWindow::show_info() {
     infodialog=new InfoDialog(recordlist->list().size());
     infodialog->show();
 }
+
+void
+MainWindow::quit() {
+    if (YAPET::Globals::records_changed) {
+	assert(confirmquit==0);
+	confirmquit = new YACURS::MessageBox2(_("Confirmation"),
+					      _("There are unsaved changes."),
+					      _("Do you want to save changes, before leaving?"),
+					      YACURS::YESNOCANCEL);
+	confirmquit->show();
+    } else {
+	YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+    }
+}
+
+					      
 
 void
 MainWindow::sort_asc(bool f) {

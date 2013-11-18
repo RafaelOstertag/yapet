@@ -45,6 +45,7 @@ class MainWindow : public YACURS::Window {
 	HelpDialog* helpdialog;
 	InfoDialog* infodialog;
 	YACURS::MessageBox* confirmdelete;
+	YACURS::MessageBox2* confirmquit;
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
 	// Used when opening an existing record or deleting a record
@@ -97,6 +98,8 @@ class MainWindow : public YACURS::Window {
 	void show_help();
 
 	void show_info();
+
+	void quit();
 
 	/**
 	 * Get the number of password records.

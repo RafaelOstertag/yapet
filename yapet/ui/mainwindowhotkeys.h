@@ -36,11 +36,16 @@
 
 // QUIT
 class HotKeyQ : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+
     public:
-	HotKeyQ() : HotKey('Q') {}
-	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq) {}
+	HotKeyQ(MainWindow* p) : HotKey('Q'), ptr(p) {
+	    assert(ptr!=0);
+	}
+	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq), ptr(hkq.ptr) {}
 	void action() {
-	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+	    ptr->quit();
 	}
 
 	HotKey* clone() const {
@@ -49,11 +54,16 @@ class HotKeyQ : public YACURS::HotKey {
 };
 
 class HotKeyq : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+
     public:
-	HotKeyq() : HotKey('q') {}
-	HotKeyq(const HotKeyq& hkq): HotKey(hkq) {}
+	HotKeyq(MainWindow* p) : HotKey('q'), ptr(p) {
+	    assert(ptr!=0);
+	}
+	HotKeyq(const HotKeyq& hkq): HotKey(hkq), ptr(hkq.ptr) {}
 	void action() {
-	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+	    ptr->quit();
 	}
 
 	HotKey* clone() const {
