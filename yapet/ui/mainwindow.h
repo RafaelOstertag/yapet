@@ -92,6 +92,8 @@ class MainWindow : public YACURS::Window {
 
 	void save_records();
 
+	void change_password(YAPET::Key* nk);
+
 	void show_help();
 
 	void show_info();

@@ -52,352 +52,9 @@
 # include "pwgendialog.h"
 #endif
 #include "cfg.h"
+#include "mainwindowhotkeys.h"
 #include "mainwindow.h"
 #include "globals.h"
-#include "loadfile.h"
-#include "createfile.h"
-
-
-// QUIT
-class HotKeyQ : public YACURS::HotKey {
-    public:
-	HotKeyQ() : HotKey('Q') {}
-	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq) {}
-	void action() {
-	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyQ(*this);
-	}
-};
-
-class HotKeyq : public YACURS::HotKey {
-    public:
-	HotKeyq() : HotKey('q') {}
-	HotKeyq(const HotKeyq& hkq): HotKey(hkq) {}
-	void action() {
-	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyq(*this);
-	}
-};
-
-// HELP
-class HotKeyH : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyH(MainWindow* p) : HotKey('H'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyH(const HotKeyH& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_help();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyH(*this);
-	}
-};
-
-class HotKeyh : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyh(MainWindow* p) : HotKey('h'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyh(const HotKeyh& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_help();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyh(*this);
-	}
-};
-
-// INFO
-class HotKeyI : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyI(MainWindow* p) : HotKey('I'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyI(const HotKeyI& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_info();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyI(*this);
-	}
-};
-
-class HotKeyi : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyi(MainWindow* p) : HotKey('i'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyi(const HotKeyi& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_info();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyi(*this);
-	}
-};
-
-// READ FILE
-class HotKeyR : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyR(MainWindow* p) : HotKey('R'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    // LoadFile does apoptosis
-	    LoadFile* loadfile = new LoadFile(ptr);
-	    loadfile->run();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyR(*this);
-	}
-
-};
-
-class HotKeyr : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyr(MainWindow* p) : HotKey('r'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    // LoadFile does apoptosis
-	    LoadFile* loadfile = new LoadFile(ptr);
-	    loadfile->run();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyr(*this);
-	}
-
-};
-
-// CREATE FILE
-class HotKeyE : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyE(MainWindow* p) : HotKey('E'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyE(const HotKeyE& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
-
-	void action() {
-	    // CreateFile does apoptosis
-	    CreateFile* createfile = new CreateFile(ptr);
-	    createfile->run();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyE(*this);
-	}
-
-};
-
-class HotKeye : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeye(MainWindow* p) : HotKey('e'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeye(const HotKeye& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
-
-	void action() {
-	    // CreateFile does apoptosis
-	    CreateFile* createfile = new CreateFile(ptr);
-	    createfile->run();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeye(*this);
-	}
-
-};
-
-// SAVE FILE
-class HotKeyS : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyS(MainWindow* p) : HotKey('S'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyS(const HotKeyS& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->save_records();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyS(*this);
-	}
-
-};
-
-class HotKeys : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeys(MainWindow* p) : HotKey('s'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeys(const HotKeys& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->save_records();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeys(*this);
-	}
-
-};
-
-// ADD RECORD
-class HotKeyA : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyA(MainWindow* p) : HotKey('A'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyA(const HotKeyA& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_password_record(false);
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyA(*this);
-	}
-
-};
-
-class HotKeya : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeya(MainWindow* p) : HotKey('a'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeya(const HotKeya& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->show_password_record(false);
-	}
-
-	HotKey* clone() const {
-	    return new HotKeya(*this);
-	}
-
-};
-
-// SORT ORDER
-class HotKeyO : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyO(MainWindow* p) : HotKey('O'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyO(const HotKeyO& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->sort_asc(!ptr->sort_asc());
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyO(*this);
-	}
-
-};
-
-class HotKeyo : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyo(MainWindow* p) : HotKey('o'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyo(const HotKeyo& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->sort_asc(!ptr->sort_asc());
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyo(*this);
-	}
-
-};
-
-// DELETE
-class HotKeyD : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyD(MainWindow* p) : HotKey('D'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyD(const HotKeyD& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->delete_selected();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyD(*this);
-	}
-};
-
-class HotKeyd : public YACURS::HotKey {
-    private:
-	MainWindow* ptr;
-    public:
-	HotKeyd(MainWindow* p) : HotKey('d'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyd(const HotKeyd& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
-
-	void action() {
-	    ptr->delete_selected();
-	}
-
-	HotKey* clone() const {
-	    return new HotKeyd(*this);
-	}
-};
 
 //
 // Private
@@ -419,6 +76,15 @@ MainWindow::apoptosis_handler(YACURS::Event& e) {
     if (typeid(e) == typeid(YACURS::EventEx<CreateFile*>)) {
 	YACURS::EventEx<CreateFile*>& evt =
 	    dynamic_cast<YACURS::EventEx<CreateFile*>&>(e);
+
+	delete evt.data();
+	evt.stop(true);
+	return;
+    }
+
+    if (typeid(e) == typeid(YACURS::EventEx<ChangePassword*>)) {
+	YACURS::EventEx<ChangePassword*>& evt =
+	    dynamic_cast<YACURS::EventEx<ChangePassword*>&>(e);
 
 	delete evt.data();
 	evt.stop(true);
@@ -458,14 +124,14 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 		    // changed the selection index.
 		    recordlist->high_light(record_index);
 		    recordlist->selected(*passwordrecord->getEncEntry());
-		    
+
 		    YACURS::Curses::statusbar()->set(_("Updated Record"));
 		}
 		YAPET::Globals::records_changed=true;
-	    } 
+	    }
 	}
 
-		    
+
 	// Reset the record index
 	record_index=-1;
 
@@ -477,7 +143,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     if (confirmdelete != 0 && evt.data() == confirmdelete) {
 	if (confirmdelete->dialog_state() == YACURS::Dialog::DIALOG_YES) {
 	    assert(record_index!= -1);
-	    
+
 	    // select the record that has been selected when
 	    // the dialog opened. Need in case a screen resize
 	    // changed the selection index.
@@ -505,7 +171,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 void
 MainWindow::listbox_enter_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_LISTBOX_ENTER);
-    
+
     if (typeid(e) == typeid(YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>)) {
 	YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>& evt =
 	    dynamic_cast<YACURS::EventEx<YACURS::ListBox<YAPET::PartDec>*>&>(e);
@@ -564,6 +230,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     add_hotkey(HotKeyD(this));
     add_hotkey(HotKeyd(this));
 
+    add_hotkey(HotKeyC(this));
+    add_hotkey(HotKeyc(this));
+
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
 						  EVT_WINDOW_CLOSE,
@@ -596,10 +265,10 @@ MainWindow::~MainWindow() {
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 					 MainWindow>(
-                                                     YACURS::EVT_WINDOW_CLOSE,
-                                                     this,
-                                                     &MainWindow::
-                                                     window_close_handler) );
+						     YACURS::EVT_WINDOW_CLOSE,
+						     this,
+						     &MainWindow::
+						     window_close_handler) );
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YAPET::EVT_APOPTOSIS,
@@ -651,12 +320,12 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	errormsgdialog->show();
     }
 }
-	
+
 
 void
 MainWindow::show_password_record(bool selected) {
     assert(passwordrecord==0);
- 
+
     if (YAPET::Globals::key==0 ||
 	YAPET::Globals::file==0)
 	return;
@@ -664,7 +333,7 @@ MainWindow::show_password_record(bool selected) {
     if (selected) {
 	assert(record_index==-1);
 	record_index = recordlist->selected_index();
-	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected())); 
+	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
     } else {
 	passwordrecord=new PasswordRecord(YAPET::Globals::key);
     }
@@ -698,9 +367,36 @@ MainWindow::save_records() {
 }
 
 void
+MainWindow::change_password(YAPET::Key* nk) {
+    if (YAPET::Globals::key == 0 || YAPET::Globals::file == 0)
+	return;
+
+    if (nk==0)
+	throw std::invalid_argument(_("New key must not be 0"));
+
+    try {
+	YAPET::Globals::file->setNewKey(*YAPET::Globals::key,
+					*nk);
+	// Replace existing key
+	delete YAPET::Globals::key;
+	YAPET::Globals::key = nk;
+
+	YACURS::Curses::statusbar()->set(std::string(_("Changed password on ")) + YAPET::Globals::file->getFilename());
+    } catch (std::exception& e) {
+	assert(errormsgdialog!=0);
+
+	errormsgdialog = new YACURS::MessageBox2(_("Error"),
+						 _("Error while changing password:"),
+						 e.what(),
+						 YACURS::Dialog::OK_ONLY);
+	errormsgdialog->show();
+    }
+}
+
+void
 MainWindow::delete_selected() {
    assert(confirmdelete==0);
- 
+
     if (YAPET::Globals::key==0 ||
 	YAPET::Globals::file==0)
 	return;
@@ -739,7 +435,7 @@ MainWindow::sort_asc(bool f) {
 	recordlist->sort_order(YACURS::DESCENDING);
 	YACURS::Curses::statusbar()->set(_("Sort Order Descending"));
     }
-    
+
 }
 
 bool

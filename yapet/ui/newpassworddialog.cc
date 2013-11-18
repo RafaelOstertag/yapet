@@ -38,6 +38,16 @@ NewPasswordDialog::on_close() {
 	return false;
     }
 
+    if (pwinput1->input().empty() && dialog_state() != YACURS::Dialog::DIALOG_CANCEL) {
+	assert(nomatchdialog==0);
+	nomatchdialog = new YACURS::MessageBox2(_("Password Missmatch"),
+						_("Password must not be empty."),
+						_("Do you want to retry?"),
+						YESNO);
+	nomatchdialog->show();
+	return false;
+    }
+
     return true;
 }
 

@@ -10,7 +10,7 @@ bin_PROGRAMS = yapet
 
 ui_SOURCES = ui/help.cc ui/mainwindow.cc ui/passworddialog.cc ui/passwordrecord.cc ui/newpassworddialog.cc ui/info.cc
 
-glue_SOURCES = glue/loadfile.cc glue/promptpassword.cc glue/createfile.cc
+glue_SOURCES = glue/loadfile.cc glue/promptpassword.cc glue/createfile.cc glue/changepassword.cc
 
 yapet_SOURCES = main.cc cfgfile.cc consts.cc cfg.cc globals.cc $(ui_SOURCES) $(glue_SOURCES)
 

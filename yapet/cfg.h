@@ -21,7 +21,7 @@
 //
 
 #ifndef _CFG_H
-#define _CFG_H
+#define _CFG_H 1
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
