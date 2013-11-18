@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-10-13 21:30+0200\n"
+"POT-Creation-Date: 2013-11-18 02:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: crypt/bdbuffer.cc:59 crypt/file.cc:536 crypt/record.h:97
+msgid "Memory exhausted"
+msgstr ""
+
+#: crypt/bdbuffer.cc:171 crypt/bdbuffer.cc:193
+msgid "Position out of range"
+msgstr ""
+
+#: crypt/crypt.cc:57
+msgid "Unable to get cipher"
+msgstr ""
+
+#: crypt/crypt.cc:66
+msgid "Error initializing cipher"
+msgstr ""
+
+#: crypt/crypt.cc:73 crypt/crypt.h:179 crypt/crypt.h:257
+msgid "Error setting the key length"
+msgstr ""
+
 #: crypt/crypt.h:160 crypt/crypt.h:238
 msgid "IVec length missmatch"
 msgstr ""
 
 #: crypt/crypt.h:172 crypt/crypt.h:250
 msgid "Error initializing encryption engine"
-msgstr ""
-
-#: crypt/crypt.h:179 crypt/crypt.h:257 crypt/crypt.cc:73
-msgid "Error setting the key length"
 msgstr ""
 
 #: crypt/crypt.h:194
@@ -43,46 +59,6 @@ msgstr ""
 
 #: crypt/crypt.h:282
 msgid "Error finalizing decryption"
-msgstr ""
-
-#: crypt/record.h:97 crypt/bdbuffer.cc:59 crypt/file.cc:536
-msgid "Memory exhausted"
-msgstr ""
-
-#: crypt/record.h:290
-msgid "BDBuffer too small. Cannot assign to Record<T>"
-msgstr ""
-
-#: crypt/record.h:292
-msgid "BDBuffer too big. Cannot assign to Record<T>"
-msgstr ""
-
-#: crypt/yapetexception.h:86
-msgid "Generic exception message"
-msgstr ""
-
-#: crypt/yapetexception.h:130
-msgid "Retry"
-msgstr ""
-
-#: crypt/yapetexception.h:155
-msgid "Encryption error"
-msgstr ""
-
-#: crypt/yapetexception.h:182
-msgid "Invalid password"
-msgstr ""
-
-#: crypt/bdbuffer.cc:171 crypt/bdbuffer.cc:193
-msgid "Position out of range"
-msgstr ""
-
-#: crypt/crypt.cc:57
-msgid "Unable to get cipher"
-msgstr ""
-
-#: crypt/crypt.cc:66
-msgid "Error initializing cipher"
 msgstr ""
 
 #: crypt/file.cc:122
@@ -232,4 +208,470 @@ msgstr ""
 
 #: crypt/key.cc:238
 msgid "IVec: Digest does not have expected length"
+msgstr ""
+
+#: crypt/record.h:290
+msgid "BDBuffer too small. Cannot assign to Record<T>"
+msgstr ""
+
+#: crypt/record.h:292
+msgid "BDBuffer too big. Cannot assign to Record<T>"
+msgstr ""
+
+#: crypt/yapetexception.h:86 yapet/pwgen/pwgenexception.h:49
+msgid "Generic exception message"
+msgstr ""
+
+#: crypt/yapetexception.h:130
+msgid "Retry"
+msgstr ""
+
+#: crypt/yapetexception.h:155
+msgid "Encryption error"
+msgstr ""
+
+#: crypt/yapetexception.h:182
+msgid "Invalid password"
+msgstr ""
+
+#: yapet/pwgen/charpool.cc:64
+msgid "Subpools may not be zero"
+msgstr ""
+
+#: yapet/pwgen/charpool.cc:78 yapet/pwgen/charpool.cc:160
+#: yapet/pwgen/charpool.cc:290
+msgid "Out of memory"
+msgstr ""
+
+#: yapet/pwgen/charpool.cc:252
+msgid "No character at given position"
+msgstr ""
+
+#: yapet/pwgen/charpool.h:159
+msgid "NULL pointer passed."
+msgstr ""
+
+#: yapet/pwgen/pwgen.cc:99
+msgid ""
+"Cannot get character from unused pool because no unused pools are available"
+msgstr ""
+
+#: yapet/pwgen/pwgenexception.h:74
+msgid "No Random Number Generator available"
+msgstr ""
+
+#: yapet/pwgen/pwgenexception.h:92
+msgid "The requested RNG is not available"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:109
+msgid "Unable to initialize RNG when none is available"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:119
+msgid "Unable to open /dev/random"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:126
+msgid "Unable to open /dev/urandom"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:141 yapet/pwgen/rng.cc:353
+msgid "Unexpected RNG Engine (AUTO)"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:144 yapet/pwgen/rng.cc:355
+msgid "The requested RNG Engine (NONE) is invalid."
+msgstr ""
+
+#: yapet/pwgen/rng.cc:186
+msgid "Read to few bytes on /dev/[u]random."
+msgstr ""
+
+#: yapet/pwgen/rng.cc:220
+msgid "lrand48() not available on system"
+msgstr ""
+
+#: yapet/pwgen/rng.cc:240
+msgid "rand() not available on system"
+msgstr ""
+
+#: yapet/main.cc:107
+msgid "Failed to suppress the creation of core file."
+msgstr ""
+
+#: yapet/main.cc:109
+msgid "The error message is: "
+msgstr ""
+
+#: yapet/main.cc:112 yapet/main.cc:124
+msgid "In case a core file is created, it may contain clear text passwords."
+msgstr ""
+
+#: yapet/main.cc:115 yapet/main.cc:127
+msgid "Press <ENTER> to continue"
+msgstr ""
+
+#: yapet/main.cc:121
+msgid "Cannot suppress the creation of core file."
+msgstr ""
+
+#: yapet/main.cc:136
+msgid "Architecture: "
+msgstr ""
+
+#: yapet/main.cc:148
+msgid "SSL Version: "
+msgstr ""
+
+#: yapet/main.cc:152
+msgid "Compiled with support for terminal title"
+msgstr ""
+
+#: yapet/main.cc:154
+msgid "Compiled without support for terminal title"
+msgstr ""
+
+#: yapet/main.cc:158
+msgid "Compiled with password generator"
+msgstr ""
+
+#: yapet/main.cc:160
+msgid "Compiled without password generator"
+msgstr ""
+
+#: yapet/main.cc:164
+msgid "Support for file security NOT available"
+msgstr ""
+
+#: yapet/main.cc:167
+msgid "Creation of core file is suppressed"
+msgstr ""
+
+#: yapet/main.cc:169
+msgid "Creation of core files is NOT suppressed"
+msgstr ""
+
+#: yapet/main.cc:187
+msgid "show copyright information"
+msgstr ""
+
+#: yapet/main.cc:190
+msgid "show this help text"
+msgstr ""
+
+#: yapet/main.cc:194
+msgid "do not read the configuration file."
+msgstr ""
+
+#: yapet/main.cc:197
+msgid ""
+"read the configuration file specified by <rcfile>.\n"
+"\t\t\tIf this option is not provided, it defaults to\n"
+"\t\t\t$HOME/.yapet unless -i is specified."
+msgstr ""
+
+#: yapet/main.cc:202
+msgid ""
+"disable check of owner and file permissions.\n"
+"\t\t\tWhen creating new files, the file mode is set\n"
+"\t\t\tto 0644."
+msgstr ""
+
+#: yapet/main.cc:207
+msgid ""
+"enable check of owner and file permissions.\n"
+"\t\t\tWhen creating new files, the file mode is set\n"
+"\t\t\tto 0600."
+msgstr ""
+
+#: yapet/main.cc:212
+msgid ""
+"the time-out in seconds until the screen is locked.\n"
+"\t\t\tDefault: 600 sec."
+msgstr ""
+
+#: yapet/main.cc:216
+msgid "show the version of "
+msgstr ""
+
+#: yapet/main.cc:220
+msgid "open the specified file <filename>"
+msgstr ""
+
+#: yapet/main.cc:226
+#, c-format
+msgid ""
+"%s stores passwords encrypted on disk using the blowfish encryption\n"
+"algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
+"for more information about %s."
+msgstr ""
+
+#: yapet/main.cc:316
+msgid " without argument"
+msgstr ""
+
+#: yapet/main.cc:321
+msgid "unknown argument"
+msgstr ""
+
+#: yapet/main.cc:359
+msgid "Press 'H' for help"
+msgstr ""
+
+#: yapet/pwgendialog.cc:60
+msgid "rand() (not good)"
+msgstr ""
+
+#: yapet/pwgendialog.cc:101
+msgid "May you consider deleting the window before reallocating"
+msgstr ""
+
+#: yapet/pwgendialog.cc:108
+msgid "Error creating password generator window"
+msgstr ""
+
+#: yapet/pwgendialog.cc:119
+msgid "Character Pools"
+msgstr ""
+
+#: yapet/pwgendialog.cc:126
+msgid "Regenerate"
+msgstr ""
+
+#: yapet/pwgendialog.cc:129
+msgid "OK"
+msgstr ""
+
+#: yapet/pwgendialog.cc:132
+msgid "Cancel"
+msgstr ""
+
+#: yapet/pwgendialog.cc:148
+msgid "P A S S W O R D  G E N E R A T O R"
+msgstr ""
+
+#: yapet/pwgendialog.cc:151
+msgid "Error printing title"
+msgstr ""
+
+#: yapet/pwgendialog.cc:154
+#, c-format
+msgid "Generated Password (using %s):"
+msgstr ""
+
+#: yapet/pwgendialog.cc:159 yapet/pwgendialog.cc:166
+msgid "Error printing label"
+msgstr ""
+
+#: yapet/pwgendialog.cc:163
+msgid "Password Length"
+msgstr ""
+
+#: yapet/pwgendialog.cc:318 yapet/pwgendialog.cc:336
+msgid "E R R O R"
+msgstr ""
+
+#: yapet/pwgendialog.cc:319
+msgid "You need to select at least one Character Pool"
+msgstr ""
+
+#: yapet/pwgendialog.cc:337
+msgid "Password must have at least one character"
+msgstr ""
+
+#: yapet/pwgendialog.cc:412
+msgid "Error drawing box"
+msgstr ""
+
+#: yapet/pwgendialog.cc:418
+msgid "Error refreshing window"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:68 yapet/ui/passwordrecord.cc:202
+#: yapet/ui/mainwindow.cc:533 yapet/ui/mainwindow.cc:578
+#: yapet/glue/promptpassword.cc:61 yapet/glue/createfile.cc:69
+msgid "Error"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:113
+msgid "Pending Changes"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:114
+msgid "Do you want to discard changes?"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:127 yapet/ui/passwordrecord.cc:274
+msgid "Password Entry"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:129
+msgid "Name"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:130
+msgid "Host"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:131
+msgid "User Name"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:132
+msgid "Password"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:133
+msgid "Comment"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:140 yapet/ui/help.cc:107
+msgid "Password Generator"
+msgstr ""
+
+#: yapet/ui/passwordrecord.cc:272
+msgid "Password Entry (Read-Only)"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:372
+msgid "Added new Record"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:382
+msgid "Updated Record"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:519
+msgid "Opened file: "
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:534
+msgid "Error while reading file:"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:571
+msgid "Saved file: "
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:579
+msgid "Error while saving file:"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:598
+msgid "Sort Order Ascending"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:601
+msgid "Sort Order Descending"
+msgstr ""
+
+#: yapet/ui/passworddialog.cc:26
+msgid "Enter Password"
+msgstr ""
+
+#: yapet/ui/passworddialog.cc:28 yapet/ui/newpassworddialog.cc:72
+msgid "Enter password for "
+msgstr ""
+
+#: yapet/ui/help.cc:40
+msgid "Help"
+msgstr ""
+
+#: yapet/ui/help.cc:51
+msgid "Save File"
+msgstr ""
+
+#: yapet/ui/help.cc:56
+msgid "Load File"
+msgstr ""
+
+#: yapet/ui/help.cc:61
+msgid "Create File"
+msgstr ""
+
+#: yapet/ui/help.cc:66
+msgid "Lock Screen"
+msgstr ""
+
+#: yapet/ui/help.cc:71
+msgid "Add Entry"
+msgstr ""
+
+#: yapet/ui/help.cc:76
+msgid "Delete Entry"
+msgstr ""
+
+#: yapet/ui/help.cc:81
+msgid "Sort Order"
+msgstr ""
+
+#: yapet/ui/help.cc:86
+msgid "Search"
+msgstr ""
+
+#: yapet/ui/help.cc:91
+msgid "Search Next"
+msgstr ""
+
+#: yapet/ui/help.cc:96
+msgid "Change Password"
+msgstr ""
+
+#: yapet/ui/help.cc:101
+msgid "Redraw Screen"
+msgstr ""
+
+#: yapet/ui/help.cc:113
+msgid "Quit"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.h:72
+msgid ""
+"Calling NewPasswordDialog::password() while dialog_state()!=DIALOG_OK or !"
+"match()"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:33
+msgid "Password Missmatch"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:34
+msgid "Passwords do not match."
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:35
+msgid "Do you want to retry?"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:68
+msgid "New Password"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:73
+msgid "Confirm password"
+msgstr ""
+
+#: yapet/glue/loadfile.cc:159 yapet/glue/createfile.cc:162
+msgid "Unsaved Changes"
+msgstr ""
+
+#: yapet/glue/loadfile.cc:161 yapet/glue/createfile.cc:164
+msgid "has unsaved changes. Do you want to save?"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:48
+msgid "Invalid Password"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:49
+msgid "Password for file"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:51
+msgid "is not correct. Do you want to try again?"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:62 yapet/glue/createfile.cc:70
+msgid "Got following error"
 msgstr ""
