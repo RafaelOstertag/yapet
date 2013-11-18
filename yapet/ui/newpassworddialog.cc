@@ -102,6 +102,7 @@ NewPasswordDialog::NewPasswordDialog(std::string& fn) :
     
     linefn->color(YACURS::DIALOG);
     line1->color(YACURS::DIALOG);
+    line2->color(YACURS::DIALOG);
 }
 
 NewPasswordDialog::~NewPasswordDialog() {
