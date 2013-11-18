@@ -1,7 +1,11 @@
 YAPET To Do
 ===========
 
-* Translate the copyright.
+ * Use terminal title
+
+ * Implement pwgen
+
+ * Implement user configuration
 
 $Id$
 Local Variables:
