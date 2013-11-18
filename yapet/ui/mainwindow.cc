@@ -165,20 +165,20 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 
     if (confirmquit != 0 && evt.data() == confirmquit) {
 	switch (confirmquit->dialog_state()) {
-	    case YACURS::DIALOG_YES:
-		assert(YAPET::Globals::key!=0);
-		assert(YAPET::Globals::file!=0);
-		save_records();
-	    case YACURS::DIALOG_NO:
-		// fall thru
-		YACURS::EventQueue::submit(YACURS::EVT_QUIT);
-		break;
-	    case YACURS::DIALOG_CANCEL:
-		YACURS::Curses::statusbar()->set(_("Quit aborted"));
-		break;
-	    default:
-		YACURS::Curses::statusbar()->set(_("Unexpected dialog state"));
-		break;
+	case YACURS::DIALOG_YES:
+	    assert(YAPET::Globals::key!=0);
+	    assert(YAPET::Globals::file!=0);
+	    save_records();
+	case YACURS::DIALOG_NO:
+	    // fall thru
+	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+	    break;
+	case YACURS::DIALOG_CANCEL:
+	    YACURS::Curses::statusbar()->set(_("Quit aborted"));
+	    break;
+	default:
+	    throw std::runtime_error(_("Unexpected dialog state for confirmsave dialog"));
+	    break;
 	}
 
 	delete confirmquit;

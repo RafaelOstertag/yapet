@@ -383,20 +383,20 @@ main(int argc, char** argv) {
 	if (yunlockdia)
 	    delete yunlockdia;
     } catch (std::exception& ex) {
-	if (YACURS::Curses::mainwindow())
-	    delete YACURS::Curses::mainwindow();
+    	if (YACURS::Curses::mainwindow())
+    	    delete YACURS::Curses::mainwindow();
 
-	if (YACURS::Curses::title())
-	    delete YACURS::Curses::title();
+    	if (YACURS::Curses::title())
+    	    delete YACURS::Curses::title();
 
-	if (YACURS::Curses::statusbar())
-	    delete YACURS::Curses::statusbar();
+    	if (YACURS::Curses::statusbar())
+    	    delete YACURS::Curses::statusbar();
 
-	if (YACURS::EventQueue::lock_screen())
-	    delete YACURS::EventQueue::lock_screen();
+    	if (YACURS::EventQueue::lock_screen())
+    	    delete YACURS::EventQueue::lock_screen();
 
-	if (yunlockdia)
-	    delete yunlockdia;
+    	if (yunlockdia)
+    	    delete yunlockdia;
 
         try {
             YACURS::Curses::end();
