@@ -68,6 +68,8 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     ent=new YACURS::Label(_("Password records: "));
     leftpack->add_back(ent);
+    val.str("");
+    val.clear();
     val << entries;
     ent_status=new YACURS::Label(val.str());
     rightpack->add_back(ent_status);
@@ -83,6 +85,8 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     ver=new YACURS::Label(_("PET file version: "));
     leftpack->add_back(ver);
     if (YAPET::Globals::file != 0 && YAPET::Globals::key != 0) {
+	val.str("");
+	val.clear();
 	val << YAPET::Globals::file->getFileVersion(*YAPET::Globals::key);
 	ver_status=new YACURS::Label(val.str());
     } else {
@@ -93,8 +97,12 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 #if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
     pwset=new YACURS::Label(_("Password set: "));
     leftpack->add_back(pwset);
-    time_t t= static_cast<time_t>(YAPET::Globals::file->getMasterPWSet (*YAPET::Globals::key));
-    pwset_status=new YACURS::Label(asctime(localtime(&t)));
+    if (YAPET::Globals::file != 0 && YAPET::Globals::key != 0) {
+	time_t t= static_cast<time_t>(YAPET::Globals::file->getMasterPWSet (*YAPET::Globals::key));
+	pwset_status=new YACURS::Label(asctime(localtime(&t)));
+    } else {
+	pwset_status=new YACURS::Label(_("n/a"));
+    }
     rightpack->add_back(pwset_status);
 #endif
 
