@@ -56,5 +56,5 @@ YapetLockScreen::show() {
 	return;
     }
 
-    YapetLockScreen::show();
+    LockScreen::show();
 }

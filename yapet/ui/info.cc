@@ -66,6 +66,14 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     slt_status=new YACURS::Label(val.str());
     rightpack->add_back(slt_status);
 
+    sult=new YACURS::Label(_("Unlock Dialog time-out: "));
+    leftpack->add_back(sult);
+    val.str("");
+    val.clear();
+    val << YAPET::CONFIG::config.pw_input_timeout;
+    sult_status=new YACURS::Label(val.str());
+    rightpack->add_back(sult_status);
+
     ent=new YACURS::Label(_("Password records: "));
     leftpack->add_back(ent);
     val.str("");
@@ -112,6 +120,9 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     slt->color(YACURS::DIALOG);
     slt_status->color(YACURS::DIALOG);
 
+    sult->color(YACURS::DIALOG);
+    sult_status->color(YACURS::DIALOG);
+
     ent->color(YACURS::DIALOG);
     ent_status->color(YACURS::DIALOG);
    
@@ -137,6 +148,9 @@ InfoDialog::~InfoDialog() {
 
     delete slt;
     delete slt_status;
+
+    delete sult;
+    delete sult_status;
 
     delete ent;
     delete ent_status;

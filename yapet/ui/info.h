@@ -43,6 +43,9 @@ class InfoDialog : public YACURS::Dialog {
 	YACURS::Label* slt;
 	YACURS::Label* slt_status;
 
+	YACURS::Label* sult;
+	YACURS::Label* sult_status;
+
 	YACURS::Label* ent;
 	YACURS::Label* ent_status;
 

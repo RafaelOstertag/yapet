@@ -341,7 +341,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 
 	recordlist->clear();
 
-	assert(errormsgdialog!=0);
+	assert(errormsgdialog==0);
 
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while reading file:"),
