@@ -8,9 +8,8 @@
 
 #include <typeinfo>
 
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
+#include <iostream>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
