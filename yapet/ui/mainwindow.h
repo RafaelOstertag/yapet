@@ -44,10 +44,12 @@ class MainWindow : public YACURS::Window {
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
 	HelpDialog* helpdialog;
 	InfoDialog* infodialog;
+	YACURS::MessageBox* confirmdelete;
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
-	// Used when opening an existing record to store the index, so
-	// that it can be reselect in case of a window resize.
+	// Used when opening an existing record or deleting a record
+	// to store the index, so that it can be reselect in case of a
+	// window resize.
 	YACURS::ListBox<YAPET::PartDec>::lsz_t record_index;
 
 
@@ -85,6 +87,8 @@ class MainWindow : public YACURS::Window {
 	 * the currently selected password record.
 	 */
 	void show_password_record(bool selected);
+
+	void delete_selected();
 
 	void save_records();
 

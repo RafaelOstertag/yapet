@@ -362,6 +362,43 @@ class HotKeyo : public YACURS::HotKey {
 
 };
 
+// DELETE
+class HotKeyD : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyD(MainWindow* p) : HotKey('D'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyD(const HotKeyD& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->delete_selected();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyD(*this);
+	}
+};
+
+class HotKeyd : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyd(MainWindow* p) : HotKey('d'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyd(const HotKeyd& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->delete_selected();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyd(*this);
+	}
+};
+
 //
 // Private
 //
@@ -437,6 +474,27 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    if (confirmdelete != 0 && evt.data() == confirmdelete) {
+	if (confirmdelete->dialog_state() == YACURS::Dialog::DIALOG_YES) {
+	    assert(record_index!= -1);
+	    
+	    // select the record that has been selected when
+	    // the dialog opened. Need in case a screen resize
+	    // changed the selection index.
+	    recordlist->high_light(record_index);
+	    recordlist->delete_selected();
+	    YACURS::Curses::statusbar()->set(_("Delete selected Record"));
+	    YAPET::Globals::records_changed=true;
+	}
+
+	// Reset the record index
+	record_index=-1;
+
+	delete confirmdelete;
+	confirmdelete=0;
+	return;
+    }
+
     if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
 	delete errormsgdialog;
 	errormsgdialog=0;
@@ -470,6 +528,7 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						0)) ,
 			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
 			  helpdialog(0),
+			  confirmdelete(0),
 			  passwordrecord(0),
 			  errormsgdialog(0),
 			  record_index(-1) {
@@ -502,6 +561,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     add_hotkey(HotKeyI(this));
     add_hotkey(HotKeyi(this));
 
+    add_hotkey(HotKeyD(this));
+    add_hotkey(HotKeyd(this));
+
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
 						  EVT_WINDOW_CLOSE,
@@ -525,6 +587,12 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 MainWindow::~MainWindow() {
     assert(recordlist!=0);
     delete recordlist;
+
+    if (helpdialog) delete helpdialog;
+    if (infodialog) delete infodialog;
+    if (confirmdelete) delete confirmdelete;
+    if (passwordrecord) delete passwordrecord;
+    if (errormsgdialog) delete errormsgdialog;
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 					 MainWindow>(
@@ -627,6 +695,23 @@ MainWindow::save_records() {
 						 YACURS::Dialog::OK_ONLY);
 	errormsgdialog->show();
     }
+}
+
+void
+MainWindow::delete_selected() {
+   assert(confirmdelete==0);
+ 
+    if (YAPET::Globals::key==0 ||
+	YAPET::Globals::file==0)
+	return;
+
+    assert(record_index==-1);
+    record_index = recordlist->selected_index();
+    confirmdelete=new YACURS::MessageBox(_("Confirm Deletion"),
+				 _("Do you want to delete the selected record?"),
+				 YACURS::Dialog::YESNO);
+
+    confirmdelete->show();
 }
 
 void
