@@ -139,6 +139,8 @@ class PasswordRecord : public YACURS::Dialog {
          */
         bool changed() const;
 
+	void readonly(bool f);
+
         bool readonly() const {
             return __readonly;
         }

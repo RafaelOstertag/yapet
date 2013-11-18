@@ -27,6 +27,24 @@
 #include "crypt.h"
 #include "passwordrecord.h"
 
+class HotKeyCtrlR : public YACURS::HotKey {
+    private:
+	PasswordRecord* ptr;
+
+    public:
+	HotKeyCtrlR(PasswordRecord* p): HotKey(18), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyCtrlR(const HotKeyCtrlR& hk) : HotKey(hk), ptr(hk.ptr){}
+	void action() {
+	    ptr->readonly(!ptr->readonly());
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyCtrlR(*this);
+	}
+};
+
 void
 PasswordRecord::on_ok_button() {
     YAPET::Record<YAPET::PasswordRecord> unenc_rec;
@@ -88,8 +106,8 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
 bool
 PasswordRecord::on_close() {
     if (changed() && 
-	!(__force_close || __newrecord) &&
-	dialog_state() != YACURS::Dialog::DIALOG_OK ) {
+	dialog_state() != YACURS::Dialog::DIALOG_OK &&
+	!__force_close) {
 	assert(confirmdialog==0);
 	confirmdialog = 
 	    new YACURS::MessageBox(_("Pending Changes"),
@@ -158,25 +176,22 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
 
     widget(vpack);
 
+    add_hotkey(HotKeyCtrlR(this));
+
     if (pe != 0) {
         YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
-	__readonly=true;
 
         try {
             YAPET::Crypt crypt(*__key);
             dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
                 pe->getEncRecord() );
 	    YAPET::PasswordRecord* ptr_rec = *dec_rec;
+	    readonly(true);
             name->input(reinterpret_cast<char*>(ptr_rec->name) );
-	    name->readonly(true);
             host->input(reinterpret_cast<char*>(ptr_rec->host) );
-	    host->readonly(true);
             username->input(reinterpret_cast<char*>(ptr_rec->username) );
-	    username->readonly(true);
             password->input(reinterpret_cast<char*>(ptr_rec->password) );
-	    password->readonly(true);
             comment->input(reinterpret_cast<char*>(ptr_rec->comment) );
-	    comment->readonly(true);
             delete dec_rec;
         } catch (YAPET::YAPETException& ex) {
             if (dec_rec != 0)
@@ -242,3 +257,19 @@ PasswordRecord::changed() const {
            password->changed() ||
            comment->changed();
 }
+
+void
+PasswordRecord::readonly(bool f) {
+    name->readonly(f);
+    host->readonly(f);
+    username->readonly(f);
+    password->readonly(f);
+    password->hide_input(f);
+    comment->readonly(f);
+    __readonly=f;
+
+    if (__readonly)
+	title(_("Password Entry (Read-Only)"));
+    else
+	title(_("Password Entry"));
+}    

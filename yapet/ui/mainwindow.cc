@@ -57,6 +57,8 @@
 #include "loadfile.h"
 #include "createfile.h"
 
+
+// QUIT
 class HotKeyQ : public YACURS::HotKey {
     public:
 	HotKeyQ() : HotKey('Q') {}
@@ -83,7 +85,7 @@ class HotKeyq : public YACURS::HotKey {
 	}
 };
 
-
+// HELP
 class HotKeyH : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -120,6 +122,7 @@ class HotKeyh : public YACURS::HotKey {
 	}
 };
 
+// READ FILE
 class HotKeyR : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -162,7 +165,7 @@ class HotKeyr : public YACURS::HotKey {
 
 };
 
-
+// CREATE FILE
 class HotKeyE : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -205,6 +208,7 @@ class HotKeye : public YACURS::HotKey {
 
 };
 
+// SAVE FILE
 class HotKeyS : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -243,6 +247,7 @@ class HotKeys : public YACURS::HotKey {
 
 };
 
+// ADD RECORD
 class HotKeyA : public YACURS::HotKey {
     private:
 	MainWindow* ptr;
@@ -280,6 +285,46 @@ class HotKeya : public YACURS::HotKey {
 	}
 
 };
+
+// SORT ORDER
+class HotKeyO : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyO(MainWindow* p) : HotKey('O'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyO(const HotKeyO& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->sort_asc(!ptr->sort_asc());
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyO(*this);
+	}
+
+};
+
+class HotKeyo : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyo(MainWindow* p) : HotKey('o'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyo(const HotKeyo& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->sort_asc(!ptr->sort_asc());
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyo(*this);
+	}
+
+};
+
 //
 // Private
 //
@@ -322,15 +367,27 @@ MainWindow::window_close_handler(YACURS::Event& e) {
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::Dialog::DIALOG_OK) {
 	    if (passwordrecord->changed()) {
-		if (passwordrecord->newrecord())
+		if (passwordrecord->newrecord()) {
 		    recordlist->add(*passwordrecord->getEncEntry());
-		else 
-#warning "To be implemented"
-		    // Replace existing record
-		    abort();
+		    YACURS::Curses::statusbar()->set(_("Added new Record"));
+		} else {
+		    assert(record_index!= -1);
+
+		    // select the record that has been selected when
+		    // the dialog opened. Need in case a screen resize
+		    // changed the selection index.
+		    recordlist->high_light(record_index);
+		    recordlist->selected(*passwordrecord->getEncEntry());
+		    
+		    YACURS::Curses::statusbar()->set(_("Updated Record"));
+		}
+		YAPET::Globals::records_changed=true;
 	    } 
 	}
-	
+
+		    
+	// Reset the record index
+	record_index=-1;
 
 	delete passwordrecord;
 	passwordrecord=0;
@@ -371,9 +428,12 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
 			  helpdialog(0),
 			  passwordrecord(0),
-			  errormsgdialog(0) {
+			  errormsgdialog(0),
+			  record_index(-1) {
     Window::widget(recordlist);
     frame(false);
+
+    recordlist->sort_order(YACURS::ASCENDING);
 
     add_hotkey(HotKeyQ() );
     add_hotkey(HotKeyq() );
@@ -392,6 +452,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     add_hotkey(HotKeyA(this));
     add_hotkey(HotKeya(this));
+
+    add_hotkey(HotKeyO(this));
+    add_hotkey(HotKeyo(this));
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
@@ -438,14 +501,6 @@ MainWindow::~MainWindow() {
 }
 
 void
-MainWindow::show_help() {
-    assert(helpdialog==0);
-
-    helpdialog=new HelpDialog;
-    helpdialog->show();
-}
-
-void
 MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
     if (YAPET::Globals::key)
 	delete YAPET::Globals::key;
@@ -462,7 +517,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
     try {
 	recordlist->set(YAPET::Globals::file->read(*YAPET::Globals::key));
 	std::string msg(_("Opened file: "));
-	YACURS::Curses::statusbar()->push(msg +
+	YACURS::Curses::statusbar()->set(msg +
 					      YAPET::Globals::file->getFilename());
     } catch (std::exception& e) {
 	delete YAPET::Globals::key;
@@ -492,10 +547,14 @@ MainWindow::show_password_record(bool selected) {
 	YAPET::Globals::file==0)
 	return;
 
-    if (selected)
-	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
-    else
+    if (selected) {
+	assert(record_index==-1);
+	record_index = recordlist->selected_index();
+	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected())); 
+    } else {
 	passwordrecord=new PasswordRecord(YAPET::Globals::key);
+    }
+
     passwordrecord->show();
 
 }
@@ -510,7 +569,7 @@ MainWindow::save_records() {
     try {
 	YAPET::Globals::file->save(recordlist->list());
 	std::string msg(_("Saved file: "));
-	YACURS::Curses::statusbar()->push(msg +
+	YACURS::Curses::statusbar()->set(msg +
 					  YAPET::Globals::file->getFilename());
 	YAPET::Globals::records_changed=false;
     } catch (std::exception& e) {
@@ -522,4 +581,29 @@ MainWindow::save_records() {
 						 YACURS::Dialog::OK_ONLY);
 	errormsgdialog->show();
     }
+}
+
+void
+MainWindow::show_help() {
+    assert(helpdialog==0);
+
+    helpdialog=new HelpDialog;
+    helpdialog->show();
+}
+
+void
+MainWindow::sort_asc(bool f) {
+    if (f) {
+	recordlist->sort_order(YACURS::ASCENDING);
+	YACURS::Curses::statusbar()->set(_("Sort Order Ascending"));
+    } else {
+	recordlist->sort_order(YACURS::DESCENDING);
+	YACURS::Curses::statusbar()->set(_("Sort Order Descending"));
+    }
+    
+}
+
+bool
+MainWindow::sort_asc() const {
+    return recordlist->sort_order() == YACURS::ASCENDING;
 }

@@ -44,6 +44,10 @@ class MainWindow : public YACURS::Window {
 	HelpDialog* helpdialog;
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
+	// Used when opening an existing record to store the index, so
+	// that it can be reselect in case of a window resize.
+	YACURS::ListBox<YAPET::PartDec>::lsz_t record_index;
+
 
         MainWindow(const MainWindow&) {
         }
@@ -83,6 +87,9 @@ class MainWindow : public YACURS::Window {
 	void save_records();
 
 	void show_help();
+
+	void sort_asc(bool f);
+	bool sort_asc() const;
 };
 
 #endif // _MAINWINDOW_H
