@@ -147,7 +147,7 @@ class HotKeyR : public YACURS::HotKey {
 
 	void action() {
 	    // LoadFile does apoptosis
-	    new LoadFile(ptr)->run();
+	    (new LoadFile(ptr))->run();
 	}
 
 	HotKey* clone() const {
@@ -167,7 +167,7 @@ class HotKeyr : public YACURS::HotKey {
 
 	void action() {
 	    // LoadFile does apoptosis
-	    new LoadFile(ptr)->run();
+	    (new LoadFile(ptr))->run();
 	}
 
 	HotKey* clone() const {
@@ -189,7 +189,7 @@ class HotKeyE : public YACURS::HotKey {
 
 	void action() {
 	    // CreateFile does apoptosis
-	    new CreateFile(ptr)->run();
+	    (new CreateFile(ptr))->run();
 	}
 
 	HotKey* clone() const {
@@ -209,7 +209,7 @@ class HotKeye : public YACURS::HotKey {
 
 	void action() {
 	    // CreateFile does apoptosis
-	    new CreateFile(ptr)->run();
+	    (new CreateFile(ptr))->run();
 	}
 
 	HotKey* clone() const {
@@ -384,7 +384,7 @@ class HotKeyC : public YACURS::HotKey {
 
 	void action() {
 	    // ChangePassword does apoptosis
-	    new ChangePassword(ptr)->run();
+	    (new ChangePassword(ptr))->run();
 	}
 
 	HotKey* clone() const {
@@ -403,7 +403,7 @@ class HotKeyc : public YACURS::HotKey {
 
 	void action() {
 	    // ChangePassword does apoptosis
-	    new ChangePassword(ptr)->run();
+	    (new ChangePassword(ptr))->run();
 	}
 
 	HotKey* clone() const {
