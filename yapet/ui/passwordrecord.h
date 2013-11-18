@@ -21,7 +21,7 @@
 //
 
 #ifndef _PASSWORDRECORD_H
-#define _PASSWORDRECORD_H
+#define _PASSWORDRECORD_H 1
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"

@@ -21,7 +21,7 @@
 //
 
 #ifndef _INFO_H
-#define _INFO_H
+#define _INFO_H 1
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

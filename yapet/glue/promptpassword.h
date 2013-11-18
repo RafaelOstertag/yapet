@@ -21,7 +21,7 @@
 //
 
 #ifndef _PROMPTPASSWORD_H
-#define _PROMPTPASSWORD_H
+#define _PROMPTPASSWORD_H 1
 
 #include "file.h"
 

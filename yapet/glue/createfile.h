@@ -21,7 +21,7 @@
 //
 
 #ifndef _CREATEFILE_H
-#define _CREATEFILE_H
+#define _CREATEFILE_H 1
 
 #include "mainwindow.h"
 #include "yacurs.h"

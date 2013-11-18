@@ -21,7 +21,7 @@
 //
 
 #ifndef _NEWPASSWORDDIALOG_H
-#define _NEWPASSWORDDIALOG_H
+#define _NEWPASSWORDDIALOG_H 1
 
 #include <stdexcept>
 #include "../intl.h"

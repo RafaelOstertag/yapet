@@ -21,7 +21,7 @@
 //
 
 #ifndef _CHANGEPASSWORD_H
-#define _CHANGEPASSWORD_H
+#define _CHANGEPASSWORD_H 1
 
 #include "mainwindow.h"
 #include "yacurs.h"

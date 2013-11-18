@@ -21,7 +21,7 @@
 //
 
 #ifndef _CSVIMPORT_H
-#define _CSVIMPORT_H
+#define _CSVIMPORT_H 1
 
 
 #ifdef HAVE_CONFIG_H

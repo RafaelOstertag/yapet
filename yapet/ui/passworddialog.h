@@ -21,7 +21,7 @@
 //
 
 #ifndef _PASSWORDDIALOG_H
-#define _PASSWORDDIALOG_H
+#define _PASSWORDDIALOG_H 1
 
 #include "yacurs.h"
 

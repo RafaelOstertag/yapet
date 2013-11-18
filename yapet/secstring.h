@@ -21,7 +21,7 @@
 //
 
 #ifndef _SECSTRING_H
-#define _SECSTRING_H
+#define _SECSTRING_H 1
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>

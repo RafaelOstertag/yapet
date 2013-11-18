@@ -21,7 +21,7 @@
 //
 
 #ifndef _HELP_H
-#define _HELP_H
+#define _HELP_H 1
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

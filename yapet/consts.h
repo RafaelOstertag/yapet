@@ -27,7 +27,7 @@
  */
 
 #ifndef _CONSTS_H
-#define _CONSTS_H
+#define _CONSTS_H 1
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
