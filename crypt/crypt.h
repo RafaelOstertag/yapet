@@ -31,7 +31,7 @@
 //
 
 #ifndef _CRYPT_H
-#define _CRYPT_H
+#define _CRYPT_H 1
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>

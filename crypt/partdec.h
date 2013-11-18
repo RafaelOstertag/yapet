@@ -31,7 +31,7 @@
 //
 
 #ifndef _PARTDEC_H
-#define _PARTDEC_H
+#define _PARTDEC_H 1
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>

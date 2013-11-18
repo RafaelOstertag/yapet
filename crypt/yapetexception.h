@@ -31,7 +31,7 @@
 //
 
 #ifndef _YAPETEXCEPTION_H
-#define _YAPETEXCEPTION_H
+#define _YAPETEXCEPTION_H 1
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"

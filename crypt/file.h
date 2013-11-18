@@ -31,7 +31,7 @@
 //
 
 #ifndef _FILE_H
-#define _FILE_H
+#define _FILE_H 1
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
