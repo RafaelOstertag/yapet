@@ -33,6 +33,7 @@
 #include <yacurs.h>
 
 #include "help.h"
+#include "info.h"
 #include "passworddialog.h"
 #include "passwordrecord.h"
 
@@ -42,6 +43,7 @@ class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
 	HelpDialog* helpdialog;
+	InfoDialog* infodialog;
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
 	// Used when opening an existing record to store the index, so
@@ -87,6 +89,15 @@ class MainWindow : public YACURS::Window {
 	void save_records();
 
 	void show_help();
+
+	void show_info();
+
+	/**
+	 * Get the number of password records.
+	 */
+	YACURS::ListBox<>::lsz_t size() {
+	    return recordlist->list().size();
+	}
 
 	void sort_asc(bool f);
 	bool sort_asc() const;

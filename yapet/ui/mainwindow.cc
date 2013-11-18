@@ -122,6 +122,43 @@ class HotKeyh : public YACURS::HotKey {
 	}
 };
 
+// INFO
+class HotKeyI : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyI(MainWindow* p) : HotKey('I'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyI(const HotKeyI& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_info();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyI(*this);
+	}
+};
+
+class HotKeyi : public YACURS::HotKey {
+    private:
+	MainWindow* ptr;
+    public:
+	HotKeyi(MainWindow* p) : HotKey('i'), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyi(const HotKeyi& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+
+	void action() {
+	    ptr->show_help();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyi(*this);
+	}
+};
+
 // READ FILE
 class HotKeyR : public YACURS::HotKey {
     private:
@@ -364,6 +401,12 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    if (infodialog!=0 && evt.data()==infodialog) {
+	delete infodialog;
+	infodialog=0;
+	return;
+    }
+
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::Dialog::DIALOG_OK) {
 	    if (passwordrecord->changed()) {
@@ -455,6 +498,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     add_hotkey(HotKeyO(this));
     add_hotkey(HotKeyo(this));
+
+    add_hotkey(HotKeyI(this));
+    add_hotkey(HotKeyi(this));
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
@@ -589,6 +635,14 @@ MainWindow::show_help() {
 
     helpdialog=new HelpDialog;
     helpdialog->show();
+}
+
+void
+MainWindow::show_info() {
+    assert(infodialog==0);
+
+    infodialog=new InfoDialog(recordlist->list().size());
+    infodialog->show();
 }
 
 void

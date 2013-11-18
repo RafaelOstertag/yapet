@@ -8,7 +8,7 @@ endif
 
 bin_PROGRAMS = yapet
 
-ui_SOURCES = ui/help.cc ui/mainwindow.cc ui/passworddialog.cc ui/passwordrecord.cc ui/newpassworddialog.cc
+ui_SOURCES = ui/help.cc ui/mainwindow.cc ui/passworddialog.cc ui/passwordrecord.cc ui/newpassworddialog.cc ui/info.cc
 
 glue_SOURCES = glue/loadfile.cc glue/promptpassword.cc glue/createfile.cc
 

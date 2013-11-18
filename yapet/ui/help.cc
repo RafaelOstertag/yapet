@@ -96,6 +96,11 @@ HelpDialog::HelpDialog():
     chpwdescr=new YACURS::Label(_("Change Password"));
     rightpack->add_back(chpwdescr);
 
+    infokey=new YACURS::Label(" I ");
+    leftpack->add_back(infokey);
+    infodescr=new YACURS::Label(_("Information"));
+    rightpack->add_back(infodescr);
+
     redrawkey=new YACURS::Label(" ^L ");
     leftpack->add_back(redrawkey);
     redrawdescr=new YACURS::Label(_("Redraw Screen"));
@@ -143,6 +148,9 @@ HelpDialog::HelpDialog():
     chpwkey->color(YACURS::DIALOG);
     chpwdescr->color(YACURS::DIALOG);
 
+    infokey->color(YACURS::DIALOG);
+    infodescr->color(YACURS::DIALOG);
+
     redrawkey->color(YACURS::DIALOG);
     redrawdescr->color(YACURS::DIALOG);
 
@@ -189,6 +197,9 @@ HelpDialog::~HelpDialog() {
 
     delete chpwkey;
     delete chpwdescr;
+
+    delete infokey;
+    delete infodescr;
 
     delete redrawkey;
     delete redrawdescr;

@@ -67,6 +67,9 @@ class HelpDialog : public YACURS::Dialog {
 	YACURS::Label* chpwkey;
 	YACURS::Label* chpwdescr;
 
+	YACURS::Label* infokey;
+	YACURS::Label* infodescr;
+
 	YACURS::Label* redrawkey;
 	YACURS::Label* redrawdescr;
 
