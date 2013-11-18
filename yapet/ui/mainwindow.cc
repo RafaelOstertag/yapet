@@ -151,7 +151,7 @@ class HotKeyi : public YACURS::HotKey {
 	HotKeyi(const HotKeyi& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
 
 	void action() {
-	    ptr->show_help();
+	    ptr->show_info();
 	}
 
 	HotKey* clone() const {
