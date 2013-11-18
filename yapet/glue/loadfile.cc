@@ -93,6 +93,9 @@ LoadFile::window_close_handler(YACURS::Event& e) {
 	case YACURS::DIALOG_CANCEL:
 	    YACURS::EventQueue::submit(YACURS::EventEx<LoadFile*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
+	default:
+	    throw std::runtime_error(_("Unexpected dialog state for confirmsave dialog"));
+	    break;
 	}
 
 	delete confirmsave;
