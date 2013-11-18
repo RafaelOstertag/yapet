@@ -6,9 +6,7 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
+#include <iostream>
 
 #include <sys/types.h>
 #include <sys/stat.h>
