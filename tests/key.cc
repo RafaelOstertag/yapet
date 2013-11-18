@@ -4,18 +4,11 @@
 # include "config.h"
 #endif
 
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-#ifdef HAVE_STDIO_H
-# include <stdio.h>
-#endif
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
-#ifdef HAVE_EXCEPTION
+#include <unistd.h>
+#include <stdio.h>
+#include <iostream>
 #include <exception>
-#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
