@@ -26,6 +26,10 @@
 # include <openssl/crypto.h>
 #endif
 
+#ifdef HAVE_SYS_RESOURCE_H
+# include <sys/resource.h>
+#endif
+
 #include <sstream>
 
 #include "../intl.h"
