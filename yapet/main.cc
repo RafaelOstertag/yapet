@@ -67,7 +67,7 @@
 #include <yacurs.h>
 
 #include "mainwindow.h"
-#include "cfg.h"
+#include "globals.h"
 #include "consts.h"
 #include "yapetlockscreen.h"
 #include "yapetunlockdialog.h"
@@ -286,8 +286,8 @@ main(int argc, char** argv) {
             return 0;
 
         case 'i':
-            YAPET::CONFIG::config.ignorerc.set(true);
-            YAPET::CONFIG::config.ignorerc.lock();
+            YAPET::Globals::config.ignorerc.set(true);
+            YAPET::Globals::config.ignorerc.lock();
             break;
 
         case 'r':
@@ -299,19 +299,19 @@ main(int argc, char** argv) {
             return 0;
 
         case 's':
-            YAPET::CONFIG::config.filesecurity.set(false);
-            YAPET::CONFIG::config.filesecurity.lock();
+            YAPET::Globals::config.filesecurity.set(false);
+            YAPET::Globals::config.filesecurity.lock();
             break;
 
         case 'S':
-            YAPET::CONFIG::config.filesecurity.set(true);
-            YAPET::CONFIG::config.filesecurity.lock();
+            YAPET::Globals::config.filesecurity.set(true);
+            YAPET::Globals::config.filesecurity.lock();
             break;
 
         case 't':
             sscanf(optarg, "%u", &timeout);
-            YAPET::CONFIG::config.timeout.set(timeout);
-            YAPET::CONFIG::config.timeout.lock();
+            YAPET::Globals::config.timeout.set(timeout);
+            YAPET::Globals::config.timeout.lock();
             break;
 
         case ':':
@@ -327,19 +327,19 @@ main(int argc, char** argv) {
     }
 
     if (optind < argc) {
-        YAPET::CONFIG::config.setPetFile(argv[optind]);
-        YAPET::CONFIG::config.petfile.lock();
+        YAPET::Globals::config.setPetFile(argv[optind]);
+        YAPET::Globals::config.petfile.lock();
     }
 
-    YAPET::CONFIG::config.loadConfigFile(cfgfilepath);
+    YAPET::Globals::config.loadConfigFile(cfgfilepath);
 
     // Unlock all configuration values, so that they can be changed
     // again.
-    YAPET::CONFIG::config.unlockAll();
+    YAPET::Globals::config.unlockAll();
 
     //  Make sure the .pet suffix is there
 #ifndef NDEBUG
-    std::string _tmp__ = YAPET::CONFIG::config.petfile.get();
+    std::string _tmp__ = YAPET::Globals::config.petfile.get();
 #endif
     assert(_tmp__.empty() ||
            _tmp__.find(YAPET::CONSTS::Consts::getDefaultSuffix(),
@@ -364,10 +364,10 @@ main(int argc, char** argv) {
 
 	YACURS::Curses::mainwindow(new MainWindow());
 
-	if (YAPET::CONFIG::config.timeout>0) {
+	if (YAPET::Globals::config.timeout>0) {
 	    yunlockdia = new YapetUnlockDialog(*YACURS::Curses::mainwindow());
 	    YACURS::EventQueue::lock_screen(new YapetLockScreen(*YACURS::Curses::mainwindow(),
-								yunlockdia,  YAPET::CONFIG::config.timeout, YAPET::CONFIG::config.pw_input_timeout));
+								yunlockdia,  YAPET::Globals::config.timeout, YAPET::Globals::config.pw_input_timeout));
 	}
 	    
 

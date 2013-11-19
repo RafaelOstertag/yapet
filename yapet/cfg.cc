@@ -33,10 +33,7 @@
 #include "pwgen/pwgen.h"
 
 using namespace YAPET::CONFIG;
-//
-// Global
-//
-Config YAPET::CONFIG::config;
+
 
 //! The default .pet file to open
 const std::string Config::def_petfile("");

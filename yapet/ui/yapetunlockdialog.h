@@ -39,11 +39,15 @@ class YapetUnlockDialog : public YACURS::UnlockDialog {
 	YACURS::DynLabel* __text2;
 	YACURS::DynLabel* __text3;
 	YACURS::Input<>* __secret_input;
+	YACURS::Button* __quit;
 	
 	YapetUnlockDialog& operator=(const YapetUnlockDialog&);
 
     protected:
 	void window_show_handler(YACURS::Event& _e);
+
+	// From dialog
+	void button_press_handler(YACURS::Event& _e);
 
     public:
 	YapetUnlockDialog(Window& mw);

@@ -51,6 +51,22 @@ YapetUnlockDialog::window_show_handler(YACURS::Event& _e) {
 	assert(YAPET::Globals::file != 0);
 	assert(YAPET::Globals::key != 0);
 	__text2->label(YAPET::Globals::file->getFilename());
+
+	if (__quit)
+	    __quit->enabled(!YAPET::Globals::records_changed);
+    }
+}
+
+void
+YapetUnlockDialog::button_press_handler(YACURS::Event& _e) {
+    UnlockDialog::button_press_handler(_e);
+
+    YACURS::EventEx<YACURS::Button*>& evt = 
+	dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(_e);
+
+    if (__quit !=0 && evt.data() == __quit) {
+	assert(!YAPET::Globals::records_changed);
+	YACURS::EventQueue::submit(YACURS::EVT_QUIT);
     }
 }
 
@@ -64,7 +80,8 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
     __text1(0),
     __text2(0),
     __text3(0),
-    __secret_input(0) {
+    __secret_input(0),
+    __quit(0) {
 
     __vpack = new YACURS::VPack;
     __vpack->always_dynamic(true);
@@ -83,6 +100,12 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
     __vpack->add_back(__text2);
     __vpack->add_back(__text3);
     __vpack->add_back(__secret_input);
+
+    if (YAPET::Globals::config.allow_lock_quit) {
+	__quit = new YACURS::Button(_("Quit"));
+	__vpack->add_back(__quit);
+    }
+
     widget(__vpack);
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<YapetUnlockDialog>(
@@ -108,6 +131,8 @@ YapetUnlockDialog::~YapetUnlockDialog() {
     delete __text2;
     delete __text3;
     delete __secret_input;
+
+    if (__quit) delete __quit;
 }
 
 bool

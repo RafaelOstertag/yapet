@@ -26,7 +26,6 @@
 
 #include "../intl.h"
 #include "globals.h"
-#include "cfg.h"
 #include "info.h"
 
 //
@@ -53,7 +52,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     fp=new YACURS::Label(_("File permission check: "));
     leftpack->add_back(fp);
 
-    if (YAPET::CONFIG::config.filesecurity)
+    if (YAPET::Globals::config.filesecurity)
 	fp_status=new YACURS::Label(_("enabled"));
     else
 	fp_status=new YACURS::Label(_("disabled"));
@@ -62,7 +61,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     slt=new YACURS::Label(_("Screen lock time-out: "));
     leftpack->add_back(slt);
     std::ostringstream val;
-    val << YAPET::CONFIG::config.timeout;
+    val << YAPET::Globals::config.timeout;
     slt_status=new YACURS::Label(val.str());
     rightpack->add_back(slt_status);
 
@@ -70,7 +69,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     leftpack->add_back(sult);
     val.str("");
     val.clear();
-    val << YAPET::CONFIG::config.pw_input_timeout;
+    val << YAPET::Globals::config.pw_input_timeout;
     sult_status=new YACURS::Label(val.str());
     rightpack->add_back(sult_status);
 

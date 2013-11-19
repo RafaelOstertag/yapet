@@ -19,7 +19,6 @@
 //
 
 #include "../intl.h"
-#include "cfg.h"
 #include "globals.h"
 #include "createfile.h"
 
@@ -65,7 +64,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 		// Must not be delete by CreateFile
 		_key = new YAPET::Key(promptpassword->password().c_str());
 		// Must not be delete by CreateFile
-		_file = new YAPET::File(__filepath, *_key, true, YAPET::CONFIG::config.filesecurity);
+		_file = new YAPET::File(__filepath, *_key, true, YAPET::Globals::config.filesecurity);
 		mainwindow->load_password_file(_file, _key);
 
 		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));

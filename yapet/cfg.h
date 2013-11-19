@@ -240,9 +240,6 @@ namespace YAPET {
 
                 const Config& operator=(const Config& c);
         };
-
-        //! The global config object.
-        extern Config config;
     }
 }
 

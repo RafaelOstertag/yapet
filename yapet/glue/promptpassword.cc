@@ -19,7 +19,6 @@
 //
 
 #include "../intl.h"
-#include "cfg.h"
 #include "promptpassword.h"
 #include "globals.h"
 
@@ -41,7 +40,7 @@ PromptPassword::window_close_handler(YACURS::Event& e) {
 	    std::string pw=pwdialog->password();
 	    try {
 		__key = new YAPET::Key(pw.c_str());
-		__file = new YAPET::File(__filename, *__key, false, YAPET::CONFIG::config.filesecurity);
+		__file = new YAPET::File(__filename, *__key, false, YAPET::Globals::config.filesecurity);
 		YACURS::EventQueue::submit(YACURS::EventEx<PromptPassword*>(YAPET::EVT_APOPTOSIS, this));
 	    } catch (YAPET::YAPETInvalidPasswordException& ex) {
 		assert(pwerror==0);

@@ -26,6 +26,8 @@
 
 using namespace YAPET;
 
-YAPET::Key* Globals::key;
-YAPET::File* Globals::file;
+Key* Globals::key;
+File* Globals::file;
 bool Globals::records_changed;
+
+CONFIG::Config Globals::config;

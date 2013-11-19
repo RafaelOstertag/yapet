@@ -27,13 +27,15 @@
 #include <file.h>
 
 #include "yacurs.h"
+#include "cfg.h"
 
 namespace YAPET {
     class Globals {
 	public:
-	    static YAPET::Key* key;
-	    static YAPET::File* file;
+	    static Key* key;
+	    static File* file;
 	    static bool records_changed;
+	    static CONFIG::Config config;
     };
 
     /**
