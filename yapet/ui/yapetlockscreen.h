@@ -45,6 +45,8 @@ class YapetLockScreen : public YACURS::LockScreen {
 	virtual ~YapetLockScreen();
 
 	void show();
+
+	void close();
 };
 
 #endif // _YAPETLOCKSCREEN_H

@@ -22,8 +22,12 @@
 # include "config.h"
 #endif
 
+#ifdef HAVE_LIBGEN_H
+# include <libgen.h>
+#endif
+
 #include <cstring>
-#include <cerrno>
+#include <cstdlib>
 
 #ifdef ENABLE_PWGEN
 # include "pwgendialog.h"
@@ -87,8 +91,6 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
-
-
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
 	    if (passwordrecord->changed()) {
@@ -109,7 +111,6 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 		YAPET::Globals::records_changed=true;
 	    }
 	}
-
 
 	// Reset the record index
 	record_index=-1;
@@ -343,6 +344,19 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	std::string msg(_("Opened file: "));
 	YACURS::Curses::statusbar()->set(msg +
 					      YAPET::Globals::file->getFilename());
+#ifdef HAVE_TERMINALTITLE
+	std::string ttl("YAPET");
+#ifdef HAVE_BASENAME
+	ttl += " (";
+	// basename may modify the string
+	char *tmp = strdup(YAPET::Globals::file->getFilename().c_str());
+	ttl += basename(tmp);
+
+	ttl += ")";
+	free(tmp);
+#endif
+	YACURS::Curses::set_terminal_title(ttl);
+#endif
     } catch (std::exception& e) {
 	delete YAPET::Globals::key;
 	YAPET::Globals::key = 0;

@@ -22,6 +22,13 @@
 # include "config.h"
 #endif
 
+#ifdef HAVE_LIBGEN_H
+# include <libgen.h>
+#endif
+
+#include <cstring>
+#include <cstdlib>
+
 #include "../intl.h"
 #include "globals.h"
 #include "yapetlockscreen.h"
@@ -57,4 +64,30 @@ YapetLockScreen::show() {
     }
 
     LockScreen::show();
+
+#if defined(HAVE_TERMINALTITLE)
+    YACURS::Curses::set_terminal_title(_("YAPET LOCKED"));
+#endif
+}
+
+void
+YapetLockScreen::close() {
+    LockScreen::close();
+
+    if (YAPET::Globals::file != 0 &&
+	YAPET::Globals::key != 0) {
+#ifdef HAVE_TERMINALTITLE
+	std::string ttl("YAPET");
+#ifdef HAVE_BASENAME
+	ttl += " (";
+	// basename may modify the string
+	char *tmp = strdup(YAPET::Globals::file->getFilename().c_str());
+	ttl += basename(tmp);
+
+	ttl += ")";
+	free(tmp);
+#endif
+	YACURS::Curses::set_terminal_title(ttl);
+#endif
+    }
 }
