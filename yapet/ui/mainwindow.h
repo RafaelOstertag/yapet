@@ -27,6 +27,13 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
+#include <string.h>
+#include <string>
+
 // Crypt
 #include <file.h>
 
@@ -37,8 +44,28 @@
 #include "passworddialog.h"
 #include "passwordrecord.h"
 
-/**
- */
+namespace INTERNAL {
+    
+    class Finder {
+	private:
+	    std::string needle;
+
+	public:
+	    Finder(std::string n): needle(n) {}
+
+	    operator const std::string&() {
+		return needle;
+	    }
+
+	    bool operator() (const YAPET::PartDec& haystack) {
+		return strcasestr(
+				  reinterpret_cast<const char*>(haystack.getName()),
+				  needle.c_str()) != 0;
+	    }
+    };
+
+};
+
 class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
@@ -48,10 +75,15 @@ class MainWindow : public YACURS::Window {
 	YACURS::MessageBox2* confirmquit;
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
+	YACURS::InputBox* searchdialog;
+	INTERNAL::Finder* finder;
 	// Used when opening an existing record or deleting a record
 	// to store the index, so that it can be reselect in case of a
 	// window resize.
 	YACURS::ListBox<YAPET::PartDec>::lsz_t record_index;
+	// Used for search. Keeps the position of the last succesfull
+	// match.
+	YACURS::ListBox<YAPET::PartDec>::lsz_t last_search_index;
 
 
         MainWindow(const MainWindow&) {
@@ -110,6 +142,10 @@ class MainWindow : public YACURS::Window {
 
 	void sort_asc(bool f);
 	bool sort_asc() const;
+
+	void search_first();
+
+	void search_next();
 };
 
 #endif // _MAINWINDOW_H

@@ -313,6 +313,59 @@ class HotKeyo : public YACURS::HotKey {
 
 };
 
+// SEARCH
+class HotKeySearch : public YACURS::HotKey {
+    private:
+	MainWindow& ref;
+    public:
+	HotKeySearch(MainWindow& r) : HotKey('/'), ref(r) {}
+	HotKeySearch(const HotKeySearch& hkh) : HotKey(hkh), ref(hkh.ref) {}
+
+	void action() {
+	    ref.search_first();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeySearch(*this);
+	}
+
+};
+
+// SEARCH NEXT
+class HotKeyN : public YACURS::HotKey {
+    private:
+	MainWindow& ref;
+    public:
+	HotKeyN(MainWindow& r) : HotKey('N'), ref(r) {}
+	HotKeyN(const HotKeyN& hkh) : HotKey(hkh), ref(hkh.ref) {}
+
+	void action() {
+	    ref.search_next();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyN(*this);
+	}
+
+};
+
+class HotKeyn : public YACURS::HotKey {
+    private:
+	MainWindow& ref;
+    public:
+	HotKeyn(MainWindow& r) : HotKey('n'), ref(r) {}
+	HotKeyn(const HotKeyn& hkh) : HotKey(hkh), ref(hkh.ref) {}
+
+	void action() {
+	    ref.search_next();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyn(*this);
+	}
+
+};
+
 // DELETE
 class HotKeyD : public YACURS::HotKey {
     private:

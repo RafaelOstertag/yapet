@@ -110,7 +110,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
-    
+
 
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
@@ -186,6 +186,29 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
+    if (searchdialog != 0 && evt.data() == searchdialog) {
+	if (searchdialog->dialog_state()== YACURS::DIALOG_OK) {
+	    // Make sure we don't search for an empty string.
+	    if (searchdialog->input().empty()) {
+		YACURS::Curses::statusbar()->set(_("Empty search string"));
+	    } else {
+		if (finder!=0)
+		    delete finder;
+
+		finder = new INTERNAL::Finder(searchdialog->input());
+
+		if (!recordlist->search(*finder, 0, &last_search_index)) {
+		    YACURS::Curses::statusbar()->set(std::string(_("No match for ")) + searchdialog->input());
+		    last_search_index=0;
+		}
+	    }
+	}
+
+	delete searchdialog;
+	searchdialog=0;
+	return;
+    }
+
     if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
 	delete errormsgdialog;
 	errormsgdialog=0;
@@ -224,7 +247,10 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 			  confirmquit(0),
 			  passwordrecord(0),
 			  errormsgdialog(0),
-			  record_index(-1) {
+			  searchdialog(0),
+			  finder(0),
+			  record_index(-1),
+			  last_search_index(0) {
     Window::widget(recordlist);
     frame(false);
 
@@ -263,6 +289,11 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     add_hotkey(HotKeyL());
     add_hotkey(HotKeyl());
 
+    add_hotkey(HotKeySearch(*this));
+
+    add_hotkey(HotKeyN(*this));
+    add_hotkey(HotKeyn(*this));
+
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
 						  EVT_WINDOW_CLOSE,
@@ -293,6 +324,8 @@ MainWindow::~MainWindow() {
     if (confirmquit) delete confirmquit;
     if (passwordrecord) delete passwordrecord;
     if (errormsgdialog) delete errormsgdialog;
+    if (searchdialog) delete searchdialog;
+    if (finder) delete finder;
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 					 MainWindow>(
@@ -471,8 +504,6 @@ MainWindow::quit() {
     }
 }
 
-					      
-
 void
 MainWindow::sort_asc(bool f) {
     if (f) {
@@ -488,4 +519,49 @@ MainWindow::sort_asc(bool f) {
 bool
 MainWindow::sort_asc() const {
     return recordlist->sort_order() == YACURS::ASCENDING;
+}
+
+void
+MainWindow::search_first() {
+    assert(searchdialog==0);
+
+    if (YAPET::Globals::file == 0 || YAPET::Globals::key == 0 ||
+	recordlist->empty())
+	return; // there is nothing to search
+
+
+    searchdialog = new YACURS::InputBox(_("Search"),
+					_("Enter search term"));
+    searchdialog->show();
+}
+
+void
+MainWindow::search_next() {
+    if (YAPET::Globals::file == 0 || YAPET::Globals::key == 0 ||
+	recordlist->empty())
+	return; // there is nothing to search
+
+    if (finder == 0) {
+	YACURS::Curses::statusbar()->set(_("No previous search. Press '/' to search."));
+	return;
+    }
+
+    while (true) {
+	try {
+	    if (!recordlist->search(*finder, last_search_index+1, &last_search_index)) {
+		YACURS::Curses::statusbar()->set(
+						 std::string(_("No more matches for ")) +
+						 static_cast<const std::string&>(*finder) + std::string(_(" found"))
+						 );
+		last_search_index = 0;
+	    } else {
+		YACURS::Curses::statusbar()->set(std::string(_("Next match for ")) +
+						 static_cast<const std::string&>(*finder));
+	    }
+	    break;
+	} catch (std::out_of_range&) {
+	    // reset last_search_index and restart
+	    last_search_index = 0;
+	}
+    }
 }
