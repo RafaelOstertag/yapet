@@ -59,13 +59,11 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	    YAPET::Key* _key=0;
 	    YAPET::File* _file=0;
 	    try {
-		assert(mainwindow!=0);
-
 		// Must not be delete by CreateFile
 		_key = new YAPET::Key(promptpassword->password().c_str());
 		// Must not be delete by CreateFile
 		_file = new YAPET::File(__filepath, *_key, true, YAPET::Globals::config.filesecurity);
-		mainwindow->load_password_file(_file, _key);
+		mainwindow.load_password_file(_file, _key);
 
 		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
 	    } catch (std::exception& ex) {
@@ -97,7 +95,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
     if (evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
 	case YACURS::DIALOG_YES: 
-	    mainwindow->save_records();
+	    mainwindow.save_records();
 	    run();
 	    break;
 	case YACURS::DIALOG_NO:
@@ -128,14 +126,12 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 // Public
 //
 
-CreateFile::CreateFile(MainWindow* mw): mainwindow(mw),
+CreateFile::CreateFile(MainWindow& mw): mainwindow(mw),
 					promptpassword(0),
 					filesavedialog(0),
 					confirmsave(0),
 					generror(0),
 					ignore_unsaved_file(false) {
-
-    assert(mainwindow!=0);
 
     YACURS::EventQueue::
 	connect_event(YACURS::EventConnectorMethod1<

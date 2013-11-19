@@ -230,35 +230,35 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 
     recordlist->sort_order(YACURS::ASCENDING);
 
-    add_hotkey(HotKeyQ(this) );
-    add_hotkey(HotKeyq(this) );
+    add_hotkey(HotKeyQ(*this) );
+    add_hotkey(HotKeyq(*this) );
 
-    add_hotkey(HotKeyH(this) );
-    add_hotkey(HotKeyh(this) );
+    add_hotkey(HotKeyH(*this) );
+    add_hotkey(HotKeyh(*this) );
 
-    add_hotkey(HotKeyR(this));
-    add_hotkey(HotKeyr(this));
+    add_hotkey(HotKeyR(*this));
+    add_hotkey(HotKeyr(*this));
 
-    add_hotkey(HotKeyS(this));
-    add_hotkey(HotKeys(this));
+    add_hotkey(HotKeyS(*this));
+    add_hotkey(HotKeys(*this));
 
-    add_hotkey(HotKeyE(this));
-    add_hotkey(HotKeye(this));
+    add_hotkey(HotKeyE(*this));
+    add_hotkey(HotKeye(*this));
 
-    add_hotkey(HotKeyA(this));
-    add_hotkey(HotKeya(this));
+    add_hotkey(HotKeyA(*this));
+    add_hotkey(HotKeya(*this));
 
-    add_hotkey(HotKeyO(this));
-    add_hotkey(HotKeyo(this));
+    add_hotkey(HotKeyO(*this));
+    add_hotkey(HotKeyo(*this));
 
-    add_hotkey(HotKeyI(this));
-    add_hotkey(HotKeyi(this));
+    add_hotkey(HotKeyI(*this));
+    add_hotkey(HotKeyi(*this));
 
-    add_hotkey(HotKeyD(this));
-    add_hotkey(HotKeyd(this));
+    add_hotkey(HotKeyD(*this));
+    add_hotkey(HotKeyd(*this));
 
-    add_hotkey(HotKeyC(this));
-    add_hotkey(HotKeyc(this));
+    add_hotkey(HotKeyC(*this));
+    add_hotkey(HotKeyc(*this));
 
     add_hotkey(HotKeyL());
     add_hotkey(HotKeyl());

@@ -45,13 +45,13 @@
  */
 class LoadFile {
     private:
-	MainWindow* mainwindow;
+	MainWindow& mainwindow;
 	PromptPassword* promptpassword;
 	YACURS::FileLoadDialog* fileloaddialog;
 	YACURS::MessageBox2* confirmsave;
 	bool ignore_unsaved_file;
 
-	LoadFile(const LoadFile&) {}
+	LoadFile(const LoadFile& l) : mainwindow(l.mainwindow) {}
 
 	const LoadFile& operator=(const LoadFile&) {
 	    return *this;
@@ -62,7 +62,7 @@ class LoadFile {
 	void window_close_handler(YACURS::Event& e);
 
     public:
-	LoadFile(MainWindow* mw);
+	LoadFile(MainWindow& mw);
 	~LoadFile();
 
 	void run();

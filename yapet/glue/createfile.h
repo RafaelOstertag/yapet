@@ -41,7 +41,7 @@
  */
 class CreateFile {
     private:
-	MainWindow* mainwindow;
+	MainWindow& mainwindow;
 	NewPasswordDialog* promptpassword;
 	YACURS::FileSaveDialog* filesavedialog;
 	YACURS::MessageBox2* confirmsave;
@@ -49,7 +49,7 @@ class CreateFile {
 	std::string __filepath;
 	bool ignore_unsaved_file;
 
-	CreateFile(const CreateFile&) {}
+	CreateFile(const CreateFile& c) : mainwindow(c.mainwindow) {}
 
 	const CreateFile& operator=(const CreateFile&) {
 	    return *this;
@@ -58,7 +58,7 @@ class CreateFile {
 	void window_close_handler(YACURS::Event& e);
 
     public:
-	CreateFile(MainWindow* mw);
+	CreateFile(MainWindow& mw);
 	~CreateFile();
 
 	void run();

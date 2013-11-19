@@ -37,15 +37,13 @@
 // QUIT
 class HotKeyQ : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
 
     public:
-	HotKeyQ(MainWindow* p) : HotKey('Q'), ptr(p) {
-	    assert(ptr!=0);
-	}
-	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq), ptr(hkq.ptr) {}
+	HotKeyQ(MainWindow& r) : HotKey('Q'), ref(r) {}
+	HotKeyQ(const HotKeyQ& hkq): HotKey(hkq), ref(hkq.ref) {}
 	void action() {
-	    ptr->quit();
+	    ref.quit();
 	}
 
 	HotKey* clone() const {
@@ -55,15 +53,13 @@ class HotKeyQ : public YACURS::HotKey {
 
 class HotKeyq : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
 
     public:
-	HotKeyq(MainWindow* p) : HotKey('q'), ptr(p) {
-	    assert(ptr!=0);
-	}
-	HotKeyq(const HotKeyq& hkq): HotKey(hkq), ptr(hkq.ptr) {}
+	HotKeyq(MainWindow& r) : HotKey('q'), ref(r) {}
+	HotKeyq(const HotKeyq& hkq): HotKey(hkq), ref(hkq.ref) {}
 	void action() {
-	    ptr->quit();
+	    ref.quit();
 	}
 
 	HotKey* clone() const {
@@ -74,15 +70,13 @@ class HotKeyq : public YACURS::HotKey {
 // HELP
 class HotKeyH : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyH(MainWindow* p) : HotKey('H'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyH(const HotKeyH& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyH(MainWindow& r) : HotKey('H'), ref(r) {}
+	HotKeyH(const HotKeyH& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_help();
+	    ref.show_help();
 	}
 
 	HotKey* clone() const {
@@ -92,15 +86,13 @@ class HotKeyH : public YACURS::HotKey {
 
 class HotKeyh : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyh(MainWindow* p) : HotKey('h'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyh(const HotKeyh& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyh(MainWindow& r) : HotKey('h'), ref(r) {}
+	HotKeyh(const HotKeyh& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_help();
+	    ref.show_help();
 	}
 
 	HotKey* clone() const {
@@ -111,15 +103,13 @@ class HotKeyh : public YACURS::HotKey {
 // INFO
 class HotKeyI : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyI(MainWindow* p) : HotKey('I'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyI(const HotKeyI& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyI(MainWindow& r) : HotKey('I'), ref(r) {}
+	HotKeyI(const HotKeyI& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_info();
+	    ref.show_info();
 	}
 
 	HotKey* clone() const {
@@ -129,15 +119,13 @@ class HotKeyI : public YACURS::HotKey {
 
 class HotKeyi : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyi(MainWindow* p) : HotKey('i'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyi(const HotKeyi& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyi(MainWindow& r) : HotKey('i'), ref(r) {}
+	HotKeyi(const HotKeyi& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_info();
+	    ref.show_info();
 	}
 
 	HotKey* clone() const {
@@ -148,16 +136,14 @@ class HotKeyi : public YACURS::HotKey {
 // READ FILE
 class HotKeyR : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyR(MainWindow* p) : HotKey('R'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyR(MainWindow& r) : HotKey('R'), ref(r) {}
+	HotKeyR(const HotKeyR& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
 	    // LoadFile does apoptosis
-	    (new LoadFile(ptr))->run();
+	    (new LoadFile(ref))->run();
 	}
 
 	HotKey* clone() const {
@@ -168,16 +154,14 @@ class HotKeyR : public YACURS::HotKey {
 
 class HotKeyr : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyr(MainWindow* p) : HotKey('r'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyr(MainWindow& r) : HotKey('r'), ref(r) {}
+	HotKeyr(const HotKeyr& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
 	    // LoadFile does apoptosis
-	    (new LoadFile(ptr))->run();
+	    (new LoadFile(ref))->run();
 	}
 
 	HotKey* clone() const {
@@ -189,17 +173,15 @@ class HotKeyr : public YACURS::HotKey {
 // CREATE FILE
 class HotKeyE : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
 
     public:
-	HotKeyE(MainWindow* p) : HotKey('E'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyE(const HotKeyE& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
+	HotKeyE(MainWindow& r) : HotKey('E'), ref(r) {}
+	HotKeyE(const HotKeyE& hkc) : HotKey(hkc), ref(hkc.ref) {}
 
 	void action() {
 	    // CreateFile does apoptosis
-	    (new CreateFile(ptr))->run();
+	    (new CreateFile(ref))->run();
 	}
 
 	HotKey* clone() const {
@@ -210,16 +192,14 @@ class HotKeyE : public YACURS::HotKey {
 
 class HotKeye : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeye(MainWindow* p) : HotKey('e'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeye(const HotKeye& hkc) : HotKey(hkc), ptr(hkc.ptr) {}
+	HotKeye(MainWindow& r) : HotKey('e'), ref(r) {}
+	HotKeye(const HotKeye& hkc) : HotKey(hkc), ref(hkc.ref) {}
 
 	void action() {
 	    // CreateFile does apoptosis
-	    (new CreateFile(ptr))->run();
+	    (new CreateFile(ref))->run();
 	}
 
 	HotKey* clone() const {
@@ -231,15 +211,13 @@ class HotKeye : public YACURS::HotKey {
 // SAVE FILE
 class HotKeyS : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyS(MainWindow* p) : HotKey('S'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyS(const HotKeyS& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyS(MainWindow& r) : HotKey('S'), ref(r) {}
+	HotKeyS(const HotKeyS& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->save_records();
+	    ref.save_records();
 	}
 
 	HotKey* clone() const {
@@ -250,15 +228,13 @@ class HotKeyS : public YACURS::HotKey {
 
 class HotKeys : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeys(MainWindow* p) : HotKey('s'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeys(const HotKeys& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeys(MainWindow& r) : HotKey('s'), ref(r) {}
+	HotKeys(const HotKeys& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->save_records();
+	    ref.save_records();
 	}
 
 	HotKey* clone() const {
@@ -270,15 +246,13 @@ class HotKeys : public YACURS::HotKey {
 // ADD RECORD
 class HotKeyA : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyA(MainWindow* p) : HotKey('A'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyA(const HotKeyA& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyA(MainWindow& r) : HotKey('A'), ref(r) {}
+	HotKeyA(const HotKeyA& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_password_record(false);
+	    ref.show_password_record(false);
 	}
 
 	HotKey* clone() const {
@@ -289,15 +263,13 @@ class HotKeyA : public YACURS::HotKey {
 
 class HotKeya : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeya(MainWindow* p) : HotKey('a'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeya(const HotKeya& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeya(MainWindow& r) : HotKey('a'), ref(r) {}
+	HotKeya(const HotKeya& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->show_password_record(false);
+	    ref.show_password_record(false);
 	}
 
 	HotKey* clone() const {
@@ -309,15 +281,13 @@ class HotKeya : public YACURS::HotKey {
 // SORT ORDER
 class HotKeyO : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyO(MainWindow* p) : HotKey('O'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyO(const HotKeyO& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyO(MainWindow& r) : HotKey('O'), ref(r) {}
+	HotKeyO(const HotKeyO& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->sort_asc(!ptr->sort_asc());
+	    ref.sort_asc(!ref.sort_asc());
 	}
 
 	HotKey* clone() const {
@@ -328,15 +298,13 @@ class HotKeyO : public YACURS::HotKey {
 
 class HotKeyo : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyo(MainWindow* p) : HotKey('o'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyo(const HotKeyo& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyo(MainWindow& r) : HotKey('o'), ref(r) {}
+	HotKeyo(const HotKeyo& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->sort_asc(!ptr->sort_asc());
+	    ref.sort_asc(!ref.sort_asc());
 	}
 
 	HotKey* clone() const {
@@ -348,15 +316,13 @@ class HotKeyo : public YACURS::HotKey {
 // DELETE
 class HotKeyD : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyD(MainWindow* p) : HotKey('D'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyD(const HotKeyD& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyD(MainWindow& r) : HotKey('D'), ref(r) {}
+	HotKeyD(const HotKeyD& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->delete_selected();
+	    ref.delete_selected();
 	}
 
 	HotKey* clone() const {
@@ -366,15 +332,13 @@ class HotKeyD : public YACURS::HotKey {
 
 class HotKeyd : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyd(MainWindow* p) : HotKey('d'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyd(const HotKeyd& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyd(MainWindow& r) : HotKey('d'), ref(r) {}
+	HotKeyd(const HotKeyd& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
-	    ptr->delete_selected();
+	    ref.delete_selected();
 	}
 
 	HotKey* clone() const {
@@ -385,16 +349,14 @@ class HotKeyd : public YACURS::HotKey {
 // CHANGE PASSWORD
 class HotKeyC : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyC(MainWindow* p) : HotKey('C'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyC(const HotKeyC& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyC(MainWindow& r) : HotKey('C'), ref(r) {}
+	HotKeyC(const HotKeyC& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
 	    // ChangePassword does apoptosis
-	    (new ChangePassword(ptr))->run();
+	    (new ChangePassword(ref))->run();
 	}
 
 	HotKey* clone() const {
@@ -404,16 +366,14 @@ class HotKeyC : public YACURS::HotKey {
 
 class HotKeyc : public YACURS::HotKey {
     private:
-	MainWindow* ptr;
+	MainWindow& ref;
     public:
-	HotKeyc(MainWindow* p) : HotKey('c'), ptr(p) {
-	    assert(p!=0);
-	}
-	HotKeyc(const HotKeyc& hkh) : HotKey(hkh), ptr(hkh.ptr) {}
+	HotKeyc(MainWindow& r) : HotKey('c'), ref(r) {}
+	HotKeyc(const HotKeyc& hkh) : HotKey(hkh), ref(hkh.ref) {}
 
 	void action() {
 	    // ChangePassword does apoptosis
-	    (new ChangePassword(ptr))->run();
+	    (new ChangePassword(ref))->run();
 	}
 
 	HotKey* clone() const {

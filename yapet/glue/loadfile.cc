@@ -42,8 +42,7 @@ LoadFile::apoptosis_handler(YACURS::Event& e) {
 	    // information over to mainwindow.
 	    if (promptpassword->key() != 0 &&
 		promptpassword->yapet_file() != 0) {
-		assert(mainwindow!=0);
-		mainwindow->load_password_file(promptpassword->yapet_file(),
+		mainwindow.load_password_file(promptpassword->yapet_file(),
 					       promptpassword->key());
 	    }
 	    
@@ -83,7 +82,7 @@ LoadFile::window_close_handler(YACURS::Event& e) {
     if (confirmsave && evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
 	case YACURS::DIALOG_YES: 
-	    mainwindow->save_records();
+	    mainwindow.save_records();
 	    run();
 	    break;
 	case YACURS::DIALOG_NO:
@@ -108,12 +107,11 @@ LoadFile::window_close_handler(YACURS::Event& e) {
 // Public
 //
 
-LoadFile::LoadFile(MainWindow* mw): mainwindow(mw),
+LoadFile::LoadFile(MainWindow& mw): mainwindow(mw),
 				    promptpassword(0),
 				    fileloaddialog(0),
 				    confirmsave(0),
 				    ignore_unsaved_file(false) {
-    assert(mainwindow!=0);
 
     YACURS::EventQueue::
 	connect_event(YACURS::EventConnectorMethod1<

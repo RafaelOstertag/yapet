@@ -39,14 +39,14 @@
  */
 class ChangePassword {
     private:
-	MainWindow* mainwindow;
+	MainWindow& mainwindow;
 	NewPasswordDialog* promptpassword;
 	YACURS::MessageBox3* confirmsave;
 	YACURS::MessageBox2* generror;
 	std::string __filepath;
 	bool ignore_unsaved_file;
 
-	ChangePassword(const ChangePassword&) {}
+	ChangePassword(const ChangePassword& c) : mainwindow(c.mainwindow) {}
 
 	const ChangePassword& operator=(const ChangePassword&) {
 	    return *this;
@@ -55,7 +55,7 @@ class ChangePassword {
 	void window_close_handler(YACURS::Event& e);
 
     public:
-	ChangePassword(MainWindow* mw);
+	ChangePassword(MainWindow& mw);
 	~ChangePassword();
 
 	void run();

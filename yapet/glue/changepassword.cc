@@ -46,11 +46,9 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 	    
 	    YAPET::Key* _key=0;
 	    try {
-		assert(mainwindow!=0);
-
 		// Must not be delete by ChangePassword
 		_key = new YAPET::Key(promptpassword->password().c_str());
-		mainwindow->change_password(_key);
+		mainwindow.change_password(_key);
 		YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
 	    } catch (std::exception& ex) {
 		assert(generror==0);
@@ -80,7 +78,7 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
     if (evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
 	case YACURS::DIALOG_YES: 
-	    mainwindow->save_records();
+	    mainwindow.save_records();
 	    run();
 	    break;
 	case YACURS::DIALOG_NO:
@@ -107,13 +105,11 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 // Public
 //
 
-ChangePassword::ChangePassword(MainWindow* mw): mainwindow(mw),
+ChangePassword::ChangePassword(MainWindow& mw): mainwindow(mw),
 					promptpassword(0),
 					confirmsave(0),
 					generror(0),
 					ignore_unsaved_file(false) {
-
-    assert(mainwindow!=0);
 
     YACURS::EventQueue::
 	connect_event(YACURS::EventConnectorMethod1<

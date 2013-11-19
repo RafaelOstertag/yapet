@@ -1,0 +1,7 @@
+Glue Classes
+------------
+
+Glue classes glue together serveral ui classes, so that the logic
+isn't implemented in MainWindow.
+
+They usually consist of a sequence of conditionally displayed windows.
