@@ -55,10 +55,6 @@
 # include <getopt.h>
 #endif
 
-#ifdef HAVE_CRYPTO_H
-# include <openssl/crypto.h>
-#endif
-
 #include <cstring>
 #include <cerrno>
 #include <iostream>
@@ -135,40 +131,11 @@ set_rlimit() {
 void
 show_version() {
     std::cout << PACKAGE_STRING << std::endl;
-    std::cout << _("Architecture: ");
-
-#ifdef SIZEOF_INT_P
-    std::cout << 8 * SIZEOF_INT_P << "bit";
-#endif
-#ifdef WORDS_BIGENDIAN
-    std::cout << " big endian" << std::endl;
-#else
-    std::cout << " little endian" << std::endl;
-#endif
-
-#ifdef HAVE_SSLEAY_VERSION
-    std::cout << _("SSL Version: ") << SSLeay_version(SSLEAY_VERSION) <<
-        std::endl;
-#endif
-#if defined(HAVE_TERMINALTITLE) && defined(HAVE_TERMNAME)
-    std::cout << _("Compiled with support for terminal title") << std::endl;
-#else
-    std::cout << _("Compiled without support for terminal title") <<
-        std::endl;
-#endif
-#ifdef ENABLE_PWGEN
-    std::cout << _("Compiled with password generator") << std::endl;
-#else
-    std::cout << _("Compiled without password generator") << std::endl;
-#endif
-#if !defined(HAVE_FSTAT) || !defined(HAVE_GETUID) || !defined(HAVE_FCHMOD) || \
+#if !defined(HAVE_FSTAT) || \
+    !defined(HAVE_GETUID) || \
+    !defined(HAVE_FCHMOD) || \
     !defined(HAVE_FCHOWN)
     std::cout << _("Support for file security NOT available") << std::endl;
-#endif
-#if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
-    std::cout << _("Creation of core file is suppressed") << std::endl;
-#else
-    std::cout << _("Creation of core files is NOT suppressed") << std::endl;
 #endif
 }
 

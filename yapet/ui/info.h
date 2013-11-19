@@ -60,6 +60,20 @@ class InfoDialog : public YACURS::Dialog {
 	YACURS::Label* pwset_status;
 #endif
 
+	YACURS::Label* arch;
+	YACURS::Label* arch_status;
+
+	YACURS::Label* ssl;
+	YACURS::Label* ssl_status;
+
+	YACURS::Label* ttl;
+	YACURS::Label* ttl_status;
+
+	YACURS::Label* pwg;
+	YACURS::Label* pwg_status;
+
+	YACURS::Label* cfs;
+	YACURS::Label* cfs_status;
 
     public:
         InfoDialog(YACURS::ListBox<>::lsz_t entries);

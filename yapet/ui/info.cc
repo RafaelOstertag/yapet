@@ -22,6 +22,10 @@
 # include "config.h"
 #endif
 
+#ifdef HAVE_CRYPTO_H
+# include <openssl/crypto.h>
+#endif
+
 #include <sstream>
 
 #include "../intl.h"
@@ -113,9 +117,64 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     rightpack->add_back(pwset_status);
 #endif
 
+    arch=new YACURS::Label(_("Architecture: "));
+    leftpack->add_back(arch);
+    std::string archstr;
+#if defined(SIZEOF_INT_P)
+    val.str("");
+    val.clear();
+    val << 8 * SIZEOF_INT_P;
+    archstr = val.str();
+    archstr += "bit ";
+#endif
+#if defined(WORDS_BIGENDIAN)
+    archstr += _("big endian");
+#else
+    archstr += _("little endian");
+#endif
+    arch_status=new YACURS::Label(archstr);
+    rightpack->add_back(arch_status);
+
+    ssl=new YACURS::Label("OpenSSL:");
+    leftpack->add_back(ssl);
+#if defined(HAVE_SSLEAY_VERSION)
+    ssl_status=new YACURS::Label(SSLeay_version(SSLEAY_VERSION));
+#else
+    ssl_status=new YACURS::Label(_("n/a"));
+#endif
+    rightpack->add_back(ssl_status);
+
+    ttl=new YACURS::Label(_("Terminal Title:"));
+    leftpack->add_back(ttl);
+#if defined(HAVE_TERMINALTITLE)
+    ttl_status=new YACURS::Label(_("built-in"));
+#else
+    ttl_status=new YACURS::Label(_("not built-in"));
+#endif
+    rightpack->add_back(ttl_status);
+
+    pwg=new YACURS::Label(_("Password Generator:"));
+    leftpack->add_back(pwg);
+#if defined(ENABLE_PWGEN)
+    pwg_status=new YACURS::Label(_("built-in"));
+#else
+    pwg_status=new YACURS::Label(_("not built-in"));
+#endif
+    rightpack->add_back(pwg_status);
+
+    cfs=new YACURS::Label(_("Core File:"));
+    leftpack->add_back(cfs);
+#if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
+    cfs_status=new YACURS::Label(_("suppressed"));
+#else
+    cfs_status=new YACURS::Label(_("not suppressed"));
+#endif
+    rightpack->add_back(cfs_status);
+
+    // colors
     fp->color(YACURS::DIALOG);
     fp_status->color(YACURS::DIALOG);
-   
+
     slt->color(YACURS::DIALOG);
     slt_status->color(YACURS::DIALOG);
 
@@ -124,7 +183,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     ent->color(YACURS::DIALOG);
     ent_status->color(YACURS::DIALOG);
-   
+
     mod->color(YACURS::DIALOG);
     mod_status->color(YACURS::DIALOG);
 
@@ -135,6 +194,21 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     pwset->color(YACURS::DIALOG);
     pwset_status->color(YACURS::DIALOG);
 #endif
+
+    arch->color(YACURS::DIALOG);
+    arch_status->color(YACURS::DIALOG);
+
+    ssl->color(YACURS::DIALOG);
+    ssl_status->color(YACURS::DIALOG);
+
+    ttl->color(YACURS::DIALOG);
+    ttl_status->color(YACURS::DIALOG);
+
+    pwg->color(YACURS::DIALOG);
+    pwg_status->color(YACURS::DIALOG);
+
+    cfs->color(YACURS::DIALOG);
+    cfs_status->color(YACURS::DIALOG);
 }
 
 InfoDialog::~InfoDialog() {
@@ -164,5 +238,19 @@ InfoDialog::~InfoDialog() {
     delete pwset;
     delete pwset_status;
 #endif
-}
 
+    delete arch;
+    delete arch_status;
+
+    delete ssl;
+    delete ssl_status;
+
+    delete ttl;
+    delete ttl_status;
+
+    delete pwg;
+    delete pwg_status;
+
+    delete cfs;
+    delete cfs_status;
+}
