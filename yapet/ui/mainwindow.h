@@ -62,9 +62,9 @@ namespace INTERNAL {
 				  reinterpret_cast<const char*>(haystack.getName()),
 				  needle.c_str()) != 0;
 	    }
-    }
+    };
 
-};
+}
 
 class MainWindow : public YACURS::Window {
     private:
