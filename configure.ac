@@ -101,7 +101,7 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h setjmp.h])
+AC_CHECK_HEADERS([assert.h ctype.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h setjmp.h libgen.h])
 
 AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if you have openssl/crypto.h])])
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
@@ -126,7 +126,7 @@ AC_TYPE_UINT8_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank iscntrl isdigit isprint isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol time tolower])
+AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank iscntrl isdigit isprint isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol time tolower basename])
 
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
