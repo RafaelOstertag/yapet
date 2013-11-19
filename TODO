@@ -1,11 +1,11 @@
 YAPET To Do
 ===========
 
- * Use terminal title
-
  * Implement pwgen
 
  * Implement user configuration
+
+ * Make sure .pet is appended to new files.
 
 $Id$
 Local Variables:
