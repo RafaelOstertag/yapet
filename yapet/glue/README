@@ -5,3 +5,6 @@ Glue classes glue together serveral ui classes, so that the logic
 isn't implemented in MainWindow.
 
 They usually consist of a sequence of conditionally displayed windows.
+
+Glue objects perform apoptosis, so there is no need to keep pointers
+to glue objects.
