@@ -136,13 +136,15 @@ AC_CHECK_FUNCS([SSLeay_version])
 
 AC_MSG_NOTICE([Checking miscellaneous properties of platform])
 AC_CHECK_SIZEOF([int *])
+AC_CHECK_SIZEOF([int])
+AC_CHECK_SIZEOF([long])
 AC_C_BIGENDIAN
 # Mainly used by the RNG test in tests/rng*
 AC_CHECK_FILES([/dev/urandom /dev/random])
 
 AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION(0.18.2)
+AM_GNU_GETTEXT_VERSION(0.18.1)
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])
