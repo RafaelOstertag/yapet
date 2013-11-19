@@ -2,6 +2,7 @@
 AC_PREREQ(2.61)
 AC_INIT([YAPET],[1.0],[https://bugs.guengel.ch/enter_bug.cgi?product=YAPET])
 AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests std-options])
+AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
