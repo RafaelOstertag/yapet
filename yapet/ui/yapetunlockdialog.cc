@@ -103,7 +103,7 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
 
     if (YAPET::Globals::config.allow_lock_quit) {
 	__quit = new YACURS::Button(_("Quit"));
-	__vpack->add_back(__quit);
+	add_button(__quit);
     }
 
     widget(__vpack);
