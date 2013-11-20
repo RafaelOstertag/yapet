@@ -33,7 +33,7 @@ const char t_letters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char t_digits[] = "0123456789";
 const char t_punct[] = ".,;:-!?'";
 const char t_special[] = "_+\"*%&/()[]={}<>";
-const char t_other[] = "§°@#\\|$£~`^";
+const char t_other[] = "@#\\|$~`^";
 
 class gainaccess : public CharacterPool {
     public:
