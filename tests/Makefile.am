@@ -1,5 +1,7 @@
 # $Id$
 
+AUTOMAKE_OPTIONS = serial-tests
+
 # For silent rules
 cpy_verbose = $(cpy_verbose_$(V))
 cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
