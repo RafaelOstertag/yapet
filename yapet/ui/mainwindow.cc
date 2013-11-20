@@ -147,7 +147,8 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	case YACURS::DIALOG_YES:
 	    assert(YAPET::Globals::key!=0);
 	    assert(YAPET::Globals::file!=0);
-	    save_records();
+	    // do not continue in case there were errors during save
+	    if (!save_records()) break;
 	case YACURS::DIALOG_NO:
 	    // fall thru
 	    YACURS::EventQueue::submit(YACURS::EVT_QUIT);
@@ -398,11 +399,11 @@ MainWindow::show_password_record(bool selected) {
 
 }
 
-void
+bool
 MainWindow::save_records() {
     if (YAPET::Globals::file == 0) {
 	// Do nothing and return
-	return;
+	return true;
     }
 
     try {
@@ -411,14 +412,16 @@ MainWindow::save_records() {
 	YACURS::Curses::statusbar()->set(msg +
 					  YAPET::Globals::file->getFilename());
 	YAPET::Globals::records_changed=false;
+	return true;
     } catch (std::exception& e) {
-	assert(errormsgdialog!=0);
+	assert(errormsgdialog==0);
 
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while saving file:"),
 						 e.what(),
 						 YACURS::OK_ONLY);
 	errormsgdialog->show();
+	return false;
     }
 }
 
@@ -439,7 +442,7 @@ MainWindow::change_password(YAPET::Key* nk) {
 
 	YACURS::Curses::statusbar()->set(std::string(_("Changed password on ")) + YAPET::Globals::file->getFilename());
     } catch (std::exception& e) {
-	assert(errormsgdialog!=0);
+	assert(errormsgdialog=0);
 
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while changing password:"),

@@ -123,7 +123,12 @@ class MainWindow : public YACURS::Window {
 
 	void delete_selected();
 
-	void save_records();
+	/**
+	 * Save records.
+	 *
+	 * @return @c false if there were errors, @c true otherwise.
+	 */
+	bool save_records();
 
 	void change_password(YAPET::Key* nk);
 
