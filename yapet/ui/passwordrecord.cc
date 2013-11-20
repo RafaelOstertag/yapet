@@ -115,6 +115,7 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
     }
 
 #ifdef ENABLE_PWGEN
+#warning "Using password generator does not set modified state, ie dialog can be cancelled without warning."
     if (evt.data() == pwgendialog) {
 	assert(!__readonly);
 	if (pwgendialog->dialog_state() == YACURS::DIALOG_OK) {
