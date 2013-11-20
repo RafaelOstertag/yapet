@@ -22,15 +22,13 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
+#include <string.h>
+
+#ifdef DEBUG
+#include <iostream>
 #endif
 
-#if defined(DEBUG) && defined(HAVE_IOSTREAM)
-# include <iostream>
-#endif
-
-#include "../../intl.h"
+#include "../intl.h"
 
 #include "charpool.h"
 
@@ -40,7 +38,7 @@ const char CharacterPool::letters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNO
 const char CharacterPool::digits[] = "0123456789";
 const char CharacterPool::punct[] = ".,;:-!?'";
 const char CharacterPool::special[] = "_+\"*%&/()[]={}<>";
-const char CharacterPool::other[] = "§°@#\\|$£~`^";
+const char CharacterPool::other[] = "@#\\|$~`^";
 
 inline const char* CharacterPool::get_letters() {
     return letters;
