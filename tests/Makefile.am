@@ -1,5 +1,6 @@
 # $Id$
 
+# Tests may fail if not run serial
 AUTOMAKE_OPTIONS = serial-tests
 
 # For silent rules
