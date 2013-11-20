@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libyacurs 0.1\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-11-18 10:18+0100\n"
+"POT-Creation-Date: 2013-11-20 23:09+0100\n"
 "PO-Revision-Date: 2013-10-13 21:46+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -39,11 +39,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: crypt/bdbuffer.cc:59 crypt/file.cc:536 crypt/record.h:97
+#: crypt/bdbuffer.cc:54 crypt/file.cc:520 crypt/record.h:92
 msgid "Memory exhausted"
 msgstr ""
 
-#: crypt/bdbuffer.cc:171 crypt/bdbuffer.cc:193
+#: crypt/bdbuffer.cc:166 crypt/bdbuffer.cc:188
 #, fuzzy
 msgid "Position out of range"
 msgstr " out of range."
@@ -85,178 +85,178 @@ msgstr ""
 msgid "Error finalizing decryption"
 msgstr ""
 
-#: crypt/file.cc:122
+#: crypt/file.cc:116
 msgid "You are not the owner of "
 msgstr ""
 
-#: crypt/file.cc:127
+#: crypt/file.cc:121
 msgid "Permissions of "
 msgstr ""
 
-#: crypt/file.cc:128
+#: crypt/file.cc:122
 msgid " not secure."
 msgstr ""
 
-#: crypt/file.cc:154
+#: crypt/file.cc:148
 #, fuzzy
 msgid "Cannot set the owner of "
 msgstr "Cannot change to "
 
-#: crypt/file.cc:161
+#: crypt/file.cc:155
 msgid "Cannot set file permissions on "
 msgstr ""
 
-#: crypt/file.cc:248
+#: crypt/file.cc:246
 msgid "Error seeking within file: "
 msgstr ""
 
-#: crypt/file.cc:290
+#: crypt/file.cc:288
 msgid "Unable to seek to data section"
 msgstr ""
 
-#: crypt/file.cc:325 crypt/file.cc:342
+#: crypt/file.cc:323 crypt/file.cc:340
 msgid "Short read on file: "
 msgstr ""
 
-#: crypt/file.cc:374
-msgid "File has been modified"
-msgstr ""
-
-#: crypt/file.cc:392 crypt/file.cc:400 crypt/file.cc:512
+#: crypt/file.cc:376 crypt/file.cc:384 crypt/file.cc:496
 msgid "Short write on file: "
 msgstr ""
 
-#: crypt/file.cc:446
+#: crypt/file.cc:430
 msgid "EOF encountered while reading header"
 msgstr ""
 
-#: crypt/file.cc:453
+#: crypt/file.cc:437
 msgid "Sanity check for control field failed"
 msgstr ""
 
-#: crypt/file.cc:489
+#: crypt/file.cc:473
 msgid "Unknown exception catched"
 msgstr ""
 
-#: crypt/file.cc:544 crypt/file.cc:549
+#: crypt/file.cc:528 crypt/file.cc:533
 #, fuzzy
 msgid "File type not recognized"
 msgstr "object not realized"
 
-#: crypt/file.cc:585
+#: crypt/file.cc:569
 msgid "Null pointer passed in ptr32"
 msgstr ""
 
-#: crypt/file.cc:587
+#: crypt/file.cc:571
 msgid "Null pointer passed in ptr64"
 msgstr ""
 
-#: crypt/key.cc:66
+#: crypt/file.cc:779 crypt/file.cc:849
+msgid "File has been externally modified"
+msgstr ""
+
+#: crypt/key.cc:64
 #, fuzzy
 msgid "Run 1: Unable to initialize the EVP_MD structure"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:74
+#: crypt/key.cc:72
 #, fuzzy
 msgid "Run 1: Unable to initialize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:81
+#: crypt/key.cc:79
 msgid "Run 1: Unable to update the digest"
 msgstr ""
 
-#: crypt/key.cc:90
+#: crypt/key.cc:88
 #, fuzzy
 msgid "Run 1: Unable to finalize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:96
+#: crypt/key.cc:94
 msgid "Run 1: Digest does not have expected length"
 msgstr ""
 
-#: crypt/key.cc:108
+#: crypt/key.cc:106
 #, fuzzy
 msgid "Run 2: Unable to initialize the EVP_MD structure"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:117
+#: crypt/key.cc:115
 #, fuzzy
 msgid "Run 2: Unable to initialize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:125
+#: crypt/key.cc:123
 msgid "Run 2: Unable to update the digest"
 msgstr ""
 
-#: crypt/key.cc:133
+#: crypt/key.cc:131
 #, fuzzy
 msgid "Run 2: Unable to finalize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:139
+#: crypt/key.cc:137
 msgid "Run 2: Digest does not have expected length"
 msgstr ""
 
-#: crypt/key.cc:151
+#: crypt/key.cc:149
 #, fuzzy
 msgid "Run 3: Unable to initialize the EVP_MD structure"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:160
+#: crypt/key.cc:158
 #, fuzzy
 msgid "Run 3: Unable to initialize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:168
+#: crypt/key.cc:166
 msgid "Run 3: Unable to update the digest"
 msgstr ""
 
-#: crypt/key.cc:176
+#: crypt/key.cc:174
 #, fuzzy
 msgid "Run 3: Unable to finalize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:182
+#: crypt/key.cc:180
 msgid "Run 3: Digest does not have expected length"
 msgstr ""
 
-#: crypt/key.cc:193
+#: crypt/key.cc:191
 #, c-format
 msgid "Effective key length of %d does not match expected key length %d"
 msgstr ""
 
-#: crypt/key.cc:207
+#: crypt/key.cc:205
 #, fuzzy
 msgid "IVec: Unable to initialize the EVP_MD structure"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:216
+#: crypt/key.cc:214
 #, fuzzy
 msgid "IVec: Unable to initialize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:224
+#: crypt/key.cc:222
 msgid "IVec: Unable to update the digest"
 msgstr ""
 
-#: crypt/key.cc:232
+#: crypt/key.cc:230
 #, fuzzy
 msgid "IVec: Unable to finalize the digest"
 msgstr "unable to initialize curses"
 
-#: crypt/key.cc:238
+#: crypt/key.cc:236
 msgid "IVec: Digest does not have expected length"
 msgstr ""
 
-#: crypt/record.h:290
+#: crypt/record.h:285
 msgid "BDBuffer too small. Cannot assign to Record<T>"
 msgstr ""
 
-#: crypt/record.h:292
+#: crypt/record.h:287
 msgid "BDBuffer too big. Cannot assign to Record<T>"
 msgstr ""
 
-#: crypt/yapetexception.h:86 yapet/pwgen/pwgenexception.h:49
+#: crypt/yapetexception.h:86
 msgid "Generic exception message"
 msgstr ""
 
@@ -272,345 +272,231 @@ msgstr ""
 msgid "Invalid password"
 msgstr ""
 
-#: yapet/pwgen/charpool.cc:64
-#, fuzzy
-msgid "Subpools may not be zero"
-msgstr "Area must not be zero"
-
-#: yapet/pwgen/charpool.cc:78 yapet/pwgen/charpool.cc:160
-#: yapet/pwgen/charpool.cc:290
-msgid "Out of memory"
-msgstr ""
-
-#: yapet/pwgen/charpool.cc:252
-msgid "No character at given position"
-msgstr ""
-
-#: yapet/pwgen/charpool.h:159
-msgid "NULL pointer passed."
-msgstr ""
-
-#: yapet/pwgen/pwgen.cc:99
-msgid ""
-"Cannot get character from unused pool because no unused pools are available"
-msgstr ""
-
-#: yapet/pwgen/pwgenexception.h:74
-msgid "No Random Number Generator available"
-msgstr ""
-
-#: yapet/pwgen/pwgenexception.h:92
-msgid "The requested RNG is not available"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:109
-msgid "Unable to initialize RNG when none is available"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:119
-msgid "Unable to open /dev/random"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:126
-msgid "Unable to open /dev/urandom"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:141 yapet/pwgen/rng.cc:353
-msgid "Unexpected RNG Engine (AUTO)"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:144 yapet/pwgen/rng.cc:355
-msgid "The requested RNG Engine (NONE) is invalid."
-msgstr ""
-
-#: yapet/pwgen/rng.cc:186
-msgid "Read to few bytes on /dev/[u]random."
-msgstr ""
-
-#: yapet/pwgen/rng.cc:220
-msgid "lrand48() not available on system"
-msgstr ""
-
-#: yapet/pwgen/rng.cc:240
-msgid "rand() not available on system"
-msgstr ""
-
-#: yapet/main.cc:107
-msgid "Failed to suppress the creation of core file."
-msgstr ""
-
-#: yapet/main.cc:109
-msgid "The error message is: "
-msgstr ""
-
-#: yapet/main.cc:112 yapet/main.cc:124
-msgid "In case a core file is created, it may contain clear text passwords."
-msgstr ""
-
-#: yapet/main.cc:115 yapet/main.cc:127
-msgid "Press <ENTER> to continue"
-msgstr ""
-
-#: yapet/main.cc:121
-msgid "Cannot suppress the creation of core file."
-msgstr ""
-
-#: yapet/main.cc:136
-msgid "Architecture: "
-msgstr ""
-
-#: yapet/main.cc:148
-msgid "SSL Version: "
-msgstr ""
-
-#: yapet/main.cc:152
-msgid "Compiled with support for terminal title"
-msgstr ""
-
-#: yapet/main.cc:154
-msgid "Compiled without support for terminal title"
-msgstr ""
-
-#: yapet/main.cc:158
-msgid "Compiled with password generator"
-msgstr ""
-
-#: yapet/main.cc:160
-msgid "Compiled without password generator"
-msgstr ""
-
-#: yapet/main.cc:164
-msgid "Support for file security NOT available"
-msgstr ""
-
-#: yapet/main.cc:167
-msgid "Creation of core file is suppressed"
-msgstr ""
-
-#: yapet/main.cc:169
-msgid "Creation of core files is NOT suppressed"
-msgstr ""
-
-#: yapet/main.cc:187
-msgid "show copyright information"
-msgstr ""
-
-#: yapet/main.cc:190
-msgid "show this help text"
-msgstr ""
-
-#: yapet/main.cc:194
-msgid "do not read the configuration file."
-msgstr ""
-
-#: yapet/main.cc:197
-msgid ""
-"read the configuration file specified by <rcfile>.\n"
-"\t\t\tIf this option is not provided, it defaults to\n"
-"\t\t\t$HOME/.yapet unless -i is specified."
-msgstr ""
-
-#: yapet/main.cc:202
-msgid ""
-"disable check of owner and file permissions.\n"
-"\t\t\tWhen creating new files, the file mode is set\n"
-"\t\t\tto 0644."
-msgstr ""
-
-#: yapet/main.cc:207
-msgid ""
-"enable check of owner and file permissions.\n"
-"\t\t\tWhen creating new files, the file mode is set\n"
-"\t\t\tto 0600."
-msgstr ""
-
-#: yapet/main.cc:212
-msgid ""
-"the time-out in seconds until the screen is locked.\n"
-"\t\t\tDefault: 600 sec."
-msgstr ""
-
-#: yapet/main.cc:216
-msgid "show the version of "
-msgstr ""
-
-#: yapet/main.cc:220
-msgid "open the specified file <filename>"
-msgstr ""
-
-#: yapet/main.cc:226
-#, c-format
-msgid ""
-"%s stores passwords encrypted on disk using the blowfish encryption\n"
-"algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
-"for more information about %s."
-msgstr ""
-
-#: yapet/main.cc:316
-msgid " without argument"
-msgstr ""
-
-#: yapet/main.cc:321
-msgid "unknown argument"
-msgstr ""
-
-#: yapet/main.cc:359
-msgid "Press 'H' for help"
-msgstr ""
-
-#: yapet/pwgendialog.cc:60
-msgid "rand() (not good)"
-msgstr ""
-
-#: yapet/pwgendialog.cc:101
-msgid "May you consider deleting the window before reallocating"
-msgstr ""
-
-#: yapet/pwgendialog.cc:108
-msgid "Error creating password generator window"
-msgstr ""
-
-#: yapet/pwgendialog.cc:119
-msgid "Character Pools"
-msgstr ""
-
-#: yapet/pwgendialog.cc:126
-msgid "Regenerate"
-msgstr ""
-
-#: yapet/pwgendialog.cc:129
-msgid "OK"
-msgstr "OK"
-
-#: yapet/pwgendialog.cc:132
-msgid "Cancel"
-msgstr "Cancel"
-
-#: yapet/pwgendialog.cc:148
-msgid "P A S S W O R D  G E N E R A T O R"
-msgstr ""
-
-#: yapet/pwgendialog.cc:151
-msgid "Error printing title"
-msgstr ""
-
-#: yapet/pwgendialog.cc:154
-#, c-format
-msgid "Generated Password (using %s):"
-msgstr ""
-
-#: yapet/pwgendialog.cc:159 yapet/pwgendialog.cc:166
-msgid "Error printing label"
-msgstr ""
-
-#: yapet/pwgendialog.cc:163
-msgid "Password Length"
-msgstr ""
-
-#: yapet/pwgendialog.cc:318 yapet/pwgendialog.cc:336
-msgid "E R R O R"
-msgstr ""
-
-#: yapet/pwgendialog.cc:319
-msgid "You need to select at least one Character Pool"
-msgstr ""
-
-#: yapet/pwgendialog.cc:337
-msgid "Password must have at least one character"
-msgstr ""
-
-#: yapet/pwgendialog.cc:412
-msgid "Error drawing box"
-msgstr ""
-
-#: yapet/pwgendialog.cc:418
-msgid "Error refreshing window"
-msgstr ""
-
-#: yapet/ui/passwordrecord.cc:68 yapet/ui/passwordrecord.cc:202
-#: yapet/ui/mainwindow.cc:579 yapet/ui/mainwindow.cc:624
-#: yapet/glue/promptpassword.cc:61 yapet/glue/createfile.cc:69
+#: yapet/glue/createfile.cc:71 yapet/glue/promptpassword.cc:60
+#: yapet/glue/changepassword.cc:55 yapet/ui/passwordrecord.cc:68
+#: yapet/ui/passwordrecord.cc:233 yapet/ui/mainwindow.cc:388
+#: yapet/ui/mainwindow.cc:434 yapet/ui/mainwindow.cc:462
 msgid "Error"
 msgstr "Error"
 
-#: yapet/ui/passwordrecord.cc:113
+#: yapet/glue/createfile.cc:72 yapet/glue/promptpassword.cc:61
+#: yapet/glue/changepassword.cc:56
+msgid "Got following error"
+msgstr ""
+
+#: yapet/glue/createfile.cc:109 yapet/glue/changepassword.cc:88
+#: yapet/glue/loadfile.cc:96 yapet/ui/mainwindow.cc:164
+msgid "Unexpected dialog state for confirmsave dialog"
+msgstr ""
+
+#: yapet/glue/createfile.cc:165 yapet/glue/changepassword.cc:146
+#: yapet/glue/loadfile.cc:160
+msgid "Unsaved Changes"
+msgstr ""
+
+#: yapet/glue/createfile.cc:167 yapet/glue/loadfile.cc:162
+#, fuzzy
+msgid "has unsaved changes. Do you want to save?"
+msgstr "already exists. Do you want to overwrite?"
+
+#: yapet/glue/promptpassword.cc:47
+msgid "Invalid Password"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:48
+msgid "Password for file"
+msgstr ""
+
+#: yapet/glue/promptpassword.cc:50
+msgid "is not correct. Do you want to try again?"
+msgstr ""
+
+#: yapet/glue/changepassword.cc:147
+msgid "Changes in"
+msgstr ""
+
+#: yapet/glue/changepassword.cc:149
+#, fuzzy
+msgid "will be saved. Do you want to continue?"
+msgstr "already exists. Do you want to overwrite?"
+
+#: yapet/ui/passwordrecord.cc:140
 msgid "Pending Changes"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:114
+#: yapet/ui/passwordrecord.cc:141
 msgid "Do you want to discard changes?"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:127 yapet/ui/passwordrecord.cc:274
+#: yapet/ui/passwordrecord.cc:154 yapet/ui/passwordrecord.cc:311
 msgid "Password Entry"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:129
+#: yapet/ui/passwordrecord.cc:156
 msgid "Name"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:130
+#: yapet/ui/passwordrecord.cc:157
 msgid "Host"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:131
+#: yapet/ui/passwordrecord.cc:158
 msgid "User Name"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:132
+#: yapet/ui/passwordrecord.cc:159
 msgid "Password"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:133
+#: yapet/ui/passwordrecord.cc:160
 msgid "Comment"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:140 yapet/ui/help.cc:112
+#: yapet/ui/passwordrecord.cc:167 yapet/ui/help.cc:112
+#: yapet/ui/pwgendialog.cc:149
 msgid "Password Generator"
 msgstr ""
 
-#: yapet/ui/passwordrecord.cc:272
+#: yapet/ui/passwordrecord.cc:309
 msgid "Password Entry (Read-Only)"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:415
+#: yapet/ui/mainwindow.cc:104
 msgid "Added new Record"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:425
+#: yapet/ui/mainwindow.cc:114
 msgid "Updated Record"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:565
+#: yapet/ui/mainwindow.cc:137
+msgid "Delete selected Record"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:161
+msgid "Quit aborted"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:177
+msgid "Empty search string"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:185
+msgid "No match for "
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:361
 msgid "Opened file: "
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:580
+#: yapet/ui/mainwindow.cc:389
 msgid "Error while reading file:"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:617
+#: yapet/ui/mainwindow.cc:426
 #, fuzzy
 msgid "Saved file: "
 msgstr "Save File"
 
-#: yapet/ui/mainwindow.cc:625
+#: yapet/ui/mainwindow.cc:435
 msgid "Error while saving file:"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:652
+#: yapet/ui/mainwindow.cc:449
+#, fuzzy
+msgid "New key must not be 0"
+msgstr "_size must not be <2"
+
+#: yapet/ui/mainwindow.cc:458
+#, fuzzy
+msgid "Changed password on "
+msgstr "Confirmation"
+
+#: yapet/ui/mainwindow.cc:463
+msgid "Error while changing password:"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:480
+msgid "Confirm Deletion"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:481
+msgid "Do you want to delete the selected record?"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:517
+#, fuzzy
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: yapet/ui/mainwindow.cc:518
+msgid "There are unsaved changes."
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:519
+msgid "Do you want to save changes, before leaving?"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:531
 msgid "Sort Order Ascending"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:655
+#: yapet/ui/mainwindow.cc:534
 msgid "Sort Order Descending"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:553 yapet/ui/help.cc:86
+msgid "Search"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:554
+msgid "Enter search term"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:565
+msgid "No previous search. Press '/' to search."
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:573
+msgid "No more matches for "
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:574
+msgid " found"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:578
+msgid "Next match for "
+msgstr ""
+
+#: yapet/ui/yapetunlockdialog.cc:77
+#, fuzzy
+msgid "Unlock Screen"
+msgstr "Unlock Screen"
+
+#: yapet/ui/yapetunlockdialog.cc:89
+#, fuzzy
+msgid "Please enter password for"
+msgstr "Please enter password in order to unlock screen"
+
+#: yapet/ui/yapetunlockdialog.cc:90
+msgid "<unknown>"
+msgstr ""
+
+#: yapet/ui/yapetunlockdialog.cc:91
+#, fuzzy
+msgid "in order to unlock screen"
+msgstr "Please enter password in order to unlock screen"
+
+#: yapet/ui/yapetunlockdialog.cc:105 yapet/ui/help.cc:118
+msgid "Quit"
 msgstr ""
 
 #: yapet/ui/passworddialog.cc:26
 msgid "Enter Password"
 msgstr ""
 
-#: yapet/ui/passworddialog.cc:28 yapet/ui/newpassworddialog.cc:72
+#: yapet/ui/passworddialog.cc:28 yapet/ui/newpassworddialog.cc:82
 msgid "Enter password for "
 msgstr ""
 
@@ -648,10 +534,6 @@ msgstr ""
 msgid "Sort Order"
 msgstr ""
 
-#: yapet/ui/help.cc:86
-msgid "Search"
-msgstr ""
-
 #: yapet/ui/help.cc:91
 msgid "Search Next"
 msgstr ""
@@ -660,7 +542,7 @@ msgstr ""
 msgid "Change Password"
 msgstr ""
 
-#: yapet/ui/help.cc:101
+#: yapet/ui/help.cc:101 yapet/ui/info.cc:51
 #, fuzzy
 msgid "Information"
 msgstr "Confirmation"
@@ -669,17 +551,109 @@ msgstr "Confirmation"
 msgid "Redraw Screen"
 msgstr ""
 
-#: yapet/ui/help.cc:118
-msgid "Quit"
+#: yapet/ui/yapetlockscreen.cc:69
+msgid "YAPET LOCKED"
 msgstr ""
 
-#: yapet/ui/newpassworddialog.h:72
-msgid ""
-"Calling NewPasswordDialog::password() while dialog_state()!=DIALOG_OK or !"
-"match()"
+#: yapet/ui/info.cc:60
+msgid "File: "
 msgstr ""
 
-#: yapet/ui/newpassworddialog.cc:33
+#: yapet/ui/info.cc:66
+msgid "none loaded"
+msgstr ""
+
+#: yapet/ui/info.cc:69
+msgid "File permission check: "
+msgstr ""
+
+#: yapet/ui/info.cc:73
+msgid "enabled"
+msgstr ""
+
+#: yapet/ui/info.cc:75
+msgid "disabled"
+msgstr ""
+
+#: yapet/ui/info.cc:78
+msgid "Screen lock time-out: "
+msgstr ""
+
+#: yapet/ui/info.cc:85
+msgid "Unlock Dialog time-out: "
+msgstr ""
+
+#: yapet/ui/info.cc:93
+msgid "Password records: "
+msgstr ""
+
+#: yapet/ui/info.cc:101
+msgid "Records modified: "
+msgstr ""
+
+#: yapet/ui/info.cc:104
+#, fuzzy
+msgid "yes"
+msgstr "Yes"
+
+#: yapet/ui/info.cc:106
+msgid "no"
+msgstr ""
+
+#: yapet/ui/info.cc:109
+msgid "PET file version: "
+msgstr ""
+
+#: yapet/ui/info.cc:117 yapet/ui/info.cc:128 yapet/ui/info.cc:156
+msgid "n/a"
+msgstr ""
+
+#: yapet/ui/info.cc:122
+msgid "Password set: "
+msgstr ""
+
+#: yapet/ui/info.cc:133
+msgid "Architecture: "
+msgstr ""
+
+#: yapet/ui/info.cc:144
+msgid "big endian"
+msgstr ""
+
+#: yapet/ui/info.cc:146
+msgid "little endian"
+msgstr ""
+
+#: yapet/ui/info.cc:160
+msgid "Terminal Title:"
+msgstr ""
+
+#: yapet/ui/info.cc:163 yapet/ui/info.cc:172
+msgid "built-in"
+msgstr ""
+
+#: yapet/ui/info.cc:165 yapet/ui/info.cc:174
+msgid "not built-in"
+msgstr ""
+
+#: yapet/ui/info.cc:169
+msgid "Password Generator:"
+msgstr ""
+
+#: yapet/ui/info.cc:178
+#, fuzzy
+msgid "Core File:"
+msgstr "Save File"
+
+#: yapet/ui/info.cc:181
+msgid "suppressed"
+msgstr ""
+
+#: yapet/ui/info.cc:183
+msgid "not suppressed"
+msgstr ""
+
+#: yapet/ui/newpassworddialog.cc:33 yapet/ui/newpassworddialog.cc:43
 msgid "Password Missmatch"
 msgstr ""
 
@@ -687,43 +661,176 @@ msgstr ""
 msgid "Passwords do not match."
 msgstr ""
 
-#: yapet/ui/newpassworddialog.cc:35
+#: yapet/ui/newpassworddialog.cc:35 yapet/ui/newpassworddialog.cc:45
 msgid "Do you want to retry?"
 msgstr ""
 
-#: yapet/ui/newpassworddialog.cc:68
+#: yapet/ui/newpassworddialog.cc:44
+#, fuzzy
+msgid "Password must not be empty."
+msgstr "Event names must not be empty."
+
+#: yapet/ui/newpassworddialog.cc:78
 msgid "New Password"
 msgstr ""
 
-#: yapet/ui/newpassworddialog.cc:73
+#: yapet/ui/newpassworddialog.cc:83
 #, fuzzy
 msgid "Confirm password"
 msgstr "Confirmation"
 
-#: yapet/glue/loadfile.cc:159 yapet/glue/createfile.cc:162
-msgid "Unsaved Changes"
+#: yapet/ui/newpassworddialog.h:72
+msgid ""
+"Calling NewPasswordDialog::password() while dialog_state()!=DIALOG_OK or !"
+"match()"
 msgstr ""
 
-#: yapet/glue/loadfile.cc:161 yapet/glue/createfile.cc:164
+#: yapet/ui/pwgendialog.cc:68 yapet/ui/pwgendialog.cc:175
+#: yapet/ui/pwgendialog.cc:183
+msgid "Letters"
+msgstr ""
+
+#: yapet/ui/pwgendialog.cc:70 yapet/ui/pwgendialog.cc:176
+#: yapet/ui/pwgendialog.cc:185
+msgid "Digits"
+msgstr ""
+
+#: yapet/ui/pwgendialog.cc:72 yapet/ui/pwgendialog.cc:177
+#: yapet/ui/pwgendialog.cc:187
+msgid "Punctuation"
+msgstr ""
+
+#: yapet/ui/pwgendialog.cc:74 yapet/ui/pwgendialog.cc:178
+#: yapet/ui/pwgendialog.cc:189
+msgid "Special"
+msgstr ""
+
+#: yapet/ui/pwgendialog.cc:76 yapet/ui/pwgendialog.cc:179
+#: yapet/ui/pwgendialog.cc:191
+msgid "Other"
+msgstr ""
+
+#: yapet/ui/pwgendialog.cc:153
 #, fuzzy
-msgid "has unsaved changes. Do you want to save?"
-msgstr "already exists. Do you want to overwrite?"
+msgid "Generated password"
+msgstr "Confirmation"
 
-#: yapet/glue/promptpassword.cc:48
-msgid "Invalid Password"
+#: yapet/ui/pwgendialog.cc:155
+msgid "Password length"
 msgstr ""
 
-#: yapet/glue/promptpassword.cc:49
-msgid "Password for file"
+#: yapet/ui/pwgendialog.cc:157
+msgid "Regenerate"
 msgstr ""
 
-#: yapet/glue/promptpassword.cc:51
-msgid "is not correct. Do you want to try again?"
+#: yapet/ui/pwgendialog.cc:180
+msgid "Character Pools"
 msgstr ""
 
-#: yapet/glue/promptpassword.cc:62 yapet/glue/createfile.cc:70
-msgid "Got following error"
+#: yapet/ui/pwgendialog.cc:205
+msgid "Sources"
 msgstr ""
+
+#: yapet/main.cc:105
+msgid "Failed to suppress the creation of core file."
+msgstr ""
+
+#: yapet/main.cc:107
+msgid "The error message is: "
+msgstr ""
+
+#: yapet/main.cc:110 yapet/main.cc:122
+msgid "In case a core file is created, it may contain clear text passwords."
+msgstr ""
+
+#: yapet/main.cc:113 yapet/main.cc:125
+msgid "Press <ENTER> to continue"
+msgstr ""
+
+#: yapet/main.cc:119
+msgid "Cannot suppress the creation of core file."
+msgstr ""
+
+#: yapet/main.cc:138
+msgid "Support for file security NOT available"
+msgstr ""
+
+#: yapet/main.cc:156
+msgid "show copyright information"
+msgstr ""
+
+#: yapet/main.cc:159
+msgid "show this help text"
+msgstr ""
+
+#: yapet/main.cc:163
+msgid "do not read the configuration file."
+msgstr ""
+
+#: yapet/main.cc:166
+msgid ""
+"read the configuration file specified by <rcfile>.\n"
+"\t\t\tIf this option is not provided, it defaults to\n"
+"\t\t\t$HOME/.yapet unless -i is specified."
+msgstr ""
+
+#: yapet/main.cc:171
+msgid ""
+"disable check of owner and file permissions.\n"
+"\t\t\tWhen creating new files, the file mode is set\n"
+"\t\t\tto 0644."
+msgstr ""
+
+#: yapet/main.cc:176
+msgid ""
+"enable check of owner and file permissions.\n"
+"\t\t\tWhen creating new files, the file mode is set\n"
+"\t\t\tto 0600."
+msgstr ""
+
+#: yapet/main.cc:181
+msgid ""
+"the time-out in seconds until the screen is locked.\n"
+"\t\t\tDefault: 600 sec."
+msgstr ""
+
+#: yapet/main.cc:185
+msgid "show the version of "
+msgstr ""
+
+#: yapet/main.cc:189
+msgid "open the specified file <filename>"
+msgstr ""
+
+#: yapet/main.cc:195
+#, c-format
+msgid ""
+"%s stores passwords encrypted on disk using the blowfish encryption\n"
+"algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
+"for more information about %s."
+msgstr ""
+
+#: yapet/main.cc:285
+msgid " without argument"
+msgstr ""
+
+#: yapet/main.cc:290
+msgid "unknown argument"
+msgstr ""
+
+#: yapet/main.cc:330
+msgid "Press 'H' for help"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Subpools may not be zero"
+#~ msgstr "Area must not be zero"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
 
 #~ msgid "CheckBox: index "
 #~ msgstr "CheckBox: index "
@@ -758,14 +865,8 @@ msgstr ""
 #~ msgid "No"
 #~ msgstr "No"
 
-#~ msgid "Yes"
-#~ msgstr "Yes"
-
 #~ msgid "System Error"
 #~ msgstr "System Error"
-
-#~ msgid "Please enter password in order to unlock screen"
-#~ msgstr "Please enter password in order to unlock screen"
 
 #~ msgid "() failed"
 #~ msgstr "() failed"
@@ -803,11 +904,5 @@ msgstr ""
 #~ msgid "Invalid dialog type"
 #~ msgstr "Invalid dialog type"
 
-#~ msgid "_size must not be <2"
-#~ msgstr "_size must not be <2"
-
 #~ msgid "Event names must not be greater than 63 characters."
 #~ msgstr "Event names must not be greater than 63 characters."
-
-#~ msgid "Event names must not be empty."
-#~ msgstr "Event names must not be empty."
