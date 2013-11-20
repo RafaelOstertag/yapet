@@ -787,4 +787,3 @@ msgstr "unbekanntes argument"
 #: yapet/main.cc:330
 msgid "Press 'H' for help"
 msgstr "Für Hilfe 'H' drücken"
-
