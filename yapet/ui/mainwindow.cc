@@ -442,7 +442,7 @@ MainWindow::change_password(YAPET::Key* nk) {
 
 	YACURS::Curses::statusbar()->set(std::string(_("Changed password on ")) + YAPET::Globals::file->getFilename());
     } catch (std::exception& e) {
-	assert(errormsgdialog=0);
+	assert(errormsgdialog==0);
 
 	errormsgdialog = new YACURS::MessageBox2(_("Error"),
 						 _("Error while changing password:"),
