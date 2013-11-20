@@ -37,6 +37,9 @@ class InfoDialog : public YACURS::Dialog {
 	YACURS::VPack* leftpack;
 	YACURS::VPack* rightpack;
 
+	YACURS::Label* fn;
+	YACURS::Label* fn_status;
+
 	YACURS::Label* fp;
 	YACURS::Label* fp_status;
 

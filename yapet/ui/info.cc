@@ -57,6 +57,15 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     mainpack->add_back(leftpack);
     mainpack->add_back(rightpack);
 
+    fn=new YACURS::Label(_("File: "));
+    leftpack->add_back(fn);
+
+    if (YAPET::Globals::file!=0)
+	fn_status=new YACURS::Label(YAPET::Globals::file->getFilename());
+    else
+	fn_status=new YACURS::Label(_("none loaded"));
+    rightpack->add_back(fn_status);
+
     fp=new YACURS::Label(_("File permission check: "));
     leftpack->add_back(fp);
 
@@ -176,6 +185,9 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     rightpack->add_back(cfs_status);
 
     // colors
+    fn->color(YACURS::DIALOG);
+    fn_status->color(YACURS::DIALOG);
+
     fp->color(YACURS::DIALOG);
     fp_status->color(YACURS::DIALOG);
 
@@ -219,6 +231,9 @@ InfoDialog::~InfoDialog() {
     delete mainpack;
     delete leftpack;
     delete rightpack;
+
+    delete fn;
+    delete fn_status;
 
     delete fp;
     delete fp_status;
