@@ -24,12 +24,12 @@
 #define _PWGEN_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include <stdexcept>
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "rng.h"
 #include "charpool.h"

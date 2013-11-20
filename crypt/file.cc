@@ -28,11 +28,13 @@
 // well as that of the covered work.
 //
 
-#include "../intl.h"
+#include "intl.h"
 #include "crypt.h"
 #include "record.h"
 #include "structs.h"
 #include "file.h"
+
+#include <unistd.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -61,21 +63,13 @@
 # include <fcntl.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#ifdef HAVE_ERRNO_H
-# include <errno.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
 #endif
+
+#include <cstring>
+#include <cerrno>
+
 
 using namespace YAPET;
 

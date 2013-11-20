@@ -32,7 +32,7 @@
 
 #include <sstream>
 
-#include "../intl.h"
+#include "intl.h"
 #include "globals.h"
 #include "info.h"
 

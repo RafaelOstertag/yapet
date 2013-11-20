@@ -4,17 +4,26 @@
 # include "config.h"
 #endif
 
-#include <unistd.h>
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <exception>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <typeinfo>
 
-#include <key.h>
+#include <unistd.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#include "key.h"
 
 const uint8_t expected_key[] = {
     0x3e,

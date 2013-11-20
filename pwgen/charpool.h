@@ -27,12 +27,11 @@
 # include "config.h"
 #endif
 
-#include <string.h>
-
+#include <cstring>
 #include <cassert>
 #include <stdexcept>
 
-#include "../intl.h"
+#include "intl.h"
 
 namespace YAPET {
     namespace PWGEN {

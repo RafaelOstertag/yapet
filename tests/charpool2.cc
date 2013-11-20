@@ -2,24 +2,28 @@
 // Advanced tests for yapet/pwgen/charpool.*
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
-
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <iostream>
+#include <cstring>
 #include <typeinfo>
 
-#include <charpool.h>
+#include <unistd.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#include "charpool.h"
 
 #include "testpaths.h"
 

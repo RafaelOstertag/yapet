@@ -34,7 +34,8 @@
 #include "key.h"
 #include "partdec.h"
 #ifdef ENABLE_PWGEN
-# include "pwgendialog.h"
+#warning "FIX"
+//# include "pwgendialog.h"
 #endif
 
 /**

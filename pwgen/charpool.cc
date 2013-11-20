@@ -19,16 +19,16 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#include <string.h>
+#include <cstring>
 
 #ifdef DEBUG
 #include <iostream>
 #endif
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "charpool.h"
 

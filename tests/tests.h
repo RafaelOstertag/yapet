@@ -3,14 +3,14 @@
 // $Id$
 //
 // This file holds defines common to all tests
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <stdexcept>
 
-#include <partdec.h>
-#include <structs.h>
-#include <key.h>
-#include <crypt.h>
+#include "partdec.h"
+#include "structs.h"
+#include "key.h"
+#include "crypt.h"
 
 #ifndef ROUNDS
 # define ROUNDS 5000

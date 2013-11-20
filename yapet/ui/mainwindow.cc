@@ -30,7 +30,8 @@
 #include <cstdlib>
 
 #ifdef ENABLE_PWGEN
-# include "pwgendialog.h"
+#warning "FIX"
+//# include "pwgendialog.h"
 #endif
 #include "cfg.h"
 #include "mainwindowhotkeys.h"

@@ -29,7 +29,7 @@
 #include <cstring>
 #include <cstdlib>
 
-#include "../intl.h"
+#include "intl.h"
 #include "globals.h"
 #include "yapetlockscreen.h"
 

@@ -19,7 +19,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include <unistd.h>
@@ -42,7 +42,7 @@
 #include <cstring>
 #include <cassert>
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "pwgenexception.h"
 #include "rng.h"

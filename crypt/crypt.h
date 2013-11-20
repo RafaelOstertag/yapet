@@ -34,14 +34,14 @@
 #define _CRYPT_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_INTTYPES_H
 # include <inttypes.h>
 #endif
 
-#include "../intl.h"
+#include "intl.h"
 
 
 #include <openssl/evp.h>

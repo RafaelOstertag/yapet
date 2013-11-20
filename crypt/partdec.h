@@ -34,7 +34,7 @@
 #define _PARTDEC_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_INTTYPES_H

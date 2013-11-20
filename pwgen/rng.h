@@ -24,7 +24,7 @@
 #define _RNG_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include <stdexcept>
@@ -33,7 +33,7 @@
 # include <sys/types.h>
 #endif
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "pwgenexception.h"
 

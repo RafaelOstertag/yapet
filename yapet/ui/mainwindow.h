@@ -31,7 +31,7 @@
 #include <strings.h>
 #endif
 
-#include <string.h>
+#include <cstring>
 #include <string>
 
 // Crypt

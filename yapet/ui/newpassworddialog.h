@@ -24,7 +24,7 @@
 #define _NEWPASSWORDDIALOG_H 1
 
 #include <stdexcept>
-#include "../intl.h"
+#include "intl.h"
 #include "yacurs.h"
 
 /**

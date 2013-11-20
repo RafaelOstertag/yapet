@@ -18,7 +18,7 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "../intl.h"
+#include "intl.h"
 #include "promptpassword.h"
 #include "globals.h"
 

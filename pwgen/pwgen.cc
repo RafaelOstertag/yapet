@@ -19,12 +19,12 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include <cassert>
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "pwgen.h"
 

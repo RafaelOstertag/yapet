@@ -37,9 +37,11 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
-#include <stdlib.h>
+#endif
 
+#include <cstdlib>
 #include <stdexcept>
 
 

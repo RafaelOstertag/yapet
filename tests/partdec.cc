@@ -1,19 +1,33 @@
 // $Id$
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <typeinfo>
 
-#include <string.h>
-
+#include <cstring>
 #include <iostream>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+
 #include <unistd.h>
-#include <key.h>
-#include <crypt.h>
-#include <structs.h>
-#include <record.h>
-#include <partdec.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#include "key.h"
+#include "crypt.h"
+#include "structs.h"
+#include "record.h"
+#include "partdec.h"
 
 #define NAME "Test name"
 #define HOST "Test host"

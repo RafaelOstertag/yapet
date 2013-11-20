@@ -34,22 +34,17 @@
 #define _RECORD_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_INTTYPES_H
 # include <inttypes.h>
 #endif
 
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
+#include <cstdlib>
+#include <cstring>
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#include "../intl.h"
+#include "intl.h"
 
 #include "bdbuffer.h"
 #include "yapetexception.h"

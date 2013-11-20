@@ -22,7 +22,7 @@
 # include "config.h"
 #endif
 
-#include "../intl.h"
+#include "intl.h"
 #include "globals.h"
 #include "crypt.h"
 #include "passwordrecord.h"

@@ -24,13 +24,13 @@
 #define _PWGENEXCEPTION_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #include <exception>
 #include <string>
 
-#include "../intl.h"
+#include "intl.h"
 
 
 namespace YAPET {
