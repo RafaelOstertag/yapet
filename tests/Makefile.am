@@ -56,52 +56,52 @@ if BUILDCSV2YAPET
 AM_CPPFLAGS += -I$(top_srcdir)/csv2yapet
 endif
 if BUILDPWGEN
-AM_CPPFLAGS += -I$(top_srcdir)/yapet/pwgen
+AM_CPPFLAGS += -I$(top_srcdir)/pwgen
 endif
 if USE_INCLUDED_LIBINTL
 AM_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
-corrupt_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+corrupt_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 corrupt_SOURCES = corrupt.cc tests.h
 corrupt_DEPENDENCIES = corrupt.pet
 
-foreign_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+foreign_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 foreign_SOURCES = foreign.cc tests.h
 foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 
-endianess_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+endianess_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 endianess_SOURCES = endianess.cc
 
-key_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+key_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 key_SOURCES = key.cc tests.h
 
-record_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+record_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 record_SOURCES = record.cc tests.h
 
-bdbuffer_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+bdbuffer_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 bdbuffer_SOURCES = bdbuffer.cc tests.h
 
-enc_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+enc_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 enc_SOURCES = enc.cc tests.h
 
-partdec_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+partdec_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 partdec_SOURCES = partdec.cc tests.h
 
-file_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+file_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file_SOURCES = file.cc tests.h
 
-file2_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+file2_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file2_SOURCES = file2.cc tests.h
 
-file3_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+file3_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file3_SOURCES = file3.cc tests.h
 
-file4_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+file4_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file4_SOURCES = file4.cc tests.h
 
-file5_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+file5_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file5_SOURCES = file5.cc tests.h
 
 cfgfile1_LDADD = @LIBINTL@
@@ -113,62 +113,62 @@ $(top_srcdir)/yapet/consts.cc
 
 if BUILDCSV2YAPET
 
-import1_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import1_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import1_SOURCES = import1.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import2_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import2_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import2_SOURCES = import2.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import3_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import3_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import3_SOURCES = import3.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import4_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import4_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import4_SOURCES = import4.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import5_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import5_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import5_SOURCES = import5.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import6_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import6_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import6_SOURCES = import6.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import7_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import7_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import7_SOURCES = import7.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import8_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import8_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import8_SOURCES = import8.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import9_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import9_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import9_SOURCES = import9.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import10_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import10_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import10_SOURCES = import10.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import11_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import11_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import11_SOURCES = import11.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import12_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import12_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import12_SOURCES = import12.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import13_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import13_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import13_SOURCES = import13.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
-import14_LDADD = $(top_builddir)/crypt/libgpcrypt.a @LIBINTL@
+import14_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 import14_SOURCES = import14.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)/csv2yapet/csvimport.cc
 
 endif
 
 if BUILDPWGEN
 
-charpool1_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
+charpool1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
 charpool1_SOURCES = charpool1.cc
 
-charpool2_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
+charpool2_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
 charpool2_SOURCES = charpool2.cc
 
-rng1_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
+rng1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
 rng1_SOURCES = rng1.cc
 
-pwgen1_LDADD = $(top_builddir)/yapet/pwgen/libypwgen.a @LIBINTL@
+pwgen1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
 pwgen1_SOURCES = pwgen1.cc
 
 endif

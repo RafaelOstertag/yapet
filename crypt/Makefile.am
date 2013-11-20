@@ -1,20 +1,21 @@
 # $Id$
 
-noinst_LIBRARIES = libgpcrypt.a
+noinst_LTLIBRARIES = libyapet-crypt.la
 
-libgpcrypt_a_SOURCES = structs.h record.h key.h yapetexception.h file.h crypt.h	\
-bdbuffer.h partdec.h key.cc file.cc crypt.cc bdbuffer.cc partdec.cc
+libyapet_crypt_la_SOURCES = structs.h record.h key.h yapetexception.h	\
+file.h crypt.h bdbuffer.h partdec.h key.cc file.cc crypt.cc		\
+bdbuffer.cc partdec.cc
 
-libgpcrypt_a_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
+libyapet_crypt_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 
 if USE_INCLUDED_LIBINTL
-libgpcrypt_a_CPPFLAGS += -I$(top_builddir)/intl 
+libyapet_crypt_la_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 if DISABLE_DEBUG
-libgpcrypt_a_CPPFLAGS += -DNDEBUG
+libyapet_crypt_la_CPPFLAGS += -DNDEBUG
 else
-libgpcrypt_a_CPPFLAGS += -DDEBUG
+libyapet_crypt_la_CPPFLAGS += -DDEBUG
 endif
 
 clean-local:
