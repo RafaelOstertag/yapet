@@ -467,4 +467,41 @@ class HotKeyl : public YACURS::HotKey {
 	}
 };
 
+#ifdef ENABLE_PWGEN
+// PASSWORD GENERATOR
+class HotKeyG : public YACURS::HotKey {
+    private:
+	MainWindow& ref;
+    public:
+	HotKeyG(MainWindow& r) : HotKey('G'), ref(r) {
+	}
+	HotKeyG(const HotKeyG& hkh) : HotKey(hkh), ref(hkh.ref) {}
+
+	void action() {
+	    ref.show_pwgen();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyG(*this);
+	}
+};
+
+class HotKeyg : public YACURS::HotKey {
+    private:
+	MainWindow& ref;
+    public:
+	HotKeyg(MainWindow& r) : HotKey('g'), ref(r) {
+	}
+	HotKeyg(const HotKeyg& hkh) : HotKey(hkh), ref(hkh.ref) {}
+
+	void action() {
+	    ref.show_pwgen();
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyg(*this);
+	}
+};
+#endif
+
 #endif // _MAINWINDOWHOTKEYS_H

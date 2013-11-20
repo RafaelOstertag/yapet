@@ -44,6 +44,10 @@
 #include "passworddialog.h"
 #include "passwordrecord.h"
 
+#ifdef ENABLE_PWGEN
+#include "pwgendialog.h"
+#endif
+
 namespace INTERNAL {
     
     class Finder {
@@ -76,6 +80,9 @@ class MainWindow : public YACURS::Window {
 	PasswordRecord* passwordrecord;
 	YACURS::MessageBox2* errormsgdialog;
 	YACURS::InputBox* searchdialog;
+#ifdef ENABLE_PWGEN
+	PwGenDialog* pwgendialog;
+#endif
 	INTERNAL::Finder* finder;
 	// Used when opening an existing record or deleting a record
 	// to store the index, so that it can be reselect in case of a
@@ -135,6 +142,10 @@ class MainWindow : public YACURS::Window {
 	void show_help();
 
 	void show_info();
+
+#ifdef ENABLE_PWGEN	
+	void show_pwgen();
+#endif
 
 	void quit();
 

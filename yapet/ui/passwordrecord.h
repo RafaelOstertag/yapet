@@ -34,8 +34,7 @@
 #include "key.h"
 #include "partdec.h"
 #ifdef ENABLE_PWGEN
-#warning "FIX"
-//# include "pwgendialog.h"
+# include "pwgendialog.h"
 #endif
 
 /**
@@ -77,8 +76,9 @@ class PasswordRecord : public YACURS::Dialog {
         YACURS::Button* pwgenbutton;
 #endif
         YACURS::MessageBox* errordialog;
-	YACURS::MessageBox* confirmdialog
-;	YAPET::PartDec* encentry;
+	YACURS::MessageBox* confirmdialog;
+	PwGenDialog* pwgendialog;
+	YAPET::PartDec* encentry;
 	const YAPET::Key* __key;
 	bool __newrecord;
         bool __readonly;
@@ -94,6 +94,10 @@ class PasswordRecord : public YACURS::Dialog {
         }
 
         virtual void on_ok_button();
+
+#ifdef ENABLE_PWGEN
+        void button_press_handler(YACURS::Event& e);
+#endif
 
         void window_close_handler(YACURS::Event& e);
 

@@ -21,7 +21,6 @@ if BUILDPWGEN
 yapet_CPPFLAGS += -I$(top_srcdir)/pwgen
 yapet_LDADD += -lyapet-pwgen
 yapet_LDFLAGS += -L$(top_srcdir)/pwgen
-#yapet_SOURCES += pwgendialog.h pwgendialog.cc
 endif
 
 if DISABLE_DEBUG

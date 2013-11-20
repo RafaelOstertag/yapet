@@ -29,10 +29,6 @@
 #include <cstring>
 #include <cstdlib>
 
-#ifdef ENABLE_PWGEN
-#warning "FIX"
-//# include "pwgendialog.h"
-#endif
 #include "cfg.h"
 #include "mainwindowhotkeys.h"
 #include "mainwindow.h"
@@ -91,6 +87,14 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	infodialog=0;
 	return;
     }
+
+#ifdef ENABLE_PWGEN
+    if (pwgendialog!=0 && evt.data()==pwgendialog) {
+	delete pwgendialog;
+	pwgendialog=0;
+	return;
+    }
+#endif
 
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
@@ -228,6 +232,9 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 			  passwordrecord(0),
 			  errormsgdialog(0),
 			  searchdialog(0),
+#ifdef ENABLE_PWGEN
+			  pwgendialog(0),
+#endif
 			  finder(0),
 			  record_index(-1),
 			  last_search_index(0) {
@@ -274,6 +281,11 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
     add_hotkey(HotKeyN(*this));
     add_hotkey(HotKeyn(*this));
 
+#ifdef ENABLE_PWGEN
+    add_hotkey(HotKeyG(*this));
+    add_hotkey(HotKeyg(*this));
+#endif
+
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
 						  EVT_WINDOW_CLOSE,
@@ -305,6 +317,9 @@ MainWindow::~MainWindow() {
     if (passwordrecord) delete passwordrecord;
     if (errormsgdialog) delete errormsgdialog;
     if (searchdialog) delete searchdialog;
+#ifdef ENABLE_PWGEN
+    if (pwgendialog) delete pwgendialog;
+#endif
     if (finder) delete finder;
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
@@ -484,6 +499,16 @@ MainWindow::show_info() {
     infodialog=new InfoDialog(recordlist->list().size());
     infodialog->show();
 }
+
+#ifdef ENABLE_PWGEN
+void
+MainWindow::show_pwgen() {
+    assert(pwgendialog==0);
+
+    pwgendialog=new PwGenDialog;
+    pwgendialog->show();
+}
+#endif
 
 void
 MainWindow::quit() {

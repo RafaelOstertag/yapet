@@ -59,7 +59,7 @@ PasswordRecord::on_ok_button() {
     ptr_rec->password[YAPET::PASSWORD_SIZE-1]=0;
     strncpy ( (char*) ptr_rec->comment, comment->input().c_str(), YAPET::COMMENT_SIZE);
     ptr_rec->comment[YAPET::COMMENT_SIZE-1]=0;
-    
+
     try {
 	assert(__key!=0);
 	encentry = new YAPET::PartDec (unenc_rec, *__key);
@@ -74,16 +74,32 @@ PasswordRecord::on_ok_button() {
 // Private
 //
 
+#ifdef ENABLE_PWGEN
+void
+PasswordRecord::button_press_handler(YACURS::Event& e) {
+    Dialog::button_press_handler(e);
+
+    YACURS::EventEx<YACURS::Button*>& evt =
+	dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(e);
+
+    if (evt.data() == pwgenbutton) {
+	assert(pwgendialog==0);
+	pwgendialog = new PwGenDialog();
+	pwgendialog->show();
+    }
+}
+#endif
+
 void
 PasswordRecord::window_close_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_WINDOW_CLOSE);
     YACURS::EventEx<YACURS::WindowBase*>& evt =
-        dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
+	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (errordialog != 0 && evt.data() == errordialog) {
-        delete errordialog;
-        errordialog = 0;
-        return;
+	delete errordialog;
+	errordialog = 0;
+	return;
     }
 
     // Handle the confirmation of whether dialog should be closed
@@ -98,18 +114,28 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
-    if (evt.data() == this) {
-        assert(0);
+#ifdef ENABLE_PWGEN
+    if (evt.data() == pwgendialog) {
+	assert(!__readonly);
+	if (pwgendialog->dialog_state() == YACURS::DIALOG_OK) {
+	    password->input(pwgendialog->password());
+	}
+
+	delete pwgendialog;
+	pwgendialog = 0;
+	return;
     }
+#endif
+
 }
 
 bool
 PasswordRecord::on_close() {
-    if (changed() && 
+    if (changed() &&
 	dialog_state() != YACURS::DIALOG_OK &&
 	!__force_close) {
 	assert(confirmdialog==0);
-	confirmdialog = 
+	confirmdialog =
 	    new YACURS::MessageBox(_("Pending Changes"),
 				    _("Do you want to discard changes?"),
 				   YACURS::YESNO);
@@ -141,6 +167,9 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
 #endif
     errordialog(0),
     confirmdialog(0),
+#ifdef ENABLE_PWGEN
+    pwgendialog(0),
+#endif
     encentry(0),
     __key(key),
     __newrecord(pe==0),
@@ -170,8 +199,9 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     vpack->add_back(password);
     vpack->add_back(lcomment);
     vpack->add_back(comment);
+
 #ifdef ENABLE_PWGEN
-    vpack->add_back(pwgenbutton);
+    add_button(pwgenbutton);
 #endif
 
     widget(vpack);
@@ -179,42 +209,42 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     add_hotkey(HotKeyCtrlR(this));
 
     if (pe != 0) {
-        YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
+	YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
 
-        try {
-            YAPET::Crypt crypt(*__key);
-            dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
-                pe->getEncRecord() );
+	try {
+	    YAPET::Crypt crypt(*__key);
+	    dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
+		pe->getEncRecord() );
 	    YAPET::PasswordRecord* ptr_rec = *dec_rec;
 	    readonly(true);
-            name->input(reinterpret_cast<char*>(ptr_rec->name) );
-            host->input(reinterpret_cast<char*>(ptr_rec->host) );
-            username->input(reinterpret_cast<char*>(ptr_rec->username) );
-            password->input(reinterpret_cast<char*>(ptr_rec->password) );
-            comment->input(reinterpret_cast<char*>(ptr_rec->comment) );
-            delete dec_rec;
-        } catch (YAPET::YAPETException& ex) {
-            if (dec_rec != 0)
-                delete dec_rec;
+	    name->input(reinterpret_cast<char*>(ptr_rec->name) );
+	    host->input(reinterpret_cast<char*>(ptr_rec->host) );
+	    username->input(reinterpret_cast<char*>(ptr_rec->username) );
+	    password->input(reinterpret_cast<char*>(ptr_rec->password) );
+	    comment->input(reinterpret_cast<char*>(ptr_rec->comment) );
+	    delete dec_rec;
+	} catch (YAPET::YAPETException& ex) {
+	    if (dec_rec != 0)
+		delete dec_rec;
 
-            try {
-                errordialog =
-                    new YACURS::MessageBox(_("Error"), ex.what() );
-                errordialog->show();
-            } catch (YACURS::EXCEPTIONS::BaseCurEx&) {
-                if (errordialog != 0)
-                    delete errordialog;
+	    try {
+		errordialog =
+		    new YACURS::MessageBox(_("Error"), ex.what() );
+		errordialog->show();
+	    } catch (YACURS::EXCEPTIONS::BaseCurEx&) {
+		if (errordialog != 0)
+		    delete errordialog;
 
-                // What should I do else, looks pretty screwed up??
-            }
-        }
+		// What should I do else, looks pretty screwed up??
+	    }
+	}
     }
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
-                                          PasswordRecord>(
-                                          YACURS::EVT_WINDOW_CLOSE, this,
-                                          &PasswordRecord::
-                                          window_close_handler) );
+					  PasswordRecord>(
+					  YACURS::EVT_WINDOW_CLOSE, this,
+					  &PasswordRecord::
+					  window_close_handler) );
 }
 
 PasswordRecord::~PasswordRecord() {
@@ -234,28 +264,34 @@ PasswordRecord::~PasswordRecord() {
     delete vpack;
 
     if (encentry) delete encentry;
+    if (errordialog) delete errordialog;
+    if (confirmdialog) delete confirmdialog;
+#ifdef ENABLE_PWGEN
+    if (pwgendialog) delete pwgendialog;
+#endif
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
-                                             PasswordRecord>(
-                                             YACURS::EVT_WINDOW_CLOSE, this,
-                                             &PasswordRecord::
-                                             window_close_handler) );
+					     PasswordRecord>(
+					     YACURS::EVT_WINDOW_CLOSE, this,
+					     &PasswordRecord::
+					     window_close_handler) );
 }
 
 bool
 PasswordRecord::changed() const {
-    if (name == 0 ||
-        host == 0 ||
-        username == 0 ||
-        password == 0 ||
-        comment == 0)
-        return false;
+    // What's that? they can't be 0, or the constructor was not called..
+    // if (name == 0 ||
+    //     host == 0 ||
+    //     username == 0 ||
+    //     password == 0 ||
+    //     comment == 0)
+    //     return false;
 
     return name->changed() ||
-           host->changed() ||
-           username->changed() ||
-           password->changed() ||
-           comment->changed();
+	   host->changed() ||
+	   username->changed() ||
+	   password->changed() ||
+	   comment->changed();
 }
 
 void
@@ -272,4 +308,8 @@ PasswordRecord::readonly(bool f) {
 	title(_("Password Entry (Read-Only)"));
     else
 	title(_("Password Entry"));
-}    
+
+#ifdef ENABLE_PWGEN
+    pwgenbutton->enabled(!__readonly);
+#endif
+}

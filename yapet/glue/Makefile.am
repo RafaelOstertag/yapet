@@ -11,6 +11,10 @@ libyapet_glue_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)/libyacu
 libyapet_glue_la_LDFLAGS = -static -L$(top_srcdir)/yapet/ui
 libyapet_glue_la_LIBADD = -lyapet-ui
 
+if BUILDPWGEN
+libyapet_glue_la_CPPFLAGS += -I$(top_srcdir)/pwgen
+endif
+
 if DISABLE_DEBUG
 libyapet_glue_la_CPPFLAGS += -DNDEBUG
 else
