@@ -3,14 +3,18 @@
 DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable-source-doc --enable-install-doc --enable-pwgen --enable-assert --enable-silent-rules
 
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
-INSTALL.generic Makefile.cvs yapet.desktop.in intl.h gettext.h BUGS THANKS
+INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
-SUBDIRS = intl po crypt ui yapet
+SUBDIRS = libyacurs po crypt
+
+if BUILDPWGEN
+SUBDIRS += pwgen
+endif
 
 if BUILDCSV2YAPET
 SUBDIRS += csv2yapet
 endif
-SUBDIRS += tests doc
+SUBDIRS +=  yapet tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
@@ -36,22 +40,6 @@ yapet.desktop: Makefile $(srcdir)/yapet.desktop.in
 DISTCLEANFILES = yapet.desktop
 
 ACLOCAL_AMFLAGS = -I m4
-
-if !DISABLE_ASSERT
-all-local:
-	@echo ""
-	@echo "***************************************************"
-	@echo "*                                                 *"
-	@echo "* Please note: asserts are enabled in this build, *"
-	@echo "*              it should therefore not be used    *"
-	@echo "*              for stable distributions.          *"
-	@echo "*                                                 *"
-	@echo "* You  can  disable  asserts  by  providing       *"
-	@echo "* --disable-assert when invoking configure.       *"
-	@echo "*                                                 *"
-	@echo "***************************************************"
-	@echo ""
-endif
 
 clean-local:
 	rm -rf SunWS_cache

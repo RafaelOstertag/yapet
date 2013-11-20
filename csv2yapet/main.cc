@@ -29,15 +29,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
-#ifdef HAVE_ERRNO_H
-# include <errno.h>
-#endif
-
-#ifdef HAVE_STDIO_H
-# include <stdio.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_GETOPT_H
@@ -48,27 +40,18 @@
 # include <unistd.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
 #ifdef HAVE_TERMIOS_H
 # include <termios.h>
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
+#include <string>
+#include <iostream>
+#include <stdexcept>
 
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
-
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
-
-#include <consts.h>
+#include "consts.h"
 #include "csvimport.h"
 
 #if defined(HAVE_TERMIOS_H) && defined (HAVE_TCSETATTR) && defined (HAVE_TCGETATTR)

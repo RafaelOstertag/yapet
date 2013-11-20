@@ -22,8 +22,8 @@
 
 using namespace YAPET::CONSTS;
 
-const std::string Consts::default_suffix (".pet");
-const std::string Consts::default_rcfilename (".yapet");
+const std::string Consts::default_suffix(".pet");
+const std::string Consts::default_rcfilename(".yapet");
 const size_t Consts::max_pwlen(256);
 const int Consts::min_locktimeout(10);
 

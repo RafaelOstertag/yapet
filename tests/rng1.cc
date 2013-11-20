@@ -2,24 +2,15 @@
 // Simple tests for yapet/pwgen/rng.*
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_IOSTREAM
-# include <iostream>
-#endif
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <typeinfo>
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
+#include <unistd.h>
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
@@ -31,9 +22,7 @@
 # include <fcntl.h>
 #endif
 
-#include <typeinfo>
-
-#include <rng.h>
+#include "rng.h"
 
 #include "testpaths.h"
 

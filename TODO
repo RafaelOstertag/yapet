@@ -1,7 +1,11 @@
 YAPET To Do
 ===========
 
-* Translate the copyright.
+ * Implement pwgen
+
+ * Implement user configuration
+
+ * Make sure .pet is appended to new files.
 
 $Id$
 Local Variables:

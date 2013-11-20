@@ -1,13 +1,29 @@
 // $Id$
 
-#include <typeinfo>
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
 
+#include <typeinfo>
 #include <iostream>
-#include <file.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+
 #include <unistd.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#include "key.h"
+#include "file.h"
+
 #include "testpaths.h"
 
 #define FN "testfile.gps"

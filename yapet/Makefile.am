@@ -1,30 +1,29 @@
 # $Id$
 
-if BUILDPWGEN
-SUBDIRS = pwgen
-endif
+SUBDIRS  = ui glue
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = mainwindow.h statusbar.h fileopen.h passworddialog.h		\
-passwordrecord.h main.cc mainwindow.cc statusbar.cc fileopen.cc			\
-passworddialog.cc passwordrecord.cc searchdialog.h searchdialog.cc cfgfile.h	\
-cfgfile.cc consts.h consts.cc cfg.h cfg.cc lockscreen.h lockscreen.cc
+yapet_LDFLAGS = -static -L$(top_srcdir)/crypt -L$(srcdir)/glue -L$(srcdir)/ui
 
-yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/ui -DLOCALEDIR=\"$(localedir)\"
-yapet_LDADD = $(top_builddir)/crypt/libgpcrypt.a $(top_builddir)/ui/libui.a @LIBINTL@
+yapet_SOURCES = main.cc cfgfile.cc consts.cc cfg.cc globals.cc	\
+cfgfile.h consts.h cfg.h globals.h
 
-if USE_INCLUDED_LIBINTL
-yapet_CPPFLAGS += -I$(top_builddir)/intl 
-endif
+yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(srcdir)/glue	\
+-I$(srcdir)/ui -I$(top_srcdir)/libyacurs/include	\
+-DLOCALEDIR=\"$(localedir)\"
+
+yapet_LDADD = -lyapet-glue -lyapet-ui	\
+-lyapet-crypt					\
+$(top_builddir)/libyacurs/src/libyacurs.la @LIBINTL@
 
 if BUILDPWGEN
-yapet_CPPFLAGS += -I$(srcdir)/pwgen
-yapet_LDADD += $(builddir)/pwgen/libypwgen.a
-yapet_SOURCES += pwgendialog.h pwgendialog.cc
+yapet_CPPFLAGS += -I$(top_srcdir)/pwgen
+yapet_LDADD += -lyapet-pwgen
+yapet_LDFLAGS += -L$(top_srcdir)/pwgen
 endif
 
-if DISABLE_ASSERT
+if DISABLE_DEBUG
 yapet_CPPFLAGS += -DNDEBUG
 else
 yapet_CPPFLAGS += -DDEBUG

@@ -28,9 +28,7 @@
 // well as that of the covered work.
 //
 
-#ifdef HAVE_STRING_H
-# include<string.h>
-#endif
+#include <cstring>
 
 #include "partdec.h"
 
@@ -92,6 +90,16 @@ PartDec::operator< (const PartDec& pd) const {
     if (this == &pd) return false;
 
     if (strcmp ( (const char*) name, (const char*) pd.name) < 0)
+        return true;
+
+    return false;
+}
+
+bool
+PartDec::operator> (const PartDec& pd) const {
+    if (this == &pd) return false;
+
+    if (strcmp ( (const char*) name, (const char*) pd.name) > 0)
         return true;
 
     return false;

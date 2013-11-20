@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -28,11 +28,13 @@
 // well as that of the covered work.
 //
 
-#include "../intl.h"
+#include "intl.h"
 #include "crypt.h"
 #include "record.h"
 #include "structs.h"
 #include "file.h"
+
+#include <unistd.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -61,21 +63,13 @@
 # include <fcntl.h>
 #endif
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#ifdef HAVE_ERRNO_H
-# include <errno.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
 #ifdef HAVE_ALLOCA_H
 # include <alloca.h>
 #endif
+
+#include <cstring>
+#include <cerrno>
+
 
 using namespace YAPET;
 
@@ -181,6 +175,8 @@ File::openCreate() throw (YAPETException) {
     if (fd == -1)
         throw YAPETException (strerror (errno) );
 
+    mtime = lastModified();
+
     if (usefsecurity)
         checkFileSecurity();
 }
@@ -195,6 +191,8 @@ File::openNoCreate() throw (YAPETException) {
 
     if (fd == -1)
         throw YAPETException (strerror (errno) );
+
+    mtime = lastModified();
 
     if (usefsecurity)
         checkFileSecurity();
@@ -355,24 +353,10 @@ File::read() const throw (YAPETException) {
  * @param forceappend if this flag is set to \c true, the method first
  * seeks to the end of the file, if set to \c false, it writes at the
  * position the file pointer points to.
- *
- * @param forcewrite before writing any data, the method checks
- * whether the last modification date stored in \c mtime matches the
- * date returned by \c lastModified(). If they differ, and this flag
- * is set to \c false, the write operation will fail and an exception
- * is thrown. If the flag is set to \c true, it writes the data to the
- * file regardless of the last modification date.
- *
- * @throw YAPETRetryException if the file has been externally modified
- * (outside of this class), and \c forcewrite is not \c true, this
- * exception is thrown.
  */
 void
-File::write (const BDBuffer& buff, bool forceappend, bool forcewrite)
-throw (YAPETException, YAPETRetryException) {
-    if ( (mtime != lastModified() ) && !forcewrite)
-        throw YAPETRetryException (_ ("File has been modified") );
-
+File::write (const BDBuffer& buff, bool forceappend)
+throw (YAPETException) {
     if (forceappend) {
         off_t pos = lseek (fd, 0, SEEK_END);
 
@@ -737,7 +721,7 @@ throw (YAPETException, YAPETInvalidPasswordException) {
  * read access.
  */
 File::File (const std::string& fn, const Key& key, bool create, bool secure)
-throw (YAPETException) : filename (fn), usefsecurity (secure) {
+    throw (YAPETException) : filename (fn), mtime(0), usefsecurity (secure) {
     if (create)
         openCreate();
     else
@@ -776,15 +760,29 @@ File::~File() {
  *
  * @param records list of \c PartDec records
  *
+ * @param forcewrite before writing any data, the method checks
+ * whether the last modification date stored in \c mtime matches the
+ * date returned by \c lastModified(). If they differ, and this flag
+ * is set to \c false, the write operation will fail and an exception
+ * is thrown. If the flag is set to \c true, it writes the data to the
+ * file regardless of the last modification date.
+ *
+ * @throw YAPETRetryException if the file has been externally modified
+ * (outside of this class), and \c forcewrite is not \c true, this
+ * exception is thrown.
+ *
  * @sa PartDec
  */
 void
-File::save (std::list<PartDec>& records) throw (YAPETException) {
+File::save (const std::list<PartDec>& records, bool forcewrite) throw (YAPETException, YAPETRetryException) {
+    if ( (mtime != lastModified() ) && !forcewrite)
+        throw YAPETRetryException (_ ("File has been externally modified") );
+
     if (usefsecurity)
         setFileSecurity();
 
     preparePWSave();
-    std::list<PartDec>::iterator it = records.begin();
+    std::list<PartDec>::const_iterator it = records.begin();
 
     while (it != records.end() ) {
         write ( it->getEncRecord() );
@@ -845,7 +843,11 @@ File::read (const Key& key) const throw (YAPETException) {
  */
 void
 File::setNewKey (const Key& oldkey,
-                 const Key& newkey) throw (YAPETException) {
+                 const Key& newkey,
+		 bool forcewrite) throw (YAPETException, YAPETRetryException) {
+    if ( (mtime != lastModified() ) && !forcewrite)
+        throw YAPETRetryException (_ ("File has been externally modified") );
+
     close (fd);
     std::string backupfilename (filename + ".bak");
     int retval = rename (filename.c_str(), backupfilename.c_str() );

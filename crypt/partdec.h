@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -31,10 +31,10 @@
 //
 
 #ifndef _PARTDEC_H
-#define _PARTDEC_H
+#define _PARTDEC_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_INTTYPES_H
@@ -79,6 +79,7 @@ namespace YAPET {
             BDBuffer enc_data;
 
         public:
+	    typedef size_t size_type;
             PartDec();
 
             PartDec (BDBuffer& bd,
@@ -102,7 +103,7 @@ namespace YAPET {
              * @return reference to the \c BDBuffer holding the
              * encrypted data.
              */
-            inline const BDBuffer& getEncRecord() const {
+            const BDBuffer& getEncRecord() const {
                 return enc_data;
             }
             /**
@@ -114,7 +115,7 @@ namespace YAPET {
              * @return pointer to the buffer holding the plain text
              * name of the password record.
              */
-            inline const uint8_t* getName() const {
+            const uint8_t* getName() const {
                 return name;
             }
             /**
@@ -125,12 +126,18 @@ namespace YAPET {
              *
              * @copydoc getName()
              */
-            inline const char* c_str() const {
+            const char* c_str() const {
                 return (char*) name;
             }
             const PartDec& operator= (const PartDec& pd);
 
             bool operator< (const PartDec& pd) const;
+
+	    bool operator> (const PartDec& pd) const;
+
+	    operator std::string() const {
+		return std::string(reinterpret_cast<const char*>(name));
+	    }
     };
 }
 

@@ -30,15 +30,10 @@
 
 #include "bdbuffer.h"
 
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
+#include <cstdlib>
+#include <cstring>
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-
-#include "../intl.h"
+#include "intl.h"
 
 using namespace YAPET;
 

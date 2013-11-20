@@ -28,12 +28,10 @@
 // well as that of the covered work.
 //
 
-#include "../intl.h"
+#include "intl.h"
 #include "key.h"
 
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
+#include <cstring>
 
 using namespace YAPET;
 

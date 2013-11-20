@@ -28,7 +28,7 @@
 // well as that of the covered work.
 //
 
-#include "../intl.h"
+#include "intl.h"
 
 #include "crypt.h"
 

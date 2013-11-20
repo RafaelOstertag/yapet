@@ -21,19 +21,18 @@
 //
 
 #ifndef _CFGFILE_H
-#define _CFGFILE_H
+#define _CFGFILE_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <string>
+#include <sstream>
 
 // Used for the YAPET::PWGEN::RNGENGINE type
 #include "pwgen/rng.h"
@@ -45,7 +44,6 @@
  */
 namespace YAPET {
     namespace CONFIG {
-
         /**
          * @brief Parses the configuration file.
          *
@@ -53,20 +51,20 @@ namespace YAPET {
          */
         class ConfigFile {
             private:
-		/**
-		 * Values returned by \c readOption.
-		 */
-		enum ReadResult {
-		    OPTION_NOT_FOUND,
-		    OPTION_EMPTY,
-		    OPTION_FOUND
-		};
+                /**
+                 * Values returned by \c readOption.
+                 */
+                enum ReadResult {
+                    OPTION_NOT_FOUND,
+                    OPTION_EMPTY,
+                    OPTION_FOUND
+                };
 
                 std::string filetoload;
                 bool usefsecurity;
                 unsigned int locktimeout;
-		unsigned int pwinputtimeout;
-		bool allowlockquit;
+                unsigned int pwinputtimeout;
+                bool allowlockquit;
                 // Yes, the file can say that it should be ignored!
                 bool ignorerc;
                 std::string cfgfilepath;
@@ -74,106 +72,122 @@ namespace YAPET {
                 //! Indicates whether or not the file could have been opened
                 bool opensuccess;
 
-		// PWGen settings
-		bool pwgen_letters;
-		bool pwgen_digits;
-		bool pwgen_punct;
-		bool pwgen_special;
-		bool pwgen_other;
-		YAPET::PWGEN::RNGENGINE pwgen_rng;
-		size_t pwgen_pwlen;
+                // PWGen settings
+                bool pwgen_letters;
+                bool pwgen_digits;
+                bool pwgen_punct;
+                bool pwgen_special;
+                bool pwgen_other;
+                YAPET::PWGEN::RNGENGINE pwgen_rng;
+                size_t pwgen_pwlen;
 
                 std::string getHomeDir() const;
-		
-		/**
-		 * Reads single options into the variable specified.
-		 *
-		 * @param l line read from the config file
-		 *
-		 * @param needle name of the option including the '=' sign
-		 *
-		 * @param ref reference where to store the value read.
-		 *
-		 * @return a value from ReadResult. \c val is only touched if
-		 * return value is \c OPTION_FOUND.
-		 */
-		template<class t> ReadResult readOption(std::string l, const std::string& needle, t& val)  {
-		    if (l.find (needle, 0) == 0) {
-			l.erase (0, needle.length() );
-			if (l.empty())
-			    return OPTION_EMPTY;
-			
-			std::istringstream sstr(l);
-			sstr >> val;
-			return OPTION_FOUND;
-		    }
-		    return OPTION_NOT_FOUND;
-		}
+
+                /**
+                 * Reads single options into the variable specified.
+                 *
+                 * @param l line read from the config file
+                 *
+                 * @param needle name of the option including the '=' sign
+                 *
+                 * @param ref reference where to store the value read.
+                 *
+                 * @return a value from ReadResult. \c val is only touched if
+                 * return value is \c OPTION_FOUND.
+                 */
+                template<class t> ReadResult readOption(std::string l,
+                                                        const std::string& needle,
+                                                        t& val) {
+                    if (l.find(needle, 0) == 0) {
+                        l.erase(0, needle.length() );
+                        if (l.empty() )
+                            return OPTION_EMPTY;
+
+                        std::istringstream sstr(l);
+                        sstr >> val;
+                        return OPTION_FOUND;
+                    }
+                    return OPTION_NOT_FOUND;
+                }
 
                 void parseFile();
 
             public:
-                ConfigFile (std::string cfgfile = "");
-                ConfigFile (const ConfigFile& cfgfile);
-                inline ~ConfigFile() {};
-
+                ConfigFile(std::string cfgfile="");
+                ConfigFile(const ConfigFile& cfgfile);
+                inline ~ConfigFile() {
+                };
 
                 inline const std::string& getConfigFilePath() const {
                     return cfgfilepath;
                 }
+
                 inline const std::string& getFileToLoad() const {
                     return filetoload;
                 }
+
                 inline bool getUseFileSecurity() const {
                     return usefsecurity;
                 }
+
                 inline unsigned int getLockTimeout() const {
                     return locktimeout;
                 }
+
                 inline bool getIgnoreRC() const {
-                    return ignorerc ;
+                    return ignorerc;
                 }
-		inline unsigned int getPwInputTimeout() const {
-		    return pwinputtimeout;
-		}
-		inline bool getAllowLockQuit() const {
-		    return allowlockquit;
-		}
-		inline YAPET::PWGEN::RNGENGINE getPWGenRNG() const {
-		    return pwgen_rng;
-		}
-		inline size_t getPWGenPWLen() const {
-		    return pwgen_pwlen;
-		}
-		inline bool getPWGenLetters() const {
-		    return pwgen_letters;
-		}
-		inline bool getPWGenDigits() const {
-		    return pwgen_digits;
-		}
-		inline bool getPWGenPunct() const {
-		    return pwgen_punct;
-		}
-		inline bool getPWGenSpecial() const {
-		    return pwgen_special;
-		}
-		inline bool getPWGenOther() const {
-		    return pwgen_other;
-		}
-	    inline int getCharPools() const {
-		return getPWGenLetters() |
-		    getPWGenDigits() |
-		    getPWGenPunct() |
-		    getPWGenSpecial() |
-		    getPWGenOther();
-	    }
+
+                inline unsigned int getPwInputTimeout() const {
+                    return pwinputtimeout;
+                }
+
+                inline bool getAllowLockQuit() const {
+                    return allowlockquit;
+                }
+
+                inline YAPET::PWGEN::RNGENGINE getPWGenRNG() const {
+                    return pwgen_rng;
+                }
+
+                inline size_t getPWGenPWLen() const {
+                    return pwgen_pwlen;
+                }
+
+                inline bool getPWGenLetters() const {
+                    return pwgen_letters;
+                }
+
+                inline bool getPWGenDigits() const {
+                    return pwgen_digits;
+                }
+
+                inline bool getPWGenPunct() const {
+                    return pwgen_punct;
+                }
+
+                inline bool getPWGenSpecial() const {
+                    return pwgen_special;
+                }
+
+                inline bool getPWGenOther() const {
+                    return pwgen_other;
+                }
+
+                inline int getCharPools() const {
+                    return getPWGenLetters() |
+                           getPWGenDigits() |
+                           getPWGenPunct() |
+                           getPWGenSpecial() |
+                           getPWGenOther();
+                }
+
                 inline bool isOpenSuccess() const {
                     return opensuccess;
                 }
 
-                const ConfigFile& operator= (const ConfigFile& cfgfile);
+                const ConfigFile& operator=(const ConfigFile& cfgfile);
         };
-
     }
 }
 

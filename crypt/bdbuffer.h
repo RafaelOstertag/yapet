@@ -31,23 +31,19 @@
 //
 
 #ifndef _BDBUFFER_H
-#define _BDBUFFER_H
+#define _BDBUFFER_H 1
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif
 
 #ifdef HAVE_INTTYPES_H
-# include <inttypes.h>
+#include <inttypes.h>
 #endif
 
-#ifdef HAVE_STDLIB_h
-# include <stdlib.h>
-#endif
+#include <cstdlib>
+#include <stdexcept>
 
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
 
 #include "yapetexception.h"
 

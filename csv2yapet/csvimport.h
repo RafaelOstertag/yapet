@@ -21,24 +21,16 @@
 //
 
 #ifndef _CSVIMPORT_H
-#define _CSVIMPORT_H
+#define _CSVIMPORT_H 1
 
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
-
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
-
-#ifdef HAVE_LIST
-# include <list>
-#endif
+#include <string>
+#include <stdexcept>
+#include <list>
 
 /**
  * The class taking care of converting a csv file.

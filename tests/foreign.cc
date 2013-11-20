@@ -5,21 +5,34 @@
 //
 // Relies on foreign.pet
 
-#include <typeinfo>
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
 
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <typeinfo>
+#include <cstring>
 #include <iostream>
 
-#include <key.h>
-#include <crypt.h>
-#include <structs.h>
-#include <record.h>
-#include <partdec.h>
-#include <file.h>
+#include <unistd.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+#include "key.h"
+#include "crypt.h"
+#include "structs.h"
+#include "record.h"
+#include "partdec.h"
+#include "file.h"
 
 #include "tests.h"
 #include "testpaths.h"

@@ -31,23 +31,15 @@
 //
 
 #ifndef _FILE_H
-#define _FILE_H
+#define _FILE_H 1
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
-#ifdef HAVE_ASSERT_H
-# include <assert.h>
-#endif
-
-#ifdef HAVE_STRING
-# include <string>
-#endif
-
-#ifdef HAVE_LIST
-# include <list>
-#endif
+#include <cassert>
+#include <string>
+#include <list>
 
 #include "yapetexception.h"
 
@@ -253,7 +245,7 @@ namespace YAPET {
 	    template <class t>
             union ENDIAN {
 		    /**
-		     * @brief  bits unsigned integer in host order.
+		     * @brief 32 bits unsigned integer in host order.
 		     *
 		     * 32 bits unsigned integer in host order.
 		     */
@@ -338,9 +330,8 @@ namespace YAPET {
             BDBuffer* read() const throw (YAPETException);
             //! Writes at the current offset in the file
             void write (const BDBuffer& buff,
-                        bool forceappend = false,
-                        bool forcewrite = false)
-            throw (YAPETException, YAPETRetryException);
+                        bool forceappend = false)
+            throw (YAPETException);
             //! Indicates whether or not the file is empty
             bool isempty() const throw (YAPETException);
             //! Initializes an empty file
@@ -370,7 +361,9 @@ namespace YAPET {
             ~File();
 
             //! Saves a password record list.
-            void save (std::list<PartDec>& records) throw (YAPETException);
+            void save (const std::list<PartDec>& records,
+		       bool forcewrite=false)
+		throw (YAPETException, YAPETRetryException);
             //! Reads the stored password records from the file.
             std::list<PartDec> read (const Key& key) const throw (YAPETException);
             //! Returns the file name of the current file.
@@ -378,7 +371,9 @@ namespace YAPET {
                 return filename;
             }
             //! Sets a new encryption key for the current file.
-            void setNewKey (const Key& oldkey, const Key& newkey) throw (YAPETException);
+            void setNewKey (const Key& oldkey, const Key& newkey,
+			    bool forcewrite=false)
+		throw (YAPETException, YAPETRetryException);
             int64_t getMasterPWSet (const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
 	    //! Return the file version
 	    FILE_VERSION getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
