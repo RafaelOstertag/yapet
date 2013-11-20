@@ -163,7 +163,7 @@ AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	crypt/Makefile
 	yapet/Makefile
-	yapet/pwgen/Makefile
+	pwgen/Makefile
 	csv2yapet/Makefile
 	tests/Makefile
 	tests/testpaths.h

@@ -27,11 +27,9 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
+#include <stdexcept>
 
-#include "../../intl.h"
+#include "../intl.h"
 
 #include "rng.h"
 #include "charpool.h"

@@ -22,11 +22,9 @@
 # include <config.h>
 #endif
 
-#if !defined(NDEBUG) && defined(HAVE_ASSERT_H)
-# include <assert.h>
-#endif
+#include <cassert>
 
-#include "../../intl.h"
+#include "../intl.h"
 
 #include "pwgen.h"
 

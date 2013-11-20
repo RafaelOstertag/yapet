@@ -27,15 +27,13 @@
 # include <config.h>
 #endif
 
-#ifdef HAVE_STDEXCEPT
-# include <stdexcept>
-#endif
+#include <stdexcept>
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
-#include "../../intl.h"
+#include "../intl.h"
 
 #include "pwgenexception.h"
 

@@ -5,12 +5,16 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-terminal-title --disable
 EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER DESIGN LICENSE	\
 INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
-SUBDIRS = libyacurs po crypt yapet
+SUBDIRS = libyacurs po crypt
+
+if BUILDPWGEN
+SUBDIRS += pwgen
+endif
 
 if BUILDCSV2YAPET
 SUBDIRS += csv2yapet
 endif
-SUBDIRS += tests doc
+SUBDIRS +=  yapet tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications

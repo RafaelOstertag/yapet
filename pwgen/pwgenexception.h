@@ -30,7 +30,7 @@
 #include <exception>
 #include <string>
 
-#include "../../intl.h"
+#include "../intl.h"
 
 
 namespace YAPET {
