@@ -54,7 +54,6 @@ namespace INTERNAL {
 	private:
 	    std::string needle;
 #ifdef USE_WCHAR
-# warning "USE_WCHAR"
 	    std::string mbstolower(const std::string& mbs) {
 		size_t reqsize = mbstowcs(0, mbs.c_str(), 0);
 		if (reqsize == (size_t)-1)
@@ -98,15 +97,12 @@ namespace INTERNAL {
 
 	public:
 #ifdef HAVE_STRCASESTR
-#warning "HAVE_STRCASESTR"
 	    Finder(std::string n): needle(n) {}
 #else // HAVE_STRCASESTR
 # if defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
-# warning "defined(USE_WCHAR) && defined(HAVE_TOWLOWER)"
 	    Finder(std::string n): needle(mbstolower(n)) {}
 # else // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  ifdef HAVE_TOLOWER
-#  warning "HAVE_TOLOWER"
 	    Finder(std::string n): needle() {
 		std::string tmp(n);
 		for(std::string::size_type i=0;
@@ -115,7 +111,6 @@ namespace INTERNAL {
 		    needle.push_back(tolower(tmp[i]));
 	    }
 #  else // defined(HAVE_TOLOWER)
-#  warning "!HAVE_TOLOWER"
 	    Finder(std::string n): needle(n) {}
 #  endif // defined(HAVE_TOLOWER)
 # endif // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
