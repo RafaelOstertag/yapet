@@ -549,9 +549,14 @@ MainWindow::search_first() {
 	recordlist->empty())
 	return; // there is nothing to search
 
-
+#if defined(HAVE_STRCASESTR) || \
+    defined(HAVE_TOLOWER) || defined(HAVE_TOWLOWER)
     searchdialog = new YACURS::InputBox(_("Search"),
 					_("Enter search term"));
+#else
+    searchdialog = new YACURS::InputBox(_("Search"),
+					_("Enter search term (case-sensitive)"));
+#endif
     searchdialog->show();
 }
 

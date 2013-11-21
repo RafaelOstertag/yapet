@@ -53,18 +53,103 @@ namespace INTERNAL {
     class Finder {
 	private:
 	    std::string needle;
+#ifdef USE_WCHAR
+# warning "USE_WCHAR"
+	    std::string mbstolower(const std::string& mbs) {
+		size_t reqsize = mbstowcs(0, mbs.c_str(), 0);
+		if (reqsize == (size_t)-1)
+		    throw std::runtime_error(_("Finder(): Unable to convert to wide character string"));
+
+		wchar_t* wstr = new wchar_t[reqsize+1];
+		if (wstr==0)
+		    throw std::runtime_error(_("Finder(): out of memory"));
+		if (mbstowcs(wstr, mbs.c_str(), reqsize+1)!=reqsize) {
+		    delete[] wstr;
+		    throw std::runtime_error(_("Finder(): Unable to convert to wide character string"));
+		}
+
+		for(size_t i=0; i<reqsize; i++)
+		    wstr[i]=towlower(wstr[i]);
+
+		reqsize = wcstombs(0, wstr, 0);
+		if (reqsize==(size_t)-1) {
+		    delete[] wstr;
+		    throw std::runtime_error(_("Finder(): Unable to convert to multibyte string"));
+		}
+
+		char* str = new char[reqsize+1];
+		if (str==0) {
+		    delete[] wstr;
+		    throw std::runtime_error(_("Finder(): out of memory"));
+		}
+
+		if (wcstombs(str, wstr, reqsize+1)!=reqsize) {
+		    delete[] wstr;
+		    delete[] str;
+		    throw std::runtime_error(_("Finder(): Unable to convert to multibyte string"));
+		}
+
+		std::string retval(str);
+		delete[] str;
+		delete[] wstr;
+		return retval;
+	    }
+#endif
 
 	public:
+#ifdef HAVE_STRCASESTR
+#warning "HAVE_STRCASESTR"
 	    Finder(std::string n): needle(n) {}
+#else // HAVE_STRCASESTR
+# if defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# warning "defined(USE_WCHAR) && defined(HAVE_TOWLOWER)"
+	    Finder(std::string n): needle(mbstolower(n)) {}
+# else // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+#  ifdef HAVE_TOLOWER
+#  warning "HAVE_TOLOWER"
+	    Finder(std::string n): needle() {
+		std::string tmp(n);
+		for(std::string::size_type i=0;
+		    i<tmp.size();
+		    i++)
+		    needle.push_back(tolower(tmp[i]));
+	    }
+#  else // defined(HAVE_TOLOWER)
+#  warning "!HAVE_TOLOWER"
+	    Finder(std::string n): needle(n) {}
+#  endif // defined(HAVE_TOLOWER)
+# endif // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+#endif // HAVE_STRCASESTR
 
 	    operator const std::string&() {
 		return needle;
 	    }
 
 	    bool operator() (const YAPET::PartDec& haystack) {
+#ifdef HAVE_STRCASESTR
 		return strcasestr(
 				  reinterpret_cast<const char*>(haystack.getName()),
 				  needle.c_str()) != 0;
+#else // HAVE_STRCASESTR
+# if defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+		std::string _hay(mbstolower(reinterpret_cast<const char*>(haystack.getName())));
+		return strstr(_hay.c_str(), needle.c_str()) != 0;
+# else // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+#  if defined(HAVE_TOLOWER)
+		std::string tmp(reinterpret_cast<const char*>(haystack.getName()));
+		std::string lower;
+		for(std::string::size_type i=0;
+		    i<tmp.size();
+		    i++)
+		    lower.push_back(tolower(tmp[i]));
+	    return strstr(lower.c_str(), needle.c_str()) != 0;
+#  else // defined(HAVE_TOLOWER)
+		return strstr(
+				  reinterpret_cast<const char*>(haystack.getName()),
+				  needle.c_str()) != 0;
+#  endif // defined(HAVE_TOLOWER)
+# endif // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+#endif // HAVE_STRCASESTR
 	    }
     };
 
