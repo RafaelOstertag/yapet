@@ -36,9 +36,7 @@
 # include <getopt.h>
 #endif
 
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
+#include <unistd.h>
 
 #ifdef HAVE_TERMIOS_H
 # include <termios.h>

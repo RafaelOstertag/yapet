@@ -43,9 +43,7 @@
 # endif
 #endif
 
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
+#include <unistd.h>
 
 #ifdef HAVE_SYS_RESOURCE_H
 # include <sys/resource.h>
