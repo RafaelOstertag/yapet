@@ -115,11 +115,11 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
     }
 
 #ifdef ENABLE_PWGEN
-#warning "Using password generator does not set modified state, ie dialog can be cancelled without warning."
     if (evt.data() == pwgendialog) {
 	assert(!__readonly);
 	if (pwgendialog->dialog_state() == YACURS::DIALOG_OK) {
 	    password->input(pwgendialog->password());
+	    __modified_by_pwgen = true;
 	}
 
 	delete pwgendialog;
@@ -175,7 +175,8 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     __key(key),
     __newrecord(pe==0),
     __readonly(false),
-    __force_close(false) {
+    __force_close(false),
+    __modified_by_pwgen(false) {
     assert(__key!=0);
 
     name->max_input(YAPET::NAME_SIZE);
@@ -289,10 +290,11 @@ PasswordRecord::changed() const {
     //     return false;
 
     return name->changed() ||
-	   host->changed() ||
-	   username->changed() ||
-	   password->changed() ||
-	   comment->changed();
+	host->changed() ||
+	username->changed() ||
+	password->changed() ||
+	comment->changed() ||
+	__modified_by_pwgen;
 }
 
 void

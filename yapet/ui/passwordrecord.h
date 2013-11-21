@@ -88,6 +88,7 @@ class PasswordRecord : public YACURS::Dialog {
 	 * confirmation if cancel has been pressed.
 	 */
 	bool __force_close;
+	bool __modified_by_pwgen;
 
         const PasswordRecord& operator=(const PasswordRecord&) {
             return *this;
