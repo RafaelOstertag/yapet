@@ -44,10 +44,7 @@
 #endif
 
 #include <unistd.h>
-
-#ifdef HAVE_SYS_RESOURCE_H
-# include <sys/resource.h>
-#endif
+#include <sys/resource.h>
 
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
@@ -93,7 +90,7 @@ const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
 
 void
 set_rlimit() {
-#if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
+#if defined(RLIMIT_CORE)
     rlimit rl;
     rl.rlim_cur = 0;
     rl.rlim_max = 0;
@@ -129,12 +126,6 @@ set_rlimit() {
 void
 show_version() {
     std::cout << PACKAGE_STRING << std::endl;
-#if !defined(HAVE_FSTAT) || \
-    !defined(HAVE_GETUID) || \
-    !defined(HAVE_FCHMOD) || \
-    !defined(HAVE_FCHOWN)
-    std::cout << _("Support for file security NOT available") << std::endl;
-#endif
 }
 
 void
@@ -206,6 +197,9 @@ main(int argc, char** argv) {
     set_rlimit();
 
 #ifdef ENABLE_NLS
+# if !defined(HAVE_SETLOCALE)
+#  error "NLS support requested, but no setlocale() found."
+# endif
     setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);

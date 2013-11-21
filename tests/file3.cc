@@ -8,15 +8,8 @@
 #include <cstring>
 
 #include <unistd.h>
-
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-
+#include <sys/types.h>
+#include <sys/stat.h>
 #ifdef HAVE_FCNTL_H
 # include <fcntl.h>
 #endif

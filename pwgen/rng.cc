@@ -23,15 +23,8 @@
 #endif
 
 #include <unistd.h>
-
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-
+#include <sys/types.h>
+#include <sys/stat.h>
 #ifdef HAVE_FCNTL_H
 # include <fcntl.h>
 #endif
@@ -111,12 +104,12 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
 
             break;
         case LRAND48:
-#if defined(HAVE_SRAND48) && defined(HAVE_TIME)
+#if defined(HAVE_SRAND48) && defined(HAVE_LRAND48)
             srand48 (time (NULL) );
 #endif
             break;
         case RAND:
-#if defined(HAVE_RAND) && defined(HAVE_TIME)
+#if defined(HAVE_SRAND) && defined(HAVE_RAND)
             srand (time (NULL) );
 #endif
             break;

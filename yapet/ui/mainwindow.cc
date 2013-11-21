@@ -361,7 +361,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	std::string msg(_("Opened file: "));
 	YACURS::Curses::statusbar()->set(msg +
 					      YAPET::Globals::file->getFilename());
-#ifdef HAVE_TERMINALTITLE
+#ifdef ENABLE_TERMINALTITLE
 	std::string ttl("YAPET");
 #ifdef HAVE_BASENAME
 	ttl += " (";

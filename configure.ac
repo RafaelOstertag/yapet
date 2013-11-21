@@ -1,5 +1,5 @@
 # $Id$
-AC_PREREQ(2.61)
+AC_PREREQ([2.61])
 AC_INIT([YAPET],[1.0],[https://bugs.guengel.ch/enter_bug.cgi?product=YAPET])
 AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests std-options])
 AM_SILENT_RULES([yes])
@@ -80,7 +80,7 @@ AC_ARG_ENABLE([pwgen],
 	[my_enablepwgen=yes])
 
 if test x$my_settitle = xyes ; then
-   AC_DEFINE([HAVE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
+   AC_DEFINE([ENABLE_TERMINALTITLE],[1], [Define if you want YAPET to set the terminal title])
 fi
 
 if test x$my_enablepwgen = xyes ; then
@@ -101,7 +101,8 @@ AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_CHECK_HEADERS([assert.h ctype.h wctype.h wchar.h dirent.h errno.h fcntl.h getopt.h limits.h locale.h pwd.h signal.h stdio.h string.h strings.h sys/param.h sys/resource.h termios.h unistd.h setjmp.h libgen.h])
+AC_HEADER_TIME
+AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h libgen.h libintl.h locale.h stdint.h strings.h sys/time.h termios.h])
 
 AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if you have openssl/crypto.h])])
 AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
@@ -120,13 +121,19 @@ AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UID_T
-AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
+
 
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([access asctime fchmod fchown fflush floor fprintf fstat getcwd getenv getopt getopt_long getpwuid getuid isblank iscntrl isdigit isprint isspace localtime log10 lrand48 memset pathconf pow rand rename setrlimit srand srand48 strcasestr strchr strcmp strerror strlen strncasecmp strncmp strncpy strstr strtol time tolower basename towlower])
+AC_CHECK_FUNCS([basename getopt_long isblank isspace lrand48 rand setlocale srand srand48 strcasestr tcgetattr tcsetattr tolower towlower])
+
+AC_CHECK_FUNCS([dup2 memset strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
+
 
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
@@ -145,7 +152,7 @@ AC_CHECK_FILES([/dev/urandom /dev/random])
 
 AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION(0.18.1)
+AM_GNU_GETTEXT_VERSION([0.18.1])
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([BUILDDOC], [test x$my_builddoc = xyes])

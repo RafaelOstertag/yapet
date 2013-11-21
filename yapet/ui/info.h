@@ -58,10 +58,8 @@ class InfoDialog : public YACURS::Dialog {
 	YACURS::Label* ver;
 	YACURS::Label* ver_status;
 
-#if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
 	YACURS::Label* pwset;
 	YACURS::Label* pwset_status;
-#endif
 
 	YACURS::Label* arch;
 	YACURS::Label* arch_status;

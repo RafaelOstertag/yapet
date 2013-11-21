@@ -51,13 +51,9 @@
 # include <inttypes.h>
 #endif
 
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
+#include <sys/types.h>
 
-#ifdef HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
+#include <sys/stat.h>
 
 #ifdef HAVE_FCNTL_H
 # include <fcntl.h>
@@ -103,7 +99,6 @@ const char RECOG_STR[] = "YAPET1.0";
  */
 void
 File::checkFileSecurity() throw (YAPETException) {
-#if defined(HAVE_FSTAT) && defined(HAVE_GETUID)
     struct stat buf;
     int err = fstat (fd, &buf);
 
@@ -122,8 +117,6 @@ File::checkFileSecurity() throw (YAPETException) {
         std::string tmp2 (_ (" not secure.") );
         throw YAPETRetryException (tmp1 + filename + tmp2);
     }
-
-#endif
 }
 
 /**
@@ -135,7 +128,6 @@ File::checkFileSecurity() throw (YAPETException) {
  */
 void
 File::setFileSecurity() throw (YAPETException) {
-#if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD) && defined(HAVE_FSTAT)
     struct stat buf;
     int err = fstat (fd, &buf);
 
@@ -155,8 +147,6 @@ File::setFileSecurity() throw (YAPETException) {
         std::string tmp (_ ("Cannot set file permissions on ") );
         throw YAPETRetryException (tmp + filename);
     }
-
-#endif
 }
 
 

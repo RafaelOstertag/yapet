@@ -24,9 +24,7 @@
 
 #include <unistd.h>
 
-#ifdef HAVE_PWD_H
-# include <pwd.h>
-#endif
+#include <pwd.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -47,7 +45,6 @@ std::string
 ConfigFile::getHomeDir() const {
     std::string homedir("");
 
-#ifdef HAVE_GETENV
     char* hd = getenv("HOME");
 
     if (hd != NULL) {
@@ -59,8 +56,6 @@ ConfigFile::getHomeDir() const {
         return homedir;
     }
 
-#endif
-#if defined(HAVE_GETPWUID) && defined(HAVE_GETUID)
     struct passwd* pwd;
     pwd = getpwuid(getuid() );
 
@@ -73,7 +68,6 @@ ConfigFile::getHomeDir() const {
         return homedir;
     }
 
-#endif
     assert(!homedir.empty() );
     return homedir;
 }

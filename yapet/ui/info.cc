@@ -26,9 +26,7 @@
 # include <openssl/crypto.h>
 #endif
 
-#ifdef HAVE_SYS_RESOURCE_H
-# include <sys/resource.h>
-#endif
+#include <sys/resource.h>
 
 #include <sstream>
 
@@ -118,7 +116,6 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     }
     rightpack->add_back(ver_status);
 
-#if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
     pwset=new YACURS::Label(_("Password set: "));
     leftpack->add_back(pwset);
     if (YAPET::Globals::file != 0 && YAPET::Globals::key != 0) {
@@ -128,7 +125,6 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 	pwset_status=new YACURS::Label(_("n/a"));
     }
     rightpack->add_back(pwset_status);
-#endif
 
     arch=new YACURS::Label(_("Architecture: "));
     leftpack->add_back(arch);
@@ -159,7 +155,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     ttl=new YACURS::Label(_("Terminal Title:"));
     leftpack->add_back(ttl);
-#if defined(HAVE_TERMINALTITLE)
+#if defined(ENABLE_TERMINALTITLE)
     ttl_status=new YACURS::Label(_("built-in"));
 #else
     ttl_status=new YACURS::Label(_("not built-in"));
@@ -177,7 +173,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     cfs=new YACURS::Label(_("Core File:"));
     leftpack->add_back(cfs);
-#if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
+#if defined(RLIMIT_CORE)
     cfs_status=new YACURS::Label(_("suppressed"));
 #else
     cfs_status=new YACURS::Label(_("not suppressed"));
@@ -206,10 +202,8 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     ver->color(YACURS::DIALOG);
     ver_status->color(YACURS::DIALOG);
 
-#if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
     pwset->color(YACURS::DIALOG);
     pwset_status->color(YACURS::DIALOG);
-#endif
 
     arch->color(YACURS::DIALOG);
     arch_status->color(YACURS::DIALOG);
@@ -253,10 +247,8 @@ InfoDialog::~InfoDialog() {
     delete ver;
     delete ver_status;
 
-#if defined(HAVE_ASCTIME) && defined(HAVE_LOCALTIME)
     delete pwset;
     delete pwset_status;
-#endif
 
     delete arch;
     delete arch_status;

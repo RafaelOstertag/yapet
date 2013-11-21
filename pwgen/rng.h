@@ -29,9 +29,7 @@
 
 #include <stdexcept>
 
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
+#include <sys/types.h>
 
 #include "intl.h"
 
