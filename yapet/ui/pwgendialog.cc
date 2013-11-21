@@ -163,6 +163,10 @@ PwGenDialog::PwGenDialog():
 	pwgen.setNewRNG(requested_rng);
     }
 
+    // coloring
+    genpwlabel.color(YACURS::DIALOG);
+    pwlenlabel.color(YACURS::DIALOG);
+
     genpw.max_input(256);
     pwlen.max_input(3);
     pwlen.filter(YACURS::FilterDigit());
