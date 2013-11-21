@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-11-20 23:09+0100\n"
+"POT-Creation-Date: 2013-11-21 12:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -401,27 +401,31 @@ msgstr ""
 msgid "Sort Order Descending"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:553 yapet/ui/help.cc:86
+#: yapet/ui/mainwindow.cc:554 yapet/ui/mainwindow.cc:557 yapet/ui/help.cc:86
 msgid "Search"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:554
+#: yapet/ui/mainwindow.cc:555
 msgid "Enter search term"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:565
+#: yapet/ui/mainwindow.cc:558
+msgid "Enter search term (case-sensitive)"
+msgstr ""
+
+#: yapet/ui/mainwindow.cc:570
 msgid "No previous search. Press '/' to search."
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:573
+#: yapet/ui/mainwindow.cc:578
 msgid "No more matches for "
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:574
+#: yapet/ui/mainwindow.cc:579
 msgid " found"
 msgstr ""
 
-#: yapet/ui/mainwindow.cc:578
+#: yapet/ui/mainwindow.cc:583
 msgid "Next match for "
 msgstr ""
 
@@ -443,6 +447,18 @@ msgstr ""
 
 #: yapet/ui/yapetunlockdialog.cc:105 yapet/ui/help.cc:118
 msgid "Quit"
+msgstr ""
+
+#: yapet/ui/mainwindow.h:60 yapet/ui/mainwindow.h:67
+msgid "Finder(): Unable to convert to wide character string"
+msgstr ""
+
+#: yapet/ui/mainwindow.h:64 yapet/ui/mainwindow.h:82
+msgid "Finder(): out of memory"
+msgstr ""
+
+#: yapet/ui/mainwindow.h:76 yapet/ui/mainwindow.h:88
+msgid "Finder(): Unable to convert to multibyte string"
 msgstr ""
 
 #: yapet/ui/passworddialog.cc:26
