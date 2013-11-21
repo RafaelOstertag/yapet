@@ -16,6 +16,9 @@ YAPET To Do
 
  * Make sure .pet is appended to new files.
 
+ * Make mainwindow.h compile on Solaris 10, i.e. the Finder class
+   cannot use strcasestr() on Solaris 10.
+
 
 $Id$
 Local Variables:
