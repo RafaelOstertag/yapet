@@ -23,9 +23,7 @@
 #endif
 
 #ifdef CFGDEBUG
-# ifdef HAVE_IOSTREAM
-#  include <iostream>
-# endif
+#include <iostream>
 #endif
 
 #include "cfg.h"
