@@ -27,9 +27,7 @@
 # include "config.h"
 #endif
 
-#ifdef HAVE_STRING
-# include <string>
-#endif
+#include <string>
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
