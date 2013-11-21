@@ -208,7 +208,7 @@ main(int argc, char** argv) {
     set_rlimit();
 
 #ifdef ENABLE_NLS
-    setlocale(LC_MESSAGES, "");
+    setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
