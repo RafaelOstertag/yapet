@@ -1,11 +1,21 @@
 YAPET To Do
 ===========
 
- * Implement pwgen
+ * When setting password with pwgen, make sure dialog is marked
+   modified and cancel ask for confirmation
+
+ * Adjust colors of pwgen
+
+ * When changing password, ask for old password first and only proceed
+   if it matches.
+
+ * When changing password, only change if new and old password are
+   different
 
  * Implement user configuration
 
  * Make sure .pet is appended to new files.
+
 
 $Id$
 Local Variables:
