@@ -53,7 +53,7 @@ namespace INTERNAL {
     class Finder {
 	private:
 	    std::string needle;
-#ifdef USE_WCHAR
+#ifdef YACURS_USE_WCHAR
 	    std::string mbstolower(const std::string& mbs) {
 		size_t reqsize = mbstowcs(0, mbs.c_str(), 0);
 		if (reqsize == (size_t)-1)
@@ -99,9 +99,9 @@ namespace INTERNAL {
 #ifdef HAVE_STRCASESTR
 	    Finder(std::string n): needle(n) {}
 #else // HAVE_STRCASESTR
-# if defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# if defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 	    Finder(std::string n): needle(mbstolower(n)) {}
-# else // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# else // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  ifdef HAVE_TOLOWER
 	    Finder(std::string n): needle() {
 		std::string tmp(n);
@@ -113,7 +113,7 @@ namespace INTERNAL {
 #  else // defined(HAVE_TOLOWER)
 	    Finder(std::string n): needle(n) {}
 #  endif // defined(HAVE_TOLOWER)
-# endif // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# endif // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #endif // HAVE_STRCASESTR
 
 	    operator const std::string&() {
@@ -126,10 +126,10 @@ namespace INTERNAL {
 				  reinterpret_cast<const char*>(haystack.getName()),
 				  needle.c_str()) != 0;
 #else // HAVE_STRCASESTR
-# if defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# if defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 		std::string _hay(mbstolower(reinterpret_cast<const char*>(haystack.getName())));
 		return strstr(_hay.c_str(), needle.c_str()) != 0;
-# else // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# else // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  if defined(HAVE_TOLOWER)
 		std::string tmp(reinterpret_cast<const char*>(haystack.getName()));
 		std::string lower;
@@ -143,7 +143,7 @@ namespace INTERNAL {
 				  reinterpret_cast<const char*>(haystack.getName()),
 				  needle.c_str()) != 0;
 #  endif // defined(HAVE_TOLOWER)
-# endif // defined(USE_WCHAR) && defined(HAVE_TOWLOWER)
+# endif // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #endif // HAVE_STRCASESTR
 	    }
     };
