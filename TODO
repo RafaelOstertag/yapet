@@ -19,6 +19,8 @@ YAPET To Do
  * Make mainwindow.h compile on Solaris 10, i.e. the Finder class
    cannot use strcasestr() on Solaris 10.
 
+ * Search next should stop when hitting the bottom of the list.
+
 
 $Id$
 Local Variables:
