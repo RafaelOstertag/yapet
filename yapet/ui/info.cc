@@ -173,7 +173,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     cfs=new YACURS::Label(_("Core File:"));
     leftpack->add_back(cfs);
-#if defined(RLIMIT_CORE)
+#if defined(RLIMIT_CORE) && !defined(DEBUG)
     cfs_status=new YACURS::Label(_("suppressed"));
 #else
     cfs_status=new YACURS::Label(_("not suppressed"));
