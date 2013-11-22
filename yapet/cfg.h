@@ -54,10 +54,22 @@ namespace YAPET {
 			return std::not_equal_to<int>()(0,__f(i));
 		    }
 	    };
+
+	    // Wrapper function object which returns bool so that it
+	    // can be used by *_if algorithms
+	    class IntIsFalse {
+		    std::pointer_to_unary_function<int,int> __f;
+		public:
+		    IntIsFalse(std::pointer_to_unary_function<int,int> _f) : __f(_f) {}
+		    bool operator()(int i) {
+			return std::equal_to<int>()(0,__f(i));
+		    }
+	    };
 	}
-	    
+
+ 
 	class CfgValBase {
-public:
+	    public:
 		virtual void set_str(const std::string&) = 0;
 		virtual ~CfgValBase() {}
 	};
@@ -77,13 +89,18 @@ public:
 
 	    protected:
 		std::string remove_space(const std::string& str) {
-		    std::string space_clean;
-		    space_clean.reserve(str.size());
+		    std::string space_clean(str);
 		    
 		    INTERNAL::IntIsTrue space(std::ptr_fun<int,int>(std::isspace));
-		    std::remove_copy_if(str.begin(), str.end(),
-					space_clean.begin(),
-					space);
+
+		    std::string::iterator new_end =
+			std::remove_if(space_clean.begin(),
+				       space_clean.end(),
+				       space);
+
+		    if (new_end == space_clean.end()) return space_clean;
+
+		    space_clean.erase(new_end, space_clean.end());
 
 		    return space_clean;
 		}
@@ -264,7 +281,11 @@ public:
                 CfgValBool filesecurity;
                 CfgValInt pwgenpwlen;
                 CfgValRNG pwgen_rng;
-                CfgValInt character_pools;
+		CfgValBool pwgen_letters;
+		CfgValBool pwgen_digits;
+		CfgValBool pwgen_punct;
+		CfgValBool pwgen_special;
+		CfgValBool pwgen_other;
                 CfgValBool allow_lock_quit;
                 CfgValInt pw_input_timeout;
 
@@ -273,6 +294,14 @@ public:
                 ~Config();
 
                 const Config& operator=(const Config& c);
+
+		/**
+		 * Convenience method.
+		 *
+		 * @return @c int representing all selected character
+		 * pools.
+		 */
+		int character_pools() const;
 
 		//! Lock all configuration values
 		void lock();

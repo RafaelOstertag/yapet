@@ -1,7 +1,8 @@
 locktimeout=21
 checkfsecurity=0
-ignorerc=0
-load=test.pet
+pwinputtimeout=25
+allowlockquit=disabled
+load=//test/test2.pet
 pwgen_pwlen=15
 pwgen_letters=0
 pwgen_digits=1

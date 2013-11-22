@@ -31,6 +31,7 @@
 
 #include "cfg.h"
 
+using namespace YAPET;
 using namespace YAPET::CONFIG;
 
 //
@@ -56,18 +57,14 @@ CfgValPetFile::set(const std::string& s) {
 
     if (s.length() < 4) {
 	// Since this holds, there can no ".pet"
-	CfgValStr::set(s+YAPET::Consts::default_suffix);
+	CfgValStr::set(s+Consts::default_suffix);
 	return;
     }
 
     // We don't have to check for the string length, because that
     // already happened above.
-    //
-    // s.length()-5 because to get the last four chars
-    //      (s.length()-4)-1 = s.length()-5
-    //
-    if (s.substr(s.length()-5,4) != YAPET::Consts::default_suffix) {
-	CfgValStr::set(s+YAPET::Consts::default_suffix);
+    if (s.substr(s.length()-4,4) != Consts::default_suffix) {
+	CfgValStr::set(s+Consts::default_suffix);
 	return;
     }
 
@@ -100,7 +97,7 @@ CfgValBool::set_str(const std::string& s) {
 	sanitized == "yes" ||
 	sanitized == "enable" ||
 	sanitized == "enabled") {
-	set(false);
+	set(true);
 	return;
     }
 
@@ -123,27 +120,27 @@ CfgValRNG::set_str(const std::string& s) {
     std::string sanitized(tolower(remove_space(s)));
 
     if (sanitized == "devrandom") {
-	set(YAPET::PWGEN::DEVRANDOM);
+	set(PWGEN::DEVRANDOM);
 	return;
     }
 
     if (sanitized == "devurandom") {
-	set(YAPET::PWGEN::DEVURANDOM);
+	set(PWGEN::DEVURANDOM);
 	return;
     }
 
     if (sanitized == "lrand48") {
-	set(YAPET::PWGEN::LRAND48);
+	set(PWGEN::LRAND48);
 	return;
     }
 
     if (sanitized == "rand") {
-	set(YAPET::PWGEN::RAND);
+	set(PWGEN::RAND);
 	return;
     }
 
     if (sanitized == "auto") {
-	set(YAPET::PWGEN::AUTO);
+	set(PWGEN::AUTO);
 	return;
     }
 
@@ -161,30 +158,35 @@ Config::setup_map() {
     __options["pwinputtimeout"]=&pw_input_timeout;
     __options["pwgen_rng"]=&pwgen_rng;
     __options["pwgen_pwlen"]=&pwgenpwlen;
-    __options["pwgen_letters"]=&character_pools;
-    __options["pwgen_digits"]=&character_pools;
-    __options["pwgen_punct"]=&character_pools;
-    __options["pwgen_special"]=&character_pools;
-    __options["pwgen_other"]=&character_pools;
+    __options["pwgen_letters"]=&pwgen_letters;
+    __options["pwgen_digits"]=&pwgen_digits;
+    __options["pwgen_punct"]=&pwgen_punct;
+    __options["pwgen_special"]=&pwgen_special;
+    __options["pwgen_other"]=&pwgen_other;
 }
 
 
 
-Config::Config() : petfile(std::string()),
-		   timeout(-1,
-			   YAPET::Consts::min_locktimeout,
-			   YAPET::Consts::min_locktimeout),
-		   filesecurity(YAPET::Consts::def_filesecurity),
-		   pwgenpwlen(YAPET::Consts::def_pwlen,
-			      YAPET::Consts::def_pwlen,
-			      YAPET::Consts::min_pwlen,
-			      YAPET::Consts::max_pwlen),
-		   pwgen_rng(YAPET::Consts::def_pwgen_rng ),
-		   character_pools(YAPET::Consts::def_character_pools),
-		   allow_lock_quit(YAPET::Consts::def_allow_lock_quit),
-		   pw_input_timeout(YAPET::Consts::def_pw_input_timeout,
-				    YAPET::Consts::min_locktimeout,
-				    YAPET::Consts::min_locktimeout) {
+Config::Config() : 
+    petfile(std::string()),
+    timeout(-1,
+	    Consts::min_locktimeout,
+	    Consts::min_locktimeout),
+    filesecurity(Consts::def_filesecurity),
+    pwgenpwlen(Consts::def_pwlen,
+	       Consts::def_pwlen,
+	       Consts::min_pwlen,
+	       Consts::max_pwlen),
+    pwgen_rng(Consts::def_pwgen_rng ),
+    pwgen_letters(PWGEN::HAS_LETTERS(Consts::def_character_pools)),
+    pwgen_digits(PWGEN::HAS_DIGITS(Consts::def_character_pools)),
+    pwgen_punct(PWGEN::HAS_PUNCT(Consts::def_character_pools)),
+    pwgen_special(PWGEN::HAS_SPECIAL(Consts::def_character_pools)),
+    pwgen_other(PWGEN::HAS_OTHER(Consts::def_character_pools)),
+    allow_lock_quit(Consts::def_allow_lock_quit),
+    pw_input_timeout(Consts::def_pw_input_timeout,
+		     Consts::min_locktimeout,
+		     Consts::min_locktimeout) {
     setup_map();
 }
 
@@ -194,7 +196,11 @@ Config::Config(const Config& c) :
     filesecurity(c.filesecurity),
     pwgenpwlen(c.pwgenpwlen),
     pwgen_rng(c.pwgen_rng),
-    character_pools(c.character_pools),
+    pwgen_letters(c.pwgen_letters),
+    pwgen_digits(c.pwgen_digits),
+    pwgen_punct(c.pwgen_punct),
+    pwgen_special(c.pwgen_special),
+    pwgen_other(c.pwgen_other),
     allow_lock_quit(c.allow_lock_quit),
     pw_input_timeout(c.pw_input_timeout) {
     setup_map();
@@ -218,11 +224,37 @@ Config::operator=(const Config& c) {
     filesecurity = c.filesecurity;
     pwgenpwlen = c.pwgenpwlen;
     pwgen_rng = c.pwgen_rng;
-    character_pools = c.character_pools;
+    pwgen_letters = c.pwgen_letters;
+    pwgen_digits = c.pwgen_digits;
+    pwgen_punct = c.pwgen_punct;
+    pwgen_special = c.pwgen_special;
+    pwgen_other = c.pwgen_other;
     allow_lock_quit = c.allow_lock_quit;
     pw_input_timeout = c.pw_input_timeout;
 
     return *this;
+}
+
+int
+Config::character_pools() const {
+    int pools=0;
+
+    if (pwgen_letters)
+	pools|=PWGEN::LETTERS;
+
+    if (pwgen_digits)
+	pools|=PWGEN::DIGITS;
+
+    if (pwgen_punct)
+	pools|=PWGEN::PUNCT;
+
+    if (pwgen_special)
+	pools|=PWGEN::SPECIAL;
+
+    if (pwgen_other)
+	pools|=PWGEN::OTHER;
+
+    return pools;
 }
 
 void
@@ -232,7 +264,11 @@ Config::lock() {
     filesecurity.lock();
     pwgenpwlen.lock();
     pwgen_rng.lock();
-    character_pools.lock();
+    pwgen_letters.lock();
+    pwgen_digits.lock();
+    pwgen_punct.lock();
+    pwgen_special.lock();
+    pwgen_other.lock();
     allow_lock_quit.lock();
     pw_input_timeout.lock();
 }
@@ -244,7 +280,11 @@ Config::unlock() {
     filesecurity.unlock();
     pwgenpwlen.unlock();
     pwgen_rng.unlock();
-    character_pools.unlock();
+    pwgen_letters.unlock();
+    pwgen_digits.unlock();
+    pwgen_punct.unlock();
+    pwgen_special.unlock();
+    pwgen_other.unlock();
     allow_lock_quit.unlock();
     pw_input_timeout.unlock();
 }

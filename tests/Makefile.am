@@ -31,7 +31,7 @@ f64be0.5.pet f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in f32be0.5.pet.in	\
 f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in f32be0.6.pet.in f64le0.6.pet.in	\
 f64be0.6.pet.in test1.csv test2.csv test3.csv test4.csv test5.csv test6.csv	\
-test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc
+test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
@@ -162,16 +162,16 @@ endif
 
 if BUILDPWGEN
 
-charpool1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
+charpool1_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 charpool1_SOURCES = charpool1.cc
 
-charpool2_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
+charpool2_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 charpool2_SOURCES = charpool2.cc
 
-rng1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
+rng1_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 rng1_SOURCES = rng1.cc
 
-pwgen1_LDADD = $(top_builddir)/pwgen/libypwgen.la @LIBINTL@
+pwgen1_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 pwgen1_SOURCES = pwgen1.cc
 
 endif

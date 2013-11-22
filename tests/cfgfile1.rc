@@ -1,6 +1,7 @@
 locktimeout=20
+pwinputtimeout=30
+allowlockquit=yes
 checkfsecurity=1
-ignorerc=1
 load=test
 pwgen_pwlen=14
 pwgen_letters=1
@@ -8,3 +9,4 @@ pwgen_digits=1
 pwgen_punct=1
 pwgen_special=1
 pwgen_other=1
+

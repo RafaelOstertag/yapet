@@ -65,6 +65,14 @@ namespace YAPET {
 	    // Used only by fromPool()
 	    NOPOOL = 0
         };
+
+	inline bool HAS_LETTERS(int v) { return (v & LETTERS) == LETTERS; }
+	inline bool HAS_DIGITS(int v) { return (v & DIGITS) == DIGITS; }
+	inline bool HAS_PUNCT(int v) { return (v & PUNCT) == PUNCT; }
+	inline bool HAS_SPECIAL(int v) { return (v & SPECIAL) == SPECIAL; }
+	inline bool HAS_OTHER(int v) { return (v & OTHER) == OTHER; }
+	inline bool HAS_ALL(int v) { return (v & ALL) == ALL; }
+	
         /**
          * @brief Generate character pools.
          *

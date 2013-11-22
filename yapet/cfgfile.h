@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -32,7 +32,7 @@
 #include <string>
 
 // Used for the YAPET::PWGEN::RNGENGINE type
-#include "pwgen/rng.h"
+#include "rng.h"
 
 #include "cfg.h"
 
@@ -58,6 +58,8 @@ namespace YAPET {
 		std::string filepath;
 
                 std::string getHomeDir() const;
+
+		std::string trim(const std::string& s);
 
             public:
                 ConfigFile(Config& cfg, std::string cfgfile=std::string());

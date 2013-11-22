@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2008-2010  Rafael Ostertag
+// Copyright (C) 2008-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -68,6 +68,27 @@ ConfigFile::getHomeDir() const {
     return homedir;
 }
 
+std::string
+ConfigFile::trim(const std::string& s) {
+    if (s.empty()) return s;
+
+    // find leading spaces
+    std::string::size_type pos=0;
+    while(std::isspace(s[pos++]) && s.length() > pos);
+    pos--;
+    assert(pos >= 0 && pos < s.length());
+
+    std::string working_copy(s.substr(pos));
+
+    // find trailing spaces
+    pos = working_copy.length()-1;
+    while(std::isspace(working_copy[pos--]) && pos >= 0);
+    pos++;
+    assert(pos>=0 && pos<=working_copy.length());
+
+    return working_copy.substr(0, pos+1);
+}
+
 ConfigFile::ConfigFile(Config& cfg, std::string cfgfile):
     __cfg(cfg),
     filepath(cfgfile.empty() ?
@@ -117,7 +138,7 @@ ConfigFile::parse() {
 		continue;
 	    }
 
-	    std::string option(l.substr(0,pos-1));
+	    std::string option(l.substr(0,pos));
 	    std::string val(l.substr(pos+1));
 
 	    if (val.empty()) {
@@ -127,8 +148,8 @@ ConfigFile::parse() {
 
 	    // here we set the value
 	    try {
-		__cfg[option].set_str(val);
-	    } catch (std::runtime_error& e) {
+		__cfg[trim(option)].set_str(val);
+	    } catch (std::invalid_argument& e) {
 		std::cerr << e.what() << std::endl;
 	    }
 	}

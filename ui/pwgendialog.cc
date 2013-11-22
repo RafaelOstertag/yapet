@@ -61,21 +61,14 @@ PwGenDialog::checkbox_selection_handler(YACURS::Event& _e) {
 	dynamic_cast<YACURS::EventEx<YACURS::CheckBox*>&>(_e);
 
     if ( evt.data() == charpools) {
-	int pools = 0;
+	YAPET::Globals::config.pwgen_letters.set(charpools->selected(_("Letters")));
+	
+	YAPET::Globals::config.pwgen_digits.set(charpools->selected(_("Digits")));
+	YAPET::Globals::config.pwgen_punct.set(charpools->selected(_("Punctuation")));
+	YAPET::Globals::config.pwgen_special.set(charpools->selected(_("Special")));
+	YAPET::Globals::config.pwgen_other.set(charpools->selected(_("Other")));
 
-	if (charpools->selected(_("Letters")))
-	    pools |= YAPET::PWGEN::LETTERS;
-	if (charpools->selected(_("Digits")))
-	    pools |= YAPET::PWGEN::DIGITS;
-	if (charpools->selected(_("Punctuation")))
-	    pools |= YAPET::PWGEN::PUNCT;
-	if (charpools->selected(_("Special")))
-	    pools |= YAPET::PWGEN::SPECIAL;
-	if (charpools->selected(_("Other")))
-	    pools |= YAPET::PWGEN::OTHER;
-
-	YAPET::Globals::config.character_pools.set(pools);
-	pwgen.setNewPool(pools);
+	pwgen.setNewPool(YAPET::Globals::config.character_pools());
 	return;
     }
 
@@ -132,7 +125,7 @@ PwGenDialog::button_press_handler(YACURS::Event& _e) {
 //
 PwGenDialog::PwGenDialog():
     YACURS::Dialog(_("Password Generator"), YACURS::OKCANCEL, YACURS::AUTOMATIC ),
-    pwgen(YAPET::Globals::config.character_pools.get()),
+    pwgen(YAPET::Globals::config.character_pools()),
     mainpack(),
     boxespack(),
     genpwlabel(_("Generated password")),
@@ -168,15 +161,15 @@ PwGenDialog::PwGenDialog():
     labels.push_back(_("Other"));
     charpools = new YACURS::CheckBox(_("Character Pools"), labels);
 
-    if (YAPET::Globals::config.character_pools.get() & YAPET::PWGEN::LETTERS)
+    if (YAPET::PWGEN::HAS_LETTERS(YAPET::Globals::config.character_pools()))
 	charpools->set_selection(_("Letters"));
-    if (YAPET::Globals::config.character_pools.get() & YAPET::PWGEN::DIGITS)
+    if (YAPET::PWGEN::HAS_DIGITS(YAPET::Globals::config.character_pools()))
 	charpools->set_selection(_("Digits"));
-    if (YAPET::Globals::config.character_pools.get() & YAPET::PWGEN::PUNCT)
+    if (YAPET::PWGEN::HAS_PUNCT((YAPET::Globals::config.character_pools())))
 	charpools->set_selection(_("Punctuation"));
-    if (YAPET::Globals::config.character_pools.get() & YAPET::PWGEN::SPECIAL)
+    if (YAPET::PWGEN::HAS_SPECIAL(YAPET::Globals::config.character_pools()))
 	charpools->set_selection(_("Special"));
-    if (YAPET::Globals::config.character_pools.get() & YAPET::PWGEN::OTHER)
+    if (YAPET::PWGEN::HAS_OTHER(YAPET::Globals::config.character_pools()))
 	charpools->set_selection(_("Other"));
 
     // Those labels must match what is returned by get_name_of_rng()
