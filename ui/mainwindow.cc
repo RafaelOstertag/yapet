@@ -103,7 +103,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 		    recordlist->add(*passwordrecord->getEncEntry());
 		    YACURS::Curses::statusbar()->set(_("Added new Record"));
 		} else {
-		    assert(record_index!= -1);
+		    assert(record_index!= (YACURS::ListBox<YAPET::PartDec>::lsz_t)-1);
 
 		    // select the record that has been selected when
 		    // the dialog opened. Need in case a screen resize
@@ -127,7 +127,7 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 
     if (confirmdelete != 0 && evt.data() == confirmdelete) {
 	if (confirmdelete->dialog_state() == YACURS::DIALOG_YES) {
-	    assert(record_index!= -1);
+	    assert(record_index!= (YACURS::ListBox<YAPET::PartDec>::lsz_t)-1);
 
 	    // select the record that has been selected when
 	    // the dialog opened. Need in case a screen resize
@@ -403,7 +403,7 @@ MainWindow::show_password_record(bool selected) {
 	return;
 
     if (selected) {
-	assert(record_index==-1);
+	assert(record_index==(YACURS::ListBox<YAPET::PartDec>::lsz_t)-1);
 	record_index = recordlist->selected_index();
 	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
     } else {
@@ -475,7 +475,7 @@ MainWindow::delete_selected() {
 	YAPET::Globals::file==0)
 	return;
 
-    assert(record_index==-1);
+    assert(record_index==(YACURS::ListBox<YAPET::PartDec>::lsz_t)-1);
     record_index = recordlist->selected_index();
     confirmdelete=new YACURS::MessageBox(_("Confirm Deletion"),
 				 _("Do you want to delete the selected record?"),

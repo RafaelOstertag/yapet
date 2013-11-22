@@ -97,7 +97,7 @@ public:
 		}
 
             public:
-		typedef typename T type;
+		typedef T type;
 
                 CfgVal() : locked(false) {
                 }
