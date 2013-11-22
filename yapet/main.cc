@@ -90,7 +90,7 @@ const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
 
 void
 set_rlimit() {
-#if defined(RLIMIT_CORE)
+#if defined(RLIMIT_CORE) && !defined(DEBUG)
     rlimit rl;
     rl.rlim_cur = 0;
     rl.rlim_max = 0;
@@ -111,6 +111,7 @@ set_rlimit() {
     }
 
 #else
+# if !defined(DEBUG)
     std::cerr << _("Cannot suppress the creation of core file.")
               << std::endl
               << _(
@@ -120,6 +121,7 @@ set_rlimit() {
               << _("Press <ENTER> to continue")
               << std::endl;
     std::cin.ignore(1, '\n');
+# endif
 #endif
 }
 
@@ -313,9 +315,15 @@ main(int argc, char** argv) {
     try {
         YACURS::Curses::init();
 
+#ifndef DEBUG
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
                                                    POS_TOP,
                                                    PACKAGE_STRING) );
+#else
+        YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
+                                                   POS_TOP,
+                                                   PACKAGE_STRING " (DEBUG Build)") );
+#endif
 	YACURS::Curses::title()->alignment(YACURS::LineObject::CENTER);
 
 	YACURS::Curses::statusbar(new YACURS::StatusBar());
