@@ -8,10 +8,12 @@ yapetlockscreen.cc help.h mainwindow.h passworddialog.h			\
 passwordrecord.h newpassworddialog.h info.h yapetunlockdialog.h		\
 yapetlockscreen.h
 
-libyapet_ui_la_LDFLAGS = -static -L$(top_srcdir)/yapet/glue
+libyapet_ui_la_LDFLAGS = -static -L$(top_srcdir)/glue
 libyapet_ui_la_LIBADD = -lyapet-glue
 
-libyapet_ui_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)/libyacurs/include -I$(top_srcdir)/yapet -I$(top_srcdir)/crypt -I$(top_srcdir)/yapet/glue
+libyapet_ui_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"	\
+-I$(top_srcdir)/libyacurs/include -I$(top_srcdir)/yapet	\
+-I$(top_srcdir)/crypt -I$(top_srcdir)/glue
 
 if BUILDPWGEN
 libyapet_ui_la_SOURCES += pwgendialog.h pwgendialog.cc
