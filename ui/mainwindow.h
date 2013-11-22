@@ -126,14 +126,14 @@ namespace INTERNAL {
 #else // HAVE_STRCASESTR
 # if defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 		std::string _hay(mbstolower(reinterpret_cast<const char*>(haystack.getName())));
-		return strstr(_hay.c_str(), needle.c_str()) != 0;
+		return _hay.find(needle) != std::string::npos;
 # else // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  if defined(HAVE_TOLOWER)
 		std::string lower(reinterpret_cast<const char*>(haystack.getName()));
 		std::transform(lower.begin(),lower.end(),
 			       lower.begin(),
 			       std::ptr_fun<int, int>(std::tolower));
-	    return strstr(lower.c_str(), needle.c_str()) != 0;
+		return lower.find(needle) != std::string::npos;
 #  else // defined(HAVE_TOLOWER)
 		return strstr(
 				  reinterpret_cast<const char*>(haystack.getName()),
