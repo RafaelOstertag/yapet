@@ -20,29 +20,10 @@
 
 #include "consts.h"
 
-using namespace YAPET::CONSTS;
+using namespace YAPET;
 
 const std::string Consts::default_suffix(".pet");
 const std::string Consts::default_rcfilename(".yapet");
-const size_t Consts::max_pwlen(256);
-const int Consts::min_locktimeout(10);
-
-const std::string&
-Consts::getDefaultSuffix() {
-    return default_suffix;
-}
-
-const std::string&
-Consts::getDefaultRCFilename() {
-    return default_rcfilename;
-}
-
-size_t
-Consts::getMaxPWLength() {
-    return max_pwlen;
-}
-
-int
-Consts::getMinLockTimeout() {
-    return min_locktimeout;
-}
+const bool Consts::def_filesecurity(true);
+const bool Consts::def_allow_lock_quit(true);
+const YAPET::PWGEN::RNGENGINE Consts::def_pwgen_rng(YAPET::PWGEN::AUTO);

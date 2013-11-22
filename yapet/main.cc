@@ -247,8 +247,9 @@ main(int argc, char** argv) {
             return 0;
 
         case 'i':
-            YAPET::Globals::config.ignorerc.set(true);
-            YAPET::Globals::config.ignorerc.lock();
+#warning "FIX"
+	    // YAPET::Globals::config.ignorerc.set(true);
+            // YAPET::Globals::config.ignorerc.lock();
             break;
 
         case 'r':
@@ -288,30 +289,23 @@ main(int argc, char** argv) {
     }
 
     if (optind < argc) {
-        YAPET::Globals::config.setPetFile(argv[optind]);
+        YAPET::Globals::config.petfile.set(argv[optind]);
         YAPET::Globals::config.petfile.lock();
     }
 
-    YAPET::Globals::config.loadConfigFile(cfgfilepath);
+    // try{}, may be the file does not exist
+    try {
+	YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,cfgfilepath);
+	cfgfile.parse();
+    } catch(std::runtime_error&) {
+	// intentionally empty
+    }
 
     // Unlock all configuration values, so that they can be changed
     // again.
-    YAPET::Globals::config.unlockAll();
+    YAPET::Globals::config.unlock();
 
-    //  Make sure the .pet suffix is there
-#ifndef NDEBUG
-    std::string _tmp__ = YAPET::Globals::config.petfile.get();
-#endif
-    assert(_tmp__.empty() ||
-           _tmp__.find(YAPET::CONSTS::Consts::getDefaultSuffix(),
-                       _tmp__.length() -
-                       YAPET::CONSTS::Consts::getDefaultSuffix().length() )
-           != std::string::npos);
-    // Make sure we have a cleaned up file path
-    assert(_tmp__.find("//", 0) == std::string::npos);
-#ifndef CFGDEBUG
-
-    YapetUnlockDialog* yunlockdia=0;
+     YapetUnlockDialog* yunlockdia=0;
     try {
         YACURS::Curses::init();
 
@@ -374,10 +368,6 @@ main(int argc, char** argv) {
     }
 
     YACURS::Curses::end();
-#else
-    config.getPetFile();
-    config.getTimeout();
-    config.getFilesecurity();
-#endif
+
     return 0;
 }

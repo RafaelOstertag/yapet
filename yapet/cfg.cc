@@ -26,204 +26,196 @@
 #include <iostream>
 #endif
 
+#include <cctype>
+#include <cstdlib>
+
 #include "cfg.h"
-// Used for the character pools
-#include "pwgen/pwgen.h"
 
 using namespace YAPET::CONFIG;
 
-
-//! The default .pet file to open
-const std::string Config::def_petfile("");
-//! The default lock timeout
-const int Config::def_timeout(600);
-//! Default for checking file security
-const bool Config::def_filesecurity(true);
-//! Default for ignoring the rc file
-const bool Config::def_ignorerc(false);
-const YAPET::PWGEN::RNGENGINE Config::def_pwgen_rng(YAPET::PWGEN::AUTO);
-const size_t Config::def_pwlen(10);
-const int Config::def_character_pools(YAPET::PWGEN::LETTERS |
-                                      YAPET::PWGEN::DIGITS |
-                                      YAPET::PWGEN::PUNCT |
-                                      YAPET::PWGEN::SPECIAL);
-const bool Config::def_allow_lock_quit(true);
-const unsigned int Config::def_pw_input_timeout(60);  // in seconds
+//
+// Class CfgValPetFile
+//
 std::string
-Config::getDefPetfile() {
-    return def_petfile;
+CfgValPetFile::cleanup_path(const std::string& p) {
+    if (p.find("//") == std::string::npos) return p;
+
+    std::string::size_type pos=0;
+    std::string working_copy(p);
+    while ( (pos=working_copy.find("//")) != std::string::npos )
+	working_copy = working_copy.replace(pos, 2, "/");
+
+    return working_copy;
 }
-
-unsigned int
-Config::getDefTimeout() {
-    return def_timeout;
-}
-
-bool
-Config::getDefFilesecurity() {
-    return def_filesecurity;
-}
-
-bool
-Config::getDefIgnorerc() {
-    return def_ignorerc;
-}
-
-YAPET::PWGEN::RNGENGINE
-Config::getDefPWGenRNG() {
-    return def_pwgen_rng;
-}
-
-size_t
-Config::getDefPWLength() {
-    return def_pwlen;
-}
-
-int
-Config::getDefCharPools() {
-    return def_character_pools;
-}
-
-bool
-Config::getDefAllowLockQuit() {
-    return def_allow_lock_quit;
-}
-
-unsigned int
-Config::getDefPwInputTimeout() {
-    return def_pw_input_timeout;
-}
-
-bool
-Config::getDefCPoolLetters() {
-    return def_character_pools & YAPET::PWGEN::LETTERS ? true : false;
-}
-
-bool
-Config::getDefCPoolDigits() {
-    return def_character_pools & YAPET::PWGEN::DIGITS ? true : false;
-}
-
-bool
-Config::getDefCPoolPunct() {
-    return def_character_pools & YAPET::PWGEN::PUNCT ? true : false;
-}
-
-bool
-Config::getDefCPoolSpecial() {
-    return def_character_pools & YAPET::PWGEN::SPECIAL ? true : false;
-}
-
-bool
-Config::getDefCPoolOther() {
-    return def_character_pools & YAPET::PWGEN::OTHER ? true : false;
-}
-
-std::string
-Config::cleanupPath(const std::string& s) const {
-#ifdef CFGDEBUG
-    std::cout << " === ";
-    std::cout << "Config::cleanupPath(std::string)";
-    std::cout << ":" << std::endl;
-#endif
-
-    if (s.empty() ) {
-#ifdef CFGDEBUG
-        std::cout << "\tgot empty string." << std::endl;
-#endif
-        return s;
+void
+CfgValPetFile::set(const std::string& s) {
+    if (s.empty()) {
+	CfgValStr::set(s);
+	return;
     }
 
-    std::string work_copy(s);
-#ifdef CFGDEBUG
-    std::cout << "\tBefore cleanup: " << s << std::endl;
-#endif
-    std::string::size_type pos;
+    if (s.length() < 4) {
+	// Since this holds, there can no ".pet"
+	CfgValStr::set(s+YAPET::Consts::default_suffix);
+	return;
+    }
 
-    while ( (pos = work_copy.find("//", 0) ) != std::string::npos)
-        work_copy.erase(pos, 1);
+    // We don't have to check for the string length, because that
+    // already happened above.
+    //
+    // s.length()-5 because to get the last four chars
+    //      (s.length()-4)-1 = s.length()-5
+    //
+    if (s.substr(s.length()-5,4) != YAPET::Consts::default_suffix) {
+	CfgValStr::set(s+YAPET::Consts::default_suffix);
+	return;
+    }
 
-#ifdef CFGDEBUG
-    std::cout << "\tAfter cleanup: " << work_copy << std::endl;
-#endif
-    return work_copy;
+    CfgValStr::set(cleanup_path(s));
+
 }
 
-Config::Config() : petfile(""),
-    timeout(Config::getDefTimeout() ),
-    filesecurity(Config::getDefFilesecurity() ),
-    ignorerc(Config::getDefIgnorerc() ),
-    pwgenpwlen(Config::getDefPWLength() ),
-    pwgen_rng(Config::getDefPWGenRNG() ),
-    character_pools(Config::getDefCharPools() ),
-    allow_lock_quit(Config::getDefAllowLockQuit() ),
-    pw_input_timeout(Config::getDefPwInputTimeout() ) {
-    // Empty
+void
+CfgValPetFile::set_str(const std::string& s) {
+    set(s);
+}
+//
+// Class CfgValBool
+//
+void
+CfgValBool::set_str(const std::string& s) {
+    std::string sanitized(tolower(remove_space(s)));
+
+    if (sanitized == "0" ||
+	sanitized == "false" ||
+	sanitized == "no" ||
+	sanitized == "disable" ||
+	sanitized == "disabled") {
+	set(false);
+	return;
+    }
+
+    if (sanitized == "1" ||
+	sanitized == "true" ||
+	sanitized == "yes" ||
+	sanitized == "enable" ||
+	sanitized == "enabled") {
+	set(false);
+	return;
+    }
+
+    throw std::invalid_argument(sanitized + _(" is not a valid bool"));
 }
 
-Config::Config(const Config& c) {
-    petfile = c.petfile;
-    timeout = c.timeout;
-    filesecurity = c.filesecurity;
-    ignorerc = c.ignorerc;
-    pwgenpwlen = c.pwgenpwlen;
-    pwgen_rng = c.pwgen_rng;
-    character_pools = c.character_pools;
-    allow_lock_quit = c.allow_lock_quit;
-    pw_input_timeout = c.pw_input_timeout;
+//
+// Class CfgValInt
+//
+void
+CfgValInt::set_str(const std::string& s) {
+    set(std::atoi(s.c_str()));
+}
+
+//
+// Class CfgValRNG
+//
+void
+CfgValRNG::set_str(const std::string& s) {
+    std::string sanitized(tolower(remove_space(s)));
+
+    if (sanitized == "devrandom") {
+	set(YAPET::PWGEN::DEVRANDOM);
+	return;
+    }
+
+    if (sanitized == "devurandom") {
+	set(YAPET::PWGEN::DEVURANDOM);
+	return;
+    }
+
+    if (sanitized == "lrand48") {
+	set(YAPET::PWGEN::LRAND48);
+	return;
+    }
+
+    if (sanitized == "rand") {
+	set(YAPET::PWGEN::RAND);
+	return;
+    }
+
+    if (sanitized == "auto") {
+	set(YAPET::PWGEN::AUTO);
+	return;
+    }
+
+    throw std::invalid_argument(sanitized + _(" is not a valid RNG"));
+}
+
+void
+Config::setup_map() {
+    __options.clear();
+
+    __options["load"]=&petfile;
+    __options["locktimeout"]=&timeout;
+    __options["checkfsecurity"]=&filesecurity;
+    __options["allowlockquit"]=&allow_lock_quit;
+    __options["pwinputtimeout"]=&pw_input_timeout;
+    __options["pwgen_rng"]=&pwgen_rng;
+    __options["pwgen_pwlen"]=&pwgenpwlen;
+    __options["pwgen_letters"]=&character_pools;
+    __options["pwgen_digits"]=&character_pools;
+    __options["pwgen_punct"]=&character_pools;
+    __options["pwgen_special"]=&character_pools;
+    __options["pwgen_other"]=&character_pools;
+}
+
+
+
+Config::Config() : petfile(std::string()),
+		   timeout(-1,
+			   YAPET::Consts::min_locktimeout,
+			   YAPET::Consts::min_locktimeout),
+		   filesecurity(YAPET::Consts::def_filesecurity),
+		   pwgenpwlen(YAPET::Consts::def_pwlen,
+			      YAPET::Consts::def_pwlen,
+			      YAPET::Consts::min_pwlen,
+			      YAPET::Consts::max_pwlen),
+		   pwgen_rng(YAPET::Consts::def_pwgen_rng ),
+		   character_pools(YAPET::Consts::def_character_pools),
+		   allow_lock_quit(YAPET::Consts::def_allow_lock_quit),
+		   pw_input_timeout(YAPET::Consts::def_pw_input_timeout,
+				    YAPET::Consts::min_locktimeout,
+				    YAPET::Consts::min_locktimeout) {
+    setup_map();
+}
+
+Config::Config(const Config& c) :
+    petfile(c.petfile),
+    timeout(c.timeout),
+    filesecurity(c.filesecurity),
+    pwgenpwlen(c.pwgenpwlen),
+    pwgen_rng(c.pwgen_rng),
+    character_pools(c.character_pools),
+    allow_lock_quit(c.allow_lock_quit),
+    pw_input_timeout(c.pw_input_timeout) {
+    setup_map();
 }
 
 Config::~Config() {
 }
 
-/**
- * @param filename the file name to load. If empty, the default file will be loaded
- */
-void
-Config::loadConfigFile(std::string filename) {
-#ifdef CFGDEBUG
-    std::cout << " === ";
-    std::cout << "Config::loadConfigFile(std::string)";
-    std::cout << ":" << std::endl;
-#endif
-
-    if (ignorerc.get() ) {
-#ifdef CFGDEBUG
-        std::cout << "\tadvised to ignore rc file!" << std::endl;
-#endif
-        return;
-    }
-
-    ConfigFile cfgfile(filename);
-
-    if (!cfgfile.isOpenSuccess() ) {
-#ifdef CFGDEBUG
-        std::cout << "\topen " << filename << " was not successful" <<
-        std::endl;
-#endif
-    }
-
-    // we use this method because it cleans up the file path
-    setPetFile(cfgfile.getFileToLoad() );
-
-    filesecurity = cfgfile.getUseFileSecurity();
-    timeout = cfgfile.getLockTimeout();
-    pw_input_timeout = cfgfile.getPwInputTimeout();
-    allow_lock_quit = cfgfile.getAllowLockQuit();
-    pwgen_rng = cfgfile.getPWGenRNG();
-    pwgenpwlen = cfgfile.getPWGenPWLen();
-    character_pools = cfgfile.getCharPools();
-}
-
 const Config&
 Config::operator=(const Config& c) {
     if (&c == this)
-        return *this;
+	return *this;
+
+    //
+    // We don't need to (re)setup the map, because the pointers in the
+    // map did not change!
+    //
 
     petfile = c.petfile;
     timeout = c.timeout;
     filesecurity = c.filesecurity;
-    ignorerc = c.ignorerc;
     pwgenpwlen = c.pwgenpwlen;
     pwgen_rng = c.pwgen_rng;
     character_pools = c.character_pools;
@@ -231,4 +223,42 @@ Config::operator=(const Config& c) {
     pw_input_timeout = c.pw_input_timeout;
 
     return *this;
+}
+
+void
+Config::lock() {
+    petfile.lock();
+    timeout.lock();
+    filesecurity.lock();
+    pwgenpwlen.lock();
+    pwgen_rng.lock();
+    character_pools.lock();
+    allow_lock_quit.lock();
+    pw_input_timeout.lock();
+}
+
+void
+Config::unlock() {
+    petfile.unlock();
+    timeout.unlock();
+    filesecurity.unlock();
+    pwgenpwlen.unlock();
+    pwgen_rng.unlock();
+    character_pools.unlock();
+    allow_lock_quit.unlock();
+    pw_input_timeout.unlock();
+}
+
+CfgValBase&
+Config::operator[](const std::string& key) {
+    if (key.empty())
+	throw std::invalid_argument(_("Configuration key must not be empty"));
+    
+    std::map<std::string,CfgValBase*>::iterator it =
+	__options.find(key);
+
+    if (it == __options.end())
+	throw std::invalid_argument(std::string(_("Configuration key '")) + key + std::string(_("' not found")));
+
+    return *((*it).second);
 }

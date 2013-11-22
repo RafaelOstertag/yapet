@@ -265,11 +265,11 @@ int main (int argc, char** argv) {
         return ERR_CMDLINE;
     }
 
-    if ( dstfile.find (YAPET::CONSTS::Consts::getDefaultSuffix(),
+    if ( dstfile.find (YAPET::Consts::default_suffix,
                        dstfile.length() -
-                       YAPET::CONSTS::Consts::getDefaultSuffix().length() )
+                       YAPET::Consts::default_suffix.length() )
             == std::string::npos )
-        dstfile += YAPET::CONSTS::Consts::getDefaultSuffix();
+        dstfile += YAPET::Consts::default_suffix;
 
     if (access (dstfile.c_str(), F_OK) == 0) {
         std::cerr << dstfile << " already exists. Aborting." << std::endl;

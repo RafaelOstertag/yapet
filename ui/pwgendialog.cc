@@ -22,8 +22,6 @@
 # include "config.h"
 #endif
 
-#include <sstream>
-
 #include "intl.h"
 #include "globals.h"
 #include "pwgendialog.h"
@@ -116,28 +114,15 @@ PwGenDialog::button_press_handler(YACURS::Event& _e) {
 
     if ( evt.data() == &regenbutton) {
 	// Transfer pwlen to configuration (might have changed)
-	int num=0;
 
-#warning "Use constants"
-	if ( !(std::istringstream(pwlen.input()) >> num) )
-	    num = 10; // fallback
+	// Configuration takes care of sanitizing number with respect
+	// to min/max value.
+	YAPET::Globals::config.pwgenpwlen.set_str(pwlen.input());
+	// Transfer length back to input, in case sanitation took
+	// place and changed the value
+	pwlen.input(YAPET::Globals::config.pwgenpwlen);
 
-#warning "Use constants"
-	// check password length
-	if (num < 2) {
-	    num = 10; // c'mon, nobody wants a password that short
-	    pwlen.input("10");
-	}
-
-#warning "Use constants"
-	if (num > 256) {
-	    num = 256;
-	    pwlen.input("256");
-	}
-
-	YAPET::Globals::config.pwgenpwlen.set(num);
-
-	pwgen.generatePassword (YAPET::Globals::config.pwgenpwlen.get());
+	pwgen.generatePassword (YAPET::Globals::config.pwgenpwlen);
 	genpw.input(pwgen.getPassword());
     }
 }
