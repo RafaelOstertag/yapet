@@ -138,11 +138,6 @@ ConfigFile::parseFile() {
                                          pwinputtimeout) != OPTION_NOT_FOUND)
                 continue;
 
-            // Yes, the file can say that it should be ignored!
-            if (readOption<bool>(l, "ignorerc=",
-                                 ignorerc) != OPTION_NOT_FOUND)
-                continue;
-
             std::string tmp;
             if ( (res =
                       readOption<std::string>(l, "pwgen_rng=",
@@ -211,7 +206,6 @@ ConfigFile::ConfigFile(std::string cfgfile) : filetoload(
     locktimeout(Config::getDefTimeout() ),
     pwinputtimeout(Config::getDefPwInputTimeout() ),
     allowlockquit(Config::getDefAllowLockQuit() ),
-    ignorerc(false),
     cfgfilepath(""),
     opensuccess(true),
     pwgen_letters(Config::getDefCPoolLetters() ),

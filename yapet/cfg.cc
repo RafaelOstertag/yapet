@@ -203,15 +203,6 @@ Config::loadConfigFile(std::string filename) {
 #endif
     }
 
-    ignorerc = cfgfile.getIgnoreRC();
-
-    if (ignorerc.get() ) {
-#ifdef CFGDEBUG
-        std::cout << "\tRC file says to ignore itself!" << std::endl;
-#endif
-        return;
-    }
-
     // we use this method because it cleans up the file path
     setPetFile(cfgfile.getFileToLoad() );
 

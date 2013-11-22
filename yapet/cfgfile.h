@@ -63,8 +63,10 @@ namespace YAPET {
                 unsigned int locktimeout;
                 unsigned int pwinputtimeout;
                 bool allowlockquit;
+		// That's non-sense. We don't do that anymore.
+		//
                 // Yes, the file can say that it should be ignored!
-                bool ignorerc;
+                //bool ignorerc;
                 std::string cfgfilepath;
 
                 //! Indicates whether or not the file could have been opened
@@ -130,10 +132,6 @@ namespace YAPET {
 
                 inline unsigned int getLockTimeout() const {
                     return locktimeout;
-                }
-
-                inline bool getIgnoreRC() const {
-                    return ignorerc;
                 }
 
                 inline unsigned int getPwInputTimeout() const {

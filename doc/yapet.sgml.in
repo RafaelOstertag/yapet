@@ -699,19 +699,6 @@ No file loaded
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><option>ignorerc</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 lets &yp; ignore
-	    the options provided in the configuration file (see also the
-	    <option>-i</option> in <xref linkend="options" />). A value of 0
-	    has no effect on the processing of the configuration file.</para>
-
-	    <para>Default: 0</para>
-	  </listitem>
-	</varlistentry>
-
 	<!-- PWGEN_BEGIN -->
 	<varlistentry>
 	  <term><option>pwgen_rng</option></term>

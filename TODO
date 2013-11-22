@@ -1,9 +1,6 @@
 YAPET To Do
 ===========
 
- * When setting password with pwgen, make sure dialog is marked
-   modified and cancel ask for confirmation
-
  * When changing password, ask for old password first and only proceed
    if it matches.
 
