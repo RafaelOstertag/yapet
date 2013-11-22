@@ -103,12 +103,10 @@ namespace INTERNAL {
 	    Finder(std::string n): needle(mbstolower(n)) {}
 # else // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  ifdef HAVE_TOLOWER
-	    Finder(std::string n): needle() {
-		std::string tmp(n);
-		for(std::string::size_type i=0;
-		    i<tmp.size();
-		    i++)
-		    needle.push_back(tolower(tmp[i]));
+	    Finder(std::string n): needle(n) {
+		std::transform(needle.begin(),needle.end(),
+			       needle.begin(),
+			       std::ptr_fun<int, int>(std::tolower));
 	    }
 #  else // defined(HAVE_TOLOWER)
 	    Finder(std::string n): needle(n) {}
@@ -131,12 +129,10 @@ namespace INTERNAL {
 		return strstr(_hay.c_str(), needle.c_str()) != 0;
 # else // defined(YACURS_USE_WCHAR) && defined(HAVE_TOWLOWER)
 #  if defined(HAVE_TOLOWER)
-		std::string tmp(reinterpret_cast<const char*>(haystack.getName()));
-		std::string lower;
-		for(std::string::size_type i=0;
-		    i<tmp.size();
-		    i++)
-		    lower.push_back(tolower(tmp[i]));
+		std::string lower(reinterpret_cast<const char*>(haystack.getName()));
+		std::transform(lower.begin(),lower.end(),
+			       lower.begin(),
+			       std::ptr_fun<int, int>(std::tolower));
 	    return strstr(lower.c_str(), needle.c_str()) != 0;
 #  else // defined(HAVE_TOLOWER)
 		return strstr(
