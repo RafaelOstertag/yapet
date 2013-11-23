@@ -46,8 +46,8 @@ int main (int, char**) {
     std::cout << std::endl;
     std::cout << " ==> Check if we can read files created on a different machine... " << std::endl;
 
-    YAPET::Key* key = NULL;
-    YAPET::File *file = NULL;
+    YAPET::Key* key = 0;
+    YAPET::File *file = 0;
     int retval = 0;
 
     //
@@ -84,17 +84,17 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
         std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     /*
      * 32bit big endian pre 0.6
@@ -123,17 +123,17 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
         std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     /*
      * 64bit little endian pre 0.6
@@ -162,17 +162,17 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
         std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
     
     /*
      * 64bit big endian pre 0.6
@@ -202,9 +202,9 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
@@ -212,8 +212,8 @@ int main (int, char**) {
 
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
 
     //
@@ -250,17 +250,17 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
         std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     /*
      * 32bit big endian 0.6
@@ -289,17 +289,17 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
         std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     /*
      * 64bit little endian 0.6
@@ -329,9 +329,9 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
@@ -339,8 +339,8 @@ int main (int, char**) {
 
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     /*
      * 64bit big endian 0.6
@@ -370,9 +370,9 @@ int main (int, char**) {
 	std::cout << std::endl;
 	std::cout << " --> yes" << std::endl;
     } catch (std::exception& ex) {
-	if (file != NULL)
+	if (file != 0)
 	    delete key;
-	if (key != NULL)
+	if (key != 0)
 	    delete key;
         std::cout << std::endl;
         std::cout << " --> no" << std::endl;
@@ -380,8 +380,8 @@ int main (int, char**) {
 
 	retval = 1;
     }
-    file = NULL;
-    key = NULL;
+    file = 0;
+    key = 0;
 
     return retval;
 

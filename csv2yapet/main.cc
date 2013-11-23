@@ -110,13 +110,13 @@ void disable_echo() {
     int err = tcgetattr (STDIN_FILENO, &ctios);
 
     if (err < 0)
-        throw std::runtime_error (strerror (errno) );
+        throw std::runtime_error (std::strerror (errno) );
 
     ctios.c_lflag &= ~ECHO;
     err = tcsetattr (STDIN_FILENO, TCSANOW, &ctios);
 
     if (err < 0)
-        throw std::runtime_error (strerror (errno) );
+        throw std::runtime_error (std::strerror (errno) );
 
 #endif
 }
@@ -130,13 +130,13 @@ void enable_echo() {
     int err = tcgetattr (STDIN_FILENO, &ctios);
 
     if (err < 0)
-        throw std::runtime_error (strerror (errno) );
+        throw std::runtime_error (std::strerror (errno) );
 
     ctios.c_lflag |= ECHO;
     err = tcsetattr (STDIN_FILENO, TCSANOW, &ctios);
 
     if (err < 0)
-        throw std::runtime_error (strerror (errno) );
+        throw std::runtime_error (std::strerror (errno) );
 
 #endif
 }
@@ -202,16 +202,16 @@ int main (int argc, char** argv) {
     int c;
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
-        { (char*) "copyright", no_argument, NULL, 'c'},
-        { (char*) "help", no_argument, NULL, 'h'},
-        { (char*) "password", required_argument, NULL, 'p'},
-        { (char*) "quiet", no_argument, NULL, 'q'},
-        { (char*) "separator", required_argument, NULL, 's'},
-        { (char*) "version", no_argument, NULL, 'V'},
-        {NULL, 0, NULL, 0}
+        { (char*) "copyright", no_argument, 0, 'c'},
+        { (char*) "help", no_argument, 0, 'h'},
+        { (char*) "password", required_argument, 0, 'p'},
+        { (char*) "quiet", no_argument, 0, 'q'},
+        { (char*) "separator", required_argument, 0, 's'},
+        { (char*) "version", no_argument, 0, 'V'},
+        {0, 0, 0, 0}
     };
 
-    while ( (c = getopt_long (argc, argv, ":chp:qs:V", long_options, NULL) ) != -1) {
+    while ( (c = getopt_long (argc, argv, ":chp:qs:V", long_options, 0) ) != -1) {
 #else // HAVE_GETOPT_LONG
     extern char *optarg;
     extern int optopt, optind;

@@ -55,11 +55,11 @@ int main (int, char**) {
 	size_t start;
 	size_t len;
 	len =tmp1.getPoolPos(LETTERS, &start);
-	if ( len != strlen(t_letters) )
+	if ( len != std::strlen(t_letters) )
 	    return 1;
 	if (tmp1[start] != t_letters[0])
 	    return 1;
-	if (tmp1[start+len-1] != t_letters[strlen(t_letters)-1])
+	if (tmp1[start+len-1] != t_letters[std::strlen(t_letters)-1])
 	    return 1;
 	if (!tmp1.hadPoolReads(LETTERS))
 	    return 1;
@@ -67,11 +67,11 @@ int main (int, char**) {
 	    return 1;
 
 	len = tmp1.getPoolPos(PUNCT, &start);
-	if ( len != strlen(t_punct) )
+	if ( len != std::strlen(t_punct) )
 	    return 1;
 	if (tmp1[start] != t_punct[0])
 	    return 1;
-	if (tmp1[start+len-1] != t_punct[strlen(t_punct)-1])
+	if (tmp1[start+len-1] != t_punct[std::strlen(t_punct)-1])
 	    return 1;
 	if (!tmp1.hadPoolReads(PUNCT))
 	    return 1;
@@ -79,11 +79,11 @@ int main (int, char**) {
 	    return 1;
 	
 	len = tmp1.getPoolPos(OTHER, &start);
-	if ( len != strlen(t_other) )
+	if ( len != std::strlen(t_other) )
 	    return 1;
 	if (tmp1[start] != t_other[0])
 	    return 1;
-	if (tmp1[start+len-1] != t_other[strlen(t_other)-1])
+	if (tmp1[start+len-1] != t_other[std::strlen(t_other)-1])
 	    return 1;
 	if (!tmp1.hadPoolReads(OTHER))
 	    return 1;

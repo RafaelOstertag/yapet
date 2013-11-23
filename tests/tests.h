@@ -89,7 +89,7 @@ void check_record (YAPET::PartDec& pd, const YAPET::Key& key, int rec_no) {
     snprintf (_pw, YAPET::PASSWORD_SIZE, PW, rec_no);
     snprintf (_cmt, YAPET::COMMENT_SIZE, COMMENT, rec_no);
 
-    if (strncmp (_name, (char*) pd.getName(), YAPET::NAME_SIZE) != 0) {
+    if (std::strncmp (_name, (char*) pd.getName(), YAPET::NAME_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("Name does not match");
     }
@@ -100,27 +100,27 @@ void check_record (YAPET::PartDec& pd, const YAPET::Key& key, int rec_no) {
 
     YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
 
-    if (strncmp (_name, (char*) ptr_pw->name, YAPET::NAME_SIZE) != 0) {
+    if (std::strncmp (_name, (char*) ptr_pw->name, YAPET::NAME_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("Name does not match");
     }
 
-    if (strncmp (_host, (char*) ptr_pw->host, YAPET::HOST_SIZE) != 0) {
+    if (std::strncmp (_host, (char*) ptr_pw->host, YAPET::HOST_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("Host does not match");
     }
 
-    if (strncmp (_uname, (char*) ptr_pw->username, YAPET::USERNAME_SIZE) != 0) {
+    if (std::strncmp (_uname, (char*) ptr_pw->username, YAPET::USERNAME_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("username does not match");
     }
 
-    if (strncmp (_pw, (char*) ptr_pw->password, YAPET::PASSWORD_SIZE) != 0) {
+    if (std::strncmp (_pw, (char*) ptr_pw->password, YAPET::PASSWORD_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("password does not match");
     }
 
-    if (strncmp (_cmt, (char*) ptr_pw->comment, YAPET::COMMENT_SIZE) != 0) {
+    if (std::strncmp (_cmt, (char*) ptr_pw->comment, YAPET::COMMENT_SIZE) != 0) {
         print_record (pd, key);
         throw std::logic_error ("comment does not match");
     }

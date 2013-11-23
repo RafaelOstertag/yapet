@@ -38,7 +38,7 @@ int main (int, char**) {
         YAPET::Crypt crypt (key);
         YAPET::FileHeader_64 header;
         header.version = YAPET::VERSION_2;
-        memcpy (header.control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE);
+        std::memcpy (header.control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE);
         YAPET::Record<YAPET::FileHeader_64> record (header);
         YAPET::BDBuffer* data = crypt.encrypt (record);
         YAPET::Record<YAPET::FileHeader_64>* dec_header;
@@ -46,7 +46,7 @@ int main (int, char**) {
         delete data;
         YAPET::FileHeader_64* fh_ptr (*dec_header);
 
-        if (memcmp (fh_ptr->control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE) != 0)
+        if (std::memcmp (fh_ptr->control, CONTROL_STR, YAPET::HEADER_CONTROL_SIZE) != 0)
             return 1;
 
         delete dec_header;

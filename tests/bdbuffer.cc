@@ -80,7 +80,7 @@ int main (int, char**) {
         data3[3] = '\0';
         uint8_t* tmp = data3;
 
-        if (strcmp ( (char*) tmp, "abc") != 0)
+        if (std::strcmp ( (char*) tmp, "abc") != 0)
             return 1;
 
         try {
