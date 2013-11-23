@@ -277,6 +277,7 @@ namespace YAPET {
 
             public:
                 CfgValPetFile petfile;
+		/// @todo rename to locktimeout
                 CfgValInt timeout;
                 CfgValBool filesecurity;
                 CfgValInt pwgenpwlen;
