@@ -250,6 +250,7 @@ namespace YAPET {
 
 	class CfgValRNG : public CfgVal<YAPET::PWGEN::RNGENGINE> {
 	    public:
+		CfgValRNG() : CfgVal<YAPET::PWGEN::RNGENGINE>(YAPET::PWGEN::AUTO) {}
 		CfgValRNG(YAPET::PWGEN::RNGENGINE v) : CfgVal<YAPET::PWGEN::RNGENGINE>(v) {}
 		CfgValRNG(const CfgValRNG& cv): CfgVal<YAPET::PWGEN::RNGENGINE>(cv) {}
 		CfgValRNG& operator=(const CfgValRNG& cv) {
