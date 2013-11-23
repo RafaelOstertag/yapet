@@ -84,6 +84,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     leftpack->add_back(sult);
     val.str("");
     val.clear();
+#warning "Fix this: doesnt show proper value"
     val << YAPET::Globals::config.pw_input_timeout;
     sult_status=new YACURS::Label(val.str());
     rightpack->add_back(sult_status);
