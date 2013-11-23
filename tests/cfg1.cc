@@ -63,134 +63,7 @@ void test_val() {
 
     if (testval3 != 5)
 	MYEXIT("CfgVal: operator=() not working");
-	
-}
 
-
-void
-test_initvalues() {
-    // Test default values
-    Config cfg;
-
-    if (!cfg.petfile.get().empty())
-	MYEXIT("cfg.petfile not empty");
-
-    if (cfg.timeout != Consts::def_locktimeout)
-	MYEXIT("locktimeout mismatch");
-
-    if (cfg.filesecurity != Consts::def_filesecurity)
-	MYEXIT("filesecurity mismatch");
-
-    if (cfg.pwgenpwlen != Consts::def_pwlen)
-	MYEXIT("pwgenpwlen mismatch");
-
-    if (cfg.pwgen_rng != Consts::def_pwgen_rng)
-	MYEXIT("pwgen_rng mismatch");
-
-    if (cfg.pwgen_letters!=PWGEN::HAS_LETTERS(Consts::def_character_pools))
-	MYEXIT("pwgen_letters mismatch");
-
-    if (cfg.pwgen_digits!=PWGEN::HAS_DIGITS(Consts::def_character_pools))
-	MYEXIT("pwgen_digits mismatch");
-
-    if (cfg.pwgen_punct!=PWGEN::HAS_PUNCT(Consts::def_character_pools))
-	MYEXIT("pwgen_punct mismatch");
-
-    if (cfg.pwgen_special!=PWGEN::HAS_SPECIAL(Consts::def_character_pools))
-	MYEXIT("pwgen_special mismatch");
-
-    if (cfg.pwgen_other!=PWGEN::HAS_OTHER(Consts::def_character_pools))
-	MYEXIT("pwgen_other mismatch");
-
-    if (cfg.character_pools() != Consts::def_character_pools)
-	MYEXIT("character_pools() mismatch");
-
-    if (cfg.allow_lock_quit != Consts::def_allow_lock_quit)
-	MYEXIT("allow_lock_quit mismatch");
-
-    if (cfg.pw_input_timeout != Consts::def_pw_input_timeout)
-	MYEXIT("pw_input_timeout mismatch");
-}
-
-void
-test_index_operator() {
-    Config cfg;
-
-    try {
-	if (!dynamic_cast<CfgValPetFile&>(cfg["load"]).get().empty())
-	    MYEXIT("cfg.petfile not empty");
-	
-	if (dynamic_cast<CfgValInt&>(cfg["locktimeout"]) != Consts::def_locktimeout)
-	    MYEXIT("locktimeout mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["checkfsecurity"]) != Consts::def_filesecurity)
-	    MYEXIT("filesecurity mismatch");
-	
-	if (dynamic_cast<CfgValInt&>(cfg["pwgen_pwlen"]) != Consts::def_pwlen)
-	    MYEXIT("pwgenpwlen mismatch");
-	
-	if (dynamic_cast<CfgValRNG&>(cfg["pwgen_rng"]) != Consts::def_pwgen_rng)
-	    MYEXIT("pwgen_rng mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["pwgen_letters"]) !=PWGEN::HAS_LETTERS(Consts::def_character_pools))
-	    MYEXIT("pwgen_letters mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["pwgen_digits"])!=PWGEN::HAS_DIGITS(Consts::def_character_pools))
-	    MYEXIT("pwgen_digits mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["pwgen_punct"])!=PWGEN::HAS_PUNCT(Consts::def_character_pools))
-	    MYEXIT("pwgen_punct mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["pwgen_special"])!=PWGEN::HAS_SPECIAL(Consts::def_character_pools))
-	    MYEXIT("pwgen_special mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["pwgen_other"])!=PWGEN::HAS_OTHER(Consts::def_character_pools))
-	    MYEXIT("pwgen_other mismatch");
-	
-	if (dynamic_cast<CfgValBool&>(cfg["allowlockquit"]) != Consts::def_allow_lock_quit)
-	    MYEXIT("allow_lock_quit mismatch");
-	
-	if (dynamic_cast<CfgValInt&>(cfg["pwinputtimeout"]) != Consts::def_pw_input_timeout)
-	    MYEXIT("pw_input_timeout mismatch");
-    } catch (std::exception& e) {
-	MYEXIT(e.what());
-    }
-
-    try {
-	cfg[""].set_str("");
-	MYEXIT("Config::operator[] allowed \"\"");
-    } catch (std::invalid_argument&) {
-	// OK
-    } catch (std::exception& e) {
-	MYEXIT(e.what());
-    }
-
-    try {
-	cfg["       "].set_str("");
-	MYEXIT("Config::operator[] allowed \"         \"");
-    } catch (std::invalid_argument&) {
-	// OK
-    } catch (std::exception& e) {
-	MYEXIT(e.what());
-    }
-
-    try {
-	cfg["__should_not_be_found"].set_str("");
-	MYEXIT("Config::operator[] allowed \"__should_not_be_found\"");
-    } catch (std::invalid_argument&) {
-	// OK
-    } catch (std::exception& e) {
-	MYEXIT(e.what());
-    }
-
-    try {
-	cfg[" locktimeout "].set_str("53");
-	MYEXIT("Config::operator[] should not find \" locktimeout \"");
-    } catch (std::invalid_argument&) {
-	// OK
-    } catch (std::exception& e) {
-	MYEXIT(e.what());
-    }
 }
 
 void
@@ -283,7 +156,7 @@ test_petfile_val() {
 
     val2.set("/test/t.pet");
     if (val2.get() != std::string("/test/t.pet"))
-	MYEXIT("CfgValPetFile: value not set properly (#1)"); 
+	MYEXIT("CfgValPetFile: value not set properly (#1)");
 
     val2.set("t");
     if (val2.get() != std::string("t.pet"))
@@ -328,7 +201,7 @@ test_rng_val() {
 	MYEXIT(e.what());
     }
 
-    
+
     try {
 	val1.set_str("devrandom");
 	if (val1 != YAPET::PWGEN::DEVRANDOM)
@@ -389,7 +262,7 @@ test_int_val() {
 
     if (val5 != 1)
 	MYEXIT("CfgIntVal: boundaries not working (#4)");
-	    
+
     val5.set(-2);
     if (val5 != -2)
 	MYEXIT("CfgIntVal: boundaries not working (#5)");
@@ -415,7 +288,143 @@ test_int_val() {
 	MYEXIT("CfgIntVal: boundaries not working (#11)");
 }
 
-    
+void
+test_initvalues() {
+    // Test default values
+    Config cfg;
+
+    if (!cfg.petfile.get().empty())
+	MYEXIT("cfg.petfile not empty");
+
+    if (cfg.timeout != Consts::def_locktimeout)
+	MYEXIT("locktimeout mismatch");
+
+    if (cfg.filesecurity != Consts::def_filesecurity)
+	MYEXIT("filesecurity mismatch");
+
+    if (cfg.pwgenpwlen != Consts::def_pwlen)
+	MYEXIT("pwgenpwlen mismatch");
+
+    if (cfg.pwgen_rng != Consts::def_pwgen_rng)
+	MYEXIT("pwgen_rng mismatch");
+
+    if (cfg.pwgen_letters!=PWGEN::HAS_LETTERS(Consts::def_character_pools))
+	MYEXIT("pwgen_letters mismatch");
+
+    if (cfg.pwgen_digits!=PWGEN::HAS_DIGITS(Consts::def_character_pools))
+	MYEXIT("pwgen_digits mismatch");
+
+    if (cfg.pwgen_punct!=PWGEN::HAS_PUNCT(Consts::def_character_pools))
+	MYEXIT("pwgen_punct mismatch");
+
+    if (cfg.pwgen_special!=PWGEN::HAS_SPECIAL(Consts::def_character_pools))
+	MYEXIT("pwgen_special mismatch");
+
+    if (cfg.pwgen_other!=PWGEN::HAS_OTHER(Consts::def_character_pools))
+	MYEXIT("pwgen_other mismatch");
+
+    if (cfg.character_pools() != Consts::def_character_pools)
+	MYEXIT("character_pools() mismatch");
+
+    if (cfg.allow_lock_quit != Consts::def_allow_lock_quit)
+	MYEXIT("allow_lock_quit mismatch");
+
+    if (cfg.pw_input_timeout != Consts::def_pw_input_timeout)
+	MYEXIT("pw_input_timeout mismatch");
+
+    if (cfg.ignorerc != false)
+	MYEXIT("ignorerc must be false");
+}
+
+void
+test_index_operator() {
+    Config cfg;
+
+    try {
+	if (!dynamic_cast<CfgValPetFile&>(cfg["load"]).get().empty())
+	    MYEXIT("cfg.petfile not empty");
+
+	if (dynamic_cast<CfgValInt&>(cfg["locktimeout"]) != Consts::def_locktimeout)
+	    MYEXIT("locktimeout mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["checkfsecurity"]) != Consts::def_filesecurity)
+	    MYEXIT("filesecurity mismatch");
+
+	if (dynamic_cast<CfgValInt&>(cfg["pwgen_pwlen"]) != Consts::def_pwlen)
+	    MYEXIT("pwgenpwlen mismatch");
+
+	if (dynamic_cast<CfgValRNG&>(cfg["pwgen_rng"]) != Consts::def_pwgen_rng)
+	    MYEXIT("pwgen_rng mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["pwgen_letters"]) !=PWGEN::HAS_LETTERS(Consts::def_character_pools))
+	    MYEXIT("pwgen_letters mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["pwgen_digits"])!=PWGEN::HAS_DIGITS(Consts::def_character_pools))
+	    MYEXIT("pwgen_digits mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["pwgen_punct"])!=PWGEN::HAS_PUNCT(Consts::def_character_pools))
+	    MYEXIT("pwgen_punct mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["pwgen_special"])!=PWGEN::HAS_SPECIAL(Consts::def_character_pools))
+	    MYEXIT("pwgen_special mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["pwgen_other"])!=PWGEN::HAS_OTHER(Consts::def_character_pools))
+	    MYEXIT("pwgen_other mismatch");
+
+	if (dynamic_cast<CfgValBool&>(cfg["allowlockquit"]) != Consts::def_allow_lock_quit)
+	    MYEXIT("allow_lock_quit mismatch");
+
+	if (dynamic_cast<CfgValInt&>(cfg["pwinputtimeout"]) != Consts::def_pw_input_timeout)
+	    MYEXIT("pw_input_timeout mismatch");
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+
+    try {
+	cfg[""].set_str("");
+	MYEXIT("Config::operator[] allowed \"\"");
+    } catch (std::invalid_argument&) {
+	// OK
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+
+    try {
+	cfg["       "].set_str("");
+	MYEXIT("Config::operator[] allowed \"         \"");
+    } catch (std::invalid_argument&) {
+	// OK
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+
+    try {
+	cfg["__should_not_be_found"].set_str("");
+	MYEXIT("Config::operator[] allowed \"__should_not_be_found\"");
+    } catch (std::invalid_argument&) {
+	// OK
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+
+    try {
+	cfg[" locktimeout "].set_str("53");
+	MYEXIT("Config::operator[] should not find \" locktimeout \"");
+    } catch (std::invalid_argument&) {
+	// OK
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+
+    try {
+	cfg["ignorec"].set_str("1");
+	MYEXIT("`ignorerc' must not be accessible by ::operator[]");
+    } catch (std::invalid_argument&) {
+	// OK
+    } catch (std::exception& e) {
+	MYEXIT(e.what());
+    }
+}
 
 int main (int, char**) {
 

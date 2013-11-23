@@ -291,6 +291,7 @@ namespace YAPET {
 		CfgValBool pwgen_other;
                 CfgValBool allow_lock_quit;
                 CfgValInt pw_input_timeout;
+		CfgValBool ignorerc;
 
                 Config();
                 Config(const Config& c);

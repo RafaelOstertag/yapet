@@ -190,9 +190,8 @@ Config::setup_map() {
     __options["pwgen_punct"]=&pwgen_punct;
     __options["pwgen_special"]=&pwgen_special;
     __options["pwgen_other"]=&pwgen_other;
+    // ignorerc can't be set in the configuration file
 }
-
-
 
 Config::Config() : 
     petfile(std::string()),
@@ -213,7 +212,8 @@ Config::Config() :
     allow_lock_quit(Consts::def_allow_lock_quit),
     pw_input_timeout(Consts::def_pw_input_timeout,
 		     Consts::min_locktimeout,
-		     Consts::min_locktimeout) {
+		     Consts::min_locktimeout),
+    ignorerc(false) {
     setup_map();
 }
 
@@ -229,7 +229,8 @@ Config::Config(const Config& c) :
     pwgen_special(c.pwgen_special),
     pwgen_other(c.pwgen_other),
     allow_lock_quit(c.allow_lock_quit),
-    pw_input_timeout(c.pw_input_timeout) {
+    pw_input_timeout(c.pw_input_timeout),
+    ignorerc(c.ignorerc) {
     setup_map();
 }
 
@@ -258,6 +259,7 @@ Config::operator=(const Config& c) {
     pwgen_other = c.pwgen_other;
     allow_lock_quit = c.allow_lock_quit;
     pw_input_timeout = c.pw_input_timeout;
+    ignorerc = c.ignorerc;
 
     return *this;
 }
@@ -298,6 +300,7 @@ Config::lock() {
     pwgen_other.lock();
     allow_lock_quit.lock();
     pw_input_timeout.lock();
+    ignorerc.lock();
 }
 
 void
@@ -314,6 +317,7 @@ Config::unlock() {
     pwgen_other.unlock();
     allow_lock_quit.unlock();
     pw_input_timeout.unlock();
+    ignorerc.unlock();
 }
 
 CfgValBase&
