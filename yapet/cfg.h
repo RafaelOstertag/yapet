@@ -218,7 +218,7 @@ namespace YAPET {
 		int __def_out_of_bounds;
 
 	    public:
-		CfgValInt(int v,
+		CfgValInt(int v=0,
 			  int def_out_of_bounds=0,
 			  int min=std::numeric_limits<int>::min(),
 			  int max=std::numeric_limits<int>::max()) : CfgVal<int>(v < min || v > max ? def_out_of_bounds : v), __min(min), __max(max), __def_out_of_bounds(def_out_of_bounds) {
