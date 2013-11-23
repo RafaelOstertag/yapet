@@ -169,7 +169,7 @@ Config::setup_map() {
 
 Config::Config() : 
     petfile(std::string()),
-    timeout(-1,
+    timeout(Consts::def_locktimeout,
 	    Consts::min_locktimeout,
 	    Consts::min_locktimeout),
     filesecurity(Consts::def_filesecurity),
