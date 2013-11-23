@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2009-2012  Rafael Ostertag
+// Copyright (C) 2009-2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -73,28 +73,30 @@ CfgValPetFile::cleanup_path(const std::string& p) {
 
     return working_copy;
 }
-void
-CfgValPetFile::set(const std::string& s) {
-    if (s.empty()) {
-	CfgValStr::set(s);
-	return;
+
+std::string
+CfgValPetFile::add_suffix(const std::string& p) {
+    if (p.empty()) {
+	return p;
     }
 
-    if (s.length() < 4) {
+    if (p.length() < 4) {
 	// Since this holds, there can no ".pet"
-	CfgValStr::set(s+Consts::default_suffix);
-	return;
+	return p+Consts::default_suffix;
     }
 
     // We don't have to check for the string length, because that
     // already happened above.
-    if (s.substr(s.length()-4,4) != Consts::default_suffix) {
-	CfgValStr::set(s+Consts::default_suffix);
-	return;
+    if (p.substr(p.length()-4,4) != Consts::default_suffix) {
+	return p+Consts::default_suffix;
     }
 
-    CfgValStr::set(cleanup_path(s));
+    return p;
+}
 
+void
+CfgValPetFile::set(const std::string& s) {
+    CfgValStr::set(add_suffix(cleanup_path(s)));
 }
 
 void
