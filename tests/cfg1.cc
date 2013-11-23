@@ -16,12 +16,12 @@ using namespace YAPET;
 using namespace YAPET::CONFIG;
 
 template<class T>
-class CfgValTest : public CfgVal<typename T> {
+class CfgValTest : public CfgVal<T> {
     public:
 	CfgValTest(const T& v) : CfgVal<T>(v) {}
 	CfgValTest(const CfgValTest<T>& c) : CfgVal<T>(c) {}
 	CfgValTest& operator=(const CfgValTest<T>& c) {
-	    CfgVal<T>operator=(c);
+	    CfgVal<T>::operator=(c);
 	    return *this;
 	}
 	void set_str(const std::string&) {
