@@ -86,9 +86,9 @@ namespace YAPET {
              * struct and sets the \c _size field.
              */
             void alloc_mem() throw (YAPETException) {
-                data = (T*) malloc (sizeof (T) );
+                data = (T*) std::malloc (sizeof (T) );
 
-                if (data == NULL)
+                if (data == 0)
                     throw YAPETException (_ ("Memory exhausted") );
 
                 _size = sizeof (T);
@@ -100,8 +100,8 @@ namespace YAPET {
              * Zero'es the memory out and frees it.
              */
             void free_mem() {
-                memset (data, 0, _size);
-                free (data);
+                std::memset (data, 0, _size);
+                std::free (data);
             }
 
         public:
@@ -116,7 +116,7 @@ namespace YAPET {
              */
             Record<T> (const T& d) throw (YAPETException) {
                 alloc_mem();
-                memcpy (data, &d, sizeof (T) );
+                std::memcpy (data, &d, sizeof (T) );
             }
 
             /**
@@ -131,7 +131,7 @@ namespace YAPET {
 
             Record<T> (const Record<T>& r) throw (YAPETException) {
                 alloc_mem();
-                memcpy (data, r.data, _size);
+                std::memcpy (data, r.data, _size);
             }
 
             virtual ~Record<T>() {
@@ -227,7 +227,7 @@ namespace YAPET {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
-                memcpy (data, r.data, r._size);
+                std::memcpy (data, r.data, r._size);
                 return *this;
             }
 
@@ -244,7 +244,7 @@ namespace YAPET {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
-                memcpy (data, &r, _size);
+                std::memcpy (data, &r, _size);
                 return *this;
             }
 
@@ -261,7 +261,7 @@ namespace YAPET {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
-                memcpy (data, r, _size);
+                std::memcpy (data, r, _size);
                 return *this;
             }
 
@@ -289,7 +289,7 @@ namespace YAPET {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
-                memcpy (data, bdb(), _size);
+                std::memcpy (data, bdb(), _size);
                 return *this;
             }
     };

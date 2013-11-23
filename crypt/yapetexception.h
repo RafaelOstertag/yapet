@@ -56,7 +56,7 @@ namespace YAPET {
     enum EXNUM {
 	BDBUFFER_TOO_SMALL = 1,
 	BDBUFFER_TOO_BIG = 2,
-	NULLPOINTER = 3,
+	ZEROPOINTER = 3,
 	NOTUSED = 255
     };
 

@@ -99,7 +99,7 @@ set_rlimit() {
     if (retval != 0) {
         std::cerr << _("Failed to suppress the creation of core file.")
                   << std::endl
-                  << _("The error message is: ") << strerror(errno)
+                  << _("The error message is: ") << std::strerror(errno)
                   << std::endl
                   << _(
             "In case a core file is created, it may contain clear text passwords.")
@@ -213,20 +213,20 @@ main(int argc, char** argv) {
 
 #ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
-        { (char*)"copyright", no_argument, NULL, 'c'},
-        { (char*)"help", no_argument, NULL, 'h'},
-        { (char*)"ignore-rc", no_argument, NULL, 'i'},
-        { (char*)"rc-file", required_argument, NULL, 'r'},
-        { (char*)"no-file-security", no_argument, NULL, 's'},
-        { (char*)"file-security", no_argument, NULL, 'S'},
-        { (char*)"timeout", required_argument, NULL, 't'},
-        { (char*)"version", no_argument, NULL, 'V'},
-        {NULL, 0, NULL, 0}
+        { (char*)"copyright", no_argument, 0, 'c'},
+        { (char*)"help", no_argument, 0, 'h'},
+        { (char*)"ignore-rc", no_argument, 0, 'i'},
+        { (char*)"rc-file", required_argument, 0, 'r'},
+        { (char*)"no-file-security", no_argument, 0, 's'},
+        { (char*)"file-security", no_argument, 0, 'S'},
+        { (char*)"timeout", required_argument, 0, 't'},
+        { (char*)"version", no_argument, 0, 'V'},
+        {0, 0, 0, 0}
     };
 
     while ( (c =
                  getopt_long(argc, argv, ":chir:sSt:V", long_options,
-                             NULL) ) != -1) {
+                             0) ) != -1) {
 #else // HAVE_GETOPT_LONG
     extern char* optarg;
     extern int optopt, optind;

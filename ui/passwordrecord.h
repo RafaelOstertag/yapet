@@ -52,7 +52,7 @@
  * object holding the altered record.
  *
  * To display a window for creating a new password record, pass \c
- * NULL to the \c PartDec pointer argument when constructing. The new
+ * 0 to the \c PartDec pointer argument when constructing. The new
  * record can be obtained by calling \c getEncEntry().
  *
  * In any case, the memory occupied by the pointer returned by \c
@@ -123,10 +123,10 @@ class PasswordRecord : public YACURS::Dialog {
          * object. The caller is responsible for freeing the memory
          * associated with the pointer returned.
          *
-         * It returns \c NULL if the dialog has been canceled.
+         * It returns \c 0 if the dialog has been canceled.
          *
          * @return pointer to the new or altered password record, or
-         * \c NULL if the dialog has been canceled. The caller is
+         * \c 0 if the dialog has been canceled. The caller is
          * responsible for freeing the memory associated with the
          * pointer returned.
          */

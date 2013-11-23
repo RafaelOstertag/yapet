@@ -106,35 +106,35 @@ PWGen::init (int p, RNGENGINE rnge) throw (std::runtime_error) {
     rng = new RNG(rnge);
 }
 
-PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(NULL), password (NULL), password_len (0) {
+PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge) throw (std::runtime_error) : cp (0), rng(0), password (0), password_len (0) {
     init (p, rnge);
-    assert (cp != NULL);
-    assert (rng != NULL);
-    assert (password == NULL);
+    assert (cp != 0);
+    assert (rng != 0);
+    assert (password == 0);
 }
 
-PWGen::PWGen (int p, RNGENGINE rnge) throw (std::runtime_error) : cp (NULL), rng(NULL), password (NULL), password_len (0) {
+PWGen::PWGen (int p, RNGENGINE rnge) throw (std::runtime_error) : cp (0), rng(0), password (0), password_len (0) {
     init (p, rnge);
-    assert (cp != NULL);
-    assert (rng != NULL);
-    assert (password == NULL);
+    assert (cp != 0);
+    assert (rng != 0);
+    assert (password == 0);
 }
 
 //
 // Copy Constructor
 //
-PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(NULL), password (NULL), password_len (0) {
-    assert (pw.cp != NULL);
-    assert (pw.rng != NULL);
+PWGen::PWGen (const PWGen& pw) throw() : cp (0), rng(0), password (0), password_len (0) {
+    assert (pw.cp != 0);
+    assert (pw.rng != 0);
     cp = new CharacterPool (* (pw.cp) );
     rng = new RNG(*(pw.rng));
-    assert (cp != NULL);
-    assert (rng != NULL);
+    assert (cp != 0);
+    assert (rng != 0);
 
-    if (pw.password != NULL) {
+    if (pw.password != 0) {
         assert (pw.password_len > 0);
         password = new char[pw.password_len + 1];
-        memcpy ( (void*) password, pw.password, pw.password_len);
+        std::memcpy ( (void*) password, pw.password, pw.password_len);
         // Don't forget to zero terminate!
         const_cast<char*>(password) [pw.password_len + 1] = '\0';
         password_len = pw.password_len;
@@ -142,43 +142,43 @@ PWGen::PWGen (const PWGen& pw) throw() : cp (NULL), rng(NULL), password (NULL), 
 }
 
 PWGen::~PWGen() throw() {
-    assert (cp != NULL);
-    assert (rng != NULL);
+    assert (cp != 0);
+    assert (rng != 0);
     delete cp;
     delete rng;
 
-    if (password_len != 0) assert (password != NULL);
+    if (password_len != 0) assert (password != 0);
 
-    if (password != NULL) {
+    if (password != 0) {
         assert (password_len > 0);
-        memset ( (void*) password, 0, password_len);
+        std::memset ( (void*) password, 0, password_len);
         delete[] password;
     }
 }
 
 void
 PWGen::setNewPool (int p) throw (std::runtime_error) {
-    assert (cp != NULL);
+    assert (cp != 0);
     delete cp;
     cp = new CharacterPool (p);
-    assert (cp != NULL);
+    assert (cp != 0);
 }
 
 void
 PWGen::setNewRNG (RNGENGINE rnge) throw (std::runtime_error) {
-    assert (rng != NULL);
+    assert (rng != 0);
     delete rng;
     rng = new RNG (rnge);
-    assert (rng != NULL);
+    assert (rng != 0);
 }
 
 void
 PWGen::generatePassword (size_t len) throw (std::logic_error) {
     if (len == 0) return;
 
-    if (password != NULL) {
+    if (password != 0) {
         assert (password_len > 0);
-        memset ( (void*) password, 0, password_len);
+        std::memset ( (void*) password, 0, password_len);
         delete[] password;
     }
 
@@ -216,7 +216,7 @@ RESTART:
 	    
 # else
 
-            if (isspace (suggestion) != 0)
+            if (std::isspace (suggestion) != 0)
                 goto RESTART;
 
 # endif // HAVE_ISBLANK
@@ -245,10 +245,10 @@ RESTART:
 
 const char*
 PWGen::getPassword() const throw() {
-    assert ( ( (password != NULL) && (password_len > 0) ) ||
-             ( (password == NULL) && (password_len == 0) ) );
+    assert ( ( (password != 0) && (password_len > 0) ) ||
+             ( (password == 0) && (password_len == 0) ) );
 
-    if (password == NULL) return NULL;
+    if (password == 0) return 0;
 
     assert (password[password_len] == '\0');
     return password;
@@ -256,8 +256,8 @@ PWGen::getPassword() const throw() {
 
 const PWGen&
 PWGen::operator= (const PWGen & pw) throw() {
-    assert (cp != NULL);
-    assert (rng != NULL);
+    assert (cp != 0);
+    assert (rng != 0);
 
     if (&pw == this) return *this;
 
@@ -266,16 +266,16 @@ PWGen::operator= (const PWGen & pw) throw() {
     delete rng;
     rng = new RNG (* (pw.rng) );
 
-    if (password != NULL) {
+    if (password != 0) {
         assert (password_len > 0);
-        memset ( (void*) password, 0, password_len);
+        std::memset ( (void*) password, 0, password_len);
         delete[] password;
     }
 
-    if (pw.password != NULL) {
+    if (pw.password != 0) {
         assert (pw.password_len > 0);
         password = new char[pw.password_len];
-        memcpy ( (void*) password, pw.password, pw.password_len);
+        std::memcpy ( (void*) password, pw.password, pw.password_len);
         // Don't forget to zero terminate
         const_cast<char*>(password) [pw.password_len + 1] = '\0';
         password_len = pw.password_len;

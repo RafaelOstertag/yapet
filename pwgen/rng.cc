@@ -105,12 +105,12 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
             break;
         case LRAND48:
 #if defined(HAVE_SRAND48) && defined(HAVE_LRAND48)
-            srand48 (time (NULL) );
+            srand48 (time (0) );
 #endif
             break;
         case RAND:
 #if defined(HAVE_SRAND) && defined(HAVE_RAND)
-            srand (time (NULL) );
+            srand (time (0) );
 #endif
             break;
         case AUTO:
@@ -161,7 +161,7 @@ RNG::devrandom (size_t ceil) throw (PWGenException) {
 		default: {
 		    char errmsg[1024];
 		    snprintf(errmsg, 1024, "%s (%s)", _ ("Read to few bytes on /dev/[u]random."),
-			     strerror(errno));
+			     std::strerror(errno));
 		    throw PWGenException ( errmsg );
 		}
 	    };

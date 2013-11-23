@@ -43,7 +43,7 @@ ConfigFile::getHomeDir() const {
 
     char* hd = getenv("HOME");
 
-    if (hd != NULL) {
+    if (hd != 0) {
         homedir = hd;
 
         if (homedir[homedir.length() ] != '/')
@@ -55,7 +55,7 @@ ConfigFile::getHomeDir() const {
     struct passwd* pwd;
     pwd = getpwuid(getuid() );
 
-    if (pwd != NULL) {
+    if (pwd != 0) {
         homedir = pwd->pw_dir;
 
         if (homedir[homedir.length() ] != '/')

@@ -55,14 +55,14 @@ namespace INTERNAL {
 	    std::string needle;
 #ifdef YACURS_USE_WCHAR
 	    std::string mbstolower(const std::string& mbs) {
-		size_t reqsize = mbstowcs(0, mbs.c_str(), 0);
+		size_t reqsize = std::mbstowcs(0, mbs.c_str(), 0);
 		if (reqsize == (size_t)-1)
 		    throw std::runtime_error(_("Finder(): Unable to convert to wide character string"));
 
 		wchar_t* wstr = new wchar_t[reqsize+1];
 		if (wstr==0)
 		    throw std::runtime_error(_("Finder(): out of memory"));
-		if (mbstowcs(wstr, mbs.c_str(), reqsize+1)!=reqsize) {
+		if (std::mbstowcs(wstr, mbs.c_str(), reqsize+1)!=reqsize) {
 		    delete[] wstr;
 		    throw std::runtime_error(_("Finder(): Unable to convert to wide character string"));
 		}
@@ -70,7 +70,7 @@ namespace INTERNAL {
 		for(size_t i=0; i<reqsize; i++)
 		    wstr[i]=towlower(wstr[i]);
 
-		reqsize = wcstombs(0, wstr, 0);
+		reqsize = std::wcstombs(0, wstr, 0);
 		if (reqsize==(size_t)-1) {
 		    delete[] wstr;
 		    throw std::runtime_error(_("Finder(): Unable to convert to multibyte string"));
@@ -82,7 +82,7 @@ namespace INTERNAL {
 		    throw std::runtime_error(_("Finder(): out of memory"));
 		}
 
-		if (wcstombs(str, wstr, reqsize+1)!=reqsize) {
+		if (std::wcstombs(str, wstr, reqsize+1)!=reqsize) {
 		    delete[] wstr;
 		    delete[] str;
 		    throw std::runtime_error(_("Finder(): Unable to convert to multibyte string"));
@@ -135,7 +135,7 @@ namespace INTERNAL {
 			       std::ptr_fun<int, int>(std::tolower));
 		return lower.find(needle) != std::string::npos;
 #  else // defined(HAVE_TOLOWER)
-		return strstr(
+		return std::strstr(
 				  reinterpret_cast<const char*>(haystack.getName()),
 				  needle.c_str()) != 0;
 #  endif // defined(HAVE_TOLOWER)

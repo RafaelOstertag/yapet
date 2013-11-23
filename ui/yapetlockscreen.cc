@@ -85,7 +85,7 @@ YapetLockScreen::close() {
 	ttl += basename(tmp);
 
 	ttl += ")";
-	free(tmp);
+	std::free(tmp);
 #endif
 	YACURS::Curses::set_terminal_title(ttl);
 #endif

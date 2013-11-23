@@ -48,9 +48,9 @@ using namespace YAPET;
  */
 uint8_t*
 BDBuffer::alloc_mem (uint32_t s) throw (YAPETException) {
-    uint8_t* tmp = (uint8_t*) malloc (s);
+    uint8_t* tmp = (uint8_t*) std::malloc (s);
 
-    if (tmp == NULL)
+    if (tmp == 0)
         throw YAPETException (_ ("Memory exhausted") );
 
     return tmp;
@@ -67,8 +67,8 @@ BDBuffer::alloc_mem (uint32_t s) throw (YAPETException) {
  */
 void
 BDBuffer::free_mem (uint8_t* d, uint32_t s) {
-    memset (d, 0, s);
-    free (d);
+    std::memset (d, 0, s);
+    std::free (d);
 }
 
 /**
@@ -84,19 +84,19 @@ BDBuffer::BDBuffer (uint32_t is) throw (YAPETException) : _size (is) {
  * Initializes the object, but does not allocate memory.
  *
  * If the object is created using this constructor, functions
- * returning pointer to the buffer will return \c NULL
+ * returning pointer to the buffer will return \c 0
  */
-BDBuffer::BDBuffer() : _size (0), data (NULL) { }
+BDBuffer::BDBuffer() : _size (0), data (0) { }
 
 BDBuffer::BDBuffer (const BDBuffer& ed) throw (YAPETException) {
-    if (ed.data == NULL) {
-        data = NULL;
+    if (ed.data == 0) {
+        data = 0;
         _size = 0;
         return;
     }
 
     data = alloc_mem (ed._size);
-    memcpy (data, ed.data, ed._size);
+    std::memcpy (data, ed.data, ed._size);
     _size = ed._size;
 }
 
@@ -106,7 +106,7 @@ BDBuffer::BDBuffer (const BDBuffer& ed) throw (YAPETException) {
  * @sa BDBuffer::free_mem()
  */
 BDBuffer::~BDBuffer() {
-    if (data == NULL) return;
+    if (data == 0) return;
 
     free_mem (data, _size);
 }
@@ -127,7 +127,7 @@ BDBuffer::~BDBuffer() {
  */
 void
 BDBuffer::resize (uint32_t ns) throw (YAPETException) {
-    if (data == NULL) {
+    if (data == 0) {
         data = alloc_mem (ns);
         _size = ns;
         return;
@@ -136,9 +136,9 @@ BDBuffer::resize (uint32_t ns) throw (YAPETException) {
     uint8_t* newbuf = alloc_mem (ns);
 
     if (ns > _size)
-        memcpy (newbuf, data, _size);
+        std::memcpy (newbuf, data, _size);
     else
-        memcpy (newbuf, data, ns);
+        std::memcpy (newbuf, data, ns);
 
     free_mem (data, _size);
     _size = ns;
@@ -194,14 +194,14 @@ const BDBuffer&
 BDBuffer::operator= (const BDBuffer & ed) {
     if (this == &ed) return *this;
 
-    if (data != NULL)
+    if (data != 0)
         free_mem (data, _size);
 
-    if (ed.data != NULL) {
+    if (ed.data != 0) {
         data = alloc_mem (ed._size);
-        memcpy (data, ed.data, ed._size);
+        std::memcpy (data, ed.data, ed._size);
     } else {
-        data = NULL;
+        data = 0;
     }
 
     _size = ed._size;

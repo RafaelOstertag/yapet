@@ -80,7 +80,7 @@ namespace YAPET {
                     return rng->getRNGEngineUsed();
                 }
 		inline int getCharacterPools() const {
-		    if (cp != NULL)
+		    if (cp != 0)
 			return cp->getAllocatedPools();
 		    return 0;
 		}

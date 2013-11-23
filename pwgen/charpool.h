@@ -119,19 +119,19 @@ namespace YAPET {
                 static const char* get_other();
 
                 inline size_t pool_letters_len() const {
-                    return strlen (letters);
+                    return std::strlen (letters);
                 }
                 inline size_t pool_digits_len() const {
-                    return strlen (digits);
+                    return std::strlen (digits);
                 }
                 inline size_t pool_punct_len() const {
-                    return strlen (punct);
+                    return std::strlen (punct);
                 }
                 inline size_t pool_special_len() const {
-                    return strlen (special);
+                    return std::strlen (special);
                 }
                 inline size_t pool_other_len() const {
-                    return strlen (other);
+                    return std::strlen (other);
                 }
 		inline size_t pool_len(SUBPOOLS p) const {
 		    switch (p) {
@@ -159,11 +159,11 @@ namespace YAPET {
 
                 inline const char* getPool (size_t* len) const throw (std::runtime_error) {
 #ifndef NDEBUG
-                    assert (len != NULL);
+                    assert (len != 0);
 #else
 
-                    if (len == NULL)
-                        throw std::runtime_error (_ ("NULL pointer passed.") );
+                    if (len == 0)
+                        throw std::runtime_error (_ ("0 pointer passed.") );
 
 #endif
                     *len = pool_length;

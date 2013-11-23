@@ -370,7 +370,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	ttl += basename(tmp);
 
 	ttl += ")";
-	free(tmp);
+	std::free(tmp);
 #endif
 	YACURS::Curses::set_terminal_title(ttl);
 #endif

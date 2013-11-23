@@ -41,8 +41,8 @@ using namespace YAPET;
  */
 void
 Key::cleanup() {
-    memset (key, 0, KEYLENGTH);
-    memset (IVec, 0, IVECLENGTH);
+    std::memset (key, 0, KEYLENGTH);
+    std::memset (IVec, 0, IVECLENGTH);
 }
 
 /**
@@ -60,19 +60,19 @@ Key::Key (const char* password) throw (YAPETException) {
     //
     const EVP_MD* md = EVP_sha1();
 
-    if (md == NULL)
+    if (md == 0)
         throw YAPETException (_ ("Run 1: Unable to initialize the EVP_MD structure") );
 
     EVP_MD_CTX mdctx;
     EVP_MD_CTX_init (&mdctx);
-    int retval = EVP_DigestInit_ex (&mdctx, md, NULL);
+    int retval = EVP_DigestInit_ex (&mdctx, md, 0);
 
     if (retval == 0) {
         EVP_MD_CTX_cleanup (&mdctx);
         throw YAPETException (_ ("Run 1: Unable to initialize the digest") );
     }
 
-    retval = EVP_DigestUpdate (&mdctx, password, strlen (password) );
+    retval = EVP_DigestUpdate (&mdctx, password, std::strlen (password) );
 
     if (retval == 0) {
         EVP_MD_CTX_cleanup (&mdctx);
@@ -101,13 +101,13 @@ Key::Key (const char* password) throw (YAPETException) {
     //
     md = EVP_md5();
 
-    if (md == NULL) {
+    if (md == 0) {
         cleanup();
         throw YAPETException (_ ("Run 2: Unable to initialize the EVP_MD structure") );
     }
 
     EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, NULL);
+    retval = EVP_DigestInit_ex (&mdctx, md, 0);
 
     if (retval == 0) {
         EVP_MD_CTX_cleanup (&mdctx);
@@ -144,13 +144,13 @@ Key::Key (const char* password) throw (YAPETException) {
     //
     md = EVP_ripemd160();
 
-    if (md == NULL) {
+    if (md == 0) {
         cleanup();
         throw YAPETException (_ ("Run 3: Unable to initialize the EVP_MD structure") );
     }
 
     EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, NULL);
+    retval = EVP_DigestInit_ex (&mdctx, md, 0);
 
     if (retval == 0) {
         EVP_MD_CTX_cleanup (&mdctx);
@@ -200,13 +200,13 @@ Key::Key (const char* password) throw (YAPETException) {
     uint8_t ivec_hash_buf[MD5_LEN];
     md = EVP_md5();
 
-    if (md == NULL) {
+    if (md == 0) {
         cleanup();
         throw YAPETException (_ ("IVec: Unable to initialize the EVP_MD structure") );
     }
 
     EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, NULL);
+    retval = EVP_DigestInit_ex (&mdctx, md, 0);
 
     if (retval == 0) {
         EVP_MD_CTX_cleanup (&mdctx);
@@ -237,13 +237,13 @@ Key::Key (const char* password) throw (YAPETException) {
     }
 
     EVP_MD_CTX_cleanup (&mdctx);
-    memcpy (IVec, ivec_hash_buf, IVECLENGTH);
-    memset (ivec_hash_buf, 0, MD5_LEN);
+    std::memcpy (IVec, ivec_hash_buf, IVECLENGTH);
+    std::memset (ivec_hash_buf, 0, MD5_LEN);
 }
 
 Key::Key (const Key& k) {
-    memcpy (key, k.key, KEYLENGTH);
-    memcpy (IVec, k.IVec, IVECLENGTH);
+    std::memcpy (key, k.key, KEYLENGTH);
+    std::memcpy (IVec, k.IVec, IVECLENGTH);
 }
 
 Key::~Key() {
@@ -255,8 +255,8 @@ Key::operator= (const Key & k) {
     if (this == &k) return *this;
 
     cleanup();
-    memcpy (key, k.key, KEYLENGTH);
-    memcpy (IVec, k.IVec, IVECLENGTH);
+    std::memcpy (key, k.key, KEYLENGTH);
+    std::memcpy (IVec, k.IVec, IVECLENGTH);
     return *this;
 }
 
@@ -276,12 +276,12 @@ Key::operator== (const Key& k) const {
 
     if (k.ivec_size() != ivec_size() ) return false;
 
-    int retval = memcmp (k.key, key, size() );
+    int retval = std::memcmp (k.key, key, size() );
 
     if (retval != 0)
         return false;
 
-    retval = memcmp (k.IVec, IVec, ivec_size() );
+    retval = std::memcmp (k.IVec, IVec, ivec_size() );
 
     if (retval != 0)
         return false;

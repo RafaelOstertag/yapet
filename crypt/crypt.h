@@ -163,7 +163,7 @@ namespace YAPET {
                 EVP_CIPHER_CTX_init (&ctx);
                 int retval = EVP_EncryptInit_ex (&ctx,
                                                  cipher,
-                                                 NULL,
+                                                 0,
                                                  key,
                                                  key.getIVec() );
 
@@ -241,7 +241,7 @@ namespace YAPET {
                 EVP_CIPHER_CTX_init (&ctx);
                 int retval = EVP_DecryptInit_ex (&ctx,
                                                  cipher,
-                                                 NULL,
+                                                 0,
                                                  key,
                                                  key.getIVec() );
 
@@ -284,12 +284,12 @@ namespace YAPET {
 
                 decdata->resize (outlen + tmplen);
                 EVP_CIPHER_CTX_cleanup (&ctx);
-		Record<T>* r = NULL;
+		Record<T>* r = 0;
 		try {
 		    r = new Record<T>;
 		    *r = *decdata;
 		} catch (...) {
-		    if ( r != NULL)
+		    if ( r != 0)
 			delete r;
 		    delete decdata;
 		    throw;

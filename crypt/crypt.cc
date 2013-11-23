@@ -47,19 +47,19 @@ using namespace YAPET;
  * @throw YAPETException in case the key length of the cipher cannot be
  * set to the length of the key provided.
  */
-Crypt::Crypt (const Key& k) throw (YAPETException) : cipher (NULL),
+Crypt::Crypt (const Key& k) throw (YAPETException) : cipher (0),
         iv_length (0),
         key_length (0),
         key (k) {
     cipher = EVP_bf_cbc();
 
-    if (cipher == NULL)
+    if (cipher == 0)
         throw YAPETException (_ ("Unable to get cipher") );
 
     // Test if key length is ok
     EVP_CIPHER_CTX ctx;
     EVP_CIPHER_CTX_init (&ctx);
-    int retval = EVP_CipherInit_ex (&ctx, cipher, NULL, NULL, NULL, 0);
+    int retval = EVP_CipherInit_ex (&ctx, cipher, 0, 0, 0, 0);
 
     if (retval == 0) {
         EVP_CIPHER_CTX_cleanup (&ctx);
