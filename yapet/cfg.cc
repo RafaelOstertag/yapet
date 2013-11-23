@@ -106,7 +106,7 @@ CfgValPetFile::set_str(const std::string& s) {
 //
 void
 CfgValBool::set_str(const std::string& s) {
-    std::string sanitized(tolower(remove_space(s)));
+    std::string sanitized(tolower(trim(s)));
 
     if (sanitized == "0" ||
 	sanitized == "false" ||
