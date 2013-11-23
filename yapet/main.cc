@@ -211,7 +211,7 @@ main(int argc, char** argv) {
     std::string cfgfilepath;
     int c;
 
-#ifdef HAVE_GETOPT_LONG
+#ifndef HAVE_GETOPT
     struct option long_options[] = {
         { (char*)"copyright", no_argument, 0, 'c'},
         { (char*)"help", no_argument, 0, 'h'},
@@ -227,7 +227,7 @@ main(int argc, char** argv) {
     while ( (c =
                  getopt_long(argc, argv, ":chir:sSt:V", long_options,
                              0) ) != -1) {
-#else // HAVE_GETOPT_LONG
+#else // !HAVE_GETOPT
     extern char* optarg;
     extern int optopt, optind;
 
@@ -235,7 +235,7 @@ main(int argc, char** argv) {
                  getopt(argc, argv,
                         ":c(copyright)h(help)i(ignore-rc)r:(rc-file)s(no-file-security)S(file-security)t:(timeout)V(version)") )
             != -1) {
-#endif // HAVE_GETOPT_LONG
+#endif // HAVE_GETOPT
 
         switch (c) {
         case 'c':
@@ -247,9 +247,8 @@ main(int argc, char** argv) {
             return 0;
 
         case 'i':
-#warning "FIX"
-	    // YAPET::Globals::config.ignorerc.set(true);
-            // YAPET::Globals::config.ignorerc.lock();
+	    YAPET::Globals::config.ignorerc.set(true);
+	    YAPET::Globals::config.ignorerc.lock();
             break;
 
         case 'r':
@@ -293,19 +292,21 @@ main(int argc, char** argv) {
         YAPET::Globals::config.petfile.lock();
     }
 
-    // try{}, may be the file does not exist
-    try {
-	YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,cfgfilepath);
-	cfgfile.parse();
-    } catch(std::runtime_error&) {
-	// intentionally empty
+    if (YAPET::Globals::config.ignorerc) {
+	// try{}, may be the file does not exist
+	try {
+	    YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,cfgfilepath);
+	    cfgfile.parse();
+	} catch(std::runtime_error&) {
+	    // intentionally empty
+	}
     }
 
     // Unlock all configuration values, so that they can be changed
     // again.
     YAPET::Globals::config.unlock();
 
-     YapetUnlockDialog* yunlockdia=0;
+    YapetUnlockDialog* yunlockdia=0;
     try {
         YACURS::Curses::init();
 
