@@ -39,7 +39,7 @@ test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
 check_PROGRAMS = endianess key record bdbuffer enc partdec file file2 file3 file4 file5	\
-corrupt foreign cfgfile1
+corrupt foreign cfg1 cfgfile1
 
 # Checks when building csv2yapet
 if BUILDCSV2YAPET
@@ -106,6 +106,13 @@ file4_SOURCES = file4.cc tests.h
 
 file5_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
 file5_SOURCES = file5.cc tests.h
+
+cfg1_LDADD = @LIBINTL@
+cfg1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet	\
+-I$(top_srcdir)/pwgen
+cfg1_SOURCES = cfg1.cc $(top_srcdir)/yapet/cfg.h	\
+$(top_srcdir)/yapet/consts.h $(top_srcdir)/yapet/cfg.cc	\
+$(top_srcdir)/yapet/consts.cc
 
 cfgfile1_LDADD = @LIBINTL@
 cfgfile1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet
