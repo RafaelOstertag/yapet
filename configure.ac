@@ -130,7 +130,8 @@ AC_TYPE_UINT64_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([basename getopt_long isblank isspace lrand48 rand setlocale srand srand48 strcasestr tcgetattr tcsetattr tolower towlower])
+# getopt: yapet/main.cc: use getopt by default, thus we use #ifndef HAVE_GETOPT
+AC_CHECK_FUNCS([basename getopt getopt_long isblank isspace lrand48 rand setlocale srand srand48 strcasestr tcgetattr tcsetattr tolower towlower])
 
 AC_CHECK_FUNCS([dup2 memset strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
 
