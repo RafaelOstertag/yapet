@@ -179,8 +179,7 @@ namespace YAPET {
 		std::string add_suffix(const std::string& p);
 
 	    public:
-		CfgValPetFile() : CfgValStr(std::string()) {}
-		CfgValPetFile(std::string v) : CfgValStr(add_suffix(cleanup_path(v))) {}
+		CfgValPetFile(std::string v=std::string()) : CfgValStr(add_suffix(cleanup_path(v))) {}
 		CfgValPetFile(const CfgValPetFile& cv): CfgValStr(cv) {}
 		CfgValPetFile& operator=(const CfgValPetFile& cv) {
 		    CfgValStr::operator=(cv);
@@ -197,7 +196,7 @@ namespace YAPET {
 
 	class CfgValBool : public CfgVal<bool> {
 	    public:
-		CfgValBool(bool v) : CfgVal<bool>(v) {}
+		CfgValBool(bool v=true) : CfgVal<bool>(v) {}
 		CfgValBool(const CfgValBool& cv): CfgVal<bool>(cv) {}
 		CfgValBool& operator=(const CfgValBool& cv) {
 		    CfgVal<bool>::operator=(cv);
@@ -250,8 +249,7 @@ namespace YAPET {
 
 	class CfgValRNG : public CfgVal<YAPET::PWGEN::RNGENGINE> {
 	    public:
-		CfgValRNG() : CfgVal<YAPET::PWGEN::RNGENGINE>(YAPET::PWGEN::AUTO) {}
-		CfgValRNG(YAPET::PWGEN::RNGENGINE v) : CfgVal<YAPET::PWGEN::RNGENGINE>(v) {}
+		CfgValRNG(YAPET::PWGEN::RNGENGINE v=YAPET::PWGEN::AUTO) : CfgVal<YAPET::PWGEN::RNGENGINE>(v) {}
 		CfgValRNG(const CfgValRNG& cv): CfgVal<YAPET::PWGEN::RNGENGINE>(cv) {}
 		CfgValRNG& operator=(const CfgValRNG& cv) {
 		    CfgVal<YAPET::PWGEN::RNGENGINE>::operator=(cv);
