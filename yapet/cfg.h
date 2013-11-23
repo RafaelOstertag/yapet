@@ -43,6 +43,8 @@
 
 namespace YAPET {
     namespace CONFIG {
+	extern std::string trim(const std::string& s);
+
 	namespace INTERNAL {
 	    // Wrapper function object which returns bool so that it
 	    // can be used by *_if algorithms

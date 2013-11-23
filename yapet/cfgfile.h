@@ -59,8 +59,6 @@ namespace YAPET {
 
                 std::string getHomeDir() const;
 
-		std::string trim(const std::string& s);
-
             public:
                 ConfigFile(Config& cfg, std::string cfgfile=std::string());
                 ConfigFile(const ConfigFile& cfgfile);
