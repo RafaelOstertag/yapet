@@ -3,6 +3,7 @@ locktimeout = 23
 checkfsecurity = no
 pwinputtimeout=24
 allowlockquit=disabled
+# comment
  load=//test/with space/test2.pet
 pwgen_pwlen = 19
 pwgen_letters = no
