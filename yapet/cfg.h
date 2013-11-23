@@ -178,6 +178,7 @@ namespace YAPET {
 		std::string cleanup_path(const std::string& p);
 
 	    public:
+		CfgValPetFile() : CfgValStr(std::string()) {}
 		CfgValPetFile(std::string v) : CfgValStr(cleanup_path(v)) {}
 		CfgValPetFile(const CfgValPetFile& cv): CfgValStr(cv) {}
 		CfgValPetFile& operator=(const CfgValPetFile& cv) {
