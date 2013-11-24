@@ -229,6 +229,6 @@ int main (int, char**) {
         abort();
     }
 
-    return 0;
+    exit(0);
 
 }
