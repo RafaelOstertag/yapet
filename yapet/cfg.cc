@@ -29,6 +29,9 @@
 #include <cctype>
 #include <cstdlib>
 
+#include <unistd.h>
+#include <pwd.h>
+
 #include "cfg.h"
 
 using namespace YAPET;
@@ -56,6 +59,37 @@ namespace YAPET {
 	    
 	    return working_copy.substr(0, pos+1);
 	}
+
+	std::string
+	getHomeDir() {
+	    std::string homedir("");
+	    
+	    char* hd = getenv("HOME");
+	    
+	    if (hd != 0) {
+		homedir = hd;
+		
+		if (homedir[homedir.length() ] != '/')
+		    homedir.push_back('/');
+		
+		return homedir;
+	    }
+
+	    struct passwd* pwd;
+	    pwd = getpwuid(getuid() );
+	    
+	    if (pwd != 0) {
+		homedir = pwd->pw_dir;
+		
+		if (homedir[homedir.length() ] != '/')
+		    homedir.push_back('/');
+
+		return homedir;
+	    }
+
+	    assert(!homedir.empty() );
+	    return homedir;
+	}
     }
 }
 
@@ -64,10 +98,19 @@ namespace YAPET {
 //
 std::string
 CfgValPetFile::cleanup_path(const std::string& p) {
-    if (p.find("//") == std::string::npos) return p;
+    if (p.empty()) return p;
+
+    std::string working_copy(p);
+
+    // If there is a ~ at the very first position, replace that with
+    // the home directory of the user.
+    if (working_copy[0] == '~') 
+	working_copy.replace(0,1,getHomeDir());
+
+    if (working_copy.find("//") == std::string::npos) return working_copy;
 
     std::string::size_type pos=0;
-    std::string working_copy(p);
+
     while ( (pos=working_copy.find("//")) != std::string::npos )
 	working_copy = working_copy.replace(pos, 2, "/");
 

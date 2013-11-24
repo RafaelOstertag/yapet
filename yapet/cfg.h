@@ -44,6 +44,7 @@
 namespace YAPET {
     namespace CONFIG {
 	extern std::string trim(const std::string& s);
+	extern std::string getHomeDir();
 
 	namespace INTERNAL {
 	    // Wrapper function object which returns bool so that it

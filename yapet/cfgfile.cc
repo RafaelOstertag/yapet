@@ -24,8 +24,6 @@
 
 #include <unistd.h>
 
-#include <pwd.h>
-
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
@@ -36,37 +34,6 @@
 #include "cfgfile.h"
 
 using namespace YAPET::CONFIG;
-
-std::string
-ConfigFile::getHomeDir() const {
-    std::string homedir("");
-
-    char* hd = getenv("HOME");
-
-    if (hd != 0) {
-        homedir = hd;
-
-        if (homedir[homedir.length() ] != '/')
-            homedir.push_back('/');
-
-        return homedir;
-    }
-
-    struct passwd* pwd;
-    pwd = getpwuid(getuid() );
-
-    if (pwd != 0) {
-        homedir = pwd->pw_dir;
-
-        if (homedir[homedir.length() ] != '/')
-            homedir.push_back('/');
-
-        return homedir;
-    }
-
-    assert(!homedir.empty() );
-    return homedir;
-}
 
 ConfigFile::ConfigFile(Config& cfg, std::string cfgfile):
     __cfg(cfg),
