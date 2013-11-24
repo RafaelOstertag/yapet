@@ -292,7 +292,7 @@ main(int argc, char** argv) {
         YAPET::Globals::config.petfile.lock();
     }
 
-    if (YAPET::Globals::config.ignorerc) {
+    if (!YAPET::Globals::config.ignorerc) {
 	// try{}, may be the file does not exist
 	try {
 	    YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,cfgfilepath);
@@ -308,7 +308,18 @@ main(int argc, char** argv) {
 
     YapetUnlockDialog* yunlockdia=0;
     try {
-        YACURS::Curses::init();
+	try {
+	    YACURS::Curses::init(YAPET::Globals::config.colors);
+	} catch (std::invalid_argument&) {
+	    // Maybe color initialization caused this
+	    YAPET::Globals::config.colors.set("");
+	    YACURS::Curses::init();
+	} catch (std::out_of_range&) {
+	    // Maybe color initialization caused this
+	    YAPET::Globals::config.colors.set("");
+	    YACURS::Curses::init();
+	}
+
 
 #ifndef DEBUG
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::

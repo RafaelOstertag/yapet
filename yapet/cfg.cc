@@ -190,6 +190,7 @@ Config::setup_map() {
     __options["pwgen_punct"]=&pwgen_punct;
     __options["pwgen_special"]=&pwgen_special;
     __options["pwgen_other"]=&pwgen_other;
+    __options["colors"]=&colors;
     // ignorerc can't be set in the configuration file
 }
 
@@ -213,7 +214,8 @@ Config::Config() :
     pw_input_timeout(Consts::def_pw_input_timeout,
 		     Consts::min_locktimeout,
 		     Consts::min_locktimeout),
-    ignorerc(false) {
+    ignorerc(false),
+    colors() {
     setup_map();
 }
 
@@ -230,7 +232,8 @@ Config::Config(const Config& c) :
     pwgen_other(c.pwgen_other),
     allow_lock_quit(c.allow_lock_quit),
     pw_input_timeout(c.pw_input_timeout),
-    ignorerc(c.ignorerc) {
+    ignorerc(c.ignorerc),
+    colors(c.colors) {
     setup_map();
 }
 
@@ -260,6 +263,7 @@ Config::operator=(const Config& c) {
     allow_lock_quit = c.allow_lock_quit;
     pw_input_timeout = c.pw_input_timeout;
     ignorerc = c.ignorerc;
+    colors = c.colors;
 
     return *this;
 }
@@ -301,6 +305,7 @@ Config::lock() {
     allow_lock_quit.lock();
     pw_input_timeout.lock();
     ignorerc.lock();
+    colors.lock();
 }
 
 void
@@ -318,6 +323,7 @@ Config::unlock() {
     allow_lock_quit.unlock();
     pw_input_timeout.unlock();
     ignorerc.unlock();
+    colors.unlock();
 }
 
 CfgValBase&

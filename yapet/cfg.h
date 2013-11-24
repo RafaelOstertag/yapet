@@ -263,6 +263,13 @@ namespace YAPET {
 		void set_str(const std::string& s);
 	};
 
+	class CfgValColor : public CfgValStr {
+	    public:
+		void set_str(const std::string& s) {
+		    set(s);
+		}
+	};
+
         /**
          * @brief Handle the command line and config file options.
          *
@@ -292,6 +299,7 @@ namespace YAPET {
                 CfgValBool allow_lock_quit;
                 CfgValInt pw_input_timeout;
 		CfgValBool ignorerc;
+		CfgValColor colors;
 
                 Config();
                 Config(const Config& c);
