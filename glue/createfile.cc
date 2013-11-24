@@ -39,6 +39,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
     if (evt.data() == filesavedialog) {
 	if (filesavedialog->dialog_state() == YACURS::DIALOG_OK) {
 	    __filepath = filesavedialog->filepath();
+	    assert(promptpassword==0);
 	    promptpassword = new NewPasswordDialog(__filepath);
 	    promptpassword->show();
 	} else {
@@ -90,7 +91,8 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	// Do not put aptoptosis here, since here we can't decide
 	// whether we had an exception or not. And if we had an
 	// exception, generror is active and we have to wait for the
-	// user to close it.
+	// user to close it. If we have an exception, generror handler
+	// takes care
 	
 	
 	delete promptpassword;
