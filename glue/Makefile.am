@@ -2,9 +2,9 @@
 
 noinst_LTLIBRARIES = libyapet-glue.la
 
-libyapet_glue_la_SOURCES = loadfile.cc promptpassword.cc	\
-createfile.cc changepassword.cc loadfile.h promptpassword.h	\
-createfile.h changepassword.h
+libyapet_glue_la_SOURCES = loadfile.cc promptpassword.cc		\
+createfile.cc changepassword.cc loadfile.h promptpassword.h		\
+createfile.h changepassword.h opencmdlinefile.cc opencmdlinefile.h
 
 libyapet_glue_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"	\
 -I$(top_srcdir)/libyacurs/include -I$(top_srcdir)/yapet		\
