@@ -55,6 +55,10 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
 	    assert(promptpassword->match());
 	    assert(!__filepath.empty());
+
+	    // Set file into configuration, so that it receives .pet
+	    // suffix
+	    YAPET::Globals::config.petfile.set(__filepath);
 	    
 	    YAPET::Key* _key=0;
 	    YAPET::File* _file=0;
@@ -62,7 +66,10 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 		// Must not be delete by CreateFile
 		_key = new YAPET::Key(promptpassword->password().c_str());
 		// Must not be delete by CreateFile
-		_file = new YAPET::File(__filepath, *_key, true, YAPET::Globals::config.filesecurity);
+		_file = new YAPET::File(YAPET::Globals::config.petfile,
+					*_key,
+					true,
+					YAPET::Globals::config.filesecurity);
 		mainwindow.load_password_file(_file, _key);
 
 		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
