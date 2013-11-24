@@ -143,40 +143,37 @@ show_help(char* prgname) {
         " [-chV] [-i | -r <rcfile>] [-s | -S] [-t <sec>] [<filename>]"
               << std::endl
               << std::endl;
-    std::cout << "-c, --copyright\t\t" << _("show copyright information")
+    std::cout << "-c\t\t" << _("show copyright information")
               << std::endl
               << std::endl;
-    std::cout << "-h, --help\t\t" << _("show this help text")
+    std::cout << "-h\t\t" << _("show this help text")
               << std::endl
               << std::endl;
-    std::cout << "-i, --ignore-rc\t\t" << _(
-        "do not read the configuration file.")
+    std::cout << "-i\t\t" << _("do not read the configuration file.")
               << std::endl
               << std::endl;
-    std::cout << "-r, --rc-file\t\t" << _("read the configuration file specified by <rcfile>.\n" \
-                                          "\t\t\tIf this option is not provided, it defaults to\n" \
-                                          "\t\t\t$HOME/.yapet unless -i is specified.")
+    std::cout << "-r <rfcfile>\t" << _("read the configuration file specified by <rcfile>. If this\n" \
+				       "\t\toption is not provided, it defaults to $HOME/.yapet unless -i\n" \
+				       "\t\tis specified.")
               << std::endl
               << std::endl;
-    std::cout << "-s, --no-file-security\t" << _("disable check of owner and file permissions.\n" \
-                                                 "\t\t\tWhen creating new files, the file mode is set\n" \
-                                                 "\t\t\tto 0644.")
+    std::cout << "-s\t\t" << _("disable check of owner and file permissions. When creating new\n"\
+			       "\t\tfiles, the file mode is set to 0644.")
               << std::endl
               << std::endl;
-    std::cout << "-S, --file-security\t" << _("enable check of owner and file permissions.\n" \
-                                              "\t\t\tWhen creating new files, the file mode is set\n" \
-                                              "\t\t\tto 0600.")
+    std::cout << "-S\t\t" << _("enable check of owner and file permissions. When creating new\n" \
+			       "\t\tfiles, the file mode is set to 0600.")
               << std::endl
               << std::endl;
-    std::cout << "-t, --timeout\t\t" << _("the time-out in seconds until the screen is locked.\n" \
-                                          "\t\t\tDefault: 600 sec.")
+    std::cout << "-t <timeout>\t" << _("the time-out in seconds until the screen is locked.\n"\
+				       "\t\tDefault: 600 sec.")
               << std::endl
               << std::endl;
-    std::cout << "-V, --version\t\t" << _("show the version of ") <<
+    std::cout << "-V\t\t" << _("show the version of ") <<
         PACKAGE_NAME
               << std::endl
               << std::endl;
-    std::cout << "<filename>\t\t" << _("open the specified file <filename>")
+    std::cout << "<filename>\t" << _("open the specified file <filename>")
               << std::endl
               << std::endl;
     char buff[512];
@@ -208,33 +205,10 @@ main(int argc, char** argv) {
     // If empty, default is taken
     std::string cfgfilepath;
     int c;
-
-#ifndef HAVE_GETOPT
-    struct option long_options[] = {
-        { (char*)"copyright", no_argument, 0, 'c'},
-        { (char*)"help", no_argument, 0, 'h'},
-        { (char*)"ignore-rc", no_argument, 0, 'i'},
-        { (char*)"rc-file", required_argument, 0, 'r'},
-        { (char*)"no-file-security", no_argument, 0, 's'},
-        { (char*)"file-security", no_argument, 0, 'S'},
-        { (char*)"timeout", required_argument, 0, 't'},
-        { (char*)"version", no_argument, 0, 'V'},
-        {0, 0, 0, 0}
-    };
-
-    while ( (c =
-                 getopt_long(argc, argv, ":chir:sSt:V", long_options,
-                             0) ) != -1) {
-#else // !HAVE_GETOPT
     extern char* optarg;
     extern int optopt, optind;
 
-    while ( (c =
-                 getopt(argc, argv,
-                        ":c(copyright)h(help)i(ignore-rc)r:(rc-file)s(no-file-security)S(file-security)t:(timeout)V(version)") )
-            != -1) {
-#endif // HAVE_GETOPT
-
+    while ( (c = getopt(argc, argv, ":chir:sSt:V") ) != -1) {
         switch (c) {
         case 'c':
             show_copyright();
@@ -250,11 +224,6 @@ main(int argc, char** argv) {
             break;
 
         case 'r':
-            if (optarg == 0) {
-                std::cerr << "-r requires argument" << std::endl;
-                show_help(argv[0]);
-                return 0;
-            }
             cfgfilepath = optarg;
             break;
 
@@ -273,11 +242,6 @@ main(int argc, char** argv) {
             break;
 
         case 't':
-            if (optarg == 0) {
-                std::cerr << "-t requires argument" << std::endl;
-                show_help(argv[0]);
-                return 0;
-            }
             YAPET::Globals::config.timeout.set(std::atoi(optarg) );
             YAPET::Globals::config.timeout.lock();
             break;
@@ -285,6 +249,7 @@ main(int argc, char** argv) {
         case ':':
             std::cerr << "-" << (char)optopt << _(" without argument")
                       << std::endl;
+	    show_help(argv[0]);
             return 1;
 
         case '?':
