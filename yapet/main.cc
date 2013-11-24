@@ -137,7 +137,6 @@ show_copyright() {
 
 void
 show_help(char* prgname) {
-    show_version();
     std::cout << std::endl;
     std::cout << prgname
               <<
@@ -181,6 +180,7 @@ show_help(char* prgname) {
               << std::endl
               << std::endl;
     char buff[512];
+
     snprintf(buff, 512,
              _(
                  "%s stores passwords encrypted on disk using the blowfish encryption\n" \
@@ -194,8 +194,6 @@ show_help(char* prgname) {
 
 int
 main(int argc, char** argv) {
-    unsigned int timeout = 0;
-
     set_rlimit();
 
 #ifdef ENABLE_NLS
@@ -247,11 +245,16 @@ main(int argc, char** argv) {
             return 0;
 
         case 'i':
-	    YAPET::Globals::config.ignorerc.set(true);
-	    YAPET::Globals::config.ignorerc.lock();
+            YAPET::Globals::config.ignorerc.set(true);
+            YAPET::Globals::config.ignorerc.lock();
             break;
 
         case 'r':
+            if (optarg == 0) {
+                std::cerr << "-r requires argument" << std::endl;
+                show_help(argv[0]);
+                return 0;
+            }
             cfgfilepath = optarg;
             break;
 
@@ -270,8 +273,12 @@ main(int argc, char** argv) {
             break;
 
         case 't':
-            sscanf(optarg, "%u", &timeout);
-            YAPET::Globals::config.timeout.set(timeout);
+            if (optarg == 0) {
+                std::cerr << "-t requires argument" << std::endl;
+                show_help(argv[0]);
+                return 0;
+            }
+            YAPET::Globals::config.timeout.set(std::atoi(optarg) );
             YAPET::Globals::config.timeout.lock();
             break;
 
@@ -293,33 +300,33 @@ main(int argc, char** argv) {
     }
 
     if (!YAPET::Globals::config.ignorerc) {
-	// try{}, may be the file does not exist
-	try {
-	    YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,cfgfilepath);
-	    cfgfile.parse();
-	} catch(std::runtime_error&) {
-	    // intentionally empty
-	}
+        // try{}, may be the file does not exist
+        try {
+            YAPET::CONFIG::ConfigFile cfgfile(YAPET::Globals::config,
+                                              cfgfilepath);
+            cfgfile.parse();
+        } catch (std::runtime_error&) {
+            // intentionally empty
+        }
     }
 
     // Unlock all configuration values, so that they can be changed
     // again.
     YAPET::Globals::config.unlock();
 
-    YapetUnlockDialog* yunlockdia=0;
+    YapetUnlockDialog* yunlockdia = 0;
     try {
-	try {
-	    YACURS::Curses::init(YAPET::Globals::config.colors);
-	} catch (std::invalid_argument&) {
-	    // Maybe color initialization caused this
-	    YAPET::Globals::config.colors.set("");
-	    YACURS::Curses::init();
-	} catch (std::out_of_range&) {
-	    // Maybe color initialization caused this
-	    YAPET::Globals::config.colors.set("");
-	    YACURS::Curses::init();
-	}
-
+        try {
+            YACURS::Curses::init(YAPET::Globals::config.colors);
+        } catch (std::invalid_argument&) {
+            // Maybe color initialization caused this
+            YAPET::Globals::config.colors.set("");
+            YACURS::Curses::init();
+        } catch (std::out_of_range&) {
+            // Maybe color initialization caused this
+            YAPET::Globals::config.colors.set("");
+            YACURS::Curses::init();
+        }
 
 #ifndef DEBUG
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
@@ -328,48 +335,58 @@ main(int argc, char** argv) {
 #else
         YACURS::Curses::title(new YACURS::TitleBar(YACURS::TitleBar::
                                                    POS_TOP,
-                                                   PACKAGE_STRING " (DEBUG Build)") );
+                                                   PACKAGE_STRING
+                                                   " (DEBUG Build)") );
 #endif
-	YACURS::Curses::title()->alignment(YACURS::LineObject::CENTER);
+        YACURS::Curses::title()->alignment(YACURS::LineObject::CENTER);
 
-	YACURS::Curses::statusbar(new YACURS::StatusBar());
-	YACURS::Curses::statusbar()->push(_("Press 'H' for help"));
+        YACURS::Curses::statusbar(new YACURS::StatusBar() );
+        YACURS::Curses::statusbar()->push(_("Press 'H' for help") );
 
-	YACURS::Curses::mainwindow(new MainWindow(YAPET::Globals::config.petfile));
+        YACURS::Curses::mainwindow(new MainWindow(YAPET::Globals::config.
+                                                  petfile) );
 
-	if (YAPET::Globals::config.timeout>0) {
-	    yunlockdia = new YapetUnlockDialog(*YACURS::Curses::mainwindow());
-	    YACURS::EventQueue::lock_screen(new YapetLockScreen(*YACURS::Curses::mainwindow(),
-								yunlockdia,  YAPET::Globals::config.timeout, YAPET::Globals::config.pw_input_timeout));
-	}
-	    
+        if (YAPET::Globals::config.timeout > 0) {
+            yunlockdia =
+                new YapetUnlockDialog(*YACURS::Curses::mainwindow() );
+            YACURS::EventQueue::lock_screen(new YapetLockScreen(*YACURS::
+                                                                Curses::
+                                                                mainwindow(),
+                                                                yunlockdia,
+                                                                YAPET::Globals
+                                                                ::config.
+                                                                timeout,
+                                                                YAPET::Globals
+                                                                ::config.
+                                                                pw_input_timeout) );
+        }
 
-	YACURS::Curses::run();
+        YACURS::Curses::run();
 
         delete YACURS::Curses::mainwindow();
-	delete YACURS::Curses::title();
-	delete YACURS::Curses::statusbar();
+        delete YACURS::Curses::title();
+        delete YACURS::Curses::statusbar();
 
-	if (YACURS::EventQueue::lock_screen())
-	    delete YACURS::EventQueue::lock_screen();
+        if (YACURS::EventQueue::lock_screen() )
+            delete YACURS::EventQueue::lock_screen();
 
-	if (yunlockdia)
-	    delete yunlockdia;
+        if (yunlockdia)
+            delete yunlockdia;
     } catch (std::exception& ex) {
-    	if (YACURS::Curses::mainwindow())
-    	    delete YACURS::Curses::mainwindow();
+        if (YACURS::Curses::mainwindow() )
+            delete YACURS::Curses::mainwindow();
 
-    	if (YACURS::Curses::title())
-    	    delete YACURS::Curses::title();
+        if (YACURS::Curses::title() )
+            delete YACURS::Curses::title();
 
-    	if (YACURS::Curses::statusbar())
-    	    delete YACURS::Curses::statusbar();
+        if (YACURS::Curses::statusbar() )
+            delete YACURS::Curses::statusbar();
 
-    	if (YACURS::EventQueue::lock_screen())
-    	    delete YACURS::EventQueue::lock_screen();
+        if (YACURS::EventQueue::lock_screen() )
+            delete YACURS::EventQueue::lock_screen();
 
-    	if (yunlockdia)
-    	    delete yunlockdia;
+        if (yunlockdia)
+            delete yunlockdia;
 
         try {
             YACURS::Curses::end();
