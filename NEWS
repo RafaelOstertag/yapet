@@ -5,7 +5,11 @@ YAPET 1.0
 
       * Uses libyacurses.
 
-      * --enable-assert renamed to --enable-debug
+      * dropped support of long command line options.
+
+      * colors can be customized using a configuration file.
+
+      * new files are created by pressing 'E'.
 
 
 YAPET 0.8pre2
