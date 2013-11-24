@@ -5,6 +5,7 @@
 #endif
 
 #include <typeinfo>
+#include <cstdlib>
 #include <cstdio>
 #include <iostream>
 #include <exception>
@@ -33,62 +34,62 @@ int main (int, char**) {
 
 	if (cfg.timeout != 20) {
 	    std::cerr << "locktimeout does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pw_input_timeout != 30) {
 	    std::cerr << "pwinputtimeout does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.allow_lock_quit)  {
 	    std::cerr << "allowlockquit does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.filesecurity) {
 	    std::cerr << "checkfsecurity does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.petfile.get() != "test.pet") {
 	    std::cerr << "load does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgenpwlen != 14)  {
 	    std::cerr << "pwgen_pwlen does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_letters) {
 	    std::cerr << "pwgen_letters does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_digits) {
 	    std::cerr << "pwgen_digits does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_punct) {
 	    std::cerr << "pwgen_punct does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_special) {
 	    std::cerr << "pwgen_special does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_other) {
 	    std::cerr << "pwgen_other does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_rng != YAPET::PWGEN::AUTO) {
 	    std::cerr << "pwgen_rng does not match (#1)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	//
@@ -99,62 +100,62 @@ int main (int, char**) {
 
 	if (cfg.timeout != 21) {
 	    std::cerr << "locktimeout does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pw_input_timeout != 25) {
 	    std::cerr << "pwinputtimeout does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.allow_lock_quit)  {
 	    std::cerr << "allowlockquit does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.filesecurity) {
 	    std::cerr << "checkfsecurity does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.petfile.get() != "/test/test2.pet") {
 	    std::cerr << "load does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgenpwlen != 15)  {
 	    std::cerr << "pwgen_pwlen does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_letters) {
 	    std::cerr << "pwgen_letters does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_digits) {
 	    std::cerr << "pwgen_digits does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_punct) {
 	    std::cerr << "pwgen_punct does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_special) {
 	    std::cerr << "pwgen_special does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_other) {
 	    std::cerr << "pwgen_other does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_rng != YAPET::PWGEN::RAND) {
 	    std::cerr << "pwgen_rng does not match (#2)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	//
@@ -165,67 +166,67 @@ int main (int, char**) {
 
 	if (cfg.timeout != 23) {
 	    std::cerr << "locktimeout does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pw_input_timeout != 24) {
 	    std::cerr << "pwinputtimeout does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.allow_lock_quit)  {
 	    std::cerr << "allowlockquit does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.filesecurity) {
 	    std::cerr << "checkfsecurity does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.petfile.get() != "/test/with space/test2.pet") {
 	    std::cerr << "load does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgenpwlen != 19)  {
 	    std::cerr << "pwgen_pwlen does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_letters) {
 	    std::cerr << "pwgen_letters does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_digits) {
 	    std::cerr << "pwgen_digits does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_punct) {
 	    std::cerr << "pwgen_punct does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (!cfg.pwgen_special) {
 	    std::cerr << "pwgen_special does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_other) {
 	    std::cerr << "pwgen_other does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
 	if (cfg.pwgen_rng != YAPET::PWGEN::RAND) {
 	    std::cerr << "pwgen_rng does not match (#3)" << std::endl;
-	    return 1;
+	    abort();
 	}
 
     } catch (std::exception& ex) {
 	std::cout << " ==> " << typeid (ex).name() << ": " << ex.what() << std::endl;
-        return 1;
+        abort();
     }
 
     return 0;
