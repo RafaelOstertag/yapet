@@ -122,7 +122,7 @@ namespace YAPET {
                 CfgVal() : locked(false) {
                 }
 
-                CfgVal(const T& v) : val(v), locked(false) {
+                CfgVal(const T& v) : locked(false), val(v) {
                 }
 
                 CfgVal(const CfgVal& c) : locked(c.locked),
