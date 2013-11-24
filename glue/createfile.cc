@@ -86,7 +86,9 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 		if (_file) delete _file;
 	    }
 	    
-	} 
+	} else {
+	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+	}
 	
 	// Do not put aptoptosis here, since here we can't decide
 	// whether we had an exception or not. And if we had an
