@@ -41,7 +41,6 @@
 
 #include "help.h"
 #include "info.h"
-#include "passworddialog.h"
 #include "passwordrecord.h"
 
 #ifdef ENABLE_PWGEN
@@ -149,6 +148,7 @@ namespace INTERNAL {
 class MainWindow : public YACURS::Window {
     private:
 	YACURS::ListBox<YAPET::PartDec>* recordlist;
+	std::string file_load_on_show;
 	HelpDialog* helpdialog;
 	InfoDialog* infodialog;
 	YACURS::MessageBox* confirmdelete;
@@ -178,12 +178,14 @@ class MainWindow : public YACURS::Window {
 
 	void apoptosis_handler(YACURS::Event& e);
 
+	void window_show_handler(YACURS::Event& e);
+
 	void window_close_handler(YACURS::Event& e);
 
 	void listbox_enter_handler(YACURS::Event& e);
 
     public:
-        MainWindow();
+        MainWindow(const std::string& _file_load_on_show=std::string());
         virtual ~MainWindow();
 
 	/**

@@ -33,6 +33,8 @@
 #include "mainwindowhotkeys.h"
 #include "mainwindow.h"
 #include "globals.h"
+#include "passworddialog.h"
+#include "opencmdlinefile.h"
 
 //
 // Private
@@ -67,6 +69,28 @@ MainWindow::apoptosis_handler(YACURS::Event& e) {
 	delete evt.data();
 	evt.stop(true);
 	return;
+    }
+
+    if (typeid(e) == typeid(YACURS::EventEx<LoadFileCmdLine*>)) {
+	YACURS::EventEx<LoadFileCmdLine*>& evt =
+	    dynamic_cast<YACURS::EventEx<LoadFileCmdLine*>&>(e);
+
+	delete evt.data();
+	evt.stop(true);
+	return;
+    }
+}
+
+void
+MainWindow::window_show_handler(YACURS::Event& e) {
+    assert(e == YACURS::EVT_WINDOW_SHOW);
+    YACURS::EventEx<YACURS::WindowBase*>& evt =
+	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
+
+    if (evt.data() == this) {
+	if (!file_load_on_show.empty())
+	    // does aptoptosis, no need to keep the pointer
+	    (new LoadFileCmdLine(*this,file_load_on_show))->run();
     }
 }
 
@@ -222,22 +246,25 @@ MainWindow::listbox_enter_handler(YACURS::Event& e) {
 //
 // Public
 //
-MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
-						0)) ,
-			  recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+MainWindow::MainWindow(const std::string& _file_load_on_show):
+    Window(YACURS::Margin(1, 0, 1,
+			  0)) ,
+    recordlist(new YACURS::ListBox<YAPET::PartDec>()),
+    file_load_on_show(_file_load_on_show),
 			  helpdialog(0),
-			  infodialog(0),
-			  confirmdelete(0),
-			  confirmquit(0),
-			  passwordrecord(0),
-			  errormsgdialog(0),
+    infodialog(0),
+    confirmdelete(0),
+    confirmquit(0),
+    passwordrecord(0),
+    errormsgdialog(0),
 			  searchdialog(0),
 #ifdef ENABLE_PWGEN
-			  pwgendialog(0),
+    pwgendialog(0),
 #endif
-			  finder(0),
-			  record_index(-1),
-			  last_search_index(0) {
+    finder(0),
+    record_index(-1),
+    last_search_index(0) {
+
     Window::widget(recordlist);
     frame(false);
 
@@ -294,6 +321,13 @@ MainWindow::MainWindow(): Window(YACURS::Margin(1, 0, 1,
 						  window_close_handler) );
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
+				      MainWindow>(YACURS::
+						  EVT_WINDOW_SHOW,
+						  this,
+						  &MainWindow::
+						  window_show_handler) );
+
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YAPET::EVT_APOPTOSIS,
 						  this,
 						  &MainWindow::
@@ -328,6 +362,13 @@ MainWindow::~MainWindow() {
 						     this,
 						     &MainWindow::
 						     window_close_handler) );
+
+    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
+					 MainWindow>(
+						     YACURS::EVT_WINDOW_SHOW,
+						     this,
+						     &MainWindow::
+						     window_show_handler) );
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YAPET::EVT_APOPTOSIS,

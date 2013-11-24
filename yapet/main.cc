@@ -335,7 +335,7 @@ main(int argc, char** argv) {
 	YACURS::Curses::statusbar(new YACURS::StatusBar());
 	YACURS::Curses::statusbar()->push(_("Press 'H' for help"));
 
-	YACURS::Curses::mainwindow(new MainWindow());
+	YACURS::Curses::mainwindow(new MainWindow(YAPET::Globals::config.petfile));
 
 	if (YAPET::Globals::config.timeout>0) {
 	    yunlockdia = new YapetUnlockDialog(*YACURS::Curses::mainwindow());
