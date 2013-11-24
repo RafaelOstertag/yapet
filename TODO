@@ -1,26 +1,7 @@
 YAPET To Do
 ===========
 
- * Fix bugs listed in bugzilla
-
- * When changing password, ask for old password first and only proceed
-   if it matches.
-
- * When changing password, only change if new and old password are
-   different
-
- * User configuration partially implemented. Missing:
-
-    - Does not respect command line arguments properly
-
-    - File won't be opened when specified in .yapet file or on command
-      line
-
- * Finish YAPET::Config test.
-
- * Make sure .pet is appended to new files.
-
- * Search next should stop when hitting the bottom of the list.
+ See https://bugs.guengel.ch/buglist.cgi?product=YAPET&component=libyacurs
 
 
 $Id$
