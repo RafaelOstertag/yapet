@@ -32,11 +32,10 @@ void
 LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
     assert(e == YAPET::EVT_APOPTOSIS);
 
-    if (typeid(e) == typeid(YACURS::EventEx<PromptPassword*>) &&
-	promptpassword) {
+    if (typeid(e) == typeid(YACURS::EventEx<PromptPassword*>)) {
 	YACURS::EventEx<PromptPassword*>& evt =
 	    dynamic_cast<YACURS::EventEx<PromptPassword*>&>(e);
-
+	
 	if (evt.data() == promptpassword) {
 	    // Only if key and yapet file are != 0, we pass
 	    // information over to mainwindow.
@@ -54,6 +53,7 @@ LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
 	}
 	return;
     }
+
 }
 
 
@@ -70,6 +70,8 @@ LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
 	    assert(newpassworddia==0);
 	    newpassworddia = new  NewPasswordDialog(file);
 	    newpassworddia->show();
+	} else {
+	    YACURS::EventQueue::submit(YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
 	}
 	delete createfile;
 	createfile=0;
@@ -107,6 +109,9 @@ LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
 		if (_key) delete _key;
 		if (_file) delete _file;
 	    }
+	} else {
+	    // Cancel pressed
+	    YACURS::EventQueue::submit(YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
 	}
 
 	// Do not put aptoptosis here, since here we can't decide
