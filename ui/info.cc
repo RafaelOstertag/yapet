@@ -51,17 +51,22 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     leftpack=new YACURS::VPack;
     rightpack=new YACURS::VPack;
 
-    widget(mainpack);
+    // used to make the file name label get the entire space available
+    // to the pack.
+    rightpack->always_dynamic(true);
+    rightpack->hinting(false);
+
     mainpack->add_back(leftpack);
     mainpack->add_back(rightpack);
+    widget(mainpack);
 
     fn=new YACURS::Label(_("File: "));
     leftpack->add_back(fn);
 
     if (YAPET::Globals::file!=0)
-	fn_status=new YACURS::Label(YAPET::Globals::file->getFilename());
+	fn_status=new YACURS::DynLabel(YAPET::Globals::file->getFilename());
     else
-	fn_status=new YACURS::Label(_("none loaded"));
+	fn_status=new YACURS::DynLabel(_("none loaded"));
     rightpack->add_back(fn_status);
 
     fp=new YACURS::Label(_("File permission check: "));
