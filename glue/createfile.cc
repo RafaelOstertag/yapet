@@ -179,7 +179,8 @@ CreateFile::run() {
 					      YACURS::YESNOCANCEL);
 	confirmsave->show();
     } else {
-	filesavedialog = new YACURS::FileSaveDialog();
+	// FileSaveDialog uses chdir().
+	filesavedialog = new YACURS::FileSaveDialog(std::string(),true);
 	filesavedialog->show();
     }
 }

@@ -163,7 +163,8 @@ LoadFile::run() {
 					      YACURS::YESNOCANCEL);
 	confirmsave->show();
     } else {
-	fileloaddialog = new YACURS::FileLoadDialog();
+	// FileLoadDialog uses chdir
+	fileloaddialog = new YACURS::FileLoadDialog(std::string(),true);
 	fileloaddialog->show();
     }
 }
