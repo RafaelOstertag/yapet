@@ -1,0 +1,8 @@
+ * Create file; enter file that exists; say yes for overwriting; enter password;
+   enter; focus is lost, i.e. dialog ain't closing and no keystrokes work
+   anymore
+
+ * Create file; create entry; save; create new entry (DON'T SAVE); change 
+   password; say yes to save; enter new password; press ok: there should be an 
+   error message like:
+	Error finalizing decryption
