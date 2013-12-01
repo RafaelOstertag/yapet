@@ -173,12 +173,14 @@ CreateFile::run() {
     if (!ignore_unsaved_file &&
 	YAPET::Globals::records_changed) {
 	assert(YAPET::Globals::file!=0);
+	assert(confirmsave == 0);
 	confirmsave = new YACURS::MessageBox2(_("Unsaved Changes"),
 					      YAPET::Globals::file->getFilename(),
 					      _("has unsaved changes. Do you want to save?"),
 					      YACURS::YESNOCANCEL);
 	confirmsave->show();
     } else {
+	assert(filesavedialog==0);
 	// FileSaveDialog uses chdir().
 	filesavedialog = new YACURS::FileSaveDialog(std::string(),true);
 	filesavedialog->show();
