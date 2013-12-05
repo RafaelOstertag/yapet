@@ -496,6 +496,9 @@ MainWindow::change_password(YAPET::Key* nk) {
 	delete YAPET::Globals::key;
 	YAPET::Globals::key = nk;
 
+	// Reread the records
+	recordlist->set(YAPET::Globals::file->read(*YAPET::Globals::key));
+
 	YACURS::Curses::statusbar()->set(std::string(_("Changed password on ")) + YAPET::Globals::file->getFilename());
     } catch (std::exception& e) {
 	assert(errormsgdialog==0);
