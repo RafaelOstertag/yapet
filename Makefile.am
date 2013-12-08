@@ -8,6 +8,8 @@ EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER		\
 DESIGN LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS	\
 THANKS
 
+DIST_SUBDIRS = libyacurs po crypt ui glue pwgen csv2yapet yapet tests doc
+
 SUBDIRS = libyacurs po crypt ui glue
 
 if BUILDPWGEN
