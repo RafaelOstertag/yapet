@@ -6,7 +6,7 @@ libyapet_crypt_la_SOURCES = structs.h record.h key.h yapetexception.h	\
 file.h crypt.h bdbuffer.h partdec.h key.cc file.cc crypt.cc		\
 bdbuffer.cc partdec.cc
 
-libyapet_crypt_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
+libyapet_crypt_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)
 
 if DISABLE_DEBUG
 libyapet_crypt_la_CPPFLAGS += -DNDEBUG

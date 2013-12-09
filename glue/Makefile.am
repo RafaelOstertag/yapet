@@ -8,9 +8,10 @@ createfile.h changepassword.h opencmdlinefile.cc opencmdlinefile.h
 
 libyapet_glue_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"	\
 -I$(top_srcdir)/libyacurs/include -I$(top_srcdir)/yapet		\
--I$(top_srcdir)/ui -I$(top_srcdir)/crypt -I$(top_srcdir)/pwgen
+-I$(top_srcdir)/ui -I$(top_srcdir)/crypt -I$(top_srcdir)/pwgen	\
+-I$(top_srcdir) -I$(top_builddir)/libyacurs/include
 
-libyapet_glue_la_LDFLAGS = -static -L$(top_srcdir)/ui
+libyapet_glue_la_LDFLAGS = -static -L$(top_builddir)/ui
 libyapet_glue_la_LIBADD = -lyapet-ui
 
 if DISABLE_DEBUG
