@@ -33,9 +33,7 @@
 #include "file.h"
 #include "key.h"
 #include "partdec.h"
-#ifdef ENABLE_PWGEN
-# include "pwgendialog.h"
-#endif
+#include "pwgendialog.h"
 
 /**
  * @brief A window that displays all the information associated with a
@@ -72,9 +70,8 @@ class PasswordRecord : public YACURS::Dialog {
         YACURS::Input<std::string>* username;
         YACURS::Input<std::string>* password;
         YACURS::Input<std::string>* comment;
-#ifdef ENABLE_PWGEN
         YACURS::Button* pwgenbutton;
-#endif
+
         YACURS::MessageBox* errordialog;
 	YACURS::MessageBox* confirmdialog;
 	PwGenDialog* pwgendialog;
@@ -96,9 +93,7 @@ class PasswordRecord : public YACURS::Dialog {
 
         virtual void on_ok_button();
 
-#ifdef ENABLE_PWGEN
         void button_press_handler(YACURS::Event& e);
-#endif
 
         void window_close_handler(YACURS::Event& e);
 

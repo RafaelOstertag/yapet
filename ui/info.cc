@@ -73,18 +73,7 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 #else
     ssl_status(_("n/a")),
 #endif
-    ttl(_("Terminal Title:")),
-#if defined(ENABLE_TERMINALTITLE)
-    ttl_status(_("built-in")),
-#else
-    ttl_status(_("not built-in")),
-#endif
-    pwg(_("Password Generator:")),
-#if defined(ENABLE_PWGEN)
-    pwg_status(_("built-in")),
-#else
-    pwg_status(_("not built-in")),
-#endif
+
     cfs(_("Core File:")),
 #if defined(RLIMIT_CORE) && !defined(DEBUG)
     cfs_status(_("suppressed"))
@@ -183,12 +172,6 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
     leftpack.add_back(&ssl);
     rightpack.add_back(&ssl_status);
 
-    leftpack.add_back(&ttl);
-    rightpack.add_back(&ttl_status);
-
-    leftpack.add_back(&pwg);
-    rightpack.add_back(&pwg_status);
-
     leftpack.add_back(&cfs);
     rightpack.add_back(&cfs_status);
 
@@ -222,12 +205,6 @@ InfoDialog::InfoDialog(YACURS::ListBox<>::lsz_t entries):
 
     ssl.color(YACURS::DIALOG);
     ssl_status.color(YACURS::DIALOG);
-
-    ttl.color(YACURS::DIALOG);
-    ttl_status.color(YACURS::DIALOG);
-
-    pwg.color(YACURS::DIALOG);
-    pwg_status.color(YACURS::DIALOG);
 
     cfs.color(YACURS::DIALOG);
     cfs_status.color(YACURS::DIALOG);

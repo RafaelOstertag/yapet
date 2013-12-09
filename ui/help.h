@@ -76,11 +76,8 @@ class HelpDialog : public YACURS::Dialog {
 	YACURS::Label* quitkey;
 	YACURS::Label* quitdescr;
 
-#ifdef ENABLE_PWGEN
 	YACURS::Label* pwgenkey;
 	YACURS::Label* pwgendescr;
-#endif
-
 	
     public:
         HelpDialog();

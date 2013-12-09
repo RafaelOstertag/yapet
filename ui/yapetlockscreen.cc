@@ -65,9 +65,7 @@ YapetLockScreen::show() {
 
     LockScreen::show();
 
-#if defined(ENABLE_TERMINALTITLE)
     YACURS::Curses::set_terminal_title(_("YAPET LOCKED"));
-#endif
 }
 
 void
@@ -76,7 +74,6 @@ YapetLockScreen::close() {
 
     if (YAPET::Globals::file != 0 &&
 	YAPET::Globals::key != 0) {
-#ifdef ENABLE_TERMINALTITLE
 	std::string ttl("YAPET");
 #ifdef HAVE_BASENAME
 	ttl += " (";
@@ -88,6 +85,5 @@ YapetLockScreen::close() {
 	std::free(tmp);
 #endif
 	YACURS::Curses::set_terminal_title(ttl);
-#endif
     }
 }

@@ -2,19 +2,14 @@
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet				\
 --enable-terminal-title --disable-source-doc --enable-install-doc	\
---enable-pwgen --enable-assert --enable-silent-rules
+--enable-debug --enable-silent-rules
 
-EXTRA_DIST = config.rpath m4/ChangeLog README.Cygwin MAINTAINER		\
-DESIGN LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS	\
-THANKS
+EXTRA_DIST = config.rpath README.Cygwin MAINTAINER DESIGN LICENSE	\
+INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
 DIST_SUBDIRS = libyacurs po crypt ui glue pwgen csv2yapet yapet tests doc
 
-SUBDIRS = libyacurs po crypt ui glue
-
-if BUILDPWGEN
-SUBDIRS += pwgen
-endif
+SUBDIRS = libyacurs po crypt ui glue pwgen
 
 if BUILDCSV2YAPET
 SUBDIRS += csv2yapet

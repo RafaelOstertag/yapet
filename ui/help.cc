@@ -106,12 +106,10 @@ HelpDialog::HelpDialog():
     redrawdescr=new YACURS::Label(_("Redraw Screen"));
     rightpack->add_back(redrawdescr);
 
-#ifdef ENABLE_PWGEN
     pwgenkey=new YACURS::Label(" G ");
     leftpack->add_back(pwgenkey);
     pwgendescr=new YACURS::Label(_("Password Generator"));
     rightpack->add_back(pwgendescr);
-#endif
 
     quitkey=new YACURS::Label(" Q ");
     leftpack->add_back(quitkey);
@@ -157,10 +155,8 @@ HelpDialog::HelpDialog():
     quitkey->color(YACURS::DIALOG);
     quitdescr->color(YACURS::DIALOG);
 
-#ifdef ENABLE_PWGEN
     pwgenkey->color(YACURS::DIALOG);
     pwgendescr->color(YACURS::DIALOG);
-#endif
 }
 
 HelpDialog::~HelpDialog() {
@@ -204,10 +200,8 @@ HelpDialog::~HelpDialog() {
     delete redrawkey;
     delete redrawdescr;
 
-#ifdef ENABLE_PWGEN
     delete pwgenkey;
     delete pwgendescr;
-#endif
 
     delete quitkey;
     delete quitdescr;

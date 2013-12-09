@@ -67,12 +67,6 @@ class InfoDialog : public YACURS::Dialog {
 	YACURS::Label ssl;
 	YACURS::Label ssl_status;
 
-	YACURS::Label ttl;
-	YACURS::Label ttl_status;
-
-	YACURS::Label pwg;
-	YACURS::Label pwg_status;
-
 	YACURS::Label cfs;
 	YACURS::Label cfs_status;
 

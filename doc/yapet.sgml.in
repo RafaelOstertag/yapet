@@ -115,7 +115,6 @@
 	<title>Main Screen</title>
 	<mediaobject>
 	  <textobject>
-<!-- PWGEN_BEGIN -->
 <screen format="linespecific">
                   ..::|| YAPET @PACKAGE_VERSION@ ||::..
 +---------------------------++---------------------------+
@@ -142,35 +141,6 @@
 +---------------------------++---------------------------+
 No file loaded
 </screen>
-<!-- PWGEN_END -->
-<!-- NOTPWGEN_BEGIN -->
-<screen format="linespecific">
-                  ..::|| YAPET @PACKAGE_VERSION@ ||::..
-+---------------------------++---------------------------+
-|                           ||          K E Y S          |
-|                           ||---------------------------|
-|                           ||   S     Save File         |
-|                           ||   R     Load File         |
-|                           ||   L     Lock Screen       |
-|                           ||   A     Add Entry         |
-|                           ||   D     Delete Entry      |
-|                           ||   O     Sort Order        |
-|                           ||   /     Search            |
-|                           ||   N     Search Next       |
-|                           ||   C     Change Password   |
-|                           ||   ^L    Redraw Screen     |
-|                           ||   Q     Quit              |
-|                           ||                           |
-|                           |+---------------------------+
-|                           |+---------------------------+
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-+---------------------------++---------------------------+
-No file loaded
-</screen>
-<!-- NOTPWGEN_END -->
 	  </textobject>
 	</mediaobject>
       </figure>
@@ -203,7 +173,6 @@ No file loaded
 	<title>Password Record Dialog</title>
   <mediaobject>
     <textobject>
-<!-- PWGEN_BEGIN -->
 <screen format="linespecific">
 +-P A S S W O R D  R E C O R D--------------------+
 |Name                                             |
@@ -220,25 +189,6 @@ No file loaded
 |[ OK ] [ Cancel ] [ Generate Password ]          |
 +-------------------------------------------------+
 </screen>
-<!-- PWGEN_END -->
-<!-- NOTPWGEN_BEGIN -->
-<screen format="linespecific">
-+-P A S S W O R D  R E C O R D--------------------+
-|Name                                             |
-|_________________________________________________|
-|Host                                             |
-|_________________________________________________|
-|Username                                         |
-|_________________________________________________|
-|Password                                         |
-|_________________________________________________|
-|Comment                                          |
-|_________________________________________________|
-|                                                 |
-|[ OK ] [ Cancel ]                                |
-+-------------------------------------------------+
-</screen>
-<!-- NOTPWGEN_END -->
     </textobject>
   </mediaobject>
       </figure>
@@ -247,10 +197,8 @@ No file loaded
 
       &pwrecord;
 
-      <!-- PWGEN_BEGIN -->
       <para>For an explanation of the <guibutton>Generate Password</guibutton>
       refer to <xref linkend="passwordgenerator" />.</para>
-      <!-- PWGEN_END -->
     </refsect2>
 
     <!--
@@ -396,7 +344,6 @@ No file loaded
 	  </listitem>
 	</varlistentry>
 
-	<!-- PWGEN_BEGIN -->
 	<varlistentry>
 	  <term><keycap>G</keycap></term>
 
@@ -406,7 +353,6 @@ No file loaded
 	    </para>
 	  </listitem>
 	</varlistentry>
-	<!-- PWGEN_END -->
 
       </variablelist>
     </refsect2>
@@ -436,7 +382,6 @@ No file loaded
 	  - PASSWORD GENERATOR DIALOG
 	  -
       -->
-      <!-- PWGEN_BEGIN -->
       <refsect3 id="passwordgenerator">
 	<title>Password Generator Dialog</title>
 
@@ -463,7 +408,6 @@ No file loaded
 	<para>See <xref linkend="configurationfile" /> on how the password
 	generator options can be preset.</para>
       </refsect3>
-      <!-- PWGEN_END -->
     </refsect2>
     <!--
 	-
@@ -699,7 +643,6 @@ No file loaded
 	  </listitem>
 	</varlistentry>
 
-	<!-- PWGEN_BEGIN -->
 	<varlistentry>
 	  <term><option>pwgen_rng</option></term>
 
@@ -835,7 +778,6 @@ No file loaded
 	    <para>Default: 0</para>
 	  </listitem>
 	</varlistentry>
-	<!-- PWGEN_END -->
       </variablelist>
 
       <para>See <xref linkend="examples" /> for examples of configuration
@@ -1052,66 +994,42 @@ No file loaded
     <example id="ex.cfgfile1">
       <title>Example of an &yp; configuration file</title>
 
-<!-- NOTPWGEN_BEGIN -->
-      <literallayout>load=/home/joe/passwords
-locktimeout=300
-checkfsecurity=0</literallayout>
-<!-- NOTPWGEN_END -->
-<!-- PWGEN_BEGIN -->
       <literallayout>load=/home/joe/passwords
 locktimeout=300
 checkfsecurity=0
 pwgen_pwlen=8</literallayout>
-<!-- PWGEN_END -->
 
       <para>In this example, the file <filename>/home/joe/passwords</filename>
       will be loaded upon invocation of &yp;. The timeout until the screen is
       locked is set to 300 seconds. File permissions will not be verified.</para>
 
-<!-- PWGEN_BEGIN -->
       <para>The Password Generator Dialog will have preset the
       <guilabel>Password Length</guilabel> to 8 characters.</para>
-<!-- PWGEN_END -->
     </example>
 
     <example id="ex.cfgfile2">
       <title>Example of an &yp; configuration file</title>
 
-<!-- NOTPWGEN_BEGIN -->
-      <literallayout>locktimeout=150
-checkfsecurity=1</literallayout>
-<!-- NOTPWGEN_END -->
-<!-- PWGEN_BEGIN -->
       <literallayout>locktimeout=150
 checkfsecurity=1
 pwgen_other=1
 </literallayout>
-<!-- PWGEN_END -->
 
       <para>In this example, no file will be automatically loaded upon
       invocation of &yp;. The timeout until the screen is locked is set to 150
       seconds. File permissions and owner will be verified.</para>
 
-<!-- PWGEN_BEGIN -->
       <para>The Password Generator Dialog will have preset the
       <guilabel>Other</guilabel> check box checked.</para>
-<!-- PWGEN_END -->
     </example>
 
     <example id="ex.cfgfile3">
       <title>Example 1 revisited</title>
 
-<!-- NOTPWGEN_BEGIN -->
-      <literallayout>load=~/passwords.pet
-locktimeout=300
-checkfsecurity=0</literallayout>
-<!-- NOTPWGEN_END -->
-<!-- PWGEN_BEGIN -->
       <literallayout>load=~/passwords.pet
 locktimeout=300
 checkfsecurity=0
 pwgen_pwlen=8</literallayout>
-<!-- PWGEN_END -->
 
       <para>This example has the same effect as <xref linkend="ex.cfgfile1"
       />. But instead of specifying the full path to the home directory, the ~

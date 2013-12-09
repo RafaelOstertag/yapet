@@ -112,13 +112,11 @@ MainWindow::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
-#ifdef ENABLE_PWGEN
     if (pwgendialog!=0 && evt.data()==pwgendialog) {
 	delete pwgendialog;
 	pwgendialog=0;
 	return;
     }
-#endif
 
     if (passwordrecord != 0 && evt.data() == passwordrecord) {
 	if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
@@ -257,10 +255,8 @@ MainWindow::MainWindow(const std::string& _file_load_on_show):
     confirmquit(0),
     passwordrecord(0),
     errormsgdialog(0),
-			  searchdialog(0),
-#ifdef ENABLE_PWGEN
+    searchdialog(0),
     pwgendialog(0),
-#endif
     finder(0),
     record_index(-1),
     last_search_index(0) {
@@ -308,10 +304,8 @@ MainWindow::MainWindow(const std::string& _file_load_on_show):
     add_hotkey(HotKeyN(*this));
     add_hotkey(HotKeyn(*this));
 
-#ifdef ENABLE_PWGEN
     add_hotkey(HotKeyG(*this));
     add_hotkey(HotKeyg(*this));
-#endif
 
     YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<
 				      MainWindow>(YACURS::
@@ -351,9 +345,7 @@ MainWindow::~MainWindow() {
     if (passwordrecord) delete passwordrecord;
     if (errormsgdialog) delete errormsgdialog;
     if (searchdialog) delete searchdialog;
-#ifdef ENABLE_PWGEN
     if (pwgendialog) delete pwgendialog;
-#endif
     if (finder) delete finder;
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
@@ -402,7 +394,7 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	std::string msg(_("Opened file: "));
 	YACURS::Curses::statusbar()->set(msg +
 					      YAPET::Globals::file->getFilename());
-#ifdef ENABLE_TERMINALTITLE
+
 	std::string ttl("YAPET");
 #ifdef HAVE_BASENAME
 	ttl += " (";
@@ -414,7 +406,6 @@ MainWindow::load_password_file(YAPET::File* file, YAPET::Key* key) {
 	std::free(tmp);
 #endif
 	YACURS::Curses::set_terminal_title(ttl);
-#endif
     } catch (std::exception& e) {
 	delete YAPET::Globals::key;
 	YAPET::Globals::key = 0;
@@ -544,7 +535,6 @@ MainWindow::show_info() {
     infodialog->show();
 }
 
-#ifdef ENABLE_PWGEN
 void
 MainWindow::show_pwgen() {
     assert(pwgendialog==0);
@@ -552,7 +542,6 @@ MainWindow::show_pwgen() {
     pwgendialog=new PwGenDialog;
     pwgendialog->show();
 }
-#endif
 
 void
 MainWindow::quit() {

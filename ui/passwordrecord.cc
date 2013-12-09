@@ -74,7 +74,6 @@ PasswordRecord::on_ok_button() {
 // Private
 //
 
-#ifdef ENABLE_PWGEN
 void
 PasswordRecord::button_press_handler(YACURS::Event& e) {
     Dialog::button_press_handler(e);
@@ -88,7 +87,6 @@ PasswordRecord::button_press_handler(YACURS::Event& e) {
 	pwgendialog->show();
     }
 }
-#endif
 
 void
 PasswordRecord::window_close_handler(YACURS::Event& e) {
@@ -114,7 +112,6 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
 	return;
     }
 
-#ifdef ENABLE_PWGEN
     if (evt.data() == pwgendialog) {
 	assert(!__readonly);
 	if (pwgendialog->dialog_state() == YACURS::DIALOG_OK) {
@@ -126,8 +123,6 @@ PasswordRecord::window_close_handler(YACURS::Event& e) {
 	pwgendialog = 0;
 	return;
     }
-#endif
-
 }
 
 bool
@@ -163,14 +158,10 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     username(new YACURS::Input<std::string>),
     password(new YACURS::Input<std::string>),
     comment(new YACURS::Input<std::string>),
-#ifdef ENABLE_PWGEN
     pwgenbutton(new YACURS::Button(_("Password Generator") ) ),
-#endif
     errordialog(0),
     confirmdialog(0),
-#ifdef ENABLE_PWGEN
     pwgendialog(0),
-#endif
     encentry(0),
     __key(key),
     __newrecord(pe==0),
@@ -202,9 +193,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     vpack->add_back(lcomment);
     vpack->add_back(comment);
 
-#ifdef ENABLE_PWGEN
     add_button(pwgenbutton);
-#endif
 
     widget(vpack);
 
@@ -260,17 +249,13 @@ PasswordRecord::~PasswordRecord() {
     delete username;
     delete password;
     delete comment;
-#ifdef ENABLE_PWGEN
     delete pwgenbutton;
-#endif
     delete vpack;
 
     if (encentry) delete encentry;
     if (errordialog) delete errordialog;
     if (confirmdialog) delete confirmdialog;
-#ifdef ENABLE_PWGEN
     if (pwgendialog) delete pwgendialog;
-#endif
 
     YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<
 					     PasswordRecord>(
@@ -312,7 +297,5 @@ PasswordRecord::readonly(bool f) {
     else
 	title(_("Password Entry"));
 
-#ifdef ENABLE_PWGEN
     pwgenbutton->enabled(!__readonly);
-#endif
 }

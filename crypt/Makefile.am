@@ -8,10 +8,6 @@ bdbuffer.cc partdec.cc
 
 libyapet_crypt_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"
 
-if USE_INCLUDED_LIBINTL
-libyapet_crypt_la_CPPFLAGS += -I$(top_builddir)/intl 
-endif
-
 if DISABLE_DEBUG
 libyapet_crypt_la_CPPFLAGS += -DNDEBUG
 else

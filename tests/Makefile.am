@@ -38,8 +38,9 @@ test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = endianess key record bdbuffer enc partdec file file2 file3 file4 file5	\
-corrupt foreign cfg1 cfgfile1
+check_PROGRAMS = endianess key record bdbuffer enc partdec file file2	\
+file3 file4 file5 corrupt foreign cfg1 cfgfile1 charpool1 charpool2	\
+rng1 pwgen1
 
 # Checks when building csv2yapet
 if BUILDCSV2YAPET
@@ -47,22 +48,11 @@ check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
 import8 import9 import10 import11 import12 import13 import14
 endif
 
-# Checks when using builtin passwordgenerator
-if BUILDPWGEN
-check_PROGRAMS += charpool1 charpool2 rng1 pwgen1
-endif
-
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/crypt
+AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/crypt -I$(top_srcdir)/pwgen
 if BUILDCSV2YAPET
 AM_CPPFLAGS += -I$(top_srcdir)/csv2yapet
-endif
-if BUILDPWGEN
-AM_CPPFLAGS += -I$(top_srcdir)/pwgen
-endif
-if USE_INCLUDED_LIBINTL
-AM_CPPFLAGS += -I$(top_builddir)/intl 
 endif
 
 corrupt_LDADD = $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
@@ -167,8 +157,6 @@ import14_SOURCES = import14.cc $(top_srcdir)/csv2yapet/csvimport.h $(top_srcdir)
 
 endif
 
-if BUILDPWGEN
-
 charpool1_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 charpool1_SOURCES = charpool1.cc
 
@@ -180,8 +168,6 @@ rng1_SOURCES = rng1.cc
 
 pwgen1_LDADD = $(top_builddir)/pwgen/libyapet-pwgen.la @LIBINTL@
 pwgen1_SOURCES = pwgen1.cc
-
-endif
 
 clean-local:
 	rm -rf SunWS_cache

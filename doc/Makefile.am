@@ -24,8 +24,8 @@ sed_files = README.sgml.in INSTALL.sgml.in DESIGN.sgml.in yapet.sgml.in	\
 sgml_static_files = copyright.sgml supportedplatforms.sgml caution.sgml	\
 pwrecord.sgml license.sgml bugreport.sgml
 
-generated_sgml_files = yapet.sgml csv2yapet.sgml README.sgml README.Cygwin.sgml	\
-INSTALL.sgml DESIGN.sgml
+generated_sgml_files = yapet.sgml csv2yapet.sgml README.sgml	\
+README.Cygwin.sgml INSTALL.sgml DESIGN.sgml
 
 # The value of _BEGIN and _END variables will be used to replace
 # markers in the xml documentation with either nothing, or xml
@@ -46,16 +46,6 @@ DOCNLS =
 else
 DOCNLS = -e '/<!--[ \t]*NLS_BEGIN[ \t]*-->/,/<!--[ \t]*NLS_END[ \t]*-->/d'
 endif
-# Used to conditionally include documentation for password generator.
-#
-# Please not that the xml comments have to include a block of text.
-if BUILDPWGEN
-DOCPWGEN= 
-DOCNOTPWGEN = -e '/<!--[ \t]*NOTPWGEN_BEGIN[ \t]*-->/,/<!--[ \t]*NOTPWGEN_END[ \t]*-->/d'
-else
-DOCPWGEN = -e '/<!--[ \t]*PWGEN_BEGIN[ \t]*-->/,/<!--[ \t]*PWGEN_END[ \t]*-->/d'
-DOCNOTPWGEN =
-endif
 
 doxycfg_src = Doxyfile.in
 
@@ -72,18 +62,14 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@builddir[@]|$(builddir)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
 	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
-	$(DOCPWGEN) $(DOCNOTPWGEN) $(DOCNLS)
-
-if BUILDDOC
+	$(DOCNLS)
 
 sgml_text = README.sgml INSTALL.sgml DESIGN.sgml README.Cygwin.sgml
 
-docbook_docbook_xsl = @DOCBOOKXSL@/xhtml/docbook.xsl
-docbook_man_xsl = @DOCBOOKXSL@/manpages/docbook.xsl
+docbook_docbook_xsl = http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl
+docbook_man_xsl = http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl
 
 sgml_text_target = $(sgml_text:.sgml=)
-
-if HAVEXSLTPROC
 
 # For silent rules
 sed_verbose = $(sed_verbose_$(V))
@@ -102,13 +88,12 @@ touch_verbose = $(touch_verbose_$(V))
 touch_verbose_ = $(touch_verbose_$(AM_DEFAULT_VERBOSITY))
 touch_verbose_0 = @echo "  TOUCH  $@";
 # For silent rules
-lynx_verbose = $(lynx_verbose_$(V))
-lynx_verbose_ = $(lynx_verbose_$(AM_DEFAULT_VERBOSITY))
-lynx_verbose_0 = @echo "  LYNX   $@";
-# For silent rules
 w3m_verbose = $(w3m_verbose_$(V))
 w3m_verbose_ = $(w3m_verbose_$(AM_DEFAULT_VERBOSITY))
 w3m_verbose_0 = @echo "  W3M    $@";
+
+XSLTPROC =	xsltproc
+W3M =		w3m
 
 .sgml.in.sgml: Makefile
 	$(sed_verbose)$(editfile) $< > $(builddir)/$@
@@ -119,11 +104,9 @@ w3m_verbose_0 = @echo "  W3M    $@";
 
 $(sgml_text_target): $(generated_sgml_files) $(sgml_static_files) $(sgml_text)
 	$(xsl_verbose)$(XSLTPROC) -o $(builddir)/$@.tmp.html $(docbook_docbook_xsl) $(builddir)/$@.sgml
-if HAVEW3M
+
 	$(w3m_verbose)$(W3M) -S -dump $(builddir)/$@.tmp.html > $(top_srcdir)/$@
-else
-	$(lynx_verbose)$(LYNX) -force_html -nolist -dump $(builddir)/$@.tmp.html > $(top_srcdir)/$@
-endif
+
 	$(rm_verbose)rm $(builddir)/$@.tmp.html
 	$(touch_verbose)touch $(builddir)/$@
 
@@ -138,39 +121,16 @@ clean-local:
 	rm -f Doxyfile
 	rm -f *.tmp.html
 
-endif # HAVEXSLTPROC
-
-endif # BUILDDOC
-
 dist-hook: $(sgml_text_target) $(htmldoc_DATA) $(dist_man1_MANS)
 
-if HAVEDOXYGEN
 Doxyfile: Doxyfile.in
 	$(editfile) $(srcdir)/$@.in > $(builddir)/$@
 
-source-doc: Doxyfile
-	$(DOXYGEN)
-
-endif # HAVEDOXYGEN
-
 if !DISABLEINSTALLDOC
-if BUILDDOC
 
-if BUILDSOURCEDOC
-all-local: $(htmldoc_DATA) $(sgml_text_target) source-doc $(dist_man1_MANS)
-else
 all-local: $(htmldoc_DATA) $(sgml_text_target) $(dist_man1_MANS)
-endif # BUILDSOURCEDOC
-
 SUFFIXES = .sgml .sgml.in .html .1
 
-else # BUILDDOC
-
-if BUILDSOURCEDOC
-all-local: source-doc
-endif #BUILDSOURCEDOC
-
-endif # BUILDDOC
 else # !DISABLEINSTALLDOC
 # For fixing bug #22
 all-local: $(dist_man1_MANS)
@@ -179,4 +139,3 @@ endif # !DISABLEINSTALLDOC
 maintainer-clean-local:
 	rm -rf source-doc
 	rm -f $(dist_man1_MANS)
-

@@ -467,7 +467,6 @@ class HotKeyl : public YACURS::HotKey {
 	}
 };
 
-#ifdef ENABLE_PWGEN
 // PASSWORD GENERATOR
 class HotKeyG : public YACURS::HotKey {
     private:
@@ -502,6 +501,5 @@ class HotKeyg : public YACURS::HotKey {
 	    return new HotKeyg(*this);
 	}
 };
-#endif
 
 #endif // _MAINWINDOWHOTKEYS_H
