@@ -20,6 +20,7 @@
 
 #include "intl.h"
 #include "globals.h"
+#include "consts.h"
 #include "createfile.h"
 
 #include <typeinfo>
@@ -183,6 +184,7 @@ CreateFile::run() {
 	assert(filesavedialog==0);
 	// FileSaveDialog uses chdir().
 	filesavedialog = new YACURS::FileSaveDialog(std::string(),true);
+	filesavedialog->suffix(YAPET::Consts::default_suffix);
 	filesavedialog->show();
     }
 }
