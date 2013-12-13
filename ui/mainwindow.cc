@@ -604,22 +604,16 @@ MainWindow::search_next() {
 	return;
     }
 
-    while (true) {
-	try {
-	    if (!recordlist->search(*finder, last_search_index+1, &last_search_index)) {
-		YACURS::Curses::statusbar()->set(
-						 std::string(_("No more matches for ")) +
-						 static_cast<const std::string&>(*finder) + std::string(_(" found"))
-						 );
-		last_search_index = 0;
-	    } else {
-		YACURS::Curses::statusbar()->set(std::string(_("Next match for ")) +
-						 static_cast<const std::string&>(*finder));
-	    }
-	    break;
-	} catch (std::out_of_range&) {
-	    // reset last_search_index and restart
-	    last_search_index = 0;
-	}
+    if (!recordlist->search(*finder, last_search_index+1, &last_search_index)) {
+	YACURS::Curses::statusbar()->set(
+					 std::string(_("No more matches for ")) +
+					 static_cast<const std::string&>(*finder) + std::string(_(" found"))
+					 );
+	last_search_index = 0;
+	delete finder;
+	finder = 0;
+    } else {
+	YACURS::Curses::statusbar()->set(std::string(_("Next match for ")) +
+					 static_cast<const std::string&>(*finder));
     }
 }
