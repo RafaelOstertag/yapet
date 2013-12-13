@@ -1,12 +1,16 @@
 # $Id$
 AC_PREREQ([2.61])
+AC_REVISION([$Revision$])
 AC_INIT([YAPET],[1.0],[https://bugs.guengel.ch/enter_bug.cgi?product=YAPET])
-AM_INIT_AUTOMAKE([silent-rules check-news dist-bzip2 color-tests])
-AM_SILENT_RULES([yes])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SUBDIRS([libyacurs])
+
+AM_INIT_AUTOMAKE([check-news dist-bzip2 color-tests subdir-objects])
+AM_SILENT_RULES([yes])
+
 
 
 # Progs
