@@ -80,7 +80,6 @@ tests/import7.cc
 tests/pwgen1.cc
 tests/file4.cc
 tests/import9.cc
-tests/testpaths.h
 tests/cfg1.cc
 csv2yapet/main.cc
 csv2yapet/csvimport.cc
