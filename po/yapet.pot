@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-12-09 18:09+0100\n"
+"POT-Creation-Date: 2013-12-13 12:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,19 +33,19 @@ msgstr ""
 msgid "in order to unlock screen"
 msgstr ""
 
-#: ui/yapetunlockdialog.cc:105 ui/help.cc:118
+#: ui/yapetunlockdialog.cc:105 ui/help.cc:116
 msgid "Quit"
 msgstr ""
 
-#: ui/mainwindow.h:59 ui/mainwindow.h:66
+#: ui/mainwindow.h:56 ui/mainwindow.h:63
 msgid "Finder(): Unable to convert to wide character string"
 msgstr ""
 
-#: ui/mainwindow.h:63 ui/mainwindow.h:81
+#: ui/mainwindow.h:60 ui/mainwindow.h:78
 msgid "Finder(): out of memory"
 msgstr ""
 
-#: ui/mainwindow.h:75 ui/mainwindow.h:87
+#: ui/mainwindow.h:72 ui/mainwindow.h:84
 msgid "Finder(): Unable to convert to multibyte string"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Sort Order"
 msgstr ""
 
-#: ui/help.cc:86 ui/mainwindow.cc:598 ui/mainwindow.cc:601
+#: ui/help.cc:86 ui/mainwindow.cc:587 ui/mainwindow.cc:590
 msgid "Search"
 msgstr ""
 
@@ -109,11 +109,11 @@ msgstr ""
 msgid "Redraw Screen"
 msgstr ""
 
-#: ui/help.cc:112 ui/pwgendialog.cc:127 ui/passwordrecord.cc:167
+#: ui/help.cc:111 ui/pwgendialog.cc:127 ui/passwordrecord.cc:161
 msgid "Password Generator"
 msgstr ""
 
-#: ui/yapetlockscreen.cc:69
+#: ui/yapetlockscreen.cc:68
 msgid "YAPET LOCKED"
 msgstr ""
 
@@ -153,63 +153,47 @@ msgstr ""
 msgid "Architecture: "
 msgstr ""
 
-#: ui/info.cc:74 ui/info.cc:153 ui/info.cc:162
+#: ui/info.cc:74 ui/info.cc:142 ui/info.cc:151
 msgid "n/a"
 msgstr ""
 
-#: ui/info.cc:76
-msgid "Terminal Title:"
-msgstr ""
-
-#: ui/info.cc:78 ui/info.cc:84
-msgid "built-in"
-msgstr ""
-
-#: ui/info.cc:80 ui/info.cc:86
-msgid "not built-in"
-msgstr ""
-
-#: ui/info.cc:82
-msgid "Password Generator:"
-msgstr ""
-
-#: ui/info.cc:88
+#: ui/info.cc:77
 msgid "Core File:"
 msgstr ""
 
-#: ui/info.cc:90
+#: ui/info.cc:79
 msgid "suppressed"
 msgstr ""
 
-#: ui/info.cc:92
+#: ui/info.cc:81
 msgid "not suppressed"
 msgstr ""
 
-#: ui/info.cc:109
+#: ui/info.cc:98
 msgid "none loaded"
 msgstr ""
 
-#: ui/info.cc:114
+#: ui/info.cc:103
 msgid "enabled"
 msgstr ""
 
-#: ui/info.cc:116
+#: ui/info.cc:105
 msgid "disabled"
 msgstr ""
 
-#: ui/info.cc:141
+#: ui/info.cc:130
 msgid "yes"
 msgstr ""
 
-#: ui/info.cc:143
+#: ui/info.cc:132
 msgid "no"
 msgstr ""
 
-#: ui/info.cc:176
+#: ui/info.cc:165
 msgid "big endian"
 msgstr ""
 
-#: ui/info.cc:178
+#: ui/info.cc:167
 msgid "little endian"
 msgstr ""
 
@@ -283,168 +267,169 @@ msgstr ""
 msgid "Sources"
 msgstr ""
 
-#: ui/passwordrecord.cc:68 ui/passwordrecord.cc:234 ui/mainwindow.cc:429
-#: ui/mainwindow.cc:475 ui/mainwindow.cc:506 glue/createfile.cc:79
-#: glue/promptpassword.cc:60 glue/changepassword.cc:55
+#: ui/passwordrecord.cc:68 ui/passwordrecord.cc:223 ui/mainwindow.cc:420
+#: ui/mainwindow.cc:466 ui/mainwindow.cc:497 glue/createfile.cc:80
+#: glue/promptpassword.cc:60 glue/changepassword.cc:52
+#: glue/changepassword.cc:62 glue/changepassword.cc:109
 #: glue/opencmdlinefile.cc:103
 msgid "Error"
 msgstr ""
 
-#: ui/passwordrecord.cc:140
+#: ui/passwordrecord.cc:135
 msgid "Pending Changes"
 msgstr ""
 
-#: ui/passwordrecord.cc:141
+#: ui/passwordrecord.cc:136
 msgid "Do you want to discard changes?"
 msgstr ""
 
-#: ui/passwordrecord.cc:154 ui/passwordrecord.cc:313
+#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:298
 msgid "Password Entry"
 msgstr ""
 
-#: ui/passwordrecord.cc:156
+#: ui/passwordrecord.cc:151
 msgid "Name"
 msgstr ""
 
-#: ui/passwordrecord.cc:157
+#: ui/passwordrecord.cc:152
 msgid "Host"
 msgstr ""
 
-#: ui/passwordrecord.cc:158
+#: ui/passwordrecord.cc:153
 msgid "User Name"
 msgstr ""
 
-#: ui/passwordrecord.cc:159
+#: ui/passwordrecord.cc:154
 msgid "Password"
 msgstr ""
 
-#: ui/passwordrecord.cc:160
+#: ui/passwordrecord.cc:155
 msgid "Comment"
 msgstr ""
 
-#: ui/passwordrecord.cc:311
+#: ui/passwordrecord.cc:296
 msgid "Password Entry (Read-Only)"
 msgstr ""
 
-#: ui/mainwindow.cc:128
+#: ui/mainwindow.cc:126
 msgid "Added new Record"
 msgstr ""
 
-#: ui/mainwindow.cc:138
+#: ui/mainwindow.cc:136
 msgid "Updated Record"
 msgstr ""
 
-#: ui/mainwindow.cc:161
+#: ui/mainwindow.cc:159
 msgid "Delete selected Record"
 msgstr ""
 
-#: ui/mainwindow.cc:185
+#: ui/mainwindow.cc:183
 msgid "Quit aborted"
 msgstr ""
 
-#: ui/mainwindow.cc:188 glue/loadfile.cc:96 glue/createfile.cc:120
-#: glue/changepassword.cc:88
+#: ui/mainwindow.cc:186 glue/loadfile.cc:96 glue/createfile.cc:121
+#: glue/changepassword.cc:142
 msgid "Unexpected dialog state for confirmsave dialog"
 msgstr ""
 
-#: ui/mainwindow.cc:201
+#: ui/mainwindow.cc:199
 msgid "Empty search string"
 msgstr ""
 
-#: ui/mainwindow.cc:209
+#: ui/mainwindow.cc:207
 msgid "No match for "
 msgstr ""
 
-#: ui/mainwindow.cc:402
+#: ui/mainwindow.cc:394
 msgid "Opened file: "
 msgstr ""
 
-#: ui/mainwindow.cc:430
+#: ui/mainwindow.cc:421
 msgid "Error while reading file:"
 msgstr ""
 
-#: ui/mainwindow.cc:467
+#: ui/mainwindow.cc:458
 msgid "Saved file: "
 msgstr ""
 
-#: ui/mainwindow.cc:476
+#: ui/mainwindow.cc:467
 msgid "Error while saving file:"
 msgstr ""
 
-#: ui/mainwindow.cc:490
+#: ui/mainwindow.cc:481
 msgid "New key must not be 0"
 msgstr ""
 
-#: ui/mainwindow.cc:502
+#: ui/mainwindow.cc:493
 msgid "Changed password on "
 msgstr ""
 
-#: ui/mainwindow.cc:507
+#: ui/mainwindow.cc:498
 msgid "Error while changing password:"
 msgstr ""
 
-#: ui/mainwindow.cc:524
+#: ui/mainwindow.cc:515
 msgid "Confirm Deletion"
 msgstr ""
 
-#: ui/mainwindow.cc:525
+#: ui/mainwindow.cc:516
 msgid "Do you want to delete the selected record?"
 msgstr ""
 
-#: ui/mainwindow.cc:561
+#: ui/mainwindow.cc:550
 msgid "Confirmation"
 msgstr ""
 
-#: ui/mainwindow.cc:562
+#: ui/mainwindow.cc:551
 msgid "There are unsaved changes."
 msgstr ""
 
-#: ui/mainwindow.cc:563
+#: ui/mainwindow.cc:552
 msgid "Do you want to save changes, before leaving?"
 msgstr ""
 
-#: ui/mainwindow.cc:575
+#: ui/mainwindow.cc:564
 msgid "Sort Order Ascending"
 msgstr ""
 
-#: ui/mainwindow.cc:578
+#: ui/mainwindow.cc:567
 msgid "Sort Order Descending"
 msgstr ""
 
-#: ui/mainwindow.cc:599
+#: ui/mainwindow.cc:588
 msgid "Enter search term"
 msgstr ""
 
-#: ui/mainwindow.cc:602
+#: ui/mainwindow.cc:591
 msgid "Enter search term (case-sensitive)"
 msgstr ""
 
-#: ui/mainwindow.cc:614
+#: ui/mainwindow.cc:603
 msgid "No previous search. Press '/' to search."
 msgstr ""
 
-#: ui/mainwindow.cc:622
+#: ui/mainwindow.cc:609
 msgid "No more matches for "
 msgstr ""
 
-#: ui/mainwindow.cc:623
+#: ui/mainwindow.cc:610
 msgid " found"
 msgstr ""
 
-#: ui/mainwindow.cc:627
+#: ui/mainwindow.cc:616
 msgid "Next match for "
 msgstr ""
 
-#: glue/loadfile.cc:160 glue/createfile.cc:177 glue/changepassword.cc:146
+#: glue/loadfile.cc:160 glue/createfile.cc:178 glue/changepassword.cc:205
 msgid "Unsaved Changes"
 msgstr ""
 
-#: glue/loadfile.cc:162 glue/createfile.cc:179
+#: glue/loadfile.cc:162 glue/createfile.cc:180
 msgid "has unsaved changes. Do you want to save?"
 msgstr ""
 
-#: glue/createfile.cc:80 glue/promptpassword.cc:61 glue/changepassword.cc:56
-#: glue/opencmdlinefile.cc:104
+#: glue/createfile.cc:81 glue/promptpassword.cc:61 glue/changepassword.cc:63
+#: glue/changepassword.cc:110 glue/opencmdlinefile.cc:104
 msgid "Got following error"
 msgstr ""
 
@@ -460,11 +445,19 @@ msgstr ""
 msgid "is not correct. Do you want to try again?"
 msgstr ""
 
-#: glue/changepassword.cc:147
+#: glue/changepassword.cc:53
+msgid "Password does not match old password"
+msgstr ""
+
+#: glue/changepassword.cc:54
+msgid "Retry?"
+msgstr ""
+
+#: glue/changepassword.cc:206
 msgid "Changes in"
 msgstr ""
 
-#: glue/changepassword.cc:149
+#: glue/changepassword.cc:208
 msgid "will be saved. Do you want to continue?"
 msgstr ""
 
