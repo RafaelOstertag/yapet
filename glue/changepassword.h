@@ -26,6 +26,7 @@
 #include "mainwindow.h"
 #include "yacurs.h"
 #include "newpassworddialog.h"
+#include "passworddialog.h"
 
 /**
  * Handle changing password of YAPET file
@@ -35,12 +36,16 @@
  * 1. if the currently open file has pending changes, it asks whether
  *    the changes should be saved, or the users wishes to cancel.
  *
- * 2. If confirmation dialog was successful, show new password prompt.
+ * 2. prompt for the old password, if it doesn't match show error
+ *
+ * 2. If old password matches, show new password prompt.
  */
 class ChangePassword {
     private:
 	MainWindow& mainwindow;
+	PasswordDialog* promptoldpassword;
 	NewPasswordDialog* promptpassword;
+	YACURS::MessageBox2* nonmatch;
 	YACURS::MessageBox3* confirmsave;
 	YACURS::MessageBox2* generror;
 	std::string __filepath;

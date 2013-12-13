@@ -37,6 +37,60 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
     YACURS::EventEx<YACURS::WindowBase*>& evt =
 	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
+    if (evt.data() == promptoldpassword) {
+	if (promptoldpassword->dialog_state() == YACURS::DIALOG_OK) {
+	    YAPET::Key* _key=0;
+	    try {
+		YAPET::Key* _key = new YAPET::Key(promptoldpassword->password().c_str());
+
+		if (*YAPET::Globals::key == *_key) {
+		    assert(promptpassword==0);
+		    promptpassword = new NewPasswordDialog(__filepath);
+		    promptpassword->show();
+		} else {
+		    assert(nonmatch==0);
+		    nonmatch = new YACURS::MessageBox2(_("Error"),
+						       _("Password does not match old password"),
+						       _("Retry?"),
+						       YACURS::YESNO);
+		    nonmatch->show();
+		}
+
+		delete _key;
+	    } catch (std::exception& ex) {
+		assert(generror==0);
+		generror = new YACURS::MessageBox2(_("Error"),
+						   _("Got following error"),
+						   ex.what(),
+						   YACURS::OK_ONLY);
+		generror->show();
+		
+		if (_key) delete _key;
+	    } 
+	} else {
+	    YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
+	}
+
+	// Do not put aptoptosis here, since here we can't decide
+	// whether we had an exception or not. And if we had an
+	// exception, generror is active and we have to wait for the
+	// user to close it.
+
+	delete promptoldpassword;
+	promptoldpassword=0;
+    }
+
+    if (evt.data() == nonmatch) {
+	if (nonmatch->dialog_state() == YACURS::DIALOG_YES) {
+	    run();
+	} else {
+	    YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
+	}
+
+	delete nonmatch;
+	nonmatch=0;
+    }
+
     if (evt.data() == promptpassword) {
 	if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
 	    assert(promptpassword->match());
@@ -105,11 +159,14 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 // Public
 //
 
-ChangePassword::ChangePassword(MainWindow& mw): mainwindow(mw),
-					promptpassword(0),
-					confirmsave(0),
-					generror(0),
-					ignore_unsaved_file(false) {
+ChangePassword::ChangePassword(MainWindow& mw): 
+    mainwindow(mw),
+    promptoldpassword(0),
+    promptpassword(0),
+    nonmatch(0),
+    confirmsave(0),
+    generror(0),
+    ignore_unsaved_file(false) {
 
     YACURS::EventQueue::
 	connect_event(YACURS::EventConnectorMethod1<
@@ -121,7 +178,9 @@ ChangePassword::ChangePassword(MainWindow& mw): mainwindow(mw),
 }
 
 ChangePassword::~ChangePassword() {
+    if (promptoldpassword) delete promptoldpassword;
     if (promptpassword) delete promptpassword;
+    if (nonmatch) delete nonmatch;
     if (confirmsave) delete confirmsave;
     if (generror) delete generror;
 
@@ -151,7 +210,7 @@ ChangePassword::run() {
 	confirmsave->show();
     } else {
 	__filepath = YAPET::Globals::file->getFilename();
-	promptpassword = new NewPasswordDialog(__filepath);
-	promptpassword->show();
+	promptoldpassword = new PasswordDialog(__filepath);
+	promptoldpassword->show();
     }
 }
