@@ -1,8 +1,7 @@
 # $Id$
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet				\
---enable-terminal-title --disable-source-doc --enable-install-doc	\
---enable-debug --enable-silent-rules
+DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-install-doc	\
+--enable-silent-rules
 
 EXTRA_DIST = config.rpath README.Cygwin MAINTAINER DESIGN LICENSE	\
 INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
