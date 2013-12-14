@@ -10,10 +10,4 @@ In order to build the documentation, call
 
 after configure has been run.
 
-Before making the distribution, call
-
- gmake -f Makefile.doc put-distfiles
-
-in order to install the files required by the distribution.
-
 $Id$

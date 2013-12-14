@@ -2,19 +2,19 @@
 
 bin_PROGRAMS = yapet
 
-pwgen_sources = $(top_srcdir)/pwgen/charpool.cc		\
-$(top_srcdir)/pwgen/rng.cc $(top_srcdir)/pwgen/pwgen.cc
+pwgen_sources = ../pwgen/charpool.cc		\
+../pwgen/rng.cc ../pwgen/pwgen.cc
 
-glue_sources = $(top_srcdir)/glue/loadfile.cc				\
-$(top_srcdir)/glue/promptpassword.cc $(top_srcdir)/glue/createfile.cc	\
-$(top_srcdir)/glue/changepassword.cc					\
-$(top_srcdir)/glue/opencmdlinefile.cc
+glue_sources = ../glue/loadfile.cc				\
+../glue/promptpassword.cc ../glue/createfile.cc	\
+../glue/changepassword.cc					\
+../glue/opencmdlinefile.cc
 
-ui_sources = $(top_srcdir)/ui/help.cc $(top_srcdir)/ui/mainwindow.cc	\
-$(top_srcdir)/ui/passworddialog.cc $(top_srcdir)/ui/passwordrecord.cc	\
-$(top_srcdir)/ui/newpassworddialog.cc $(top_srcdir)/ui/info.cc		\
-$(top_srcdir)/ui/yapetunlockdialog.cc					\
-$(top_srcdir)/ui/yapetlockscreen.cc $(top_srcdir)/ui/pwgendialog.cc
+ui_sources = ../ui/help.cc ../ui/mainwindow.cc	\
+../ui/passworddialog.cc ../ui/passwordrecord.cc	\
+../ui/newpassworddialog.cc ../ui/info.cc		\
+../ui/yapetunlockdialog.cc					\
+../ui/yapetlockscreen.cc ../ui/pwgendialog.cc
 
 yapet_LDFLAGS = -static
 
@@ -25,9 +25,9 @@ cfg.h globals.h
 yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/glue	\
 -I$(top_srcdir)/ui -I$(top_srcdir)/libyacurs/include		\
 -I$(top_builddir)/libyacurs/include -I$(top_srcdir)/pwgen	\
--I$(top_srcdir) -DLOCALEDIR=\"$(localedir)\"
+-I$(top_srcdir) -DLOCALEDIR=\"$(localedir)\" $(OPENSSL_INCLUDES)
 
-yapet_LDADD = $(top_builddir)/libyacurs/src/libyacurs.la $(top_builddir)/crypt/libyapet-crypt.la @LIBINTL@
+yapet_LDADD = $(top_builddir)/libyacurs/src/libyacurs.la $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 
 if DISABLE_DEBUG
 yapet_CPPFLAGS += -DNDEBUG

@@ -2,9 +2,9 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
 [
-<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
-<!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
-<!ENTITY pwrecord SYSTEM "@srcdir@/pwrecord.sgml">
+<!ENTITY cpr SYSTEM "copyright.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY pwrecord SYSTEM "pwrecord.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
 <!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>

@@ -2,10 +2,10 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
 [
-<!ENTITY cpr SYSTEM "@srcdir@/copyright.sgml">
-<!ENTITY supplatforms SYSTEM "@srcdir@/supportedplatforms.sgml">
-<!ENTITY caution SYSTEM "@srcdir@/caution.sgml">
-<!ENTITY license SYSTEM "@srcdir@/license.sgml">
+<!ENTITY cpr SYSTEM "copyright.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY caution SYSTEM "caution.sgml">
+<!ENTITY license SYSTEM "license.sgml">
 <!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
 <manvolnum>3</manvolnum></citerefentry>">
 <!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>

@@ -8,7 +8,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SUBDIRS([libyacurs])
 
-AM_INIT_AUTOMAKE([check-news dist-bzip2 color-tests subdir-objects])
+AM_INIT_AUTOMAKE([check-news dist-bzip2 color-tests])
 AM_SILENT_RULES([yes])
 
 
@@ -25,16 +25,6 @@ AM_PROG_AR
 LT_INIT
 LT_LANG([C++])
 AC_LANG([C++])
-
-# Arguments
-AC_ARG_WITH([openssl-include],
-	[AS_HELP_STRING([--with-openssl-include],[directory for openssl header files])],
-	[CPPFLAGS="-I$withval $CPPFLAGS"],
-	[])
-AC_ARG_WITH([openssl-lib],
-	[AS_HELP_STRING([--with-openssl-lib],[directory for openssl libraries])],
-	[LDFLAGS="-L$withval $LDFLAGS"],
-	[])
 
 # "Enables"
 AC_ARG_ENABLE([debug],
@@ -55,16 +45,12 @@ AC_ARG_ENABLE([csv2yapet],
 	[my_buildcsv2yapet=yes])
 
 # Libs
-AC_MSG_NOTICE([Searching for required libraries])
-AC_SEARCH_LIBS([EVP_DigestInit_ex],[crypto],[],AC_MSG_ERROR([libcrypto not found]))
+AX_CHECK_OPENSSL(,[AC_MSG_ERROR([openssl not found])])
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h libgen.h libintl.h locale.h stdint.h strings.h sys/time.h termios.h])
-
-AC_CHECK_HEADER([openssl/crypto.h], [AC_DEFINE([HAVE_CRYPTO_H],[1],[Set to 1 if you have openssl/crypto.h])])
-AC_CHECK_HEADER([openssl/evp.h], [], AC_MSG_ERROR([OpenSSL evp header not found]))
 
 AC_MSG_NOTICE([Checking C++ headers])
 AX_CXX_HEADER_STDCXX_98
@@ -92,13 +78,22 @@ AC_CHECK_FUNCS([basename isblank isspace lrand48 rand setlocale srand srand48 st
 
 AC_CHECK_FUNCS([dup2 getopt memset strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
 
+LIBS_SAVE="$LIBS"
+LDFLAGS_SAVE="$LDFLAGS"
+CPPFLAGS_SAVE="$CPPFLAGS"
 
+LIBS="$LIBS $OPENSSL_LIBS"
+LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
+CPPFLAGS="$CPPFLAGS $OPENSSL_INCLUDES"
 AC_MSG_NOTICE([Checking encryption functions])
 AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_init EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_MD_CTX_cleanup EVP_MD_CTX_init EVP_md5 EVP_ripemd160 EVP_sha1],
 	[],
 	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
 AC_MSG_NOTICE([Checking support functions])
 AC_CHECK_FUNCS([SSLeay_version])
+LIBS="$LIBS_SAVE"
+LDFLAGS="$LDFLAGS_SAVE"
+CPPFLAGS="$CPPFLAGS_SAVE"
 
 AC_MSG_NOTICE([Checking miscellaneous properties of platform])
 AC_CHECK_SIZEOF([int *])
@@ -127,7 +122,8 @@ AC_CONFIG_FILES([Makefile
 	csv2yapet/Makefile
 	tests/Makefile
 	tests/testpaths.h
-	doc/Makefile])
+	doc/Makefile
+	doc/Makefile.doc])
 AC_OUTPUT
 
 echo "******************************************************************"

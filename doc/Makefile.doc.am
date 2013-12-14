@@ -1,0 +1,92 @@
+# $Id$
+
+##
+## Following lines are not used during the normal build 
+##
+
+
+# The value of _BEGIN and _END variables will be used to replace
+# markers in the xml documentation with either nothing, or xml
+# comments. This way we can include/exclude stuff from the docs
+# without using conditional processing of the xml files.
+if BUILDCSV2YAPET
+DOCCSV2YAPET_BEGIN =
+DOCCSV2YAPET_END =
+else
+DOCCSV2YAPET_BEGIN = <!--
+DOCCSV2YAPET_END = -->
+endif
+# Used to conditionally include documentation for NLS support.
+#
+# Please not that the xml comments have to include a block of text.
+if USE_NLS
+DOCNLS = 
+else
+DOCNLS = -e '/<!--[ \t]*NLS_BEGIN[ \t]*-->/,/<!--[ \t]*NLS_END[ \t]*-->/d'
+endif
+
+docbook_docbook_xsl = http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl
+docbook_man_xsl = http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl
+
+XSLTPROC        = xsltproc
+W3M             = w3m
+
+STATIC_FILES = $(srcdir)/bugreport.sgml $(srcdir)/caution.sgml	\
+$(srcdir)/copyright.sgml $(srcdir)/license.sgml			\
+$(srcdir)/pwrecord.sgml $(srcdir)/supportedplatforms.sgml
+
+GENERATED_FILES = $(srcdir)/csv2yapet.sgml $(srcdir)/DESIGN.sgml	\
+$(srcdir)/Doxyfile $(srcdir)/INSTALL.sgml				\
+$(srcdir)/README.Cygwin.sgml $(srcdir)/README.sgml			\
+$(srcdir)/yapet.sgml
+
+TARGETS_TEXT = INSTALL README	\
+DESIGN README.Cygwin
+
+TARGETS = $(srcdir)/Doxyfile $(srcdir)/INSTALL.html			\
+$(srcdir)/README.html $(srcdir)/DESIGN.html $(srcdir)/yapet.html	\
+$(srcdir)/yapet.1 $(srcdir)/csv2yapet.html $(srcdir)/csv2yapet.1	\
+$(srcdir)/README.Cygwin.html $(TARGETS_TEXT)
+
+editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
+	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
+	-e 's|@PACKAGE_NAME[@]|$(PACKAGE_NAME)|g' \
+	-e 's|@PACKAGE[@]|$(PACKAGE)|g' \
+	-e 's|@PACKAGE_TARNAME[@]|$(PACKAGE_TARNAME)|g' \
+	-e 's|@srcdir[@]|$(srcdir)|g' \
+	-e 's|@top_srcdir[@]|$(top_srcdir)|g' \
+	-e 's|@top_builddir[@]|$(top_builddir)|g' \
+	-e 's|@builddir[@]|$(builddir)|g' \
+	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
+	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
+	$(DOCNLS)
+
+all: $(TARGETS)
+
+.sgml.in.sgml: Makefile.doc
+	$(editfile) $< > $@
+
+.sgml.html: $(GENERATED_FILES) $(STATIC_FILES)
+	rm -f $@
+	$(XSLTPROC) -o $@ $(docbook_docbook_xsl) $<
+
+$(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
+	$(XSLTPROC) -o $@.tmp.html $(docbook_docbook_xsl) $(srcdir)/$@.sgml
+
+	$(W3M) -S -dump $@.tmp.html > $(top_srcdir)/$@
+	rm $@.tmp.html
+	touch $@
+
+.sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
+	rm -f $(srcdir)/$@
+	$(XSLTPROC) -o $@ $(docbook_man_xsl) $<
+
+$(srcdir)/Doxyfile: $(srcdir)/Doxyfile.in
+	$(editfile) $< > $@
+
+clean:
+	rm -f *.tmp.html
+	rm -rf source-doc
+	rm -f  $(GENERATED_FILES) $(TARGETS)
+
+SUFFIXES = .sgml .sgml.in .html .1
