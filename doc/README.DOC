@@ -1,0 +1,19 @@
+DOC
+===
+
+Documentation is built outside the normal ./configure && gmake
+sequence. Built files are included in the distribution, though.
+
+In order to build the documentation, call
+
+ gmake -f Makefile.doc
+
+after configure has been run.
+
+Before making the distribution, call
+
+ gmake -f Makefile.doc put-distfiles
+
+in order to install the files required by the distribution.
+
+$Id$
