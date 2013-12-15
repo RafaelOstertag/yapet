@@ -75,7 +75,6 @@ $(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
 
 	$(W3M) -S -dump $@.tmp.html > $(top_srcdir)/$@
 	rm $@.tmp.html
-	touch $@
 
 .sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
