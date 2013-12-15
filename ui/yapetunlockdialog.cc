@@ -77,23 +77,20 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
     UnlockDialog(_("Unlock Screen")),
     mainwin(dynamic_cast<MainWindow&>(mw)),
     __vpack(0),
-    __text1(0),
-    __text2(0),
-    __text3(0),
-    __secret_input(0),
-    __quit(0) {
+    __text1(new YACURS::DynLabel(_("Please enter password for"))),
+    __text2(new YACURS::DynLabel(_("<unknown>"))),
+    __text3(new YACURS::DynLabel(_("in order to unlock screen") )),
+    __secret_input(new YACURS::Input<>),
+    __quit(0),
+    __quit_spacer(0) {
 
     __vpack = new YACURS::VPack;
     __vpack->always_dynamic(true);
 
-    __text1 = new YACURS::DynLabel(_("Please enter password for"));
-    __text2 = new YACURS::DynLabel(_("<unknown>"));
-    __text3 = new YACURS::DynLabel(_("in order to unlock screen") );
     __text1->color(YACURS::DIALOG);
     __text2->color(YACURS::DIALOG);
     __text3->color(YACURS::DIALOG);
 
-    __secret_input = new YACURS::Input<>;
     __secret_input->obscure_input(true);
 
     __vpack->add_back(__text1);
@@ -102,6 +99,8 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
     __vpack->add_back(__secret_input);
 
     if (YAPET::Globals::config.allow_lock_quit) {
+	__quit_spacer = new YACURS::Spacer;
+	add_button(__quit_spacer);
 	__quit = new YACURS::Button(_("Quit"));
 	add_button(__quit);
     }
@@ -126,13 +125,15 @@ YapetUnlockDialog::~YapetUnlockDialog() {
 											  this,
 											  &YapetUnlockDialog::window_show_handler) );
 
-    delete __vpack;
     delete __text1;
     delete __text2;
     delete __text3;
     delete __secret_input;
 
+    if (__quit_spacer) delete __quit_spacer;
     if (__quit) delete __quit;
+
+    delete __vpack;
 }
 
 bool

@@ -71,6 +71,7 @@ class PasswordRecord : public YACURS::Dialog {
         YACURS::Input<std::string>* password;
         YACURS::Input<std::string>* comment;
         YACURS::Button* pwgenbutton;
+	YACURS::Spacer* pwgenbutton_spacer;
 
         YACURS::MessageBox* errordialog;
 	YACURS::MessageBox* confirmdialog;

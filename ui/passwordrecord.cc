@@ -159,6 +159,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     password(new YACURS::Input<std::string>),
     comment(new YACURS::Input<std::string>),
     pwgenbutton(new YACURS::Button(_("Password Generator") ) ),
+    pwgenbutton_spacer(new YACURS::Spacer),
     errordialog(0),
     confirmdialog(0),
     pwgendialog(0),
@@ -193,6 +194,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     vpack->add_back(lcomment);
     vpack->add_back(comment);
 
+    add_button(pwgenbutton_spacer);
     add_button(pwgenbutton);
 
     widget(vpack);
@@ -250,6 +252,7 @@ PasswordRecord::~PasswordRecord() {
     delete password;
     delete comment;
     delete pwgenbutton;
+    delete pwgenbutton_spacer;
     delete vpack;
 
     if (encentry) delete encentry;

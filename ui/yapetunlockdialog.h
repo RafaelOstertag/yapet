@@ -40,6 +40,7 @@ class YapetUnlockDialog : public YACURS::UnlockDialog {
 	YACURS::DynLabel* __text3;
 	YACURS::Input<>* __secret_input;
 	YACURS::Button* __quit;
+	YACURS::Spacer* __quit_spacer;
 	
 	YapetUnlockDialog& operator=(const YapetUnlockDialog&);
 
