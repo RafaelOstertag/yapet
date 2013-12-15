@@ -68,6 +68,13 @@ PwGenDialog::checkbox_selection_handler(YACURS::Event& _e) {
 	YAPET::Globals::config.pwgen_special.set(charpools->selected(_("Special")));
 	YAPET::Globals::config.pwgen_other.set(charpools->selected(_("Other")));
 
+	// make sure at least one character pool is selected, else
+	// setNewPool() will throw an exception.
+	if (YAPET::Globals::config.character_pools()==0) {
+	    YAPET::Globals::config.pwgen_letters.set(true);
+	    charpools->set_selection(0);
+	}
+
 	pwgen.setNewPool(YAPET::Globals::config.character_pools());
 	return;
     }
