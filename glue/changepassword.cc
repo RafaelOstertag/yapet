@@ -100,9 +100,16 @@ ChangePassword::window_close_handler(YACURS::Event& e) {
 	    
 	    YAPET::Key* _key=0;
 	    try {
-		// Must not be delete by ChangePassword
+		// Must not be delete by ChangePassword once passed to
+		// mainwindow.change_password().
 		_key = new YAPET::Key(promptpassword->password().c_str());
-		mainwindow.change_password(_key);
+
+		if (*_key == *YAPET::Globals::key) {
+		    YACURS::Curses::statusbar()->set(_("Password not changed. Old and new password identical."));
+		    delete _key;
+		} else {		    
+		    mainwindow.change_password(_key);
+		}
 		YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
 	    } catch (std::exception& ex) {
 		assert(generror==0);
