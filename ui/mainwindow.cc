@@ -435,6 +435,8 @@ MainWindow::show_password_record(bool selected) {
 	return;
 
     if (selected) {
+	if (recordlist->empty()) return;
+
 	assert(record_index==(YACURS::ListBox<YAPET::PartDec>::lsz_t)-1);
 	record_index = recordlist->selected_index();
 	passwordrecord=new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
