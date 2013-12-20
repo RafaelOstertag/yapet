@@ -121,6 +121,7 @@ AC_CONFIG_FILES([Makefile
 	yapet/Makefile
 	csv2yapet/Makefile
 	tests/Makefile
+	tests/preload/Makefile
 	tests/testpaths.h
 	doc/Makefile
 	doc/Makefile.doc])

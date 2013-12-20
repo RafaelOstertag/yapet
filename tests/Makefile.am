@@ -3,6 +3,8 @@
 # Tests may fail if not run serial
 AUTOMAKE_OPTIONS = serial-tests
 
+SUBDIRS = preload
+
 # For silent rules
 cpy_verbose = $(cpy_verbose_$(V))
 cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
