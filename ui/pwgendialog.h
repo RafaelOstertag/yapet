@@ -46,6 +46,7 @@ class PwGenDialog : public YACURS::Dialog {
 	YACURS::Label pwlenlabel;
 	YACURS::Input<> pwlen;
 
+	YACURS::Spacer regenbutton_spacer;
 	YACURS::Button regenbutton;
 
 	YACURS::CheckBox* charpools;

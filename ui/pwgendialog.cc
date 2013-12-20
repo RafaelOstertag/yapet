@@ -139,6 +139,7 @@ PwGenDialog::PwGenDialog():
     genpw(),
     pwlenlabel(_("Password length")),
     pwlen(),
+    regenbutton_spacer(),
     regenbutton(_("Regenerate")) {
 
     // Make sure configuration does meet available rngs
@@ -209,6 +210,7 @@ PwGenDialog::PwGenDialog():
     widget(&mainpack);
 
     // Add regenerate button
+    add_button(&regenbutton_spacer);
     add_button(&regenbutton);
 
     // Initialize values
