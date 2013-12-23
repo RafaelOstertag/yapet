@@ -506,7 +506,9 @@ MainWindow::change_password(YAPET::Key* nk) {
 
 void
 MainWindow::delete_selected() {
-   assert(confirmdelete==0);
+    assert(confirmdelete==0);
+
+    if (recordlist->empty()) return;
 
     if (YAPET::Globals::key==0 ||
 	YAPET::Globals::file==0)
