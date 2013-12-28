@@ -456,11 +456,15 @@ MainWindow::save_records() {
     }
 
     try {
-	YAPET::Globals::file->save(recordlist->list());
-	std::string msg(_("Saved file: "));
-	YACURS::Curses::statusbar()->set(msg +
-					  YAPET::Globals::file->getFilename());
-	YAPET::Globals::records_changed=false;
+	if (YAPET::Globals::records_changed) {
+	    YAPET::Globals::file->save(recordlist->list());
+	    std::string msg(_("Saved file: "));
+	    YACURS::Curses::statusbar()->set(msg +
+					     YAPET::Globals::file->getFilename());
+	    YAPET::Globals::records_changed=false;
+	} else {
+	    YACURS::Curses::statusbar()->set(_("No changes need to be saved"));
+	}
 	return true;
     } catch (std::exception& e) {
 	assert(errormsgdialog==0);
