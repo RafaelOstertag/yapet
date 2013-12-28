@@ -82,8 +82,10 @@ LoadFile::window_close_handler(YACURS::Event& e) {
     if (confirmsave && evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
 	case YACURS::DIALOG_YES: 
-	    mainwindow.save_records();
-	    run();
+	    if (mainwindow.save_records())
+		run();
+	    else
+		YACURS::EventQueue::submit(YACURS::EventEx<LoadFile*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
 	case YACURS::DIALOG_NO:
 	    ignore_unsaved_file=true;
