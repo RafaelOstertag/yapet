@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-12-13 12:06+0100\n"
-"PO-Revision-Date: 2013-11-25 06:59+0100\n"
+"POT-Creation-Date: 2013-12-28 19:38+0100\n"
+"PO-Revision-Date: 2013-12-28 19:53+0100\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -23,19 +23,19 @@ msgstr ""
 msgid "Unlock Screen"
 msgstr "Bildschirm entsperren"
 
-#: ui/yapetunlockdialog.cc:89
+#: ui/yapetunlockdialog.cc:80
 msgid "Please enter password for"
 msgstr "Passwort eingeben für"
 
-#: ui/yapetunlockdialog.cc:90
+#: ui/yapetunlockdialog.cc:81
 msgid "<unknown>"
 msgstr "<unbekannt>"
 
-#: ui/yapetunlockdialog.cc:91
+#: ui/yapetunlockdialog.cc:82
 msgid "in order to unlock screen"
 msgstr "um Bildschirm zu entsperren"
 
-#: ui/yapetunlockdialog.cc:105 ui/help.cc:116
+#: ui/yapetunlockdialog.cc:104 ui/help.cc:116
 msgid "Quit"
 msgstr "Beenden"
 
@@ -91,7 +91,7 @@ msgstr "Eintrag löschen"
 msgid "Sort Order"
 msgstr "Sortierreihenfolge"
 
-#: ui/help.cc:86 ui/mainwindow.cc:587 ui/mainwindow.cc:590
+#: ui/help.cc:86 ui/mainwindow.cc:595 ui/mainwindow.cc:598
 msgid "Search"
 msgstr "Suchen"
 
@@ -111,7 +111,7 @@ msgstr "Informationen"
 msgid "Redraw Screen"
 msgstr "Bildschirm neu zeichnen"
 
-#: ui/help.cc:111 ui/pwgendialog.cc:127 ui/passwordrecord.cc:161
+#: ui/help.cc:111 ui/pwgendialog.cc:134 ui/passwordrecord.cc:161
 msgid "Password Generator"
 msgstr "Passwortgenerator"
 
@@ -231,50 +231,50 @@ msgstr ""
 "Aufruf von NewPasswordDialog::password() während dialog_state()!=DIALOG_OK "
 "oder !match() ist"
 
-#: ui/pwgendialog.cc:64 ui/pwgendialog.cc:157 ui/pwgendialog.cc:165
+#: ui/pwgendialog.cc:64 ui/pwgendialog.cc:165 ui/pwgendialog.cc:173
 msgid "Letters"
 msgstr "Buchstaben"
 
-#: ui/pwgendialog.cc:66 ui/pwgendialog.cc:158 ui/pwgendialog.cc:167
+#: ui/pwgendialog.cc:66 ui/pwgendialog.cc:166 ui/pwgendialog.cc:175
 msgid "Digits"
 msgstr "Ziffern"
 
-#: ui/pwgendialog.cc:67 ui/pwgendialog.cc:159 ui/pwgendialog.cc:169
+#: ui/pwgendialog.cc:67 ui/pwgendialog.cc:167 ui/pwgendialog.cc:177
 msgid "Punctuation"
 msgstr "Satzzeichen"
 
-#: ui/pwgendialog.cc:68 ui/pwgendialog.cc:160 ui/pwgendialog.cc:171
+#: ui/pwgendialog.cc:68 ui/pwgendialog.cc:168 ui/pwgendialog.cc:179
 msgid "Special"
 msgstr "Spezial"
 
-#: ui/pwgendialog.cc:69 ui/pwgendialog.cc:161 ui/pwgendialog.cc:173
+#: ui/pwgendialog.cc:69 ui/pwgendialog.cc:169 ui/pwgendialog.cc:181
 msgid "Other"
 msgstr "Andere"
 
-#: ui/pwgendialog.cc:131
+#: ui/pwgendialog.cc:138
 msgid "Generated password"
 msgstr "Generiertes Passwort"
 
-#: ui/pwgendialog.cc:133
+#: ui/pwgendialog.cc:140
 msgid "Password length"
 msgstr "Passwortlänge"
 
-#: ui/pwgendialog.cc:135
+#: ui/pwgendialog.cc:143
 msgid "Regenerate"
 msgstr "Regenerieren"
 
-#: ui/pwgendialog.cc:162
+#: ui/pwgendialog.cc:170
 msgid "Character Pools"
 msgstr "Zeichenvorrat"
 
-#: ui/pwgendialog.cc:187
+#: ui/pwgendialog.cc:195
 msgid "Sources"
 msgstr "Quellen"
 
-#: ui/passwordrecord.cc:68 ui/passwordrecord.cc:223 ui/mainwindow.cc:420
-#: ui/mainwindow.cc:466 ui/mainwindow.cc:497 glue/createfile.cc:80
+#: ui/passwordrecord.cc:68 ui/passwordrecord.cc:225 ui/mainwindow.cc:420
+#: ui/mainwindow.cc:472 ui/mainwindow.cc:503 glue/createfile.cc:80
 #: glue/promptpassword.cc:60 glue/changepassword.cc:52
-#: glue/changepassword.cc:62 glue/changepassword.cc:109
+#: glue/changepassword.cc:62 glue/changepassword.cc:116
 #: glue/opencmdlinefile.cc:103
 msgid "Error"
 msgstr "Fehler"
@@ -287,7 +287,7 @@ msgstr "Anstehende Änderungen"
 msgid "Do you want to discard changes?"
 msgstr "Änderungen verwerfen?"
 
-#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:298
+#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:301
 msgid "Password Entry"
 msgstr "Passwort Entrag"
 
@@ -311,7 +311,7 @@ msgstr "Passwort"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: ui/passwordrecord.cc:296
+#: ui/passwordrecord.cc:299
 msgid "Password Entry (Read-Only)"
 msgstr "Passwort Eintrag (Nur-lesen)"
 
@@ -331,8 +331,8 @@ msgstr "Ausgewählten Eintrag löschen?"
 msgid "Quit aborted"
 msgstr "Beenden abgebrochen"
 
-#: ui/mainwindow.cc:186 glue/loadfile.cc:96 glue/createfile.cc:121
-#: glue/changepassword.cc:142
+#: ui/mainwindow.cc:186 glue/loadfile.cc:98 glue/createfile.cc:123
+#: glue/changepassword.cc:149
 msgid "Unexpected dialog state for confirmsave dialog"
 msgstr "Unerwarteter dialog status für Bestätigungsdialog"
 
@@ -352,88 +352,92 @@ msgstr "Geöffnete Datei: "
 msgid "Error while reading file:"
 msgstr "Fehler beim Lesen der Datei:"
 
-#: ui/mainwindow.cc:458
+#: ui/mainwindow.cc:461
 msgid "Saved file: "
 msgstr "Gespeicherte Datei: "
 
-#: ui/mainwindow.cc:467
+#: ui/mainwindow.cc:466
+msgid "No changes need to be saved"
+msgstr "Keine Änderungen zum Speichern"
+
+#: ui/mainwindow.cc:473
 msgid "Error while saving file:"
 msgstr "Fehler beim Öffnen der Datei:"
 
-#: ui/mainwindow.cc:481
+#: ui/mainwindow.cc:487
 msgid "New key must not be 0"
 msgstr "Neuer Schlüssel darf nicht 0 sein"
 
-#: ui/mainwindow.cc:493
+#: ui/mainwindow.cc:499
 msgid "Changed password on "
 msgstr "Passwort geändert am"
 
-#: ui/mainwindow.cc:498
+#: ui/mainwindow.cc:504
 msgid "Error while changing password:"
 msgstr "Fehler beim Ändern des Passworts:"
 
-#: ui/mainwindow.cc:515
+#: ui/mainwindow.cc:523
 msgid "Confirm Deletion"
 msgstr "Löschen bestätigen"
 
-#: ui/mainwindow.cc:516
+#: ui/mainwindow.cc:524
 msgid "Do you want to delete the selected record?"
 msgstr "Ausgewählter Eintrag löschen?"
 
-#: ui/mainwindow.cc:550
+#: ui/mainwindow.cc:558
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: ui/mainwindow.cc:551
+#: ui/mainwindow.cc:559
 msgid "There are unsaved changes."
 msgstr "Ungespeicherte Änderungen vorhanden."
 
-#: ui/mainwindow.cc:552
+#: ui/mainwindow.cc:560
 msgid "Do you want to save changes, before leaving?"
 msgstr "Änderungen vor Beenden speichern?"
 
-#: ui/mainwindow.cc:564
+#: ui/mainwindow.cc:572
 msgid "Sort Order Ascending"
 msgstr "Sortierreihenfolge aufsteigend"
 
-#: ui/mainwindow.cc:567
+#: ui/mainwindow.cc:575
 msgid "Sort Order Descending"
 msgstr "Sortierreihenfolge absteigend"
 
-#: ui/mainwindow.cc:588
+#: ui/mainwindow.cc:596
 msgid "Enter search term"
 msgstr "Suchbegriff eingeben"
 
-#: ui/mainwindow.cc:591
+#: ui/mainwindow.cc:599
 msgid "Enter search term (case-sensitive)"
 msgstr "Suchbegriff eingeben (Gross- und Kleinschreibung werden beachtet)"
 
-#: ui/mainwindow.cc:603
+#: ui/mainwindow.cc:611
 msgid "No previous search. Press '/' to search."
 msgstr "Keine vorhergehende Suche. '/' drücken um zu suchen."
 
-#: ui/mainwindow.cc:609
+#: ui/mainwindow.cc:617
 msgid "No more matches for "
 msgstr "Keine Treffer für "
 
-#: ui/mainwindow.cc:610
+#: ui/mainwindow.cc:618
 msgid " found"
 msgstr " gefunden"
 
-#: ui/mainwindow.cc:616
+#: ui/mainwindow.cc:624
 msgid "Next match for "
 msgstr "Nächster Treffer für "
 
-#: glue/loadfile.cc:160 glue/createfile.cc:178 glue/changepassword.cc:205
+#: glue/loadfile.cc:162 glue/createfile.cc:180 glue/changepassword.cc:212
 msgid "Unsaved Changes"
 msgstr "Ungespeicherte Änderungen"
 
-#: glue/loadfile.cc:162 glue/createfile.cc:180
+#: glue/loadfile.cc:164 glue/createfile.cc:182
 msgid "has unsaved changes. Do you want to save?"
 msgstr "hat nicht gespeicherte Änderungen. Speichern?"
 
 #: glue/createfile.cc:81 glue/promptpassword.cc:61 glue/changepassword.cc:63
-#: glue/changepassword.cc:110 glue/opencmdlinefile.cc:104
+#: glue/changepassword.cc:117 glue/opencmdlinefile.cc:104
 msgid "Got following error"
 msgstr "Folgenden Fehler erhalten"
 
@@ -450,20 +454,22 @@ msgid "is not correct. Do you want to try again?"
 msgstr "ist nicht korrekt. Nochmals versuchen?"
 
 #: glue/changepassword.cc:53
-#, fuzzy
 msgid "Password does not match old password"
-msgstr "Passwörter stimmen nicht überein"
+msgstr "Passwort stimmt nich mit altem Passwort überein"
 
 #: glue/changepassword.cc:54
-#, fuzzy
 msgid "Retry?"
-msgstr "Wiederholen"
+msgstr "Nochmals versuchen?"
 
-#: glue/changepassword.cc:206
+#: glue/changepassword.cc:108
+msgid "Password not changed. Old and new password identical."
+msgstr "Passwort nich geändert. Neues und altes sind identisch."
+
+#: glue/changepassword.cc:213
 msgid "Changes in"
 msgstr "Änderungen in"
 
-#: glue/changepassword.cc:208
+#: glue/changepassword.cc:215
 msgid "will be saved. Do you want to continue?"
 msgstr "wird gespeichert. Fortfahren?"
 
@@ -889,15 +895,3 @@ msgstr "unbekanntes argument"
 #: yapet/main.cc:309
 msgid "Press 'H' for help"
 msgstr "Für Hilfe 'H' drücken"
-
-#~ msgid "Terminal Title:"
-#~ msgstr "Terminal Titel: "
-
-#~ msgid "built-in"
-#~ msgstr "eingebaut"
-
-#~ msgid "not built-in"
-#~ msgstr "nicht eingebaut"
-
-#~ msgid "Password Generator:"
-#~ msgstr "Passwortgenerator: "
