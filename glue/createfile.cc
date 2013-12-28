@@ -61,7 +61,7 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	    // Set file into configuration, so that it receives .pet
 	    // suffix
 	    YAPET::Globals::config.petfile.set(__filepath);
-	    
+
 	    YAPET::Key* _key=0;
 	    YAPET::File* _file=0;
 	    try {
@@ -82,33 +82,35 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 						   ex.what(),
 						   YACURS::OK_ONLY);
 		generror->show();
-		
+
 		if (_key) delete _key;
 		if (_file) delete _file;
 	    }
-	    
+
 	} else {
 	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
 	}
-	
+
 	// Do not put aptoptosis here, since here we can't decide
 	// whether we had an exception or not. And if we had an
 	// exception, generror is active and we have to wait for the
 	// user to close it. If we have an exception, generror handler
 	// takes care
-	
-	
+
+
 	delete promptpassword;
 	promptpassword=0;
-	
+
 	return;
     }
-    
+
     if (evt.data() == confirmsave) {
 	switch (confirmsave->dialog_state()) {
-	case YACURS::DIALOG_YES: 
-	    mainwindow.save_records();
-	    run();
+	case YACURS::DIALOG_YES:
+	    if (mainwindow.save_records())
+		run();
+	    else
+		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
 	    break;
 	case YACURS::DIALOG_NO:
 	    ignore_unsaved_file=true;
@@ -121,12 +123,12 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 	    throw std::runtime_error(_("Unexpected dialog state for confirmsave dialog"));
 	    break;
 	}
-	
+
 	delete confirmsave;
 	confirmsave = 0;
 	return;
     }
-    
+
     if (evt.data() == generror) {
 	delete generror;
 	generror = 0;
