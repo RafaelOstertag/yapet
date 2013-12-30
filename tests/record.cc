@@ -17,9 +17,19 @@
 
 #include "record.h"
 
-struct tmp {
+struct test_struct {
     char v1[5];
     char v2[20];
+};
+
+struct test_struct2 {
+	char v1[8];
+	char v2[8];
+};
+
+test_struct2 pre_initialized = {
+    "1234567",
+    "abcdefg"
 };
 
 int main (int, char**) {
@@ -28,16 +38,31 @@ int main (int, char**) {
     dup2(stdout_redir_fd,STDOUT_FILENO);
 #endif
     std::cout << std::endl;
-    tmp t;
-    YAPET::Record<tmp> record (t);
+    test_struct t;
+    YAPET::Record<test_struct> record (t);
 
     if (record.size() != 25) {
         return 1;
     }
 
-    YAPET::Record<tmp> record2 (record);
-    YAPET::Record<tmp> record3 (t);
+    YAPET::Record<test_struct> record2 (record);
+    YAPET::Record<test_struct> record3 (t);
     record3 = record2 = record;
+
+    YAPET::Record<test_struct2> record4(pre_initialized);
+
+    if (std::strcmp(static_cast<test_struct2*>(record4)->v1, pre_initialized.v1)!=0)
+	return 1;
+
+    if (std::strcmp(static_cast<test_struct2*>(record4)->v2, pre_initialized.v2)!=0)
+	return 1;
+
+    if (std::strcmp(static_cast<test_struct2*>(record4)->v1, pre_initialized.v2)==0)
+	return 1;
+
+    if (std::strcmp(static_cast<test_struct2*>(record4)->v2, pre_initialized.v1)==0)
+	return 1;
+
     return 0;
 
 }
