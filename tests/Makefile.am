@@ -14,10 +14,11 @@ chmod_verbose = $(chmod_verbose_$(V))
 chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
 chmod_verbose_0 = @echo "  CHMOD  $@";
 
-CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak		\
-test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet test8.pet	\
-test9.pet endianess.pet corrupt.pet f32le0.5.pet f32be0.5.pet f64le0.5.pet	\
-f64be0.5.pet f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
+CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak	\
+test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
+test8.pet test9.pet test10.pet endianess.pet corrupt.pet f32le0.5.pet	\
+f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
+f64le0.6.pet f64be0.6.pet
 #
 # Files used for foreign test
 #
@@ -30,10 +31,11 @@ f64be0.5.pet f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 # f32be0.6.pet.in	file created on 32bit big endian arch with a 0.6 version
 # f64le0.6.pet.in	file created on 64bit little endian arch with a 0.6 version
 # f64be0.6.pet.in	file created on 64bit big endian arch with a 0.6 version
-EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in f32be0.5.pet.in	\
-f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in f32be0.6.pet.in f64le0.6.pet.in	\
-f64be0.6.pet.in test1.csv test2.csv test3.csv test4.csv test5.csv test6.csv	\
-test7.csv test8.csv test9.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
+EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in		\
+f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
+f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in test1.csv test2.csv	\
+test3.csv test4.csv test5.csv test6.csv test7.csv test8.csv test9.csv	\
+test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
@@ -47,7 +49,7 @@ charpool2 rng1 pwgen1
 # Checks when building csv2yapet
 if BUILDCSV2YAPET
 check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
-import8 import9 import10 import11 import12 import13 import14
+import8 import9 import10 import11 import12 import13 import14 import15
 endif
 
 TESTS = $(check_PROGRAMS)
@@ -156,6 +158,9 @@ import13_SOURCES = import13.cc  ../csv2yapet/csvimport.cc
 
 import14_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 import14_SOURCES = import14.cc  ../csv2yapet/csvimport.cc
+
+import15_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
+import15_SOURCES = import15.cc  ../csv2yapet/csvimport.cc
 
 endif
 
