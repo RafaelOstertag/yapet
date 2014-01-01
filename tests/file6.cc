@@ -115,26 +115,31 @@ int main (int, char**) {
 	if (std::strcmp((char*) ptr_pw->name, NAMEV) != 0) {
             std::cerr << "Name does not match" << std::endl;
 	    delete ptr_dec_rec;
+	    return 1;
 	}
 
 	if (std::strcmp((char*) ptr_pw->host, HOSTV) != 0) {
             std::cerr << "Host does not match" << std::endl;
 	    delete ptr_dec_rec;
+	    return 1;
 	}
 
 	if (std::strcmp((char*) ptr_pw->username, NAMEV) != 0) {
             std::cerr << "User Name does not match" << std::endl;
 	    delete ptr_dec_rec;
+	    return 1;
 	}
 
 	if (std::strcmp((char*) ptr_pw->password, PASSV) != 0) {
             std::cerr << "Password does not match" << std::endl;
 	    delete ptr_dec_rec;
+	    return 1;
 	}
 
 	if (std::strcmp((char*) ptr_pw->comment, COMMV) != 0) {
             std::cerr << "Comment does not match" << std::endl;
 	    delete ptr_dec_rec;
+	    return 1;
 	}
 	
 	delete ptr_dec_rec;
