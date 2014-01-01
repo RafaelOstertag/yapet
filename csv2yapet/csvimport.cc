@@ -158,8 +158,27 @@ CSVImport::import (const char* pw) throw (std::exception) {
     // The iterator for scanning the line character by character
     std::string::size_type it = 0;
 
-    while (csvfile.getline (line, max_len) ) {
+    bool failmode=false;
+    while (!csvfile.getline (line, max_len).eof() ) {
+	if (csvfile.fail()) {
+	    csvfile.clear();
+	    failmode=true;
+	    continue;
+	}
+
+	if (failmode) {
+	    // now we read an entire line while in failmode, so reset,
+	    // increment line counter, and skip line. This is done so
+	    // that the line counter keeps accurate.
+	    failmode=false;
+	    lineno++;
+	    logError(lineno, "Failed reading line (line too long?)");
+	    continue;
+	}
+
+	// leave this here.
         lineno++;
+
         std::string l (line);
         // integer pointing to the last delimiter found
         std::string::size_type last_sep = 0;
