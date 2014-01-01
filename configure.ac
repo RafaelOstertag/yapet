@@ -125,6 +125,8 @@ AC_CONFIG_FILES([Makefile
 	tests/testpaths.h
 	doc/Makefile
 	doc/Makefile.doc])
+# Inject --disable-install which is used by libyacurs.
+ac_configure_args="$ac_configure_args --disable-install"
 AC_OUTPUT
 
 echo "******************************************************************"
