@@ -24,12 +24,12 @@ std::string comm("Test Comment ");
 
 std::list<control_struct> control_data;
 YAPET::Key key("pleasechange");
-YAPET::Crypt crypt(key);
+YAPET::Crypt yacrypt(key);
 YAPET::File testfile("/tmp/testpwrecord.pet", key, false, false);
 
 bool operator==(const YAPET::PartDec& a, const control_struct& b) {
     YAPET::Record<YAPET::PasswordRecord>* dec_rec = 
-	crypt.decrypt<YAPET::PasswordRecord>(a.getEncRecord() );
+	yacrypt.decrypt<YAPET::PasswordRecord>(a.getEncRecord() );
     YAPET::PasswordRecord* ptr_rec = *dec_rec;
     
     if (reinterpret_cast<const char*>(ptr_rec->name) != b.name)
