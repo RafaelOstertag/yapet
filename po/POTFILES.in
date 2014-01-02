@@ -1,4 +1,3 @@
-# find crypt csv2yapet glue ui yapet  tests -type f \( -name \*.cc -o -name \*.h \) > po/POTFILES.in
 crypt/bdbuffer.cc
 crypt/bdbuffer.h
 crypt/crypt.cc
@@ -51,7 +50,6 @@ yapet/cfgfile.h
 yapet/consts.cc
 yapet/consts.h
 yapet/globals.cc
-yapet/secstring.h
 yapet/globals.h
 yapet/main.cc
 tests/bdbuffer.cc
