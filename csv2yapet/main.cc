@@ -83,7 +83,7 @@ enum {
     MAX_FILEPATH = 1024
 };
 
-const char COPYRIGHT[] = "\nCopyright (C) 2009-2010  Rafael Ostertag\n"  \
+const char COPYRIGHT[] = "\nCopyright (C) 2009-2014  Rafael Ostertag\n"  \
                          "\n"                                \
                          "csv2yapet is part of YAPET.\n"                 \
                          "\n"                                \
@@ -157,34 +157,34 @@ void show_help (char* prgname) {
               << " [-h] [-p <password>] [-q] [-s <char>] [-V] <src> <dst>"
               << std::endl
               << std::endl;
-    std::cout << "-c, --copyright\tshow copyright information"
+    std::cout << "-c\tshow copyright information"
               << std::endl
               << std::endl;
-    std::cout << "-h, --help\tshow this help text"
+    std::cout << "-h\tshow this help text"
               << std::endl
               << std::endl;
-    std::cout << "-p, --password\tuse <password> as the password for the file created"
+    std::cout << "-p\tuse <password> as the password for the file created"
               << std::endl
-              << "\t\tby the convert."
+              << "\tby the convert."
               << std::endl
-              << "\t\tThe use of this option is discouraged."
-              << std::endl
-              << std::endl;
-    std::cout << "-q, --quiet\toperate quietly"
+              << "\tThe use of this option is discouraged."
               << std::endl
               << std::endl;
-    std::cout << "-s, --separator\tuse <char> as field separator."
-              << std::endl
-              << "\t\tDefault: ,"
+    std::cout << "-q\toperate quietly"
               << std::endl
               << std::endl;
-    std::cout << "-V, --version\tshow the version of csv2yapet"
+    std::cout << "-s\tuse <char> as field separator."
+              << std::endl
+              << "\tDefault: ,"
               << std::endl
               << std::endl;
-    std::cout << "<src>\t\tthe source csv file"
+    std::cout << "-V\tshow the version of csv2yapet"
               << std::endl
               << std::endl;
-    std::cout << "<dst>\t\tthe output file"
+    std::cout << "<src>\tthe source csv file"
+              << std::endl
+              << std::endl;
+    std::cout << "<dst>\tthe output file"
               << std::endl
               << std::endl;
     std::cout << "csv2yapet converts csv text files to files readable by YAPET."
@@ -199,26 +199,12 @@ int main (int argc, char** argv) {
     char separator = ',';
     std::string srcfile;
     std::string dstfile;
-    int c;
-#ifdef HAVE_GETOPT_LONG
-    struct option long_options[] = {
-        { (char*) "copyright", no_argument, 0, 'c'},
-        { (char*) "help", no_argument, 0, 'h'},
-        { (char*) "password", required_argument, 0, 'p'},
-        { (char*) "quiet", no_argument, 0, 'q'},
-        { (char*) "separator", required_argument, 0, 's'},
-        { (char*) "version", no_argument, 0, 'V'},
-        {0, 0, 0, 0}
-    };
 
-    while ( (c = getopt_long (argc, argv, ":chp:qs:V", long_options, 0) ) != -1) {
-#else // HAVE_GETOPT_LONG
+    int c;
     extern char *optarg;
     extern int optopt, optind;
 
-    while ( (c = getopt (argc, argv, ":c(copyright)h(help)p:(password)q(quiet)s:(separator)V(version)") ) != -1) {
-#endif // HAVE_GETOPT_LONG
-
+    while ( (c = getopt (argc, argv, ":chp:qs:V") ) != -1) {
         switch (c) {
             case 'c':
                 show_copyright();

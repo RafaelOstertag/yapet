@@ -185,14 +185,14 @@
 
     <variablelist>
       <varlistentry>
-	<term><option>-c</option>, <option>--copyright</option></term>
+	<term><option>-c</option></term>
 	<listitem>
 	  <para>Show the copyright information.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-h</option>, <option>--help</option></term>
+	<term><option>-h</option></term>
 	<listitem>
 
 	  <para>Print a help text.</para>
@@ -200,8 +200,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><option>-p</option> <replaceable>password</replaceable>,
-	<option>--password</option> <replaceable>password</replaceable></term>
+	<term><option>-p</option> <replaceable>password</replaceable></term>
 
 	<listitem>
 	  <para>The password to be used to encrypt the &YP; file. If
@@ -212,7 +211,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><option>-q</option>, <option>--quiet</option></term>
+	<term><option>-q</option></term>
 
 	<listitem>
 	  <para>Enable the quiet mode. No details about errors are reported.
@@ -221,9 +220,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><option>-s</option> <replaceable>separator</replaceable>,
-	<option>--separator</option>
-	<replaceable>separator</replaceable></term>
+	<term><option>-s</option> <replaceable>separator</replaceable></term>
 
 	<listitem>
 
@@ -235,7 +232,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><option>-V</option>, <option>--version</option></term>
+	<term><option>-V</option></term>
 	<listitem>
 
 	  <para>Show the version of &csv2yapet;.</para>
