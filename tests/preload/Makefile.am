@@ -26,13 +26,14 @@ myCPPFLAGS = -I$(top_srcdir)/libyacurs/include	\
 pwrecord.lo: pwrecord.cc
 	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) -shared $(myCPPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(AM_CPPFLAGS) -c -o $(builddir)/$@ $<
 
-libpwrecord.so: pwrecord.lo
-	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXX) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -G -h$@ -o $@ $<
+libpwrecord.la: pwrecord.lo
+	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXX) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -rpath $(libdir) -version-info 0 -o $@ $<
 
-check-local: libpwrecord.so checktestpwrecord
+check-local: libpwrecord.la checktestpwrecord
 	rm -f /tmp/testpwrecord.pet
-	$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/libpwrecord.so" $(top_builddir)/yapet/yapet -i /tmp/testpwrecord.pet
+	$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libpwrecord.so" $(top_builddir)/yapet/yapet -i /tmp/testpwrecord.pet
 	$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1
 
 clean-local:
-	rm -f pwrecord.lo libpwrecord.so
+	rm -f *.la
+	rm -f *.o
