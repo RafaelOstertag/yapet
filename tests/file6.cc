@@ -49,11 +49,11 @@ void init_vars() {
     for (int i=0; i<YAPET::COMMENT_SIZE-1; i++)
 	COMMV[i]=chars[i%len];
 
-    NAMEV[YAPET::NAME_SIZE]=0;
-    HOSTV[YAPET::HOST_SIZE]=0;
-    USERV[YAPET::USERNAME_SIZE]=0;
-    PASSV[YAPET::PASSWORD_SIZE]=0;
-    COMMV[YAPET::COMMENT_SIZE]=0;
+    NAMEV[YAPET::NAME_SIZE-1]=0;
+    HOSTV[YAPET::HOST_SIZE-1]=0;
+    USERV[YAPET::USERNAME_SIZE-1]=0;
+    PASSV[YAPET::PASSWORD_SIZE-1]=0;
+    COMMV[YAPET::COMMENT_SIZE-1]=0;
 }
 
 int main (int, char**) {
@@ -124,7 +124,7 @@ int main (int, char**) {
 	    return 1;
 	}
 
-	if (std::strcmp((char*) ptr_pw->username, NAMEV) != 0) {
+	if (std::strcmp((char*) ptr_pw->username, USERV) != 0) {
             std::cerr << "User Name does not match" << std::endl;
 	    delete ptr_dec_rec;
 	    return 1;
