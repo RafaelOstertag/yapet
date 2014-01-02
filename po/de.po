@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2013-12-28 19:38+0100\n"
+"POT-Creation-Date: 2014-01-02 13:43+0100\n"
 "PO-Revision-Date: 2013-12-28 19:53+0100\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -18,6 +18,447 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: crypt/bdbuffer.cc:54 crypt/file.cc:510 crypt/record.h:92
+msgid "Memory exhausted"
+msgstr "Speicher aufgebraucht"
+
+#: crypt/bdbuffer.cc:166 crypt/bdbuffer.cc:188
+msgid "Position out of range"
+msgstr "Position ausserhalb des Bereiches"
+
+#: crypt/crypt.cc:57
+msgid "Unable to get cipher"
+msgstr "Kann die Verschlüsselung nicht ermitteln"
+
+#: crypt/crypt.cc:66
+msgid "Error initializing cipher"
+msgstr "Fehler beim Initialisieren der Verschlüsselung"
+
+#: crypt/crypt.cc:73 crypt/crypt.h:179 crypt/crypt.h:257
+msgid "Error setting the key length"
+msgstr "Kann die Schlüssellänge nicht setzen"
+
+#: crypt/crypt.h:160 crypt/crypt.h:238
+msgid "IVec length missmatch"
+msgstr "IVec Länge falsch"
+
+#: crypt/crypt.h:172 crypt/crypt.h:250
+msgid "Error initializing encryption engine"
+msgstr "Fehler beim Initialisieren der Verschlüsselung"
+
+#: crypt/crypt.h:194
+msgid "Error encrypting data"
+msgstr "Fehler beim Verschlüsseln der Daten"
+
+#: crypt/crypt.h:205
+msgid "Error finalizing encryption"
+msgstr "Fehler beim Abschliessen der Verschlüsselung"
+
+#: crypt/crypt.h:271
+msgid "Error decrypting data"
+msgstr "Fehler beim Entschlüsseln der Daten"
+
+#: crypt/crypt.h:282
+msgid "Error finalizing decryption"
+msgstr "Fehler beim Abschliessen der Entschlüsselung"
+
+#: crypt/file.cc:111
+msgid "You are not the owner of "
+msgstr "Sie sind nicht der Eigner von "
+
+#: crypt/file.cc:116
+msgid "Permissions of "
+msgstr "Zugriffsrechte von "
+
+#: crypt/file.cc:117
+msgid " not secure."
+msgstr " nicht sicher."
+
+#: crypt/file.cc:140
+msgid "Cannot set the owner of "
+msgstr "Kann Eigentümer nicht setzen:"
+
+#: crypt/file.cc:147
+msgid "Cannot set file permissions on "
+msgstr "Zugriffsrechte setzen nicht möglich: "
+
+#: crypt/file.cc:236
+msgid "Error seeking within file: "
+msgstr "Fehler beim Positionieren innerhalb von: "
+
+#: crypt/file.cc:278
+msgid "Unable to seek to data section"
+msgstr "Kann den Datenabschnitt nicht finden"
+
+#: crypt/file.cc:313 crypt/file.cc:330
+msgid "Short read on file: "
+msgstr "Abruptes Ende beim Lesen von: "
+
+#: crypt/file.cc:366 crypt/file.cc:374 crypt/file.cc:486
+msgid "Short write on file: "
+msgstr "Abruptes Ende beim Schreiben von: "
+
+#: crypt/file.cc:420
+msgid "EOF encountered while reading header"
+msgstr "Ende der Datei während lesen des Dateikopfes erreicht"
+
+#: crypt/file.cc:427
+msgid "Sanity check for control field failed"
+msgstr "Plausibiltätskontrolle für Kontrollfeld fehlgeschlagen"
+
+#: crypt/file.cc:463
+msgid "Unknown exception catched"
+msgstr "Unbekannte Ausnahme aufgetreten"
+
+#: crypt/file.cc:518 crypt/file.cc:523
+msgid "File type not recognized"
+msgstr "Filetyp unbekannt"
+
+#: crypt/file.cc:559
+msgid "Null pointer passed in ptr32"
+msgstr "Null Zeiger in ptr32 übergeben."
+
+#: crypt/file.cc:561
+msgid "Null pointer passed in ptr64"
+msgstr "Null Zeiger in ptr64 übergeben."
+
+#: crypt/file.cc:769 crypt/file.cc:839
+msgid "File has been externally modified"
+msgstr "Datei wurde von ausserhalb verändert"
+
+#: crypt/key.cc:64
+msgid "Run 1: Unable to initialize the EVP_MD structure"
+msgstr "Lauf 1: Kann EVP_MD Struktur nicht initialisieren"
+
+#: crypt/key.cc:72
+msgid "Run 1: Unable to initialize the digest"
+msgstr "Lauf 1: Kann Digest nicht initialisieren"
+
+#: crypt/key.cc:79
+msgid "Run 1: Unable to update the digest"
+msgstr "Lauf 1: Digest kann nicht angepasst werden"
+
+#: crypt/key.cc:88
+msgid "Run 1: Unable to finalize the digest"
+msgstr "Lauf 1: Kann Digest nicht abschliessen"
+
+#: crypt/key.cc:94
+msgid "Run 1: Digest does not have expected length"
+msgstr "Lauf 1: Digest hat unerwartete Länge"
+
+#: crypt/key.cc:106
+msgid "Run 2: Unable to initialize the EVP_MD structure"
+msgstr "Lauf 2: Kann EVP_MD Struktur nicht initialisieren"
+
+#: crypt/key.cc:115
+msgid "Run 2: Unable to initialize the digest"
+msgstr "Lauf 2: Kann Digest nicht initialisieren"
+
+#: crypt/key.cc:123
+msgid "Run 2: Unable to update the digest"
+msgstr "Lauf 2: Digest kann nicht angepasst werden"
+
+#: crypt/key.cc:131
+msgid "Run 2: Unable to finalize the digest"
+msgstr "Lauf 2: Kann Digest nicht abschliessen"
+
+#: crypt/key.cc:137
+msgid "Run 2: Digest does not have expected length"
+msgstr "Lauf 2: Digest hat unerwartete Länge"
+
+#: crypt/key.cc:149
+msgid "Run 3: Unable to initialize the EVP_MD structure"
+msgstr "Lauf 3: Kann EVP_MD Struktur nicht initialisieren"
+
+#: crypt/key.cc:158
+msgid "Run 3: Unable to initialize the digest"
+msgstr "Lauf 3: Kann Digest nicht initialisieren"
+
+#: crypt/key.cc:166
+msgid "Run 3: Unable to update the digest"
+msgstr "Lauf 3: Digest kann nicht angepasst werden"
+
+#: crypt/key.cc:174
+msgid "Run 3: Unable to finalize the digest"
+msgstr "Lauf 3: Kann Digest nicht abschliessen"
+
+#: crypt/key.cc:180
+msgid "Run 3: Digest does not have expected length"
+msgstr "Lauf 3: Digest hat unerwartete Länge"
+
+#: crypt/key.cc:191
+#, c-format
+msgid "Effective key length of %d does not match expected key length %d"
+msgstr ""
+"Die effektive Schlüssellänge %d passt nicht auf die erwartete Schlüssellänge "
+"%d"
+
+#: crypt/key.cc:205
+msgid "IVec: Unable to initialize the EVP_MD structure"
+msgstr "IVec: Kann EVP_MD Struktur nicht initialisieren"
+
+#: crypt/key.cc:214
+msgid "IVec: Unable to initialize the digest"
+msgstr "IVec: Kann Digest nicht initialisieren"
+
+#: crypt/key.cc:222
+msgid "IVec: Unable to update the digest"
+msgstr "IVec: Kann Digest nicht anpassen"
+
+#: crypt/key.cc:230
+msgid "IVec: Unable to finalize the digest"
+msgstr "IVec: Kann Digest nicht abschliessen"
+
+#: crypt/key.cc:236
+msgid "IVec: Digest does not have expected length"
+msgstr "IVec: Digest hat unerwartete Länge"
+
+#: crypt/record.h:285
+msgid "BDBuffer too small. Cannot assign to Record<T>"
+msgstr "BDBuffer zu klein. Kann nicht an Record<T> zuweisen"
+
+#: crypt/record.h:287
+msgid "BDBuffer too big. Cannot assign to Record<T>"
+msgstr "BDBuffer zu gross. Kann nicht an Record<T> zuweisen."
+
+#: crypt/yapetexception.h:86
+msgid "Generic exception message"
+msgstr "Generische Ausnahmenachricht"
+
+#: crypt/yapetexception.h:130
+msgid "Retry"
+msgstr "Wiederholen"
+
+#: crypt/yapetexception.h:155
+msgid "Encryption error"
+msgstr "Verschlüsselungsfehler"
+
+#: crypt/yapetexception.h:182
+msgid "Invalid password"
+msgstr "Falsches Passwort"
+
+#: glue/createfile.cc:80 glue/promptpassword.cc:60 glue/changepassword.cc:52
+#: glue/changepassword.cc:62 glue/changepassword.cc:116
+#: glue/opencmdlinefile.cc:103 ui/passwordrecord.cc:68
+#: ui/passwordrecord.cc:225 ui/mainwindow.cc:420 ui/mainwindow.cc:472
+#: ui/mainwindow.cc:503
+msgid "Error"
+msgstr "Fehler"
+
+#: glue/createfile.cc:81 glue/promptpassword.cc:61 glue/changepassword.cc:63
+#: glue/changepassword.cc:117 glue/opencmdlinefile.cc:104
+msgid "Got following error"
+msgstr "Folgenden Fehler erhalten"
+
+#: glue/createfile.cc:123 glue/changepassword.cc:149 glue/loadfile.cc:98
+#: ui/mainwindow.cc:186
+msgid "Unexpected dialog state for confirmsave dialog"
+msgstr "Unerwarteter dialog status für Bestätigungsdialog"
+
+#: glue/createfile.cc:180 glue/changepassword.cc:212 glue/loadfile.cc:162
+msgid "Unsaved Changes"
+msgstr "Ungespeicherte Änderungen"
+
+#: glue/createfile.cc:182 glue/loadfile.cc:164
+msgid "has unsaved changes. Do you want to save?"
+msgstr "hat nicht gespeicherte Änderungen. Speichern?"
+
+#: glue/promptpassword.cc:47
+msgid "Invalid Password"
+msgstr "Falsches Passwort"
+
+#: glue/promptpassword.cc:48
+msgid "Password for file"
+msgstr "Passwort für Datei"
+
+#: glue/promptpassword.cc:50
+msgid "is not correct. Do you want to try again?"
+msgstr "ist nicht korrekt. Nochmals versuchen?"
+
+#: glue/changepassword.cc:53
+msgid "Password does not match old password"
+msgstr "Passwort stimmt nich mit altem Passwort überein"
+
+#: glue/changepassword.cc:54
+msgid "Retry?"
+msgstr "Nochmals versuchen?"
+
+#: glue/changepassword.cc:108
+msgid "Password not changed. Old and new password identical."
+msgstr "Passwort nich geändert. Neues und altes sind identisch."
+
+#: glue/changepassword.cc:213
+msgid "Changes in"
+msgstr "Änderungen in"
+
+#: glue/changepassword.cc:215
+msgid "will be saved. Do you want to continue?"
+msgstr "wird gespeichert. Fortfahren?"
+
+#: glue/opencmdlinefile.cc:196
+msgid "Create new File?"
+msgstr "Neue Datei erstellen?"
+
+#: glue/opencmdlinefile.cc:197
+msgid "The file"
+msgstr "Die Datei"
+
+#: glue/opencmdlinefile.cc:199
+msgid "does not exist. Create?"
+msgstr "existiert nicht. Erstellen?"
+
+#: ui/passwordrecord.cc:135
+msgid "Pending Changes"
+msgstr "Anstehende Änderungen"
+
+#: ui/passwordrecord.cc:136
+msgid "Do you want to discard changes?"
+msgstr "Änderungen verwerfen?"
+
+#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:301
+msgid "Password Entry"
+msgstr "Passwort Entrag"
+
+#: ui/passwordrecord.cc:151
+msgid "Name"
+msgstr "Name"
+
+#: ui/passwordrecord.cc:152
+msgid "Host"
+msgstr "Host"
+
+#: ui/passwordrecord.cc:153
+msgid "User Name"
+msgstr "Benutzername"
+
+#: ui/passwordrecord.cc:154
+msgid "Password"
+msgstr "Passwort"
+
+#: ui/passwordrecord.cc:155
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ui/passwordrecord.cc:161 ui/help.cc:111 ui/pwgendialog.cc:134
+msgid "Password Generator"
+msgstr "Passwortgenerator"
+
+#: ui/passwordrecord.cc:299
+msgid "Password Entry (Read-Only)"
+msgstr "Passwort Eintrag (Nur-lesen)"
+
+#: ui/mainwindow.cc:126
+msgid "Added new Record"
+msgstr "Neuen Eintrag hinzugefügt"
+
+#: ui/mainwindow.cc:136
+msgid "Updated Record"
+msgstr "Eintrag aktualisiert"
+
+#: ui/mainwindow.cc:159
+msgid "Delete selected Record"
+msgstr "Ausgewählten Eintrag löschen?"
+
+#: ui/mainwindow.cc:183
+msgid "Quit aborted"
+msgstr "Beenden abgebrochen"
+
+#: ui/mainwindow.cc:199
+msgid "Empty search string"
+msgstr "<"
+
+#: ui/mainwindow.cc:207
+msgid "No match for "
+msgstr "Keine Treffer für "
+
+#: ui/mainwindow.cc:394
+msgid "Opened file: "
+msgstr "Geöffnete Datei: "
+
+#: ui/mainwindow.cc:421
+msgid "Error while reading file:"
+msgstr "Fehler beim Lesen der Datei:"
+
+#: ui/mainwindow.cc:461
+msgid "Saved file: "
+msgstr "Gespeicherte Datei: "
+
+#: ui/mainwindow.cc:466
+msgid "No changes need to be saved"
+msgstr "Keine Änderungen zum Speichern"
+
+#: ui/mainwindow.cc:473
+msgid "Error while saving file:"
+msgstr "Fehler beim Öffnen der Datei:"
+
+#: ui/mainwindow.cc:487
+msgid "New key must not be 0"
+msgstr "Neuer Schlüssel darf nicht 0 sein"
+
+#: ui/mainwindow.cc:499
+msgid "Changed password on "
+msgstr "Passwort geändert am"
+
+#: ui/mainwindow.cc:504
+msgid "Error while changing password:"
+msgstr "Fehler beim Ändern des Passworts:"
+
+#: ui/mainwindow.cc:523
+msgid "Confirm Deletion"
+msgstr "Löschen bestätigen"
+
+#: ui/mainwindow.cc:524
+msgid "Do you want to delete the selected record?"
+msgstr "Ausgewählter Eintrag löschen?"
+
+#: ui/mainwindow.cc:558
+msgid "Confirmation"
+msgstr "Bestätigung"
+
+#: ui/mainwindow.cc:559
+msgid "There are unsaved changes."
+msgstr "Ungespeicherte Änderungen vorhanden."
+
+#: ui/mainwindow.cc:560
+msgid "Do you want to save changes, before leaving?"
+msgstr "Änderungen vor Beenden speichern?"
+
+#: ui/mainwindow.cc:572
+msgid "Sort Order Ascending"
+msgstr "Sortierreihenfolge aufsteigend"
+
+#: ui/mainwindow.cc:575
+msgid "Sort Order Descending"
+msgstr "Sortierreihenfolge absteigend"
+
+#: ui/mainwindow.cc:595 ui/mainwindow.cc:598 ui/help.cc:86
+msgid "Search"
+msgstr "Suchen"
+
+#: ui/mainwindow.cc:596
+msgid "Enter search term"
+msgstr "Suchbegriff eingeben"
+
+#: ui/mainwindow.cc:599
+msgid "Enter search term (case-sensitive)"
+msgstr "Suchbegriff eingeben (Gross- und Kleinschreibung werden beachtet)"
+
+#: ui/mainwindow.cc:611
+msgid "No previous search. Press '/' to search."
+msgstr "Keine vorhergehende Suche. '/' drücken um zu suchen."
+
+#: ui/mainwindow.cc:617
+msgid "No more matches for "
+msgstr "Keine Treffer für "
+
+#: ui/mainwindow.cc:618
+msgid " found"
+msgstr " gefunden"
+
+#: ui/mainwindow.cc:624
+msgid "Next match for "
+msgstr "Nächster Treffer für "
 
 #: ui/yapetunlockdialog.cc:77
 msgid "Unlock Screen"
@@ -91,10 +532,6 @@ msgstr "Eintrag löschen"
 msgid "Sort Order"
 msgstr "Sortierreihenfolge"
 
-#: ui/help.cc:86 ui/mainwindow.cc:595 ui/mainwindow.cc:598
-msgid "Search"
-msgstr "Suchen"
-
 #: ui/help.cc:91
 msgid "Search Next"
 msgstr "Weiter suchen"
@@ -110,10 +547,6 @@ msgstr "Informationen"
 #: ui/help.cc:106
 msgid "Redraw Screen"
 msgstr "Bildschirm neu zeichnen"
-
-#: ui/help.cc:111 ui/pwgendialog.cc:134 ui/passwordrecord.cc:161
-msgid "Password Generator"
-msgstr "Passwortgenerator"
 
 #: ui/yapetlockscreen.cc:68
 msgid "YAPET LOCKED"
@@ -271,501 +704,6 @@ msgstr "Zeichenvorrat"
 msgid "Sources"
 msgstr "Quellen"
 
-#: ui/passwordrecord.cc:68 ui/passwordrecord.cc:225 ui/mainwindow.cc:420
-#: ui/mainwindow.cc:472 ui/mainwindow.cc:503 glue/createfile.cc:80
-#: glue/promptpassword.cc:60 glue/changepassword.cc:52
-#: glue/changepassword.cc:62 glue/changepassword.cc:116
-#: glue/opencmdlinefile.cc:103
-msgid "Error"
-msgstr "Fehler"
-
-#: ui/passwordrecord.cc:135
-msgid "Pending Changes"
-msgstr "Anstehende Änderungen"
-
-#: ui/passwordrecord.cc:136
-msgid "Do you want to discard changes?"
-msgstr "Änderungen verwerfen?"
-
-#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:301
-msgid "Password Entry"
-msgstr "Passwort Entrag"
-
-#: ui/passwordrecord.cc:151
-msgid "Name"
-msgstr "Name"
-
-#: ui/passwordrecord.cc:152
-msgid "Host"
-msgstr "Host"
-
-#: ui/passwordrecord.cc:153
-msgid "User Name"
-msgstr "Benutzername"
-
-#: ui/passwordrecord.cc:154
-msgid "Password"
-msgstr "Passwort"
-
-#: ui/passwordrecord.cc:155
-msgid "Comment"
-msgstr "Kommentar"
-
-#: ui/passwordrecord.cc:299
-msgid "Password Entry (Read-Only)"
-msgstr "Passwort Eintrag (Nur-lesen)"
-
-#: ui/mainwindow.cc:126
-msgid "Added new Record"
-msgstr "Neuen Eintrag hinzugefügt"
-
-#: ui/mainwindow.cc:136
-msgid "Updated Record"
-msgstr "Eintrag aktualisiert"
-
-#: ui/mainwindow.cc:159
-msgid "Delete selected Record"
-msgstr "Ausgewählten Eintrag löschen?"
-
-#: ui/mainwindow.cc:183
-msgid "Quit aborted"
-msgstr "Beenden abgebrochen"
-
-#: ui/mainwindow.cc:186 glue/loadfile.cc:98 glue/createfile.cc:123
-#: glue/changepassword.cc:149
-msgid "Unexpected dialog state for confirmsave dialog"
-msgstr "Unerwarteter dialog status für Bestätigungsdialog"
-
-#: ui/mainwindow.cc:199
-msgid "Empty search string"
-msgstr "<"
-
-#: ui/mainwindow.cc:207
-msgid "No match for "
-msgstr "Keine Treffer für "
-
-#: ui/mainwindow.cc:394
-msgid "Opened file: "
-msgstr "Geöffnete Datei: "
-
-#: ui/mainwindow.cc:421
-msgid "Error while reading file:"
-msgstr "Fehler beim Lesen der Datei:"
-
-#: ui/mainwindow.cc:461
-msgid "Saved file: "
-msgstr "Gespeicherte Datei: "
-
-#: ui/mainwindow.cc:466
-msgid "No changes need to be saved"
-msgstr "Keine Änderungen zum Speichern"
-
-#: ui/mainwindow.cc:473
-msgid "Error while saving file:"
-msgstr "Fehler beim Öffnen der Datei:"
-
-#: ui/mainwindow.cc:487
-msgid "New key must not be 0"
-msgstr "Neuer Schlüssel darf nicht 0 sein"
-
-#: ui/mainwindow.cc:499
-msgid "Changed password on "
-msgstr "Passwort geändert am"
-
-#: ui/mainwindow.cc:504
-msgid "Error while changing password:"
-msgstr "Fehler beim Ändern des Passworts:"
-
-#: ui/mainwindow.cc:523
-msgid "Confirm Deletion"
-msgstr "Löschen bestätigen"
-
-#: ui/mainwindow.cc:524
-msgid "Do you want to delete the selected record?"
-msgstr "Ausgewählter Eintrag löschen?"
-
-#: ui/mainwindow.cc:558
-msgid "Confirmation"
-msgstr "Bestätigung"
-
-#: ui/mainwindow.cc:559
-msgid "There are unsaved changes."
-msgstr "Ungespeicherte Änderungen vorhanden."
-
-#: ui/mainwindow.cc:560
-msgid "Do you want to save changes, before leaving?"
-msgstr "Änderungen vor Beenden speichern?"
-
-#: ui/mainwindow.cc:572
-msgid "Sort Order Ascending"
-msgstr "Sortierreihenfolge aufsteigend"
-
-#: ui/mainwindow.cc:575
-msgid "Sort Order Descending"
-msgstr "Sortierreihenfolge absteigend"
-
-#: ui/mainwindow.cc:596
-msgid "Enter search term"
-msgstr "Suchbegriff eingeben"
-
-#: ui/mainwindow.cc:599
-msgid "Enter search term (case-sensitive)"
-msgstr "Suchbegriff eingeben (Gross- und Kleinschreibung werden beachtet)"
-
-#: ui/mainwindow.cc:611
-msgid "No previous search. Press '/' to search."
-msgstr "Keine vorhergehende Suche. '/' drücken um zu suchen."
-
-#: ui/mainwindow.cc:617
-msgid "No more matches for "
-msgstr "Keine Treffer für "
-
-#: ui/mainwindow.cc:618
-msgid " found"
-msgstr " gefunden"
-
-#: ui/mainwindow.cc:624
-msgid "Next match for "
-msgstr "Nächster Treffer für "
-
-#: glue/loadfile.cc:162 glue/createfile.cc:180 glue/changepassword.cc:212
-msgid "Unsaved Changes"
-msgstr "Ungespeicherte Änderungen"
-
-#: glue/loadfile.cc:164 glue/createfile.cc:182
-msgid "has unsaved changes. Do you want to save?"
-msgstr "hat nicht gespeicherte Änderungen. Speichern?"
-
-#: glue/createfile.cc:81 glue/promptpassword.cc:61 glue/changepassword.cc:63
-#: glue/changepassword.cc:117 glue/opencmdlinefile.cc:104
-msgid "Got following error"
-msgstr "Folgenden Fehler erhalten"
-
-#: glue/promptpassword.cc:47
-msgid "Invalid Password"
-msgstr "Falsches Passwort"
-
-#: glue/promptpassword.cc:48
-msgid "Password for file"
-msgstr "Passwort für Datei"
-
-#: glue/promptpassword.cc:50
-msgid "is not correct. Do you want to try again?"
-msgstr "ist nicht korrekt. Nochmals versuchen?"
-
-#: glue/changepassword.cc:53
-msgid "Password does not match old password"
-msgstr "Passwort stimmt nich mit altem Passwort überein"
-
-#: glue/changepassword.cc:54
-msgid "Retry?"
-msgstr "Nochmals versuchen?"
-
-#: glue/changepassword.cc:108
-msgid "Password not changed. Old and new password identical."
-msgstr "Passwort nich geändert. Neues und altes sind identisch."
-
-#: glue/changepassword.cc:213
-msgid "Changes in"
-msgstr "Änderungen in"
-
-#: glue/changepassword.cc:215
-msgid "will be saved. Do you want to continue?"
-msgstr "wird gespeichert. Fortfahren?"
-
-#: glue/opencmdlinefile.cc:196
-msgid "Create new File?"
-msgstr "Neue Datei erstellen?"
-
-#: glue/opencmdlinefile.cc:197
-msgid "The file"
-msgstr "Die Datei"
-
-#: glue/opencmdlinefile.cc:199
-msgid "does not exist. Create?"
-msgstr "existiert nicht. Erstellen?"
-
-#: crypt/bdbuffer.cc:54 crypt/file.cc:510 crypt/record.h:92
-msgid "Memory exhausted"
-msgstr "Speicher aufgebraucht"
-
-#: crypt/bdbuffer.cc:166 crypt/bdbuffer.cc:188
-msgid "Position out of range"
-msgstr "Position ausserhalb des Bereiches"
-
-#: crypt/file.cc:111
-msgid "You are not the owner of "
-msgstr "Sie sind nicht der Eigner von "
-
-#: crypt/file.cc:116
-msgid "Permissions of "
-msgstr "Zugriffsrechte von "
-
-#: crypt/file.cc:117
-msgid " not secure."
-msgstr " nicht sicher."
-
-#: crypt/file.cc:140
-msgid "Cannot set the owner of "
-msgstr "Kann Eigentümer nicht setzen:"
-
-#: crypt/file.cc:147
-msgid "Cannot set file permissions on "
-msgstr "Zugriffsrechte setzen nicht möglich: "
-
-#: crypt/file.cc:236
-msgid "Error seeking within file: "
-msgstr "Fehler beim Positionieren innerhalb von: "
-
-#: crypt/file.cc:278
-msgid "Unable to seek to data section"
-msgstr "Kann den Datenabschnitt nicht finden"
-
-#: crypt/file.cc:313 crypt/file.cc:330
-msgid "Short read on file: "
-msgstr "Abruptes Ende beim Lesen von: "
-
-#: crypt/file.cc:366 crypt/file.cc:374 crypt/file.cc:486
-msgid "Short write on file: "
-msgstr "Abruptes Ende beim Schreiben von: "
-
-#: crypt/file.cc:420
-msgid "EOF encountered while reading header"
-msgstr "Ende der Datei während lesen des Dateikopfes erreicht"
-
-#: crypt/file.cc:427
-msgid "Sanity check for control field failed"
-msgstr "Plausibiltätskontrolle für Kontrollfeld fehlgeschlagen"
-
-#: crypt/file.cc:463
-msgid "Unknown exception catched"
-msgstr "Unbekannte Ausnahme aufgetreten"
-
-#: crypt/file.cc:518 crypt/file.cc:523
-msgid "File type not recognized"
-msgstr "Filetyp unbekannt"
-
-#: crypt/file.cc:559
-msgid "Null pointer passed in ptr32"
-msgstr "Null Zeiger in ptr32 übergeben."
-
-#: crypt/file.cc:561
-msgid "Null pointer passed in ptr64"
-msgstr "Null Zeiger in ptr64 übergeben."
-
-#: crypt/file.cc:769 crypt/file.cc:839
-msgid "File has been externally modified"
-msgstr "Datei wurde von ausserhalb verändert"
-
-#: crypt/record.h:285
-msgid "BDBuffer too small. Cannot assign to Record<T>"
-msgstr "BDBuffer zu klein. Kann nicht an Record<T> zuweisen"
-
-#: crypt/record.h:287
-msgid "BDBuffer too big. Cannot assign to Record<T>"
-msgstr "BDBuffer zu gross. Kann nicht an Record<T> zuweisen."
-
-#: crypt/crypt.cc:57
-msgid "Unable to get cipher"
-msgstr "Kann die Verschlüsselung nicht ermitteln"
-
-#: crypt/crypt.cc:66
-msgid "Error initializing cipher"
-msgstr "Fehler beim Initialisieren der Verschlüsselung"
-
-#: crypt/crypt.cc:73 crypt/crypt.h:179 crypt/crypt.h:257
-msgid "Error setting the key length"
-msgstr "Kann die Schlüssellänge nicht setzen"
-
-#: crypt/crypt.h:160 crypt/crypt.h:238
-msgid "IVec length missmatch"
-msgstr "IVec Länge falsch"
-
-#: crypt/crypt.h:172 crypt/crypt.h:250
-msgid "Error initializing encryption engine"
-msgstr "Fehler beim Initialisieren der Verschlüsselung"
-
-#: crypt/crypt.h:194
-msgid "Error encrypting data"
-msgstr "Fehler beim Verschlüsseln der Daten"
-
-#: crypt/crypt.h:205
-msgid "Error finalizing encryption"
-msgstr "Fehler beim Abschliessen der Verschlüsselung"
-
-#: crypt/crypt.h:271
-msgid "Error decrypting data"
-msgstr "Fehler beim Entschlüsseln der Daten"
-
-#: crypt/crypt.h:282
-msgid "Error finalizing decryption"
-msgstr "Fehler beim Abschliessen der Entschlüsselung"
-
-#: crypt/yapetexception.h:86 pwgen/pwgenexception.h:49
-msgid "Generic exception message"
-msgstr "Generische Ausnahmenachricht"
-
-#: crypt/yapetexception.h:130
-msgid "Retry"
-msgstr "Wiederholen"
-
-#: crypt/yapetexception.h:155
-msgid "Encryption error"
-msgstr "Verschlüsselungsfehler"
-
-#: crypt/yapetexception.h:182
-msgid "Invalid password"
-msgstr "Falsches Passwort"
-
-#: crypt/key.cc:64
-msgid "Run 1: Unable to initialize the EVP_MD structure"
-msgstr "Lauf 1: Kann EVP_MD Struktur nicht initialisieren"
-
-#: crypt/key.cc:72
-msgid "Run 1: Unable to initialize the digest"
-msgstr "Lauf 1: Kann Digest nicht initialisieren"
-
-#: crypt/key.cc:79
-msgid "Run 1: Unable to update the digest"
-msgstr "Lauf 1: Digest kann nicht angepasst werden"
-
-#: crypt/key.cc:88
-msgid "Run 1: Unable to finalize the digest"
-msgstr "Lauf 1: Kann Digest nicht abschliessen"
-
-#: crypt/key.cc:94
-msgid "Run 1: Digest does not have expected length"
-msgstr "Lauf 1: Digest hat unerwartete Länge"
-
-#: crypt/key.cc:106
-msgid "Run 2: Unable to initialize the EVP_MD structure"
-msgstr "Lauf 2: Kann EVP_MD Struktur nicht initialisieren"
-
-#: crypt/key.cc:115
-msgid "Run 2: Unable to initialize the digest"
-msgstr "Lauf 2: Kann Digest nicht initialisieren"
-
-#: crypt/key.cc:123
-msgid "Run 2: Unable to update the digest"
-msgstr "Lauf 2: Digest kann nicht angepasst werden"
-
-#: crypt/key.cc:131
-msgid "Run 2: Unable to finalize the digest"
-msgstr "Lauf 2: Kann Digest nicht abschliessen"
-
-#: crypt/key.cc:137
-msgid "Run 2: Digest does not have expected length"
-msgstr "Lauf 2: Digest hat unerwartete Länge"
-
-#: crypt/key.cc:149
-msgid "Run 3: Unable to initialize the EVP_MD structure"
-msgstr "Lauf 3: Kann EVP_MD Struktur nicht initialisieren"
-
-#: crypt/key.cc:158
-msgid "Run 3: Unable to initialize the digest"
-msgstr "Lauf 3: Kann Digest nicht initialisieren"
-
-#: crypt/key.cc:166
-msgid "Run 3: Unable to update the digest"
-msgstr "Lauf 3: Digest kann nicht angepasst werden"
-
-#: crypt/key.cc:174
-msgid "Run 3: Unable to finalize the digest"
-msgstr "Lauf 3: Kann Digest nicht abschliessen"
-
-#: crypt/key.cc:180
-msgid "Run 3: Digest does not have expected length"
-msgstr "Lauf 3: Digest hat unerwartete Länge"
-
-#: crypt/key.cc:191
-#, c-format
-msgid "Effective key length of %d does not match expected key length %d"
-msgstr ""
-"Die effektive Schlüssellänge %d passt nicht auf die erwartete Schlüssellänge "
-"%d"
-
-#: crypt/key.cc:205
-msgid "IVec: Unable to initialize the EVP_MD structure"
-msgstr "IVec: Kann EVP_MD Struktur nicht initialisieren"
-
-#: crypt/key.cc:214
-msgid "IVec: Unable to initialize the digest"
-msgstr "IVec: Kann Digest nicht initialisieren"
-
-#: crypt/key.cc:222
-msgid "IVec: Unable to update the digest"
-msgstr "IVec: Kann Digest nicht anpassen"
-
-#: crypt/key.cc:230
-msgid "IVec: Unable to finalize the digest"
-msgstr "IVec: Kann Digest nicht abschliessen"
-
-#: crypt/key.cc:236
-msgid "IVec: Digest does not have expected length"
-msgstr "IVec: Digest hat unerwartete Länge"
-
-#: pwgen/pwgen.cc:97
-msgid ""
-"Cannot get character from unused pool because no unused pools are available"
-msgstr ""
-"Cannot get character from unused pool because no unused pools are available"
-
-#: pwgen/pwgenexception.h:74
-msgid "No Random Number Generator available"
-msgstr "Kein Zufallszahlengenerator verfügbar"
-
-#: pwgen/pwgenexception.h:92
-msgid "The requested RNG is not available"
-msgstr "Angeforderter RNG nicht verfügbar"
-
-#: pwgen/rng.cc:86
-msgid "Unable to initialize RNG when none is available"
-msgstr "Kann nicht initialisieren wenn kein RNG verfügbar"
-
-#: pwgen/rng.cc:96
-msgid "Unable to open /dev/random"
-msgstr "Kann /dev/random nicht öffnen"
-
-#: pwgen/rng.cc:103
-msgid "Unable to open /dev/urandom"
-msgstr "Kann /dev/urandom nicht öffnen"
-
-#: pwgen/rng.cc:118 pwgen/rng.cc:330
-msgid "Unexpected RNG Engine (AUTO)"
-msgstr "Unerwarteter RNG (AUTO)"
-
-#: pwgen/rng.cc:121 pwgen/rng.cc:332
-msgid "The requested RNG Engine (NONE) is invalid."
-msgstr "Der angeforderte RNG (NONE) ist ungültig"
-
-#: pwgen/rng.cc:163
-msgid "Read to few bytes on /dev/[u]random."
-msgstr "Zuwenige Bytes von /dev/[u]random gelesen."
-
-#: pwgen/rng.cc:197
-msgid "lrand48() not available on system"
-msgstr "lrand48() nicht verfügbar"
-
-#: pwgen/rng.cc:217
-msgid "rand() not available on system"
-msgstr "rand() nicht verfügbar"
-
-#: pwgen/charpool.cc:62
-msgid "Subpools may not be zero"
-msgstr "Subpool darf nicht Null sein"
-
-#: pwgen/charpool.cc:76 pwgen/charpool.cc:158 pwgen/charpool.cc:288
-msgid "Out of memory"
-msgstr "Kein Speicher mehr"
-
-#: pwgen/charpool.cc:250
-msgid "No character at given position"
-msgstr "Kein Zeichen an gegebener Stelle"
-
-#: pwgen/charpool.h:166
-msgid "0 pointer passed."
-msgstr "0 Zeiger ermittelt."
-
 #: yapet/cfg.cc:174
 msgid " is not a valid bool"
 msgstr " ist kein gültiger «bool»"
@@ -895,3 +833,52 @@ msgstr "unbekanntes argument"
 #: yapet/main.cc:309
 msgid "Press 'H' for help"
 msgstr "Für Hilfe 'H' drücken"
+
+#~ msgid ""
+#~ "Cannot get character from unused pool because no unused pools are "
+#~ "available"
+#~ msgstr ""
+#~ "Cannot get character from unused pool because no unused pools are "
+#~ "available"
+
+#~ msgid "No Random Number Generator available"
+#~ msgstr "Kein Zufallszahlengenerator verfügbar"
+
+#~ msgid "The requested RNG is not available"
+#~ msgstr "Angeforderter RNG nicht verfügbar"
+
+#~ msgid "Unable to initialize RNG when none is available"
+#~ msgstr "Kann nicht initialisieren wenn kein RNG verfügbar"
+
+#~ msgid "Unable to open /dev/random"
+#~ msgstr "Kann /dev/random nicht öffnen"
+
+#~ msgid "Unable to open /dev/urandom"
+#~ msgstr "Kann /dev/urandom nicht öffnen"
+
+#~ msgid "Unexpected RNG Engine (AUTO)"
+#~ msgstr "Unerwarteter RNG (AUTO)"
+
+#~ msgid "The requested RNG Engine (NONE) is invalid."
+#~ msgstr "Der angeforderte RNG (NONE) ist ungültig"
+
+#~ msgid "Read to few bytes on /dev/[u]random."
+#~ msgstr "Zuwenige Bytes von /dev/[u]random gelesen."
+
+#~ msgid "lrand48() not available on system"
+#~ msgstr "lrand48() nicht verfügbar"
+
+#~ msgid "rand() not available on system"
+#~ msgstr "rand() nicht verfügbar"
+
+#~ msgid "Subpools may not be zero"
+#~ msgstr "Subpool darf nicht Null sein"
+
+#~ msgid "Out of memory"
+#~ msgstr "Kein Speicher mehr"
+
+#~ msgid "No character at given position"
+#~ msgstr "Kein Zeichen an gegebener Stelle"
+
+#~ msgid "0 pointer passed."
+#~ msgstr "0 Zeiger ermittelt."

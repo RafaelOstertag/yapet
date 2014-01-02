@@ -19,3 +19,6 @@ endif # BUILDCSV2YAPET
 htmldocdir = $(docdir)/html
 
 endif # !DISABLEINSTALLDOC
+
+distclean-local:
+	rm -f Makefile.doc
