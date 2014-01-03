@@ -575,12 +575,12 @@ host_starchild() {
 			    xpg4)
 				case $arch in
 				    -m64)
-					LDFLAGS="-L/usr/xpg4/lib/${arch#-m} -R/usr/xpg4/lib/${arch#-m}"
-					CPPFLAGS="-I/usr/xpg4/include"
+					LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m} -L/usr/xpg4/lib/${arch#-m} -R/usr/xpg4/lib/${arch#-m}"
+					CPPFLAGS="-I/usr/sfw/include -I/usr/xpg4/include"
 					;;
 				    -m32)
-					LDFLAGS="-L/usr/xpg4/lib -R/usr/xpg4/lib"
-					CPPFLAGS="-I/usr/xpg4/include"
+					LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m} -L/usr/xpg4/lib -R/usr/xpg4/lib"
+					CPPFLAGS="-I/usr/sfw/include -I/usr/xpg4/include"
 					;;
 				esac
 				;;
