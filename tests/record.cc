@@ -48,11 +48,11 @@ int main (int, char**) {
     YAPET::Record<test_struct> record2 (record);
     // Yes, t is used uninitialized, but it will be initialized thru
     // record3
-#ifdef __GNUC__
+#if defined(__GNUC__) && defined(__GNUC_MINOR__) && __GNUC__ > 3 && __GNUC_MINOR__ > 3
 #pragma GCC diagnostic ignored "-Wuninitialized"
 #endif
     YAPET::Record<test_struct> record3 (t);
-#ifdef __GNUC__
+#if defined(__GNUC__) && defined(__GNUC_MINOR__) && __GNUC__ > 3 && __GNUC_MINOR__ > 3
 #pragma GCC diagnostic pop
 #endif
     record3 = record2 = record;
