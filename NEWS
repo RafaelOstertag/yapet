@@ -7,9 +7,11 @@ YAPET 1.0
 
       * dropped support of long command line options.
 
-      * colors can be customized using a configuration file.
+      * colors can be customized in the configuration file.
 
       * new files are created by pressing 'E'.
+
+      * PET files can be exported to CSV using yapet2csv.
 
 
 YAPET 0.8pre2
