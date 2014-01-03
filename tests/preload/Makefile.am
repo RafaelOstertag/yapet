@@ -15,7 +15,7 @@ checktestpwrecord_SOURCES = checktestpwrecord.cc		 \
 ../../crypt/key.cc ../../crypt/partdec.cc
 checktestpwrecord_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_builddir) \
 -I$(top_srcdir)
-checktestpwrecord_LDADD = $(top_builddir)/crypt/libyapet-crypt.la
+checktestpwrecord_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 
 myCPPFLAGS = -I$(top_srcdir)/libyacurs/include	\
 -I$(top_builddir)/libyacurs/include
