@@ -48,6 +48,9 @@ host_hyperion() {
 		LDFLAGS="`eval echo \\$HYPERION_LDFLAGS_$c`"
 	    
 	    had_error $? "Error in CXX=`eval echo \\$HYPERION_CXX_$c` CC=`eval echo \\$HYPERION_CC_$c` CFLAGS=`eval echo \\$HYPERION_CFLAGS_$c` CXXFLAGS=`eval echo \\$HYPERION_CXXFLAGS_$c` LDFLAGS=`eval echo \\$HYPERION_LDFLAGS_$c` CONFIGFLAGS=$configflags"
+
+	    make -C doc -f doc/Makefile.doc
+	    had_error $? "Error in CXX=`eval echo \\$HYPERION_CXX_$c` CC=`eval echo \\$HYPERION_CC_$c` CFLAGS=`eval echo \\$HYPERION_CFLAGS_$c` CXXFLAGS=`eval echo \\$HYPERION_CXXFLAGS_$c` LDFLAGS=`eval echo \\$HYPERION_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
 	    make
@@ -97,6 +100,9 @@ host_dash() {
 		CXXFLAGS="`eval echo \\$DASH_CXXFLAGS_$c`" \
 		LDFLAGS="`eval echo \\$DASH_LDFLAGS_$c`"
 	    
+	    had_error $? "Error in CXX=`eval echo \\$DASH_CXX_$c` CC=`eval echo \\$DASH_CC_$c` CFLAGS=`eval echo \\$DASH_CFLAGS_$c` CXXFLAGS=`eval echo \\$DASH_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DASH_LDFLAGS_$c` CONFIGFLAGS=$configflags"
+
+	    make -C doc -f doc/Makefile.doc
 	    had_error $? "Error in CXX=`eval echo \\$DASH_CXX_$c` CC=`eval echo \\$DASH_CC_$c` CFLAGS=`eval echo \\$DASH_CFLAGS_$c` CXXFLAGS=`eval echo \\$DASH_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DASH_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
@@ -155,6 +161,9 @@ host_wheezy() {
 	    
 	    had_error $? "Error in CXX=`eval echo \\$WHEEZY_CXX_$c` CC=`eval echo \\$WHEEZY_CC_$c` CFLAGS=`eval echo \\$WHEEZY_CFLAGS_$c` CXXFLAGS=`eval echo \\$WHEEZY_CXXFLAGS_$c` LDFLAGS=`eval echo \\$WHEEZY_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
+	    make -C doc -f doc/Makefile.doc
+	    had_error $? "Error in CXX=`eval echo \\$WHEEZY_CXX_$c` CC=`eval echo \\$WHEEZY_CC_$c` CFLAGS=`eval echo \\$WHEEZY_CFLAGS_$c` CXXFLAGS=`eval echo \\$WHEEZY_CXXFLAGS_$c` LDFLAGS=`eval echo \\$WHEEZY_LDFLAGS_$c` CONFIGFLAGS=$configflags"
+
 	    make clean
 	    make
 	    had_error $? "Error in CXX=`eval echo \\$WHEEZY_CXX_$c` CC=`eval echo \\$WHEEZY_CC_$c` CFLAGS=`eval echo \\$WHEEZY_CFLAGS_$c` CXXFLAGS=`eval echo \\$WHEEZY_CXXFLAGS_$c` LDFLAGS=`eval echo \\$WHEEZY_LDFLAGS_$c` CONFIGFLAGS=$configflags"
@@ -204,6 +213,9 @@ host_debian32() {
 		CXXFLAGS="`eval echo \\$DEBIAN32_CXXFLAGS_$c`" \
 		LDFLAGS="`eval echo \\$DEBIAN32_LDFLAGS_$c`"
 	    
+	    had_error $? "Error in CXX=`eval echo \\$DEBIAN32_CXX_$c` CC=`eval echo \\$DEBIAN32_CC_$c` CFLAGS=`eval echo \\$DEBIAN32_CFLAGS_$c` CXXFLAGS=`eval echo \\$DEBIAN32_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DEBIAN32_LDFLAGS_$c` CONFIGFLAGS=$configflags"
+
+	    make -C doc -f doc/Makefile.doc
 	    had_error $? "Error in CXX=`eval echo \\$DEBIAN32_CXX_$c` CC=`eval echo \\$DEBIAN32_CC_$c` CFLAGS=`eval echo \\$DEBIAN32_CFLAGS_$c` CXXFLAGS=`eval echo \\$DEBIAN32_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DEBIAN32_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
@@ -281,6 +293,9 @@ host_aurora() {
 		    CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" \
 		    LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`"
 		
+		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		gmake -C doc -f doc/Makefile.doc
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -360,6 +375,9 @@ host_freebsd32() {
 		    LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`"
 		
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		gmake -C doc -f doc/Makefile.doc
+		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
 		gmake
@@ -382,6 +400,9 @@ host_abraxas() {
 		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
 		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
 	    had_error $? "Error on abraxas CONFIGFLAGS=$configflags"
+
+	    gmake -C doc -f doc/Makefile.doc
+	    had_error $? "Error on abraxas CONFIGFLAGS=$configflags"
 	    
 	    gmake clean
 	    gmake
@@ -403,6 +424,9 @@ host_netbsd32() {
 		CXXFLAGS="-O3 -Wall -Werror -pedantic"
 	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
 	    
+	    gmake -C doc -f doc/Makefile.doc
+	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
+
 	    gmake clean
 	    gmake
 	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
@@ -423,6 +447,9 @@ host_fish() {
 		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 	    
+	    gmake -C doc -f doc/Makefile.doc
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+
 	    gmake clean
 	    gmake
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
@@ -442,8 +469,12 @@ host_puffy() {
 		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
 		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
-	    
+
+	    gmake -C doc -f doc/Makefile.doc
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+
 	    gmake clean
+
 	    gmake
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 	    
@@ -461,6 +492,9 @@ host_openbsd32() {
 	    ../yapet-src/configure $configflags \
 		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
 		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
+	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
+
+	    gmake -C doc -f doc/Makefile.doc
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 	    
 	    gmake clean
@@ -503,6 +537,9 @@ host_odin() {
 			
 			gmake distclean
 			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc LDFLAGS="$LDFLAGS" CPPFLAGS="$CPPFLAGS" CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" $CONFIGARGS
+			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
+
+			gmake -C doc -f doc/Makefile.doc
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 			
 			gmake
@@ -560,6 +597,9 @@ host_starchild() {
 			
 			gmake distclean
 			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch"
+			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
+
+			gmake -C doc -f doc/Makefile.doc
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 			
 			gmake -j4
