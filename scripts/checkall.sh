@@ -529,12 +529,17 @@ host_odin() {
 				;;
 			    solaris)
 				CONFIGARGS="--without-ncurses"
-			    ;;
+				LDFLAGS=""
+				;;
 			    ncurses)
 				CPPFLAGS="-I/usr/include/ncurses"
+				LDFLAGS=""
 				CONFIGARGS="--with-ncurses"
 				;;
 			esac
+
+			LD_OPTIONS="$LDFLAGS"
+			export LD_OPTIONS
 			
 			gmake distclean
 			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc LDFLAGS="$LDFLAGS" CPPFLAGS="$CPPFLAGS" CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" $CONFIGARGS
@@ -546,7 +551,7 @@ host_odin() {
 			gmake
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 			
-			gmake check
+			gmake V=1 check
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 
 			message "*** OK: ${c}:$arch:$flags CONFIGFLAGS=$configflags"
@@ -590,10 +595,13 @@ host_starchild() {
 				CPPFLAGS="-I/usr/sfw/include"
 				;;
 			    ncurses)
+				LDFLAGS=""
 				CPPFLAGS="-I/usr/include/ncurses"
 				;;
 			esac
-			
+
+			LD_OPTIONS="$LDFLAGS"
+			export LD_OPTIONS			
 			export LDFLAGS
 			export CPPFLAGS
 			
