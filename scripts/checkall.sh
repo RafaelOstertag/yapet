@@ -1,5 +1,8 @@
 #!/bin/sh
 #
+# GCC option -pedantic cannot be used, since tests/endianess.cc relies
+# on a feature, that -pedantic warns about, but cannot be supressed.
+#
 # $Id$
 
 TERM=xterm
@@ -24,7 +27,7 @@ message() {
     echo "[$HOST] $*" >> checkall.log
 }
 
-HYPERION_CXXFLAGS_default="-march=native -mtune=native -O3 -pedantic -Wall -Werror"
+HYPERION_CXXFLAGS_default="-march=native -mtune=native -O3 -Wall -Werror"
 HYPERION_CFLAGS_default="$HYPERION_CXXFLAGS_default"
 HYPERION_CC_default=gcc
 HYPERION_CXX_default=g++
@@ -65,7 +68,7 @@ host_hyperion() {
     done
 }
 
-DASH_CXXFLAGS_43='-march=native -mtune=native -O3 -pedantic -Wall -Werror'
+DASH_CXXFLAGS_43='-march=native -mtune=native -O3 -Wall -Werror'
 DASH_CFLAGS_43="$DASH_CXXFLAGS_43"
 DASH_CC_43=gcc-4.3
 DASH_CXX_43=g++-4.3
@@ -118,7 +121,7 @@ host_dash() {
     done
 }
 
-WHEEZY_CXXFLAGS_44='-march=native -mtune=native -O3 -pedantic -Wall -Werror'
+WHEEZY_CXXFLAGS_44='-march=native -mtune=native -O3 -Wall -Werror'
 WHEEZY_CFLAGS_44="$WHEEZY_CXXFLAGS_44"
 WHEEZY_CC_44=gcc-4.4
 WHEEZY_CXX_44=g++-4.4
@@ -177,7 +180,7 @@ host_wheezy() {
     done
 }
 
-DEBIAN32_CXXFLAGS_43='-march=native -mtune=native -O3 -pedantic -Wall -Werror'
+DEBIAN32_CXXFLAGS_43='-march=native -mtune=native -O3 -Wall -Werror'
 DEBIAN32_CFLAGS_43="$DEBIAN32_CXXFLAGS_43"
 DEBIAN32_CC_43=gcc-4.3
 DEBIAN32_CXX_43=g++-4.3
@@ -231,7 +234,7 @@ host_debian32() {
     done
 }
 
-AURORA_CXXFLAGS_42='-march=native -mtune=native -O3 -pedantic -Wall -Werror'
+AURORA_CXXFLAGS_42='-march=native -mtune=native -O3 -Wall -Werror'
 AURORA_CFLAGS_42="$AURORA_CXXFLAGS_42"
 AURORA_CC_42=gcc42
 AURORA_CXX_42=g++42
@@ -312,7 +315,7 @@ host_aurora() {
     done
 }
 
-FREEBSD32_CXXFLAGS_42='-march=native -mtune=native -O3 -pedantic -Wall -Werror'
+FREEBSD32_CXXFLAGS_42='-march=native -mtune=native -O3 -Wall -Werror'
 FREEBSD32_CFLAGS_42="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_42=gcc42
 FREEBSD32_CXX_42=g++42
@@ -398,8 +401,8 @@ host_abraxas() {
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
-		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
-		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
+		CFLAGS="-O3 -Wall -Werror -march=native -mtune=native" \
+		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on abraxas CONFIGFLAGS=$configflags"
 
 	    gmake -C doc -f Makefile.doc
@@ -421,8 +424,8 @@ host_netbsd32() {
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
-		CFLAGS="-O3 -Wall -Werror -pedantic" \
-		CXXFLAGS="-O3 -Wall -Werror -pedantic"
+		CFLAGS="-O3 -Wall -Werror" \
+		CXXFLAGS="-O3 -Wall -Werror"
 	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
 	    
 	    gmake -C doc -f Makefile.doc
@@ -444,8 +447,8 @@ host_fish() {
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
-		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
-		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
+		CFLAGS="-O3 -Wall -Werror -march=native -mtune=native" \
+		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 	    
 	    gmake -C doc -f Makefile.doc
@@ -467,8 +470,8 @@ host_puffy() {
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
-		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
-		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
+		CFLAGS="-O3 -Wall -Werror -march=native -mtune=native" \
+		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake -C doc -f Makefile.doc
@@ -491,8 +494,8 @@ host_openbsd32() {
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
-		CFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native" \
-		CXXFLAGS="-O3 -Wall -Werror -pedantic -march=native -mtune=native"
+		CFLAGS="-O3 -Wall -Werror -march=native -mtune=native" \
+		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 
 	    gmake -C doc -f Makefile.doc
