@@ -172,9 +172,7 @@ ChangePassword::ChangePassword(MainWindow& mw):
     promptpassword(0),
     nonmatch(0),
     confirmsave(0),
-    generror(0),
-    ignore_unsaved_file(false) {
-
+    generror(0) {
     YACURS::EventQueue::
 	connect_event(YACURS::EventConnectorMethod1<
 		      ChangePassword>(YACURS::

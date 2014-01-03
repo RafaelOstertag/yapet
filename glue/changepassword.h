@@ -49,7 +49,6 @@ class ChangePassword {
 	YACURS::MessageBox3* confirmsave;
 	YACURS::MessageBox2* generror;
 	std::string __filepath;
-	bool ignore_unsaved_file;
 
 	ChangePassword(const ChangePassword& c) : mainwindow(c.mainwindow) {}
 
