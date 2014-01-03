@@ -32,6 +32,11 @@ test_struct2 pre_initialized = {
     "abcdefg"
 };
 
+// Yes, t is used uninitialized, but it will be initialized thru
+// record3
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wuninitialized"
+#endif
 int main (int, char**) {
 #ifndef TESTS_VERBOSE
     int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
@@ -46,15 +51,8 @@ int main (int, char**) {
     }
 
     YAPET::Record<test_struct> record2 (record);
-    // Yes, t is used uninitialized, but it will be initialized thru
-    // record3
-#if defined(__GNUC__) && defined(__GNUC_MINOR__) && __GNUC__ > 3 && __GNUC_MINOR__ > 3
-#pragma GCC diagnostic ignored "-Wuninitialized"
-#endif
     YAPET::Record<test_struct> record3 (t);
-#if defined(__GNUC__) && defined(__GNUC_MINOR__) && __GNUC__ > 3 && __GNUC_MINOR__ > 3
-#pragma GCC diagnostic pop
-#endif
+
     record3 = record2 = record;
 
     YAPET::Record<test_struct2> record4(pre_initialized);
