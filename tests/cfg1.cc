@@ -83,15 +83,15 @@ test_bool_val() {
     if (val3!=false)
 	MYEXIT("CfgValBool: setting 'FaLse' failed");
 
-    val3.set_str("  True ");
+    val3.set_str("  True  ");
     if (val3!=true)
 	MYEXIT("CfgValBool: setting 'True' failed");
 
-    val3.set_str("  0 ");
+    val3.set_str("  0   ");
     if (val3!=false)
 	MYEXIT("CfgValBool: setting '0' failed");
 
-    val3.set_str("  1 ");
+    val3.set_str("                1                      ");
     if (val3!=true)
 	MYEXIT("CfgValBool: setting '1' failed");
 
