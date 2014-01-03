@@ -585,7 +585,8 @@ host_starchild() {
 				esac
 				;;
 			    solaris)
-				:
+				LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m}"
+				CPPFLAGS="-I/usr/sfw/include"
 				;;
 			    ncurses)
 				CPPFLAGS="-I/usr/include/ncurses"
