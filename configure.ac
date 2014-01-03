@@ -120,6 +120,7 @@ AC_CONFIG_FILES([Makefile
 	glue/Makefile
 	yapet/Makefile
 	csv2yapet/Makefile
+        yapet2csv/Makefile
 	tests/Makefile
 	tests/preload/Makefile
 	tests/testpaths.h

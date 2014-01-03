@@ -35,7 +35,7 @@ EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in		\
 f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
 f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in test1.csv test2.csv	\
 test3.csv test4.csv test5.csv test6.csv test7.csv test8.csv test9.csv	\
-test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc
+test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc testimport.csv
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
@@ -161,6 +161,12 @@ import14_SOURCES = import14.cc  ../csv2yapet/csvimport.cc
 
 import15_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 import15_SOURCES = import15.cc  ../csv2yapet/csvimport.cc
+
+check-local:
+	rm -f /tmp/yapettestimport.pet /tmp/yapettestexport.csv
+	$(top_builddir)/csv2yapet/csv2yapet -p secret -s ',' $(srcdir)/testimport.csv /tmp/yapettestimport.pet
+	$(top_builddir)/yapet2csv/yapet2csv -p secret -s ',' /tmp/yapettestimport.pet /tmp/yapettestexport.csv
+	diff $(srcdir)/testimport.csv /tmp/yapettestexport.csv
 
 endif
 
