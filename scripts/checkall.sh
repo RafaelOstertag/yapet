@@ -3,7 +3,8 @@
 # $Id$
 
 TERM=xterm
-export TERM
+LC_ALL=en_US.UTF-8
+export TERM LC_ALL
 
 had_error() {
 	retval=$1
