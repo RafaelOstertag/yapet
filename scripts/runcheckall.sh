@@ -11,8 +11,8 @@ else
 fi
 
 cd "${TESTDIR_SRC}"
-touch ChangeLog
-touch README
+touch ChangeLog libyacurs/ChangeLog
+touch README libyacurs/README
 autoreconf -fi || exit 1
 
 for h in fish dash debian32 freebsd32 openbsd32 netbsd32 abraxas aurora starchild odin wheezy puffy hyperion
