@@ -55,7 +55,7 @@ namespace YAPET {
 	    pos = working_copy.length()-1;
 	    while(std::isspace(working_copy[pos--]) && pos != 0);
 	    pos++;
-	    assert(pos<=working_copy.length());
+	    assert(pos<working_copy.length());
 	    
 	    return working_copy.substr(0, pos+1);
 	}
