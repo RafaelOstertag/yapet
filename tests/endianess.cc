@@ -44,10 +44,6 @@ class gainaccess : public YAPET::File {
 	}
 };
 
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wlong-long"
-#pragma GCC diagnostic ignored "-Wc++0x-compat"
-#endif
 int main(int, char**) {
 #ifndef TESTS_VERBOSE
 	int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
