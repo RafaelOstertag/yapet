@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 #ifdef YACURS_USE_WCHAR
-wint_t
+std::wint_t
 #else
 int
 #endif
