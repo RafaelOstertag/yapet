@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
+[
+<!ENTITY cpr SYSTEM "copyright.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY pwrecord SYSTEM "pwrecord.sgml">
+<!ENTITY caution SYSTEM "caution.sgml">
+<!ENTITY license SYSTEM "license.sgml">
+<!ENTITY bugreport SYSTEM "bugreport.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY CSV2YAPET "csv2yapet">
+<!ENTITY csv2yapet "<command>csv2yapet</command>">
+<!ENTITY csv2yapetman ", <citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY YAPET2CSV "yapet2csv">
+<!ENTITY yapet2csv "<command>yapet2csv</command>">
+<!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+]>
+<refentry id="yapet2csv">
+  <!-- $Id$ -->
+
+  <refentryinfo>
+     <productname>yapet2csv</productname>
+     &cpr;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>yapet2csv</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
+    <refmiscinfo class="manual">User Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>yapet2csv</refname>
+    <refpurpose>convert &YP; file to CSV file</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis cmdlength="9">
+      &yapet2csv;
+      <group>
+	<arg choice="opt" rep="norepeat"><option>-c</option></arg>
+	<arg choice="opt" rep="norepeat"><option>-h</option></arg>
+	<arg choice="opt" rep="norepeat"><option>-V</option></arg>
+      </group>
+      <arg choice="opt" rep="norepeat"><option>-p</option> <arg
+      choice="req"><replaceable>password</replaceable></arg></arg>
+      <arg choice="opt" rep="norepeat"><option>-q</option></arg>
+      <arg choice="opt" rep="norepeat"><option>-s</option> <arg choice="req"
+      rep="norepeat"><replaceable>separator</replaceable></arg></arg>
+
+      <arg choice="req"><replaceable>src</replaceable></arg>
+      <arg choice="req"><replaceable>dst</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <!--
+  -
+  -  DESCRIPTION
+  -
+  -->
+  <refsect1 id="description">
+    <title>DESCRIPTION</title>
+
+    <para></para>
+
+    <!--
+	-
+	- SOURCE FILE FORMAT
+	-
+    -->
+    <refsect2 id="sourcefileformat">
+      <title>Source File Format</title>
+
+      <para></para>
+
+    </refsect2>
+  </refsect1>
+
+  <!--
+  -
+  -  OPTIONS
+  -
+  -->
+  <refsect1 id="options">
+    <title>OPTIONS</title>
+
+    <para></para>
+  </refsect1>
+
+  <!--
+  -
+  -  OPERANDS
+  -
+  -->
+  <refsect1 id="operands">
+    <title>OPERANDS</title>
+
+    <para></para>
+  </refsect1>
+
+
+  <!--
+  -
+  - EXAMPLES
+  -
+  -->
+
+  <refsect1 id="examples">
+    <title>EXAMPLES</title>
+
+    <para></para>
+
+  </refsect1>
+
+  <!--
+      -
+      - EXIT STATUS
+      -
+  -->
+  <refsect1 id="exitstatus">
+    <title>EXIST STATUS</title>
+
+    <para></para>
+
+  </refsect1>
+
+  <!--
+  -
+  -  BUGS
+  -
+  -->
+  <refsect1 id="bugs">
+    <title>BUGS</title>
+
+    &bugreport;
+  </refsect1>
+
+
+  <!--
+  -
+  -  AUTHOR
+  -
+  -->
+  <refsect1 id="author">
+    <title>AUTHOR</title>
+    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
+  </refsect1>
+
+  <!--
+  -
+  -  SEE ALSO
+  -
+  -->
+  <refsect1 id="seealso">
+    <title>SEE ALSO</title>
+
+    <simpara>&ypman;</simpara>
+  </refsect1>
+
+  <!--
+      -
+      - LICENSE
+      -
+  -->
+  <refsect1 id="license">
+    <title>LICENSE</title>
+
+    <para>&YAPET2CSV; is part of &YP;.</para>
+
+    &license;
+  </refsect1>
+
+</refentry>

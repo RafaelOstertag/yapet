@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2014-01-02 13:43+0100\n"
+"POT-Creation-Date: 2014-01-04 12:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -252,7 +252,7 @@ msgstr ""
 msgid "Unexpected dialog state for confirmsave dialog"
 msgstr ""
 
-#: glue/createfile.cc:180 glue/changepassword.cc:212 glue/loadfile.cc:162
+#: glue/createfile.cc:180 glue/changepassword.cc:210 glue/loadfile.cc:162
 msgid "Unsaved Changes"
 msgstr ""
 
@@ -284,11 +284,11 @@ msgstr ""
 msgid "Password not changed. Old and new password identical."
 msgstr ""
 
-#: glue/changepassword.cc:213
+#: glue/changepassword.cc:211
 msgid "Changes in"
 msgstr ""
 
-#: glue/changepassword.cc:215
+#: glue/changepassword.cc:213
 msgid "will be saved. Do you want to continue?"
 msgstr ""
 
@@ -698,23 +698,23 @@ msgstr ""
 msgid "Sources"
 msgstr ""
 
-#: yapet/cfg.cc:174
+#: yapet/cfg.cc:175
 msgid " is not a valid bool"
 msgstr ""
 
-#: yapet/cfg.cc:217
+#: yapet/cfg.cc:218
 msgid " is not a valid RNG"
 msgstr ""
 
-#: yapet/cfg.cc:375
+#: yapet/cfg.cc:376
 msgid "Configuration key must not be empty"
 msgstr ""
 
-#: yapet/cfg.cc:381
+#: yapet/cfg.cc:382
 msgid "Configuration key '"
 msgstr ""
 
-#: yapet/cfg.cc:381
+#: yapet/cfg.cc:382
 msgid "' not found"
 msgstr ""
 

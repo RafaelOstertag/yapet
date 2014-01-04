@@ -36,8 +36,8 @@ STATIC_FILES = $(srcdir)/bugreport.sgml $(srcdir)/caution.sgml	\
 $(srcdir)/copyright.sgml $(srcdir)/license.sgml			\
 $(srcdir)/pwrecord.sgml $(srcdir)/supportedplatforms.sgml
 
-GENERATED_FILES = $(srcdir)/csv2yapet.sgml $(srcdir)/DESIGN.sgml	\
-$(srcdir)/Doxyfile $(srcdir)/INSTALL.sgml				\
+GENERATED_FILES = $(srcdir)/csv2yapet.sgml $(srcdir)/yapet2csv.sgml	\
+$(srcdir)/DESIGN.sgml $(srcdir)/Doxyfile $(srcdir)/INSTALL.sgml		\
 $(srcdir)/README.Cygwin.sgml $(srcdir)/README.sgml			\
 $(srcdir)/yapet.sgml
 
@@ -47,6 +47,7 @@ DESIGN README.Cygwin
 TARGETS = $(srcdir)/Doxyfile $(srcdir)/INSTALL.html			\
 $(srcdir)/README.html $(srcdir)/DESIGN.html $(srcdir)/yapet.html	\
 $(srcdir)/yapet.1 $(srcdir)/csv2yapet.html $(srcdir)/csv2yapet.1	\
+$(srcdir)/yapet2csv.html $(srcdir)/yapet2csv.1				\
 $(srcdir)/README.Cygwin.html $(TARGETS_TEXT)
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
