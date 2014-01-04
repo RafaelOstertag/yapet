@@ -1,6 +1,6 @@
 [Desktop Entry]
-Version=1.0
 Type=Application
+Version=1.0
 Name=YAPET
 GenericName=Password Encryption
 Comment=Yet Another Password Encryption Tool
@@ -8,4 +8,5 @@ TryExec=@prefix@/bin/@PACKAGE@
 Exec=@prefix@/bin/@PACKAGE@ %f
 Terminal=true
 Categories=Utility;Security;ConsoleOnly;
-# $Id$
+Keywords=Password Vault;Password Safe;Password Manager;
+StartupNotify=false
