@@ -47,14 +47,15 @@ namespace YAPET {
 	    std::string::size_type pos=0;
 	    while(std::isspace(s[pos++]) && s.length() > pos);
 	    pos--;
-	    assert(pos >= 0 && pos < s.length());
+	    assert(pos < s.length());
 	    
 	    std::string working_copy(s.substr(pos));
 	    
 	    // find trailing spaces
 	    pos = working_copy.length()-1;
-	    while(std::isspace(working_copy[pos--]) && pos != 0);
-	    pos++;
+	    while(std::isspace(working_copy[pos]) && pos != 0) {
+		pos--;
+	    }
 	    assert(pos<working_copy.length());
 	    
 	    return working_copy.substr(0, pos+1);
