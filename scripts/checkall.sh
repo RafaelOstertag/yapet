@@ -205,7 +205,6 @@ DEBIAN32_CXX_clang=clang++
 DEBIAN32_LDFLAGS_clang="-L/usr/lib"
 
 host_debian32() {
-    # clang has been removed from list, it currently fails when running the tests
     for c in default 43 44
     do
 	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls
@@ -555,6 +554,7 @@ host_odin() {
 				CONFIGARGS="--without-ncurses"
 				;;
 			    solaris)
+				CPPFLAGS=''
 				CONFIGARGS="--without-ncurses"
 				LDFLAGS=""
 				;;
