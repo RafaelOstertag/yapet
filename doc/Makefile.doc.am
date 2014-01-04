@@ -4,6 +4,7 @@
 ## Following lines are not used during the normal build 
 ##
 
+DOCBOOK_BASE ?= http://docbook.sourceforge.net/release/xsl/current
 
 # The value of _BEGIN and _END variables will be used to replace
 # markers in the xml documentation with either nothing, or xml
@@ -25,8 +26,8 @@ else
 DOCNLS = -e '/<!--[ \t]*NLS_BEGIN[ \t]*-->/,/<!--[ \t]*NLS_END[ \t]*-->/d'
 endif
 
-docbook_docbook_xsl = http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl
-docbook_man_xsl = http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl
+docbook_docbook_xsl = $(DOCBOOK_BASE)/xhtml/docbook.xsl
+docbook_man_xsl = $(DOCBOOK_BASE)/manpages/docbook.xsl
 
 XSLTPROC        = xsltproc
 W3M             = w3m
