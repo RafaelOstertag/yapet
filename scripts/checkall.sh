@@ -282,7 +282,7 @@ AURORA_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
 AURORA_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 
 host_aurora() {
-    for c in default clang 42 44 46 47 48
+    for c in default clang 44 46 47 48
     do
 	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
 	do
@@ -363,7 +363,7 @@ FREEBSD32_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
 FREEBSD32_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 
 host_freebsd32() {
-    for c in default clang 42 44 46 47 48
+    for c in default clang 44 46 47 48
     do
 	for curs in system
 	do
