@@ -263,6 +263,12 @@ AURORA_CC_48=gcc48
 AURORA_CXX_48=g++48
 AURORA_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
 
+AURORA_CXXFLAGS_49="$AURORA_CXXFLAGS_42"
+AURORA_CFLAGS_49="$AURORA_CXXFLAGS_42"
+AURORA_CC_49=gcc49
+AURORA_CXX_49=g++49
+AURORA_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+
 AURORA_CXXFLAGS_default="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_default="$AURORA_CXXFLAGS_42"
 AURORA_CC_default=gcc
@@ -282,7 +288,7 @@ AURORA_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
 AURORA_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 
 host_aurora() {
-    for c in default clang 44 46 47 48
+    for c in default clang 46 47 48 49
     do
 	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
 	do
@@ -344,6 +350,12 @@ FREEBSD32_CC_48=gcc48
 FREEBSD32_CXX_48=g++48
 FREEBSD32_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
 
+FREEBSD32_CXXFLAGS_49="$FREEBSD32_CXXFLAGS_42"
+FREEBSD32_CFLAGS_49="$FREEBSD32_CXXFLAGS_42"
+FREEBSD32_CC_49=gcc49
+FREEBSD32_CXX_49=g++49
+FREEBSD32_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+
 FREEBSD32_CXXFLAGS_default="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_default="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_default=gcc
@@ -363,7 +375,7 @@ FREEBSD32_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
 FREEBSD32_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 
 host_freebsd32() {
-    for c in default clang 44 46 47 48
+    for c in default clang 46 47 48 49
     do
 	for curs in system
 	do
