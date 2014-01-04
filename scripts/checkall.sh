@@ -53,7 +53,7 @@ host_hyperion() {
 	    
 	    had_error $? "Error in CXX=`eval echo \\$HYPERION_CXX_$c` CC=`eval echo \\$HYPERION_CC_$c` CFLAGS=`eval echo \\$HYPERION_CFLAGS_$c` CXXFLAGS=`eval echo \\$HYPERION_CXXFLAGS_$c` LDFLAGS=`eval echo \\$HYPERION_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
-	    make -C doc -f Makefile.doc
+	    make -C doc -f Makefile.doc DOCBOOK_BASE=/usr/share/sgml/docbook/xsl-stylesheets
 	    had_error $? "Error in CXX=`eval echo \\$HYPERION_CXX_$c` CC=`eval echo \\$HYPERION_CC_$c` CFLAGS=`eval echo \\$HYPERION_CFLAGS_$c` CXXFLAGS=`eval echo \\$HYPERION_CXXFLAGS_$c` LDFLAGS=`eval echo \\$HYPERION_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
@@ -106,7 +106,7 @@ host_dash() {
 	    
 	    had_error $? "Error in CXX=`eval echo \\$DASH_CXX_$c` CC=`eval echo \\$DASH_CC_$c` CFLAGS=`eval echo \\$DASH_CFLAGS_$c` CXXFLAGS=`eval echo \\$DASH_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DASH_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
-	    make -C doc -f Makefile.doc
+	    make -C doc -f Makefile.doc DOCBOOK_BASE=/usr/share/sgml/docbook/stylesheet/xsl/docbook-xsl
 	    had_error $? "Error in CXX=`eval echo \\$DASH_CXX_$c` CC=`eval echo \\$DASH_CC_$c` CFLAGS=`eval echo \\$DASH_CFLAGS_$c` CXXFLAGS=`eval echo \\$DASH_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DASH_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
@@ -165,7 +165,7 @@ host_wheezy() {
 	    
 	    had_error $? "Error in CXX=`eval echo \\$WHEEZY_CXX_$c` CC=`eval echo \\$WHEEZY_CC_$c` CFLAGS=`eval echo \\$WHEEZY_CFLAGS_$c` CXXFLAGS=`eval echo \\$WHEEZY_CXXFLAGS_$c` LDFLAGS=`eval echo \\$WHEEZY_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
-	    make -C doc -f Makefile.doc
+	    make -C doc -f Makefile.doc DOCBOOK_BASE=/usr/share/sgml/docbook/stylesheet/xsl/docbook-xsl
 	    had_error $? "Error in CXX=`eval echo \\$WHEEZY_CXX_$c` CC=`eval echo \\$WHEEZY_CC_$c` CFLAGS=`eval echo \\$WHEEZY_CFLAGS_$c` CXXFLAGS=`eval echo \\$WHEEZY_CXXFLAGS_$c` LDFLAGS=`eval echo \\$WHEEZY_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
 	    make clean
@@ -219,7 +219,7 @@ host_debian32() {
 	    
 	    had_error $? "Error in CXX=`eval echo \\$DEBIAN32_CXX_$c` CC=`eval echo \\$DEBIAN32_CC_$c` CFLAGS=`eval echo \\$DEBIAN32_CFLAGS_$c` CXXFLAGS=`eval echo \\$DEBIAN32_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DEBIAN32_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 
-	    make -C doc -f Makefile.doc
+	    make -C doc -f Makefile.doc DOCBOOK_BASE=/usr/share/sgml/docbook/stylesheet/xsl/docbook-xsl
 	    had_error $? "Error in CXX=`eval echo \\$DEBIAN32_CXX_$c` CC=`eval echo \\$DEBIAN32_CC_$c` CFLAGS=`eval echo \\$DEBIAN32_CFLAGS_$c` CXXFLAGS=`eval echo \\$DEBIAN32_CXXFLAGS_$c` LDFLAGS=`eval echo \\$DEBIAN32_LDFLAGS_$c` CONFIGFLAGS=$configflags"
 	    
 	    make clean
@@ -298,8 +298,8 @@ host_aurora() {
 		    LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`"
 		
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
-
-		gmake -C doc -f Makefile.doc
+		
+		gmake -C doc -f Makefile.doc DOCBOOK_XSL=/usr/local/share/xsl/docbook
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -380,7 +380,7 @@ host_freebsd32() {
 		
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 
-		gmake -C doc -f Makefile.doc
+		gmake -C doc -f Makefile.doc DOCBOOK_XSL=/usr/local/share/xsl/docbook
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -405,7 +405,7 @@ host_abraxas() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on abraxas CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/pkg/share/xsl/docbook
 	    had_error $? "Error on abraxas CONFIGFLAGS=$configflags"
 	    
 	    gmake clean
@@ -428,7 +428,7 @@ host_netbsd32() {
 		CXXFLAGS="-O3 -Wall -Werror"
 	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
 	    
-	    gmake -C doc -f Makefile.doc
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/pkg/share/xsl/docbook
 	    had_error $? "Error on netbsd32 CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -451,7 +451,7 @@ host_fish() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 	    
-	    gmake -C doc -f Makefile.doc
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -474,7 +474,31 @@ host_puffy() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+
+	    gmake clean
+
+	    gmake
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+	    
+	    gmake check
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+
+	    message "*** OK: CONFIGFLAGS=$configflags"
+	done
+}
+
+host_merlin() {
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls
+	do
+	    gmake distclean
+	    ../yapet-src/configure $configflags \
+		CFLAGS="-O3 -Wall -Werror -march=native -mtune=native" \
+		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
+	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
+
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -498,7 +522,7 @@ host_openbsd32() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc
+	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 	    
 	    gmake clean
