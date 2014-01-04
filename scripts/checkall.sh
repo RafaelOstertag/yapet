@@ -250,36 +250,42 @@ AURORA_CFLAGS_46="$AURORA_CXXFLAGS_42"
 AURORA_CC_46=gcc46
 AURORA_CXX_46=g++46
 AURORA_LDFLAGS_46="-L/usr/local/lib/gcc46 -R/usr/local/lib/gcc46"
+AURORA_LIBS_46=/usr/local/lib/gcc46/libstdc++.so
 
 AURORA_CXXFLAGS_47="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_47="$AURORA_CXXFLAGS_42"
 AURORA_CC_47=gcc47
 AURORA_CXX_47=g++47
 AURORA_LDFLAGS_47="-L/usr/local/lib/gcc47 -R/usr/local/lib/gcc47"
+AURORA_LIBS_47=/usr/local/lib/gcc47/libstdc++.so
 
 AURORA_CXXFLAGS_48="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_48="$AURORA_CXXFLAGS_42"
 AURORA_CC_48=gcc48
 AURORA_CXX_48=g++48
 AURORA_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
+AURORA_LIBS_48=/usr/local/lib/gcc48/libstdc++.so
 
 AURORA_CXXFLAGS_49="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_49="$AURORA_CXXFLAGS_42"
 AURORA_CC_49=gcc49
 AURORA_CXX_49=g++49
 AURORA_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+AURORA_LIBS_49=/usr/local/lib/gcc49/libstdc++.so
 
 AURORA_CXXFLAGS_default="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_default="$AURORA_CXXFLAGS_42"
 AURORA_CC_default=gcc
 AURORA_CXX_default=g++
 AURORA_LDFLAGS_default=""
+AURORA_LIBS_default=""
 
 AURORA_CXXFLAGS_clang="$AURORA_CXXFLAGS_42"
 AURORA_CFLAGS_clang="$AURORA_CXXFLAGS_42"
 AURORA_CC_clang=clang
 AURORA_CXX_clang=clang++
 AURORA_LDFLAGS_clang=""
+AURORA_LIBS_clang=""
 
 AURORA_CURSES_CPPFLAGS_system=
 AURORA_CURSES_LDFLAGS_system=
@@ -300,9 +306,10 @@ host_aurora() {
 		    CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" \
 		    CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" \
 		    CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" \
+		    LIBS="`eval echo \\$AURORA_LIBS_$c`" \
 		    LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`"
 		
-		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LIBS="`eval echo \\$AURORA_LIBS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake -C doc -f Makefile.doc DOCBOOK_XSL=/usr/local/share/xsl/docbook
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
@@ -337,36 +344,42 @@ FREEBSD32_CFLAGS_46="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_46=gcc46
 FREEBSD32_CXX_46=g++46
 FREEBSD32_LDFLAGS_46="-L/usr/local/lib/gcc46 -R/usr/local/lib/gcc46"
+FREEBSD32_LIBS_46=/usr/local/lib/gcc46/libstdc++.so
 
 FREEBSD32_CXXFLAGS_47="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_47="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_47=gcc47
 FREEBSD32_CXX_47=g++47
 FREEBSD32_LDFLAGS_47="-L/usr/local/lib/gcc47 -R/usr/local/lib/gcc47"
+FREEBSD32_LIBS_47=/usr/local/lib/gcc47/libstdc++.so
 
 FREEBSD32_CXXFLAGS_48="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_48="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_48=gcc48
 FREEBSD32_CXX_48=g++48
 FREEBSD32_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
+FREEBSD32_LIBS_48=/usr/local/lib/gcc48/libstdc++.so
 
 FREEBSD32_CXXFLAGS_49="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_49="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_49=gcc49
 FREEBSD32_CXX_49=g++49
 FREEBSD32_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+FREEBSD32_LIBS_49=/usr/local/lib/gcc49/libstdc++.so
 
 FREEBSD32_CXXFLAGS_default="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_default="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_default=gcc
 FREEBSD32_CXX_default=g++
 FREEBSD32_LDFLAGS_default=""
+FREEBSD32_LIBS_defaults=""
 
 FREEBSD32_CXXFLAGS_clang="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CFLAGS_clang="$FREEBSD32_CXXFLAGS_42"
 FREEBSD32_CC_clang=clang
 FREEBSD32_CXX_clang=clang++
 FREEBSD32_LDFLAGS_clang=""
+FREEBSD32_LIBS_clang=""
 
 FREEBSD32_CURSES_CPPFLAGS_system=
 FREEBSD32_CURSES_LDFLAGS_system=
@@ -387,9 +400,10 @@ host_freebsd32() {
 		    CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" \
 		    CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" \
 		    CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" \
+		    LIBS="`eval echo \\$FREEBSD32_LIBS_$c`" \
 		    LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`"
 		
-		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LIBS="`eval echo \\$FREEBSD32_LIBS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 
 		gmake -C doc -f Makefile.doc DOCBOOK_XSL=/usr/local/share/xsl/docbook
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
