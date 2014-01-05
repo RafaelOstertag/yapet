@@ -349,7 +349,7 @@ $
       -
   -->
   <refsect1 id="exitstatus">
-    <title>EXIST STATUS</title>
+    <title>EXIT STATUS</title>
 
     <para>
       <variablelist>
