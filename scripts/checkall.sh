@@ -659,7 +659,7 @@ host_starchild() {
 			export CPPFLAGS
 			
 			gmake distclean
-			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch"
+			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" LDFLAGS="$LDFLAGS"
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 
 			gmake -C doc -f Makefile.doc
