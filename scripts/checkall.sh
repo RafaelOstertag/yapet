@@ -629,7 +629,7 @@ host_starchild() {
 		do
 		    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
 		    do
-			unset LDFLAGS CPPFLAGS
+			unset LD_OPTIONS
 			case $flags in
 			    xpg4)
 				case $arch in
@@ -661,12 +661,9 @@ host_starchild() {
 			esac
 
 			LD_OPTIONS="$LDFLAGS"
-			export LD_OPTIONS			
-			export LDFLAGS
-			export CPPFLAGS
 			
 			gmake distclean
-			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" LDFLAGS="$LDFLAGS"
+			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" LDFLAGS="$LDFLAGS" CPPFLAGS="$CPPFLAGS"
 			had_error $? "Error in ${c}:$arch:$flags CONFIGFLAGS=$configflags"
 
 			gmake -C doc -f Makefile.doc
