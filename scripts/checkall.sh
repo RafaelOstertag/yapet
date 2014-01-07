@@ -638,13 +638,20 @@ host_starchild() {
 					CPPFLAGS="-I/usr/sfw/include -I/usr/xpg4/include"
 					;;
 				    -m32)
-					LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m} -L/usr/xpg4/lib -R/usr/xpg4/lib"
+					LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/xpg4/lib -R/usr/xpg4/lib"
 					CPPFLAGS="-I/usr/sfw/include -I/usr/xpg4/include"
 					;;
 				esac
 				;;
 			    solaris)
-				LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m}"
+				case $arch in
+				    -m64)
+					LDFLAGS="-L/usr/sfw/lib/${arch#-m} -R/usr/sfw/lib/${arch#-m}"
+					;;
+				    -m32)
+					LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"
+					;;
+				esac
 				CPPFLAGS="-I/usr/sfw/include"
 				;;
 			    ncurses)
