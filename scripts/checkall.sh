@@ -661,6 +661,7 @@ host_starchild() {
 			esac
 
 			LD_OPTIONS="$LDFLAGS"
+			export LD_OPTIONS
 			
 			gmake distclean
 			../yapet-src/configure $configflags CXX=${c}/CC CC=${c}/cc CFLAGS="-fast $arch" CXXFLAGS="-fast $arch" LDFLAGS="$LDFLAGS" CPPFLAGS="$CPPFLAGS"
