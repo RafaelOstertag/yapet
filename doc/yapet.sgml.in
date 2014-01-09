@@ -1127,7 +1127,7 @@ pwgen_pwlen=8</literallayout>
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara><!-- CSV2YAPET_BEGIN -->&csv2yapetman;, <!-- CSV2YAPET_END -->
+    <simpara><!-- CSV2YAPET_BEGIN -->&csv2yapetman;, &yapet2csvman;,<!-- CSV2YAPET_END -->
     &CURSES;, &OPENSSL;, &CRYPTO;</simpara>
   </refsect1>
 
@@ -1141,17 +1141,6 @@ pwgen_pwlen=8</literallayout>
 
     <para>The latest version of &yp; can be found under <ulink
     url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
-  </refsect1>
-
-  <!--
-      -
-      - LICENSE
-      -
-  -->
-  <refsect1 id="license">
-    <title>LICENSE</title>
-
-    &license;
   </refsect1>
 
 </refentry>

@@ -20,11 +20,11 @@
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman ", <citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<!ENTITY csv2yapetman "<citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY YAPET2CSV "yapet2csv">
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
@@ -79,102 +79,72 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para>The &csv2yapet; utility converts a CSV file
-    <replaceable>src</replaceable> to an &YP; file
-    <replaceable>dst</replaceable>. The expected columns and column order of
-    the CSV file is explained in <xref linkend="sourcefileformat" />.</para>
+    <para>Convert a CSV file <replaceable>src</replaceable> to an &YP;
+    file <replaceable>dst</replaceable>. The default character for
+    delimiting the fields is ',' (comma) unless specified otherwise on
+    the command line by providing the <option>-s</option> option
+    (refer to <xref linkend="options" />).</para>
 
-    <para>For each successfully imported source file record a corresponding
-    &YP; password record will be generated in the resulting file.</para>
+    <para>Fields containing the field separator character have to be
+    enclosed in double quotes (").</para>
 
-    <para>After the successful conversion the file
-    <replaceable>dst</replaceable> can be opened with &ypman;.</para>
+    <para>In order to convert a double quote characters it has to be
+    preceded by another double quote character (see <xref
+    linkend="examples" />).</para>
 
-    <para>The file suffix <filename>.pet</filename> is appended to the output
-    file <replaceable>dst</replaceable> if not provided as part of the file
-    path.</para>
+    <para>The following table describes the fields of the source
+    CSV file as expected by &csv2yapet;:</para>
 
-    <para>The password either entered on the standard input or provided as
-    command line argument using the <option>-p</option> option is used to
-    encrypt the destination file <replaceable>dst</replaceable> and must be
-    used to decrypt the file content when opening the file in &ypman;.</para>
+    <table pgwide="1">
+      <title>Source file format</title>
 
-    <para>&csv2yapet; will not overwrite existing destination files. If the
-    destination file already exists &csv2yapet; will abort the
-    conversion.</para>
+      <tgroup cols="3">
+	<colspec colname="colnum" align="center" />
+	<colspec colname="desc" align="left" />
+	<colspec colname="maxsize" align="left" />
+	
+	<thead>
+	  <row>
+	    <entry>Column #</entry>
+	    <entry align="left">&YP; record field</entry>
+	    <entry align="left">Maximum size in bytes</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>1</entry>
+	    <entry align="left">Name</entry>
+	    <entry>127</entry>
+	  </row>
 
-    <para>Errors during the conversion process will be displayed unless the
-    <option>-q</option> option is provided.</para>
+	  <row>
+	    <entry>2</entry>
+	    <entry>Host</entry>
+	    <entry>255</entry>
+	  </row>
 
-    <!--
-	-
-	- SOURCE FILE FORMAT
-	-
-    -->
-    <refsect2 id="sourcefileformat">
-      <title>Source File Format</title>
-
-      <para>The source file <replaceable>src</replaceable> to be converted has
-      to be organized as CSV file. The default character for delimiting the
-      fields is ',' (comma) unless specified differently on the command line
-      providing the <option>-s</option> option (refer to <xref
-      linkend="options" />).</para>
-
-      <para>Fields containing the field separator character have to be enclosed
-      in double quotes (").</para>
-
-      <para>Double quote characters to be converted literally, has each to be
-      preceded by another double quote character (see <xref linkend="examples"
-      />).</para>
-
-      <para>The following table will describe the fields of the source CSV file
-      as expected by &csv2yapet;:</para>
-
-      <table pgwide="1">
-	<title>Source file format</title>
-
-	<tgroup cols="2">
-	  <colspec colname="colnum" align="center" />
-	  <colspec colname="desc" align="left" />
-
-	  <thead>
-	    <row>
-	      <entry>Column #</entry>
-	      <entry align="left">&YP; record field</entry>
-	    </row>
-	  </thead>
-	  <tbody>
-	    <row>
-	      <entry>1</entry>
-	      <entry align="left">Name</entry>
-	    </row>
-
-	    <row>
-	      <entry>2</entry>
-	      <entry>Host</entry>
-	    </row>
-
-	    <row>
+	  <row>
 	    <entry>3</entry>
-	    <entry>Username</entry>
-	    </row>
+	    <entry>User name</entry>
+	    <entry>255</entry>
+	  </row>
 
-	    <row>
+	  <row>
 	    <entry>4</entry>
 	    <entry>Password</entry>
-	    </row>
+	    <entry>255</entry>
+	  </row>
 
 	  <row>
 	    <entry>5</entry>
 	    <entry>Comment</entry>
+	    <entry>511</entry>
 	  </row>
-	  </tbody>
-	</tgroup>
-      </table>
+	</tbody>
+      </tgroup>
+    </table>
 
-      <para>See <xref linkend="examples" /> for an example CSV file.</para>
-
-    </refsect2>
+    <para>See <xref linkend="examples" /> for an example CSV file.</para>
   </refsect1>
 
   <!--
@@ -191,7 +161,7 @@
       <varlistentry>
 	<term><option>-c</option></term>
 	<listitem>
-	  <para>Show the copyright information.</para>
+	  <para>Show copyright.</para>
 	</listitem>
       </varlistentry>
 
@@ -199,7 +169,15 @@
 	<term><option>-h</option></term>
 	<listitem>
 
-	  <para>Print a help text.</para>
+	  <para>Show help.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-V</option></term>
+	<listitem>
+
+	  <para>Show version.</para>
 	</listitem>
       </varlistentry>
 
@@ -208,8 +186,8 @@
 
 	<listitem>
 	  <para>The password to be used to encrypt the &YP; file. If
-	  &csv2yapet; is invoked without this option, it will prompt for the
-	  password on the standard input.
+	  &csv2yapet; is invoked without this option, it will prompt
+	  for the password on the standard input.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -234,15 +212,6 @@
 	  </para>
 	</listitem>
       </varlistentry>
-
-      <varlistentry>
-	<term><option>-V</option></term>
-	<listitem>
-
-	  <para>Show the version of &csv2yapet;.</para>
-	</listitem>
-      </varlistentry>
-
     </variablelist>
   </refsect1>
 
@@ -262,7 +231,7 @@
 
 	<listitem>
 	  <para>The source CSV file to be converted. It must be of the format
-	  described in <xref linkend="sourcefileformat" />.</para>
+	  described in <xref linkend="description" />.</para>
 
 	</listitem>
       </varlistentry>
@@ -272,9 +241,9 @@
 
 	<listitem>
 	  <para>The resulting &YP; file holding the content of
-	  <replaceable>src</replaceable> encrypted. This file must not exist
-	  prior the conversion process, else &csv2yapet; will not start the
-	  conversion and abort.</para>
+	  <replaceable>src</replaceable> encrypted. This file must not
+	  exist prior the conversion process, else &csv2yapet; will
+	  not start the conversion and abort.</para>
 
 	</listitem>
       </varlistentry>
@@ -295,11 +264,11 @@
     <example id="ex.csv1">
       <title>An example of a CSV file accepted by &csv2yapet;.</title>
 
-      <para>The following example shows an excerpt of a CSV file as accepted
-      for conversion by &csv2yapet;.</para>
+      <para>The following example shows an excerpt of a CSV file as
+      accepted for conversion by &csv2yapet;.</para>
 
-      <para>As the second line shows, fields can be blank but the separator may
-      not be omitted.</para>
+      <para>As the second line shows, fields can be blank but the
+      separator may not be omitted.</para>
 <screen>
 ssh host,host.example.org,johndoe,secret,Linux machine
 mail account,imap.email.org,john_doe,secret,
@@ -308,14 +277,15 @@ mail account,imap.email.org,john_doe,secret,
     </example>
 
     <example id="ex.csv2">
-      <title>An example of a CSV file accepted by &csv2yapet; using double quotes.</title>
+      <title>An example of a CSV file accepted by &csv2yapet; using
+      double quotes.</title>
 
-      <para>The following example shows an excerpt of a CSV file as accepted
-      for conversion by &csv2yapet;.</para>
+      <para>The following example shows an excerpt of a CSV file as
+      accepted for conversion by &csv2yapet;.</para>
 
-      <para>The first line demonstrates how to double quote fields containing
-      the separator character. The second line shows how to literally convert
-      double quote characters.</para>
+      <para>The first line demonstrates how to double quote fields
+      containing the separator character. The second line shows how to
+      literally convert double quote characters.</para>
 
 <screen>
 "ssh, ftp, and http server",server.example.org,johndoe,secret,Linux machine
@@ -327,9 +297,10 @@ mail account,imap.email.org,john_doe,secret,"John ""the Unknown"" Doe"
     <example id="ex.invoc1">
       <title>Invoking &csv2yapet;.</title>
 
-      <para>The following example shows how to invoke &csv2yapet; in order to
-      convert a CSV file to an &YP; file. If the <option>-s</option> option is
-      not given, &csv2yapet; will ask for a password as shown:</para>
+      <para>The following example shows how to invoke &csv2yapet; in
+      order to convert a CSV file to an &YP; file. If the
+      <option>-s</option> option is not given, &csv2yapet; will ask
+      for a password as shown:</para>
 
 <screen>
 <prompt>$</prompt> &csv2yapet; <filename>passwords.csv</filename> <filename>passwords.pet</filename>
@@ -376,7 +347,8 @@ $
 	  <term><returnvalue>2</returnvalue></term>
 
 	  <listitem>
-	    <para>The passwords provided on the standard input do not match.
+	    <para>The passwords provided on the standard input do not
+	    match.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -386,7 +358,8 @@ $
 
 	  <listitem>
 	    <para>The destination file
-	    <filename><replaceable>dst</replaceable></filename> already exists.
+	    <filename><replaceable>dst</replaceable></filename>
+	    already exists.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -435,20 +408,6 @@ $
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara>&ypman;</simpara>
+    <simpara>&ypman;, &yapet2csvman;</simpara>
   </refsect1>
-
-  <!--
-      -
-      - LICENSE
-      -
-  -->
-  <refsect1 id="license">
-    <title>LICENSE</title>
-
-    <para>&CSV2YAPET; is part of &YP;.</para>
-
-    &license;
-  </refsect1>
-
 </refentry>

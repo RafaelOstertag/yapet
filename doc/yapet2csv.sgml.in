@@ -20,11 +20,11 @@
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman ", <citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<!ENTITY csv2yapetman "<citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY YAPET2CSV "yapet2csv">
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
@@ -60,6 +60,7 @@
 	<arg choice="opt" rep="norepeat"><option>-h</option></arg>
 	<arg choice="opt" rep="norepeat"><option>-V</option></arg>
       </group>
+      <arg choice="opt" rep="norepeat"><option>-H</option></arg>
       <arg choice="opt" rep="norepeat"><option>-p</option> <arg
       choice="req"><replaceable>password</replaceable></arg></arg>
       <arg choice="opt" rep="norepeat"><option>-q</option></arg>
@@ -79,19 +80,10 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para></para>
+    <para>Convert a &YP; file to a CSV file. The source file
+    specified by <replaceable>src</replaceable> will not be
+    modified.</para>
 
-    <!--
-	-
-	- SOURCE FILE FORMAT
-	-
-    -->
-    <refsect2 id="sourcefileformat">
-      <title>Source File Format</title>
-
-      <para></para>
-
-    </refsect2>
   </refsect1>
 
   <!--
@@ -102,7 +94,57 @@
   <refsect1 id="options">
     <title>OPTIONS</title>
 
-    <para></para>
+    <variablelist>
+      <varlistentry>
+	<term><option>-h</option></term>
+	<listitem>
+	  <para>Show help.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-c</option></term>
+	<listitem>
+	  <para>Show copyright.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-V</option></term>
+	<listitem>
+	  <para>Show version.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-H</option></term>
+	<listitem>
+	  <para>Add header line to CSV file.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-p</option></term>
+	<listitem>
+	  <para>Use the master password
+	  <replaceable>password</replaceable> provided to decrypt
+	  <replaceable>src</replaceable>. The use of this option is
+	  not recommended for security reasons.</para>
+
+	  <para>By default, &yapet2csv; prompts for the master
+	  password.</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>-q</option></term>
+	<listitem>
+	  <para>Do not produce verbose output, except for error
+	  messages. By default, &yapet2csv; will print a period for
+	  each converted password record to stdout.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
   </refsect1>
 
   <!--
@@ -113,9 +155,29 @@
   <refsect1 id="operands">
     <title>OPERANDS</title>
 
-    <para></para>
-  </refsect1>
+    <variablelist>
+      <varlistentry>
+	<term><filename><replaceable>src</replaceable></filename></term>
+	<listitem>
+	  <para>Source &YP; file path which will be converted to CSV and
+	  stored in <replaceable>dst</replaceable>. If the the file
+	  path does not end in <filename
+	  class="extension">.pet</filename>, &yapet2csv; will append
+	  <filename class="extension">.pet</filename> to the operand.
+	  </para>
+	</listitem>
+      </varlistentry>
 
+      <varlistentry>
+	<term><filename><replaceable>dst</replaceable></filename></term>
+	<listitem>
+	  <para>File path where the converted &YP; file will be
+	  store. The file must not exist prior invoking
+	  &yapet2csv;.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
 
   <!--
   -
@@ -126,7 +188,30 @@
   <refsect1 id="examples">
     <title>EXAMPLES</title>
 
-    <para></para>
+    <example id="ex1">
+      <title>Prompt for Master Password</title>
+      <para>Convert the &YP; file <filename>/tmp/foo.pet</filename>
+      to a CSV file <filename>/tmp/bar.csv</filename>. Master password
+      used to decrypt <filename>foo.pet</filename> will be prompted
+      for:</para>
+
+      <screen>
+	<prompt>$</prompt> yapet2csv <filename>/tmp/foo.pet</filename> <filename>/tmp/bar.csv</filename>
+      </screen>
+    </example>
+
+    <example id="ex2">
+      <title>Provide Master Password on command line</title>
+      <para>Convert the &YP; file <filename>/tmp/foo2.pet</filename>
+      to a CSV file <filename>/tmp/bar2.csv</filename>. Master
+      password <userinput>secret</userinput> used to decrypt
+      <filename>foo2.pet</filename> is provided on command
+      line:</para>
+
+      <screen>
+	<prompt>$</prompt> yapet2csv -p secret <filename>/tmp/foo2.pet</filename> <filename>/tmp/bar2.csv</filename>
+      </screen>
+    </example>
 
   </refsect1>
 
@@ -138,7 +223,42 @@
   <refsect1 id="exitstatus">
     <title>EXIT STATUS</title>
 
-    <para></para>
+    <para>
+      <variablelist>
+
+	<varlistentry>
+	  <term><returnvalue>0</returnvalue></term>
+	  <listitem>
+	    <para>Successful completion.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>1</returnvalue></term>
+
+	  <listitem>
+	    <para>Error while parsing command line arguments.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>2</returnvalue></term>
+
+	  <listitem>
+	    <para>File <replaceable>dst</replaceable> already
+	    exists.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><returnvalue>3</returnvalue></term>
+
+	  <listitem>
+	    <para>An error occurred.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
 
   </refsect1>
 
@@ -172,20 +292,6 @@
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara>&ypman;</simpara>
+    <simpara>&ypman;, &csv2yapetman;</simpara>
   </refsect1>
-
-  <!--
-      -
-      - LICENSE
-      -
-  -->
-  <refsect1 id="license">
-    <title>LICENSE</title>
-
-    <para>&YAPET2CSV; is part of &YP;.</para>
-
-    &license;
-  </refsect1>
-
 </refentry>
