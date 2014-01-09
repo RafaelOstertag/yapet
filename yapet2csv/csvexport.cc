@@ -86,11 +86,16 @@ CSVExport::prepareline(const std::string& l) const {
  * @param verb enable/disable verbosity. Default \c true.
  */
 
-CSVExport::CSVExport (std::string src, std::string dst, char sep, bool verb):
+CSVExport::CSVExport (std::string src,
+		      std::string dst,
+		      char sep,
+		      bool verb,
+		      bool print_header):
         srcfile (src),
         dstfile (dst),
         separator (sep),
-        __verbose (verb) {
+        __verbose (verb),
+	__print_header(print_header) {
     if (access (srcfile.c_str(), R_OK | F_OK) == -1)
         throw std::runtime_error ("Cannot access " + srcfile);
 }
@@ -113,6 +118,14 @@ CSVExport::doexport (const char* pw) {
     std::list<YAPET::PartDec> list = yapetfile.read (key);
 
     std::list<YAPET::PartDec>::iterator it = list.begin();
+
+    if (!list.empty() && __print_header) {
+	csvfile << "name" << separator
+		<< "host" << separator
+		<< "username" << separator
+		<< "password" << separator
+		<< "comment" << std::endl;
+    }
 
     while ( it!=list.end() ) {
 	const YAPET::BDBuffer& enc_rec = it->getEncRecord();

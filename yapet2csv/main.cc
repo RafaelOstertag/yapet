@@ -63,17 +63,13 @@ enum {
      */
     ERR_CMDLINE = 1,
     /**
-     * The passwords supplied by the user do not match.
-     */
-    ERR_PASSWDMISMATCH = 2,
-    /**
      * The destination file already exists.
      */
-    ERR_FILEEXISTS = 3,
+    ERR_FILEEXISTS = 2,
     /**
      * A fatal error. Does not indicate convert errors which are handled/logged by \c CSVImport.
      */
-    ERR_FATAL = 4,
+    ERR_FATAL = 3,
     /**
      * The max password length
      */
@@ -143,7 +139,6 @@ void enable_echo() {
 }
 
 void show_version() {
-    std::cout << std::endl;
     std::cout << "yapet2csv is part of ";
     std::cout << PACKAGE_STRING << std::endl;
 }
@@ -155,13 +150,16 @@ void show_copyright() {
 void show_help (char* prgname) {
     std::cout << std::endl;
     std::cout << basename(prgname)
-              << " [-h] [-p <password>] [-q] [-s <char>] [-V] <src> <dst>"
+              << " [-c] [-h] [-V] [-H] [-p <password>] [-q] [-s <char>] <src> <dst>"
               << std::endl
               << std::endl;
     std::cout << "-c\tshow copyright information"
               << std::endl
               << std::endl;
     std::cout << "-h\tshow this help text"
+              << std::endl
+              << std::endl;
+    std::cout << "-H\tadd header to file"
               << std::endl
               << std::endl;
     std::cout << "-p\tuse <password> to open yapet file"
@@ -188,7 +186,7 @@ void show_help (char* prgname) {
     std::cout << "<dst>\tthe CSV output file"
               << std::endl
               << std::endl;
-    std::cout << "yapet2csv converts YAPET files to csv text files."
+    std::cout << "yapet2csv converts YAPET files to CSV text files."
               << std::endl
               << std::endl;
 }
@@ -196,6 +194,7 @@ void show_help (char* prgname) {
 int main (int argc, char** argv) {
     bool quiet = false;
     bool cmdline_pw = false;
+    bool print_header = false;
     char passwd[MAX_PASSWD];
     char separator = ',';
     std::string srcfile;
@@ -205,36 +204,39 @@ int main (int argc, char** argv) {
     extern char *optarg;
     extern int optopt, optind;
 
-    while ( (c = getopt (argc, argv, ":chp:qs:V") ) != -1) {
+    while ( (c = getopt (argc, argv, ":chp:qs:HV") ) != -1) {
         switch (c) {
-            case 'c':
-                show_copyright();
-                return 0;
-            case 'h':
-                show_help (argv[0]);
-                return 0;
-            case 'p':
-                strncpy (passwd, optarg, MAX_PASSWD);
-		passwd[MAX_PASSWD-1] = 0;
-                cmdline_pw = true;
-                break;
-            case 'q':
-                quiet = true;
-                break;
-            case 's':
-                sscanf (optarg, "%c", &separator);
-                break;
-            case 'V':
-                show_version();
-                return 0;
-            case ':':
-                std::cerr << "-" << (char) optopt << " without argument"
-                          << std::endl;
-                return ERR_CMDLINE;
-            case '?':
-                std::cerr << "unknown argument" << " '" << (char) optopt << "'"
-                          << std::endl;
-                return ERR_CMDLINE;
+	case 'c':
+	    show_copyright();
+	    return 0;
+	case 'h':
+	    show_help (argv[0]);
+	    return 0;
+	case 'p':
+	    strncpy (passwd, optarg, MAX_PASSWD);
+	    passwd[MAX_PASSWD-1] = 0;
+	    cmdline_pw = true;
+	    break;
+	case 'q':
+	    quiet = true;
+	    break;
+	case 's':
+	    separator=optarg[0];
+	    break;
+	case 'V':
+	    show_version();
+	    return 0;
+	case 'H':
+	    print_header=true;
+	    break;
+	case ':':
+	    std::cerr << "-" << (char) optopt << " without argument"
+		      << std::endl;
+	    return ERR_CMDLINE;
+	case '?':
+	    std::cerr << "unknown argument" << " '" << (char) optopt << "'"
+		      << std::endl;
+	    return ERR_CMDLINE;
         }
     }
 
@@ -263,7 +265,7 @@ int main (int argc, char** argv) {
 
     try {
         // We read the password from stdin only if the user did not provide the
-        // -s switch.
+        // -p switch.
         if (!cmdline_pw) {
             std::cout << "Please enter the password for " << srcfile << ": ";
             std::cout.flush();
@@ -277,7 +279,7 @@ int main (int argc, char** argv) {
 	    passwd[MAX_PASSWD-1] = 0;
         }
 
-        CSVExport exp (srcfile, dstfile, separator, !quiet);
+        CSVExport exp (srcfile, dstfile, separator, !quiet, print_header);
         exp.doexport (passwd);
 
 	if (!quiet) {

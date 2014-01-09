@@ -54,10 +54,15 @@ class CSVExport {
          */
         bool __verbose;
 
+	/**
+	 * Print header
+	 */
+	bool __print_header;
+
 	std::string prepareline(const std::string& l) const;
 
     public:
-	CSVExport (std::string src, std::string dst, char sep, bool verb = true);
+	CSVExport (std::string src, std::string dst, char sep, bool verb = true, bool print_header = false);
         ~CSVExport() {};
         /// Do the import.
         void doexport (const char* pw);
