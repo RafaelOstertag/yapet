@@ -37,6 +37,7 @@
 #endif
 
 #include <unistd.h>
+#include <libgen.h>
 
 #ifdef HAVE_TERMIOS_H
 # include <termios.h>
@@ -142,7 +143,6 @@ void enable_echo() {
 }
 
 void show_version() {
-    std::cout << std::endl;
     std::cout << "csv2yapet is part of ";
     std::cout << PACKAGE_STRING << std::endl;
 }
@@ -153,7 +153,7 @@ void show_copyright() {
 
 void show_help (char* prgname) {
     std::cout << std::endl;
-    std::cout << prgname
+    std::cout << basename(prgname)
               << " [-h] [-p <password>] [-q] [-s <char>] [-V] <src> <dst>"
               << std::endl
               << std::endl;
@@ -163,9 +163,7 @@ void show_help (char* prgname) {
     std::cout << "-h\tshow this help text"
               << std::endl
               << std::endl;
-    std::cout << "-p\tuse <password> as the password for the file created"
-              << std::endl
-              << "\tby the convert."
+    std::cout << "-p\tuse <password> as the master password for the YAPET file."
               << std::endl
               << "\tThe use of this option is discouraged."
               << std::endl
@@ -187,7 +185,7 @@ void show_help (char* prgname) {
     std::cout << "<dst>\tthe output file"
               << std::endl
               << std::endl;
-    std::cout << "csv2yapet converts csv text files to files readable by YAPET."
+    std::cout << "csv2yapet converts CSV text files to YAPET files."
               << std::endl
               << std::endl;
 }
@@ -221,7 +219,7 @@ int main (int argc, char** argv) {
                 quiet = true;
                 break;
             case 's':
-                sscanf (optarg, "%c", &separator);
+		separator=optarg[0];
                 break;
             case 'V':
                 show_version();
@@ -262,7 +260,7 @@ int main (int argc, char** argv) {
 
     try {
         // We read the password from stdin only if the user did not provide the
-        // -s switch.
+        // -p switch.
         if (!cmdline_pw) {
             std::cout << "Please enter the password for " << dstfile << ": ";
             std::cout.flush();
