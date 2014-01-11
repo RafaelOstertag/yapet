@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
+[
+<!ENTITY cpr SYSTEM "copyright.sgml">
+<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
+<!ENTITY pwrecord SYSTEM "pwrecord.sgml">
+<!ENTITY caution SYSTEM "caution.sgml">
+<!ENTITY license SYSTEM "license.sgml">
+<!ENTITY bugreport SYSTEM "bugreport.sgml">
+<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum></citerefentry>">
+<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
+<manvolnum>3X</manvolnum></citerefentry>">
+<!ENTITY YP "@PACKAGE_NAME@">
+<!ENTITY yp "<command>@PACKAGE@</command>">
+<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY CSV2YAPET "csv2yapet">
+<!ENTITY csv2yapet "<command>csv2yapet</command>">
+<!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY YAPET2CSV "yapet2csv">
+<!ENTITY yapet2csv "<command>yapet2csv</command>">
+<!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
+<!ENTITY yapet_colors "<citerefentry><refentrytitle>yapet_colors</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
+<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
+<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
+<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
+<!ENTITY YPVER "@PACKAGE_VERSION@">
+<!ENTITY DEFRCFILE "<envar>$HOME</envar><filename>/.yapet</filename>">
+]>
+<refentry id="yapet_colors">
+  <!-- $Id: yapet.sgml.in 5884 2014-01-09 18:42:06Z rafi $ -->
+
+  <refentryinfo>
+     <productname>yapet</productname>
+     &cpr;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>yapet_colors</refentrytitle>
+    <manvolnum>5</manvolnum>
+    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
+    <refmiscinfo class="manual">File Formats</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>yapet_colors</refname>
+    <refpurpose>format of &YP; color configuration</refpurpose>
+  </refnamediv>
+
+  <!--
+  -
+  -  DESCRIPTION
+  -
+  -->
+  <refsect1 id="description">
+    <title>DESCRIPTION</title>
+
+    <para>The color scheme of &YP; can be customized by setting the
+    <option>colors</option> option in &DEFRCFILE;.
+    </para>
+
+    <table pgwide="1" id="tab.colors">
+      <title>Colors</title>
+
+      <tgroup cols="2" align="left">
+	<colspec colname="color" align="left" />
+	<colspec colname="abbrev" align="left" />
+	<thead>
+	  <row>
+	    <entry>Color</entry>
+	    <entry>Abbreviation</entry>
+	  </row>
+	</thead>
+
+	<tbody>
+         <row><entry>COLOR_BLACK</entry><entry>k</entry></row>
+         <row><entry>COLOR_RED</entry><entry>r</entry></row>
+         <row><entry>COLOR_GREEN</entry><entry>g</entry></row>
+         <row><entry>COLOR_YELLOW</entry><entry>y</entry></row>
+         <row><entry>COLOR_BLUE</entry><entry>b</entry></row>
+         <row><entry>COLOR_MAGENTA</entry><entry>m</entry></row>
+         <row><entry>COLOR_CYAN</entry><entry>c</entry></row>
+         <row><entry>COLOR_WHITE</entry><entry>w</entry></row>
+	</tbody>
+
+      </tgroup>
+    </table>
+
+    <table pgwide="1" id="tab.attributes">
+      <title>Attributes</title>
+
+      <tgroup cols="2" align="left">
+	<colspec colname="attribute" align="left" />
+	<colspec colname="abbrev" align="left" />
+	<thead>
+	  <row>
+	    <entry>Attribute</entry>
+	    <entry>Abbreviation</entry>
+	  </row>
+	</thead>
+
+	<tbody>
+         <row><entry>A_NORMAL</entry><entry>0</entry></row>
+         <row><entry>A_STANDOUT</entry><entry>1</entry></row>
+         <row><entry>A_UNDERLINE</entry><entry>2</entry></row>
+         <row><entry>A_REVERSE</entry><entry>3</entry></row>
+         <row><entry>A_BLINK</entry><entry>4</entry></row>
+         <row><entry>A_DIM</entry><entry>5</entry></row>
+         <row><entry>A_PROTECT</entry><entry>6</entry></row>
+         <row><entry>A_INVIS</entry><entry>7</entry></row>
+	</tbody>
+
+      </tgroup>
+    </table>
+
+    <table pgwide="1" id="tab.uiobjects">
+      <title>UI Objects</title>
+
+      <tgroup cols="2" align="left">
+	<colspec colname="uiobject" align="left" />
+	<colspec colname="abbrev" align="left" />
+	<thead>
+	  <row>
+	    <entry>UI Object</entry>
+	    <entry>Abbreviation</entry>
+	  </row>
+	</thead>
+
+	<tbody>
+         <row><entry>DEFAULT</entry><entry>DEF</entry></row>
+         <row><entry>DIALOG</entry><entry>DIA</entry></row>
+         <row><entry>DIALOG_TITLE</entry><entry>DIT</entry></row>
+         <row><entry>INPUTWIDGET_NOFOCUS</entry><entry>IWN</entry></row>
+         <row><entry>INPUTWIDGET_FOCUS</entry><entry>IWF</entry></row>
+         <row><entry>INPUTWIDGET_HIDDEN</entry><entry>IWH</entry></row>
+         <row><entry>BUTTON_NOFOCUS</entry><entry>BTN</entry></row>
+         <row><entry>BUTTON_FOCUS</entry><entry>BTF</entry></row>
+         <row><entry>LISTBOX</entry><entry>LBX</entry></row>
+         <row><entry>LISTBOX_HILITE</entry><entry>LBH</entry></row>
+         <row><entry>CHECKBOXGROUP</entry><entry>CBG</entry></row>
+         <row><entry>TITLEBAR</entry><entry>TLB</entry></row>
+         <row><entry>STATUSBAR</entry><entry>STB</entry></row>
+	</tbody>
+
+      </tgroup>
+    </table>
+
+  </refsect1>
+
+  <!--
+  -
+  - EXAMPLES
+  -
+  -->
+  <refsect1 id="examples">
+    <title>EXAMPLES</title>
+
+    <example id="ex.defaultcolors">
+      <title>Default YAPET Colors</title>
+      
+      <literallayout>colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;BTN:wk0;BTF:kg3;LBX:wk0;LBH:kg3;CBG:yc0;TLB:bw0;STB:bw0</literallayout>
+    </example>
+  </refsect1>
+
+
+  <!--
+      -
+      - FILES
+      -
+  -->
+  <refsect1 id="files">
+    <title>FILES</title>
+
+    <variablelist>
+      <varlistentry>
+	<term>&DEFRCFILE;</term>
+
+	<listitem>
+	  <para>The per-user configuration file. If existing, options
+	  are read from this file but can be overridden by the command
+	  line options.</para>
+
+	  <para>Processing of this file can be disabled by invoking
+	  &yp; with the <option>-i</option> option.</para>
+
+	  <para>Refer to the &yapet_config; for
+	  an explanation of the per-user configuration file.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <!--
+  -
+  -  AUTHOR
+  -
+  -->
+  <refsect1 id="author">
+    <title>AUTHOR</title>
+    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
+  </refsect1>
+
+  <!--
+  -
+  -  SEE ALSO
+  -
+  -->
+  <refsect1 id="seealso">
+    <title>SEE ALSO</title>
+
+    <simpara>&ypman;, &yapet_config;</simpara>
+  </refsect1>
+
+</refentry>

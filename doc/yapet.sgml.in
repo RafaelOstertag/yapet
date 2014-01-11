@@ -26,6 +26,10 @@
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
 <!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
+<!ENTITY yapet_colors "<citerefentry><refentrytitle>yapet_colors</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
 <trademark class='trademark'>Solaris</trademark>">
@@ -409,7 +413,7 @@ No file loaded
 	the Password Record by pressing <guibutton>OK</guibutton>. Any previous
 	password will replaced by the generated password.</para>
 
-	<para>See <xref linkend="configurationfile" /> on how the password
+	<para>See &yapet_config; on how the password
 	generator options can be preset.</para>
       </refsect3>
     </refsect2>
@@ -552,246 +556,6 @@ No file loaded
 	any of the text fields.</para>
     </refsect2>
 
-    <!--
-	-
-	-  CONFIGURATION FILE
-	-
-    -->
-    <refsect2 id="configurationfile">
-      <title>Configuration File</title>
-
-      <para>If the file &DEFRCFILE; exists, &yp; reads options
-      provided in this file. You may specify a different configuration file by
-      using the <option>-r</option> option (see <xref linkend="options"
-      />). Options given on the command line have precedence over options given
-      in a configuration file.
-      </para>
-
-      <para>The configuration file has the following syntax:</para>
-
-      <informalexample>
-	<para><replaceable>option</replaceable>=<replaceable>value</replaceable></para>
-      </informalexample>
-
-      <para>where <replaceable>option</replaceable> can be any of the following:</para>
-
-      <variablelist>
-	<varlistentry>
-	  <term><option>load</option></term>
-
-	  <listitem>
-	    <para>The file to load upon start of &yp;.</para>
-
-	    <para>Equivalent to providing a <replaceable>filename</replaceable>
-	    when invoking &yp;.</para>
-
-	    <para>A <envar>~</envar> (tilde) sign as the first character of the
-	    file path will be replaced by the home directory of the user running
-	    &yp;.</para>
-
-	    <para>Default: not set</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>locktimeout</option></term>
-
-	  <listitem>
-	    <para>A positive integer specifying the time of inactivity in seconds
-	    until the screen is locked.</para>
-
-	    <para>Equivalent to providing the <option>-t</option> option when
-	    invoking &yp;.</para>
-
-	    <para>Default: 600</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwinputtimeout</option></term>
-
-	  <listitem>
-	    <para>A positive integer specifying the time of inactivity in seconds
-	    until the password prompt for unlocking the screen will disappear.</para>
-
-	    <para>Default: 60</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>allowlockquit</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 allows the user to quit
-	    &yp; from the locked screen (if no changes are pending). A value of
-	    0 prevents the user from quitting &yp; when the screen is locked.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>checkfsecurity</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 enables the
-	    verification of the file owner and permissions when loading a
-	    file. A value of 0 disables the verification of the file owner and
-	    permissions when loading a file.</para>
-
-	    <para>Equivalent to providing the <option>-S</option> (same as 1)
-	    or <option>-s</option> (same as 0) options when invoking
-	    &yp;.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_rng</option></term>
-
-	  <listitem>
-	    <para>The random number generator used to generate passwords. Possible values are
-	    <variablelist>
-	      <varlistentry>
-		<term><literal>devrandom</literal></term>
-
-		<listitem>
-		  <para>Requests the use of
-		  <filename>/dev/random</filename>. This is a high-quality
-		  random number generator. However, if the system lacks
-		  entropy, reading from this device may block, thus making &yp;
-		  unresponsive.</para>
-		</listitem>
-	      </varlistentry>
-
-	      <varlistentry>
-		<term><literal>devurandom</literal></term>
-
-		<listitem>
-		  <para>Requests the use of
-		  <filename>/dev/urandom</filename>. This is a quality random
-		  number generator similar to <filename>/dev/random</filename>
-		  but not of the same quality.</para>
-
-		  <para>Using this random number generator will not block as
-		  opposite to <filename>/dev/random</filename>.</para>
-		</listitem>
-	      </varlistentry>
-
-	      <varlistentry>
-		<term><literal>lrand48</literal></term>
-
-		<listitem>
-		  <para>Requests the use of <literal>lrand48</literal>. This is
-		  low-quality random number generator and should be used only
-		  if none of the above two random number generators are
-		  available.</para>
-		</listitem>
-	      </varlistentry>
-
-	      <varlistentry>
-		<term><literal>rand</literal></term>
-
-		<listitem>
-		  <para>Requests the use of <literal>rand</literal>. This is a
-		  last resort random number generator and should not be
-		  used.</para>
-		</listitem>
-	      </varlistentry>
-	    </variablelist>
-
-	    If the random number generator requested is not available on the
-	    system, &yp; searches for a suitable alternative.
-	    </para>
-
-	    <para>Default: devurandom</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_pwlen</option></term>
-
-	  <listitem>
-	    <para>A positive integer greater than zero specifying the default
-	    password length used by the Password Generator Dialog.</para>
-
-	    <para>Default: 10</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_letters</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 will preselect
-	    <guilabel>Letters</guilabel> check box of the Password Generator
-	    Dialog. 0 does not preselect <guilabel>Letters</guilabel> check
-	    box.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_digits</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 will preselect
-	    <guilabel>Digits</guilabel> check box of the Password Generator
-	    Dialog. 0 does not preselect <guilabel>Digits</guilabel> check
-	    box.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_punct</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 will preselect
-	    <guilabel>Punctuation</guilabel> check box of the Password Generator
-	    Dialog. 0 does not preselect <guilabel>Punctuation</guilabel> check
-	    box.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_special</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 will preselect
-	    <guilabel>Special</guilabel> check box of the Password Generator Dialog. 0 does not
-	    preselect <guilabel>Special</guilabel> check box.</para>
-
-	    <para>Default: 1</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><option>pwgen_other</option></term>
-
-	  <listitem>
-	    <para>A value of 1 (one) or 0 (zero). A value of 1 will preselect
-	    <guilabel>Other</guilabel> check box of the Password Generator Dialog. 0 does not
-	    preselect <guilabel>Other</guilabel> check box.</para>
-
-	    <para>Default: 0</para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-
-      <para>See <xref linkend="examples" /> for examples of configuration
-      files.</para>
-
-      <para>Options are case-sensitive. Spaces are not allowed before or after
-      the equal sign. Syntax errors and unrecognized options are ignored
-      silently.</para>
-    </refsect2>
-
     <refsect2 id="statusframe">
       <title>Status Frame</title>
 
@@ -897,8 +661,7 @@ No file loaded
 	<term><option>-i</option>, <option>--ignore-rc</option></term>
 	<listitem>
 	  <para>Do not read the configuration file. See also the
-	  <option>ignorerc</option> option in <xref linkend="configurationfile"
-	  />.</para>
+	  <option>ignorerc</option> option in &yapet_config;.</para>
 	</listitem>
       </varlistentry>
 
@@ -988,64 +751,6 @@ No file loaded
   </refsect1>
 
   <!--
-  -
-  - EXAMPLES
-  -
-  -->
-  <refsect1 id="examples">
-    <title>EXAMPLES</title>
-
-    <example id="ex.cfgfile1">
-      <title>Example of an &yp; configuration file</title>
-
-      <literallayout>load=/home/joe/passwords
-locktimeout=300
-checkfsecurity=0
-pwgen_pwlen=8</literallayout>
-
-      <para>In this example, the file <filename>/home/joe/passwords</filename>
-      will be loaded upon invocation of &yp;. The timeout until the screen is
-      locked is set to 300 seconds. File permissions will not be verified.</para>
-
-      <para>The Password Generator Dialog will have preset the
-      <guilabel>Password Length</guilabel> to 8 characters.</para>
-    </example>
-
-    <example id="ex.cfgfile2">
-      <title>Example of an &yp; configuration file</title>
-
-      <literallayout>locktimeout=150
-checkfsecurity=1
-pwgen_other=1
-</literallayout>
-
-      <para>In this example, no file will be automatically loaded upon
-      invocation of &yp;. The timeout until the screen is locked is set to 150
-      seconds. File permissions and owner will be verified.</para>
-
-      <para>The Password Generator Dialog will have preset the
-      <guilabel>Other</guilabel> check box checked.</para>
-    </example>
-
-    <example id="ex.cfgfile3">
-      <title>Example 1 revisited</title>
-
-      <literallayout>load=~/passwords.pet
-locktimeout=300
-checkfsecurity=0
-pwgen_pwlen=8</literallayout>
-
-      <para>This example has the same effect as <xref linkend="ex.cfgfile1"
-      />. But instead of specifying the full path to the home directory, the ~
-      (tilde) sign is used, which is expanded to the home directory
-      automatically. The <filename>.pet</filename> suffix can be specified, but
-      if omitted it will be appended automatically.</para>
-    </example>
-
-  </refsect1>
-
-
-  <!--
       -
       - FILES
       -
@@ -1058,15 +763,15 @@ pwgen_pwlen=8</literallayout>
 	<term>&DEFRCFILE;</term>
 
 	<listitem>
-	  <para>The per-user configuration file. If existing, options are read
-	  from this file but can be overridden by the command line
-	  options.</para>
+	  <para>The per-user configuration file. If existing, options
+	  are read from this file but can be overridden by the command
+	  line options.</para>
 
-	  <para>Processing of this file can be disabled by invoking &yp; with
-	  the <option>-i</option> option.</para>
+	  <para>Processing of this file can be disabled by invoking
+	  &yp; with the <option>-i</option> option.</para>
 
-	  <para>Refer to the <xref linkend="configurationfile" /> for an
-	  explanation of the per-user configuration file.</para>
+	  <para>Refer to the &yapet_config; for
+	  an explanation of the per-user configuration file.</para>
 	</listitem>
       </varlistentry>
     </variablelist>
