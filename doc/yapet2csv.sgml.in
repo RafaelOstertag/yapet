@@ -26,6 +26,10 @@
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
 <!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
+<!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
+<!ENTITY yapet_colors "<citerefentry><refentrytitle>yapet_colors</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry>">
 <!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
 <!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
 <trademark class='trademark'>Solaris</trademark>">
@@ -83,6 +87,58 @@
     <para>Convert a &YP; file to a CSV file. The source file
     specified by <replaceable>src</replaceable> will not be
     modified.</para>
+
+    <para>The resulting CSV file <replaceable>dst</replaceable> has
+    the format as shown in <xref linkend="tab.csvformat" />.</para>
+
+    <table pgwide="1" id="tab.csvformat">
+      <title>CSV file format</title>
+
+      <tgroup cols="3">
+	<colspec colname="colnum" align="center" />
+	<colspec colname="desc" align="left" />
+	<colspec colname="maxsize" align="left" />
+	
+	<thead>
+	  <row>
+	    <entry>Column #</entry>
+	    <entry align="left">&YP; record field</entry>
+	    <entry align="left">Maximum size in bytes</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>1</entry>
+	    <entry align="left">Name</entry>
+	    <entry>127</entry>
+	  </row>
+
+	  <row>
+	    <entry>2</entry>
+	    <entry>Host</entry>
+	    <entry>255</entry>
+	  </row>
+
+	  <row>
+	    <entry>3</entry>
+	    <entry>User name</entry>
+	    <entry>255</entry>
+	  </row>
+
+	  <row>
+	    <entry>4</entry>
+	    <entry>Password</entry>
+	    <entry>255</entry>
+	  </row>
+
+	  <row>
+	    <entry>5</entry>
+	    <entry>Comment</entry>
+	    <entry>511</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
 
   </refsect1>
 
@@ -172,8 +228,10 @@
 	<term><filename><replaceable>dst</replaceable></filename></term>
 	<listitem>
 	  <para>File path where the converted &YP; file will be
-	  store. The file must not exist prior invoking
-	  &yapet2csv;.</para>
+	  stored. The file must not exist prior invoking
+	  &yapet2csv;. Refer to <xref linkend="tab.csvformat"/> for
+	  the format of the resulting CSV file
+	  <replaceable>dst</replaceable>.</para>
 	</listitem>
       </varlistentry>
     </variablelist>
