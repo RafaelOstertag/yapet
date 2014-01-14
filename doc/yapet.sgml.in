@@ -24,7 +24,7 @@
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY YAPET2CSV "yapet2csv">
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman ", <citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
 <manvolnum>5</manvolnum></citerefentry>">
@@ -96,9 +96,6 @@
     number of files the passwords are stored in, although &yp; is able to
     display only password records of one file at a time.</para>
 
-    <para>For convenience, &yp; provides a search function for password records
-    of the currently loaded password file.</para>
-
     <para>The password records are protected by a master password. The master
     password is used to encrypt and decrypt the password records.</para>
 
@@ -108,501 +105,10 @@
     </para>
 
     <para>Files created by &yp; always have the suffix
-    <filename>.pet</filename>. This cannot be changed. Also, if a file is
-    loaded using the command line, &yp; appends the suffix
+    <filename>.pet</filename>. This cannot be changed. Also, if a file
+    is loaded using the command line, &yp; appends the suffix
     <filename>.pet</filename> to the file name unless the file name includes
     this suffix.</para>
-
-    <refsect2 id="mainscreen">
-      <title>Main Screen</title>
-
-      <para>Invoking &yp; without command line arguments given will show a
-      screen as shown in <xref linkend="fig.mainscreen" />.</para>
-
-      <figure id="fig.mainscreen">
-	<title>Main Screen</title>
-	<mediaobject>
-	  <textobject>
-<screen format="linespecific">
-                  ..::|| YAPET @PACKAGE_VERSION@ ||::..
-+---------------------------++---------------------------+
-|                           ||          K E Y S          |
-|                           ||---------------------------|
-|                           ||   S     Save File         |
-|                           ||   R     Load File         |
-|                           ||   L     Lock Screen       |
-|                           ||   A     Add Entry         |
-|                           ||   D     Delete Entry      |
-|                           ||   O     Sort Order        |
-|                           ||   /     Search            |
-|                           ||   N     Search Next       |
-|                           ||   C     Change Password   |
-|                           ||   ^L    Redraw Screen     |
-|                           ||   Q     Quit              |
-|                           ||   G     Password Generator|
-|                           |+---------------------------+
-|                           |+---------------------------+
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-|                           ||                           |
-+---------------------------++---------------------------+
-No file loaded
-</screen>
-	  </textobject>
-	</mediaobject>
-      </figure>
-
-      <para>The upper right frame in <xref linkend="fig.mainscreen" /> shows
-      the function keys recognized by &yp;. See <xref linkend="functionkeys" />
-      for details about the function keys.</para>
-
-      <para>The empty frame on the left side of the main screen will display
-      the list of password records. The selection of the record to be viewed
-      can be moved as explained in <xref linkend="selectionmovement" />.</para>
-
-      <para>Only when a a password file is loaded, the lower right frame will
-      display some status information as explained in <xref
-      linkend="statusframe" />.</para>
-    </refsect2>
-
-    <!--
-	-
-	-  PASSWORD RECORD
-	-
-    -->
-    <refsect2 id="passwordrecord">
-      <title>Password Record</title>
-
-      <para>Passwords are stored as records having the fields as shown in <xref
-      linkend="fig.pwrecord" /> below.</para>
-
-      <figure id="fig.pwrecord">
-	<title>Password Record Dialog</title>
-  <mediaobject>
-    <textobject>
-<screen format="linespecific">
-+-P A S S W O R D  R E C O R D--------------------+
-|Name                                             |
-|_________________________________________________|
-|Host                                             |
-|_________________________________________________|
-|Username                                         |
-|_________________________________________________|
-|Password                                         |
-|_________________________________________________|
-|Comment                                          |
-|_________________________________________________|
-|                                                 |
-|[ OK ] [ Cancel ] [ Generate Password ]          |
-+-------------------------------------------------+
-</screen>
-    </textobject>
-  </mediaobject>
-      </figure>
-
-      <para>The fields have the following meaning:</para>
-
-      &pwrecord;
-
-      <para>For an explanation of the <guibutton>Generate Password</guibutton>
-      refer to <xref linkend="passwordgenerator" />.</para>
-    </refsect2>
-
-    <!--
-	-
-	-  FUNCTION KEYS
-	-
-    -->
-    <refsect2 id="functionkeys">
-      <title>Function Keys</title>
-
-      <para>Function keys are the keys recognized by &yp; in the main screen,
-      i.e. if no dialog is presented.  Function keys are not case-sensitive. See
-      below for an explanation of the function keys recognized:
-      </para>
-
-      <variablelist>
-
-	<varlistentry>
-	  <term><keycap>S</keycap></term>
-
-	  <listitem>
-	    <simpara>Saves the password records to the file.</simpara>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>R</keycap></term>
-
-	  <listitem>
-	    <para>Load (read) a file from disk. This command is also used to
-	    create a new file. When creating a new file, enter the file name into
-	    the input field. &yp; will ask whether it should create the file if
-	    it does not exist.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>L</keycap></term>
-
-	  <listitem>
-	    <para>Lock and blank the screen. Has only effect if a file is
-	    loaded. In order to unlock the screen, the password of the currently
-	    loaded file has to be entered.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>A</keycap></term>
-
-	  <listitem>
-	    <para>Add a new password record to the currently loaded file. The
-	    password record will be permanently added to the file when the
-	    file is saved by pressing <keycap>S</keycap>.
-	    </para>
-
-	    <para>Before this function can be used an existing file has to be
-	    loaded or a new file has to be created by pressing
-	    <keycap>R</keycap>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>D</keycap></term>
-
-	  <listitem>
-	    <para>Delete a password entry from the currently loaded file. The
-	    entry will be permanently deleted if the file is saved by pressing
-	    <keycap>S</keycap>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>O</keycap></term>
-
-	  <listitem>
-	    <para>Change the sort order to either ascending or descending. This
-	    setting is not kept permanently and is lost upon restart of
-	    &yp;.</para>
-
-	    <para>The default sort order is ascending.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>/</keycap></term>
-
-	  <listitem>
-	    <para>Start a new search. &yp; can only search the name of the
-	    password records for a particular term. If the term is found, the
-	    item is highlighted. The search can be repeated by pressing
-	    <keycap>N</keycap>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>N</keycap></term>
-
-	  <listitem>
-	    <para>Repeat the search using the search term specified by invoking the
-	    search functionality by pressing <keycap>/</keycap>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>C</keycap></term>
-
-	  <listitem>
-	    <para>Change the master password of the currently loaded file. This
-	    action requires to save all changes first. The file with the old
-	    master password will be saved as
-	    <filename><replaceable>filename</replaceable>.pet.bak</filename> where
-	    <replaceable>filename</replaceable> is the name of the currently
-	    loaded file.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycombo action="simul"><keycap>CTRL</keycap>
-	  <keycap>L</keycap></keycombo> (<keycap>^L</keycap>)</term>
-
-	  <listitem>
-	    <para>Redraws the screen.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Q</keycap></term>
-
-	  <listitem>
-	    <para>Quit &yp;. If changes were not saved &yp; will ask
-	    whether they should be saved or not. Regardless of the answer, &yp;
-	    quits, either saving the changes or discarding them.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>G</keycap></term>
-
-	  <listitem>
-	    <para>Open the Password Generator Dialog. See <xref
-	    linkend="passwordgenerator" /> for further information.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-      </variablelist>
-    </refsect2>
-
-    <!--
-	-
-	-  DIALOGS
-	-
-    -->
-    <refsect2 id="dialogs">
-      <title>Dialogs</title>
-
-      <para>Frames appearing on top of the Main Screen are called
-      <firstterm>Dialogs</firstterm>. They are comprised of widgets which can
-      take input from the user.</para>
-
-      <para>The <keycap>Tab</keycap> key will switch the focus to the next
-      widget. Be aware that <keycombo
-      action="simul"><keycap>Shift</keycap><keycap>Tab</keycap></keycombo> does
-      not work for focusing the previous widget.</para>
-
-      <para>By pressing the <keycap>Esc</keycap> key dialogs will be canceled and
-      closed.</para>
-
-      <!--
-	  -
-	  - PASSWORD GENERATOR DIALOG
-	  -
-      -->
-      <refsect3 id="passwordgenerator">
-	<title>Password Generator Dialog</title>
-
-	<para>&yp; may compute random password of arbitrary length using
-	characters from different character pools.</para>
-
-	<para>In the Main Screen, pressing <keycap>G</keycap> will bring up the
-	Password Generator Dialog, which simply generates passwords.</para>
-
-	<para>The check boxes can be selected by pressing either
-	<keycap>Enter</keycap> or <keycap>Space</keycap> keys, the
-	<keycap>Down</keycap> and <keycap>Up</keycap> keys will selected the
-	next or previous check box, respectively. Pressing the
-	<keycap>Tab</keycap> will leave the check boxes and focus the
-	<guibutton>Regenerate</guibutton> button, which can be used to
-	regenerate the password with the options set.</para>
-
-	<para>By pressing the <guibutton>Generate Password</guibutton> button
-	in the Password Record Dialog the Password Generator Dialog will also
-	be displayed. Additionally, the generated password can be inserted into
-	the Password Record by pressing <guibutton>OK</guibutton>. Any previous
-	password will replaced by the generated password.</para>
-
-	<para>See &yapet_config; on how the password
-	generator options can be preset.</para>
-      </refsect3>
-    </refsect2>
-    <!--
-	-
-	-  SELECTION MOVEMENT
-	-
-    -->
-    <refsect2 id="selectionmovement">
-      <title>Selection Movement</title>
-
-      <para>The keys explained below are recognized for selection movement in
-      list widgets, such as the password records list or the lists used by the
-      File Open dialog.</para>
-
-      <variablelist>
-	<varlistentry>
-	  <term><keycap>Up</keycap>, <keycap>k</keycap>, <keycap>Down</keycap>,
-	  <keycap>j</keycap></term>
-
-	  <listitem>
-	    <para>Moves the selection one item up (<keycap>Up</keycap>,
-	    <keycap>k</keycap>) or down (<keycap>Down</keycap>,
-	    <keycap>j</keycap>).</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Page Up</keycap>, <keycap>Page Down</keycap></term>
-
-	  <listitem>
-	    <para>Scrolls one screen-full up (<keycap>Page Up</keycap>) or down
-	    (<keycap>Page Down</keycap>).</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Home</keycap>, <keycap>End</keycap></term>
-
-	<listitem>
-	  <para>Scrolls to the beginning (<keycap>Home</keycap>) or the end
-	  (<keycap>End</keycap>) of the list.</para>
-	</listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Enter</keycap></term>
-
-	  <listitem>
-	    <para>Chooses the selected item.</para>
-	  </listitem>
-	</varlistentry>
-      </variablelist>
-    </refsect2>
-
-    <refsect2 id="cursormovement">
-      <title>Cursor Movement</title>
-
-      <para>Cursor movement, whether in clear text or password fields, is
-      accomplished by using the following keys:</para>
-
-      <variablelist>
-	<varlistentry>
-	  <term><keycap>Left</keycap>, <keycap>Up</keycap></term>
-
-	  <listitem>
-	    <para>Moves the cursor one character to the left. In password fields, it
-	    deletes the character to the left of the current cursor
-	    position.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Right</keycap>, <keycap>Down</keycap></term>
-
-	  <listitem>
-	    <para>Moves the cursor one character to the right. In password fields,
-	    these keys do nothing.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Home</keycap></term>
-
-	  <listitem>
-	    <para>Moves the cursor at the beginning of the input field.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>End</keycap></term>
-
-	  <listitem>
-	    <para>Moves the cursor at the end of the input field.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Backspace</keycap></term>
-
-	  <listitem>
-	    <para>Moves the cursor one character to the right and deletes the
-	    character at this position.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Delete</keycap></term>
-
-	  <listitem>
-	    <para>Keeps the cursor at the current position and deletes the
-	    character on the right, shifting remaining characters to the
-	    left.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><keycap>Enter</keycap>, <keycap>Tab</keycap></term>
-
-	  <listitem>
-	    <para>The input is confirmed and the next widget will be
-	    focused.</para>
-	  </listitem>
-	</varlistentry>
-
-      </variablelist>
-
-    </refsect2>
-
-    <refsect2 id="editingpasswordrecords">
-	<title>Editing Password Records</title>
-
-	<para>When a password record is opened by pressing
-	<keycap>Enter</keycap>, it is opened in read-only mode in order to
-	prevent accidental modification.</para>
-
-	<para>After opening a password record, the read-only mode can be left
-	by pressing <keycombo
-	action='simul'><keycap>Ctrl</keycap><keycap>e</keycap></keycombo> in
-	any of the text fields.</para>
-    </refsect2>
-
-    <refsect2 id="statusframe">
-      <title>Status Frame</title>
-
-      <para>When a password file is loaded, &yp; displays some status
-      information in the lower right frame as shown in <xref
-      linkend="fig.statusframe" /></para>
-
-      <figure id="fig.statusframe">
-	<title>The Status Frame</title>
-	<mediaobject>
-	  <textobject>
-<screen>
-+--------------------------------------+
-| File permission check: enabled       |
-| Screen lock time-out: 600 sec        |
-| 1 entries (+)  (V: 1)                |
-| PW set: Sat Aug 22 11:49:46 2009     |
-+--------------------------------------+
-</screen>
-	  </textobject>
-	</mediaobject>
-      </figure>
-
-      <para><guilabel>File permission check</guilabel> is explained in <xref
-      linkend="options" /> under the <option>-s</option> and
-      <option>-S</option> options.</para>
-
-      <para>The next line labeled <guilabel>Screen lock time-out</guilabel>
-      displays how long &yp; will wait for a key press until the screen is
-      locked.</para>
-
-      <para>The third line is giving a count of the password records in the
-      currently loaded file. The <guilabel>(+)</guilabel> sign indicates
-      that there are unsaved modifications in one or more password
-      records. Absence of this sign indicates that no changes have been made to
-      the records.</para>
-
-      <para>The <guilabel>(V: 1)</guilabel> label indicates that the file
-      currently loaded was created with &yp; version 0.5 or earlier. A file
-      created with version 0.6 or a file created with &yp; version prior 0.6
-      having its master password changed using &yp; 0.6 will display
-      <guilabel>(V: 2)</guilabel>.</para>
-
-      <para>The fourth and last line shows the date the current master password
-      has been set.</para>
-
-    </refsect2>
 
     <!--
 	-
@@ -643,14 +149,14 @@ No file loaded
 
     <variablelist>
       <varlistentry>
-	<term><option>-c</option>, <option>--copyright</option></term>
+	<term><option>-c</option></term>
 	<listitem>
 	  <para>Show the copyright information.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><option>-h</option>, <option>--help</option></term>
+	<term><option>-h</option></term>
 	<listitem>
 
 	  <para>Print a help text.</para>
@@ -658,7 +164,7 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-i</option>, <option>--ignore-rc</option></term>
+	<term><option>-i</option></term>
 	<listitem>
 	  <para>Do not read the configuration file. See also the
 	  <option>ignorerc</option> option in &yapet_config;.</para>
@@ -666,8 +172,7 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-r</option> <replaceable>rcfile</replaceable>,
-	<option>--rc-file</option> <replaceable>rcfile</replaceable></term>
+	<term><option>-r</option> <replaceable>rcfile</replaceable></term>
 
 	<listitem>
 	  <para>Read the configuration file specified by
@@ -678,7 +183,7 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-s</option>, <option>--no-file-security</option></term>
+	<term><option>-s</option></term>
 
 	<listitem>
 	  <para>Disable the check for the owner and file mode when loading
@@ -696,7 +201,7 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-S</option>, <option>--file-security</option></term>
+	<term><option>-S</option></term>
 
 	<listitem>
 	  <para>Enable the check for the owner and file mode when loading
@@ -713,11 +218,9 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-t</option> <replaceable>sec</replaceable>,
-	<option>--timeout</option> <replaceable>sec</replaceable></term>
+	<term><option>-t</option> <replaceable>sec</replaceable></term>
 
 	<listitem>
-
 	  <para>Set the timeout until the screen is locked to
 	  <replaceable>sec</replaceable> seconds. The minimum time allowed is
 	  10 seconds. If a lower value is provided, the timeout will be set to
@@ -726,7 +229,7 @@ No file loaded
       </varlistentry>
 
       <varlistentry>
-	<term><option>-V</option>, <option>--version</option></term>
+	<term><option>-V</option></term>
 	<listitem>
 
 	  <para>Show the version of &yp;.</para>
@@ -808,9 +311,6 @@ No file loaded
   <refsect1 id="bugs">
     <title>BUGS</title>
 
-    <para>If a password record is open, the screen lock will not activate,
-    leaving &yp; unprotected.</para>
-
     &bugreport;
   </refsect1>
 
@@ -832,8 +332,14 @@ No file loaded
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara><!-- CSV2YAPET_BEGIN -->&csv2yapetman;, &yapet2csvman;,<!-- CSV2YAPET_END -->
-    &CURSES;, &OPENSSL;, &CRYPTO;</simpara>
+    <simpara>
+      <!-- CSV2YAPET_BEGIN -->
+      &csv2yapetman;,
+      &yapet2csvman;,
+      <!-- CSV2YAPET_END -->
+      &yapet_config;, 
+      &yapet_colors;
+    </simpara>
   </refsect1>
 
   <!--

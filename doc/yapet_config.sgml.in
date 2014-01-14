@@ -38,7 +38,7 @@
 <!ENTITY DEFRCFILE "<envar>$HOME</envar><filename>/.yapet</filename>">
 ]>
 <refentry id="yapet_config">
-  <!-- $Id: yapet.sgml.in 5884 2014-01-09 18:42:06Z rafi $ -->
+  <!-- $Id$ -->
 
   <refentryinfo>
      <productname>yapet</productname>
@@ -65,18 +65,16 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para>If the file &DEFRCFILE; exists, &yp; reads options provided
-    in this file. You may specify a different configuration file by
-    using the <option>-r</option> option (see &yp;). Options given on
-    the command line have precedence over options given in a
-    configuration file.
+    <para>
+      &ypman; reads the configuration file &DEFRCFILE; if it exists
+      unless a different file is specified by using
+      the <option>-r</option> option (see &ypman;). Options given on
+      the command line override options given in a configuration file.
     </para>
 
     <para>The configuration file has the following syntax:</para>
 
-    <informalexample>
-      <para><replaceable>option</replaceable>=<replaceable>value</replaceable></para>
-    </informalexample>
+    <literallayout><replaceable>option</replaceable>=<replaceable>value</replaceable></literallayout>
 
     <para>where <replaceable>option</replaceable> can be any of the
     following:</para>
@@ -302,10 +300,6 @@
 
     <para>See <xref linkend="examples" /> for examples of
     configuration files.</para>
-
-    <para>Options are case-sensitive. Spaces are not allowed before or
-    after the equal sign. Syntax errors and unrecognized options are
-    ignored silently.</para>
   </refsect1>
 
   <!--
@@ -320,9 +314,9 @@
       <title>Example of an &yp; configuration file</title>
 
       <literallayout>load=/home/joe/passwords
-      locktimeout=300
-      checkfsecurity=0
-      pwgen_pwlen=8</literallayout>
+locktimeout=300
+checkfsecurity=0
+pwgen_pwlen=8</literallayout>
 
       <para>In this example, the file
       <filename>/home/joe/passwords</filename> will be loaded upon
@@ -338,9 +332,9 @@
       <title>Example of an &yp; configuration file</title>
 
       <literallayout>locktimeout=150
-      checkfsecurity=1
-      pwgen_other=1
-      </literallayout>
+checkfsecurity=1
+pwgen_other=1
+</literallayout>
 
       <para>In this example, no file will be automatically loaded upon
       invocation of &yp;. The timeout until the screen is locked is
@@ -355,9 +349,9 @@
       <title>Example 1 revisited</title>
 
       <literallayout>load=~/passwords.pet
-      locktimeout=300
-      checkfsecurity=0
-      pwgen_pwlen=8</literallayout>
+locktimeout=300
+checkfsecurity=0
+pwgen_pwlen=8</literallayout>
 
       <para>This example has the same effect as <xref
       linkend="ex.cfgfile1" />. But instead of specifying the full
