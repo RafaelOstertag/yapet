@@ -45,6 +45,7 @@
 
 #include <unistd.h>
 #include <sys/resource.h>
+#include <libgen.h>
 
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
@@ -138,7 +139,7 @@ show_copyright() {
 void
 show_help(char* prgname) {
     std::cout << std::endl;
-    std::cout << prgname
+    std::cout << basename(prgname)
               <<
         " [-chV] [-i | -r <rcfile>] [-s | -S] [-t <sec>] [<filename>]"
               << std::endl
