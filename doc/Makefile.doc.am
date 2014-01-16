@@ -84,11 +84,11 @@ $(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
 
 .sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
-	$(XSLTPROC) -o $@ $(docbook_man_xsl) $<
+	$(XSLTPROC) --param man.justify 1 -o $@ $(docbook_man_xsl) $<
 
 .sgml.5: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
-	$(XSLTPROC) -o $@ $(docbook_man_xsl) $<
+	$(XSLTPROC) --param man.justify 1 -o $@ $(docbook_man_xsl) $<
 
 $(srcdir)/Doxyfile: $(srcdir)/Doxyfile.in
 	$(editfile) $< > $@

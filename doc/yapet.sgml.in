@@ -89,43 +89,322 @@
   <refsect1 id="description">
     <title>DESCRIPTION</title>
 
-    <para>&yp; stores passwords and associated information (referred to as
-    <firstterm>password records</firstterm>) in files encrypted on disk.</para>
-
-    <para>&yp; does not impose a limit of password records per file and the
-    number of files the passwords are stored in, although &yp; is able to
-    display only password records of one file at a time.</para>
-
-    <para>The password records are protected by a master password. The master
-    password is used to encrypt and decrypt the password records.</para>
-
-    <para>&yp; relies on OpenSSL for encryption and decryption of password
-    records. The cipher for encryption and decryption is Blowfish with a 448
-    bits key.
+    <para>
+      &yp; stores passwords and associated information (referred to as
+      <firstterm>password records</firstterm>) in files encrypted on
+      disk. A master password is required to encrypt/decrypt the
+      password records in a given file. &yp; does not impose a limit
+      of password records per file.
     </para>
 
-    <para>Files created by &yp; always have the suffix
-    <filename>.pet</filename>. This cannot be changed. Also, if a file
-    is loaded using the command line, &yp; appends the suffix
-    <filename>.pet</filename> to the file name unless the file name includes
-    this suffix.</para>
+    <para>
+      &yp; relies on OpenSSL for encryption and decryption of password
+      records. The cipher for encryption and decryption is Blowfish
+      with a 448 bits key.
+    </para>
 
-    <!--
-	-
-	-  CAUTION
-	-
-    -->
-    <refsect2 id="caution">
-      <title>Caution</title>
-      &caution;
+    <para>
+      Files created by &yp; always have the suffix
+      <filename>.pet</filename>. This cannot be changed. Also, if a
+      file is loaded using the command line, &yp; appends the suffix
+      <filename>.pet</filename> to the file name unless the file name
+      includes this suffix.
+    </para>
+
+    <refsect2 id="keys">
+      <title>Main Window Function Keys</title>
+
+      <para>
+	Following function keys are recognized in the main window:
+      </para>
+
+      <variablelist>
+	<varlistentry>
+	  <term><keycap>h</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Show an overview of the function keys.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>s</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Save changes to currently loaded &YP; file.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>r</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Open a &YP; file.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>e</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Create a new, empty &YP; file.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>l</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Lock the screen immediately. Take only effect if a &YP;
+	      file is loaded.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>a</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Add a new password record.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>d</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Delete the currently selected password record.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>o</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Change the sort order of the password record list.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>/</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Search for a password record. The search is only
+	      performed on the Name of the password record. Other
+	      password record fields won't be searched.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>n</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Search for the next occurrence of a previous search
+	      initiated by <keycap>/</keycap>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>c</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Change the master password of the currently loaded &YP;
+	      file.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>i</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Show various information about &YP; and loaded &YP;
+	      file, if any.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycombo action="simul"><keycap>Ctrl</keycap>
+	  <keycap>l</keycap></keycombo> (<keycap>^L</keycap>)</term>
+
+	  <listitem>
+	    <para>
+	      Redraw the entire screen.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>g</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Open the password generator.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>q</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Quit &YP;.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
     </refsect2>
 
-    <refsect2 id="petfileformat">
-      <title>Format of &YP; Files</title>
+    <refsect2 id="cursormovement">
+      <title>Cursor Movement</title>
 
-      <para>Please refer to the <filename>DESIGN</filename> in source code
-      distribution or point your browser to <ulink
-      url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
+      <para>
+	Cursor movement, whether in clear text or password fields, is
+	accomplished by using the following keys:
+      </para>
+
+      <variablelist>
+	<varlistentry>
+	  <term><keycap>Left</keycap>, <keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>b</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Moves the cursor one character to the left.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>Right</keycap>, <keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>f</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Moves the cursor one character to the right.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>Home</keycap>, <keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>a</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Moves the cursor at the beginning of the input field.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>End</keycap>, <keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>e</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Moves the cursor at the end of the input field.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>Backspace</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Delete the charact left of the cursor.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>Delete</keycap>, <keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>d</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Delete the charcter under the cursor.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>k</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Delete all charcters under and right of the cursor.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>u</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Delete all charcters left of the cursor.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycap>Enter</keycap>, <keycap>Tab</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Focus the next widget.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycombo action="simul">
+	  <keycap>Shift</keycap> <keycap>Tab</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Focus the previous widget.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+      </variablelist>
+
+    </refsect2>
+
+    <refsect2 id="passwordrecorddialog">
+      <title>Password Record Dialog</title>
+
+      <para>
+      </para>
     </refsect2>
 
   </refsect1>
@@ -302,6 +581,14 @@
 
   </refsect1>
   <!-- NLS_END -->
+
+  <refsect1 id="petfileformat">
+    <title>Format of &YP; Files</title>
+    
+    <para>Please refer to the <filename>DESIGN</filename> in source
+    code distribution or point your browser to <ulink
+    url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
+  </refsect1>
 
   <!--
   -
