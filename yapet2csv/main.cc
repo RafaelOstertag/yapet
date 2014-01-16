@@ -67,7 +67,7 @@ enum {
      */
     ERR_FILEEXISTS = 2,
     /**
-     * A fatal error. Does not indicate convert errors which are handled/logged by \c CSVImport.
+     * A fatal error.
      */
     ERR_FATAL = 3,
     /**
@@ -253,7 +253,7 @@ int main (int argc, char** argv) {
     }
 
     if ( srcfile.find (YAPET::Consts::default_suffix,
-                       dstfile.length() -
+                       srcfile.length() -
                        YAPET::Consts::default_suffix.length() )
             == std::string::npos )
         srcfile += YAPET::Consts::default_suffix;
