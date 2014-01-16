@@ -46,37 +46,37 @@ HelpDialog::HelpDialog():
     mainpack->add_back(leftpack);
     mainpack->add_back(rightpack);
 
-    savekey=new YACURS::Label(" S ");
+    savekey=new YACURS::Label(" s ");
     leftpack->add_back(savekey);
     savedescr=new YACURS::Label(_("Save File"));
     rightpack->add_back(savedescr);
 
-    loadkey=new YACURS::Label(" R ");
+    loadkey=new YACURS::Label(" r ");
     leftpack->add_back(loadkey);
     loaddescr=new YACURS::Label(_("Load File"));
     rightpack->add_back(loaddescr);
 
-    createkey=new YACURS::Label(" E ");
+    createkey=new YACURS::Label(" e ");
     leftpack->add_back(createkey);
     createdescr=new YACURS::Label(_("Create File"));
     rightpack->add_back(createdescr);
 
-    lockkey=new YACURS::Label(" L ");
+    lockkey=new YACURS::Label(" l ");
     leftpack->add_back(lockkey);
     lockdescr=new YACURS::Label(_("Lock Screen"));
     rightpack->add_back(lockdescr);
 
-    addkey=new YACURS::Label(" A ");
+    addkey=new YACURS::Label(" a ");
     leftpack->add_back(addkey);
     adddescr=new YACURS::Label(_("Add Entry"));
     rightpack->add_back(adddescr);
 
-    delkey=new YACURS::Label(" D ");
+    delkey=new YACURS::Label(" d ");
     leftpack->add_back(delkey);
     deldescr=new YACURS::Label(_("Delete Entry"));
     rightpack->add_back(deldescr);
 
-    sortkey=new YACURS::Label(" O ");
+    sortkey=new YACURS::Label(" o ");
     leftpack->add_back(sortkey);
     sortdescr=new YACURS::Label(_("Sort Order"));
     rightpack->add_back(sortdescr);
@@ -86,17 +86,17 @@ HelpDialog::HelpDialog():
     searchdescr=new YACURS::Label(_("Search"));
     rightpack->add_back(searchdescr);
 
-    searchnkey=new YACURS::Label(" N ");
+    searchnkey=new YACURS::Label(" n ");
     leftpack->add_back(searchnkey);
     searchndescr=new YACURS::Label(_("Search Next"));
     rightpack->add_back(searchndescr);
 
-    chpwkey=new YACURS::Label(" C ");
+    chpwkey=new YACURS::Label(" c ");
     leftpack->add_back(chpwkey);
     chpwdescr=new YACURS::Label(_("Change Password"));
     rightpack->add_back(chpwdescr);
 
-    infokey=new YACURS::Label(" I ");
+    infokey=new YACURS::Label(" i ");
     leftpack->add_back(infokey);
     infodescr=new YACURS::Label(_("Information"));
     rightpack->add_back(infodescr);
@@ -106,12 +106,12 @@ HelpDialog::HelpDialog():
     redrawdescr=new YACURS::Label(_("Redraw Screen"));
     rightpack->add_back(redrawdescr);
 
-    pwgenkey=new YACURS::Label(" G ");
+    pwgenkey=new YACURS::Label(" g ");
     leftpack->add_back(pwgenkey);
     pwgendescr=new YACURS::Label(_("Password Generator"));
     rightpack->add_back(pwgendescr);
 
-    quitkey=new YACURS::Label(" Q ");
+    quitkey=new YACURS::Label(" q ");
     leftpack->add_back(quitkey);
     quitdescr=new YACURS::Label(_("Quit"));
     rightpack->add_back(quitdescr);
