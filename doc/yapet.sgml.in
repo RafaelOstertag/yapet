@@ -90,11 +90,36 @@
     <title>DESCRIPTION</title>
 
     <para>
-      &yp; stores passwords and associated information (referred to as
+      &yp; provides a text user interface for storing passwords and
+      associated information (referred to as
       <firstterm>password records</firstterm>) in files encrypted on
-      disk. A master password is required to encrypt/decrypt the
-      password records in a given file. &yp; does not impose a limit
-      of password records per file.
+      disk. A password record is comprised of a record name, host
+      name, user name, password, and comment. A master password is
+      required to encrypt/decrypt the password records in a given
+      file. &yp; does not impose a limit of password records per file.
+    </para>
+
+    <para>
+      Files created by &yp; always have the suffix
+      <filename>.pet</filename>. This cannot be changed. Also, if a
+      file is loaded using the command line, &yp; appends the suffix
+      <filename>.pet</filename> to the file name unless the file name
+      includes this suffix already. By default, &yp; refuses to load
+      files not having a file mode of 600. This behavior can be
+      changed by providing the <option>-s</option> option when
+      starting &yp; or using a configuration file (see &yapet_config;,
+      and <xref linkend="options"/>).
+    </para>
+
+    <para>
+      After loading a file, the record name of each password record is
+      displayed in a list. Existing password records can be opened by
+      selecting them and pressing <keycap>Enter</keycap>. By default,
+      existing password records are opened in read-only mode, to avoid
+      accidental changes. Pressing <keycombo
+      action='simul'><keycap>Ctrl</keycap>
+      <keycap>r</keycap></keycombo> toggles between read-only and edit
+      mode.
     </para>
 
     <para>
@@ -103,13 +128,45 @@
       with a 448 bits key.
     </para>
 
+
     <para>
-      Files created by &yp; always have the suffix
-      <filename>.pet</filename>. This cannot be changed. Also, if a
-      file is loaded using the command line, &yp; appends the suffix
-      <filename>.pet</filename> to the file name unless the file name
-      includes this suffix.
+      Other features of &yp; are:
     </para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+	  Screen lock after a certain amount of inactivitiy when
+	  password file is loaded.
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  Password records opened in read-only mode (default) hide the
+	  password. Toggling into edit mode reveals the password.
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  Import of CSV files (see &csv2yapet;).
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  Export of &YP; files to CSV files (see &yapet2csv;).
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  Integrated password generator.
+	</para>
+      </listitem>
+    </itemizedlist>
+
 
     <refsect2 id="keys">
       <title>Main Window Function Keys</title>
@@ -130,11 +187,21 @@
 	</varlistentry>
 
 	<varlistentry>
+	  <term><keycap>Enter</keycap></term>
+
+	  <listitem>
+	    <para>
+	      Open the currently selected password record.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
 	  <term><keycap>s</keycap></term>
 
 	  <listitem>
 	    <para>
-	      Save changes to currently loaded &YP; file.
+	      Save changes to currently loaded file.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -144,7 +211,7 @@
 
 	  <listitem>
 	    <para>
-	      Open a &YP; file.
+	      Open a file.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -154,7 +221,7 @@
 
 	  <listitem>
 	    <para>
-	      Create a new, empty &YP; file.
+	      Create a new, empty file.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -164,7 +231,7 @@
 
 	  <listitem>
 	    <para>
-	      Lock the screen immediately. Take only effect if a &YP;
+	      Lock the screen immediately. Takes only effect if a 
 	      file is loaded.
 	    </para>
 	  </listitem>
@@ -279,8 +346,8 @@
 
     </refsect2>
 
-    <refsect2 id="cursormovement">
-      <title>Cursor Movement</title>
+    <refsect2 id="cursormovementkeys">
+      <title>Cursor Movement Keys</title>
 
       <para>
 	Cursor movement, whether in clear text or password fields, is
@@ -401,10 +468,27 @@
     </refsect2>
 
     <refsect2 id="passwordrecorddialog">
-      <title>Password Record Dialog</title>
+      <title>Password Record Dialog Keys</title>
 
       <para>
+	Following function keys are recognized in the password record
+	dialog, besides the cursor movement keys (see <xref
+	linkend="cursormovementkeys" />):
       </para>
+
+      <variablelist>
+	<varlistentry>
+	  <term><keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>r</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Toggle the password record dialog between read-only and
+	      edit mode.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
     </refsect2>
 
   </refsect1>
@@ -465,16 +549,21 @@
 	<term><option>-s</option></term>
 
 	<listitem>
-	  <para>Disable the check for the owner and file mode when loading
-	  files. Without this option, &yp; checks password files for having the
-	  same owner as the user running &yp; and verifies that the file mode
-	  is strictly 0600. If one of these conditions are not met, &yp; refuses
-	  to load the file. Providing this options disables those checks and
-	  &yp; will load files with owners other than the process owner of
-	  &yp; and file modes different from 0600.</para>
+	  <para>
+	    Disable the check for the owner and file mode when loading
+	    files. Without this option, &yp; checks password files for
+	    having the same owner as the user running &yp; and
+	    verifies that the file mode is strictly 0600. If one of
+	    these conditions are not met, &yp; refuses to load the
+	    file. Providing this options disables those checks and
+	    &yp; will load files with owners other than the process
+	    owner of &yp; and file modes different from 0600.
+	  </para>
 
-	  <para>New files saved while this option is active will have the file
-	  mode set to 0644.</para>
+	  <para>
+	    New files saved while this option is active will have the
+	    file mode set to 0644.
+	  </para>
 
 	</listitem>
       </varlistentry>
@@ -483,16 +572,22 @@
 	<term><option>-S</option></term>
 
 	<listitem>
-	  <para>Enable the check for the owner and file mode when loading
-	  files. This option makes &yp; to load password files having the
-	  owner set to the process owner of &yp; and the file mode strictly set
-	  to 0600 only. If one of these conditions are not met, &yp; refuses to
-	  load the file.</para>
+	  <para>
+	    Enable the check for the owner and file mode when loading
+	    files. This option makes &yp; to load password files
+	    having the owner set to the process owner of &yp; and the
+	    file mode strictly set to 0600 only. If one of these
+	    conditions are not met, &yp; refuses to load the file.
+	  </para>
 
-	  <para>New files saved while this option is active will have the file
-	  mode set to 0600.</para>
+	  <para>
+	    New files saved while this option is active will have the
+	    file mode set to 0600.
+	  </para>
 
-	  <para>This is the default mode.</para>
+	  <para>
+	    This is the default mode.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -500,10 +595,12 @@
 	<term><option>-t</option> <replaceable>sec</replaceable></term>
 
 	<listitem>
-	  <para>Set the timeout until the screen is locked to
-	  <replaceable>sec</replaceable> seconds. The minimum time allowed is
-	  10 seconds. If a lower value is provided, the timeout will be set to
-	  10 seconds.</para>
+	  <para>
+	    Set the timeout until the screen is locked to
+	    <replaceable>sec</replaceable> seconds. The minimum time
+	    allowed is 10 seconds. If a lower value is provided, the
+	    timeout will be set to 10 seconds.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -511,7 +608,9 @@
 	<term><option>-V</option></term>
 	<listitem>
 
-	  <para>Show the version of &yp;.</para>
+	  <para>
+	    Show the version of &yp;.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -519,12 +618,14 @@
 	<term><option><replaceable>filename</replaceable></option></term>
 
 	<listitem>
-	  <para>The file to open upon invocation of &yp;. If the file does not
-	  exist, &yp; asks whether it should be created.
+	  <para>
+	    The file to open upon invocation of &yp;. If the file does
+	    not exist, &yp; asks whether it should be created.
 	  </para>
 
-	  <para>Files created by &yp; always have the suffix <filename
-	  moreinfo="none">.pet</filename>.
+	  <para>
+	    Files created by &yp; always have the
+	    suffix <filename moreinfo="none">.pet</filename>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -545,15 +646,21 @@
 	<term>&DEFRCFILE;</term>
 
 	<listitem>
-	  <para>The per-user configuration file. If existing, options
-	  are read from this file but can be overridden by the command
-	  line options.</para>
+	  <para>
+	    The per-user configuration file. If existing, options are
+	    read from this file but can be overridden by the command
+	    line options.
+	  </para>
 
-	  <para>Processing of this file can be disabled by invoking
-	  &yp; with the <option>-i</option> option.</para>
+	  <para>
+	    Processing of this file can be disabled by invoking &yp;
+	    with the <option>-i</option> option.
+	  </para>
 
-	  <para>Refer to the &yapet_config; for
-	  an explanation of the per-user configuration file.</para>
+	  <para>
+	    Refer to the &yapet_config; for an explanation of the
+	    per-user configuration file.
+	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -573,8 +680,10 @@
 	<term><envar>LC_MESSAGES</envar></term>
 
 	<listitem>
-	  <para>Printing messages in the specified language. Currently only
-	  German is supported besides English.</para>
+	  <para>
+	    Displaying messages in the specified language. Currently
+	    only German is supported besides English.
+	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -585,9 +694,11 @@
   <refsect1 id="petfileformat">
     <title>Format of &YP; Files</title>
     
-    <para>Please refer to the <filename>DESIGN</filename> in source
-    code distribution or point your browser to <ulink
-    url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
+    <para>
+      Please refer to the <filename>DESIGN</filename> in source code
+      distribution or point your browser
+      to <ulink url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.
+    </para>
   </refsect1>
 
   <!--
@@ -637,8 +748,10 @@
   <refsect1 id="availability">
     <title>AVAILABILITY</title>
 
-    <para>The latest version of &yp; can be found under <ulink
-    url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.</para>
+    <para>
+      The latest version of &yp; can be found
+      under <ulink url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.
+    </para>
   </refsect1>
 
 </refentry>
