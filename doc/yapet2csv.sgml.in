@@ -109,19 +109,19 @@
 	<tbody>
 	  <row>
 	    <entry>1</entry>
-	    <entry align="left">Name</entry>
+	    <entry align="left">Record Name</entry>
 	    <entry>127</entry>
 	  </row>
 
 	  <row>
 	    <entry>2</entry>
-	    <entry>Host</entry>
+	    <entry>Host Name</entry>
 	    <entry>255</entry>
 	  </row>
 
 	  <row>
 	    <entry>3</entry>
-	    <entry>User name</entry>
+	    <entry>User Name</entry>
 	    <entry>255</entry>
 	  </row>
 

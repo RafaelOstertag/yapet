@@ -36,8 +36,11 @@
   <sect1 id="intro">
     <title>Introduction</title>
 
-    <para>Build instructions for &YP; under Cygwin. The build and configuration
-    steps are basically the same as on a real UNIX system.</para>
+    <para>
+      Build instructions for &YP; under Cygwin. The build and
+      configuration steps are basically the same as on a real UNIX
+      system.
+    </para>
 
   </sect1>
 
@@ -59,50 +62,24 @@
   </sect1>
 
   <sect1 id="configuring">
-    <title>Configuring</title>
-
-    <para>Unpack the source code and run the configure script with the
-    <option>--with-curses-include</option> option as shown below</para>
-
-    <screen>./configure --with-curses-include=/usr/include/ncurses</screen>
-
-    <para>You may want to specify an different prefix with
-    <option>--prefix</option>.</para>
-  </sect1>
-
-  <sect1 id="building">
-    <title>Building and Installing</title>
-
-    <para>Build &YP; by typing <command>make</command> on the command
-    line. After the build has finished, make sure you run the checks by typing
-    <command>make <option>check</option></command>. If all tests have
-    succeeded, install &YP; by typing <command>make
-    <option>install</option></command> on the command line.</para>
-
-  </sect1>
-
-  <sect1 id="builderror">
-    <title>Build Error</title>
-    <para>If the build process aborts with the error message</para>
+    <title>Configuring, Buildin,g and Installing</title>
 
     <para>
-<screen>cc1: error: unrecognized command line option "-fvisibility=hidden"</screen>
+      See INSTALL.
     </para>
 
-    <para>open the file <filename>intl/Makefile</filename> and remove the
-    option <option>-fvisibility=hidden</option> from the
-    <varname>CFLAGS</varname> variable. The <varname>CFLAGS</varname> variable
-    is located around line number 86 in the
-    <filename>Makefile</filename>.</para>
   </sect1>
 
   <sect1 id="filepermissions">
     <title>Insecure File Permissions</title>
 
-    <para>When creating or reading files stored on a Windows server, &YP; may
-    complain about insecure file permissions. In that case, move the file to a
-    local disk or start &YP; with the <option>-s</option> command line option
-    as described in the &YP; manual page &ypman;.</para>
+    <para>
+      When creating or reading files stored on a Windows server, &YP;
+      may complain about insecure file permissions. In that case, move
+      the file to a local disk or start &YP; with the
+      <option>-s</option> command line option as described in the &YP;
+      manual page &ypman;.
+    </para>
   </sect1>
 
 </article>

@@ -76,25 +76,45 @@
 
     <literallayout><replaceable>option</replaceable>=<replaceable>value</replaceable></literallayout>
 
-    <para>where <replaceable>option</replaceable> can be any of the
-    following:</para>
+    <para>
+      where <replaceable>option</replaceable> can be any of the
+      following:
+    </para>
 
     <variablelist>
+      <varlistentry>
+	<term><option>colors</option></term>
+
+	<listitem>
+	  <para>
+	    (String) Set custom colors. See &yapet_colors; for more
+	    information.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term><option>load</option></term>
 
 	<listitem>
-	  <para>The file to load upon start of &yp;.</para>
+	  <para>
+	    (String) The file to load upon start of &yp;.
+	  </para>
 
-	  <para>Equivalent to providing a
-	  <replaceable>filename</replaceable> when invoking
-	  &yp;.</para>
+	  <para>
+	    Equivalent to providing a
+	    <replaceable>filename</replaceable> when invoking &yp;.
+	  </para>
 
-	  <para>A <envar>~</envar> (tilde) sign as the first character
-	  of the file path will be replaced by the home directory of
-	  the user running &yp;.</para>
+	  <para>
+	    A <envar>~</envar> (tilde) sign as the first character of
+	    the file path will be replaced by the home directory of
+	    the user running &yp;.
+	  </para>
 
-	  <para>Default: not set</para>
+	  <para>
+	    Default: not set
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -102,13 +122,19 @@
 	<term><option>locktimeout</option></term>
 
 	<listitem>
-	  <para>A positive integer specifying the time of inactivity
-	  in seconds until the screen is locked.</para>
+	  <para>
+	    (Integer) A positive integer specifying the time of
+	    inactivity in seconds until the screen is locked.
+	  </para>
 
-	  <para>Equivalent to providing the <option>-t</option> option
-	  when invoking &yp;.</para>
+	  <para>
+	    Equivalent to providing the <option>-t</option> option
+	    when invoking &yp;.
+	  </para>
 
-	  <para>Default: 600</para>
+	  <para>
+	    Default: 600
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -116,11 +142,15 @@
 	<term><option>pwinputtimeout</option></term>
 
 	<listitem>
-	  <para>A positive integer specifying the time of inactivity
-	  in seconds until the password prompt for unlocking the
-	  screen will disappear.</para>
+	  <para>
+	    (Integer) A positive integer specifying the time of
+	    inactivity in seconds until the password prompt for
+	    unlocking the screen will disappear.
+	  </para>
 
-	  <para>Default: 60</para>
+	  <para>
+	    Default: 60
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -128,12 +158,16 @@
 	<term><option>allowlockquit</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 allows
-	  the user to quit &yp; from the locked screen (if no changes
-	  are pending). A value of 0 prevents the user from quitting
-	  &yp; when the screen is locked.</para>
+	  <para>
+	    (Boolean) A value of <literal>true</literal> allows the
+	    user to quit &yp; from the locked screen (if no changes
+	    are pending). A value of <literal>false</literal> prevents
+	    the user from quitting &yp; when the screen is locked.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -141,16 +175,23 @@
 	<term><option>checkfsecurity</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 enables
-	  the verification of the file owner and permissions when
-	  loading a file. A value of 0 disables the verification of
-	  the file owner and permissions when loading a file.</para>
+	  <para>
+	    (Boolean) A value of <literal>true</literal> enables the
+	    verification of the file owner and permissions when
+	    loading a file. A value of <literal>false</literal>
+	    disables the verification of the file owner and
+	    permissions when loading a file.
+	  </para>
 
-	  <para>Equivalent to providing the <option>-S</option> (same
-	  as 1) or <option>-s</option> (same as 0) options when
-	  invoking &yp;.</para>
+	  <para>
+	    Equivalent to providing the <option>-S</option> (same as
+	    <literal>true</literal>) or <option>-s</option> (same as
+	    <literal>false</literal>) options when invoking &yp;.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -158,65 +199,77 @@
 	<term><option>pwgen_rng</option></term>
 
 	<listitem>
-	  <para>The random number generator used to generate
-	  passwords. Possible values are
-	  <variablelist>
-	    <varlistentry>
-	      <term><literal>devrandom</literal></term>
+	  <para>
+	    (String) The random number generator used to generate
+	    passwords. Possible values are
+	    <variablelist>
+	      <varlistentry>
+		<term><literal>devrandom</literal></term>
 
-	      <listitem>
-		<para>Requests the use of
-		<filename>/dev/random</filename>. This is a
-		high-quality random number generator. However, if the
-		system lacks entropy, reading from this device may
-		block, thus making &yp; unresponsive.</para>
-	      </listitem>
-	    </varlistentry>
+		<listitem>
+		  <para>
+		    Requests the use of
+		    <filename>/dev/random</filename>. This is a
+		    high-quality random number generator. However, if
+		    the system lacks entropy, reading from this device
+		    may block, thus making &yp; unresponsive.
+		  </para>
+		</listitem>
+	      </varlistentry>
 
-	    <varlistentry>
-	      <term><literal>devurandom</literal></term>
+	      <varlistentry>
+		<term><literal>devurandom</literal></term>
 
-	      <listitem>
-		<para>Requests the use of
-		<filename>/dev/urandom</filename>. This is a quality
-		random number generator similar to
-		<filename>/dev/random</filename> but not of the same
-		quality.</para>
+		<listitem>
+		  <para>
+		    Requests the use of
+		    <filename>/dev/urandom</filename>. This is a
+		    quality random number generator similar to
+		    <filename>/dev/random</filename> but not of the
+		    same quality.
+		  </para>
 
-		<para>Using this random number generator will not
-		block as opposite to
-		<filename>/dev/random</filename>.</para>
-	      </listitem>
-	    </varlistentry>
+		  <para>
+		    Using this random number generator will not block as
+		    opposite to <filename>/dev/random</filename>.
+		  </para>
+		</listitem>
+	      </varlistentry>
 
-	    <varlistentry>
-	      <term><literal>lrand48</literal></term>
+	      <varlistentry>
+		<term><literal>lrand48</literal></term>
 
-	      <listitem>
-		<para>Requests the use of
-		<literal>lrand48</literal>. This is low-quality random
-		number generator and should be used only if none of
-		the above two random number generators are
-		available.</para>
-	      </listitem>
-	    </varlistentry>
+		<listitem>
+		  <para>
+		    Requests the use of
+		    <literal>lrand48</literal>. This is low-quality
+		    random number generator and should be used only if
+		    none of the above two random number generators are
+		    available.
+		  </para>
+		</listitem>
+	      </varlistentry>
 
-	    <varlistentry>
-	      <term><literal>rand</literal></term>
+	      <varlistentry>
+		<term><literal>rand</literal></term>
 
-	      <listitem>
-		<para>Requests the use of
-		<literal>rand</literal>. This is a last resort random
-		number generator and should not be used.</para>
-	      </listitem>
-	    </varlistentry>
-	  </variablelist>
+		<listitem>
+		  <para>
+		    Requests the use of <literal>rand</literal>. This
+		    is a last resort random number generator and
+		    should not be used.
+		  </para>
+		</listitem>
+	      </varlistentry>
+	    </variablelist>
 
-	  If the random number generator requested is not available on
-	  the system, &yp; searches for a suitable alternative.
+	    If the random number generator requested is not available on
+	    the system, &yp; takes the next best random number generator.
 	  </para>
 
-	  <para>Default: devurandom</para>
+	  <para>
+	    Default: devurandom
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -224,11 +277,15 @@
 	<term><option>pwgen_pwlen</option></term>
 
 	<listitem>
-	  <para>A positive integer greater than zero specifying the
-	  default password length used by the Password Generator
-	  Dialog.</para>
+	  <para>
+	    (Integer) A positive integer greater than zero specifying
+	    the default password length used by the Password Generator
+	    Dialog.
+	  </para>
 
-	  <para>Default: 10</para>
+	  <para>
+	    Default: 15
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -236,12 +293,17 @@
 	<term><option>pwgen_letters</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 will
-	  preselect <guilabel>Letters</guilabel> check box of the
-	  Password Generator Dialog. 0 does not preselect
-	  <guilabel>Letters</guilabel> check box.</para>
+	  <para>
+	    (Boolean) A value of <literal>true</literal> will
+	    preselect the <guilabel>Letters</guilabel> check box of
+	    the Password Generator Dialog. <literal>false</literal>
+	    does not preselect the <guilabel>Letters</guilabel> check
+	    box.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -249,12 +311,16 @@
 	<term><option>pwgen_digits</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 will
-	  preselect <guilabel>Digits</guilabel> check box of the
-	  Password Generator Dialog. 0 does not preselect
-	  <guilabel>Digits</guilabel> check box.</para>
+	  <para>
+	    (Boolean) A value of <literal>true</literal> will
+	    preselect the <guilabel>Digits</guilabel> check box of the
+	    Password Generator Dialog. <literal>false</literal> does
+	    not preselect the <guilabel>Digits</guilabel> check box.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -262,12 +328,17 @@
 	<term><option>pwgen_punct</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 will
-	  preselect <guilabel>Punctuation</guilabel> check box of the
-	  Password Generator Dialog. 0 does not preselect
-	  <guilabel>Punctuation</guilabel> check box.</para>
+	  <para>
+	     (Boolean) A value of <literal>true</literal> will
+	     preselect the <guilabel>Punctuation</guilabel> check box
+	     of the Password Generator
+	     Dialog. <literal>false</literal> does not preselect the
+	     <guilabel>Punctuation</guilabel> check box.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -275,12 +346,17 @@
 	<term><option>pwgen_special</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 will
-	  preselect <guilabel>Special</guilabel> check box of the
-	  Password Generator Dialog. 0 does not preselect
-	  <guilabel>Special</guilabel> check box.</para>
+	  <para>
+	     (Boolean) A value of <literal>true</literal> will
+	     preselect the <guilabel>Special</guilabel> check box of
+	     the Password Generator Dialog. <literal>false</literal>
+	     does not preselect the <guilabel>Special</guilabel> check
+	     box.
+	  </para>
 
-	  <para>Default: 1</para>
+	  <para>
+	    Default: <literal>true</literal>
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -288,15 +364,28 @@
 	<term><option>pwgen_other</option></term>
 
 	<listitem>
-	  <para>A value of 1 (one) or 0 (zero). A value of 1 will
-	  preselect <guilabel>Other</guilabel> check box of the
-	  Password Generator Dialog. 0 does not preselect
-	  <guilabel>Other</guilabel> check box.</para>
+	  <para>
+	     (Boolean) A value of <literal>true</literal> will
+	     preselect <guilabel>Other</guilabel> check box of the
+	     Password Generator Dialog. <literal>false</literal> does
+	     not preselect the <guilabel>Other</guilabel> check box.
+	  </para>
 
-	  <para>Default: 0</para>
+	  <para>
+	    Default: <literal>false</literal>
+	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>
+
+    <para>
+      For boolean values, <literal>1</literal>,
+      <literal>yes</literal>, <literal>true</literal>,
+      <literal>enable</literal>, and <literal>enabled</literal> denote
+      true. <literal>0</literal>, <literal>false</literal>,
+      <literal>no</literal>, <literal>disable</literal>,
+      <literal>disabled</literal> denote false.
+    </para>
 
     <para>See <xref linkend="examples" /> for examples of
     configuration files.</para>
@@ -318,31 +407,38 @@ locktimeout=300
 checkfsecurity=0
 pwgen_pwlen=8</literallayout>
 
-      <para>In this example, the file
-      <filename>/home/joe/passwords</filename> will be loaded upon
-      invocation of &yp;. The timeout until the screen is locked is
-      set to 300 seconds. File permissions will not be
-      verified.</para>
+      <para>
+	In this example, the file
+	<filename>/home/joe/passwords</filename> will be loaded upon
+	invocation of &yp;. The timeout until the screen is locked is
+	set to 300 seconds. File permissions will not be verified.
+      </para>
 
-      <para>The Password Generator Dialog will have preset the
-      <guilabel>Password Length</guilabel> to 8 characters.</para>
+      <para>
+	The Password Generator Dialog will have preset the
+	<guilabel>Password Length</guilabel> to 8 characters.
+      </para>
     </example>
 
     <example id="ex.cfgfile2">
       <title>Example of an &yp; configuration file</title>
 
       <literallayout>locktimeout=150
-checkfsecurity=1
-pwgen_other=1
+checkfsecurity=yes
+pwgen_other=enable
 </literallayout>
 
-      <para>In this example, no file will be automatically loaded upon
-      invocation of &yp;. The timeout until the screen is locked is
-      set to 150 seconds. File permissions and owner will be
-      verified.</para>
+      <para>
+	In this example, no file will be automatically loaded upon
+	invocation of &yp;. The timeout until the screen is locked is
+	set to 150 seconds. File permissions and owner will be
+	verified.
+      </para>
 
-      <para>The Password Generator Dialog will have preset the
-      <guilabel>Other</guilabel> check box checked.</para>
+      <para>
+	The Password Generator Dialog will have preset the
+	<guilabel>Other</guilabel> check box checked.
+      </para>
     </example>
 
     <example id="ex.cfgfile3">
@@ -350,15 +446,17 @@ pwgen_other=1
 
       <literallayout>load=~/passwords.pet
 locktimeout=300
-checkfsecurity=0
+checkfsecurity=false
 pwgen_pwlen=8</literallayout>
 
-      <para>This example has the same effect as <xref
-      linkend="ex.cfgfile1" />. But instead of specifying the full
-      path to the home directory, the ~ (tilde) sign is used, which is
-      expanded to the home directory automatically. The
-      <filename>.pet</filename> suffix can be specified, but if
-      omitted it will be appended automatically.</para>
+      <para>
+	This example has the same effect as <xref
+	linkend="ex.cfgfile1" />. But instead of specifying the full
+	path to the home directory, the ~ (tilde) sign is used, which
+	is expanded to the home directory automatically. The
+	<filename>.pet</filename> suffix can be specified, but if
+	omitted it will be appended automatically.
+      </para>
     </example>
 
   </refsect1>
@@ -377,12 +475,16 @@ pwgen_pwlen=8</literallayout>
 	<term>&DEFRCFILE;</term>
 
 	<listitem>
-	  <para>The per-user configuration file. If existing, options
-	  are read from this file but can be overridden by the command
-	  line options.</para>
-
-	  <para>Processing of this file can be disabled by invoking
-	  &yp; with the <option>-i</option> option.</para>
+	  <para>
+	    The per-user configuration file. If existing, options are
+	    read from this file but can be overridden by the command
+	    line options.
+	  </para>
+	  
+	  <para>
+	    Processing of this file can be disabled by invoking &yp;
+	    with the <option>-i</option> option.
+	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>

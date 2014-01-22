@@ -137,14 +137,16 @@
       <listitem>
 	<para>
 	  Screen lock after a certain amount of inactivitiy when
-	  password file is loaded.
+	  password file is loaded (see also &yapet_config; and <xref
+	  linkend="options" />.
 	</para>
       </listitem>
 
       <listitem>
 	<para>
 	  Password records opened in read-only mode (default) hide the
-	  password. Toggling into edit mode reveals the password.
+	  password. Toggling into edit mode reveals the password (see
+	  <xref linkend="passwordrecorddialog" />).
 	</para>
       </listitem>
 
@@ -306,8 +308,8 @@
 
 	  <listitem>
 	    <para>
-	      Show various information about &YP; and loaded &YP;
-	      file, if any.
+	      Show various information about &YP; and the loaded file,
+	      if any.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -472,7 +474,7 @@
 
       <para>
 	Following function keys are recognized in the password record
-	dialog, besides the cursor movement keys (see <xref
+	dialog, besides cursor movement keys (see <xref
 	linkend="cursormovementkeys" />):
       </para>
 
@@ -484,7 +486,8 @@
 	  <listitem>
 	    <para>
 	      Toggle the password record dialog between read-only and
-	      edit mode.
+	      edit mode. In read-only mode, &yp; hides the password
+	      (only supported on color terminals).
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -514,7 +517,7 @@
       <varlistentry>
 	<term><option>-c</option></term>
 	<listitem>
-	  <para>Show the copyright information.</para>
+	  <para>Show copyright information.</para>
 	</listitem>
       </varlistentry>
 
@@ -522,15 +525,14 @@
 	<term><option>-h</option></term>
 	<listitem>
 
-	  <para>Print a help text.</para>
+	  <para>Print help text.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term><option>-i</option></term>
 	<listitem>
-	  <para>Do not read the configuration file. See also the
-	  <option>ignorerc</option> option in &yapet_config;.</para>
+	  <para>Do not read the configuration file.</para>
 	</listitem>
       </varlistentry>
 
@@ -562,7 +564,7 @@
 
 	  <para>
 	    New files saved while this option is active will have the
-	    file mode set to 0644.
+	    file mode set according to umask.
 	  </para>
 
 	</listitem>
@@ -601,6 +603,8 @@
 	    allowed is 10 seconds. If a lower value is provided, the
 	    timeout will be set to 10 seconds.
 	  </para>
+
+	  <para>Default: 10 min.</para>
 	</listitem>
       </varlistentry>
 
@@ -609,7 +613,7 @@
 	<listitem>
 
 	  <para>
-	    Show the version of &yp;.
+	    Show version of &yp;.
 	  </para>
 	</listitem>
       </varlistentry>
