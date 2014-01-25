@@ -79,7 +79,7 @@ all: $(TARGETS)
 # supported, we simply call it again with -s upon error useing -S
 $(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
 	$(XSLTPROC) -o $@.tmp.html $(docbook_docbook_xsl) $(srcdir)/$@.sgml
-	$(W3M) -S -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null || $(W3M) -s -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null
+	$(W3M) -S -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null || $(W3M) -s -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null
 	rm $@.tmp.html
 
 .sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
