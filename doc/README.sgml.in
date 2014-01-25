@@ -46,17 +46,6 @@
     </para>
 
     <para>
-      &YP; does not impose a limit of password records per file and
-      the number of files the passwords are stored in, although &YP;
-      is only able to display password records of one file at a time.
-    </para>
-
-    <para>
-      For convenience, &YP; provides a search function for password
-      records of the currently displayed password file.
-    </para>
-
-    <para>
       The password records are protected by a master password. The
       master password is used to encrypt and decrypt the password
       records.
@@ -105,7 +94,7 @@
 
 	  <para>
 	    dependes only on two libraries: OpenSSL (<ulink
-	    url="http://www.openssl.org">http://www.openssl.org</ulink>)
+	    url="http://www.openssl.org/">http://www.openssl.org/</ulink>)
 	    and curses or ncurses (<ulink
 	    url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>).
 	  </para>
@@ -139,6 +128,7 @@
       <title>Version 1.0</title>
 
       <para>
+	New user interface.
       </para>
     </sect2>
 
