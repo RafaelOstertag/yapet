@@ -476,7 +476,8 @@ host_fish() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 	    
-	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
+	    # Don't use local docbook installation, it's missing the profiling part
+	    gmake -C doc -f Makefile.doc
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -499,7 +500,8 @@ host_puffy() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
+	    # Don't use local docbook installation, it's missing the profiling part
+	    gmake -C doc -f Makefile.doc
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -523,7 +525,8 @@ host_merlin() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
+	    # Don't use local docbook installation, it's missing the profiling part
+	    gmake -C doc -f Makefile.doc
 	    had_error $? "Error on fish CONFIGFLAGS=$configflags"
 
 	    gmake clean
@@ -547,7 +550,8 @@ host_openbsd32() {
 		CXXFLAGS="-O3 -Wall -Werror -march=native -mtune=native"
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 
-	    gmake -C doc -f Makefile.doc DOCBOOK_BASE=/usr/local/share/xsl/docbook
+	    # Don't use local docbook installation, it's missing the profiling part
+	    gmake -C doc -f Makefile.doc
 	    had_error $? "Error in OpenBSD32 CONFIGFLAGS=$configflags"
 	    
 	    gmake clean
