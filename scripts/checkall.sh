@@ -42,7 +42,7 @@ HYPERION_LDFLAGS_clang=""
 host_hyperion() {
     for c in default clang
     do
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 	do
 	    make distclean
 	    ../yapet-src/configure $configflags CXX="`eval echo \\$HYPERION_CXX_$c`" \
@@ -95,7 +95,7 @@ DASH_LDFLAGS_clang="-L/usr/lib"
 host_dash() {
     for c in default 43 44
     do
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	do
 	    make distclean
 	    ../yapet-src/configure $configflags CXX="`eval echo \\$DASH_CXX_$c`" \
@@ -154,7 +154,7 @@ WHEEZY_LDFLAGS_clang="-L/usr/lib"
 host_wheezy() {
     for c in default 44 46 47
     do
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	do
 	    make distclean
 	    ../yapet-src/configure $configflags CXX="`eval echo \\$WHEEZY_CXX_$c`" \
@@ -207,7 +207,7 @@ DEBIAN32_LDFLAGS_clang="-L/usr/lib"
 host_debian32() {
     for c in default 43 44
     do
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	do
 	    make distclean
 	    ../yapet-src/configure $configflags CXX="`eval echo \\$DEBIAN32_CXX_$c`" \
@@ -296,7 +296,7 @@ AURORA_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 host_aurora() {
     for c in default clang 46 47 48 49
     do
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	do
 	    for curs in system
 	    do
@@ -392,7 +392,7 @@ host_freebsd32() {
     do
 	for curs in system
 	do
-	    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	    do
 		gmake distclean
 		../yapet-src/configure $configflags CXX="`eval echo \\$FREEBSD32_CXX_$c`" \
@@ -445,7 +445,7 @@ host_abraxas() {
 }
 
 host_netbsd32() {
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
@@ -468,7 +468,7 @@ host_netbsd32() {
 }
 
 host_fish() {
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
@@ -491,7 +491,7 @@ host_fish() {
 }
 
 host_puffy() {
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
@@ -515,7 +515,7 @@ host_puffy() {
 }
 
 host_merlin() {
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
@@ -539,7 +539,7 @@ host_merlin() {
 }
 
 host_openbsd32() {
-	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 	do
 	    gmake distclean
 	    ../yapet-src/configure $configflags \
@@ -571,7 +571,7 @@ host_odin() {
 	    do
 		for flags in xpg4 solaris ncurses
 		do
-		    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+		    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
 		    do
 			case $flags in
 			    xpg4)
@@ -627,7 +627,7 @@ host_starchild() {
 	    do
 		for flags in xpg4 solaris
 		do
-		    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
+		    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug --disable-converters
 		    do
 			unset LD_OPTIONS
 			case $flags in
