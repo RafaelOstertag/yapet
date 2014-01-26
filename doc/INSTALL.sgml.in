@@ -11,9 +11,8 @@
 <manvolnum>3X</manvolnum></citerefentry>">
 <!ENTITY YP "@PACKAGE_NAME@">
 <!ENTITY yp "<command>@PACKAGE@</command>">
-<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
-<!ENTITY SUN "<trademark class='trademark'>Sun</trademark>">
-<!ENTITY SOLARIS "&SUN; <trademark class='trademark'>Solaris</trademark>">
+<!ENTITY FREEBSD "FreeBSD">
+<!ENTITY SOLARIS "Oracle Solaris">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>
@@ -76,7 +75,7 @@
       <para>
 	<itemizedlist>
 	  <listitem>
-	    <simpara>&SUN; Studio 12.2 C++ Compiler or later</simpara>
+	    <simpara>Sun/Solaris Studio 12.2 C++ Compiler or later</simpara>
 	  </listitem>
 	  <listitem>
 	    <simpara>GNU GCC</simpara>
@@ -224,21 +223,23 @@
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/csv2yapet</filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/[csv2yapet|yapet2csv]</filename></term>
 	<listitem>
 	  <para>
 	    Utility for converting CSV files into &YP; files.
 	  </para>
 
 	  <para>
-	    Will be installed only when the build of
-	    <command>csv2yapet</command> has not been disabled.
+	    <filename>csv2yapet</filename> and
+	    <filename>yapet2csv</filename> will be installed only when
+	    the build of <command>csv2yapet</command> has not been
+	    disabled.
 	  </para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/man/man1/[yapet.1|csv2yapet.1]</filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/man/man1/[yapet.1|csv2yapet.1|yapet2csv.1|yapet_config.5|yapet_colors.5]</filename></term>
 
 	<listitem>
 	  <para>
@@ -246,7 +247,8 @@
 	  </para>
 
 	  <para>
-	    <filename>csv2yapet.1</filename> will be installed only
+	    <filename>csv2yapet.1</filename> and
+	    <filename>yapet2csv.1</filename> will be installed only
 	    when the build of <command>csv2yapet</command> has not
 	    been disabled.
 	  </para>

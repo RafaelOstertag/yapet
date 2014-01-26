@@ -12,9 +12,8 @@
 <!ENTITY YP "@PACKAGE_NAME@">
 <!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
-<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
-<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
-<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY FREEBSD "FreeBSD">
+<!ENTITY SOLARIS "Oracle Solaris">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>

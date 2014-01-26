@@ -13,11 +13,12 @@
 <!ENTITY YP "@PACKAGE_NAME@">
 <!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
-<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
-<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
-<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY FREEBSD "FreeBSD">
+<!ENTITY SOLARIS "Oracle Solaris">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
+<!ENTITY yapet2csv "<command>yapet2csv</command>">
+<!ENTITY csv2yapet "<command>csv2yapet</command>">
 ]>
 <article>
 
@@ -129,6 +130,11 @@
 
       <para>
 	New user interface.
+      </para>
+
+      <para>
+	In addtion to &csv2yapet;, there is now also an utility
+	&yapet2csv; which converts PET files to CSV files.
       </para>
     </sect2>
 

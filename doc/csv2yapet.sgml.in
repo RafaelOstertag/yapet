@@ -20,19 +20,18 @@
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman "<citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY YAPET2CSV "yapet2csv">
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<!ENTITY yapet2csvman "<citerefentry><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
 <manvolnum>5</manvolnum></citerefentry>">
 <!ENTITY yapet_colors "<citerefentry><refentrytitle>yapet_colors</refentrytitle>
 <manvolnum>5</manvolnum></citerefentry>">
-<!ENTITY FREEBSD "<trademark class='registered'>FreeBSD</trademark>">
-<!ENTITY SOLARIS "<trademark class='trademark'>Sun</trademark>
-<trademark class='trademark'>Solaris</trademark>">
+<!ENTITY FREEBSD "FreeBSD">
+<!ENTITY SOLARIS "Oracle Solaris">
 <!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
 <!ENTITY YPVER "@PACKAGE_VERSION@">
 ]>
