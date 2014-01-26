@@ -11,7 +11,7 @@ yapet tests doc
 
 SUBDIRS = libyacurs po crypt ui glue pwgen
 
-if BUILDCSV2YAPET
+if BUILDCONVERTS
 SUBDIRS += csv2yapet yapet2csv
 endif
 SUBDIRS +=  yapet tests doc

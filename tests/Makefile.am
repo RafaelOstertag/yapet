@@ -47,7 +47,7 @@ file3 file4 file5 file6 corrupt foreign cfg1 cfgfile1 charpool1		\
 charpool2 rng1 pwgen1
 
 # Checks when building csv2yapet
-if BUILDCSV2YAPET
+if BUILDCONVERTS
 check_PROGRAMS += import1 import2 import3 import4 import5 import6 import7	\
 import8 import9 import10 import11 import12 import13 import14 import15
 endif
@@ -55,7 +55,7 @@ endif
 TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/crypt -I$(top_srcdir)/pwgen
-if BUILDCSV2YAPET
+if BUILDCONVERTS
 AM_CPPFLAGS += -I$(top_srcdir)/csv2yapet
 endif
 
@@ -115,7 +115,7 @@ cfgfile1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet
 cfgfile1_SOURCES = cfgfile1.cc ../yapet/cfg.cc ../yapet/cfgfile.cc	\
 ../yapet/consts.cc
 
-if BUILDCSV2YAPET
+if BUILDCONVERTS
 
 import1_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 import1_SOURCES = import1.cc ../csv2yapet/csvimport.cc

@@ -39,10 +39,10 @@ AC_ARG_ENABLE([install-doc],
 	my_disableinstalldoc=no
 	fi],
 	[my_disableinstalldoc=no])
-AC_ARG_ENABLE([csv2yapet],
-	[AS_HELP_STRING([--disable-csv2yapet],[CSV file import utility will not be built (Default: no)])],
-	[my_buildcsv2yapet=$enableval],
-	[my_buildcsv2yapet=yes])
+AC_ARG_ENABLE([converters],
+	[AS_HELP_STRING([--disable-converters],[CSV file import/export utility will not be built (Default: no)])],
+	[my_buildconverts=$enableval],
+	[my_buildconverts=yes])
 
 # Libs
 AX_CHECK_OPENSSL(,[AC_MSG_ERROR([openssl not found])])
@@ -109,7 +109,7 @@ AM_GNU_GETTEXT_VERSION([0.18.1])
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
-AM_CONDITIONAL([BUILDCSV2YAPET], [test x$my_buildcsv2yapet = xyes])
+AM_CONDITIONAL([BUILDCONVERTS], [test x$my_buildconverts = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
 AM_CONDITIONAL([DISABLE_DEBUG], [test x$my_debug = xno])
 AC_CONFIG_FILES([Makefile
@@ -140,7 +140,7 @@ echo "LDFLAGS             : $LDFLAGS"
 echo ""
 echo "Enable debug code   : $my_debug"
 echo "Disable install Doc.: $my_disableinstalldoc"
-echo "Build csv2yapet     : $my_buildcsv2yapet"
+echo "Build csv2yapet     : $my_buildconverts"
 echo ""
 echo "Use NLS             : $USE_NLS"
 echo ""
