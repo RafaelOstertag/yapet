@@ -48,7 +48,7 @@
 
     <para>
       Prior building YAPET under Cygwin, you need to install following Cygwin
-      Packages in addition the base system packages:
+      Packages in addition to the base system packages:
       <itemizedlist>
 	<listitem><simpara>gcc4-core</simpara></listitem>
 	<listitem><simpara>gcc4-g++</simpara></listitem>
@@ -61,10 +61,11 @@
   </sect1>
 
   <sect1 id="configuring">
-    <title>Configuring, Buildin,g and Installing</title>
+    <title>Configuring, Building, and Installing</title>
 
     <para>
-      See INSTALL.
+      Refer to the <filename>INSTALL</filename> file in the source
+      tarball <filename>&YPPKG;</filename>.
     </para>
 
   </sect1>

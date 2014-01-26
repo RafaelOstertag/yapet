@@ -96,7 +96,7 @@
     </para>
 
     <para>
-      In order to convert a double quote characters it has to be
+      In order to convert a double quote character it has to be
       preceded by another double quote character (see <xref
       linkend="examples" />).
     </para>
@@ -117,7 +117,7 @@
 	<thead>
 	  <row>
 	    <entry>Column #</entry>
-	    <entry align="left">&YP; record field</entry>
+	    <entry align="left">&YP; Record Field</entry>
 	    <entry align="left">Maximum size in bytes</entry>
 	  </row>
 	</thead>
@@ -136,7 +136,7 @@
 
 	  <row>
 	    <entry>3</entry>
-	    <entry>User name</entry>
+	    <entry>User Name</entry>
 	    <entry>255</entry>
 	  </row>
 
@@ -265,8 +265,8 @@
 	  <para>
 	    The resulting &YP; file holding the content of
 	    <replaceable>src</replaceable> encrypted. This file must
-	    not exist prior the conversion process, else &csv2yapet;
-	    will not start the conversion and abort.
+	    not exist prior to the conversion process, else
+	    &csv2yapet; will not start the conversion and abort.
 	  </para>
 
 	</listitem>

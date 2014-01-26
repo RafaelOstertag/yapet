@@ -87,14 +87,14 @@
 
 	<listitem>
 	  <para>
-	    passwords are not kept clear text in memory.
+	    Passwords are not kept clear text in memory.
 	  </para>
 	</listitem>
 
 	<listitem>
 
 	  <para>
-	    dependes only on two libraries: OpenSSL (<ulink
+	    Dependes only on two libraries: OpenSSL (<ulink
 	    url="http://www.openssl.org/">http://www.openssl.org/</ulink>)
 	    and curses or ncurses (<ulink
 	    url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>).
@@ -103,19 +103,19 @@
 
 	<listitem>
 	  <para>
-	    locks the terminal on inactivity.
+	    Locks the terminal on inactivity.
 	  </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-	    utilities to convert to and from CSV format.
+	    Utilities to convert to and from CSV format.
 	  </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-	    built-in password generator.
+	    Built-in password generator.
 	  </para>
 	</listitem>
       </itemizedlist>
@@ -356,8 +356,9 @@
 
     <para>
       &YP; uses a <command>configure</command> script for configuring
-      the build process. Refer to the <filename>INSTALL</filename>
-      file in the source tarball <filename>&YPPKG;</filename>.
+      the build process. For more information, refer to
+      the <filename>INSTALL</filename> file in the source
+      tarball <filename>&YPPKG;</filename>.
     </para>
   </sect1>
 

@@ -55,7 +55,7 @@
 
       <para>
 	As of version 0.3 &YP; uses GNU Gettext for
-	internationalization, hence GNU Gettext is an optional
+	internationalization. Hence GNU Gettext is an optional
 	dependency.
       </para>
 
@@ -70,7 +70,7 @@
 
       <para>&YP; is written in C++, so you obviously need a C++
 	compiler to compile. It compiles out of the box using the
-	following compilers</para>
+	following compilers:</para>
 
       <para>
 	<itemizedlist>
@@ -120,7 +120,7 @@
 
     <para>
       &YP; will now be built. After the build has finished, switch to
-      the root user if not done already, and type
+      the root user, if not done already, and type
     </para>
 
     <para>
@@ -207,7 +207,7 @@
   </sect1>
 
   <sect1 id="wgi">
-    <title>What gets installed?</title>
+    <title>What Gets Installed?</title>
 
     <para>
       Upon issuing <command>make <option>install</option></command>

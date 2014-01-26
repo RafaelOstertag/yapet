@@ -383,7 +383,8 @@
       <literal>enable</literal>, and <literal>enabled</literal> denote
       true. <literal>0</literal>, <literal>false</literal>,
       <literal>no</literal>, <literal>disable</literal>,
-      <literal>disabled</literal> denote false.
+      <literal>disabled</literal> denote false. Please note, boolean
+      values are case-sensitive.
     </para>
 
     <para>See <xref linkend="examples" /> for examples of
