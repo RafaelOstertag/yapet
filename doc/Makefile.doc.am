@@ -6,28 +6,26 @@
 
 DOCBOOK_BASE ?= http://docbook.sourceforge.net/release/xsl/current
 
-# The value of _BEGIN and _END variables will be used to replace
-# markers in the xml documentation with either nothing, or xml
-# comments. This way we can include/exclude stuff from the docs
-# without using conditional processing of the xml files.
-if BUILDCSV2YAPET
-DOCCSV2YAPET_BEGIN =
-DOCCSV2YAPET_END =
+
+if BUILDCONVERTS
+XSLPROFILE_CONVERTERS = withconverters
 else
-DOCCSV2YAPET_BEGIN = <!--
-DOCCSV2YAPET_END = -->
+XSLPROFILE_CONVERTERS = withoutconverters
 endif
 # Used to conditionally include documentation for NLS support.
 #
 # Please not that the xml comments have to include a block of text.
 if USE_NLS
-DOCNLS = 
+XSLPROFILE_NLS = withnls
 else
-DOCNLS = -e '/<!--[ \t]*NLS_BEGIN[ \t]*-->/,/<!--[ \t]*NLS_END[ \t]*-->/d'
+XSLPROFILE_NLS = withoutnls
 endif
 
-docbook_docbook_xsl = $(DOCBOOK_BASE)/xhtml/docbook.xsl
-docbook_man_xsl = $(DOCBOOK_BASE)/manpages/docbook.xsl
+XSLPROFILE_KEYWORDS = $(XSLPROFILE_CONVERTERS);$(XSLPROFILE_NLS)
+
+docbook_profile_xsl     = $(DOCBOOK_BASE)/profiling/profile.xsl
+docbook_html_xsl = $(DOCBOOK_BASE)/xhtml/docbook.xsl
+docbook_man_xsl     = $(DOCBOOK_BASE)/manpages/docbook.xsl
 
 XSLTPROC        = xsltproc
 W3M             = w3m
@@ -61,10 +59,7 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@srcdir[@]|$(srcdir)|g' \
 	-e 's|@top_srcdir[@]|$(top_srcdir)|g' \
 	-e 's|@top_builddir[@]|$(top_builddir)|g' \
-	-e 's|@builddir[@]|$(builddir)|g' \
-	-e 's|<!--[ \t]*CSV2YAPET_BEGIN[ \t]*-->|$(DOCCSV2YAPET_BEGIN)|g' \
-	-e 's|<!--[ \t]*CSV2YAPET_END[ \t]*-->|$(DOCCSV2YAPET_END)|g' \
-	$(DOCNLS)
+	-e 's|@builddir[@]|$(builddir)|g'
 
 all: $(TARGETS)
 
@@ -73,22 +68,30 @@ all: $(TARGETS)
 
 .sgml.html: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $@
-	$(XSLTPROC) -o $@ $(docbook_docbook_xsl) $<
+	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.profile $(docbook_profile_xsl) $<
+	$(XSLTPROC) -o $@ $(docbook_html_xsl) $@.profile
+	rm $@.profile
 
 # Debian's w3m uses -s instead -S. Instead of checking what is
-# supported, we simply call it again with -s upon error useing -S
+# supported, we simply call it again with -s upon error using -S
 $(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
-	$(XSLTPROC) -o $@.tmp.html $(docbook_docbook_xsl) $(srcdir)/$@.sgml
+	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.tmp.html.profile $(docbook_profile_xsl) $(srcdir)/$@.sgml
+	$(XSLTPROC) --stringparam section.autolabel 1 -o $@.tmp.html $(docbook_html_xsl) $@.tmp.html.profile
 	$(W3M) -S -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null || $(W3M) -s -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null
+	rm $@.tmp.html.profile
 	rm $@.tmp.html
 
 .sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
-	$(XSLTPROC) --param man.justify 1 -o $@ $(docbook_man_xsl) $<
+	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.profile $(docbook_profile_xsl) $<
+	$(XSLTPROC) --param man.justify 1 --param man.output.encoding ASCII -o $@ $(docbook_man_xsl) $@.profile
+	rm $@.profile
 
 .sgml.5: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
-	$(XSLTPROC) --param man.justify 1 -o $@ $(docbook_man_xsl) $<
+	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.profile $(docbook_profile_xsl) $<
+	$(XSLTPROC) --param man.justify 1 --param man.output.encoding ASCII -o $@ $(docbook_man_xsl) $@.profile
+	rm $@.profile
 
 $(srcdir)/Doxyfile: $(srcdir)/Doxyfile.in
 	$(editfile) $< > $@
