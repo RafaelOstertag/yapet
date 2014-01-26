@@ -84,7 +84,7 @@ enum {
     MAX_FILEPATH = 1024
 };
 
-const char COPYRIGHT[] = "\nCopyright (C) 2009-2014  Rafael Ostertag\n"  \
+const char COPYRIGHT[] = "\nCopyright (C) 2009-2011, 2013, 2014  Rafael Ostertag\n"  \
                          "\n"                                \
                          "csv2yapet is part of YAPET.\n"                 \
                          "\n"                                \

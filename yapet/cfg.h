@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2009-2012  Rafael Ostertag
+// Copyright (C) 2009-2011, 2013, 2014  Rafael Ostertag
 //
 // This file is part of YAPET.
 //

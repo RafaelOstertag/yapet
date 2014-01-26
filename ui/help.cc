@@ -1,6 +1,6 @@
 // $Id: mainwindow.cc 5225 2013-06-24 17:06:49Z rafisol $
 //
-// Copyright (C) 2008-2013  Rafael Ostertag
+// Copyright (C) 2008-2011, 2013  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
