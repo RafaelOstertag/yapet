@@ -180,13 +180,13 @@
 
       <varlistentry>
 	<term>
-	  <option>--disable-csv2yapet</option>
+	  <option>--disable-converters</option>
 	</term>
 
 	<listitem>
 	  <para>
-	    If given the <command>csv2yapet</command> import utility
-	    will not be built.
+	    If given the <command>csv2yapet</command> and
+	    <command>yapet2csv</command> utility will not be built.
 	  </para>
 	</listitem>
       </varlistentry>
