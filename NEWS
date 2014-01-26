@@ -3,7 +3,7 @@ News
 
 YAPET 1.0
 
-      * Uses libyacurses.
+      * new user interface.
 
       * dropped support of long command line options.
 
