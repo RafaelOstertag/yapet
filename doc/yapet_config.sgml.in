@@ -207,7 +207,7 @@
 
 		<listitem>
 		  <para>
-		    Requests the use of
+		    Request using
 		    <filename>/dev/random</filename>. This is a
 		    high-quality random number generator. However, if
 		    the system lacks entropy, reading from this device
@@ -221,7 +221,7 @@
 
 		<listitem>
 		  <para>
-		    Requests the use of
+		    Request using
 		    <filename>/dev/urandom</filename>. This is a
 		    quality random number generator similar to
 		    <filename>/dev/random</filename> but not of the
@@ -240,8 +240,8 @@
 
 		<listitem>
 		  <para>
-		    Requests the use of
-		    <literal>lrand48</literal>. This is low-quality
+		    Request using
+		    <literal>lrand48</literal>. This is a low-quality
 		    random number generator and should be used only if
 		    none of the above two random number generators are
 		    available.
@@ -254,9 +254,9 @@
 
 		<listitem>
 		  <para>
-		    Requests the use of <literal>rand</literal>. This
-		    is a last resort random number generator and
-		    should not be used.
+		    Request using <literal>rand</literal>. This is a
+		    last resort random number generator and should not
+		    be used.
 		  </para>
 		</listitem>
 	      </varlistentry>

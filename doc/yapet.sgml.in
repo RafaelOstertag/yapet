@@ -104,7 +104,7 @@
       file is loaded using the command line, &yp; appends the suffix
       <filename>.pet</filename> to the file name unless the file name
       includes this suffix already. By default, &yp; refuses to load
-      files not having a file mode of 600. This behavior can be
+      files not having a file mode of 0600. This behavior can be
       changed by providing the <option>-s</option> option when
       starting &yp; or using a configuration file (see &yapet_config;,
       and <xref linkend="options"/>).
@@ -114,7 +114,7 @@
       After loading a file, the record name of each password record is
       displayed in a list. Existing password records can be opened by
       selecting them and pressing <keycap>Enter</keycap>. By default,
-      existing password records are opened in read-only mode, to avoid
+      existing password records are opened in read-only mode to avoid
       accidental changes. Pressing <keycombo
       action='simul'><keycap>Ctrl</keycap>
       <keycap>r</keycap></keycombo> toggles between read-only and edit
@@ -137,7 +137,7 @@
 	<para>
 	  Screen lock after a certain amount of inactivitiy when
 	  password file is loaded (see also &yapet_config; and <xref
-	  linkend="options" />.
+	  linkend="options" />).
 	</para>
       </listitem>
 
@@ -384,7 +384,7 @@
 
 	  <listitem>
 	    <para>
-	      Moves the cursor at the beginning of the input field.
+	      Moves the cursor to the beginning of the input field.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -395,7 +395,7 @@
 
 	  <listitem>
 	    <para>
-	      Moves the cursor at the end of the input field.
+	      Moves the cursor to the end of the input field.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -563,7 +563,8 @@
 
 	  <para>
 	    New files saved while this option is active will have the
-	    file mode set according to umask.
+	    file mode set according to
+	    <citerefentry><refentrytitle>umask</refentrytitle><manvolnum>2</manvolnum></citerefentry>.
 	  </para>
 
 	</listitem>
@@ -599,7 +600,7 @@
 	  <para>
 	    Set the timeout until the screen is locked to
 	    <replaceable>sec</replaceable> seconds. The minimum time
-	    allowed is 10 seconds. If a lower value is provided, the
+	    allowed is 10 seconds. If a smaller value is provided, the
 	    timeout will be set to 10 seconds.
 	  </para>
 
@@ -698,9 +699,9 @@
     <title>Format of &YP; Files</title>
     
     <para>
-      Please refer to the <filename>DESIGN</filename> in source code
-      distribution or point your browser
-      to <ulink url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.
+      Please refer to the <filename>DESIGN</filename> file in the
+      source code distribution or point your browser to <ulink
+      url="http://www.guengel.ch/myapps/yapet/">http://www.guengel.ch/myapps/yapet/</ulink>.
     </para>
   </refsect1>
 

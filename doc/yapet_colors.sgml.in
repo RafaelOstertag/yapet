@@ -67,8 +67,7 @@
     <para>
       The color scheme of &YP; can be customized by setting the
       <option>colors</option> option in &DEFRCFILE; (see <xref
-      linkend="examples"/> for examples). It has following
-      syntax:
+      linkend="examples"/> for examples). It has the following syntax:
     </para>
 
     <literallayout><option>colors</option>=<replaceable>OBJ1</replaceable>:<replaceable>&lt;fg1&gt;</replaceable><replaceable>&lt;bg1&gt;</replaceable><replaceable>&lt;attr1&gt;</replaceable>;...;<replaceable>OBJN</replaceable>:<replaceable>&lt;fgN&gt;</replaceable><replaceable>&lt;bgN&gt;</replaceable><replaceable>&lt;attrN&gt;</replaceable></literallayout>
@@ -79,8 +78,7 @@
 	<listitem>
 	  <para>
 	    The UI object for which the color is set. See <xref
-	    linkend="tab.uiobjects" /> for possible values for
-	    <replaceable>OBJN</replaceable>.
+	    linkend="tab.uiobjects" /> for possible values.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -109,7 +107,7 @@
 	<term><replaceable>&lt;attrN&gt;</replaceable></term>
 	<listitem>
 	  <para>
-	    The attribute the UI object. Attributes are used if the
+	    The attribute of the UI object. Attributes are used if the
 	    terminal does not support colors. See <xref
 	    linkend="tab.attributes"/> for possible values.
 	  </para>
