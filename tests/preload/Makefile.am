@@ -6,7 +6,7 @@
 # by LD_PRELOAD. However, not using noinst_ prefix, a shared library
 # will be built which is also installed. That we don't want either.
 
-EXTRA_DIST = pwrecord.cc
+EXTRA_DIST = pwrecord.cc checkyapet.cc masterpwchange.cc
 
 noinst_PROGRAMS = checktestpwrecord checkmasterpwchange
 
