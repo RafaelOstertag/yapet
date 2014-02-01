@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2014-01-04 12:27+0100\n"
+"POT-Creation-Date: 2014-01-29 22:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -730,72 +730,72 @@ msgstr ""
 msgid "has no value"
 msgstr ""
 
-#: yapet/main.cc:100
+#: yapet/main.cc:101
 msgid "Failed to suppress the creation of core file."
 msgstr ""
 
-#: yapet/main.cc:102
+#: yapet/main.cc:103
 msgid "The error message is: "
 msgstr ""
 
-#: yapet/main.cc:105 yapet/main.cc:118
+#: yapet/main.cc:106 yapet/main.cc:119
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 
-#: yapet/main.cc:108 yapet/main.cc:121
+#: yapet/main.cc:109 yapet/main.cc:122
 msgid "Press <ENTER> to continue"
 msgstr ""
 
-#: yapet/main.cc:115
+#: yapet/main.cc:116
 msgid "Cannot suppress the creation of core file."
 msgstr ""
 
-#: yapet/main.cc:146
+#: yapet/main.cc:147
 msgid "show copyright information"
 msgstr ""
 
-#: yapet/main.cc:149
+#: yapet/main.cc:150
 msgid "show this help text"
 msgstr ""
 
-#: yapet/main.cc:152
+#: yapet/main.cc:153
 msgid "do not read the configuration file."
 msgstr ""
 
-#: yapet/main.cc:155
+#: yapet/main.cc:156
 msgid ""
 "read the configuration file specified by <rcfile>. If this\n"
 "\t\toption is not provided, it defaults to $HOME/.yapet unless -i\n"
 "\t\tis specified."
 msgstr ""
 
-#: yapet/main.cc:160
+#: yapet/main.cc:161
 msgid ""
 "disable check of owner and file permissions. When creating new\n"
 "\t\tfiles, the file mode is set to 0644."
 msgstr ""
 
-#: yapet/main.cc:164
+#: yapet/main.cc:165
 msgid ""
 "enable check of owner and file permissions. When creating new\n"
 "\t\tfiles, the file mode is set to 0600."
 msgstr ""
 
-#: yapet/main.cc:168
+#: yapet/main.cc:169
 msgid ""
 "the time-out in seconds until the screen is locked.\n"
 "\t\tDefault: 600 sec."
 msgstr ""
 
-#: yapet/main.cc:172
+#: yapet/main.cc:173
 msgid "show the version of "
 msgstr ""
 
-#: yapet/main.cc:176
+#: yapet/main.cc:177
 msgid "open the specified file <filename>"
 msgstr ""
 
-#: yapet/main.cc:183
+#: yapet/main.cc:184
 #, c-format
 msgid ""
 "%s stores passwords encrypted on disk using the blowfish encryption\n"
@@ -803,14 +803,14 @@ msgid ""
 "for more information about %s."
 msgstr ""
 
-#: yapet/main.cc:250
+#: yapet/main.cc:251
 msgid " without argument"
 msgstr ""
 
-#: yapet/main.cc:256
+#: yapet/main.cc:257
 msgid "unknown argument"
 msgstr ""
 
-#: yapet/main.cc:309
+#: yapet/main.cc:310
 msgid "Press 'H' for help"
 msgstr ""
