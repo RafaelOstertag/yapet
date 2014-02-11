@@ -80,6 +80,7 @@ class PasswordRecord : public YACURS::Dialog {
 	const YAPET::Key* __key;
 	bool __newrecord;
         bool __readonly;
+	bool __password_hidden;
 
 	/**
 	 * When @c true, dialog will be closed without asked for
@@ -146,6 +147,12 @@ class PasswordRecord : public YACURS::Dialog {
         bool readonly() const {
             return __readonly;
         }
+
+	void password_hidden(bool f);
+
+	bool password_hidden() const {
+	    return __password_hidden;
+	}
 
 	bool newrecord() const {
 	    return __newrecord;

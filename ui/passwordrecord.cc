@@ -45,6 +45,26 @@ class HotKeyCtrlR : public YACURS::HotKey {
 	}
 };
 
+class HotKeyCtrlT : public YACURS::HotKey {
+    private:
+	PasswordRecord* ptr;
+
+    public:
+	HotKeyCtrlT(PasswordRecord* p): HotKey(20), ptr(p) {
+	    assert(p!=0);
+	}
+	HotKeyCtrlT(const HotKeyCtrlT& hk) : HotKey(hk), ptr(hk.ptr){}
+	void action() {
+	    ptr->password_hidden(!ptr->password_hidden());
+	}
+
+	HotKey* clone() const {
+	    return new HotKeyCtrlT(*this);
+	}
+};
+
+
+
 void
 PasswordRecord::on_ok_button() {
     YAPET::Record<YAPET::PasswordRecord> unenc_rec;
@@ -167,6 +187,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     __key(key),
     __newrecord(pe==0),
     __readonly(false),
+    __password_hidden(false),
     __force_close(false),
     __modified_by_pwgen(false) {
     assert(__key!=0);
@@ -200,6 +221,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
     widget(vpack);
 
     add_hotkey(HotKeyCtrlR(this));
+    add_hotkey(HotKeyCtrlT(this));
 
     if (pe != 0) {
 	YAPET::Record<YAPET::PasswordRecord>* dec_rec = 0;
@@ -209,6 +231,7 @@ PasswordRecord::PasswordRecord(const YAPET::Key* key, const YAPET::PartDec* pe) 
 	    dec_rec = crypt.decrypt<YAPET::PasswordRecord>(
 		pe->getEncRecord() );
 	    YAPET::PasswordRecord* ptr_rec = *dec_rec;
+	    // This also sets the __password_hidden attribute
 	    readonly(true);
 	    name->input(reinterpret_cast<char*>(ptr_rec->name) );
 	    host->input(reinterpret_cast<char*>(ptr_rec->host) );
@@ -293,7 +316,7 @@ PasswordRecord::readonly(bool f) {
     password->readonly(f);
     password->hide_input(f);
     comment->readonly(f);
-    __readonly=f;
+    __password_hidden = __readonly=f;
 
     if (__readonly)
 	title(_("Password Entry (Read-Only)"));
@@ -301,4 +324,14 @@ PasswordRecord::readonly(bool f) {
 	title(_("Password Entry"));
 
     pwgenbutton->enabled(!__readonly);
+}
+
+void
+PasswordRecord::password_hidden(bool f) {
+    // We only allow to hide the password when dialog is in read-only
+    // mode.
+
+    if (!__readonly) return;
+
+    password->hide_input(__password_hidden = f);
 }
