@@ -102,7 +102,7 @@
       Files created by &yp; always have the suffix
       <filename>.pet</filename>. This cannot be changed. Also, if a
       file is loaded using the command line, &yp; appends the suffix
-      <filename>.pet</filename> to the file name unless the file name
+      <filename>.pet</filename> to the filename unless the filename
       includes this suffix already. By default, &yp; refuses to load
       files not having a file mode of 0600. This behavior can be
       changed by providing the <option>-s</option> option when

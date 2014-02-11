@@ -107,7 +107,7 @@
 
 	  <para>
 	    A <envar>~</envar> (tilde) sign as the first character of
-	    the file path will be replaced by the home directory of
+	    the pathname will be replaced by the home directory of
 	    the user running &yp;.
 	  </para>
 

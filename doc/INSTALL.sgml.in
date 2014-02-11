@@ -185,7 +185,7 @@
 
 	<listitem>
 	  <para>
-	    If given the <command>csv2yapet</command> and
+	    If provided the <command>csv2yapet</command> and
 	    <command>yapet2csv</command> utility will not be built.
 	  </para>
 	</listitem>
@@ -226,14 +226,14 @@
 	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/bin/[csv2yapet|yapet2csv]</filename></term>
 	<listitem>
 	  <para>
-	    Utility for converting CSV files into &YP; files.
+	    Conversion utilities.
 	  </para>
 
 	  <para>
 	    <filename>csv2yapet</filename> and
 	    <filename>yapet2csv</filename> will be installed only when
-	    the build of <command>csv2yapet</command> has not been
-	    disabled.
+	    <option>--disable-converters</option> has not been
+	    provided.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -249,13 +249,8 @@
 	  <para>
 	    <filename>csv2yapet.1</filename> and
 	    <filename>yapet2csv.1</filename> will be installed only
-	    when the build of <command>csv2yapet</command> has not
-	    been disabled.
-	  </para>
-
-	  <para>
-	    Files won't be installed when installation of
-	    documentation files has been disabled.
+	    when <option>--disable-converters</option> has not been
+	    provided.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -294,9 +289,10 @@
 	  </para>
 
 	  <para>
-	    <filename>csv2yapet.html</filename> will be installed only when
-	    the build of <command>csv2yapet</command> has not been
-	    disabled.
+	    <filename>csv2yapet.html</filename>
+	    and <filename>yapet2csv.html</filename> will be installed
+	    only when <option>--disable-converters</option> has not
+	    been provided.
 	  </para>
 
 	  <para>

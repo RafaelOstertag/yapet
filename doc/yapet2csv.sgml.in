@@ -214,7 +214,7 @@
       <varlistentry>
 	<term><filename><replaceable>src</replaceable></filename></term>
 	<listitem>
-	  <para>Source &YP; file path which will be converted to CSV and
+	  <para>Source &YP; pathname which will be converted to CSV and
 	  stored in <replaceable>dst</replaceable>. If the file
 	  path does not end in <filename
 	  class="extension">.pet</filename>, &yapet2csv; will append
@@ -226,7 +226,7 @@
       <varlistentry>
 	<term><filename><replaceable>dst</replaceable></filename></term>
 	<listitem>
-	  <para>File path where the converted &YP; file will be
+	  <para>pathname where the converted &YP; file will be
 	  stored. The file must not exist prior to invoking
 	  &yapet2csv;. Refer to <xref linkend="tab.csvformat"/> for
 	  the format of the resulting CSV file

@@ -54,8 +54,7 @@
 
     <para>
       &YP; relies on OpenSSL for encrypting and decrypting password
-      records. The cipher for encryption and decryption is Blowfish
-      with a 448 bits key.
+      records, using a Blowfish cipher with a 448 bits key.
     </para>
 
   </sect1>
@@ -389,12 +388,6 @@
     <title>A Word of Caution</title>
 
     &caution;
-  </sect1>
-
-  <sect1 id="license">
-    <title>License</title>
-
-    &license;
   </sect1>
 
 </article>
