@@ -5,13 +5,15 @@ YAPET 1.0
 
       * new user interface.
 
-      * dropped support of long command line options.
-
       * colors can be customized in the configuration file.
 
-      * new files are created by pressing 'E'.
+      * can be suspended by pressing ^Z (Control-Z).
 
       * PET files can be exported to CSV using yapet2csv.
+
+      * dropped support of long command line options.
+
+      * new files are created by pressing 'E'.
 
 
 YAPET 0.8pre2

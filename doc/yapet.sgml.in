@@ -122,6 +122,16 @@
     </para>
 
     <para>
+      On terminals supporting colors, the password is hidden if the
+      password record dialog is in read-only mode. The password can be
+      made visible, by either going to edit mode (<keycombo
+      action='simul'><keycap>Ctrl</keycap>
+      <keycap>r</keycap></keycombo>), or by pressing <keycombo
+      action='simul'><keycap>Ctrl</keycap>
+      <keycap>t</keycap></keycombo>.
+    </para>
+
+    <para>
       &yp; relies on OpenSSL for encryption and decryption of password
       records. The cipher for encryption and decryption is Blowfish
       with a 448 bits key.
@@ -487,6 +497,20 @@
 	      Toggle the password record dialog between read-only and
 	      edit mode. In read-only mode, &yp; hides the password
 	      (only supported on color terminals).
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><keycombo action="simul">
+	  <keycap>Ctrl</keycap> <keycap>t</keycap></keycombo></term>
+
+	  <listitem>
+	    <para>
+	      Toggle between hiding and showing the password, without
+	      setting the password record dialog to edit mode (only
+	      supported on color terminals). Has no effect if the
+	      password record dialog is in edit mode.
 	    </para>
 	  </listitem>
 	</varlistentry>
