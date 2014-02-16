@@ -463,17 +463,10 @@ ION_LIBS_49=/usr/local/lib/gcc49/libstdc++.so
 
 ION_CXXFLAGS_default="$ION_CXXFLAGS_42"
 ION_CFLAGS_default="$ION_CXXFLAGS_42"
-ION_CC_default=gcc
-ION_CXX_default=g++
+ION_CC_default=default
+ION_CXX_default=default++
 ION_LDFLAGS_default=""
-ION_LIBS_defaults=""
-
-ION_CXXFLAGS_clang="$ION_CXXFLAGS_42"
-ION_CFLAGS_clang="$ION_CXXFLAGS_42"
-ION_CC_clang=clang
-ION_CXX_clang=clang++
-ION_LDFLAGS_clang=""
-ION_LIBS_clang=""
+ION_LIBS_default=""
 
 ION_CURSES_CPPFLAGS_system=
 ION_CURSES_LDFLAGS_system=
