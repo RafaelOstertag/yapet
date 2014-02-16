@@ -421,6 +421,100 @@ host_freebsd32() {
     done
 }
 
+ION_CXXFLAGS_42='-march=native -mtune=native -O3 -Wall -Werror'
+ION_CFLAGS_42="$ION_CXXFLAGS_42"
+ION_CC_42=gcc42
+ION_CXX_42=g++42
+ION_LDFLAGS_42="-L/usr/local/lib/gcc42 -R/usr/local/lib/gcc42"
+
+ION_CXXFLAGS_44="$ION_CXXFLAGS_42"
+ION_CFLAGS_44="$ION_CXXFLAGS_42"
+ION_CC_44=gcc44
+ION_CXX_44=g++44
+ION_LDFLAGS_44="-L/usr/local/lib/gcc44 -R/usr/local/lib/gcc44"
+
+ION_CXXFLAGS_46="$ION_CXXFLAGS_42"
+ION_CFLAGS_46="$ION_CXXFLAGS_42"
+ION_CC_46=gcc46
+ION_CXX_46=g++46
+ION_LDFLAGS_46="-L/usr/local/lib/gcc46 -R/usr/local/lib/gcc46"
+ION_LIBS_46=/usr/local/lib/gcc46/libstdc++.so
+
+ION_CXXFLAGS_47="$ION_CXXFLAGS_42"
+ION_CFLAGS_47="$ION_CXXFLAGS_42"
+ION_CC_47=gcc47
+ION_CXX_47=g++47
+ION_LDFLAGS_47="-L/usr/local/lib/gcc47 -R/usr/local/lib/gcc47"
+ION_LIBS_47=/usr/local/lib/gcc47/libstdc++.so
+
+ION_CXXFLAGS_48="$ION_CXXFLAGS_42"
+ION_CFLAGS_48="$ION_CXXFLAGS_42"
+ION_CC_48=gcc48
+ION_CXX_48=g++48
+ION_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
+ION_LIBS_48=/usr/local/lib/gcc48/libstdc++.so
+
+ION_CXXFLAGS_49="$ION_CXXFLAGS_42"
+ION_CFLAGS_49="$ION_CXXFLAGS_42"
+ION_CC_49=gcc49
+ION_CXX_49=g++49
+ION_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+ION_LIBS_49=/usr/local/lib/gcc49/libstdc++.so
+
+ION_CXXFLAGS_default="$ION_CXXFLAGS_42"
+ION_CFLAGS_default="$ION_CXXFLAGS_42"
+ION_CC_default=gcc
+ION_CXX_default=g++
+ION_LDFLAGS_default=""
+ION_LIBS_defaults=""
+
+ION_CXXFLAGS_clang="$ION_CXXFLAGS_42"
+ION_CFLAGS_clang="$ION_CXXFLAGS_42"
+ION_CC_clang=clang
+ION_CXX_clang=clang++
+ION_LDFLAGS_clang=""
+ION_LIBS_clang=""
+
+ION_CURSES_CPPFLAGS_system=
+ION_CURSES_LDFLAGS_system=
+
+ION_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
+ION_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
+
+host_ion() {
+    for c in default 46 47 48 49
+    do
+	for curs in system
+	do
+	    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
+	    do
+		gmake distclean
+		../yapet-src/configure $configflags CXX="`eval echo \\$ION_CXX_$c`" \
+		    CC="`eval echo \\$ION_CC_$c`" \
+		    CFLAGS="`eval echo \\$ION_CFLAGS_$c`" \
+		    CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" \
+		    CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" \
+		    LIBS="`eval echo \\$ION_LIBS_$c`" \
+		    LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`"
+		
+		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LIBS="`eval echo \\$ION_LIBS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		
+		gmake clean
+		gmake
+		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		
+		gmake check
+		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		message "*** OK: CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+	    done
+	done
+    done
+}
+
 host_abraxas() {
 	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
 	do
