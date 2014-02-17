@@ -47,14 +47,8 @@
     </para>
 
     <para>
-      The password records are protected by a master password. The
-      master password is used to encrypt and decrypt the password
-      records.
-    </para>
-
-    <para>
-      &YP; relies on OpenSSL for encrypting and decrypting password
-      records, using a Blowfish cipher with a 448 bits key.
+      The password records are protected by a master password which is
+      used to encrypt and decrypt the password records.
     </para>
 
   </sect1>
