@@ -561,7 +561,7 @@ GRIMREAPER_CURSES_LDFLAGS_system=
 GRIMREAPER_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
 GRIMREAPER_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
 
-host_ion() {
+host_grimreaper() {
     for c in default 46 47 48 49
     do
 	for curs in system
