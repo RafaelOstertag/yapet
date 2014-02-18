@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2014-01-29 22:54+0100\n"
+"POT-Creation-Date: 2014-02-18 18:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -236,8 +236,8 @@ msgstr ""
 
 #: glue/createfile.cc:80 glue/promptpassword.cc:60 glue/changepassword.cc:52
 #: glue/changepassword.cc:62 glue/changepassword.cc:116
-#: glue/opencmdlinefile.cc:103 ui/passwordrecord.cc:68
-#: ui/passwordrecord.cc:225 ui/mainwindow.cc:420 ui/mainwindow.cc:472
+#: glue/opencmdlinefile.cc:103 ui/passwordrecord.cc:88
+#: ui/passwordrecord.cc:248 ui/mainwindow.cc:420 ui/mainwindow.cc:472
 #: ui/mainwindow.cc:503
 msgid "Error"
 msgstr ""
@@ -304,43 +304,43 @@ msgstr ""
 msgid "does not exist. Create?"
 msgstr ""
 
-#: ui/passwordrecord.cc:135
+#: ui/passwordrecord.cc:155
 msgid "Pending Changes"
 msgstr ""
 
-#: ui/passwordrecord.cc:136
+#: ui/passwordrecord.cc:156
 msgid "Do you want to discard changes?"
 msgstr ""
 
-#: ui/passwordrecord.cc:149 ui/passwordrecord.cc:301
+#: ui/passwordrecord.cc:169 ui/passwordrecord.cc:324
 msgid "Password Entry"
 msgstr ""
 
-#: ui/passwordrecord.cc:151
+#: ui/passwordrecord.cc:171
 msgid "Name"
 msgstr ""
 
-#: ui/passwordrecord.cc:152
+#: ui/passwordrecord.cc:172
 msgid "Host"
 msgstr ""
 
-#: ui/passwordrecord.cc:153
+#: ui/passwordrecord.cc:173
 msgid "User Name"
 msgstr ""
 
-#: ui/passwordrecord.cc:154
+#: ui/passwordrecord.cc:174
 msgid "Password"
 msgstr ""
 
-#: ui/passwordrecord.cc:155
+#: ui/passwordrecord.cc:175
 msgid "Comment"
 msgstr ""
 
-#: ui/passwordrecord.cc:161 ui/help.cc:111 ui/pwgendialog.cc:134
+#: ui/passwordrecord.cc:181 ui/help.cc:111 ui/pwgendialog.cc:134
 msgid "Password Generator"
 msgstr ""
 
-#: ui/passwordrecord.cc:299
+#: ui/passwordrecord.cc:322
 msgid "Password Entry (Read-Only)"
 msgstr ""
 
