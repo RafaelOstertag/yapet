@@ -508,6 +508,93 @@ host_ion() {
     done
 }
 
+GRIMREAPER_CXXFLAGS_42='-march=native -mtune=native -O3 -Wall -Werror'
+GRIMREAPER_CFLAGS_42="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_42=gcc42
+GRIMREAPER_CXX_42=g++42
+GRIMREAPER_LDFLAGS_42="-L/usr/local/lib/gcc42 -R/usr/local/lib/gcc42"
+
+GRIMREAPER_CXXFLAGS_44="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_44="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_44=gcc44
+GRIMREAPER_CXX_44=g++44
+GRIMREAPER_LDFLAGS_44="-L/usr/local/lib/gcc44 -R/usr/local/lib/gcc44"
+
+GRIMREAPER_CXXFLAGS_46="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_46="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_46=gcc46
+GRIMREAPER_CXX_46=g++46
+GRIMREAPER_LDFLAGS_46="-L/usr/local/lib/gcc46 -R/usr/local/lib/gcc46"
+GRIMREAPER_LIBS_46=/usr/local/lib/gcc46/libstdc++.so
+
+GRIMREAPER_CXXFLAGS_47="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_47="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_47=gcc47
+GRIMREAPER_CXX_47=g++47
+GRIMREAPER_LDFLAGS_47="-L/usr/local/lib/gcc47 -R/usr/local/lib/gcc47"
+GRIMREAPER_LIBS_47=/usr/local/lib/gcc47/libstdc++.so
+
+GRIMREAPER_CXXFLAGS_48="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_48="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_48=gcc48
+GRIMREAPER_CXX_48=g++48
+GRIMREAPER_LDFLAGS_48="-L/usr/local/lib/gcc48 -R/usr/local/lib/gcc48"
+GRIMREAPER_LIBS_48=/usr/local/lib/gcc48/libstdc++.so
+
+GRIMREAPER_CXXFLAGS_49="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_49="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_49=gcc49
+GRIMREAPER_CXX_49=g++49
+GRIMREAPER_LDFLAGS_49="-L/usr/local/lib/gcc49 -R/usr/local/lib/gcc49"
+GRIMREAPER_LIBS_49=/usr/local/lib/gcc49/libstdc++.so
+
+GRIMREAPER_CXXFLAGS_default="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CFLAGS_default="$GRIMREAPER_CXXFLAGS_42"
+GRIMREAPER_CC_default=clang
+GRIMREAPER_CXX_default=clang++
+GRIMREAPER_LDFLAGS_default=""
+GRIMREAPER_LIBS_default=""
+
+GRIMREAPER_CURSES_CPPFLAGS_system=
+GRIMREAPER_CURSES_LDFLAGS_system=
+
+GRIMREAPER_CURSES_CPPFLAGS_ncurses='-I/usr/local/include'
+GRIMREAPER_CURSES_LDFLAGS_ncurses='-L/usr/local/lib'
+
+host_ion() {
+    for c in default 46 47 48 49
+    do
+	for curs in system
+	do
+	    for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug  --disable-converters
+	    do
+		gmake distclean
+		../yapet-src/configure $configflags CXX="`eval echo \\$GRIMREAPER_CXX_$c`" \
+		    CC="`eval echo \\$GRIMREAPER_CC_$c`" \
+		    CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" \
+		    CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" \
+		    CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" \
+		    LIBS="`eval echo \\$GRIMREAPER_LIBS_$c`" \
+		    LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`"
+		
+		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LIBS="`eval echo \\$GRIMREAPER_LIBS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		
+		gmake clean
+		gmake
+		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+		
+		gmake check
+		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+
+		message "*** OK: CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
+	    done
+	done
+    done
+}
+
 host_abraxas() {
 	for configflags in --enable-wchar --enable-nls --disable-wchar --disable-nls --enable-debug
 	do
