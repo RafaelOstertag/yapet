@@ -1,13 +1,18 @@
 Maintainer Information
 ======================
 
-A brief remark for maintainers. To build the doc files (including the
-man page) from sgml sources you need the docbook-xsl style sheets,
-xsltproc, and lynx. Invoke the configure script like this
+To build the doc files (README*, INSTALL*, and man pages) from sgml
+sources you need docbook 4.5, docbook style sheets, xsltproc, and w3m.
 
-      $ ./configure --enable-build-doc --with-docbook-xsl=<path>
+After running configure, cd into doc/ and do
 
-where <path> is the path where the docbook style sheets are installed.
+ make -f Makefile.doc
+
+The location of the docbook style sheets can be provided, if
+necessary, by using
+
+ make -f Makefile.doc DOCBOOK_BASE=/usr/share/sgml/docbook/xsl-stylesheets
+
 
 $Id$
 Local Variables:

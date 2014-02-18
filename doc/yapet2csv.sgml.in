@@ -93,47 +93,47 @@
     <table pgwide="1" id="tab.csvformat">
       <title>CSV file format</title>
 
-      <tgroup cols="3">
+      <tgroup cols="2">
 	<colspec colname="colnum" align="center" />
 	<colspec colname="desc" align="left" />
-	<colspec colname="maxsize" align="left" />
+	<!-- <colspec colname="maxsize" align="left" /> -->
 	
 	<thead>
 	  <row>
 	    <entry>Column #</entry>
 	    <entry align="left">&YP; record field</entry>
-	    <entry align="left">Maximum size in bytes</entry>
+	    <!-- <entry align="left">Maximum size in bytes</entry> -->
 	  </row>
 	</thead>
 	<tbody>
 	  <row>
 	    <entry>1</entry>
 	    <entry align="left">Record Name</entry>
-	    <entry>127</entry>
+	    <!-- <entry>127</entry> -->
 	  </row>
 
 	  <row>
 	    <entry>2</entry>
 	    <entry>Host Name</entry>
-	    <entry>255</entry>
+	    <!-- <entry>255</entry> -->
 	  </row>
 
 	  <row>
 	    <entry>3</entry>
 	    <entry>User Name</entry>
-	    <entry>255</entry>
+	    <!-- <entry>255</entry> -->
 	  </row>
 
 	  <row>
 	    <entry>4</entry>
 	    <entry>Password</entry>
-	    <entry>255</entry>
+	    <!-- <entry>255</entry> -->
 	  </row>
 
 	  <row>
 	    <entry>5</entry>
 	    <entry>Comment</entry>
-	    <entry>511</entry>
+	    <!-- <entry>511</entry> -->
 	  </row>
 	</tbody>
       </tgroup>

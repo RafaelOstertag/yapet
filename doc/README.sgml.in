@@ -71,10 +71,7 @@
       <itemizedlist>
 	<listitem>
 	  <para>
-	    Blowfish encryption (<ulink
-	    url="http://www.schneier.com/blowfish.html">http://www.schneier.com/blowfish.html</ulink>)
-	    with 448 bits key using the OpenSSL library (<ulink
-	    url="http://www.openssl.org/">http://www.openssl.org/</ulink>).
+	    Blowfish encryption with 448 bits key.
 	  </para>
 	</listitem>
 

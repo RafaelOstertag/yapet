@@ -78,6 +78,9 @@
 	    <simpara>Sun/Solaris Studio 12.2 C++ Compiler or later</simpara>
 	  </listitem>
 	  <listitem>
+	    <simpara>Clang</simpara>
+	  </listitem>
+	  <listitem>
 	    <simpara>GNU GCC</simpara>
 	  </listitem>
 	</itemizedlist>
