@@ -1,7 +1,8 @@
 # $Id$
 
 ##
-## This makefile is not used during regular build. It has to
+## This makefile is not used during regular build. It has to be called
+## separately
 ##
 
 DOCBOOK_BASE ?= http://docbook.sourceforge.net/release/xsl/current
