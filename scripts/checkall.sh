@@ -311,7 +311,7 @@ host_aurora() {
 		
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LIBS="`eval echo \\$AURORA_LIBS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
-		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		gmake -C doc -f Makefile.doc DOCBOOK_BASE=http://gizmo.kruemel.home/docbook-xsl-1.78.1
 		had_error $? "Error in CXX="`eval echo \\$AURORA_CXX_$c`" CC="`eval echo \\$AURORA_CC_$c`" CFLAGS="`eval echo \\$AURORA_CFLAGS_$c`" CPPFLAGS="`eval echo \\$AURORA_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$AURORA_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$AURORA_LDFLAGS_$c` `eval echo \\$AURORA_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -405,7 +405,7 @@ host_freebsd32() {
 		
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LIBS="`eval echo \\$FREEBSD32_LIBS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 
-		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		gmake -C doc -f Makefile.doc DOCBOOK_BASE=http://gizmo.kruemel.home/docbook-xsl-1.78.1
 		had_error $? "Error in CXX="`eval echo \\$FREEBSD32_CXX_$c`" CC="`eval echo \\$FREEBSD32_CC_$c`" CFLAGS="`eval echo \\$FREEBSD32_CFLAGS_$c`" CPPFLAGS="`eval echo \\$FREEBSD32_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$FREEBSD32_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$FREEBSD32_LDFLAGS_$c` `eval echo \\$FREEBSD32_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -492,7 +492,7 @@ host_ion() {
 		
 		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LIBS="`eval echo \\$ION_LIBS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 
-		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		gmake -C doc -f Makefile.doc DOCBOOK_BASE=http://gizmo.kruemel.home/docbook-xsl-1.78.1
 		had_error $? "Error in CXX="`eval echo \\$ION_CXX_$c`" CC="`eval echo \\$ION_CC_$c`" CFLAGS="`eval echo \\$ION_CFLAGS_$c`" CPPFLAGS="`eval echo \\$ION_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$ION_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$ION_LDFLAGS_$c` `eval echo \\$ION_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
@@ -579,7 +579,7 @@ host_grimreaper() {
 		
 		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LIBS="`eval echo \\$GRIMREAPER_LIBS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 
-		gmake -C doc -f Makefile.doc DOCBOOK_XSL=http://gizmo.kruemel.home/docbook-xsl-1.78.1
+		gmake -C doc -f Makefile.doc DOCBOOK_BASE=http://gizmo.kruemel.home/docbook-xsl-1.78.1
 		had_error $? "Error in CXX="`eval echo \\$GRIMREAPER_CXX_$c`" CC="`eval echo \\$GRIMREAPER_CC_$c`" CFLAGS="`eval echo \\$GRIMREAPER_CFLAGS_$c`" CPPFLAGS="`eval echo \\$GRIMREAPER_CURSES_CPPFLAGS_$curs`" 	CXXFLAGS="`eval echo \\$GRIMREAPER_CXXFLAGS_$c`" LDFLAGS="`eval echo \\$GRIMREAPER_LDFLAGS_$c` `eval echo \\$GRIMREAPER_CURSES_LDFLAGS_$curs`" CONFIGFLAGS=$configflags"
 		
 		gmake clean
