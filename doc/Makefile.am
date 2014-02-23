@@ -6,7 +6,7 @@ csv2yapet.html yapet2csv.html Makefile.doc.in Makefile.doc.am
 
 # For fixing bug #22
 dist_man1_MANS = yapet.1
-dist_man5_MANS = yapet_colors.5
+dist_man5_MANS = yapet_colors.5 yapet_config.5
 if BUILDCONVERTS
 dist_man1_MANS += csv2yapet.1 yapet2csv.1
 endif # BUILDCONVERTS
