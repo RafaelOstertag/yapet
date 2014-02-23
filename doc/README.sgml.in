@@ -39,7 +39,7 @@
 
     <para>
       &YP; is a text based password manager using the Blowfish
-      encryption algorithm to store password and associated
+      encryption algorithm to store passwords and associated
       information encrypted on disk. Its primary aim is to provide a
       safe way to store passwords in a file on disk while having a
       small footprint, and compiling and running under today's most
@@ -84,7 +84,7 @@
 	<listitem>
 
 	  <para>
-	    Dependes only on two libraries: OpenSSL (<ulink
+	    Depends only on two libraries: OpenSSL (<ulink
 	    url="http://www.openssl.org/">http://www.openssl.org/</ulink>)
 	    and curses or ncurses (<ulink
 	    url="http://www.gnu.org/software/ncurses/">http://www.gnu.org/software/ncurses/</ulink>).
@@ -123,7 +123,7 @@
       </para>
 
       <para>
-	In addtion to &csv2yapet;, there is now also an utility
+	In addition to &csv2yapet;, there is now also an utility
 	&yapet2csv; which converts PET files to CSV files.
       </para>
     </sect2>

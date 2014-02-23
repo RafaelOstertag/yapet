@@ -378,12 +378,12 @@
     </variablelist>
 
     <para>
-      For boolean values, <literal>1</literal>,
+      For Boolean values, <literal>1</literal>,
       <literal>yes</literal>, <literal>true</literal>,
       <literal>enable</literal>, and <literal>enabled</literal> denote
       true. <literal>0</literal>, <literal>false</literal>,
       <literal>no</literal>, <literal>disable</literal>,
-      <literal>disabled</literal> denote false. Please note, boolean
+      <literal>disabled</literal> denote false. Please note, Boolean
       values are case-sensitive.
     </para>
 

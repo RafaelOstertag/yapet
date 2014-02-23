@@ -20,11 +20,11 @@
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY CSV2YAPET "csv2yapet">
 <!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman "<citerefentry condition='csv2yapet'><refentrytitle>csv2yapet</refentrytitle>
+<!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY YAPET2CSV "yapet2csv">
 <!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman "<citerefentry condition='yapet2csv'><refentrytitle>yapet2csv</refentrytitle>
+<!ENTITY yapet2csvman "<citerefentry><refentrytitle>yapet2csv</refentrytitle>
 <manvolnum>1</manvolnum></citerefentry>">
 <!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
 <manvolnum>5</manvolnum></citerefentry>">
@@ -226,7 +226,7 @@
       <varlistentry>
 	<term><filename><replaceable>dst</replaceable></filename></term>
 	<listitem>
-	  <para>pathname where the converted &YP; file will be
+	  <para>Pathname where the converted &YP; file will be
 	  stored. The file must not exist prior to invoking
 	  &yapet2csv;. Refer to <xref linkend="tab.csvformat"/> for
 	  the format of the resulting CSV file
@@ -349,6 +349,8 @@
   <refsect1 id="seealso">
     <title>SEE ALSO</title>
 
-    <simpara>&ypman;, &csv2yapetman;</simpara>
+    <simpara>
+      &ypman;, &csv2yapetman;
+    </simpara>
   </refsect1>
 </refentry>

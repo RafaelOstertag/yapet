@@ -145,7 +145,7 @@
     <itemizedlist>
       <listitem>
 	<para>
-	  Screen lock after a certain amount of inactivitiy when
+	  Screen lock after a certain amount of inactivity when
 	  password file is loaded (see also &yapet_config; and <xref
 	  linkend="options" />).
 	</para>
@@ -415,7 +415,7 @@
 
 	  <listitem>
 	    <para>
-	      Delete the charact left of the cursor.
+	      Delete the character left of the cursor.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -426,7 +426,7 @@
 
 	  <listitem>
 	    <para>
-	      Delete the charcter under the cursor.
+	      Delete the character under the cursor.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -437,7 +437,7 @@
 
 	  <listitem>
 	    <para>
-	      Delete all charcters under and right of the cursor.
+	      Delete all characters under and right of the cursor.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -448,7 +448,7 @@
 
 	  <listitem>
 	    <para>
-	      Delete all charcters left of the cursor.
+	      Delete all characters left of the cursor.
 	    </para>
 	  </listitem>
 	</varlistentry>
