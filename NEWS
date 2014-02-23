@@ -15,6 +15,8 @@ YAPET 1.0
 
       * new files are created by pressing 'E'.
 
+      * experimental support for multi-byte characters.
+
 
 YAPET 0.8pre2
 
