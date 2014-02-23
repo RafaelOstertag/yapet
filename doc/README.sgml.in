@@ -119,7 +119,8 @@
       <title>Version 1.0</title>
 
       <para>
-	New user interface.
+	New user interface with experimental support for multi-byte
+	characters.
       </para>
 
       <para>
