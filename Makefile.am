@@ -1,6 +1,6 @@
 # $Id$
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-csv2yapet --enable-install-doc	\
+DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
 EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER DESIGN	\
@@ -20,7 +20,7 @@ desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
 if !DISABLEINSTALLDOC
-textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE
+textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE NEWS
 textdocdir = $(docdir)
 endif # !DISABLEINSTALLDOC
 
