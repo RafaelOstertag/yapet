@@ -67,5 +67,14 @@ Iconv::operator()(const std::string& _in) const {
 	}
     }
 
+    // Assume the output buffer is four times the size of the input
+    // size
+    size_t outsize = _in.len() * 4;
+    try {
+	char* outbuf = new char[outsize];
+    } catch (...) {
+	(void)iconv_close(cd);
+	throw;
+    }
     
 }
