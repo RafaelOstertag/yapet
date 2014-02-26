@@ -669,16 +669,10 @@
   <sect1 id="security">
     <title>Security</title>
 
-    <para>Memory used for storing sensitive information is cleared by
-      setting it to zero upon de-allocation. This is default behavior
-      of &YP; functions. However, &YP; cannot alter the way functions
-      provided by &CRYPTO; and &CURSES; de-allocates memory. An attempt
-      to make &CURSES; more secure is taken by
-      calling <citerefentry><refentrytitle><function>wclear</function></refentrytitle>
-	<manvolnum>3X</manvolnum></citerefentry> before
-      calling <citerefentry><refentrytitle><function>delwin</function></refentrytitle>
-	<manvolnum>3X</manvolnum></citerefentry>, in the hope that
-      it clears the memory associated with the curses window.
+    <para>&YP; does not keep the password records decrypted in
+    memory. It decrypts only the name of the password record in order
+    to show it to the user. Password records are only decrypted for
+    displaying and editing, when the user chooses to open a record.
     </para>
 
     <para>&YP;
@@ -689,14 +683,6 @@
       and <literal>SIGKILL</literal> for doing a proper cleanup and
       clearing of allocated memory.</para>
 
-    <para>Apart from memory clearing, &YP; locks the screen after ten
-    minutes of inactivity.</para>
-
-    <para>&YP; does not keep the password records decrypted in
-    memory. It decrypts only the name of the password record in order
-    to show it to the user. Password records are only decrypted for
-    displaying and editing, when the user chooses to open a record.
-    </para>
   </sect1>
 
   <sect1 id="references">
