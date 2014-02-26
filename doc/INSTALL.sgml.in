@@ -284,7 +284,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html|csv2yapet.html]</filename></term>
+	<term><filename><replaceable>&lt;PATH&gt;</replaceable>/share/doc/html/[DESIGN.html|README.html|yapet.html|csv2yapet.html|yapet2csv.html]</filename></term>
 
 	<listitem>
 	  <para>
