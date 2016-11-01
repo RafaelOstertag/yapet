@@ -163,7 +163,7 @@ namespace YAPET {
                     locked = false;
                 }
 
-                void is_locked() const {
+                bool is_locked() const {
                     return locked;
                 }
 
