@@ -100,6 +100,9 @@ namespace YAPET {
              */
             Key key;
 
+	    EVP_CIPHER_CTX *create_context();
+	    void destroy_context(EVP_CIPHER_CTX *context);
+
         public:
             //! Constructor
             Crypt (const Key& k) throw (YAPETException);
@@ -159,54 +162,53 @@ namespace YAPET {
                 if (key.ivec_size() != iv_length)
                     throw YAPETException (_ ("IVec length missmatch") );
 
-                EVP_CIPHER_CTX ctx;
-                EVP_CIPHER_CTX_init (&ctx);
-                int retval = EVP_EncryptInit_ex (&ctx,
+                EVP_CIPHER_CTX *ctx=create_context ();
+                int retval = EVP_EncryptInit_ex (ctx,
                                                  cipher,
                                                  0,
                                                  key,
                                                  key.getIVec() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     throw YAPETEncryptionException (_ ("Error initializing encryption engine") );
                 }
 
-                retval = EVP_CIPHER_CTX_set_key_length (&ctx, key.size() );
+                retval = EVP_CIPHER_CTX_set_key_length (ctx, key.size() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     throw YAPETException (_ ("Error setting the key length") );
                 }
 
                 BDBuffer* encdata =
                     new BDBuffer (data.size() + EVP_MAX_BLOCK_LENGTH);
                 int outlen;
-                retval = EVP_EncryptUpdate (&ctx,
+                retval = EVP_EncryptUpdate (ctx,
                                             *encdata,
                                             &outlen,
                                             data,
                                             data.size() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     delete encdata;
                     throw YAPETEncryptionException (_ ("Error encrypting data") );
                 }
 
                 int tmplen;
-                retval = EVP_EncryptFinal_ex (&ctx,
+                retval = EVP_EncryptFinal_ex (ctx,
                                               encdata->at (outlen),
                                               &tmplen);
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     delete encdata;
                     throw YAPETEncryptionException (_ ("Error finalizing encryption") );
                 }
 
                 encdata->resize (outlen + tmplen);
-                EVP_CIPHER_CTX_cleanup (&ctx);
+                destroy_context (ctx);
                 return encdata;
             }
 
@@ -237,53 +239,52 @@ namespace YAPET {
                 if ( ( (unsigned int) key.ivec_size() ) != iv_length)
                     throw YAPETException (_ ("IVec length missmatch") );
 
-                EVP_CIPHER_CTX ctx;
-                EVP_CIPHER_CTX_init (&ctx);
-                int retval = EVP_DecryptInit_ex (&ctx,
+                EVP_CIPHER_CTX* ctx = create_context ();
+                int retval = EVP_DecryptInit_ex (ctx,
                                                  cipher,
                                                  0,
                                                  key,
                                                  key.getIVec() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     throw YAPETEncryptionException (_ ("Error initializing encryption engine") );
                 }
 
-                retval = EVP_CIPHER_CTX_set_key_length (&ctx, key.size() );
+                retval = EVP_CIPHER_CTX_set_key_length (ctx, key.size() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     throw YAPETException (_ ("Error setting the key length") );
                 }
 
                 BDBuffer* decdata = new BDBuffer (data.size() );
                 int outlen;
-                retval = EVP_DecryptUpdate (&ctx,
+                retval = EVP_DecryptUpdate (ctx,
                                             *decdata,
                                             &outlen,
                                             data,
                                             data.size() );
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     delete decdata;
                     throw YAPETEncryptionException (_ ("Error decrypting data") );
                 }
 
                 int tmplen;
-                retval = EVP_DecryptFinal_ex (&ctx,
+                retval = EVP_DecryptFinal_ex (ctx,
                                               decdata->at (outlen),
                                               &tmplen);
 
                 if (retval == 0) {
-                    EVP_CIPHER_CTX_cleanup (&ctx);
+                    destroy_context (ctx);
                     delete decdata;
                     throw YAPETEncryptionException (_ ("Error finalizing decryption") );
                 }
 
                 decdata->resize (outlen + tmplen);
-                EVP_CIPHER_CTX_cleanup (&ctx);
+                destroy_context (ctx);
 		Record<T>* r = 0;
 		try {
 		    r = new Record<T>;

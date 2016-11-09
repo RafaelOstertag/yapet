@@ -114,6 +114,10 @@ namespace YAPET {
             //! Cleanup routine
             void cleanup();
 
+	    EVP_MD_CTX *create_context();
+
+	    void destroy_context(EVP_MD_CTX *context);
+
         public:
             //! Initializes the key
             Key (const char* password) throw (YAPETException);

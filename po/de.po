@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2014-02-18 18:05+0100\n"
+"POT-Creation-Date: 2016-11-09 20:57+0100\n"
 "PO-Revision-Date: 2013-12-28 19:53+0100\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -27,39 +27,39 @@ msgstr "Speicher aufgebraucht"
 msgid "Position out of range"
 msgstr "Position ausserhalb des Bereiches"
 
-#: crypt/crypt.cc:57
+#: crypt/crypt.cc:82
 msgid "Unable to get cipher"
 msgstr "Kann die Verschlüsselung nicht ermitteln"
 
-#: crypt/crypt.cc:66
+#: crypt/crypt.cc:90
 msgid "Error initializing cipher"
 msgstr "Fehler beim Initialisieren der Verschlüsselung"
 
-#: crypt/crypt.cc:73 crypt/crypt.h:179 crypt/crypt.h:257
+#: crypt/crypt.cc:97 crypt/crypt.h:181 crypt/crypt.h:258
 msgid "Error setting the key length"
 msgstr "Kann die Schlüssellänge nicht setzen"
 
-#: crypt/crypt.h:160 crypt/crypt.h:238
+#: crypt/crypt.h:163 crypt/crypt.h:240
 msgid "IVec length missmatch"
 msgstr "IVec Länge falsch"
 
-#: crypt/crypt.h:172 crypt/crypt.h:250
+#: crypt/crypt.h:174 crypt/crypt.h:251
 msgid "Error initializing encryption engine"
 msgstr "Fehler beim Initialisieren der Verschlüsselung"
 
-#: crypt/crypt.h:194
+#: crypt/crypt.h:196
 msgid "Error encrypting data"
 msgstr "Fehler beim Verschlüsseln der Daten"
 
-#: crypt/crypt.h:205
+#: crypt/crypt.h:207
 msgid "Error finalizing encryption"
 msgstr "Fehler beim Abschliessen der Verschlüsselung"
 
-#: crypt/crypt.h:271
+#: crypt/crypt.h:272
 msgid "Error decrypting data"
 msgstr "Fehler beim Entschlüsseln der Daten"
 
-#: crypt/crypt.h:282
+#: crypt/crypt.h:283
 msgid "Error finalizing decryption"
 msgstr "Fehler beim Abschliessen der Entschlüsselung"
 
@@ -127,90 +127,90 @@ msgstr "Null Zeiger in ptr64 übergeben."
 msgid "File has been externally modified"
 msgstr "Datei wurde von ausserhalb verändert"
 
-#: crypt/key.cc:64
+#: crypt/key.cc:87
 msgid "Run 1: Unable to initialize the EVP_MD structure"
 msgstr "Lauf 1: Kann EVP_MD Struktur nicht initialisieren"
 
-#: crypt/key.cc:72
+#: crypt/key.cc:95
 msgid "Run 1: Unable to initialize the digest"
 msgstr "Lauf 1: Kann Digest nicht initialisieren"
 
-#: crypt/key.cc:79
+#: crypt/key.cc:102
 msgid "Run 1: Unable to update the digest"
 msgstr "Lauf 1: Digest kann nicht angepasst werden"
 
-#: crypt/key.cc:88
+#: crypt/key.cc:111
 msgid "Run 1: Unable to finalize the digest"
 msgstr "Lauf 1: Kann Digest nicht abschliessen"
 
-#: crypt/key.cc:94
+#: crypt/key.cc:117
 msgid "Run 1: Digest does not have expected length"
 msgstr "Lauf 1: Digest hat unerwartete Länge"
 
-#: crypt/key.cc:106
+#: crypt/key.cc:129
 msgid "Run 2: Unable to initialize the EVP_MD structure"
 msgstr "Lauf 2: Kann EVP_MD Struktur nicht initialisieren"
 
-#: crypt/key.cc:115
+#: crypt/key.cc:138
 msgid "Run 2: Unable to initialize the digest"
 msgstr "Lauf 2: Kann Digest nicht initialisieren"
 
-#: crypt/key.cc:123
+#: crypt/key.cc:146
 msgid "Run 2: Unable to update the digest"
 msgstr "Lauf 2: Digest kann nicht angepasst werden"
 
-#: crypt/key.cc:131
+#: crypt/key.cc:154
 msgid "Run 2: Unable to finalize the digest"
 msgstr "Lauf 2: Kann Digest nicht abschliessen"
 
-#: crypt/key.cc:137
+#: crypt/key.cc:160
 msgid "Run 2: Digest does not have expected length"
 msgstr "Lauf 2: Digest hat unerwartete Länge"
 
-#: crypt/key.cc:149
+#: crypt/key.cc:172
 msgid "Run 3: Unable to initialize the EVP_MD structure"
 msgstr "Lauf 3: Kann EVP_MD Struktur nicht initialisieren"
 
-#: crypt/key.cc:158
+#: crypt/key.cc:181
 msgid "Run 3: Unable to initialize the digest"
 msgstr "Lauf 3: Kann Digest nicht initialisieren"
 
-#: crypt/key.cc:166
+#: crypt/key.cc:189
 msgid "Run 3: Unable to update the digest"
 msgstr "Lauf 3: Digest kann nicht angepasst werden"
 
-#: crypt/key.cc:174
+#: crypt/key.cc:197
 msgid "Run 3: Unable to finalize the digest"
 msgstr "Lauf 3: Kann Digest nicht abschliessen"
 
-#: crypt/key.cc:180
+#: crypt/key.cc:203
 msgid "Run 3: Digest does not have expected length"
 msgstr "Lauf 3: Digest hat unerwartete Länge"
 
-#: crypt/key.cc:191
+#: crypt/key.cc:214
 #, c-format
 msgid "Effective key length of %d does not match expected key length %d"
 msgstr ""
 "Die effektive Schlüssellänge %d passt nicht auf die erwartete Schlüssellänge "
 "%d"
 
-#: crypt/key.cc:205
+#: crypt/key.cc:228
 msgid "IVec: Unable to initialize the EVP_MD structure"
 msgstr "IVec: Kann EVP_MD Struktur nicht initialisieren"
 
-#: crypt/key.cc:214
+#: crypt/key.cc:237
 msgid "IVec: Unable to initialize the digest"
 msgstr "IVec: Kann Digest nicht initialisieren"
 
-#: crypt/key.cc:222
+#: crypt/key.cc:245
 msgid "IVec: Unable to update the digest"
 msgstr "IVec: Kann Digest nicht anpassen"
 
-#: crypt/key.cc:230
+#: crypt/key.cc:253
 msgid "IVec: Unable to finalize the digest"
 msgstr "IVec: Kann Digest nicht abschliessen"
 
-#: crypt/key.cc:236
+#: crypt/key.cc:259
 msgid "IVec: Digest does not have expected length"
 msgstr "IVec: Digest hat unerwartete Länge"
 
@@ -240,9 +240,8 @@ msgstr "Falsches Passwort"
 
 #: glue/createfile.cc:80 glue/promptpassword.cc:60 glue/changepassword.cc:52
 #: glue/changepassword.cc:62 glue/changepassword.cc:116
-#: glue/opencmdlinefile.cc:103 ui/passwordrecord.cc:88
-#: ui/passwordrecord.cc:248 ui/mainwindow.cc:420 ui/mainwindow.cc:472
-#: ui/mainwindow.cc:503
+#: glue/opencmdlinefile.cc:103 ui/passwordrecord.cc:88 ui/passwordrecord.cc:248
+#: ui/mainwindow.cc:420 ui/mainwindow.cc:472 ui/mainwindow.cc:503
 msgid "Error"
 msgstr "Fehler"
 

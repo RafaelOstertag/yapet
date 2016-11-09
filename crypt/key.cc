@@ -45,6 +45,29 @@ Key::cleanup() {
     std::memset (IVec, 0, IVECLENGTH);
 }
 
+EVP_MD_CTX*
+Key::create_context() {
+#ifdef HAVE_EVP_MD_CTX_CREATE
+    return EVP_MD_CTX_create ();
+#elif HAVE_EVP_MD_CTX_NEW
+    return EVP_MD_CTX_new();
+#else
+#error "Neither EVP_MD_CTX_create() nor EVP_MD_CTX_new() available"
+#endif
+}
+
+void
+Key::destroy_context(EVP_MD_CTX *context) {
+#ifdef HAVE_EVP_MD_CTX_DESTROY
+    EVP_MD_CTX_destroy (context);
+#elif HAVE_EVP_MD_CTX_FREE
+    EVP_MD_CTX_free(context);
+#else
+#error "Neither EVP_MD_CTX_destroy() nor EVP_MD_CTX_free() available"
+#endif
+}
+    
+
 /**
  * Initializes the key and the initialization vector. Make sure you
  * securely destroy the password provided to this method.
@@ -63,39 +86,39 @@ Key::Key (const char* password) throw (YAPETException) {
     if (md == 0)
         throw YAPETException (_ ("Run 1: Unable to initialize the EVP_MD structure") );
 
-    EVP_MD_CTX mdctx;
-    EVP_MD_CTX_init (&mdctx);
-    int retval = EVP_DigestInit_ex (&mdctx, md, 0);
+    EVP_MD_CTX *mdctx = create_context();
+
+    int retval = EVP_DigestInit_ex (mdctx, md, 0);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         throw YAPETException (_ ("Run 1: Unable to initialize the digest") );
     }
 
-    retval = EVP_DigestUpdate (&mdctx, password, std::strlen (password) );
+    retval = EVP_DigestUpdate (mdctx, password, std::strlen (password) );
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         throw YAPETException (_ ("Run 1: Unable to update the digest") );
     }
 
     unsigned int tmplen;
-    retval = EVP_DigestFinal_ex (&mdctx, key, &tmplen);
+    retval = EVP_DigestFinal_ex (mdctx, key, &tmplen);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 1: Unable to finalize the digest") );
     }
 
     if (tmplen != SHA1_LEN) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 1: Digest does not have expected length") );
     }
 
     eff_keylength = tmplen;
-    EVP_MD_CTX_cleanup (&mdctx);
+    destroy_context(mdctx);
     //
     // Second run (md5)
     //
@@ -106,39 +129,39 @@ Key::Key (const char* password) throw (YAPETException) {
         throw YAPETException (_ ("Run 2: Unable to initialize the EVP_MD structure") );
     }
 
-    EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, 0);
+    mdctx=create_context();
+    retval = EVP_DigestInit_ex (mdctx, md, 0);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 2: Unable to initialize the digest") );
     }
 
-    retval = EVP_DigestUpdate (&mdctx, key, SHA1_LEN);
+    retval = EVP_DigestUpdate (mdctx, key, SHA1_LEN);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 2: Unable to update the digest") );
     }
 
-    retval = EVP_DigestFinal_ex (&mdctx, key + SHA1_LEN, &tmplen);
+    retval = EVP_DigestFinal_ex (mdctx, key + SHA1_LEN, &tmplen);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 2: Unable to finalize the digest") );
     }
 
     if (tmplen != MD5_LEN) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 2: Digest does not have expected length") );
     }
 
     eff_keylength += tmplen;
-    EVP_MD_CTX_cleanup (&mdctx);
+    destroy_context(mdctx);
     //
     // Third run (ripemd160)
     //
@@ -149,39 +172,39 @@ Key::Key (const char* password) throw (YAPETException) {
         throw YAPETException (_ ("Run 3: Unable to initialize the EVP_MD structure") );
     }
 
-    EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, 0);
+    mdctx = create_context();
+    retval = EVP_DigestInit_ex (mdctx, md, 0);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 3: Unable to initialize the digest") );
     }
 
-    retval = EVP_DigestUpdate (&mdctx, key, SHA1_LEN + MD5_LEN);
+    retval = EVP_DigestUpdate (mdctx, key, SHA1_LEN + MD5_LEN);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 3: Unable to update the digest") );
     }
 
-    retval = EVP_DigestFinal_ex (&mdctx, key + SHA1_LEN + MD5_LEN, &tmplen);
+    retval = EVP_DigestFinal_ex (mdctx, key + SHA1_LEN + MD5_LEN, &tmplen);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 3: Unable to finalize the digest") );
     }
 
     if (tmplen != RIPEMD160_LEN) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("Run 3: Digest does not have expected length") );
     }
 
     eff_keylength += tmplen;
-    EVP_MD_CTX_cleanup (&mdctx);
+    destroy_context(mdctx);
 
     if (eff_keylength != KEYLENGTH) {
         cleanup();
@@ -205,38 +228,38 @@ Key::Key (const char* password) throw (YAPETException) {
         throw YAPETException (_ ("IVec: Unable to initialize the EVP_MD structure") );
     }
 
-    EVP_MD_CTX_init (&mdctx);
-    retval = EVP_DigestInit_ex (&mdctx, md, 0);
+    mdctx = create_context();
+    retval = EVP_DigestInit_ex (mdctx, md, 0);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("IVec: Unable to initialize the digest") );
     }
 
-    retval = EVP_DigestUpdate (&mdctx, key, SHA1_LEN + MD5_LEN + RIPEMD160_LEN);
+    retval = EVP_DigestUpdate (mdctx, key, SHA1_LEN + MD5_LEN + RIPEMD160_LEN);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("IVec: Unable to update the digest") );
     }
 
-    retval = EVP_DigestFinal_ex (&mdctx, ivec_hash_buf, &tmplen);
+    retval = EVP_DigestFinal_ex (mdctx, ivec_hash_buf, &tmplen);
 
     if (retval == 0) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("IVec: Unable to finalize the digest") );
     }
 
     if (tmplen != MD5_LEN) {
-        EVP_MD_CTX_cleanup (&mdctx);
+        destroy_context(mdctx);
         cleanup();
         throw YAPETException (_ ("IVec: Digest does not have expected length") );
     }
 
-    EVP_MD_CTX_cleanup (&mdctx);
+    destroy_context(mdctx);
     std::memcpy (IVec, ivec_hash_buf, IVECLENGTH);
     std::memset (ivec_hash_buf, 0, MD5_LEN);
 }

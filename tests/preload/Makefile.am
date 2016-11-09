@@ -14,14 +14,14 @@ checktestpwrecord_SOURCES = checktestpwrecord.cc		 \
 ../../crypt/bdbuffer.cc ../../crypt/crypt.cc ../../crypt/file.cc \
 ../../crypt/key.cc ../../crypt/partdec.cc
 checktestpwrecord_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_builddir) \
--I$(top_srcdir)
+-I$(top_srcdir) $(OPENSSL_INCLUDES)
 checktestpwrecord_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc		 \
 ../../crypt/bdbuffer.cc ../../crypt/crypt.cc ../../crypt/file.cc \
 ../../crypt/key.cc ../../crypt/partdec.cc
 checkmasterpwchange_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_builddir) \
--I$(top_srcdir)
+-I$(top_srcdir) $(OPENSSL_INCLUDES)
 checkmasterpwchange_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 
 istty_SOURCES = istty.cc

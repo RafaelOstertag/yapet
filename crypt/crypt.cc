@@ -34,6 +34,31 @@
 
 using namespace YAPET;
 
+EVP_CIPHER_CTX*
+Crypt::create_context() {
+#ifdef HAVE_EVP_CIPHER_CTX_INIT
+    EVP_CIPHER_CTX *context = (EVP_CIPHER_CTX*) std::malloc(sizeof(EVP_CIPHER_CTX));
+    EVP_CIPHER_CTX_init(context);
+    return context;
+#elif HAVE_EVP_CIPHER_CTX_NEW
+    return EVP_CIPHER_CTX_new();
+#else
+    #error "Neither EVP_CIPHER_CTX_init() nor EVP_CIPHER_CTX_new() available"
+#endif
+}
+
+void
+Crypt::destroy_context(EVP_CIPHER_CTX *context) {
+#ifdef HAVE_EVP_CIPHER_CTX_CLEANUP
+    EVP_CIPHER_CTX_cleanup(context);
+    std::free(context);
+#elif HAVE_EVP_CIPHER_CTX_FREE
+    EVP_CIPHER_CTX_free(context);
+#else
+#error "Neither EVP_CIPHER_CTX_cleanup() nor EVP_CIPHER_CTX_free() available"
+#endif
+}
+
 /**
  * Initializes the class with the given key, which is used for
  * encryption and decryption.
@@ -57,25 +82,24 @@ Crypt::Crypt (const Key& k) throw (YAPETException) : cipher (0),
         throw YAPETException (_ ("Unable to get cipher") );
 
     // Test if key length is ok
-    EVP_CIPHER_CTX ctx;
-    EVP_CIPHER_CTX_init (&ctx);
-    int retval = EVP_CipherInit_ex (&ctx, cipher, 0, 0, 0, 0);
+    EVP_CIPHER_CTX* ctx = create_context();
+    int retval = EVP_CipherInit_ex (ctx, cipher, 0, 0, 0, 0);
 
     if (retval == 0) {
-        EVP_CIPHER_CTX_cleanup (&ctx);
+        destroy_context(ctx);
         throw YAPETException (_ ("Error initializing cipher") );
     }
 
-    retval = EVP_CIPHER_CTX_set_key_length (&ctx, key.size() );
+    retval = EVP_CIPHER_CTX_set_key_length (ctx, key.size() );
 
     if (retval == 0) {
-        EVP_CIPHER_CTX_cleanup (&ctx);
+	destroy_context(ctx);
         throw YAPETException (_ ("Error setting the key length") );
     }
 
-    iv_length = EVP_CIPHER_CTX_iv_length (&ctx);
-    key_length = EVP_CIPHER_CTX_key_length (&ctx);
-    EVP_CIPHER_CTX_cleanup (&ctx);
+    iv_length = EVP_CIPHER_CTX_iv_length (ctx);
+    key_length = EVP_CIPHER_CTX_key_length (ctx);
+    destroy_context(ctx);
 }
 
 Crypt::Crypt (const Crypt& c) : cipher (c.cipher),
