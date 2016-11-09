@@ -1,6 +1,13 @@
 News
 ====
 
+YAPET 1.1
+
+      * Compiles with GCC 6.
+
+      * Supports OpenSSL 1.1.
+      
+
 YAPET 1.0
 
       * new user interface.
