@@ -42,7 +42,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("docs " + cxx)) {
 	dir (objectDirectoryName + '/doc') {
 	    withEnv(environmentVariables) {
-		sh 'if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE -f Makefile.doc'
+		sh 'if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; if [ -f /usr/local/share/xml/catalog ] ; then  XML_CATALOG_FILES=/usr/local/share/xml/catalog fi ; $MAKE -f Makefile.doc'
 	    }
 	}
     }
