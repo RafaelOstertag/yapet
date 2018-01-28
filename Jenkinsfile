@@ -3,13 +3,13 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '10'))])
 
-checkout() {
+void checkout() {
     stage("checkout") {
 	checkout scm
     }
 }
 
-autoconf() {
+void autoconf() {
     stage("autoconf") {
 	touch "README"
 	touch "ChangeLog"
@@ -32,6 +32,7 @@ node("linux") {
     checkout()
     autoconf()
 }
+
 node("freebsd") {
     checkout()
     autoconf()
