@@ -25,31 +25,48 @@ void autoconf() {
     }
 }
 
-void buildWithSystemDefaults() {
-    stage(makeStageName("configure")) {
-	dir ('obj-dir-system-default') {
-	    sh "../configure"
+void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
+    environmentVariables = [
+	"CC="+cc,
+	"CXX="+cxx,
+	"LDFLAGS="+ldflags,
+	'XML_CATALOG_FILES=/usr/local/share/xml/catalog'
+    ]
+    
+    stage(makeStageName("configure " + cxx)) {
+	dir (objectDirectoryName) {
+	    withEnv(environmentVariables) {
+		sh "../configure"
+	    }
 	}
     }
-    stage(makeStageName("docs")) {
-	dir ('obj-dir/doc') {
-	    withEnv(['XML_CATALOG_FILES=/usr/local/share/xml/catalog']) {
+    stage(makeStageName("docs " + cxx)) {
+	dir (objectDirectoryName + '/doc') {
+	    withEnv(environmentVariables) {
 		sh "gmake -f Makefile.doc"
 	    }
 	}
     }
     
-    stage(makeStageName("build")) {
-	dir ('obj-dir') {
-	    sh "gmake all"
+    stage(makeStageName("build " + cxx)) {
+	dir (objectDirectoryName) {
+	    withEnv(environmentVariables) {
+		sh "gmake all"
+	    }
 	}
     }
 
-    stage(makeStageName("check")) {
-	dir ('obj-dir') {
-	    sh "gmake check"
+    stage(makeStageName("check " + cxx)) {
+	dir (objectDirectoryName) {
+	    withEnv(environmentVariables) {
+		sh "gmake check"
+	    }
 	}
     }
+}
+
+void buildWithSystemDefaults() {
+    build 'obj-dir-system-default'
 }
 
 stage("distribute") {
@@ -80,6 +97,7 @@ stage("distribute") {
 		checkout()
 		autoconf()
 		buildWithSystemDefaults()
+		build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
 	    }
 	}
     )
