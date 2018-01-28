@@ -184,6 +184,8 @@ void autoconf() {
 
 void build(profileName) {
     environmentVariables = buildProfiles[profileName].env
+    objectDirectoryName = "obj-" + profileName
+    
     stage(makeStageName("configure " + profileName)) {
 	dir (objectDirectoryName) {
 	    withEnv(environmentVariables) {
