@@ -1,5 +1,5 @@
-buildProfiles = {
-    "default" : {
+buildProfiles = [
+    "default" : [
 	"env": [
 	    "CC=cc",
 	    "CXX=c++",
@@ -12,8 +12,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-clang50-ports" : {
+    ],
+    "fb-clang50-ports" : [
 	"env": [
 	    "CC=clang50",
 	    "CXX=clang++50",
@@ -26,8 +26,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-clang34-ports" : {
+    ],
+    "fb-clang34-ports" : [
 	"env": [
 	    "CC=clang34",
 	    "CXX=clang++34",
@@ -40,8 +40,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-clang35-ports" : {
+    ],
+    "fb-clang35-ports" : [
 	"env": [
 	    "CC=clang35",
 	    "CXX=clang++35",
@@ -54,8 +54,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-clang38-ports" : {
+    ],
+    "fb-clang38-ports" : [
 	"env": [
 	    "CC=clang38",
 	    "CXX=clang++38",
@@ -68,8 +68,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc47-ports" : {
+    ],
+    "fb-gcc47-ports" : [
 	"env": [
 	    "CC=gcc47",
 	    "CXX=g++47",
@@ -82,8 +82,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc48-ports" : {
+    ],
+    "fb-gcc48-ports" : [
 	"env": [
 	    "CC=gcc48",
 	    "CXX=g++48",
@@ -96,8 +96,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc49-ports" : {
+    ],
+    "fb-gcc49-ports" : [
 	"env": [
 	    "CC=gcc49",
 	    "CXX=g++49",
@@ -110,8 +110,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc5-ports" : {
+    ],
+    "fb-gcc5-ports" : [
 	"env": [
 	    "CC=gcc5",
 	    "CXX=g++5",
@@ -124,8 +124,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc6-ports" : {
+    ],
+    "fb-gcc6-ports" : [
 	"env": [
 	    "CC=gcc6",
 	    "CXX=g++6",
@@ -138,8 +138,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    },
-    "fb-gcc7-ports" : {
+    ],
+    "fb-gcc7-ports" : [
 	"env": [
 	    "CC=gcc7",
 	    "CXX=g++7",
@@ -152,8 +152,8 @@ buildProfiles = {
 	    "--disable-silent-rules",
 	    "--enable-debug"
 	]
-    }
-}
+    ]
+]
 
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
