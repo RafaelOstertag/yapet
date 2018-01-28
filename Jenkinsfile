@@ -30,7 +30,9 @@ node("freebsd") {
 
     stage("docs") {
 	dir ('obj-dir/doc') {
-	    sh "gmake -f Makefile.doc"
+	    withEnv(['XML_CATALOG_FILES=/usr/local/share/xml/catalog']) {
+		sh "gmake -f Makefile.doc"
+	    }
 	}
     }
 
