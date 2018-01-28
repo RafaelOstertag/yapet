@@ -3,13 +3,13 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '10'))])
 void checkout() {
-    stage("checkout") {
+    stage("checkout " + NODE_NAME) {
 	checkout scm
     }
 }
 
 void autoconf() {
-    stage("autoconf") {
+    stage("autoconf " + NODE_NAME) {
 	touch "README"
 	touch "ChangeLog"
 	touch "libyacurs/ChangeLog"
