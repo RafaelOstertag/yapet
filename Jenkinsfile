@@ -2,17 +2,39 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '10'))])
-node("freebsd") {
+
+checkout() {
     stage("checkout") {
 	checkout scm
     }
+}
 
+autoconf() {
     stage("autoconf") {
 	touch "README"
 	touch "ChangeLog"
 	touch "libyacurs/ChangeLog"
 	sh "autoreconf -I m4 -i"
     }
+}
+
+node("openbsd") {
+    checkout()
+    autoconf()
+}
+
+node("netbsd") {
+    checkout()
+    autoconf()
+}
+
+node("linux") {
+    checkout()
+    autoconf()
+}
+node("freebsd") {
+    checkout()
+    autoconf()
 
     stage("prepare object directory") {
 	dir ('obj-dir') {
