@@ -68,36 +68,28 @@ void buildWithSystemDefaults() {
     build 'obj-dir-system-default'
 }
 
-stage("distribute") {
-    parallel (
-	"openbsd": {
-	    node("openbsd") {
-		checkout()
-		autoconf()
-		buildWithSystemDefaults()
-	    }
-	},
-	"netbsd": {
-	    node("netbsd") {
-		checkout()
-		autoconf()
-		buildWithSystemDefaults()
-	    }
-	},
-	"linux": {
-	    node("linux") {
-		checkout()
-		autoconf()
-		buildWithSystemDefaults()
-	    }
-	},
-	"freebsd": {
-	    node("freebsd") {
-		checkout()
-		autoconf()
-		buildWithSystemDefaults()
-		build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
-	    }
-	}
-    )
+node("openbsd") {
+    checkout()
+    autoconf()
+    buildWithSystemDefaults()
 }
+
+node("netbsd") {
+    checkout()
+    autoconf()
+    buildWithSystemDefaults()
+}
+
+node("linux") {
+    checkout()
+    autoconf()
+    buildWithSystemDefaults()
+}
+
+node("freebsd") {
+    checkout()
+    autoconf()
+    buildWithSystemDefaults()
+    build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
+}
+
