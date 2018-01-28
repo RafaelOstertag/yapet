@@ -1,3 +1,9 @@
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
+				      artifactNumToKeepStr: '',
+				      daysToKeepStr: '', numToKeepStr:
+				      '10'))])
+emailext recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+
 node("freebsd") {
     stage("checkout") {
 	checkout scm
@@ -25,6 +31,18 @@ node("freebsd") {
     stage("docs") {
 	dir ('obj-dir/doc') {
 	    sh "gmake -f Makefile.doc"
+	}
+    }
+
+    stage("build") {
+	dir ('obj-dir') {
+	    sh "gmake all"
+	}
+    }
+
+    stage("check") {
+	dir ('obj-dir') {
+	    sh "gmake check"
 	}
     }
 }
