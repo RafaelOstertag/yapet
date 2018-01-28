@@ -2,8 +2,6 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '10'))])
-emailext recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
-
 node("freebsd") {
     stage("checkout") {
 	checkout scm
