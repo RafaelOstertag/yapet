@@ -1,0 +1,3 @@
+[submodule "libyacurs"]
+	path = libyacurs
+	url = git@github.com:RafaelOstertag/libyacurs.git
