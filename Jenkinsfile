@@ -42,7 +42,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("docs " + cxx)) {
 	dir (objectDirectoryName + '/doc') {
 	    withEnv(environmentVariables) {
-		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE -f Makefile.doc"
+		sh 'if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE -f Makefile.doc'
 	    }
 	}
     }
@@ -50,7 +50,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("build " + cxx)) {
 	dir (objectDirectoryName) {
 	    withEnv(environmentVariables) {
-		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE all"
+		sh 'if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE all'
 	    }
 	}
     }
@@ -58,7 +58,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("check " + cxx)) {
 	dir (objectDirectoryName) {
 	    withEnv(environmentVariables) {
-		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE check"
+		sh 'if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE check'
 	    }
 	}
     }
@@ -67,6 +67,14 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
 void buildWithSystemDefaults() {
     build 'obj-dir-system-default'
 }
+
+node("freebsd") {
+    checkout()
+    autoconf()
+    buildWithSystemDefaults()
+    build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
+}
+
 
 node("openbsd") {
     checkout()
@@ -85,11 +93,3 @@ node("linux") {
     autoconf()
     buildWithSystemDefaults()
 }
-
-node("freebsd") {
-    checkout()
-    autoconf()
-    buildWithSystemDefaults()
-    build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
-}
-
