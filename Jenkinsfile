@@ -43,7 +43,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("docs " + cxx)) {
 	dir (objectDirectoryName + '/doc') {
 	    withEnv(environmentVariables) {
-		sh "gmake -f Makefile.doc"
+		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE -f Makefile.doc"
 	    }
 	}
     }
@@ -51,7 +51,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("build " + cxx)) {
 	dir (objectDirectoryName) {
 	    withEnv(environmentVariables) {
-		sh "gmake all"
+		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE all"
 	    }
 	}
     }
@@ -59,7 +59,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     stage(makeStageName("check " + cxx)) {
 	dir (objectDirectoryName) {
 	    withEnv(environmentVariables) {
-		sh "gmake check"
+		sh "if which gmake ; then MAKE=gmake ; else MAKE=make; fi ; $MAKE check"
 	    }
 	}
     }
