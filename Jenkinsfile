@@ -18,7 +18,7 @@ node("freebsd") {
 
     stage("configure") {
 	dir ('obj-dir') {
-	    sh "./configure"
+	    sh "../configure"
 	}
     }
 
