@@ -73,7 +73,8 @@ node("freebsd") {
     autoconf()
     buildWithSystemDefaults()
     build "clang-5", "clang50", "clang++50", "-L/usr/local/llvm50/lib -Wl,-rpath -Wl,/usr/local/llvm50/lib"
-    build "clang-33", "clang33", "clang++33", "-L/usr/local/llvm33/lib -Wl,-rpath -Wl,/usr/local/llvm33/lib"
+    // Configure claims it does not support c++98
+    //build "clang-33", "clang33", "clang++33", "-L/usr/local/llvm33/lib -Wl,-rpath -Wl,/usr/local/llvm33/lib"
     build "clang-34", "clang34", "clang++34", "-L/usr/local/llvm34/lib -Wl,-rpath -Wl,/usr/local/llvm34/lib"
     build "clang-35", "clang35", "clang++35", "-L/usr/local/llvm35/lib -Wl,-rpath -Wl,/usr/local/llvm35/lib"
     build "clang-38", "clang38", "clang++38", "-L/usr/local/llvm38/lib -Wl,-rpath -Wl,/usr/local/llvm38/lib"
