@@ -29,8 +29,7 @@ void build(objectDirectoryName, cc="cc", cxx="c++", ldflags="") {
     environmentVariables = [
 	"CC="+cc,
 	"CXX="+cxx,
-	"LDFLAGS="+ldflags,
-	'XML_CATALOG_FILES=/usr/local/share/xml/catalog'
+	"LDFLAGS="+ldflags
     ]
     
     stage(makeStageName("configure " + cxx)) {
