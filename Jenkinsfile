@@ -14,7 +14,10 @@ void autoconf() {
 	touch "README"
 	touch "ChangeLog"
 	touch "libyacurs/ChangeLog"
-	sh "autoreconf -I m4 -i"
+	// AUTOCONF_VERSION is used on OpenBSD.
+	withEnv(["AUTOCONF_VERSION=2.69"]) {
+	    sh "autoreconf -I m4 -i"
+	}
     }
 }
 
