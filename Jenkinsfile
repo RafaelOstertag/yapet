@@ -2,8 +2,6 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '10'))])
-agent none
-
 void checkout() {
     stage("checkout") {
 	checkout scm
