@@ -23,7 +23,7 @@ node("freebsd") {
     }
 
     stage("docs") {
-	dir ('obj-dir') {
+	dir ('obj-dir/docs') {
 	    sh "gmake -f Makefile.doc"
 	}
     }
