@@ -9,21 +9,3 @@ node("freebsd") {
     yapet.autoconf()
     yapet.build "FreeBSD"
 }
-
-node("openbsd") {
-    yapet.checkout()
-    yapet.autoconf()
-    yapet.build "OpenBSD"
-}
-
-node("netbsd") {
-    yapet.checkout()
-    yapet.autoconf()
-    yapet.build "NetBSD"
-}
-
-node("linux") {
-    yapet.checkout()
-    yapet.autoconf()
-    yapet.build "Linux"
-}
