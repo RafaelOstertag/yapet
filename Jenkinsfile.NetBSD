@@ -6,7 +6,11 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      '10'))])
 
 node("netbsd") {
+    os = "NetBSD"
     yapet.checkout()
     yapet.autoconf()
-    yapet.build "NetBSD"
+    yapet.configure os
+    yapet.buildDoc os
+    yapet.build os
+    yapet.check os
 }

@@ -6,7 +6,11 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      '10'))])
 
 node("openbsd") {
+    os = "OpenBSD"
     yapet.checkout()
     yapet.autoconf()
-    yapet.build "OpenBSD"
+    yapet.configure os
+    yapet.buildDoc os
+    yapet.build os
+    yapet.check os
 }
