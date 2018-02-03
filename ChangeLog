@@ -7,6 +7,8 @@ YAPET 1.1
 
       * Compiles with GCC 6, Clang 6.0.
 
+      * Use libyacurs 0.2.
+
       * Supports OpenSSL 1.1.
       
 
