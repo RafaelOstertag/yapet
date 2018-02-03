@@ -3,7 +3,9 @@ News
 
 YAPET 1.1
 
-      * Compiles with GCC 6.
+      * Dropped NEWS, is now ChangeLog.
+
+      * Compiles with GCC 6, Clang 6.0.
 
       * Supports OpenSSL 1.1.
       
