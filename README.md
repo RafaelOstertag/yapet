@@ -9,21 +9,36 @@ Build Primer
 
 1. Clone the repository
 1. Switch to the development branch
+
     git checkout development
-1. Fetch the libyacurs submodule
+
+2. Fetch the libyacurs submodule
+
     git submodule init
     git submodule update
-1. Create stub `README` and `ChangeLog` files
+
+3. Create stub `README` and `ChangeLog` files
+
     touch README ChangeLog libyacurs/ChangeLog
-1. Run `autoreconf`
+
+4. Run `autoreconf`
+
     autoreconf -I m4 -i
-1. Create the build directory
+
+5. Create the build directory
+
     mkdir obj && cd obj
-1. Configure and build
+
+6. Configure and build
+
     ../configure
-1. Create the man pages and `README` file
+
+7. Create the man pages and `README` file
+
     cd doc && gmake -f Makefile.doc
-1. Build YAPET
+
+8. Build YAPET
+
     cd .. && gmake
 	
 Bootstrapping the project is cumbersome because I don't keep the
