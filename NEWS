@@ -3,8 +3,6 @@ News
 
 YAPET 1.1
 
-      * Dropped NEWS, is now ChangeLog.
-
       * Compiles with GCC 6, Clang 6.0.
 
       * Use libyacurs 0.2.
