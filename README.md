@@ -9,8 +9,9 @@ Build Primer
 
 1. Clone the repository
 1. Switch to the development branch
-
-    git checkout development
+```
+git checkout development
+```
 
 2. Fetch the libyacurs submodule
 
