@@ -8,6 +8,8 @@ node("freebsd") {
     yapet.notify {
 	os = "FreeBSD"
 	yapet.checkout()
+        yapet.makeChangeLog()
+        yapet.makeLibyacursSubmoduleChangeLog()
 	yapet.autoconf()
 	yapet.configure os
 	yapet.buildDoc os

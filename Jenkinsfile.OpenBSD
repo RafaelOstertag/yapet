@@ -9,6 +9,8 @@ node("openbsd") {
     yapet.notify {
 	os = "OpenBSD"
 	yapet.checkout()
+        yapet.makeChangeLog()
+        yapet.makeLibyacursSubmoduleChangeLog()
 	yapet.autoconf()
 	yapet.configure os
 	yapet.buildDoc os
