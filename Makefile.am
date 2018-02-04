@@ -20,7 +20,7 @@ desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
 if !DISABLEINSTALLDOC
-textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE NEWS
+textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE
 textdocdir = $(docdir)
 endif # !DISABLEINSTALLDOC
 

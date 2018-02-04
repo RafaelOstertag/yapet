@@ -1,0 +1,17 @@
+@Library('yapetJenkins') _
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
+				      artifactNumToKeepStr: '',
+				      daysToKeepStr: '', numToKeepStr:
+				      '10'))])
+node("freebsd") {
+    yapet.notify {
+	os = "FreeBSD"
+	yapet.checkout()
+	yapet.autoconf()
+	yapet.configure os
+	yapet.buildDoc os
+	yapet.build os
+	yapet.check os
+    }
+}

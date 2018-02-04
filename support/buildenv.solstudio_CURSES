@@ -1,8 +1,0 @@
-XML_CATALOG_FILES=/opt/guengel/etc/xml/catalog.xml
-CC=cc
-CXX=CC
-CPPFLAGS='-I/usr/sfw/include' # For openssl
-CXXFLAGS='-xO0 -g +w'
-LDFLAGS='-L/usr/sfw/lib -R/usr/sfw/lib' # For openssl
-PATH=/usr/bin:/usr/sbin:/usr/ccs/bin
-export XML_CATALOG_FILES CC CXX CXXFLAGS PATH CPPFLAGS LDFLAGS
