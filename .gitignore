@@ -4,8 +4,11 @@
 *.lo
 *.o
 *~
+.dirstamp
+nbproject
 .deps
 .libs
+ChangeLog
 DESIGN
 INSTALL
 Makefile

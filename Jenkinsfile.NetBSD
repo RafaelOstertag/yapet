@@ -9,6 +9,8 @@ node("netbsd") {
     yapet.notify {    
 	os = "NetBSD"
 	yapet.checkout()
+        yapet.makeChangeLog()
+        yapet.makeLibyacursSubmoduleChangeLog()
 	yapet.autoconf()
 	yapet.configure os
 	yapet.buildDoc os
