@@ -15,5 +15,6 @@ node("freebsd") {
 	yapet.buildDoc os
 	yapet.build os
 	yapet.check os
+        release.roll()
     }
 }
