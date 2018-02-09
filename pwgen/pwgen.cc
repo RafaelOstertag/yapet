@@ -37,7 +37,7 @@ using namespace YAPET::PWGEN;
  * Use only on zero terminated passwords!
  */
 void
-PWGen::sanitize_password() throw(std::logic_error) {
+PWGen::sanitize_password() {
     if ( (static_cast<size_t>(cp->numPoolsAllocated()) > password_len) ||
 	 (cp->numPoolsNotRead() == 0))  /* No can do */ return;
 
@@ -62,7 +62,7 @@ PWGen::sanitize_password() throw(std::logic_error) {
 }
 
 char
-PWGen::getCharFromUnusedPools() throw(std::logic_error) {
+PWGen::getCharFromUnusedPools() {
     char suggestion = 0;
     if (cp->numPoolsNotRead() > 0) {
 	// Find out which one(s) are not read
@@ -101,19 +101,19 @@ PWGen::getCharFromUnusedPools() throw(std::logic_error) {
 }
 
 void
-PWGen::init (int p, RNGENGINE rnge) throw (std::runtime_error) {
+PWGen::init (int p, RNGENGINE rnge) {
     cp = new CharacterPool (p);
     rng = new RNG(rnge);
 }
 
-PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge) throw (std::runtime_error) : cp (0), rng(0), password (0), password_len (0) {
+PWGen::PWGen (SUBPOOLS p, RNGENGINE rnge)  : cp (0), rng(0), password (0), password_len (0) {
     init (p, rnge);
     assert (cp != 0);
     assert (rng != 0);
     assert (password == 0);
 }
 
-PWGen::PWGen (int p, RNGENGINE rnge) throw (std::runtime_error) : cp (0), rng(0), password (0), password_len (0) {
+PWGen::PWGen (int p, RNGENGINE rnge) : cp (0), rng(0), password (0), password_len (0) {
     init (p, rnge);
     assert (cp != 0);
     assert (rng != 0);
@@ -157,7 +157,7 @@ PWGen::~PWGen() throw() {
 }
 
 void
-PWGen::setNewPool (int p) throw (std::runtime_error) {
+PWGen::setNewPool (int p) {
     assert (cp != 0);
     delete cp;
     cp = new CharacterPool (p);
@@ -165,7 +165,7 @@ PWGen::setNewPool (int p) throw (std::runtime_error) {
 }
 
 void
-PWGen::setNewRNG (RNGENGINE rnge) throw (std::runtime_error) {
+PWGen::setNewRNG (RNGENGINE rnge) {
     assert (rng != 0);
     delete rng;
     rng = new RNG (rnge);
@@ -173,7 +173,7 @@ PWGen::setNewRNG (RNGENGINE rnge) throw (std::runtime_error) {
 }
 
 void
-PWGen::generatePassword (size_t len) throw (std::logic_error) {
+PWGen::generatePassword (size_t len) {
     if (len == 0) return;
 
     if (password != 0) {
