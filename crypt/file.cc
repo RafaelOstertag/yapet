@@ -98,7 +98,7 @@ const char RECOG_STR[] = "YAPET1.0";
  * (S_IRUSR|S_IWUSR).
  */
 void
-File::checkFileSecurity() throw (YAPETException) {
+File::checkFileSecurity() {
     struct stat buf;
     int err = fstat (fd, &buf);
 
@@ -127,7 +127,7 @@ File::checkFileSecurity() throw (YAPETException) {
  * YAPETRetryException if the error can be avoided using non-secure settings.
  */
 void
-File::setFileSecurity() throw (YAPETException) {
+File::setFileSecurity() {
     struct stat buf;
     int err = fstat (fd, &buf);
 
@@ -156,7 +156,7 @@ File::setFileSecurity() throw (YAPETException) {
  *
  */
 void
-File::openCreate() throw (YAPETException) {
+File::openCreate() {
     fd = ::open (filename.c_str(),
                  O_RDWR | O_CREAT | O_TRUNC | O_APPEND,
                  (usefsecurity ? S_IRUSR | S_IWUSR :
@@ -176,7 +176,7 @@ File::openCreate() throw (YAPETException) {
  * exist, the method throws an exception.
  */
 void
-File::openNoCreate() throw (YAPETException) {
+File::openNoCreate() {
     fd = ::open (filename.c_str(), O_RDWR | O_APPEND);
 
     if (fd == -1)
@@ -195,7 +195,7 @@ File::openNoCreate() throw (YAPETException) {
  * @return a \c time_t holdign the last modification date.
  */
 int64_t
-File::lastModified() const throw (YAPETException) {
+File::lastModified() const {
     struct stat st_buf;
     int retval = fstat (fd, &st_buf);
 
@@ -213,7 +213,7 @@ File::lastModified() const throw (YAPETException) {
  * file.
  */
 void
-File::seekCurr (off_t offset) const throw (YAPETException) {
+File::seekCurr (off_t offset) const {
     off_t pos = lseek (fd, offset, SEEK_CUR);
 
     if ( ( (off_t) - 1) == pos)
@@ -226,7 +226,7 @@ File::seekCurr (off_t offset) const throw (YAPETException) {
  * @param offset the offset in bytes from the beginning.
  */
 void
-File::seekAbs (off_t offset) const throw (YAPETException) {
+File::seekAbs (off_t offset) const {
     off_t pos = lseek (fd, offset, SEEK_SET);
 
     if ( ( (off_t) - 1) == pos)
@@ -242,7 +242,7 @@ File::seekAbs (off_t offset) const throw (YAPETException) {
  *
  */
 void
-File::preparePWSave() throw (YAPETException) {
+File::preparePWSave() {
     BDBuffer* curr_header = readHeader();
     ::close (fd);
 
@@ -266,7 +266,7 @@ File::preparePWSave() throw (YAPETException) {
  * read() will return the first password record.
  */
 void
-File::seekDataSection() const throw (YAPETException) {
+File::seekDataSection() const {
     seekAbs (std::strlen (RECOG_STR) );
     uint32_t len;
     int retval = ::read (fd, &len, sizeof (uint32_t) );
@@ -299,7 +299,7 @@ File::seekDataSection() const throw (YAPETException) {
  * been reached.
  */
 BDBuffer*
-File::read() const throw (YAPETException) {
+File::read() const {
     uint32_t len;
     int retval = ::read (fd, &len, sizeof (uint32_t) );
 
@@ -345,8 +345,7 @@ File::read() const throw (YAPETException) {
  * position the file pointer points to.
  */
 void
-File::write (const BDBuffer& buff, bool forceappend)
-throw (YAPETException) {
+File::write (const BDBuffer& buff, bool forceappend) {
     if (forceappend) {
         off_t pos = lseek (fd, 0, SEEK_END);
 
@@ -382,7 +381,7 @@ throw (YAPETException) {
  * @return \c true if the file's size is zero, \c false otherwise.
  */
 bool
-File::isempty() const throw (YAPETException) {
+File::isempty() const {
     struct stat st_buf;
     int retval = fstat (fd, &st_buf);
 
@@ -404,7 +403,7 @@ File::isempty() const throw (YAPETException) {
  * @param key reference to the key used to encrypt the header.
  */
 void
-File::initFile (const Key& key) throw (YAPETException) {
+File::initFile (const Key& key) {
     Crypt crypt (key);
     Record<FileHeader_64> header;
     FileHeader_64* ptr = header;
@@ -444,7 +443,7 @@ File::initFile (const Key& key) throw (YAPETException) {
  */
 void
 File::writeHeader (const Record<FileHeader_64>& header, const Key& key)
-throw (YAPETException) {
+{
     Crypt crypt (key);
     BDBuffer* buff = 0;
 
@@ -474,7 +473,7 @@ throw (YAPETException) {
  * header
  */
 void
-File::writeHeader (const BDBuffer& enc_header) throw (YAPETException) {
+File::writeHeader (const BDBuffer& enc_header) {
     seekAbs (0);
     // Write the recognition string
     ssize_t retval = ::write (fd, RECOG_STR, std::strlen (RECOG_STR) );
@@ -502,7 +501,7 @@ File::writeHeader (const BDBuffer& enc_header) throw (YAPETException) {
  * header. The memory occupied has to be freed by the caller.
  */
 BDBuffer*
-File::readHeader() const throw (YAPETException) {
+File::readHeader() const {
     seekAbs (0);
     char* buff = (char*) alloca (std::strlen (RECOG_STR) );
 
@@ -553,7 +552,7 @@ File::readHeader() const throw (YAPETException) {
  * FileHeader_64, 0 is returned.
  */
 void
-File::readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const throw(YAPETException) {
+File::readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const {
     assert(ptr32 != 0 && ptr64 != 0);
     if (ptr32 == 0)
 	throw YAPETException(_("Null pointer passed in ptr32"), ZEROPOINTER);
@@ -648,7 +647,7 @@ File::readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeade
  */
 void
 File::validateKey (const Key& key)
-throw (YAPETException, YAPETInvalidPasswordException) {
+{
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = 0;
     Record<FileHeader_64>* dec_header_64 = 0;
@@ -711,7 +710,7 @@ throw (YAPETException, YAPETInvalidPasswordException) {
  * read access.
  */
 File::File (const std::string& fn, const Key& key, bool create, bool secure)
-    throw (YAPETException) : filename (fn), mtime(0), usefsecurity (secure) {
+    : filename (fn), mtime(0), usefsecurity (secure) {
     if (create)
         openCreate();
     else
@@ -727,7 +726,7 @@ File::File (const std::string& fn, const Key& key, bool create, bool secure)
 /**
  * Duplicates the file descriptor by calling \c dup().
  */
-File::File (const File& f) throw (YAPETException) {
+File::File (const File& f) {
     fd = dup (f.fd);
 
     if (fd == -1)
@@ -764,7 +763,7 @@ File::~File() {
  * @sa PartDec
  */
 void
-File::save (const std::list<PartDec>& records, bool forcewrite) throw (YAPETException, YAPETRetryException) {
+File::save (const std::list<PartDec>& records, bool forcewrite) {
     if ( (mtime != lastModified() ) && !forcewrite)
         throw YAPETRetryException (_ ("File has been externally modified") );
 
@@ -794,7 +793,7 @@ File::save (const std::list<PartDec>& records, bool forcewrite) throw (YAPETExce
  * @sa PartDec
  */
 std::list<PartDec>
-File::read (const Key& key) const throw (YAPETException) {
+File::read (const Key& key) const {
     seekDataSection();
     BDBuffer* buff = 0;
     std::list<PartDec> retval;
@@ -834,7 +833,7 @@ File::read (const Key& key) const throw (YAPETException) {
 void
 File::setNewKey (const Key& oldkey,
                  const Key& newkey,
-		 bool forcewrite) throw (YAPETException, YAPETRetryException) {
+		 bool forcewrite) {
     if ( (mtime != lastModified() ) && !forcewrite)
         throw YAPETRetryException (_ ("File has been externally modified") );
 
@@ -909,8 +908,7 @@ File::setNewKey (const Key& oldkey,
  * set.
  */
 int64_t
-File::getMasterPWSet (const Key& key) const
-throw (YAPETException, YAPETInvalidPasswordException) {
+File::getMasterPWSet (const Key& key) const {
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = 0;
     Record<FileHeader_64>* dec_header_64 = 0;
@@ -945,7 +943,7 @@ throw (YAPETException, YAPETInvalidPasswordException) {
  * Return the file version.
  */
 FILE_VERSION
-File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException) {
+File::getFileVersion(const Key& key) const {
     // Expect either a 32bit or 64bit header
     Record<FileHeader_32>* dec_header_32 = 0;
     Record<FileHeader_64>* dec_header_64 = 0;
@@ -975,7 +973,7 @@ File::getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPa
 }
 
 const File&
-File::operator= (const File & f) throw (YAPETException) {
+File::operator= (const File & f) {
     if (this == &f) return *this;
 
     close (fd);

@@ -107,10 +107,10 @@ class CSVImport {
         void logError (unsigned long lno, const std::string& errmsg);
 
     public:
-        CSVImport (std::string src, std::string dst, char sep, bool verb = true) throw (std::runtime_error);
+        CSVImport (std::string src, std::string dst, char sep, bool verb = true);
         ~CSVImport() {};
         //! Do the import.
-        void import (const char* pw) throw (std::exception);
+        void import (const char* pw);
         //! Set the verbosity.
         inline void setVerbose (bool v) {
             verbose = v;

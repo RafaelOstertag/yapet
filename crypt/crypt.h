@@ -105,7 +105,7 @@ namespace YAPET {
 
         public:
             //! Constructor
-            Crypt (const Key& k) throw (YAPETException);
+            Crypt (const Key& k);
             Crypt (const Crypt& c);
             inline ~Crypt() {}
 
@@ -157,8 +157,7 @@ namespace YAPET {
              * @sa Record, BDBuffer
              */
             template<class T>
-            BDBuffer* encrypt (const Record<T>& data)
-            throw (YAPETException, YAPETEncryptionException) {
+            BDBuffer* encrypt (const Record<T>& data) {
                 if (key.ivec_size() != iv_length)
                     throw YAPETException (_ ("IVec length missmatch") );
 
@@ -234,8 +233,7 @@ namespace YAPET {
              * @sa Record, BDBuffer
              */
             template<class T>
-            Record<T>* decrypt (const BDBuffer& data)
-            throw (YAPETException, YAPETEncryptionException) {
+            Record<T>* decrypt (const BDBuffer& data) {
                 if ( ( (unsigned int) key.ivec_size() ) != iv_length)
                     throw YAPETException (_ ("IVec length missmatch") );
 

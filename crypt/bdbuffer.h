@@ -82,20 +82,20 @@ namespace YAPET {
 
         protected:
             //! Allocates memory of a given size
-            uint8_t* alloc_mem (uint32_t s) throw (YAPETException);
+            uint8_t* alloc_mem (uint32_t s);
             //! Clears and frees memory
             void free_mem (uint8_t* d, uint32_t s);
 
         public:
             //! Initializes the object with a given size of memory
-            BDBuffer (uint32_t is) throw (YAPETException);
+            BDBuffer (uint32_t is);
             BDBuffer();
-            BDBuffer (const BDBuffer& ed) throw (YAPETException);
+            BDBuffer (const BDBuffer& ed);
             //! Destructor
             ~BDBuffer();
 
             //! Resize the memory to a given size
-            void resize (uint32_t ns) throw (YAPETException);
+            void resize (uint32_t ns);
             /**
              * @brief Get the size of the buffer
              *
@@ -109,9 +109,9 @@ namespace YAPET {
             }
 
             //! Access a location inside the memory chunk
-            uint8_t* at (uint32_t pos) throw (std::out_of_range);
+            uint8_t* at (uint32_t pos);
             //! Access a location inside the memory chunk
-            const uint8_t* at (uint32_t pos) const throw (std::out_of_range);
+            const uint8_t* at (uint32_t pos) const;
 
             //! Returns the pointer to the memory chunk
             const uint8_t* operator() () const {
