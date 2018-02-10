@@ -3,7 +3,8 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
-				      '10'))])
+				      '10')),
+            pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']])])
 
 node("openbsd") {
     yapet.notify {
