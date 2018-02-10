@@ -3,7 +3,7 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
-				      '10')),
+				      '5')),
             pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']])])
 
 node("linux") {
