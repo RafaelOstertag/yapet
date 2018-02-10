@@ -72,7 +72,7 @@ Crypt::destroy_context(EVP_CIPHER_CTX *context) {
  * @throw YAPETException in case the key length of the cipher cannot be
  * set to the length of the key provided.
  */
-Crypt::Crypt (const Key& k) throw (YAPETException) : cipher (0),
+Crypt::Crypt (const Key& k) : cipher (0),
         iv_length (0),
         key_length (0),
         key (k) {

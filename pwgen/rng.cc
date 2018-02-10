@@ -46,7 +46,7 @@ using namespace YAPET::PWGEN;
 int RNG::rng_available = 0;
 
 void
-RNG::check_availability() throw (PWGenException) {
+RNG::check_availability() {
     if (access ("/dev/random", R_OK) == 0)
         rng_available |= DEVRANDOM;
 
@@ -79,7 +79,7 @@ RNG::getAvailableRNGs() {
  * @param request the engine requested.
  */
 void
-RNG::init_rng (RNGENGINE request) throw (PWGenException) {
+RNG::init_rng (RNGENGINE request) {
     assert (rng_available != 0);
 
     if (rng_available == 0)
@@ -135,7 +135,7 @@ RNG::init_rng (RNGENGINE request) throw (PWGenException) {
  * @return a random number
  */
 size_t
-RNG::devrandom (size_t ceil) throw (PWGenException) {
+RNG::devrandom (size_t ceil)  {
     assert (rng_initialized);
     assert (rng_used == DEVRANDOM || rng_used == DEVURANDOM);
     assert (fd > -1);
@@ -236,7 +236,7 @@ RNG::_rand (size_t ceil) throw() {
  *
  * @param request the requested engine or AUTO for auto determination.
  */
-RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
+RNG::RNG (RNGENGINE request) : fd (-1),
         rng_initialized (false),
         rng_used (NONE) {
     check_availability();
@@ -272,7 +272,7 @@ RNG::RNG (RNGENGINE request) throw (PWGenException) : fd (-1),
 //
 // *** Copy Constructor
 //
-RNG::RNG (const RNG& r) throw (PWGenException) {
+RNG::RNG (const RNG& r) {
     assert (r.rng_initialized);
 
     // Code below takes care of the file descriptor
@@ -311,7 +311,7 @@ RNG::~RNG() throw() {
 }
 
 size_t
-RNG::getRandomNumber (size_t ceil) throw (PWGenException) {
+RNG::getRandomNumber (size_t ceil) {
     assert(ceil > 0);
     if (ceil == 0) return 0;
     assert (rng_initialized == true);

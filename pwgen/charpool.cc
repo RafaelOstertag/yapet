@@ -57,7 +57,7 @@ inline const char* CharacterPool::get_other() {
 }
 
 void
-CharacterPool::init (int p) throw (std::runtime_error) {
+CharacterPool::init (int p) {
     if (p == 0)
         throw std::runtime_error (_ ("Subpools may not be zero") );
 
@@ -118,7 +118,7 @@ CharacterPool::init (int p) throw (std::runtime_error) {
     assert (copy_pos == pool_length);
 }
 
-CharacterPool::CharacterPool (int p)  throw (std::runtime_error) : pool (0),
+CharacterPool::CharacterPool (int p) : pool (0),
 								   pool_length (0),
 								   pools_allocated (p),
 								   pools_reads(0)
@@ -126,7 +126,7 @@ CharacterPool::CharacterPool (int p)  throw (std::runtime_error) : pool (0),
     init (p);
 }
 
-CharacterPool::CharacterPool (SUBPOOLS p)  throw (std::runtime_error) : pool (0),
+CharacterPool::CharacterPool (SUBPOOLS p) : pool (0),
 									pool_length (0),
 									pools_allocated (p),
 									pools_reads(0)
@@ -142,7 +142,7 @@ CharacterPool::~CharacterPool() throw() {
 //
 // Copy constructor
 //
-CharacterPool::CharacterPool (const CharacterPool& cp) throw (std::runtime_error) :     pool (0),
+CharacterPool::CharacterPool (const CharacterPool& cp)  :     pool (0),
         pool_length (cp.pool_length),
 											pools_allocated (cp.pools_allocated),
 											pools_reads (cp.pools_reads) {
@@ -245,7 +245,7 @@ CharacterPool::fromPool(char c) const {
  * pos greater than or equal to \c getPoolLength()
  */
 char
-CharacterPool::operator[] (size_t pos) throw (std::logic_error) {
+CharacterPool::operator[] (size_t pos)  {
     if (pos >= pool_length)
         throw std::out_of_range (_ ("No character at given position") );
 
@@ -267,7 +267,7 @@ CharacterPool::operator[] (size_t pos) throw (std::logic_error) {
 }
 
 const CharacterPool&
-CharacterPool::operator= (const CharacterPool & cp) throw (std::runtime_error) {
+CharacterPool::operator= (const CharacterPool & cp) {
     assert (pool != 0);
 
     if (&cp == this) return *this;

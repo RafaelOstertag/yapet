@@ -83,17 +83,17 @@ namespace YAPET {
             PartDec();
 
             PartDec (BDBuffer& bd,
-                     const Key& key) throw (YAPETException);
+                     const Key& key);
 
             PartDec (Record<PasswordRecord>& pr,
-                     const Key& key) throw (YAPETException);
+                     const Key& key);
 
             PartDec (const PartDec& pd);
 
             ~PartDec();
 
             void setRecord (Record<PasswordRecord>& pr,
-                            const Key& key) throw (YAPETException);
+                            const Key& key);
             /**
              * @brief Get the encrypted password record.
              *

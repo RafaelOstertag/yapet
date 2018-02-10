@@ -75,7 +75,7 @@ Key::destroy_context(EVP_MD_CTX *context) {
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key::Key (const char* password) throw (YAPETException) {
+Key::Key (const char* password) {
     // Sentinel variable to check the size of the key
     uint8_t eff_keylength;
     //

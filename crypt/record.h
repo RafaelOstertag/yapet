@@ -85,7 +85,7 @@ namespace YAPET {
              * Allocates the proper amount of memory for holding the
              * struct and sets the \c _size field.
              */
-            void alloc_mem() throw (YAPETException) {
+            void alloc_mem() {
                 data = (T*) std::malloc (sizeof (T) );
 
                 if (data == 0)
@@ -114,7 +114,7 @@ namespace YAPET {
              * @param d reference to the struct from where the content
              * is copied to the allocated memory.
              */
-            Record<T> (const T& d) throw (YAPETException) {
+            Record<T> (const T& d) {
                 alloc_mem();
                 std::memcpy (data, &d, sizeof (T) );
             }
@@ -125,11 +125,11 @@ namespace YAPET {
              *
              * Allocates memory to hold a struct of the type \c T.
              */
-            Record<T>() throw (YAPETException) {
+            Record<T>() {
                 alloc_mem();
             }
 
-            Record<T> (const Record<T>& r) throw (YAPETException) {
+            Record<T> (const Record<T>& r) {
                 alloc_mem();
                 std::memcpy (data, r.data, _size);
             }
@@ -221,7 +221,7 @@ namespace YAPET {
              * @return const reference to \c this.
              */
             const Record<T>& operator= (const Record<T>& r)
-            throw (YAPETException) {
+             {
                 if (this == &r) return *this;
 
                 free_mem();
@@ -240,7 +240,7 @@ namespace YAPET {
              *
              * @return const reference to \c this.
              */
-            const Record<T>& operator= (const T& r) throw (YAPETException) {
+            const Record<T>& operator= (const T& r) {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
@@ -257,7 +257,7 @@ namespace YAPET {
              *
              * @return const reference to \c this.
              */
-            const Record<T>& operator= (const T* r) throw (YAPETException) {
+            const Record<T>& operator= (const T* r) {
                 free_mem();
                 // This sets _size member too
                 alloc_mem();
@@ -279,7 +279,7 @@ namespace YAPET {
              * @return const reference to \c this.
              */
             const Record<T>& operator= (const BDBuffer& bdb)
-            throw (YAPETException) {
+            {
 		// As of version 0.6, the exnum is used to determine whether to use a 32 or 64 bit header
                 if (bdb.size() < _size)
                     throw YAPETException (_ ("BDBuffer too small. Cannot assign to Record<T>"), BDBUFFER_TOO_SMALL );

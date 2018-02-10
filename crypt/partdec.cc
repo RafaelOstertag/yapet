@@ -41,8 +41,7 @@ PartDec::PartDec() {
     std::memset (name, 0, NAME_SIZE);
 }
 
-PartDec::PartDec (BDBuffer& bd, const Key& key)
-throw (YAPETException) : enc_data (bd) {
+PartDec::PartDec (BDBuffer& bd, const Key& key) : enc_data (bd) {
     Crypt crypt (key);
     Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord> (bd);
     PasswordRecord* ptr_dec_pw_rec = *dec_pw_rec;
@@ -50,7 +49,7 @@ throw (YAPETException) : enc_data (bd) {
     delete dec_pw_rec;
 }
 
-PartDec::PartDec (Record<PasswordRecord>& pr, const Key& key) throw (YAPETException) {
+PartDec::PartDec (Record<PasswordRecord>& pr, const Key& key) {
     setRecord (pr, key);
 }
 
@@ -63,7 +62,7 @@ PartDec::~PartDec() {
 }
 
 void
-PartDec::setRecord (Record<PasswordRecord>& pr, const Key& key) throw (YAPETException) {
+PartDec::setRecord (Record<PasswordRecord>& pr, const Key& key) {
     PasswordRecord* ptr_pr = pr;
     std::memcpy (name, ptr_pr->name, NAME_SIZE);
     Crypt crypt (key);

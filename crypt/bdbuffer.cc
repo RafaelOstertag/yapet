@@ -47,7 +47,7 @@ using namespace YAPET;
  * @throw YAPETException if the memory could not be allocated.
  */
 uint8_t*
-BDBuffer::alloc_mem (uint32_t s) throw (YAPETException) {
+BDBuffer::alloc_mem (uint32_t s) {
     uint8_t* tmp = (uint8_t*) std::malloc (s);
 
     if (tmp == 0)
@@ -76,7 +76,7 @@ BDBuffer::free_mem (uint8_t* d, uint32_t s) {
  *
  * @param is number of bytes to be allocated.
  */
-BDBuffer::BDBuffer (uint32_t is) throw (YAPETException) : _size (is) {
+BDBuffer::BDBuffer (uint32_t is) : _size (is) {
     data = alloc_mem (_size);
 }
 
@@ -88,7 +88,7 @@ BDBuffer::BDBuffer (uint32_t is) throw (YAPETException) : _size (is) {
  */
 BDBuffer::BDBuffer() : _size (0), data (0) { }
 
-BDBuffer::BDBuffer (const BDBuffer& ed) throw (YAPETException) {
+BDBuffer::BDBuffer (const BDBuffer& ed) {
     if (ed.data == 0) {
         data = 0;
         _size = 0;
@@ -126,7 +126,7 @@ BDBuffer::~BDBuffer() {
  * @param ns the new size of the memory chunk serving as buffer
  */
 void
-BDBuffer::resize (uint32_t ns) throw (YAPETException) {
+BDBuffer::resize (uint32_t ns) {
     if (data == 0) {
         data = alloc_mem (ns);
         _size = ns;
@@ -161,7 +161,7 @@ BDBuffer::resize (uint32_t ns) throw (YAPETException) {
  * index.
  */
 uint8_t*
-BDBuffer::at (uint32_t pos) throw (std::out_of_range) {
+BDBuffer::at (uint32_t pos) {
     if (pos > (_size - 1) )
         throw std::out_of_range (_ ("Position out of range") );
 
@@ -183,7 +183,7 @@ BDBuffer::at (uint32_t pos) throw (std::out_of_range) {
  * @throw std::out_of_range exception if \c pos is not a valid index.
  */
 const uint8_t*
-BDBuffer::at (uint32_t pos) const throw (std::out_of_range) {
+BDBuffer::at (uint32_t pos) const {
     if (pos > (_size - 1) )
         throw std::out_of_range (_ ("Position out of range") );
 

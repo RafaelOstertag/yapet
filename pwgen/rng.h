@@ -95,22 +95,22 @@ namespace YAPET {
                  */
                 static int rng_available;
 
-                static void check_availability() throw (PWGenException);
+                static void check_availability();
                 //! Initializes the given engine.
-                void init_rng (RNGENGINE request) throw (PWGenException);
+                void init_rng (RNGENGINE request);
 
 
-                size_t devrandom (size_t ceil) throw (PWGenException);
+                size_t devrandom (size_t ceil);
                 size_t _lrand48 (size_t ceil) throw();
                 size_t _rand (size_t ceil) throw();
 
             public:
                 //! Try a specific RNG Engine or use automatically determination
-                RNG (RNGENGINE request = AUTO) throw (PWGenException);
-                RNG (const RNG& r) throw (PWGenException);
+                RNG (RNGENGINE request = AUTO);
+                RNG (const RNG& r);
                 virtual ~RNG() throw();
 
-                size_t getRandomNumber (size_t ceil) throw (PWGenException);
+                size_t getRandomNumber (size_t ceil);
 
 		static int getAvailableRNGs();
 
@@ -118,7 +118,7 @@ namespace YAPET {
                     return rng_used;
                 }
 
-                inline size_t operator() (size_t ceil) throw (PWGenException) {
+                inline size_t operator() (size_t ceil) {
                     return getRandomNumber (ceil);
                 }
                 const RNG& operator= (const RNG& r) throw();

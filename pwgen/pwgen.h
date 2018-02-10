@@ -62,19 +62,19 @@ namespace YAPET {
                 const char* password;
                 size_t password_len;
 
-		void sanitize_password() throw(std::logic_error);
-		char getCharFromUnusedPools() throw(std::logic_error);
-                void init (int p, RNGENGINE rnge) throw (std::runtime_error);
+		void sanitize_password();
+		char getCharFromUnusedPools();
+                void init (int p, RNGENGINE rnge);
 
             public:
-                PWGen (SUBPOOLS p, RNGENGINE rnge=AUTO) throw (std::runtime_error);
-                PWGen (int p, RNGENGINE rnge=AUTO) throw (std::runtime_error);
+                PWGen (SUBPOOLS p, RNGENGINE rnge=AUTO);
+                PWGen (int p, RNGENGINE rnge=AUTO);
                 PWGen (const PWGen& pw) throw();
                 virtual ~PWGen() throw();
 
-                void setNewPool (int p) throw (std::runtime_error);
-		void setNewRNG (RNGENGINE rnge) throw (std::runtime_error);
-                void generatePassword (size_t len) throw (std::logic_error);
+                void setNewPool (int p);
+		void setNewRNG (RNGENGINE rnge);
+                void generatePassword (size_t len);
                 const char* getPassword() const throw();
                 inline RNGENGINE getRNGUsed() const {
                     return rng->getRNGEngineUsed();
