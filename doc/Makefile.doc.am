@@ -29,6 +29,7 @@ docbook_html_xsl = $(DOCBOOK_BASE)/xhtml/docbook.xsl
 docbook_man_xsl     = $(DOCBOOK_BASE)/manpages/docbook.xsl
 
 XSLTPROC        = xsltproc
+XSL_PARAMS	= --stringparam make.year.ranges 1
 W3M             = w3m
 
 STATIC_FILES = $(srcdir)/bugreport.sgml $(srcdir)/caution.sgml	\
@@ -70,14 +71,14 @@ all: $(TARGETS)
 .sgml.html: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $@
 	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.profile $(docbook_profile_xsl) $<
-	$(XSLTPROC) -o $@ $(docbook_html_xsl) $@.profile
+	$(XSLTPROC) $(XSL_PARAMS) -o $@ $(docbook_html_xsl) $@.profile
 	rm $@.profile
 
 # Debian's w3m uses -s instead -S. Instead of checking what is
 # supported, we simply call it again with -s upon error using -S
 $(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
 	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.tmp.html.profile $(docbook_profile_xsl) $(srcdir)/$@.sgml
-	$(XSLTPROC) --stringparam section.autolabel 1 -o $@.tmp.html $(docbook_html_xsl) $@.tmp.html.profile
+	$(XSLTPROC) $(XSL_PARAMS) --stringparam section.autolabel 1 -o $@.tmp.html $(docbook_html_xsl) $@.tmp.html.profile
 	$(W3M) -S -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null || $(W3M) -s -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null
 	rm $@.tmp.html.profile
 	rm $@.tmp.html
