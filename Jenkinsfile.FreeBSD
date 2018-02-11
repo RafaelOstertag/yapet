@@ -1,0 +1,21 @@
+@Library('yapetJenkins') _
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
+				      artifactNumToKeepStr: '',
+				      daysToKeepStr: '', numToKeepStr:
+				      '5')),
+            pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']])])
+node("freebsd") {
+    yapet.notify {
+	os = "FreeBSD"
+	yapet.checkout()
+        yapet.makeChangeLog()
+        yapet.makeLibyacursSubmoduleChangeLog()
+	yapet.autoconf()
+	yapet.configure os
+	yapet.buildDoc os
+	yapet.build os
+	yapet.check os
+        release.roll()
+    }
+}

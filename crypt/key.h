@@ -120,7 +120,7 @@ namespace YAPET {
 
         public:
             //! Initializes the key
-            Key (const char* password) throw (YAPETException);
+            Key (const char* password);
             Key (const Key& k);
             ~Key();
 

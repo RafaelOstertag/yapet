@@ -109,7 +109,7 @@ namespace YAPET {
 		 */
 		int pools_reads;
 
-                void init (int p) throw (std::runtime_error);
+                void init (int p);
 
             protected:
                 static const char* get_letters();
@@ -157,7 +157,7 @@ namespace YAPET {
 		    }
 		}
 
-                inline const char* getPool (size_t* len) const throw (std::runtime_error) {
+                inline const char* getPool (size_t* len) const {
 #ifndef NDEBUG
                     assert (len != 0);
 #else
@@ -174,10 +174,10 @@ namespace YAPET {
                 }
 
             public:
-                explicit CharacterPool (int p) throw (std::runtime_error);
-                explicit CharacterPool (SUBPOOLS p) throw (std::runtime_error);
+                explicit CharacterPool (int p);
+                explicit CharacterPool (SUBPOOLS p);
                 virtual ~CharacterPool() throw();
-                CharacterPool (const CharacterPool& cp) throw (std::runtime_error);
+                CharacterPool (const CharacterPool& cp);
 
 		/**
 		 * Returns the number of pools allocated.
@@ -230,13 +230,13 @@ namespace YAPET {
                 }
 
                 //! Return a character at the position specified
-                char operator[] (size_t pos) throw (std::logic_error);
+                char operator[] (size_t pos);
 
                 inline size_t operator() () const throw() {
                     return getPoolLength();
                 }
 
-                const CharacterPool& operator= (const CharacterPool& cp) throw (std::runtime_error);
+                const CharacterPool& operator= (const CharacterPool& cp);
 #ifdef DEBUG
                 int print_pools_allocated() const;
 #endif

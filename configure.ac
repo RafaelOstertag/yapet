@@ -8,7 +8,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SUBDIRS([libyacurs])
 
-AM_INIT_AUTOMAKE([check-news dist-bzip2 color-tests])
+AM_INIT_AUTOMAKE([check-news dist-xz color-tests])
 AM_SILENT_RULES([yes])
 
 

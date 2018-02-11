@@ -105,7 +105,7 @@ CSVImport::logError (unsigned long lno, const std::string& errmsg) {
  * @param verb enable/disable verbosity. Default \c true.
  */
 
-CSVImport::CSVImport (std::string src, std::string dst, char sep, bool verb) throw (std::runtime_error) :
+CSVImport::CSVImport (std::string src, std::string dst, char sep, bool verb) :
         srcfile (src),
         dstfile (dst),
         separator (sep),
@@ -122,7 +122,7 @@ CSVImport::CSVImport (std::string src, std::string dst, char sep, bool verb) thr
  * @param pw the password set on the destination file.
  */
 void
-CSVImport::import (const char* pw) throw (std::exception) {
+CSVImport::import (const char* pw) {
     std::ifstream csvfile (srcfile.c_str() );
 
     if (!csvfile)

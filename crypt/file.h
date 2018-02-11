@@ -224,22 +224,22 @@ namespace YAPET {
             bool usefsecurity;
 
             //! Checks the permissions and owner of a file for security
-            void checkFileSecurity() throw (YAPETException);
+            void checkFileSecurity();
             //! Sets the owner and permissions on a file
-            void setFileSecurity() throw (YAPETException);
+            void setFileSecurity();
 
             //! Creates and opens a new file.
-            void openCreate() throw (YAPETException);
+            void openCreate();
             //! Opens an existing file
-            void openNoCreate() throw (YAPETException);
+            void openNoCreate();
             //! Returns the last modification time of the open file
-            int64_t lastModified() const throw (YAPETException);
+            int64_t lastModified() const;
             //! Seek to a position relative to the current offset
-            void seekCurr (off_t offset) const throw (YAPETException);
+            void seekCurr (off_t offset) const;
             //! Seek to an absolute offset
-            void seekAbs (off_t offset) const throw (YAPETException);
+            void seekAbs (off_t offset) const;
             //! Prepare the file for saving the password records.
-            void preparePWSave() throw (YAPETException);
+            void preparePWSave();
 
         protected:
 	    template <class t>
@@ -324,31 +324,30 @@ namespace YAPET {
 
             //! Seeks to the first password record length indicator in
             //! the file
-            void seekDataSection() const throw (YAPETException);
+            void seekDataSection() const;
 
             //! Reads from the current offset in the file
-            BDBuffer* read() const throw (YAPETException);
+            BDBuffer* read() const;
             //! Writes at the current offset in the file
             void write (const BDBuffer& buff,
                         bool forceappend = false)
-            throw (YAPETException);
+           ;
             //! Indicates whether or not the file is empty
-            bool isempty() const throw (YAPETException);
+            bool isempty() const;
             //! Initializes an empty file
-            void initFile (const Key& key) throw (YAPETException);
+            void initFile (const Key& key);
             //! Writes the given header encrypted to the file
             void writeHeader (const Record<FileHeader_64>& header,
                               const Key& key)
-            throw (YAPETException);
+           ;
             //! Writes the given encrypted header to the file
-            void writeHeader (const BDBuffer& enc_header) throw (YAPETException);
+            void writeHeader (const BDBuffer& enc_header);
             //! Reads the encrypted header
-            BDBuffer* readHeader() const throw (YAPETException);
+            BDBuffer* readHeader() const;
 	    //! Reads the encrypted header and return it decrypted
-	    void readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const throw(YAPETException);
+	    void readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const;
             //! Validates the given key
-            void validateKey (const Key& key)
-            throw (YAPETException, YAPETInvalidPasswordException);
+            void validateKey (const Key& key);
 
         public:
             //! Constructor
@@ -356,29 +355,26 @@ namespace YAPET {
                   const Key& key,
                   bool create = false,
                   bool secure = true)
-            throw (YAPETException);
-            File (const File& f) throw (YAPETException);
+           ;
+            File (const File& f);
             ~File();
 
             //! Saves a password record list.
-            void save (const std::list<PartDec>& records,
-		       bool forcewrite=false)
-		throw (YAPETException, YAPETRetryException);
+            void save (const std::list<PartDec>& records, bool forcewrite=false);
             //! Reads the stored password records from the file.
-            std::list<PartDec> read (const Key& key) const throw (YAPETException);
+            std::list<PartDec> read (const Key& key) const;
             //! Returns the file name of the current file.
             std::string getFilename() const {
                 return filename;
             }
             //! Sets a new encryption key for the current file.
             void setNewKey (const Key& oldkey, const Key& newkey,
-			    bool forcewrite=false)
-		throw (YAPETException, YAPETRetryException);
-            int64_t getMasterPWSet (const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
+			    bool forcewrite=false);
+            int64_t getMasterPWSet (const Key& key) const;
 	    //! Return the file version
-	    FILE_VERSION getFileVersion(const Key& key) const throw (YAPETException, YAPETInvalidPasswordException);
+	    FILE_VERSION getFileVersion(const Key& key) const;
             //! Returns the time the master password was set
-            const File& operator= (const File& f) throw (YAPETException);
+            const File& operator= (const File& f);
 
             //! Returns whether or not file security is enabled
             bool filesecurityEnabled() const {
