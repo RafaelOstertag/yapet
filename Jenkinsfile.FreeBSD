@@ -4,7 +4,8 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
 				      artifactNumToKeepStr: '',
 				      daysToKeepStr: '', numToKeepStr:
 				      '5')),
-            pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']])])
+            pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']]),
+	    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/RafaelOstertag/yapet/']])
 node("freebsd") {
     yapet.notify {
 	os = "FreeBSD"
