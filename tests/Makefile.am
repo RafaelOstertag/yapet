@@ -44,7 +44,7 @@ test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc testimport.csv
 
 check_PROGRAMS = endianess key record bdbuffer enc partdec file file2	\
 file3 file4 file5 file6 corrupt foreign cfg1 cfgfile1 charpool1		\
-charpool2 rng1 pwgen1
+charpool2 rng1 pwgen1 securearray
 
 # Checks when building csv2yapet
 if BUILDCONVERTS
@@ -185,6 +185,9 @@ rng1_SOURCES = rng1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 pwgen1_LDADD = $(LIBINTL)
 pwgen1_SOURCES = pwgen1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 ../pwgen/rng.cc
+
+securearray_LDADD = $(top_builddir)/crypt/libyapet-crypt.la -lcppunit
+securearray_SOURCES = securearray.cc
 
 clean-local:
 	rm -rf SunWS_cache

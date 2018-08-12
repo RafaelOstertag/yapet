@@ -4,7 +4,7 @@ noinst_LTLIBRARIES = libyapet-crypt.la
 
 libyapet_crypt_la_SOURCES = structs.h record.h key.h yapetexception.h	\
 file.h crypt.h bdbuffer.h partdec.h key.cc file.cc crypt.cc		\
-bdbuffer.cc partdec.cc
+bdbuffer.cc partdec.cc securearray.cc
 
 libyapet_crypt_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir) $(OPENSSL_INCLUDES)
 libyapet_crypt_la_LIBADD = $(OPENSSL_LIBS)
