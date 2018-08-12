@@ -3,7 +3,7 @@
 # Tests may fail if not run serial
 AUTOMAKE_OPTIONS = serial-tests
 
-SUBDIRS = preload
+SUBDIRS = preload file
 
 # For silent rules
 cpy_verbose = $(cpy_verbose_$(V))
@@ -42,9 +42,9 @@ test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc testimport.csv
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = endianess key record bdbuffer enc partdec file file2	\
+check_PROGRAMS = endianess key record bdbuffer enc partdec file1 file2	\
 file3 file4 file5 file6 corrupt foreign cfg1 cfgfile1 charpool1		\
-charpool2 rng1 pwgen1 securearray
+charpool2 rng1 pwgen1
 
 # Checks when building csv2yapet
 if BUILDCONVERTS
@@ -86,8 +86,8 @@ enc_SOURCES = enc.cc tests.h
 partdec_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 partdec_SOURCES = partdec.cc tests.h
 
-file_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file_SOURCES = file.cc tests.h
+file1_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
+file1_SOURCES = file1.cc tests.h
 
 file2_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 file2_SOURCES = file2.cc tests.h
@@ -185,10 +185,6 @@ rng1_SOURCES = rng1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 pwgen1_LDADD = $(LIBINTL)
 pwgen1_SOURCES = pwgen1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 ../pwgen/rng.cc
-
-securearray_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(CPPUNIT_LIBS)
-securearray_CXXFLAGS =  $(CPPUNIT_CFLAGS)
-securearray_SOURCES = securearray.cc
 
 clean-local:
 	rm -rf SunWS_cache

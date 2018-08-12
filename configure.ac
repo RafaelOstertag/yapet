@@ -105,14 +105,16 @@ AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
 AM_CONDITIONAL([DISABLE_DEBUG], [test x$my_debug = xno])
 AC_CONFIG_FILES([Makefile
 	po/Makefile.in
+	file/Makefile
 	crypt/Makefile
 	pwgen/Makefile
 	ui/Makefile
 	glue/Makefile
 	yapet/Makefile
 	csv2yapet/Makefile
-        yapet2csv/Makefile
+    yapet2csv/Makefile
 	tests/Makefile
+	tests/file/Makefile
 	tests/preload/Makefile
 	tests/testpaths.h
 	doc/Makefile
