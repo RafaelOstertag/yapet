@@ -11,8 +11,6 @@ AC_CONFIG_SUBDIRS([libyacurs])
 AM_INIT_AUTOMAKE([check-news dist-xz color-tests])
 AM_SILENT_RULES([yes])
 
-
-
 # Progs
 AC_MSG_NOTICE([Checking required programs])
 AC_PROG_CC
@@ -52,24 +50,14 @@ AC_MSG_NOTICE([Checking C headers])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h libgen.h libintl.h locale.h stdint.h strings.h sys/time.h termios.h])
 
-AC_MSG_NOTICE([Checking C++ headers])
-AX_CXX_HEADER_STDCXX_98
-AS_IF([test x$ax_cv_cxx_stdcxx_98 = xno],
-	    [AC_MSG_ERROR([ISO C++ 98 not supported])])
 
 # Types
 AC_MSG_NOTICE([Checking types])
-AC_TYPE_INT32_T
-AC_TYPE_INT64_T
 AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UID_T
-AC_TYPE_UINT8_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT64_T
 
 # library functions
 AC_MSG_NOTICE([Checking functions])
