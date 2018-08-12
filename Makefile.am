@@ -1,5 +1,3 @@
-# $Id$
-
 DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
