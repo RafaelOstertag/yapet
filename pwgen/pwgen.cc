@@ -41,13 +41,13 @@ PWGen::sanitize_password() {
     if ( (static_cast<size_t>(cp->numPoolsAllocated()) > password_len) ||
 	 (cp->numPoolsNotRead() == 0))  /* No can do */ return;
 
-    for (register size_t pwit_outer = 0; pwit_outer < password_len; pwit_outer++) {
+    for (size_t pwit_outer = 0; pwit_outer < password_len; pwit_outer++) {
 	assert(password[pwit_outer] != '\0');
 
 	char c_outer = password[pwit_outer];
 	SUBPOOLS c_outer_pool = cp->fromPool(c_outer);
 	// Search for characters from same pool
-	for (register size_t pwit_inner = 0; pwit_inner < password_len; pwit_inner++) {
+	for (size_t pwit_inner = 0; pwit_inner < password_len; pwit_inner++) {
 	    if (cp->numPoolsNotRead() == 0) return;
 	    assert(password[pwit_inner] != '\0');
 	    char c_inner = password[pwit_inner];
