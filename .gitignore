@@ -71,3 +71,4 @@ tests/testpaths.h
 yapet.desktop
 yapet/yapet
 yapet2csv/yapet2csv
+.vscode/launch.json

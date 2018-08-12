@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "cstdint": "cpp",
+        "array": "cpp",
+        "cassert": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp",
+        "exception": "cpp",
+        "stdexcept": "cpp"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+}
