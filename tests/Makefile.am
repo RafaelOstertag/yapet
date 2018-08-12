@@ -186,7 +186,8 @@ pwgen1_LDADD = $(LIBINTL)
 pwgen1_SOURCES = pwgen1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 ../pwgen/rng.cc
 
-securearray_LDADD = $(top_builddir)/crypt/libyapet-crypt.la -lcppunit
+securearray_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(CPPUNIT_LIBS)
+securearray_CXXFLAGS =  $(CPPUNIT_CFLAGS)
 securearray_SOURCES = securearray.cc
 
 clean-local:

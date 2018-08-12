@@ -96,6 +96,8 @@ AC_MSG_NOTICE([Preparing NLS])
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18.1])
 
+PKG_CHECK_MODULES([CPPUNIT], [cppunit])
+
 # Some conditionals for the makefileS
 AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
 AM_CONDITIONAL([BUILDCONVERTS], [test x$my_buildconverts = xyes])
