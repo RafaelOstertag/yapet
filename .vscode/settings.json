@@ -9,7 +9,8 @@
         "utility": "cpp",
         "valarray": "cpp",
         "exception": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "string": "cpp"
     },
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
