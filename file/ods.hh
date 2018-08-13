@@ -11,13 +11,13 @@
 
 namespace yapet {
 namespace {
-template <typename T>
+template <class T>
 union Integer {
     T integer;
     std::uint8_t bytes[sizeof(T)];
 };
 
-template <typename T>
+template <class T>
 void reverseBytes(Integer<T>& integer) {
     Integer<T> reversed;
     auto integerSize = sizeof(integer.integer);
@@ -31,7 +31,7 @@ void reverseBytes(Integer<T>& integer) {
 /**
  * Convert an integer to On-Disk-Structure
  */
-template <typename T>
+template <class T>
 T toODS(T odsInt) {
 #ifdef WORDS_BIGENDIAN
     return odsInt;
@@ -45,7 +45,7 @@ T toODS(T odsInt) {
 /**
  * Convert an integer from On-Disk-Structure to host representation
  */
-template <typename T>
+template <class T>
 T toHost(T hostInt) {
 #ifdef WORDS_BIGENDIAN
     return hostInt;
