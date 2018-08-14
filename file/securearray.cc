@@ -1,13 +1,14 @@
 
 #include <stdexcept>
 
+#include "intl.h"
 #include "securearray.hh"
 
 using namespace yapet;
 
 SecureArray::SecureArray(size_t s) : _size{s} {
     if (_size < 1) {
-        throw std::invalid_argument("Size must be greater than zero");
+        throw std::invalid_argument(_("Size must be greater than zero"));
     }
 
     array = new std::uint8_t[_size];
