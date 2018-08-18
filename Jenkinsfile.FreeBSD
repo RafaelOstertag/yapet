@@ -36,5 +36,37 @@ pipeline {
 				}
 			}
 		}
+
+		stage("Build") {
+			steps {
+				dir("obj") {
+					sh '$MAKE all'
+				}
+			}
+		}
+
+		stage("Test") {
+			steps {
+				dir("obj") {
+					sh '$MAKE check'
+				}
+			}
+		}
+
+		stage("Check Dist") {
+			steps {
+				dir("obj") {
+					sh '$MAKE distcheck'
+				}
+			}
+		}
+	}
+
+	post {
+		// If distcheck fails, it leaves certain directories with read-only permissions.
+		// We unconditionally set write mode
+		dir("obj") {
+			sh "chmod -R u+w ."
+		}
 	}
 }
