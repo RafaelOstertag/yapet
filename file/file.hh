@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
-#include <optional>
+#include <utility>
 
 #include "securearray.hh"
 
@@ -37,13 +37,13 @@ class File {
      *
      * The bytes read are returned in a \c SecureArray.
      */
-    std::optional<SecureArray> read(std::uint32_t size);
+    std::pair<SecureArray, bool> read(std::uint32_t size);
     /**
      * Read the next record.
      *
      * Read the length indicator and return a \c SecureArray holding the data.
      */
-    std::optional<SecureArray> read();
+    std::pair<SecureArray, bool> read();
 
     /**
      * Write \c SecureArray to file.
@@ -71,11 +71,6 @@ class FileError : public std::runtime_error {
 
    public:
     FileError(const char* msg, int errorNumber = NO_SYSTEM_ERROR_SPECIFIED);
-
-    FileError(const FileError&) = delete;
-    FileError& operator=(const FileError&) = delete;
-    FileError(FileError&&) = delete;
-    FileError& operator=(FileError&&) = delete;
 
     int errorNumber() const { return _errorNumber; }
     const char* systemErrorMsg() const { return _systemErrorMsg; }

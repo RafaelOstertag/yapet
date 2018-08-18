@@ -24,6 +24,8 @@ LT_INIT
 LT_LANG([C++])
 AC_LANG([C++])
 
+AX_CXX_COMPILE_STDCXX([14], [noext], [mandatory])
+
 # "Enables"
 AC_ARG_ENABLE([debug],
 	[AS_HELP_STRING([--enable-debug],[enable debug code (Default: no)])],

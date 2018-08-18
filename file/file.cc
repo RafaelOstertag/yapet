@@ -77,7 +77,7 @@ void File::openNew() {
     _openFlag = true;
 }
 
-std::optional<SecureArray> File::read(std::uint32_t size) {
+std::pair<SecureArray, bool> File::read(std::uint32_t size) {
     throwIfFileNotOpen(_openFlag);
 
     if (size < 1) {
@@ -88,16 +88,16 @@ std::optional<SecureArray> File::read(std::uint32_t size) {
 
     auto res = std::fread(*array, size, ONE_ITEM, _file);
     if (std::feof(_file)) {
-        return {};
+        return std::move(std::pair<SecureArray, bool>{SecureArray{1}, false});
     }
     if (std::ferror(_file) || res != ONE_ITEM) {
         throw FileError{_("Error reading file"), errno};
     }
 
-    return std::move(array);
+    return std::move(std::pair<SecureArray, bool>{array, true});
 }
 
-std::optional<SecureArray> File::read() {
+std::pair<SecureArray, bool> File::read() {
     throwIfFileNotOpen(_openFlag);
 
     record_size_type odsRecordSize;
@@ -105,7 +105,7 @@ std::optional<SecureArray> File::read() {
     auto res =
         std::fread(&odsRecordSize, sizeof(record_size_type), ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file)) {
-        return {};
+        return std::move(std::pair<SecureArray, bool>{SecureArray{1}, false});
     }
 
     if (std::ferror(_file)) {
@@ -114,7 +114,7 @@ std::optional<SecureArray> File::read() {
 
     auto hostRecordSize = toHost(odsRecordSize);
 
-    return read(hostRecordSize);
+    return std::move(read(hostRecordSize));
 }
 
 void File::write(const SecureArray& secureArray) {
