@@ -117,6 +117,7 @@ AC_CONFIG_FILES([Makefile
 	tests/file/Makefile
 	tests/preload/Makefile
 	tests/testpaths.h
+	tests/file/testpaths.h
 	doc/Makefile
 	doc/Makefile.doc])
 # Inject --disable-install which is used by libyacurs.
