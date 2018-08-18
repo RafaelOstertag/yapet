@@ -1,22 +1,40 @@
-@Library('yapetJenkins') _
+pipeline {
+	agent {
+	  label 'freebsd'
+	}
 
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '',
-				      artifactNumToKeepStr: '',
-				      daysToKeepStr: '', numToKeepStr:
-				      '5')),
-            pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1h']]),
-	    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/RafaelOstertag/yapet/']])
-node("freebsd") {
-    yapet.notify {
-	os = "FreeBSD"
-	yapet.checkout()
-        yapet.makeChangeLog()
-        yapet.makeLibyacursSubmoduleChangeLog()
-	yapet.autoconf()
-	yapet.configure os
-	yapet.buildDoc os
-	yapet.build os
-	yapet.check os
-        release.roll()
-    }
+	options {
+  		ansiColor('xterm')
+  		buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+  		timestamps
+	}
+
+	stage("Bootstrap Build") {
+		steps {
+			sh "git log --stat > ChangeLog"
+			dir("libyacurs") {
+				sh "git log --stat > ChangeLog"
+			}
+			sh "touch README"
+			sh "autoreconf -I m4 -i"
+		}
+	}
+
+	stage("Configure") {
+		steps {
+			sh "rm -rf obj"
+			sh "mkdir obj"
+			dir("obj") {
+				sh "../configure --enable-debug --disable-silent-rules"
+			}
+		}
+	}
+
+	stage("Build Docs") {
+		steps {
+			dir("obj/docs") {
+				sh '$MAKE -f Makefile.doc'
+			}
+		}
+	}
 }
