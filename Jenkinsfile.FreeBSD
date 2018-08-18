@@ -22,7 +22,6 @@ pipeline {
 
 		stage("Configure") {
 			steps {
-				sh "rm -rf obj"
 				dir("obj") {
 					sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
 				}
@@ -63,10 +62,14 @@ pipeline {
 	}
 
 	post {
-		// If distcheck fails, it leaves certain directories with read-only permissions.
-		// We unconditionally set write mode
-		dir("obj") {
-			sh "chmod -R u+w ."
+		always {
+			// If distcheck fails, it leaves certain directories with read-only permissions.
+			// We unconditionally set write mode
+			dir("obj") {
+				sh "chmod -R u+w ."
+			}
+
+			cleanWs notFailBuild: true
 		}
 	}
 }
