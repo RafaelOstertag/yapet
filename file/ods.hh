@@ -10,6 +10,7 @@
 #include "config.h"
 
 namespace yapet {
+    using record_size_type = std::uint32_t;
 namespace {
 template <class T>
 union Integer {

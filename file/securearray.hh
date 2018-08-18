@@ -14,10 +14,10 @@ namespace yapet {
  */
 class SecureArray {
    public:
-    using size_t = unsigned int;
+    using size_type = unsigned int;
 
    private:
-    size_t _size;
+    size_type _size;
     std::uint8_t* array;
 
     inline void clearMemory() {
@@ -31,7 +31,7 @@ class SecureArray {
     }
 
    public:
-    SecureArray(size_t);
+    SecureArray(size_type);
     ~SecureArray();
 
     SecureArray(const SecureArray&);
@@ -42,6 +42,7 @@ class SecureArray {
 
     const std::uint8_t* operator*() const;
     std::uint8_t* operator*();
+    std::uint8_t operator[](size_type index) const;
 
     bool operator==(const SecureArray& other) const;
 
@@ -49,7 +50,7 @@ class SecureArray {
         return !this->operator==(other);
     };
 
-    size_t size() const { return _size; }
+    size_type size() const { return _size; }
 };
 }  // namespace yapet
 #endif

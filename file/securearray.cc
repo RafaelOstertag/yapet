@@ -6,7 +6,7 @@
 
 using namespace yapet;
 
-SecureArray::SecureArray(size_t s) : _size{s} {
+SecureArray::SecureArray(size_type s) : _size{s} {
     if (_size < 1) {
         throw std::invalid_argument(_("Size must be greater than zero"));
     }
@@ -70,6 +70,14 @@ SecureArray& SecureArray::operator=(SecureArray&& other) {
 const std::uint8_t* SecureArray::operator*() const { return array; }
 
 std::uint8_t* SecureArray::operator*() { return array; }
+
+std::uint8_t SecureArray::operator[](size_type index) const {
+    if (index >= _size) {
+        throw std::out_of_range{_("Index out of range")};
+    }
+
+    return array[index];
+}
 
 bool SecureArray::operator==(const SecureArray& other) const {
     if (other._size != _size) return false;

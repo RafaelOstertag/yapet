@@ -27,6 +27,10 @@ class SecureArrayTest : public CppUnit::TestFixture {
             "move assignment", &SecureArrayTest::testMove));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "equality", &SecureArrayTest::testEquality));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "equality", &SecureArrayTest::testEquality));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "equality", &SecureArrayTest::testIndexOperator));
 
         return suiteOfTests;
     }
@@ -110,13 +114,25 @@ class SecureArrayTest : public CppUnit::TestFixture {
         **b = 42;
 
         CPPUNIT_ASSERT(a == b);
-        CPPUNIT_ASSERT(!(a!=b));
+        CPPUNIT_ASSERT(!(a != b));
 
         b = yapet::SecureArray{1};
         **b = 43;
 
-        CPPUNIT_ASSERT(!(a==b));
-        CPPUNIT_ASSERT(a!=b);
+        CPPUNIT_ASSERT(!(a == b));
+        CPPUNIT_ASSERT(a != b);
+    }
+
+    void testIndexOperator() {
+        yapet::SecureArray secureArray(3);
+
+        CPPUNIT_ASSERT_THROW(secureArray[-1], std::out_of_range);
+        CPPUNIT_ASSERT_THROW(secureArray[4], std::out_of_range);
+
+        for (auto i = 0; i < 3; i++) {
+            (*secureArray)[i] = i;
+            CPPUNIT_ASSERT_EQUAL((std::uint8_t)i, secureArray[i]);
+        }
     }
 };
 

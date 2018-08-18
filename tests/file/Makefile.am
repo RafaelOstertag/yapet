@@ -1,4 +1,4 @@
-check_PROGRAMS = securearray ods
+check_PROGRAMS = securearray ods file
 
 TESTS = $(check_PROGRAMS)       
 
@@ -8,3 +8,4 @@ AM_CXXFLAGS =  $(CPPUNIT_CFLAGS)
 
 securearray_SOURCES = securearray.cc
 ods_SOURCES = ods.cc
+file_SOURCES = file.cc
