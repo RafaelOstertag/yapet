@@ -48,7 +48,7 @@ File& File::operator=(File&& other) {
         return *this;
     }
 
-    _filename = std::move(_filename);
+    _filename = std::move(other._filename);
     _file = other._file;
     other._file = nullptr;
     _openFlag = other._openFlag;
