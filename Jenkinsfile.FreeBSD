@@ -9,31 +9,33 @@ pipeline {
   		timestamps
 	}
 
-	stage("Bootstrap Build") {
-		steps {
-			sh "git log --stat > ChangeLog"
-			dir("libyacurs") {
+	stages {
+		stage("Bootstrap Build") {
+			steps {
 				sh "git log --stat > ChangeLog"
-			}
-			sh "touch README"
-			sh "autoreconf -I m4 -i"
-		}
-	}
-
-	stage("Configure") {
-		steps {
-			sh "rm -rf obj"
-			sh "mkdir obj"
-			dir("obj") {
-				sh "../configure --enable-debug --disable-silent-rules"
+				dir("libyacurs") {
+					sh "git log --stat > ChangeLog"
+				}
+				sh "touch README"
+				sh "autoreconf -I m4 -i"
 			}
 		}
-	}
 
-	stage("Build Docs") {
-		steps {
-			dir("obj/docs") {
-				sh '$MAKE -f Makefile.doc'
+		stage("Configure") {
+			steps {
+				sh "rm -rf obj"
+				sh "mkdir obj"
+				dir("obj") {
+					sh "../configure --enable-debug --disable-silent-rules"
+				}
+			}
+		}
+
+		stage("Build Docs") {
+			steps {
+				dir("obj/docs") {
+					sh '$MAKE -f Makefile.doc'
+				}
 			}
 		}
 	}
