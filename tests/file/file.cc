@@ -77,9 +77,9 @@ class FileTest : public CppUnit::TestFixture {
 
         file.rewind();
 
-        auto actualOptional = file.read(sizeof(fileContent));
-        CPPUNIT_ASSERT_EQUAL(false, !actualOptional);
-        auto actual = *actualOptional;
+        auto actualPair = file.read(sizeof(fileContent));
+        CPPUNIT_ASSERT_EQUAL(true, actualPair.second);
+        auto actual = actualPair.first;
 
         CPPUNIT_ASSERT_EQUAL((yapet::SecureArray::size_type)fileContentSize,
                              actual.size());
@@ -94,11 +94,11 @@ class FileTest : public CppUnit::TestFixture {
 
         file.openNew();
 
-        auto actualOptional = file.read(1);
-        CPPUNIT_ASSERT_EQUAL(true, !actualOptional);
+        auto actualPair = file.read(1);
+        CPPUNIT_ASSERT_EQUAL(false, actualPair.second);
 
-        actualOptional = file.read();
-        CPPUNIT_ASSERT_EQUAL(true, !actualOptional);
+        actualPair = file.read();
+        CPPUNIT_ASSERT_EQUAL(false, actualPair.second);
     }
 
     void testReadWriteSecureArray() {
@@ -112,10 +112,10 @@ class FileTest : public CppUnit::TestFixture {
         file.write(secureArray);
         file.rewind();
 
-        auto actualOptional = file.read();
-        CPPUNIT_ASSERT_EQUAL(false, !actualOptional);
+        auto actualPair = file.read();
+        CPPUNIT_ASSERT_EQUAL(true, actualPair.second);
 
-        auto actual = *actualOptional;
+        auto actual = actualPair.first;
         CPPUNIT_ASSERT_EQUAL((yapet::SecureArray::size_type)5, actual.size());
 
         for (auto i = 0; i < 5; i++) {
