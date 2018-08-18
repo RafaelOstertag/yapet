@@ -6,7 +6,6 @@ pipeline {
 	options {
   		ansiColor('xterm')
   		buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
-  		timestamps
 	}
 
 	stages {
