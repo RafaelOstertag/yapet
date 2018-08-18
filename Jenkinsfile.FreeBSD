@@ -24,7 +24,7 @@ pipeline {
 			steps {
 				sh "rm -rf obj"
 				dir("obj") {
-					sh "../configure --enable-debug --disable-silent-rules"
+					sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
 				}
 			}
 		}
