@@ -88,13 +88,13 @@ std::pair<SecureArray, bool> File::read(std::uint32_t size) {
 
     auto res = std::fread(*array, size, ONE_ITEM, _file);
     if (std::feof(_file)) {
-        return std::move(std::pair<SecureArray, bool>{SecureArray{1}, false});
+        return std::pair<SecureArray, bool>{SecureArray{1}, false};
     }
     if (std::ferror(_file) || res != ONE_ITEM) {
         throw FileError{_("Error reading file"), errno};
     }
 
-    return std::move(std::pair<SecureArray, bool>{array, true});
+    return std::pair<SecureArray, bool>{array, true};
 }
 
 std::pair<SecureArray, bool> File::read() {
@@ -105,7 +105,7 @@ std::pair<SecureArray, bool> File::read() {
     auto res =
         std::fread(&odsRecordSize, sizeof(record_size_type), ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file)) {
-        return std::move(std::pair<SecureArray, bool>{SecureArray{1}, false});
+        return std::pair<SecureArray, bool>{SecureArray{1}, false};
     }
 
     if (std::ferror(_file)) {
@@ -114,7 +114,7 @@ std::pair<SecureArray, bool> File::read() {
 
     auto hostRecordSize = toHost(odsRecordSize);
 
-    return std::move(read(hostRecordSize));
+    return read(hostRecordSize);
 }
 
 void File::write(const SecureArray& secureArray) {
