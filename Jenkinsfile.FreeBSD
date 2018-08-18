@@ -51,14 +51,6 @@ pipeline {
 				}
 			}
 		}
-
-		stage("Check Dist") {
-			steps {
-				dir("obj") {
-					sh '$MAKE distcheck'
-				}
-			}
-		}
 	}
 
 	post {
