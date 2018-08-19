@@ -2,7 +2,7 @@
 #include <cstring>
 #include <stdexcept>
 
-#include "file.hh"
+#include "rawfile.hh"
 #include "intl.h"
 #include "ods.hh"
 
@@ -26,16 +26,16 @@ inline void throwIfFileNotOpen(bool fileOpen) {
     }
 }
 
-File::File(const std::string& filename) noexcept
+RawFile::RawFile(const std::string& filename) noexcept
     : _filename{filename}, _file{nullptr}, _openFlag{false} {}
 
-File::~File() {
+RawFile::~RawFile() {
     if (_file) {
         std::fclose(_file);
     }
 }
 
-File::File(File&& other)
+RawFile::RawFile(RawFile&& other)
     : _filename{std::move(other._filename)},
       _file{other._file},
       _openFlag{other._openFlag} {
@@ -43,7 +43,7 @@ File::File(File&& other)
     other._openFlag = false;
 }
 
-File& File::operator=(File&& other) {
+RawFile& RawFile::operator=(RawFile&& other) {
     if (this == &other) {
         return *this;
     }
@@ -57,7 +57,7 @@ File& File::operator=(File&& other) {
     return *this;
 }
 
-void File::openExisting() {
+void RawFile::openExisting() {
     throwIfFileAlreadyOpen(_openFlag);
 
     _file = std::fopen(_filename.c_str(), READ_WRITE_EXISTING_MODE);
@@ -67,7 +67,7 @@ void File::openExisting() {
     _openFlag = true;
 }
 
-void File::openNew() {
+void RawFile::openNew() {
     throwIfFileAlreadyOpen(_openFlag);
 
     _file = std::fopen(_filename.c_str(), CREATE_NEW_MODE);
@@ -77,7 +77,7 @@ void File::openNew() {
     _openFlag = true;
 }
 
-std::pair<SecureArray, bool> File::read(std::uint32_t size) {
+std::pair<SecureArray, bool> RawFile::read(std::uint32_t size) {
     throwIfFileNotOpen(_openFlag);
 
     if (size < 1) {
@@ -97,7 +97,7 @@ std::pair<SecureArray, bool> File::read(std::uint32_t size) {
     return std::pair<SecureArray, bool>{array, true};
 }
 
-std::pair<SecureArray, bool> File::read() {
+std::pair<SecureArray, bool> RawFile::read() {
     throwIfFileNotOpen(_openFlag);
 
     record_size_type odsRecordSize;
@@ -117,7 +117,7 @@ std::pair<SecureArray, bool> File::read() {
     return read(hostRecordSize);
 }
 
-void File::write(const SecureArray& secureArray) {
+void RawFile::write(const SecureArray& secureArray) {
     throwIfFileNotOpen(_openFlag);
 
     record_size_type hostRecordSize = secureArray.size();
@@ -132,7 +132,7 @@ void File::write(const SecureArray& secureArray) {
     write(*secureArray, hostRecordSize);
 }
 
-void File::write(const std::uint8_t* buffer, std::uint32_t size) {
+void RawFile::write(const std::uint8_t* buffer, std::uint32_t size) {
     throwIfFileNotOpen(_openFlag);
 
     auto res = std::fwrite(buffer, size, ONE_ITEM, _file);
@@ -141,7 +141,7 @@ void File::write(const std::uint8_t* buffer, std::uint32_t size) {
     }
 }
 
-void File::rewind() {
+void RawFile::rewind() {
     throwIfFileNotOpen(_openFlag);
 
     auto error = std::fseek(_file, 0, SEEK_SET);

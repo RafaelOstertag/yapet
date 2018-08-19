@@ -5,31 +5,33 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include <unistd.h>
-#include "file.hh"
+#include "rawfile.hh"
 #include "testpaths.h"
 
 #define TEST_FILE BUILDDIR "/yapet-test-file"
 
-class FileTest : public CppUnit::TestFixture {
+class RawFileTest : public CppUnit::TestFixture {
    public:
     static CppUnit::TestSuite *suite() {
-        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("File test");
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
+        CppUnit::TestSuite *suiteOfTests =
+            new CppUnit::TestSuite("RawFile test");
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw on open already open file",
-            &FileTest::throwOnOpenAlreadyOpen});
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
+            &RawFileTest::throwOnOpenAlreadyOpen});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw on non-open file read/write",
-            &FileTest::throwOnNonOpenReadWrite});
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
+            &RawFileTest::throwOnNonOpenReadWrite});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw open non-existing file",
-            &FileTest::throwOnOpenNonExistingFile});
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
-            "should read/write", &FileTest::testReadWrite});
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
+            &RawFileTest::throwOnOpenNonExistingFile});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should read/write", &RawFileTest::testReadWrite});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should read/write secure array",
-            &FileTest::testReadWriteSecureArray});
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>{
-            "should read past EOF without error", &FileTest::testReadPastEof});
+            &RawFileTest::testReadWriteSecureArray});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should read past EOF without error",
+            &RawFileTest::testReadPastEof});
 
         return suiteOfTests;
     }
@@ -39,17 +41,17 @@ class FileTest : public CppUnit::TestFixture {
     void tearDown() { ::unlink(TEST_FILE); }
 
     void throwOnOpenAlreadyOpen() {
-        yapet::File file{TEST_FILE};
+        yapet::RawFile file{TEST_FILE};
         file.openNew();
         CPPUNIT_ASSERT_THROW(file.openExisting(), yapet::FileError);
 
-        yapet::File file2{TEST_FILE};
+        yapet::RawFile file2{TEST_FILE};
         file2.openExisting();
         CPPUNIT_ASSERT_THROW(file2.openNew(), yapet::FileError);
     }
 
     void throwOnNonOpenReadWrite() {
-        yapet::File file{TEST_FILE};
+        yapet::RawFile file{TEST_FILE};
 
         CPPUNIT_ASSERT_THROW(file.rewind(), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.read(), yapet::FileError);
@@ -61,13 +63,13 @@ class FileTest : public CppUnit::TestFixture {
     }
 
     void throwOnOpenNonExistingFile() {
-        yapet::File file{BUILDDIR "/must-not-exist"};
+        yapet::RawFile file{BUILDDIR "/must-not-exist"};
 
         CPPUNIT_ASSERT_THROW(file.openExisting(), yapet::FileError);
     }
 
     void testReadWrite() {
-        yapet::File file{TEST_FILE};
+        yapet::RawFile file{TEST_FILE};
 
         file.openNew();
 
@@ -90,7 +92,7 @@ class FileTest : public CppUnit::TestFixture {
     }
 
     void testReadPastEof() {
-        yapet::File file{TEST_FILE};
+        yapet::RawFile file{TEST_FILE};
 
         file.openNew();
 
@@ -107,7 +109,7 @@ class FileTest : public CppUnit::TestFixture {
             (*secureArray)[i] = i;
         }
 
-        yapet::File file{TEST_FILE};
+        yapet::RawFile file{TEST_FILE};
         file.openNew();
         file.write(secureArray);
         file.rewind();
@@ -126,7 +128,7 @@ class FileTest : public CppUnit::TestFixture {
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest(FileTest::suite());
+    runner.addTest(RawFileTest::suite());
     runner.run();
     return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef _FILE_HH
-#define _FILE_HH
+#ifndef _RAWFILE_HH
+#define _RAWFILE_HH
 
 #include <cstdint>
 #include <cstdio>
@@ -11,21 +11,21 @@
 #include "securearray.hh"
 
 namespace yapet {
-class File {
+class RawFile {
    private:
     std::string _filename;
     FILE* _file;
     bool _openFlag;
 
    public:
-    File(const std::string& filename) noexcept;
-    ~File();
+    RawFile(const std::string& filename) noexcept;
+    ~RawFile();
 
-    File(const File&) = delete;
-    File& operator=(const File&) = delete;
+    RawFile(const RawFile&) = delete;
+    RawFile& operator=(const RawFile&) = delete;
 
-    File(File&&);
-    File& operator=(File&&);
+    RawFile(RawFile&&);
+    RawFile& operator=(RawFile&&);
 
     void openExisting();
     void openNew();
