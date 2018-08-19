@@ -40,6 +40,14 @@ public:
             "should read past EOF without error",
             &RawFileTest::testReadPastEof
         });
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should not seek negative",
+            &RawFileTest::testSeekAbsoluteNegative
+        });
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should seek absolute",
+            &RawFileTest::testSeekAbsolute
+        });
 
         return suiteOfTests;
     }
@@ -68,6 +76,7 @@ public:
         CPPUNIT_ASSERT_THROW(file.rewind(), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.read(), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.read(1), yapet::FileError);
+        CPPUNIT_ASSERT_THROW(file.seekAbsolute(1), yapet::FileError);
         yapet::SecureArray array{1};
 
         CPPUNIT_ASSERT_THROW(file.write(array), yapet::FileError);
@@ -135,6 +144,31 @@ public:
         for (auto i = 0; i < 5; i++) {
             CPPUNIT_ASSERT_EQUAL((std::uint8_t)i, actual[i]);
         }
+    }
+
+    void testSeekAbsoluteNegative() {
+        yapet::RawFile file{TEST_FILE};
+        file.openNew();
+
+        CPPUNIT_ASSERT_THROW(file.seekAbsolute(-1), std::invalid_argument);
+    }
+
+    void testSeekAbsolute() {
+        yapet::RawFile file{TEST_FILE};
+        file.openNew();
+
+        file.seekAbsolute(10);
+
+        yapet::SecureArray secureArray{1};
+        **secureArray = 'A';
+
+        file.write(secureArray);
+
+        file.seekAbsolute(10);
+        auto actualPair = file.read();
+        CPPUNIT_ASSERT_EQUAL(true, actualPair.second);
+
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t)'A', **(actualPair.first));
     }
 };
 

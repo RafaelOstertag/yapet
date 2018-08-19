@@ -27,7 +27,11 @@ inline void throwIfFileNotOpen(bool fileOpen) {
 }
 
 RawFile::RawFile(const std::string& filename) noexcept
-    : _filename{filename}, _file{nullptr}, _openFlag{false} {}
+: _filename {
+    filename
+}, _file{nullptr}, _openFlag{false}
+{
+}
 
 RawFile::~RawFile() {
     if (_file) {
@@ -36,9 +40,10 @@ RawFile::~RawFile() {
 }
 
 RawFile::RawFile(RawFile&& other)
-    : _filename{std::move(other._filename)},
-      _file{other._file},
-      _openFlag{other._openFlag} {
+: _filename{std::move(other._filename)},
+_file{other._file},
+_openFlag{other._openFlag}
+{
     other._file = nullptr;
     other._openFlag = false;
 }
@@ -103,7 +108,7 @@ std::pair<SecureArray, bool> RawFile::read() {
     record_size_type odsRecordSize;
 
     auto res =
-        std::fread(&odsRecordSize, sizeof(record_size_type), ONE_ITEM, _file);
+            std::fread(&odsRecordSize, sizeof (record_size_type), ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file)) {
         return std::pair<SecureArray, bool>{SecureArray{1}, false};
     }
@@ -124,7 +129,7 @@ void RawFile::write(const SecureArray& secureArray) {
     auto odsRecordSize = toODS(hostRecordSize);
 
     auto res =
-        std::fwrite(&odsRecordSize, sizeof(record_size_type), ONE_ITEM, _file);
+            std::fwrite(&odsRecordSize, sizeof (record_size_type), ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file) || std::ferror(_file)) {
         throw FileError{_("Cannot write record size to file"), errno};
     }
@@ -142,10 +147,18 @@ void RawFile::write(const std::uint8_t* buffer, std::uint32_t size) {
 }
 
 void RawFile::rewind() {
+    seekAbsolute(0);
+}
+
+void RawFile::seekAbsolute(seek_type position) {
     throwIfFileNotOpen(_openFlag);
 
-    auto error = std::fseek(_file, 0, SEEK_SET);
+    if (position < 0) {
+        throw std::invalid_argument{_("Position must be positive")};
+    }
+
+    auto error = std::fseek(_file, position, SEEK_SET);
     if (error || std::feof(_file) || std::ferror(_file)) {
-        throw FileError{_("Error rewinding file"), errno};
+        throw FileError{_("Error seeking in file"), errno};
     }
 }

@@ -21,6 +21,8 @@ namespace yapet {
         bool _openFlag;
 
     public:
+        using seek_type = long;
+        
         RawFile(const std::string& filename) noexcept;
         ~RawFile();
 
@@ -67,6 +69,11 @@ namespace yapet {
         }
 
         void rewind();
+        
+        /**
+         * Go to position in file measured in bytes. \c position must be positive
+         */
+        void seekAbsolute(seek_type position);
     };
 } // namespace yapet
 
