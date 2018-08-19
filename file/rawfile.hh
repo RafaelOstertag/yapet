@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <cstdio>
 #include <fstream>
-#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -60,20 +59,6 @@ class RawFile {
     std::string filename() const { return _filename; }
 
     void rewind();
-};
-
-constexpr auto NO_SYSTEM_ERROR_SPECIFIED = -1;
-
-class FileError : public std::runtime_error {
-   private:
-    int _errorNumber;
-    const char* _systemErrorMsg;
-
-   public:
-    FileError(const char* msg, int errorNumber = NO_SYSTEM_ERROR_SPECIFIED);
-
-    int errorNumber() const { return _errorNumber; }
-    const char* systemErrorMsg() const { return _systemErrorMsg; }
 };
 }  // namespace yapet
 

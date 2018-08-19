@@ -6,6 +6,7 @@
 
 #include <unistd.h>
 #include "rawfile.hh"
+#include "fileerror.hh"
 #include "testpaths.h"
 
 #define TEST_FILE BUILDDIR "/yapet-test-file"

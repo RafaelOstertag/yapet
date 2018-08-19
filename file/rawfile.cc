@@ -1,10 +1,10 @@
 #include <cerrno>
-#include <cstring>
 #include <stdexcept>
 
 #include "rawfile.hh"
 #include "intl.h"
 #include "ods.hh"
+#include "fileerror.hh"
 
 using namespace yapet;
 
@@ -147,14 +147,5 @@ void RawFile::rewind() {
     auto error = std::fseek(_file, 0, SEEK_SET);
     if (error || std::feof(_file) || std::ferror(_file)) {
         throw FileError{_("Error rewinding file"), errno};
-    }
-}
-
-FileError::FileError(const char* msg, int errorNumber)
-    : std::runtime_error{msg},
-      _errorNumber{errorNumber},
-      _systemErrorMsg{nullptr} {
-    if (_errorNumber > NO_SYSTEM_ERROR_SPECIFIED) {
-        _systemErrorMsg = std::strerror(_errorNumber);
     }
 }

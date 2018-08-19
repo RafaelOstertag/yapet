@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libyapet-file.la
 
-libyapet_file_la_SOURCES = securearray.hh securearray.cc rawfile.cc rawfile.hh ods.hh 
+libyapet_file_la_SOURCES = securearray.hh securearray.cc rawfile.cc rawfile.hh ods.hh ileerror.hh fileerror.cc
 
 libyapet_file_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)
 
