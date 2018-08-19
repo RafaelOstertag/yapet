@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <cerrno>
 #include <cinttypes>
+#include <stdio.h>
 
 #include "intl.h"
 #include "fileutils.hh"
@@ -68,4 +69,14 @@ bool yapet::hasSecurePermissions(const std::string& filename) {
     }
 
     return true;
+}
+
+void yapet::renameFile(const std::string& oldName, const std::string& newName) {
+    if (oldName == newName) {
+        throw FileError(_("Old and new name cannot be the same"));
+    }
+    auto error = ::rename(oldName.c_str(), newName.c_str());
+    if (error) {
+        throw FileError{_("Cannot rename file"), errno};
+    }
 }

@@ -35,14 +35,25 @@ public:
             &FileUtilsTest::hasSecurePermissionsAndOwnerNonExisting
         });
         suiteOfTests->addTest(new CppUnit::TestCaller<FileUtilsTest>{
-            "testing secure permissions and owner should throw",
+            "should get modification time",
             &FileUtilsTest::getModificationTime
         });
         suiteOfTests->addTest(new CppUnit::TestCaller<FileUtilsTest>{
-            "testing secure permissions and owner should throw",
+            "should throw on getting modification time of non-existing file",
             &FileUtilsTest::getModificationTimeNonExisting
         });
-
+        suiteOfTests->addTest(new CppUnit::TestCaller<FileUtilsTest>{
+            "should throw on renaming non existing file",
+            &FileUtilsTest::renameNonExistingFile
+        });
+        suiteOfTests->addTest(new CppUnit::TestCaller<FileUtilsTest>{
+            "should rename file",
+            &FileUtilsTest::renameFile
+        });
+        suiteOfTests->addTest(new CppUnit::TestCaller<FileUtilsTest>{
+            "should throw on renaming to same name",
+            &FileUtilsTest::renameFileToSameName
+        });
 
         return suiteOfTests;
     }
@@ -99,6 +110,30 @@ public:
 
     void getModificationTimeNonExisting() {
         CPPUNIT_ASSERT_THROW(yapet::getModificationTime("must-not-exist"), yapet::FileError);
+    }
+
+    void renameNonExistingFile() {
+        CPPUNIT_ASSERT_THROW(yapet::renameFile("must-not-exist", "wdc"), yapet::FileError);
+    }
+
+    void renameFile() {
+        createFile();
+
+        yapet::renameFile(TEST_FILE, TEST_FILE ".renamed");
+
+        struct stat wdc;
+        CPPUNIT_ASSERT_EQUAL(0, ::stat(TEST_FILE ".renamed", &wdc));
+
+        // Rename it back so it will be deleted by tearDown()
+        yapet::renameFile(TEST_FILE ".renamed", TEST_FILE);
+
+        CPPUNIT_ASSERT_EQUAL(0, ::stat(TEST_FILE, &wdc));
+    }
+
+    void renameFileToSameName() {
+        createFile();
+
+        CPPUNIT_ASSERT_THROW(yapet::renameFile(TEST_FILE, TEST_FILE), yapet::FileError);
     }
 
 };
