@@ -12,34 +12,45 @@
 #define TEST_FILE BUILDDIR "/yapet-test-file"
 
 class RawFileTest : public CppUnit::TestFixture {
-   public:
+public:
+
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests =
-            new CppUnit::TestSuite("RawFile test");
+                new CppUnit::TestSuite("RawFile test");
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw on open already open file",
-            &RawFileTest::throwOnOpenAlreadyOpen});
+            &RawFileTest::throwOnOpenAlreadyOpen
+        });
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw on non-open file read/write",
-            &RawFileTest::throwOnNonOpenReadWrite});
+            &RawFileTest::throwOnNonOpenReadWrite
+        });
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should throw open non-existing file",
-            &RawFileTest::throwOnOpenNonExistingFile});
+            &RawFileTest::throwOnOpenNonExistingFile
+        });
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
-            "should read/write", &RawFileTest::testReadWrite});
+            "should read/write", &RawFileTest::testReadWrite
+        });
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should read/write secure array",
-            &RawFileTest::testReadWriteSecureArray});
+            &RawFileTest::testReadWriteSecureArray
+        });
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should read past EOF without error",
-            &RawFileTest::testReadPastEof});
+            &RawFileTest::testReadPastEof
+        });
 
         return suiteOfTests;
     }
 
-    void setUp() { ::unlink(TEST_FILE); }
+    void setUp() {
+        ::unlink(TEST_FILE);
+    }
 
-    void tearDown() { ::unlink(TEST_FILE); }
+    void tearDown() {
+        ::unlink(TEST_FILE);
+    }
 
     void throwOnOpenAlreadyOpen() {
         yapet::RawFile file{TEST_FILE};
@@ -75,19 +86,19 @@ class RawFileTest : public CppUnit::TestFixture {
         file.openNew();
 
         std::uint8_t fileContent[]{'t', 'e', 's', 't'};
-        auto fileContentSize = sizeof(fileContent);
+        auto fileContentSize = sizeof (fileContent);
         file.write(fileContent, fileContentSize);
 
         file.rewind();
 
-        auto actualPair = file.read(sizeof(fileContent));
+        auto actualPair = file.read(sizeof (fileContent));
         CPPUNIT_ASSERT_EQUAL(true, actualPair.second);
         auto actual = actualPair.first;
 
         CPPUNIT_ASSERT_EQUAL((yapet::SecureArray::size_type)fileContentSize,
-                             actual.size());
+                actual.size());
 
-        for (auto i = 0; i < (int)fileContentSize; i++) {
+        for (auto i = 0; i < (int) fileContentSize; i++) {
             CPPUNIT_ASSERT_EQUAL(fileContent[i], actual[i]);
         }
     }
@@ -130,6 +141,5 @@ class RawFileTest : public CppUnit::TestFixture {
 int main() {
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(RawFileTest::suite());
-    runner.run();
-    return 0;
+    return runner.run() ? 0 : 1;
 }

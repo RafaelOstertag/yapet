@@ -9,25 +9,26 @@
 #include "ods.hh"
 
 class ODSTest : public CppUnit::TestFixture {
-   public:
+public:
+
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests =
-            new CppUnit::TestSuite("On Disk Structure");
+                new CppUnit::TestSuite("On Disk Structure");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "16bits integer to On-Disk-Structure", &ODSTest::toODS16));
+                "16bits integer to On-Disk-Structure", &ODSTest::toODS16));
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "16bits integer to host", &ODSTest::toHost16));
+                "16bits integer to host", &ODSTest::toHost16));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "32bits integer to On-Disk-Structure", &ODSTest::toODS32));
+                "32bits integer to On-Disk-Structure", &ODSTest::toODS32));
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "32bits integer to host", &ODSTest::toHost32));
+                "32bits integer to host", &ODSTest::toHost32));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "64bits integer to On-Disk-Structure", &ODSTest::toODS64));
+                "64bits integer to On-Disk-Structure", &ODSTest::toODS64));
         suiteOfTests->addTest(new CppUnit::TestCaller<ODSTest>(
-            "64bits integer to host", &ODSTest::toHost64));
+                "64bits integer to host", &ODSTest::toHost64));
         return suiteOfTests;
     }
 
@@ -95,6 +96,5 @@ class ODSTest : public CppUnit::TestFixture {
 int main() {
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(ODSTest::suite());
-    runner.run();
-    return 0;
+    return runner.run() ? 0 : 1;
 }

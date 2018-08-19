@@ -7,37 +7,38 @@
 #include "securearray.hh"
 
 class SecureArrayTest : public CppUnit::TestFixture {
-   public:
+public:
+
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests =
-            new CppUnit::TestSuite("SecureArrayTest");
+                new CppUnit::TestSuite("SecureArrayTest");
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "should not initialize with negative size",
-            &SecureArrayTest::testInitWithZeroSize));
+                "should not initialize with negative size",
+                &SecureArrayTest::testInitWithZeroSize));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "should set empty array upon destruction",
-            &SecureArrayTest::testZeroOutBuffer));
+                "should set empty array upon destruction",
+                &SecureArrayTest::testZeroOutBuffer));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "copy constructor", &SecureArrayTest::testCopy));
+                "copy constructor", &SecureArrayTest::testCopy));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "assignment", &SecureArrayTest::testAssignment));
+                "assignment", &SecureArrayTest::testAssignment));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "move", &SecureArrayTest::testMove));
+                "move", &SecureArrayTest::testMove));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "move assignment", &SecureArrayTest::testMove));
+                "move assignment", &SecureArrayTest::testMove));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "equality", &SecureArrayTest::testEquality));
+                "equality", &SecureArrayTest::testEquality));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "equality", &SecureArrayTest::testEquality));
+                "equality", &SecureArrayTest::testEquality));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-            "equality", &SecureArrayTest::testIndexOperator));
+                "equality", &SecureArrayTest::testIndexOperator));
 
         return suiteOfTests;
     }
 
     void testInitWithZeroSize() {
         CPPUNIT_ASSERT_THROW(yapet::SecureArray secureArray{0},
-                             std::invalid_argument);
+        std::invalid_argument);
     }
 
     void testZeroOutBuffer() {
@@ -139,6 +140,5 @@ class SecureArrayTest : public CppUnit::TestFixture {
 int main() {
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(SecureArrayTest::suite());
-    runner.run();
-    return 0;
+    return runner.run() ? 0 : 1;
 }
