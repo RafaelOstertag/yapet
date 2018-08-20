@@ -18,20 +18,13 @@ class SecureArray {
 
    private:
     size_type _size;
-    std::uint8_t* array;
+    std::uint8_t* _array;
 
-    inline void clearMemory() {
-        for (size_t i = 0; i < _size; array[i] = 0, i++)
-            ;
-    }
-
-    inline void freeMemory() {
-        assert(array != nullptr);
-        delete[] array;
-    }
+    void clearMemory();
+    void freeMemory();
 
    public:
-    SecureArray(size_type);
+    SecureArray(size_type size = 0);
     ~SecureArray();
 
     SecureArray(const SecureArray&);

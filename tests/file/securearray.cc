@@ -7,38 +7,55 @@
 #include "securearray.hh"
 
 class SecureArrayTest : public CppUnit::TestFixture {
-public:
-
+   public:
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests =
-                new CppUnit::TestSuite("SecureArrayTest");
+            new CppUnit::TestSuite("SecureArrayTest");
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "should not initialize with negative size",
-                &SecureArrayTest::testInitWithZeroSize));
+            "test empty array", &SecureArrayTest::testEmptyArray));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "should set empty array upon destruction",
-                &SecureArrayTest::testZeroOutBuffer));
+            "should set empty array upon destruction",
+            &SecureArrayTest::testZeroOutBuffer));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "copy constructor", &SecureArrayTest::testCopy));
+            "copy constructor", &SecureArrayTest::testCopy));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "assignment", &SecureArrayTest::testAssignment));
+            "assignment", &SecureArrayTest::testAssignment));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "move", &SecureArrayTest::testMove));
+            "move", &SecureArrayTest::testMove));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "move assignment", &SecureArrayTest::testMove));
+            "move assignment", &SecureArrayTest::testMove));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "equality", &SecureArrayTest::testEquality));
+            "equality", &SecureArrayTest::testEquality));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "equality", &SecureArrayTest::testEquality));
+            "should properly implement index operator",
+            &SecureArrayTest::testIndexOperator));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
-                "equality", &SecureArrayTest::testIndexOperator));
+            "should properly handle assignment of empty array",
+            &SecureArrayTest::testEmptyAssignment));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "should properly handle copy of empty array",
+            &SecureArrayTest::testEmptyCopy));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "should properly handle move of empty array",
+            &SecureArrayTest::testEmptyMove));
 
         return suiteOfTests;
     }
 
-    void testInitWithZeroSize() {
-        CPPUNIT_ASSERT_THROW(yapet::SecureArray secureArray{0},
-        std::invalid_argument);
+    void testEmptyArray() {
+        yapet::SecureArray *ptr{new yapet::SecureArray()};
+
+        CPPUNIT_ASSERT_EQUAL(0u, ptr->size());
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, ptr->operator*());
+
+        delete ptr;
+
+        ptr = new yapet::SecureArray(0);
+
+        CPPUNIT_ASSERT_EQUAL(0u, ptr->size());
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, ptr->operator*());
+
+        delete ptr;
     }
 
     void testZeroOutBuffer() {
@@ -110,6 +127,7 @@ public:
     void testEquality() {
         yapet::SecureArray a = yapet::SecureArray{1};
         **a = 42;
+        CPPUNIT_ASSERT(a == a);
 
         yapet::SecureArray b = yapet::SecureArray{1};
         **b = 42;
@@ -122,6 +140,14 @@ public:
 
         CPPUNIT_ASSERT(!(a == b));
         CPPUNIT_ASSERT(a != b);
+
+        yapet::SecureArray empty;
+        CPPUNIT_ASSERT(empty == empty);
+        CPPUNIT_ASSERT(!(a == empty));
+        CPPUNIT_ASSERT(a != empty);
+
+        yapet::SecureArray empty2;
+        CPPUNIT_ASSERT(empty == empty2);
     }
 
     void testIndexOperator() {
@@ -134,6 +160,52 @@ public:
             (*secureArray)[i] = i;
             CPPUNIT_ASSERT_EQUAL((std::uint8_t)i, secureArray[i]);
         }
+    }
+
+    void testEmptyAssignment() {
+        yapet::SecureArray empty;
+        yapet::SecureArray nonEmpty{1};
+        nonEmpty = empty;
+        CPPUNIT_ASSERT_EQUAL(0u, nonEmpty.size());
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *nonEmpty);
+
+        yapet::SecureArray nonEmpty2{2};
+        (*nonEmpty2)[0] = 'A';
+        (*nonEmpty2)[1] = 'B';
+        empty = nonEmpty2;
+        CPPUNIT_ASSERT_EQUAL(2u, empty.size());
+        CPPUNIT_ASSERT((*empty)[0] == (std::uint8_t)'A');
+        CPPUNIT_ASSERT((*empty)[1] == (std::uint8_t)'B');
+    }
+
+    void testEmptyCopy() {
+        yapet::SecureArray empty;
+        yapet::SecureArray empty2{empty};
+        CPPUNIT_ASSERT_EQUAL(0u, empty2.size());
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *empty2);
+
+        yapet::SecureArray nonEmpty{2};
+        (*nonEmpty)[0] = 'A';
+        (*nonEmpty)[1] = 'B';
+        yapet::SecureArray empty3{nonEmpty};
+        CPPUNIT_ASSERT_EQUAL(2u, empty3.size());
+        CPPUNIT_ASSERT((*empty3)[0] == (std::uint8_t)'A');
+        CPPUNIT_ASSERT((*empty3)[1] == (std::uint8_t)'B');
+    }
+
+    void testEmptyMove() {
+        yapet::SecureArray empty;
+        yapet::SecureArray empty2{std::move(empty)};
+        CPPUNIT_ASSERT_EQUAL(0u, empty2.size());
+        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *empty2);
+
+        yapet::SecureArray nonEmpty{2};
+        (*nonEmpty)[0] = 'A';
+        (*nonEmpty)[1] = 'B';
+        yapet::SecureArray empty3{std::move(nonEmpty)};
+        CPPUNIT_ASSERT_EQUAL(2u, empty3.size());
+        CPPUNIT_ASSERT((*empty3)[0] == (std::uint8_t)'A');
+        CPPUNIT_ASSERT((*empty3)[1] == (std::uint8_t)'B');
     }
 };
 

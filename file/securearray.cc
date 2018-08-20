@@ -6,28 +6,24 @@
 
 using namespace yapet;
 
-SecureArray::SecureArray(size_type s) : _size{s} {
-    if (_size < 1) {
-        throw std::invalid_argument(_("Size must be greater than zero"));
+SecureArray::SecureArray(size_type size) : _size{size}, _array{nullptr} {
+    if (_size != 0) {
+        _array = new std::uint8_t[_size];
     }
-
-    array = new std::uint8_t[_size];
 }
 
 SecureArray::~SecureArray() {
-    // move constructor may set it to nullptr
-    if (array == nullptr) {
-        return;
-    }
-
     clearMemory();
     freeMemory();
 }
 
 SecureArray::SecureArray(const SecureArray& other)
-    : _size{other._size}, array{new std::uint8_t[other._size]} {
-    for (size_t i = 0; i < _size; array[i] = other.array[i], i++)
-        ;
+    : _size{other._size}, _array{nullptr} {
+    if (_size != 0) {
+        _array = new std::uint8_t[_size];
+        for (size_t i = 0; i < _size; _array[i] = other._array[i], i++)
+            ;
+    }
 }
 
 SecureArray& SecureArray::operator=(const SecureArray& other) {
@@ -39,17 +35,20 @@ SecureArray& SecureArray::operator=(const SecureArray& other) {
     freeMemory();
 
     _size = other._size;
-
-    array = new std::uint8_t[_size];
-    for (size_t i = 0; i < _size; array[i] = other.array[i], i++)
-        ;
+    if (_size == 0) {
+        _array = other._array;
+    } else {
+        _array = new std::uint8_t[_size];
+        for (size_t i = 0; i < _size; _array[i] = other._array[i], i++)
+            ;
+    }
 
     return *this;
 }
 
 SecureArray::SecureArray(SecureArray&& other)
-    : _size{other._size}, array{other.array} {
-    other.array = nullptr;
+    : _size{other._size}, _array{other._array} {
+    other._array = nullptr;
 }
 
 SecureArray& SecureArray::operator=(SecureArray&& other) {
@@ -61,29 +60,41 @@ SecureArray& SecureArray::operator=(SecureArray&& other) {
     freeMemory();
 
     _size = other._size;
-    array = other.array;
-    other.array = nullptr;
+    _array = other._array;
+    other._array = nullptr;
 
     return *this;
 }
 
-const std::uint8_t* SecureArray::operator*() const { return array; }
+inline void SecureArray::clearMemory() {
+    if (_array == nullptr) return;
 
-std::uint8_t* SecureArray::operator*() { return array; }
+    for (size_t i = 0; i < _size; _array[i] = 0, i++)
+        ;
+}
+
+inline void SecureArray::freeMemory() {
+    if (_array == nullptr) return;
+    delete[] _array;
+}
+
+const std::uint8_t* SecureArray::operator*() const { return _array; }
+
+std::uint8_t* SecureArray::operator*() { return _array; }
 
 std::uint8_t SecureArray::operator[](size_type index) const {
     if (index >= _size) {
         throw std::out_of_range{_("Index out of range")};
     }
 
-    return array[index];
+    return _array[index];
 }
 
 bool SecureArray::operator==(const SecureArray& other) const {
     if (other._size != _size) return false;
 
     for (size_t i = 0; i < _size; i++) {
-        if (array[i] != other.array[i]) return false;
+        if (_array[i] != other._array[i]) return false;
     }
 
     return true;
