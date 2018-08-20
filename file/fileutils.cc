@@ -1,13 +1,13 @@
-#include <sys/types.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <cerrno>
 #include <cinttypes>
-#include <stdio.h>
 
-#include "intl.h"
-#include "fileutils.hh"
 #include "fileerror.hh"
+#include "fileutils.hh"
+#include "intl.h"
 
 using namespace yapet;
 
@@ -15,21 +15,17 @@ constexpr auto SECURE_MODE{S_IRUSR | S_IWUSR | S_IFREG};
 
 namespace {
 
-    inline uid_t getCurrentUid() {
-        return ::getuid();
-    }
+inline uid_t getCurrentUid() { return ::getuid(); }
 
-    inline gid_t getCurrentGid() {
-        return ::getgid();
-    }
+inline gid_t getCurrentGid() { return ::getgid(); }
 
-    inline void getFileStat(const std::string& filename, struct stat* statPtr) {
-        auto error = ::stat(filename.c_str(), statPtr);
-        if (error) {
-            throw FileError{_("Unable to get stat for file"), errno};
-        }
+inline void getFileStat(const std::string& filename, struct stat* statPtr) {
+    auto error = ::stat(filename.c_str(), statPtr);
+    if (error) {
+        throw FileError{_("Unable to get stat for file"), errno};
     }
-}; // namespace
+}
+}  // namespace
 
 void yapet::setSecurePermissionsAndOwner(const std::string& filename) {
     auto uid = getCurrentUid();
@@ -43,7 +39,6 @@ void yapet::setSecurePermissionsAndOwner(const std::string& filename) {
     if (error) {
         throw FileError{_("Error setting file mode"), errno};
     }
-
 }
 
 std::uint64_t yapet::getModificationTime(const std::string& filename) {
@@ -59,8 +54,7 @@ bool yapet::hasSecurePermissions(const std::string& filename) {
     auto uid = getCurrentUid();
     auto gid = getCurrentGid();
 
-    if (fileStat.st_uid != uid ||
-            fileStat.st_gid != gid) {
+    if (fileStat.st_uid != uid || fileStat.st_gid != gid) {
         return false;
     }
 

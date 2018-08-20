@@ -17,6 +17,6 @@ class FileError : public std::runtime_error {
     int errorNumber() const { return _errorNumber; }
     const char* systemErrorMsg() const { return _systemErrorMsg; }
 };
-};  // namespace yapet
+}  // namespace yapet
 
 #endif
