@@ -5,7 +5,7 @@
 ## separately
 ##
 
-DOCBOOK_BASE ?= http://docbook.sourceforge.net/release/xsl/current
+DOCBOOK_BASE ?= http://cdn.docbook.org/release/xsl-nons/current/
 
 
 if BUILDCONVERTS
