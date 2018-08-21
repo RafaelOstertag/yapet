@@ -29,11 +29,7 @@ inline void throwIfFileNotOpen(bool fileOpen) {
 RawFile::RawFile(const std::string& filename) noexcept
     : _filename{filename}, _file{nullptr}, _openFlag{false} {}
 
-RawFile::~RawFile() {
-    if (_file) {
-        std::fclose(_file);
-    }
-}
+RawFile::~RawFile() { close(); }
 
 RawFile::RawFile(RawFile&& other)
     : _filename{std::move(other._filename)},
@@ -49,7 +45,7 @@ RawFile& RawFile::operator=(RawFile&& other) {
     }
 
     _filename = std::move(other._filename);
-
+    close();
     _file = other._file;
     other._file = nullptr;
     _openFlag = other._openFlag;

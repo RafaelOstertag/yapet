@@ -158,6 +158,16 @@ class RawFileTest : public CppUnit::TestFixture {
 
         CPPUNIT_ASSERT_EQUAL((std::uint8_t)'A', **(actualPair.first));
     }
+
+    void testClose() {
+        yapet::RawFile file{TEST_FILE};
+        file.openNew();
+
+        CPPUNIT_ASSERT(file.isOpen() == true);
+
+        file.close();
+        CPPUNIT_ASSERT(file.isOpen() == false);
+    }
 };
 
 int main() {
