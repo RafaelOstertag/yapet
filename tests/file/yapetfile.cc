@@ -42,6 +42,14 @@ class YapetFileMock : public yapet::YapetFile {
         throw std::runtime_error("Not implemented");
     }
 
+    void writeMetaData(const yapet::SecureArray&) {
+        throw std::runtime_error("Not implemented");
+    }
+
+    void writePasswordRecords(const std::list<yapet::SecureArray>&) {
+        throw std::runtime_error("Not implemented");
+    }
+
     void open() { openRawFile(); }
 };
 

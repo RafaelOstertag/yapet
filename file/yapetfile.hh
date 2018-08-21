@@ -71,7 +71,6 @@ class YapetFile {
 
     virtual ~YapetFile();
 
-    
     /**
      * Indicate whether the file has valid format.
      *
@@ -93,6 +92,17 @@ class YapetFile {
     virtual SecureArray readMetaData() = 0;
 
     virtual std::list<SecureArray> readPasswordRecords() = 0;
+
+    /**
+     * Write meta data
+     */
+    virtual void writeMetaData(const SecureArray& metaData) = 0;
+
+    /**
+     * Write password records
+     */
+    virtual void writePasswordRecords(
+        const std::list<SecureArray>& passwords) = 0;
 
     bool isSecure() const { return _secure; }
 
