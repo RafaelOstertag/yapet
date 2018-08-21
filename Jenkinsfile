@@ -18,101 +18,26 @@ pipeline {
                     stages {
                         stage("Bootstrap Build") {
                             steps {
-                                sh "git log --stat > ChangeLog"
-                                dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
-                                }
-                                sh "touch README"
-                                sh "autoreconf -I m4 -i"
+				echo "one"
                             }
                         }
 
-                        stage("Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
-                                }
-                            }
-                        }
-
-                        stage("Build Docs") {
-                            steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
-                                }
-                            }
-                        }
-
-                        stage("Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all'
-                                }
-                            }
-                        }
-
-                        stage("Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check'
-                                }
-                            }
-                        }
                     }
                 }
 
-				stage("Linux") {
-					agent {
-						label "linux"
-					}
-					stages {
-						stage("Bootstrap Build") {
-							steps {
-								sh "git log --stat > ChangeLog"
-								dir("libyacurs") {
-									sh "git log --stat > ChangeLog"
-								}
-								sh "touch README"
-								sh "autoreconf -I m4 -i"
-							}
-						}
-
-						stage("Configure") {
-							steps {
-								dir("obj") {
-									sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
-								}
-							}
-						}
-
-						stage("Build Docs") {
-							steps {
-								dir("obj/doc") {
-									sh '$MAKE -f Makefile.doc'
-								}
-							}
-						}
-
-						stage("Build") {
-							steps {
-								dir("obj") {
-									sh '$MAKE all'
-								}
-							}
-						}
-
-						stage("Test") {
-							steps {
-								dir("obj") {
-									sh '$MAKE check'
-								}
-							}
-						}
-					}
+		stage("Linux") {
+		    agent {
+			label "linux"
+		    }
+		    stages {
+			stage("Bootstrap Build") {
+			    steps {
+				echo "two"
+			    }
+			}
+		    }
+		}
             }
-            }
-
-           
         }
     }
 
