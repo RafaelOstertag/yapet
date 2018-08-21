@@ -23,6 +23,12 @@ class FileInsecureError : public FileError {
     FileInsecureError(const char* msg)
         : FileError{msg, NO_SYSTEM_ERROR_SPECIFIED} {}
 };
+
+class FileFormatError : public FileError {
+   public:
+    FileFormatError(const char* msg)
+        : FileError{msg, NO_SYSTEM_ERROR_SPECIFIED} {}
+};
 }  // namespace yapet
 
 #endif
