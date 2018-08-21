@@ -270,7 +270,7 @@ namespace YAPET {
 		ENDIAN<t> out;
 		in.value = le;
 		out.value = 0;
-		for (register unsigned int i=0; i < sizeof(t); i++)
+		for (unsigned int i=0; i < sizeof(t); i++)
 		    out.fields[(sizeof(t)-1)-i] = in.fields[i];
 		return out.value;
 	    }

@@ -1,15 +1,13 @@
-# $Id$
-
 DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
 EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER DESIGN	\
 LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
-DIST_SUBDIRS = libyacurs po crypt ui glue pwgen csv2yapet yapet2csv	\
+DIST_SUBDIRS = libyacurs po file crypt ui glue pwgen csv2yapet yapet2csv	\
 yapet tests doc
 
-SUBDIRS = libyacurs po crypt ui glue pwgen
+SUBDIRS = libyacurs po file crypt ui glue pwgen
 
 if BUILDCONVERTS
 SUBDIRS += csv2yapet yapet2csv

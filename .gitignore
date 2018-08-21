@@ -1,5 +1,5 @@
 !m4/ax_check_openssl.m4
-!m4/ax_cxx_header_stdcxx_98.m4
+!m4/ax_cxx_compile_stdcxx.m4
 *.la
 *.lo
 *.o
@@ -68,6 +68,8 @@ tests/preload/checkmasterpwchange
 tests/preload/checktestpwrecord
 tests/preload/istty
 tests/testpaths.h
+tests/file/testpaths.h
 yapet.desktop
 yapet/yapet
 yapet2csv/yapet2csv
+.vscode/launch.json

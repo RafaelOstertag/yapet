@@ -1,5 +1,3 @@
-# $Id$
-
 noinst_LTLIBRARIES = libyapet-crypt.la
 
 libyapet_crypt_la_SOURCES = structs.h record.h key.h yapetexception.h	\
