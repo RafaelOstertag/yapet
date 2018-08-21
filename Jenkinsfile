@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label any
+        any
     }
 
     options {
