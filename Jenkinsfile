@@ -126,7 +126,7 @@ pipeline {
                         stage("Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug --disable-silent-rules CC=cc CXX=c++ CXXFLAGS='-Wall -pedantic'"
                                 }
                             }
                         }
