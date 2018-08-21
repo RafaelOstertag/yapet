@@ -25,7 +25,7 @@
  * well as that of the covered work.
  */
 
-/* 
+/*
  * File:   YapetFile.hh
  * Author: rafi
  *
@@ -41,70 +41,63 @@
 
 namespace yapet {
 
-    class YapetFile {
-    private:
-        RawFile _rawFile;
-        bool _create;
-        bool _secure;
-    protected:
+class YapetFile {
+   private:
+    RawFile _rawFile;
+    bool _create;
+    bool _secure;
 
-        inline RawFile& getRawFile() {
-            return _rawFile;
-        }
-        
-        void openRawFile();
+   protected:
+    inline RawFile& getRawFile() { return _rawFile; }
 
-    public:
-        /**
-         * 
-         * @param filename file to open
-         * @param create if \c true create file if it does not exist. If \c false open existing file or fail 
-         * @param secure if \c true, fail if permissions and owner are not secure. 
-         */
-        YapetFile(const std::string& filename, bool create = false, bool secure = true);
+    void openRawFile();
 
-        YapetFile(const YapetFile&) = delete;
-        YapetFile& operator=(const YapetFile&) = delete;
+   public:
+    /**
+     *
+     * @param filename file to open
+     * @param create if \c true create file if it does not exist. If \c false
+     * open existing file or fail
+     * @param secure if \c true, fail if permissions and owner are not secure.
+     */
+    YapetFile(const std::string& filename, bool create = false,
+              bool secure = true);
 
-        YapetFile(YapetFile&& other);
-        YapetFile& operator=(YapetFile&& other);
+    YapetFile(const YapetFile&) = delete;
+    YapetFile& operator=(const YapetFile&) = delete;
 
-        virtual ~YapetFile();
+    YapetFile(YapetFile&& other);
+    YapetFile& operator=(YapetFile&& other);
 
-        /**
-         * Indicate whether the file has valid format.
-         * 
-         * @return \c true if the file has valid format, \c false otherwise.
-         */
-        virtual bool hasValidFormat() = 0;
+    virtual ~YapetFile();
 
-        /**
-         * Get plain text identifier.
-         * 
-         * @return plain text identifier
-         */
-        virtual SecureArray readIdentifier() = 0;
+    
+    /**
+     * Indicate whether the file has valid format.
+     *
+     * @return \c true if the file has valid format, \c false otherwise.
+     */
+    virtual bool hasValidFormat() = 0;
 
-        /**
-         * Read the meta data.
-         * @return meta data
-         */
-        virtual SecureArray readMetaData() = 0;
+    /**
+     * Get plain text identifier.
+     *
+     * @return plain text identifier
+     */
+    virtual SecureArray readIdentifier() = 0;
 
-        virtual std::list<SecureArray> readPasswordRecords() = 0;
+    /**
+     * Read the meta data.
+     * @return meta data
+     */
+    virtual SecureArray readMetaData() = 0;
 
-        bool isSecure() const {
-            return _secure;
-        }
+    virtual std::list<SecureArray> readPasswordRecords() = 0;
 
-        bool isCreate() const {
-            return _create;
-        }
+    bool isSecure() const { return _secure; }
 
-
-
-    };
-}
+    bool isCreate() const { return _create; }
+};
+}  // namespace yapet
 
 #endif /* _YAPETFILE_HH */
-

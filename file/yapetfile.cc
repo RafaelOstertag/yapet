@@ -33,18 +33,19 @@
  */
 
 #include "yapetfile.hh"
+#include "fileerror.hh"
 #include "fileutils.hh"
+#include "intl.h"
 
 using namespace yapet;
 
-YapetFile::YapetFile(const std::string& filename, bool create, bool secure) : _rawFile{filename}, _create{create}, _secure{secure}
-{
-}
+YapetFile::YapetFile(const std::string& filename, bool create, bool secure)
+    : _rawFile{filename}, _create{create}, _secure{secure} {}
 
-YapetFile::YapetFile(YapetFile&& other) : _rawFile{std::move(other._rawFile)}, _create{other._create}, _secure{other._secure}
-{
-
-}
+YapetFile::YapetFile(YapetFile&& other)
+    : _rawFile{std::move(other._rawFile)},
+      _create{other._create},
+      _secure{other._secure} {}
 
 YapetFile& YapetFile::operator=(YapetFile&& other) {
     if (&other == this) {
@@ -58,9 +59,17 @@ YapetFile& YapetFile::operator=(YapetFile&& other) {
     return *this;
 }
 
-YapetFile::~YapetFile() {
-}
+YapetFile::~YapetFile() {}
 
 void YapetFile::openRawFile() {
-    if (_secure && !has)
+    if (_create) {
+        _rawFile.openNew();
+        setSecurePermissionsAndOwner(_rawFile.filename());
+    } else {
+        if (_secure && !hasSecurePermissions(_rawFile.filename())) {
+            throw FileInsecureError{_("File has insecure permissions")};
+        }
+
+        _rawFile.openExisting();
     }
+}
