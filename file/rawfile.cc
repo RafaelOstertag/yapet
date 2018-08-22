@@ -172,3 +172,12 @@ void RawFile::reopen() {
         throw FileError(_("Error re-opening file"), errno);
     }
 }
+
+RawFile::seek_type RawFile::getPosition() {
+    auto currentPosition = ::ftell(_file);
+    if (currentPosition == -1) {
+        throw FileError(_("Unable to get current position in file"), errno);
+    }
+
+    return currentPosition;
+}

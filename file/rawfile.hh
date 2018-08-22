@@ -81,6 +81,11 @@ class RawFile {
      * Close and open the file
      */
     void reopen();
+
+    /**
+     * Get current stream position measured in bytes
+     */
+     seek_type getPosition();
 };
 }  // namespace yapet
 

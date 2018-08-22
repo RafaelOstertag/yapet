@@ -42,6 +42,9 @@ class RawFileTest : public CppUnit::TestFixture {
             "should close file", &RawFileTest::testClose});
             suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should re-open file", &RawFileTest::testReopen});
+            suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should get current position", &RawFileTest::testGetCurrentPosition});
+        
 
         return suiteOfTests;
     }
@@ -188,6 +191,19 @@ class RawFileTest : public CppUnit::TestFixture {
 
         file.write(secureArray);
             }
+
+    void testGetCurrentPosition() {
+        yapet::RawFile file{TEST_FILE};
+        file.openNew();
+
+        CPPUNIT_ASSERT(file.getPosition() == 0);
+
+        yapet::SecureArray secureArray{1};
+        **secureArray = 'A';
+
+        file.write(secureArray);
+        CPPUNIT_ASSERT(file.getPosition() == (sizeof(yapet::SecureArray::size_type)+1));
+    }
 };
 
 int main() {
