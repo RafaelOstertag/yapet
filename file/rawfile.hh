@@ -76,6 +76,11 @@ class RawFile {
      * Close the file
      */
     void close();
+
+    /**
+     * Close and open the file
+     */
+    void reopen();
 };
 }  // namespace yapet
 

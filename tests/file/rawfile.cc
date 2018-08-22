@@ -39,7 +39,9 @@ class RawFileTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should seek absolute", &RawFileTest::testSeekAbsolute});
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
-            "should seek absolute", &RawFileTest::testClose});
+            "should close file", &RawFileTest::testClose});
+            suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should re-open file", &RawFileTest::testReopen});
 
         return suiteOfTests;
     }
@@ -65,8 +67,9 @@ class RawFileTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT_THROW(file.read(), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.read(1), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.seekAbsolute(1), yapet::FileError);
-        yapet::SecureArray array{1};
+        CPPUNIT_ASSERT_THROW(file.reopen(), yapet::FileError);
 
+        yapet::SecureArray array{1};
         CPPUNIT_ASSERT_THROW(file.write(array), yapet::FileError);
         CPPUNIT_ASSERT_THROW(file.write(*array, 1), yapet::FileError);
     }
@@ -168,6 +171,23 @@ class RawFileTest : public CppUnit::TestFixture {
         file.close();
         CPPUNIT_ASSERT(file.isOpen() == false);
     }
+
+    void testReopen() {
+        yapet::RawFile file{TEST_FILE};
+        file.openNew();
+
+        yapet::SecureArray secureArray{1};
+        **secureArray = 'A';
+
+        file.write(secureArray);
+        file.reopen();
+
+        auto resultPair = file.read();
+        CPPUNIT_ASSERT(resultPair.second == true);
+        CPPUNIT_ASSERT(**resultPair.first == 'A');
+
+        file.write(secureArray);
+            }
 };
 
 int main() {

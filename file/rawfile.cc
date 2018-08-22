@@ -44,10 +44,13 @@ RawFile& RawFile::operator=(RawFile&& other) {
         return *this;
     }
 
-    _filename = std::move(other._filename);
     close();
+
+    _filename = std::move(other._filename);
+
     _file = other._file;
     other._file = nullptr;
+
     _openFlag = other._openFlag;
     other._openFlag = false;
 
@@ -159,4 +162,13 @@ void RawFile::close() {
         _file = nullptr;
     }
     _openFlag = false;
+}
+
+void RawFile::reopen() {
+    throwIfFileNotOpen(_openFlag);
+
+    _file = ::freopen(_filename.c_str(), READ_WRITE_EXISTING_MODE, _file);
+    if (_file == nullptr) {
+        throw FileError(_("Error re-opening file"), errno);
+    }
 }
