@@ -94,6 +94,11 @@ class YapetFile {
     virtual std::list<SecureArray> readPasswordRecords() = 0;
 
     /**
+     * Write the identifier
+     */
+    virtual void writeIdentifier() = 0;
+
+    /**
      * Write meta data
      */
     virtual void writeMetaData(const SecureArray& metaData) = 0;

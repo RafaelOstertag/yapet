@@ -34,6 +34,7 @@
  * Created on August 19, 2018, 3:12 PM
  */
 
+#include <unistd.h>
 #include <exception>
 
 #include "fileerror.hh"
@@ -129,4 +130,42 @@ std::list<SecureArray> Yapet10File::readPasswordRecords() {
     }
 
     return passwordRecords;
+}
+
+void Yapet10File::writeIdentifier() {
+    RawFile& rawFile{getRawFile()};
+    rawFile.rewind();
+    rawFile.write(Yapet10File::_recognitionString,
+                  Yapet10File::_recognitionStringSize);
+}
+
+void Yapet10File::writeMetaData(const SecureArray& metaData) {
+    RawFile& rawFile{getRawFile()};
+
+    rawFile.seekAbsolute(Yapet10File::_recognitionStringSize);
+
+    rawFile.write(metaData);
+}
+
+void Yapet10File::writePasswordRecords(
+    const std::list<SecureArray>& passwords) {
+    // This will position the file pointer on to the size indicator of the first
+    // password record
+    readMetaData();
+
+    RawFile& rawFile{getRawFile()};
+    RawFile::seek_type trimSize = rawFile.getPosition();
+
+    rawFile.close();
+    auto error = ::truncate(rawFile.filename().c_str(), trimSize);
+    if (error) {
+        throw yapet::FileError(_("Error truncating file"), errno);
+    }
+
+    rawFile.openExisting();
+    rawFile.seekAbsolute(trimSize);
+
+    for (auto password : passwords) {
+        rawFile.write(password);
+    }
 }

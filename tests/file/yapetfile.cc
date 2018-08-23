@@ -1,4 +1,3 @@
-
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/TestCaller.h>
 #include <cppunit/TestFixture.h>
@@ -41,6 +40,8 @@ class YapetFileMock : public yapet::YapetFile {
     std::list<yapet::SecureArray> readPasswordRecords() {
         throw std::runtime_error("Not implemented");
     }
+
+    void writeIdentifier() { throw std::runtime_error("Not implemented"); }
 
     void writeMetaData(const yapet::SecureArray&) {
         throw std::runtime_error("Not implemented");

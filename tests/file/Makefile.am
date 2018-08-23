@@ -1,4 +1,4 @@
-check_PROGRAMS = securearray ods rawfile fileutils yapetfile
+check_PROGRAMS = securearray ods rawfile fileutils yapetfile yapet10file
 
 TESTS = $(check_PROGRAMS)       
 
@@ -11,3 +11,4 @@ ods_SOURCES = ods.cc
 rawfile_SOURCES = rawfile.cc
 fileutils_SOURCES = fileutils.cc
 yapetfile_SOURCES = yapetfile.cc
+yapet10file_SOURCES = yapet10file.cc
