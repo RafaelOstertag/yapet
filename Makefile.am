@@ -4,15 +4,9 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER DESIGN	\
 LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
-DIST_SUBDIRS = libyacurs po file crypt ui glue pwgen csv2yapet yapet2csv	\
-yapet tests doc
+DIST_SUBDIRS = libyacurs src po tests doc
 
-SUBDIRS = libyacurs po file crypt ui glue pwgen utils
-
-if BUILDCONVERTS
-SUBDIRS += csv2yapet yapet2csv
-endif
-SUBDIRS +=  yapet tests doc
+SUBDIRS = libyacurs src po tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
