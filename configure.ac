@@ -109,6 +109,7 @@ AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	src/Makefile
 	src/libs/Makefile
+	src/libs/cfg/Makefile
 	src/libs/consts/Makefile
 	src/libs/utils/Makefile
 	src/libs/file/Makefile
@@ -121,6 +122,7 @@ AC_CONFIG_FILES([Makefile
 	src/converters/csv2yapet/Makefile
     src/converters/yapet2csv/Makefile
 	tests/Makefile
+	tests/crypt/Makefile
 	tests/utils/Makefile
 	tests/file/Makefile
 	tests/preload/Makefile

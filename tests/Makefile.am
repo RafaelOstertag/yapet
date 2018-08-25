@@ -1,55 +1,20 @@
 # $Id$
 
 yapet_srcdir = $(top_srcdir)/srcdir
-yapet_lib_srcdir = $(yapet_srcdir)/libs
+yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir= $(top_builddir)/src
-yapet_lib_builddir = $(top_builddir)/src/libs
+yapet_libs_builddir = $(top_builddir)/src/libs
 
 # Tests may fail if not run serial
 AUTOMAKE_OPTIONS = serial-tests
 
-SUBDIRS = preload file
+SUBDIRS = crypt file preload 
 
-# For silent rules
-cpy_verbose = $(cpy_verbose_$(V))
-cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
-cpy_verbose_0 = @echo "  CPY    $@";
-# For silent rules
-chmod_verbose = $(chmod_verbose_$(V))
-chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
-chmod_verbose_0 = @echo "  CHMOD  $@";
-
-CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak	\
-test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
-test8.pet test9.pet test10.pet endianess.pet corrupt.pet f32le0.5.pet	\
-f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
-f64le0.6.pet f64be0.6.pet
-#
-# Files used for foreign test
-#
-# f32le0.5.pet.in	file created on 32bit little endian arch with a pre 0.6 version
-# f32be0.5.pet.in	file created on 32bit big endian arch with a pre 0.6 version
-# f64le0.5.pet.in	file created on 64bit little endian arch with a pre 0.6 version
-# f64be0.5.pet.in	file created on 64bit big endian arch with a pre 0.6 version
-#
-# f32le0.6.pet.in	file created on 32bit little endian arch with a 0.6 version
-# f32be0.6.pet.in	file created on 32bit big endian arch with a 0.6 version
-# f64le0.6.pet.in	file created on 64bit little endian arch with a 0.6 version
-# f64be0.6.pet.in	file created on 64bit big endian arch with a 0.6 version
-EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in		\
-f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
-f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in test1.csv test2.csv	\
+EXTRA_DIST = test1.csv test2.csv	\
 test3.csv test4.csv test5.csv test6.csv test7.csv test8.csv test9.csv	\
 test10.csv cfgfile1.rc cfgfile2.rc cfgfile3.rc testimport.csv
 
-# Listed as _DEPENDENCIES for corrupt and foreign
-.pet.in.pet:
-	$(cpy_verbose)cp $< $(builddir)/$@
-	$(chmod_verbose)chmod u=rw $(builddir)/$@
-
-check_PROGRAMS = endianess key record bdbuffer enc partdec file1 file2	\
-file3 file4 file5 file6 corrupt foreign cfg1 cfgfile1 charpool1		\
-charpool2 rng1 pwgen1
+check_PROGRAMS = cfg1 cfgfile1 charpool1 charpool2 rng1 pwgen1
 
 # Checks when building csv2yapet
 if BUILDCONVERTS
@@ -61,55 +26,12 @@ TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
+	-I$(builddir) \
+	-I$(srcdir) \
 	-I$(top_srcdir)
 if BUILDCONVERTS
 AM_CPPFLAGS += -I$(top_srcdir)/csv2yapet
 endif
-
-corrupt_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-corrupt_SOURCES = corrupt.cc tests.h
-corrupt_DEPENDENCIES = corrupt.pet
-
-foreign_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-foreign_SOURCES = foreign.cc tests.h
-foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
-f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
-
-endianess_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-endianess_SOURCES = endianess.cc
-
-key_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-key_SOURCES = key.cc tests.h
-
-record_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-record_SOURCES = record.cc tests.h
-
-bdbuffer_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-bdbuffer_SOURCES = bdbuffer.cc tests.h
-
-enc_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-enc_SOURCES = enc.cc tests.h
-
-partdec_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-partdec_SOURCES = partdec.cc tests.h
-
-file1_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file1_SOURCES = file1.cc tests.h
-
-file2_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file2_SOURCES = file2.cc tests.h
-
-file3_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file3_SOURCES = file3.cc tests.h
-
-file4_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file4_SOURCES = file4.cc tests.h
-
-file5_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file5_SOURCES = file5.cc tests.h
-
-file6_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file6_SOURCES = file6.cc tests.h
 
 cfg1_LDADD = $(LIBINTL)
 cfg1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet	\
@@ -121,6 +43,7 @@ cfgfile1_LDADD = $(LIBINTL)
 cfgfile1_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/yapet
 cfgfile1_SOURCES = cfgfile1.cc ../yapet/cfg.cc ../yapet/cfgfile.cc	\
 ../yapet/consts.cc
+
 
 if BUILDCONVERTS
 
@@ -192,8 +115,3 @@ rng1_SOURCES = rng1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 pwgen1_LDADD = $(LIBINTL)
 pwgen1_SOURCES = pwgen1.cc ../pwgen/charpool.cc ../pwgen/pwgen.cc	\
 ../pwgen/rng.cc
-
-clean-local:
-	rm -rf SunWS_cache
-
-SUFFIXES = .pet .pet.in
