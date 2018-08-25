@@ -24,8 +24,8 @@
 #define _LOADFILE_H 1
 
 #include "mainwindow.h"
-#include "yacurs.h"
 #include "promptpassword.h"
+#include "yacurs.h"
 
 /**
  * Handle loading a file.
@@ -44,28 +44,26 @@
  *    MainWindow::load_password_file() is called.
  */
 class LoadFile {
-    private:
-	MainWindow& mainwindow;
-	PromptPassword* promptpassword;
-	YACURS::FileLoadDialog* fileloaddialog;
-	YACURS::MessageBox2* confirmsave;
-	bool ignore_unsaved_file;
+   private:
+    MainWindow& mainwindow;
+    PromptPassword* promptpassword;
+    YACURS::FileLoadDialog* fileloaddialog;
+    YACURS::MessageBox2* confirmsave;
+    bool ignore_unsaved_file;
 
-	LoadFile(const LoadFile& l) : mainwindow(l.mainwindow) {}
+    LoadFile(const LoadFile& l) : mainwindow(l.mainwindow) {}
 
-	const LoadFile& operator=(const LoadFile&) {
-	    return *this;
-	}
+    const LoadFile& operator=(const LoadFile&) { return *this; }
 
-	void apoptosis_handler(YACURS::Event& e);
+    void apoptosis_handler(YACURS::Event& e);
 
-	void window_close_handler(YACURS::Event& e);
+    void window_close_handler(YACURS::Event& e);
 
-    public:
-	LoadFile(MainWindow& mw);
-	~LoadFile();
+   public:
+    LoadFile(MainWindow& mw);
+    ~LoadFile();
 
-	void run();
+    void run();
 };
 
-#endif // _LOADFILE_H
+#endif  // _LOADFILE_H

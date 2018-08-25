@@ -1,1 +1,1 @@
-SUBDIRS = utils file crypt glue pwgen ui
+SUBDIRS = utils file crypt glue pwgen consts ui

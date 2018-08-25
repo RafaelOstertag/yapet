@@ -1,12 +1,17 @@
-check_PROGRAMS = securearray ods rawfile fileutils yapetfile yapet10file
+yapet_srcdir = $(top_srcdir)/src
+yapet_libs_srcdir = $(yapet_srcdir)/libs
+yapet_builddir = $(top_builddir)/src
+yapet_libs_builddir = $(yapet_builddir)/libs
+
+check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file
 
 TESTS = $(check_PROGRAMS)       
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/file
-AM_LDFLAGS = $(top_builddir)/file/libyapet-file.la $(CPPUNIT_LIBS) $(LIBINTL)
+AM_CPPFLAGS = -I$(top_srcdir) -I$(yapet_libs_srcdir)/utils -I$(yapet_libs_srcdir)/file
+LDADD = $(yapet_libs_builddir)/file/libyapet-file.la $(yapet_libs_builddir)/utils/libyapet-utils.la
+AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)
 AM_CXXFLAGS =  $(CPPUNIT_CFLAGS)
 
-securearray_SOURCES = securearray.cc
 ods_SOURCES = ods.cc
 rawfile_SOURCES = rawfile.cc
 fileutils_SOURCES = fileutils.cc

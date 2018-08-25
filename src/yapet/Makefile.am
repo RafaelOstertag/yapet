@@ -1,33 +1,36 @@
 # $Id$
 
+yapet_srcdir = $(top_srcdir)/src
+yapet_libs_srcdir = $(yapet_srcdir)/libs
+yapet_libdir = $(top_builddir)/src/libs
+
 bin_PROGRAMS = yapet
 
-pwgen_sources = ../pwgen/charpool.cc		\
-../pwgen/rng.cc ../pwgen/pwgen.cc
-
-glue_sources = ../glue/loadfile.cc				\
-../glue/promptpassword.cc ../glue/createfile.cc	\
-../glue/changepassword.cc					\
-../glue/opencmdlinefile.cc
-
-ui_sources = ../ui/help.cc ../ui/mainwindow.cc	\
-../ui/passworddialog.cc ../ui/passwordrecord.cc	\
-../ui/newpassworddialog.cc ../ui/info.cc		\
-../ui/yapetunlockdialog.cc					\
-../ui/yapetlockscreen.cc ../ui/pwgendialog.cc
-
-yapet_LDFLAGS = -static
-
-yapet_SOURCES = $(pwgen_sources) $(glue_sources) $(ui_sources)		\
-main.cc cfgfile.cc consts.cc cfg.cc globals.cc cfgfile.h consts.h	\
+yapet_LDFLAGS = $(LIBINTL)
+yapet_SOURCES = main.cc cfgfile.cc cfg.cc globals.cc cfgfile.h	\
 cfg.h globals.h
 
-yapet_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_srcdir)/glue	\
--I$(top_srcdir)/ui -I$(top_srcdir)/libyacurs/include		\
--I$(top_builddir)/libyacurs/include -I$(top_srcdir)/pwgen	\
--I$(top_srcdir) -DLOCALEDIR=\"$(localedir)\" $(OPENSSL_INCLUDES)
 
-yapet_LDADD = $(top_builddir)/libyacurs/src/libyacurs.la $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
+yapet_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
+	-I$(yapet_libs_srcdir)/glue	\
+	-I$(yapet_libs_srcdir)/ui \
+	-I$(yapet_libs_srcdir)/pwgen \
+	-I$(yapet_libs_srcdir)/consts \
+	-I$(top_srcdir)/libyacurs/include		\
+	-I$(top_builddir)/libyacurs/include	\
+	-I$(top_srcdir) \
+	-DLOCALEDIR=\"$(localedir)\" \
+	$(OPENSSL_INCLUDES)
+
+yapet_LDADD =  $(yapet_libdir)/file/libyapet-file.la \
+	$(yapet_libdir)/ui/libyapet-ui.la \
+	$(yapet_libdir)/glue/libyapet-glue.la \
+	$(yapet_libdir)/pwgen/libyapet-pwgen.la \
+	$(yapet_libdir)/crypt/libyapet-crypt.la \
+	$(yapet_libdir)/consts/libyapet-consts.la \
+	$(yapet_libdir)/utils/libyapet-utils.la \
+	$(top_builddir)/libyacurs/src/libyacurs.la
+
 
 if DISABLE_DEBUG
 yapet_CPPFLAGS += -DNDEBUG

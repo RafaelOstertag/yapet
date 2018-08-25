@@ -109,6 +109,7 @@ AC_CONFIG_FILES([Makefile
 	po/Makefile.in
 	src/Makefile
 	src/libs/Makefile
+	src/libs/consts/Makefile
 	src/libs/utils/Makefile
 	src/libs/file/Makefile
 	src/libs/crypt/Makefile
