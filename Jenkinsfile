@@ -28,7 +28,7 @@ pipeline {
                         stage("(FB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
                                 }
                             }
                         }
@@ -77,7 +77,7 @@ pipeline {
                         stage("(LX) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
                                 }
                             }
                         }
@@ -126,7 +126,7 @@ pipeline {
                         stage("(OB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CC=cc CXX=c++ CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CC=cc CXX=c++ CXXFLAGS='-Wall -pedantic'"
                                 }
                             }
                         }
@@ -175,7 +175,7 @@ pipeline {
                         stage("(SOL) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
                                 }
                             }
                         }
@@ -224,7 +224,7 @@ pipeline {
                         stage("(NB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic' LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib'"
                                 }
                             }
                         }
