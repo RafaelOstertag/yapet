@@ -14,7 +14,7 @@ pipeline {
                         label "freebsd"
                     }
                     stages {
-                        stage("Bootstrap Build") {
+                        stage("(FB) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -25,7 +25,7 @@ pipeline {
                             }
                         }
 
-                        stage("Configure") {
+                        stage("(FB) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
@@ -33,14 +33,14 @@ pipeline {
                             }
                         }
 
-                        stage("Build Docs") {
+                        stage("(FB) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
                             }
                         }
-						 stage("Build") {
+						 stage("(FB) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all'
@@ -48,7 +48,7 @@ pipeline {
                              }
                          }
 
-                        stage("Test") {
+                        stage("(FB) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check'
@@ -63,7 +63,7 @@ pipeline {
 						label "linux"
 					}
 					stages {
-						stage("Bootstrap Build") {
+						stage("(LX) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -74,7 +74,7 @@ pipeline {
                             }
                         }
 
-                        stage("Configure") {
+                        stage("(LX) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
@@ -82,14 +82,14 @@ pipeline {
                             }
                         }
 
-                        stage("Build Docs") {
+                        stage("(LX) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
                             }
                         }
-						 stage("Build") {
+						 stage("(LX) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all'
@@ -97,7 +97,7 @@ pipeline {
                              }
                          }
 
-                        stage("Test") {
+                        stage("(LX) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check'
@@ -112,7 +112,7 @@ pipeline {
 						label "openbsd"
 					}
 					stages {
-						stage("Bootstrap Build") {
+						stage("(OB) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -123,7 +123,7 @@ pipeline {
                             }
                         }
 
-                        stage("Configure") {
+                        stage("(OB) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug --disable-silent-rules CC=cc CXX=c++ CXXFLAGS='-Wall -pedantic'"
@@ -131,14 +131,14 @@ pipeline {
                             }
                         }
 
-                        stage("Build Docs") {
+                        stage("(OB) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
                             }
                         }
-						 stage("Build") {
+						 stage("(OB) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all'
@@ -146,7 +146,7 @@ pipeline {
                              }
                          }
 
-                        stage("Test") {
+                        stage("(OB) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check'
@@ -161,7 +161,7 @@ pipeline {
 						label "solaris"
 					}
 					stages {
-						stage("Bootstrap Build") {
+						stage("(SOL) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -172,7 +172,7 @@ pipeline {
                             }
                         }
 
-                        stage("Configure") {
+                        stage("(SOL) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
@@ -180,14 +180,14 @@ pipeline {
                             }
                         }
 
-                        stage("Build Docs") {
+                        stage("(SOL) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
                             }
                         }
-						 stage("Build") {
+						 stage("(SOL) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all'
@@ -195,7 +195,7 @@ pipeline {
                              }
                          }
 
-                        stage("Test") {
+                        stage("(SOL) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check'
@@ -210,7 +210,7 @@ pipeline {
 						label "netbsd"
 					}
 					stages {
-						stage("Bootstrap Build") {
+						stage("(NB) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -221,7 +221,7 @@ pipeline {
                             }
                         }
 
-                        stage("Configure") {
+                        stage("(NB) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug --disable-silent-rules CXXFLAGS='-Wall -pedantic'"
@@ -229,14 +229,14 @@ pipeline {
                             }
                         }
 
-                        stage("Build Docs") {
+                        stage("(NB) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
                             }
                         }
-						 stage("Build") {
+						 stage("(NB) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all'
@@ -244,7 +244,7 @@ pipeline {
                              }
                          }
 
-                        stage("Test") {
+                        stage("(NB) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check'
