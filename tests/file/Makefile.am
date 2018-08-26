@@ -3,6 +3,11 @@ yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
+# Tests may fail if not run serial
+AUTOMAKE_OPTIONS = serial-tests
+
+EXTRA_DIST = testpaths.h.in
+
 check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file
 
 TESTS = $(check_PROGRAMS)       

@@ -2,6 +2,25 @@
 
 yapet_srcdir = $(top_srcdir)/src
 yapet_src_libdir = $(yapet_srcdir)/libs
+yapet_builddir = $(top_builddir)/src
+yapet_libs_builddir = $(yapet_builddir)/libs
+
+AM_CPPFLAGS = -I$(top_srcdir)/src/yapet \
+    -I$(yapet_src_libdir)/pwgen \
+    -I$(yapet_src_libdir)/crypt \
+    -I$(yapet_src_libdir)/glue \
+    -I$(yapet_src_libdir)/consts \
+    -I$(yapet_src_libdir)/cfg \
+    -I$(top_srcdir)/libyacurs/include		\
+	-I$(top_builddir)/libyacurs/include	\
+    -I$(top_srcdir) \
+    -DLOCALEDIR=\"$(localedir)\"
+
+if DISABLE_DEBUG
+AM_CPPFLAGS += -DNDEBUG
+else
+AM_CPPFLAGS += -DDEBUG
+endif
 
 noinst_LTLIBRARIES = libyapet-ui.la
 
@@ -10,22 +29,5 @@ passwordrecord.cc newpassworddialog.cc info.cc yapetunlockdialog.cc	\
 yapetlockscreen.cc help.h mainwindow.h passworddialog.h			\
 passwordrecord.h newpassworddialog.h info.h yapetunlockdialog.h		\
 yapetlockscreen.h pwgendialog.h pwgendialog.cc mainwindowhotkeys.h
-
 # This resolves circular dependency between ui and glue when linked into yapet
-libyapet_ui_la_LIBADD = $(top_builddir)/src/libs/glue/libyapet-glue.la
-
-libyapet_ui_la_CPPFLAGS = -I$(top_srcdir)/src/yapet \
-    -I$(yapet_src_libdir)/pwgen \
-    -I$(yapet_src_libdir)/crypt \
-    -I$(yapet_src_libdir)/glue \
-    -I$(yapet_src_libdir)/consts \
-    -I$(top_srcdir)/libyacurs/include		\
-	-I$(top_builddir)/libyacurs/include	\
-    -I$(top_srcdir) \
-    -DLOCALEDIR=\"$(localedir)\"
-
-if DISABLE_DEBUG
-libyapet_ui_la_CPPFLAGS += -DNDEBUG
-else
-libyapet_ui_la_CPPFLAGS += -DDEBUG
-endif
+libyapet_ui_la_LIBADD = $(yapet_libs_builddir)/glue/libyapet-glue.la

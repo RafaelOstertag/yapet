@@ -1,0 +1,12 @@
+/*
+ * Include defines for path, in order to make the checks work with a build dir
+ * different from the source dir
+ *
+ * $Id$
+ */
+
+#define TOPSRCDIR "@top_srcdir@"
+#define SRCDIR "@srcdir@"
+#define TOPBUILDDIR "@top_builddir@"
+#define BUILDDIR "@builddir@"
+

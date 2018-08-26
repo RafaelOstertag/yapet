@@ -3,6 +3,9 @@ yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir= $(top_builddir)/src
 yapet_libs_builddir = $(top_builddir)/src/libs
 
+# Tests may fail if not run serial
+AUTOMAKE_OPTIONS = serial-tests
+
 # For silent rules
 cpy_verbose = $(cpy_verbose_$(V))
 cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
@@ -32,7 +35,7 @@ f64le0.6.pet f64be0.6.pet
 # f64be0.6.pet.in	file created on 64bit big endian arch with a 0.6 version
 EXTRA_DIST = endianess.test corrupt.pet.in f32le0.5.pet.in		\
 f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
-f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in 
+f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
@@ -49,50 +52,38 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
     -I$(builddir)/.. \
     -I$(srcdir)/.. \
 	-I$(top_srcdir)
+LDADD = $(LIBINTL)
+AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la 
 
-corrupt_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-corrupt_SOURCES = corrupt.cc tests.h
+corrupt_SOURCES = corrupt.cc
 corrupt_DEPENDENCIES = corrupt.pet
 
-foreign_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-foreign_SOURCES = foreign.cc tests.h
+foreign_SOURCES = foreign.cc
 foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 
-endianess_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
 endianess_SOURCES = endianess.cc
 
-key_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-key_SOURCES = key.cc tests.h
+key_SOURCES = key.cc
 
-record_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-record_SOURCES = record.cc tests.h
+record_SOURCES = record.cc
 
-bdbuffer_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-bdbuffer_SOURCES = bdbuffer.cc tests.h
+bdbuffer_SOURCES = bdbuffer.cc
 
-enc_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-enc_SOURCES = enc.cc tests.h
+enc_SOURCES = enc.cc
 
-partdec_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-partdec_SOURCES = partdec.cc tests.h
+partdec_SOURCES = partdec.cc
 
-file1_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file1_SOURCES = file1.cc tests.h
+file1_SOURCES = file1.cc
 
-file2_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file2_SOURCES = file2.cc tests.h
+file2_SOURCES = file2.cc
 
-file3_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file3_SOURCES = file3.cc tests.h
+file3_SOURCES = file3.cc
 
-file4_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file4_SOURCES = file4.cc tests.h
+file4_SOURCES = file4.cc
 
-file5_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file5_SOURCES = file5.cc tests.h
+file5_SOURCES = file5.cc
 
-file6_LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
-file6_SOURCES = file6.cc tests.h
+file6_SOURCES = file6.cc
 
 SUFFIXES = .pet .pet.in

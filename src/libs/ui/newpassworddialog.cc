@@ -18,55 +18,52 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "../intl.h"
 #include "newpassworddialog.h"
+#include "intl.h"
 
 #include <cassert>
 
 //
 // Private
 //
-bool
-NewPasswordDialog::on_close() {
+bool NewPasswordDialog::on_close() {
     if (!match() && dialog_state() != YACURS::DIALOG_CANCEL) {
-	assert(nomatchdialog==0);
-	nomatchdialog = new YACURS::MessageBox2(_("Password Missmatch"),
-						_("Passwords do not match."),
-						_("Do you want to retry?"),
-						YACURS::YESNO);
-	nomatchdialog->show();
-	return false;
+        assert(nomatchdialog == 0);
+        nomatchdialog = new YACURS::MessageBox2(
+            _("Password Missmatch"), _("Passwords do not match."),
+            _("Do you want to retry?"), YACURS::YESNO);
+        nomatchdialog->show();
+        return false;
     }
 
     if (pwinput1->input().empty() && dialog_state() != YACURS::DIALOG_CANCEL) {
-	assert(nomatchdialog==0);
-	nomatchdialog = new YACURS::MessageBox2(_("Password Missmatch"),
-						_("Password must not be empty."),
-						_("Do you want to retry?"),
-						YACURS::YESNO);
-	nomatchdialog->show();
-	return false;
+        assert(nomatchdialog == 0);
+        nomatchdialog = new YACURS::MessageBox2(
+            _("Password Missmatch"), _("Password must not be empty."),
+            _("Do you want to retry?"), YACURS::YESNO);
+        nomatchdialog->show();
+        return false;
     }
 
     return true;
 }
 
-void
-NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
+void NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
     assert(_e == YACURS::EVT_WINDOW_CLOSE);
 
-    YACURS::EventEx<YACURS::WindowBase*>& evt = dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(_e);
+    YACURS::EventEx<YACURS::WindowBase*>& evt =
+        dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(_e);
 
     if (nomatchdialog == evt.data()) {
-	if (nomatchdialog->dialog_state() == YACURS::DIALOG_YES) {
-	    pwinput1->clear();
-	    pwinput2->clear();
-	} else {
-	    dialog_state(YACURS::DIALOG_CANCEL);
-	    close();
-	}
-	delete nomatchdialog;
-	nomatchdialog = 0;
+        if (nomatchdialog->dialog_state() == YACURS::DIALOG_YES) {
+            pwinput1->clear();
+            pwinput2->clear();
+        } else {
+            dialog_state(YACURS::DIALOG_CANCEL);
+            close();
+        }
+        delete nomatchdialog;
+        nomatchdialog = 0;
     }
 }
 
@@ -74,54 +71,51 @@ NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
 // Public
 //
 
-NewPasswordDialog::NewPasswordDialog(std::string& fn) :
-    Dialog(_("New Password")),
-    nomatchdialog(0),
-    pwinput1(new YACURS::Input<>()),
-    pwinput2(new YACURS::Input<>()),
-    line1(new YACURS::Label(_("Enter password for "))),
-    line2(new YACURS::Label(_("Confirm password"))),
-    linefn(new YACURS::Label(fn)) {
+NewPasswordDialog::NewPasswordDialog(std::string& fn)
+    : Dialog(_("New Password")),
+      nomatchdialog(0),
+      pwinput1(new YACURS::Input<>()),
+      pwinput2(new YACURS::Input<>()),
+      line1(new YACURS::Label(_("Enter password for "))),
+      line2(new YACURS::Label(_("Confirm password"))),
+      linefn(new YACURS::Label(fn)) {
+    YACURS::EventQueue::connect_event(
+        YACURS::EventConnectorMethod1<NewPasswordDialog>(
+            YACURS::EVT_WINDOW_CLOSE, this,
+            &NewPasswordDialog::window_close_handler));
 
-    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<NewPasswordDialog>
-				      (YACURS::EVT_WINDOW_CLOSE,
-				       this,
-				       &NewPasswordDialog::
-				       window_close_handler) );
-
-    pwinput2->obscure_input(true); 
+    pwinput2->obscure_input(true);
     widget(pwinput2);
 
     widget(line2);
 
-    pwinput1->obscure_input(true); 
+    pwinput1->obscure_input(true);
     widget(pwinput1);
 
-    widget(linefn); // add label to dialog
-    widget(line1); // add label to dialog
-    
+    widget(linefn);  // add label to dialog
+    widget(line1);   // add label to dialog
+
     linefn->color(YACURS::DIALOG);
     line1->color(YACURS::DIALOG);
     line2->color(YACURS::DIALOG);
 }
 
 NewPasswordDialog::~NewPasswordDialog() {
-    assert(pwinput1!=0);
-    assert(pwinput2!=0);
-    assert(line1!=0);
-    assert(line2!=0);
-    assert(linefn!=0);
+    assert(pwinput1 != 0);
+    assert(pwinput2 != 0);
+    assert(line1 != 0);
+    assert(line2 != 0);
+    assert(linefn != 0);
 
-    if (nomatchdialog!=0) delete nomatchdialog;
+    if (nomatchdialog != 0) delete nomatchdialog;
     delete pwinput1;
     delete pwinput2;
     delete line1;
     delete line2;
     delete linefn;
 
-    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<NewPasswordDialog>
-					 (YACURS::EVT_WINDOW_CLOSE,
-					  this,
-					  &NewPasswordDialog::
-					  window_close_handler) );
+    YACURS::EventQueue::disconnect_event(
+        YACURS::EventConnectorMethod1<NewPasswordDialog>(
+            YACURS::EVT_WINDOW_CLOSE, this,
+            &NewPasswordDialog::window_close_handler));
 }

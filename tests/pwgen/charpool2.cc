@@ -19,8 +19,6 @@
 
 #include "charpool.h"
 
-#include "testpaths.h"
-
 using namespace YAPET::PWGEN;
 
 

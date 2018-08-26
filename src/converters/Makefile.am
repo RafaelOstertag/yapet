@@ -1,5 +1,1 @@
-DIST_SUBDIRS = csv2yapet yapet2csv
-
-if BUILDCONVERTS
-SUBDIRS = $(DIST_SUBDIRS)
-endif 
+SUBDIRS = csv2yapet yapet2csv

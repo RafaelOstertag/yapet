@@ -11,6 +11,7 @@ yapet_lib_srcdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs = $(yapet_builddir)/libs
 
+
 EXTRA_DIST = istty.cc pwrecord.cc checkyapet.cc masterpwchange.cc
 
 noinst_PROGRAMS = checktestpwrecord checkmasterpwchange istty
