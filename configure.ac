@@ -39,10 +39,6 @@ AC_ARG_ENABLE([install-doc],
 	my_disableinstalldoc=no
 	fi],
 	[my_disableinstalldoc=no])
-AC_ARG_ENABLE([converters],
-	[AS_HELP_STRING([--disable-converters],[CSV file import/export utility will not be built (Default: no)])],
-	[my_buildconverts=$enableval],
-	[my_buildconverts=yes])
 
 # Libs
 AX_CHECK_OPENSSL(,[AC_MSG_ERROR([openssl not found])])
@@ -51,7 +47,6 @@ AX_CHECK_OPENSSL(,[AC_MSG_ERROR([openssl not found])])
 AC_MSG_NOTICE([Checking C headers])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h libgen.h libintl.h locale.h stdint.h strings.h sys/time.h termios.h])
-
 
 # Types
 AC_MSG_NOTICE([Checking types])
@@ -102,28 +97,41 @@ PKG_CHECK_MODULES([CPPUNIT], [cppunit])
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
-AM_CONDITIONAL([BUILDCONVERTS], [test x$my_buildconverts = xyes])
 AM_CONDITIONAL([DISABLEINSTALLDOC], [test x$my_disableinstalldoc = xyes])
 AM_CONDITIONAL([DISABLE_DEBUG], [test x$my_debug = xno])
-AC_CONFIG_FILES([Makefile
-	po/Makefile.in
-	utils/Makefile
-	file/Makefile
-	crypt/Makefile
-	pwgen/Makefile
-	ui/Makefile
-	glue/Makefile
-	yapet/Makefile
-	csv2yapet/Makefile
-    yapet2csv/Makefile
-	tests/Makefile
-	tests/utils/Makefile
-	tests/file/Makefile
-	tests/preload/Makefile
-	tests/testpaths.h
-	tests/file/testpaths.h
+AC_CONFIG_FILES([
 	doc/Makefile
-	doc/Makefile.doc])
+	doc/Makefile.doc
+	Makefile
+	po/Makefile.in
+	src/converters/csv2yapet/Makefile
+	src/converters/Makefile
+	src/converters/yapet2csv/Makefile
+	src/libs/cfg/Makefile
+	src/libs/consts/Makefile
+	src/libs/crypt/Makefile
+	src/libs/file/Makefile
+	src/libs/glue/Makefile
+	src/libs/Makefile
+	src/libs/pwgen/Makefile
+	src/libs/ui/Makefile
+	src/libs/utils/Makefile
+	src/Makefile
+	src/yapet/Makefile
+	tests/cfg/Makefile
+	tests/cfg/testpaths.h
+	tests/converters/Makefile
+	tests/crypt/Makefile
+	tests/crypt/testpaths.h
+	tests/file/Makefile
+	tests/file/testpaths.h
+	tests/import/Makefile
+	tests/import/testpaths.h
+	tests/Makefile
+	tests/preload/Makefile
+	tests/pwgen/Makefile
+	tests/utils/Makefile
+	])
 # Inject --disable-install which is used by libyacurs.
 ac_configure_args="$ac_configure_args --disable-install"
 AC_OUTPUT
@@ -138,7 +146,6 @@ echo "LDFLAGS             : $LDFLAGS"
 echo ""
 echo "Enable debug code   : $my_debug"
 echo "Disable install Doc.: $my_disableinstalldoc"
-echo "Build csv2yapet     : $my_buildconverts"
 echo ""
 echo "Use NLS             : $USE_NLS"
 echo ""

@@ -8,11 +8,6 @@
 DOCBOOK_BASE ?= http://docbook.sourceforge.net/release/xsl/current
 
 
-if BUILDCONVERTS
-XSLPROFILE_CONVERTERS = withconverters
-else
-XSLPROFILE_CONVERTERS = withoutconverters
-endif
 # Used to conditionally include documentation for NLS support.
 #
 # Please not that the xml comments have to include a block of text.
@@ -22,7 +17,7 @@ else
 XSLPROFILE_NLS = withoutnls
 endif
 
-XSLPROFILE_KEYWORDS = $(XSLPROFILE_CONVERTERS);$(XSLPROFILE_NLS)
+XSLPROFILE_KEYWORDS = $(XSLPROFILE_NLS)
 
 docbook_profile_xsl     = $(DOCBOOK_BASE)/profiling/profile.xsl
 docbook_html_xsl = $(DOCBOOK_BASE)/xhtml/docbook.xsl

@@ -6,23 +6,29 @@
 # by LD_PRELOAD. However, not using noinst_ prefix, a shared library
 # will be built which is also installed. That we don't want either.
 
+yapet_srcdir = $(top_srcdir)/src
+yapet_lib_srcdir = $(yapet_srcdir)/libs
+yapet_builddir = $(top_builddir)/src
+yapet_libs = $(yapet_builddir)/libs
+
+
 EXTRA_DIST = istty.cc pwrecord.cc checkyapet.cc masterpwchange.cc
 
 noinst_PROGRAMS = checktestpwrecord checkmasterpwchange istty
 
-checktestpwrecord_SOURCES = checktestpwrecord.cc		 \
-../../crypt/bdbuffer.cc ../../crypt/crypt.cc ../../crypt/file.cc \
-../../crypt/key.cc ../../crypt/partdec.cc
-checktestpwrecord_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_builddir) \
--I$(top_srcdir) $(OPENSSL_INCLUDES)
-checktestpwrecord_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
+checktestpwrecord_SOURCES = checktestpwrecord.cc
+checktestpwrecord_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
+	-I$(top_builddir) \
+	-I$(top_srcdir) \
+	 $(OPENSSL_INCLUDES)
+checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la $(LIBINTL)
 
-checkmasterpwchange_SOURCES = checkmasterpwchange.cc		 \
-../../crypt/bdbuffer.cc ../../crypt/crypt.cc ../../crypt/file.cc \
-../../crypt/key.cc ../../crypt/partdec.cc
-checkmasterpwchange_CPPFLAGS = -I$(top_srcdir)/crypt -I$(top_builddir) \
--I$(top_srcdir) $(OPENSSL_INCLUDES)
-checkmasterpwchange_LDADD = $(top_builddir)/crypt/libyapet-crypt.la $(LIBINTL)
+checkmasterpwchange_SOURCES = checkmasterpwchange.cc
+checkmasterpwchange_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
+	-I$(top_builddir) \
+	-I$(top_srcdir) \
+	$(OPENSSL_INCLUDES)
+checkmasterpwchange_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la $(LIBINTL)
 
 istty_SOURCES = istty.cc
 
@@ -59,12 +65,12 @@ libmasterpwchange.la: masterpwchange.lo
 check-local: libpwrecord.la checktestpwrecord libmasterpwchange.la libcheckyapet.la
 	if $(builddir)/istty ; then \
 		rm -f /tmp/emptyfile.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libcheckyapet.so" $(top_builddir)/yapet/yapet -i /tmp/emptyfile.pet && echo 'OK' ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libcheckyapet.so" $(yapet_builddir)/yapet/yapet -i /tmp/emptyfile.pet && echo 'OK' ; \
 		rm -f /tmp/testpwrecord.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libpwrecord.so" $(top_builddir)/yapet/yapet -i /tmp/testpwrecord.pet ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libpwrecord.so" $(yapet_builddir)/yapet/yapet -i /tmp/testpwrecord.pet ; \
 		$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1 ; \
 		rm -f /tmp/masterpwchange.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libmasterpwchange.so" $(top_builddir)/yapet/yapet -i /tmp/masterpwchange.pet ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet ; \
 		$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1 ; \
 	fi
 

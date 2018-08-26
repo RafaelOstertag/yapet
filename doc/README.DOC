@@ -9,5 +9,3 @@ In order to build the documentation, call
  gmake -f Makefile.doc
 
 after configure has been run.
-
-$Id$

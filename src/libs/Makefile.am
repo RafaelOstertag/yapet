@@ -1,0 +1,1 @@
+SUBDIRS = utils file crypt glue pwgen consts cfg ui
