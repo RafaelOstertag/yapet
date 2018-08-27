@@ -112,6 +112,8 @@ class YapetFile {
     bool isSecure() const { return _secure; }
 
     bool isCreate() const { return _create; }
+
+    std::string filename() const { return _rawFile.filename(); }
 };
 }  // namespace yapet
 

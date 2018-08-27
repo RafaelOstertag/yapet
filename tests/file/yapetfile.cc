@@ -73,6 +73,8 @@ class YapetFileTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<YapetFileTest>{
             "should be forced to open file with insecure permissions",
             &YapetFileTest::forceOpenExistingFileWithInsecurePermissions});
+        suiteOfTests->addTest(new CppUnit::TestCaller<YapetFileTest>{
+            "should get filename", &YapetFileTest::filename});
 
         return suiteOfTests;
     }
@@ -126,6 +128,14 @@ class YapetFileTest : public CppUnit::TestFixture {
         YapetFileMock file{false, false};
         file.open();
         // Not throwing is the test
+    }
+
+    void filename() {
+        YapetFileMock file{false, true};
+
+        std::string expected{TEST_FILE};
+
+        CPPUNIT_ASSERT_EQUAL(expected, file.filename());
     }
 };
 
