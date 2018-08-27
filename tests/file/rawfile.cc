@@ -40,11 +40,14 @@ class RawFileTest : public CppUnit::TestFixture {
             "should seek absolute", &RawFileTest::testSeekAbsolute});
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should close file", &RawFileTest::testClose});
-            suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
             "should re-open file", &RawFileTest::testReopen});
-            suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
-            "should get current position", &RawFileTest::testGetCurrentPosition});
-        
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should get current position",
+            &RawFileTest::testGetCurrentPosition});
+        suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
+            "should get the current filename",
+            &RawFileTest::testFilename});
 
         return suiteOfTests;
     }
@@ -190,7 +193,7 @@ class RawFileTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(**resultPair.first == 'A');
 
         file.write(secureArray);
-            }
+    }
 
     void testGetCurrentPosition() {
         yapet::RawFile file{TEST_FILE};
@@ -202,7 +205,15 @@ class RawFileTest : public CppUnit::TestFixture {
         **secureArray = 'A';
 
         file.write(secureArray);
-        CPPUNIT_ASSERT(file.getPosition() == (sizeof(yapet::SecureArray::size_type)+1));
+        CPPUNIT_ASSERT(file.getPosition() ==
+                       (sizeof(yapet::SecureArray::size_type) + 1));
+    }
+
+    void testFilename() {
+        yapet::RawFile file{TEST_FILE};
+
+        std::string expected {TEST_FILE};
+        CPPUNIT_ASSERT_EQUAL(expected, file.filename());
     }
 };
 
