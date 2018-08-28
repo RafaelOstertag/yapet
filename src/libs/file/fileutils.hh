@@ -7,6 +7,7 @@
 namespace yapet {
 void setSecurePermissionsAndOwner(const std::string& filename);
 std::uint64_t getModificationTime(const std::string& filename);
+std::uint32_t getFileSize(const std::string& filename);
 bool hasSecurePermissions(const std::string& filename);
 void renameFile(const std::string& oldName, const std::string& newName);
 }  // namespace yapet

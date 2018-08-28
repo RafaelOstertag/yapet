@@ -47,6 +47,13 @@ std::uint64_t yapet::getModificationTime(const std::string& filename) {
     return fileStat.st_mtime;
 }
 
+std::uint32_t yapet::getFileSize(const std::string& filename) {
+    struct stat fileStat;
+    getFileStat(filename, &fileStat);
+
+    return fileStat.st_size;
+}
+
 bool yapet::hasSecurePermissions(const std::string& filename) {
     struct stat fileStat;
     getFileStat(filename, &fileStat);
