@@ -34,7 +34,7 @@
 #define _YAPETEXCEPTION_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <exception>
@@ -44,160 +44,197 @@
 
 namespace YAPET {
 
+/**
+ * New in version 0.6
+ *
+ * Since version 0.6 we provide an optional error
+ * specification. It is entirely optional to use it, but at the
+ * time of this writing, the YAPET::File class uses it to
+ * determine whether or not retrying to decrypt the using a
+ * different structure (FileHeader_32 or FileHeader_64)
+ */
+enum EXNUM {
+    BDBUFFER_TOO_SMALL = 1,
+    BDBUFFER_TOO_BIG = 2,
+    ZEROPOINTER = 3,
+    NOTUSED = 255
+};
+
+/**
+ * @brief The exception class used for cryptographic classes.
+ *
+ * Modified in version 0.6.
+ *
+ * The exception base class used for cryptographic classes.
+ */
+class YAPETException : public std::exception {
+   private:
+    EXNUM exnum;
+    std::string message;
+
+   protected:
+    void setExNum(EXNUM n) { exnum = n; }
+
+   public:
     /**
-     * New in version 0.6
+     * @brief Initializes a default exception message
      *
-     * Since version 0.6 we provide an optional error
-     * specification. It is entirely optional to use it, but at the
-     * time of this writing, the YAPET::File class uses it to
-     * determine whether or not retrying to decrypt the using a
-     * different structure (FileHeader_32 or FileHeader_64)
+     * Initializes a default exception message
      */
-    enum EXNUM {
-	BDBUFFER_TOO_SMALL = 1,
-	BDBUFFER_TOO_BIG = 2,
-	ZEROPOINTER = 3,
-	NOTUSED = 255
-    };
-
+    YAPETException() noexcept
+        : exception(),
+          exnum(NOTUSED),
+          message(_("Generic exception message")) {}
     /**
-     * @brief The exception class used for cryptographic classes.
+     * @brief Initializes with a user specified message
      *
-     * Modified in version 0.6.
+     * Initializes with a user specified message
      *
-     * The exception base class used for cryptographic classes.
+     * @param msg the message of the exception
      */
-    class YAPETException : public std::exception {
-        private:
-	    EXNUM exnum;
-            std::string message;
+    YAPETException(std::string msg) noexcept
+        : exception(), exnum(NOTUSED), message(msg) {}
+    YAPETException(std::string msg, EXNUM n) noexcept
+        : exception(), exnum(n), message(msg) {}
+    YAPETException(const YAPETException& ex) noexcept
+        : exnum{ex.exnum}, message{ex.message} {}
+    YAPETException(YAPETException&& ex) noexcept
+        : exnum{ex.exnum}, message{std::move(ex.message)} {}
+    virtual ~YAPETException() noexcept { /* empty */
+    }
 
-	protected:
-	    inline void setExNum(EXNUM n) { exnum = n ; }
-        public:
-            /**
-             * @brief Initializes a default exception message
-             *
-             * Initializes a default exception message
-             */
-            inline YAPETException()
-            throw() : exception(),
-		      exnum(NOTUSED),
-                    message (_ ("Generic exception message") ) {}
-            /**
-             * @brief Initializes with a user specified message
-             *
-             * Initializes with a user specified message
-             *
-             * @param msg the message of the exception
-             */
-            inline YAPETException (std::string msg) throw() : exception(),
-							      exnum(NOTUSED),
-							      message (msg) {}
-            inline YAPETException (std::string msg, EXNUM n) throw() : exception(),
-								       exnum(n),
-								       message (msg) {}
-            inline YAPETException (const YAPETException& ex) throw() {
-		exnum = ex.exnum;
-                message = ex.message;
-            }
-            inline virtual ~YAPETException() throw() { /* empty */ }
-            inline const YAPETException& operator= (const YAPETException& ex)
-            throw() {
-                if (this == &ex) return *this;
+    YAPETException& operator=(const YAPETException& ex) noexcept {
+        if (this == &ex) return *this;
 
-		exnum = ex.exnum;
-                message = ex.message;
-                return *this;
-            }
-            inline virtual const char* what() const throw() {
-                return message.c_str();
-            }
-	    inline EXNUM getExNum() const throw() { return exnum; }
-    };
+        exnum = ex.exnum;
+        message = ex.message;
+        return *this;
+    }
 
-    /**
-     * @brief Exception indicating that an operation may be retried
-     *
-     * This exception indicates that an operation may be retried. The
-     * \c File class uses this exception for certain methods.
-     *
-     * @sa File
-     */
-    class YAPETRetryException : public YAPETException {
-        public:
-            inline YAPETRetryException()
-            throw() : YAPETException (_ ("Retry") ) {}
-            inline YAPETRetryException (std::string msg)
-            throw() : YAPETException (msg) {}
-            inline YAPETRetryException (const YAPETRetryException& ex)
-            throw() : YAPETException (ex) {}
-            inline virtual ~YAPETRetryException() throw() { /* Empty */ }
+    YAPETException& operator=(YAPETException&& ex) noexcept {
+        if (this == &ex) return *this;
 
-            inline const YAPETRetryException
-            operator= (const YAPETRetryException& ex) throw() {
-                if (this == &ex) return *this;
+        exnum = ex.exnum;
+        message = std::move(ex.message);
 
-                YAPETException::operator= (ex);
-                return *this;
-            }
-    };
+        return *this;
+    }
 
-    /**
-     * @brief Indicates an error while encrypting/decrypting.
-     *
-     * This function indicates an error while encrypting/decrypting
-     * data.
-     */
-    class YAPETEncryptionException : public YAPETException {
-        public:
-            inline YAPETEncryptionException()
-            throw() : YAPETException (_ ("Encryption error") ) {}
-            inline YAPETEncryptionException (std::string msg)
-            throw() : YAPETException (msg) {}
-            inline YAPETEncryptionException (const YAPETEncryptionException& ex)
-            throw() : YAPETException (ex) {}
-            inline virtual ~YAPETEncryptionException() throw() { /* Empty */ }
+    virtual const char* what() const noexcept { return message.c_str(); }
+    EXNUM getExNum() const noexcept { return exnum; }
+};
 
-            inline const YAPETEncryptionException
-            operator= (const YAPETEncryptionException& ex) throw() {
-                if (this == &ex) return *this;
+/**
+ * @brief Exception indicating that an operation may be retried
+ *
+ * This exception indicates that an operation may be retried. The
+ * \c File class uses this exception for certain methods.
+ *
+ * @sa File
+ */
+class YAPETRetryException : public YAPETException {
+   public:
+    YAPETRetryException() noexcept : YAPETException{_("Retry")} {}
+    YAPETRetryException(std::string msg) noexcept : YAPETException{msg} {}
+    YAPETRetryException(const YAPETRetryException& ex) noexcept
+        : YAPETException{ex} {}
+    YAPETRetryException(YAPETRetryException&& ex) noexcept
+        : YAPETException{std::move(ex)} {}
+    virtual ~YAPETRetryException() noexcept { /* Empty */
+    }
 
-                YAPETException::operator= (ex);
-                return *this;
-            }
-    };
+    YAPETRetryException& operator=(const YAPETRetryException& ex) noexcept {
+        if (this == &ex) return *this;
 
-    /**
-     * @brief Indicates a wrong password.
-     *
-     * Indicates that a wrong password, thus key, was used for
-     * decryption of a file.
-     *
-     * @sa File
-     */
-    class YAPETInvalidPasswordException : public YAPETException {
-        public:
-            inline YAPETInvalidPasswordException()
-            throw() : YAPETException (_ ("Invalid password") ) {}
-            inline YAPETInvalidPasswordException (std::string msg)
-            throw() : YAPETException (msg) {}
+        YAPETException::operator=(ex);
+        return *this;
+    }
 
-            inline
-            YAPETInvalidPasswordException (const YAPETInvalidPasswordException& ex)
-            throw() : YAPETException (ex) {}
-            inline virtual ~YAPETInvalidPasswordException()
-            throw() { /* Empty */ }
+    YAPETRetryException& operator=(YAPETRetryException&& ex) noexcept {
+        if (this == &ex) return *this;
 
-            inline const YAPETInvalidPasswordException
-            operator= (const YAPETInvalidPasswordException& ex) throw() {
-                if (this == &ex) return *this;
+        YAPETException::operator=(ex);
+        return *this;
+    }
+};
 
-                YAPETException::operator= (ex);
-                return *this;
-            }
-    };
+/**
+ * @brief Indicates an error while encrypting/decrypting.
+ *
+ * This function indicates an error while encrypting/decrypting
+ * data.
+ */
+class YAPETEncryptionException : public YAPETException {
+   public:
+    YAPETEncryptionException() noexcept
+        : YAPETException{_("Encryption error")} {}
+    YAPETEncryptionException(std::string msg) noexcept : YAPETException{msg} {}
+    YAPETEncryptionException(const YAPETEncryptionException& ex) noexcept
+        : YAPETException{ex} {}
+    YAPETEncryptionException(YAPETEncryptionException&& ex) noexcept
+        : YAPETException {
+        std::move(ex)
+    }
+    virtual ~YAPETEncryptionException() noexcept { /* Empty */
+    }
 
-}
+    YAPETEncryptionException& operator=(
+        const YAPETEncryptionException& ex) noexcept {
+        if (this == &ex) return *this;
 
-#endif // _YAPETEXCEPTION_H
+        YAPETException::operator=(ex);
+        return *this;
+    }
+
+    YAPETEncryptionException& operator=(
+        YAPETEncryptionException&& ex) noexcept {
+        if (this == &ex) return *this;
+
+        YAPETException::operator=(ex);
+        return *this;
+    }
+};
+
+/**
+ * @brief Indicates a wrong password.
+ *
+ * Indicates that a wrong password, thus key, was used for
+ * decryption of a file.
+ *
+ * @sa File
+ */
+class YAPETInvalidPasswordException : public YAPETException {
+   public:
+    YAPETInvalidPasswordException() noexcept
+        : YAPETException{_("Invalid password")} {}
+    YAPETInvalidPasswordException(std::string msg) noexcept
+        : YAPETException{msg} {}
+
+    YAPETInvalidPasswordException(
+        const YAPETInvalidPasswordException& ex) noexcept
+        : YAPETException{ex} {}
+    YAPETInvalidPasswordException(YAPETInvalidPasswordException&& ex) noexcept
+        : YAPETException{std::move(ex)} {}
+    virtual ~YAPETInvalidPasswordException() noexcept { /* Empty */
+    }
+
+    YAPETInvalidPasswordException& operator=(
+        const YAPETInvalidPasswordException& ex) noexcept {
+        if (this == &ex) return *this;
+
+        YAPETException::operator=(ex);
+        return *this;
+    }
+
+    YAPETInvalidPasswordException& operator=(
+        YAPETInvalidPasswordException&& ex) noexcept {
+        if (this == &ex) return *this;
+
+        YAPETException::operator=(ex);
+        return *this;
+    }
+};
+
+}  // namespace YAPET
+
+#endif  // _YAPETEXCEPTION_H
