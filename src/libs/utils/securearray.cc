@@ -1,4 +1,5 @@
 
+#include <cstring>
 #include <stdexcept>
 
 #include "intl.h"
@@ -21,8 +22,7 @@ SecureArray::SecureArray(const SecureArray& other)
     : _size{other._size}, _array{nullptr} {
     if (_size != 0) {
         _array = new std::uint8_t[_size];
-        for (size_t i = 0; i < _size; _array[i] = other._array[i], i++)
-            ;
+        std::memcpy(_array, other._array, _size);
     }
 }
 
@@ -39,8 +39,7 @@ SecureArray& SecureArray::operator=(const SecureArray& other) {
         _array = other._array;
     } else {
         _array = new std::uint8_t[_size];
-        for (size_t i = 0; i < _size; _array[i] = other._array[i], i++)
-            ;
+        std::memcpy(_array, other._array, _size);
     }
 
     return *this;
@@ -69,8 +68,7 @@ SecureArray& SecureArray::operator=(SecureArray&& other) {
 inline void SecureArray::clearMemory() {
     if (_array == nullptr) return;
 
-    for (size_t i = 0; i < _size; _array[i] = 0, i++)
-        ;
+    std::memset(_array, 0, _size);
 }
 
 inline void SecureArray::freeMemory() {
@@ -93,9 +91,5 @@ std::uint8_t SecureArray::operator[](size_type index) const {
 bool SecureArray::operator==(const SecureArray& other) const {
     if (other._size != _size) return false;
 
-    for (size_t i = 0; i < _size; i++) {
-        if (_array[i] != other._array[i]) return false;
-    }
-
-    return true;
+    return std::memcmp(_array, other._array, _size) == 0;
 }
