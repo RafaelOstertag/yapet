@@ -168,7 +168,7 @@ pipeline {
                                     sh "git log --stat > ChangeLog"
                                 }
                                 sh "touch README"
-                                sh "autoreconf -I m4 -i"
+                                sh "autoreconf -I m4 -I /usr/share/aclocal -i"
                             }
                         }
 
