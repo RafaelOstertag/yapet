@@ -174,9 +174,7 @@ class YAPETEncryptionException : public YAPETException {
     YAPETEncryptionException(const YAPETEncryptionException& ex) noexcept
         : YAPETException{ex} {}
     YAPETEncryptionException(YAPETEncryptionException&& ex) noexcept
-        : YAPETException {
-        std::move(ex)
-    }
+        : YAPETException{std::move(ex)} {}
     virtual ~YAPETEncryptionException() noexcept { /* Empty */
     }
 
