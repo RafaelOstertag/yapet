@@ -12,6 +12,8 @@
 namespace yapet {
 /**
  * YAPET header of YAPET 1.0 files.
+ * 
+ * Supports only unencrypted data.
  */
 class Header10 {
    private:
