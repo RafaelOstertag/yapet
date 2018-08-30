@@ -45,8 +45,7 @@ AX_CHECK_OPENSSL(,[AC_MSG_ERROR([openssl not found])])
 
 # Headers
 AC_MSG_NOTICE([Checking C headers])
-AC_HEADER_TIME
-AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h libgen.h libintl.h locale.h stdint.h strings.h sys/time.h termios.h])
+AC_CHECK_HEADERS([fcntl.h getopt.h libgen.h libintl.h locale.h strings.h termios.h])
 
 # Types
 AC_MSG_NOTICE([Checking types])
@@ -61,7 +60,7 @@ AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS([basename isblank isspace lrand48 rand setlocale srand srand48 strcasestr tcgetattr tcsetattr tolower towlower])
 
-AC_CHECK_FUNCS([dup2 getopt memset strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
+AC_CHECK_FUNCS([getopt strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
 
 LIBS_SAVE="$LIBS"
 LDFLAGS_SAVE="$LDFLAGS"
