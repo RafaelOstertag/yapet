@@ -1,0 +1,1 @@
+DIST_SOURCES = serializable.hh

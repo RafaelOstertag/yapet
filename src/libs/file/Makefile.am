@@ -1,5 +1,12 @@
+yapet_srcdir = $(top_srcdir)/src
+yapet_src_libdir = $(yapet_srcdir)/libs
+yapet_builddir = $(top_builddir)/src
+yapet_libs_builddir = $(yapet_builddir)/libs
 
-AM_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir) -I$(top_srcdir)/src/libs/utils
+AM_CPPFLAGS = -I$(yapet_src_libdir)/utils \
+    -I$(yapet_src_libdir)/interfaces \
+    -I$(top_srcdir) \
+    -DLOCALEDIR=\"$(localedir)\"  
 
 if DISABLE_DEBUG
 AM_CPPFLAGS += -DNDEBUG
@@ -10,4 +17,5 @@ endif
 noinst_LTLIBRARIES = libyapet-file.la
 libyapet_file_la_SOURCES = rawfile.cc rawfile.hh \
 ods.hh fileerror.hh fileerror.cc fileutils.cc fileutils.hh yapetfile.hh \
-yapetfile.cc yapet10file.hh yapet10file.cc header10.cc header10.hh headererror.hh headerversion.hh
+yapetfile.cc yapet10file.hh yapet10file.cc header10.cc header10.hh \
+headererror.hh headerversion.hh

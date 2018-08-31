@@ -25,7 +25,7 @@ class Header10Test : public CppUnit::TestFixture {
     void serializeAndDeserialize() {
         yapet::Header10 header10{};
 
-        yapet::SecureArray serialized{header10};
+        yapet::SecureArray serialized{header10.serialize()};
 
         yapet::Header10 fromSerializedHeader{serialized};
 
@@ -37,7 +37,7 @@ class Header10Test : public CppUnit::TestFixture {
     void invalidHeader() {
         yapet::Header10 invalidHeader{std::time(0), 3};
 
-        yapet::SecureArray serialized{invalidHeader};
+        yapet::SecureArray serialized{invalidHeader.serialize()};
 
         yapet::Header10 deserializedHeader{};
         CPPUNIT_ASSERT_THROW(deserializedHeader = serialized,

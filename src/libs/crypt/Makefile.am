@@ -5,6 +5,7 @@ yapet_libs_builddir = $(yapet_builddir)/libs
 
 AM_CPPFLAGS = -I$(yapet_src_libdir)/file \
     -I$(yapet_src_libdir)/utils \
+    -I$(yapet_src_libdir)/interfaces \
     -I$(top_srcdir) \
     $(OPENSSL_INCLUDES) \
     -DLOCALEDIR=\"$(localedir)\"

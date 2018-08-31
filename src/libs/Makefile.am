@@ -1,1 +1,1 @@
-SUBDIRS = utils file crypt glue pwgen consts cfg ui
+SUBDIRS = interfaces utils file crypt glue pwgen consts cfg ui

@@ -72,7 +72,7 @@ Header10& Header10::operator=(const SecureArray& serializedHeader) {
     return *this;
 }
 
-Header10::operator SecureArray() const {
+SecureArray Header10::serialize() const {
     // Copy version to SecureArray
     SecureArray serializedHeader{TOTAL_HEADER_SIZE_VERSION_2};
     **serializedHeader = _version;

@@ -12,7 +12,10 @@ check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file header10
 
 TESTS = $(check_PROGRAMS)       
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(yapet_libs_srcdir)/utils -I$(yapet_libs_srcdir)/file
+AM_CPPFLAGS = -I$(yapet_libs_srcdir)/utils \
+    -I$(yapet_libs_srcdir)/interfaces \
+    -I$(yapet_libs_srcdir)/file \
+    -I$(top_srcdir) 
 LDADD = $(yapet_libs_builddir)/file/libyapet-file.la $(yapet_libs_builddir)/utils/libyapet-utils.la
 AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)
 AM_CXXFLAGS =  $(CPPUNIT_CFLAGS)
