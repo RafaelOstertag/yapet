@@ -66,8 +66,6 @@ foreign_SOURCES = foreign.cc
 foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 
-endianess_SOURCES = endianess.cc
-
 key_SOURCES = key.cc
 
 record_SOURCES = record.cc
