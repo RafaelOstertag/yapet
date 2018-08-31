@@ -20,5 +20,5 @@ endif
 noinst_LTLIBRARIES = libyapet-crypt.la
 
 libyapet_crypt_la_SOURCES = structs.h record.h key.h yapetexception.h	\
-file.h crypt.h bdbuffer.h partdec.h key.cc file.cc crypt.cc		\
-bdbuffer.cc partdec.cc
+file.h blowfish.h bdbuffer.h partdec.h key.cc file.cc blowfish.cc		\
+bdbuffer.cc partdec.cc crypto.hh
