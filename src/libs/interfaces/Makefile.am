@@ -1,1 +1,1 @@
-DIST_SOURCES = serializable.hh
+EXTRA_DIST = serializable.hh
