@@ -67,7 +67,6 @@ namespace YAPET {
  */
 class Key {
    private:
-    
     /**
      * @brief Holds the key
      *
@@ -86,12 +85,12 @@ class Key {
     //! Initializes the key
     Key(const yapet::SecureArray& password);
 
-    Key(const Key&) = delete;
-    Key& operator=(const Key&) = delete;
+    Key(const Key& k);
+    Key& operator=(const Key& k);
 
     Key(Key&& k);
     Key& operator=(Key&& key);
-    ~Key();
+    ~Key(){};
 
     yapet::SecureArray key() const { return _key; }
 
@@ -102,7 +101,9 @@ class Key {
     yapet::SecureArray::size_type ivecSize() const { return _ivec.size(); }
 
     //! Compares two keys for equality
-    bool operator==(const Key& k) const;
+    bool operator==(const Key& k) const {
+        return _key == k._key && _ivec == k._ivec;
+    }
     //! Compares two keys for inequality
     bool operator!=(const Key& k) const { return !operator==(k); }
 };

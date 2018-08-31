@@ -53,11 +53,13 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/utils \
     -I$(builddir)/.. \
     -I$(srcdir)/.. \
-	-I$(top_srcdir)
+	-I$(top_srcdir) \
+	$(CPPUNIT_CFLAGS)
 LDADD = $(LIBINTL)
 AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/file/libyapet-file.la \
-	$(yapet_libs_builddir)/utils/libyapet-utils.la
+	$(yapet_libs_builddir)/utils/libyapet-utils.la \
+	$(CPPUNIT_LIBS)
 
 corrupt_SOURCES = corrupt.cc
 corrupt_DEPENDENCIES = corrupt.pet
