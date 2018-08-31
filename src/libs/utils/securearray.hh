@@ -45,5 +45,7 @@ class SecureArray {
 
     size_type size() const { return _size; }
 };
+
+SecureArray operator+(const SecureArray& a, const SecureArray& b);
 }  // namespace yapet
 #endif

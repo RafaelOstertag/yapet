@@ -38,6 +38,9 @@ class SecureArrayTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "should properly handle move of empty array",
             &SecureArrayTest::testEmptyMove));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "should properly add two secure arrays",
+            &SecureArrayTest::testAdd));
 
         return suiteOfTests;
     }
@@ -206,6 +209,19 @@ class SecureArrayTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT_EQUAL(2u, empty3.size());
         CPPUNIT_ASSERT((*empty3)[0] == (std::uint8_t)'A');
         CPPUNIT_ASSERT((*empty3)[1] == (std::uint8_t)'B');
+    }
+
+    void testAdd() {
+        yapet::SecureArray a{1};
+        **a = 'A';
+
+        yapet::SecureArray b{1};
+        **b = 'B';
+
+        yapet::SecureArray result = a + b;
+        CPPUNIT_ASSERT(result.size() == 2);
+        CPPUNIT_ASSERT(**result == 'A');
+        CPPUNIT_ASSERT((*result)[1] == 'B');
     }
 };
 

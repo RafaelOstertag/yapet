@@ -93,3 +93,15 @@ bool SecureArray::operator==(const SecureArray& other) const {
 
     return std::memcmp(_array, other._array, _size) == 0;
 }
+
+SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {
+    auto aSize = a.size();
+    auto bSize = b.size();
+    SecureArray result{aSize + bSize};
+
+    std::memcpy(*result, *a, aSize);
+    auto ptrToBDest = *result + aSize;
+    std::memcpy(ptrToBDest, *b, bSize);
+
+    return result;
+}
