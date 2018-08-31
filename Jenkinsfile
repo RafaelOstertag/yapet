@@ -174,8 +174,21 @@ pipeline {
 
                         stage("(SOL) Configure") {
                             steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
+                                withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkg-config']) {
+                                    dir("obj") {
+                                        sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
+                                    }
+                                }
+                            }
+                        }
+
+                        stage("(SOL) Fix libyacurs build") {
+                            steps {
+                                dir("obj/libyacurs/src") {
+                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
+                                }
+                                dir("obj/libyacurs/tests/preloadlib") {
+                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
                                 }
                             }
                         }
