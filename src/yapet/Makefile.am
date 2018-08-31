@@ -10,6 +10,8 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
 	-I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/cfg \
+	-I$(yapet_libs_srcdir)/file \
+	-I$(yapet_libs_srcdir)/utils \
 	-I$(top_srcdir)/libyacurs/include		\
 	-I$(top_builddir)/libyacurs/include	\
 	-I$(top_srcdir) \
@@ -22,11 +24,11 @@ else
 AM_CPPFLAGS += -DDEBUG
 endif
 
-LDADD =  $(yapet_libdir)/file/libyapet-file.la \
-	$(yapet_libdir)/ui/libyapet-ui.la \
+LDADD = $(yapet_libdir)/ui/libyapet-ui.la \
 	$(yapet_libdir)/glue/libyapet-glue.la \
 	$(yapet_libdir)/pwgen/libyapet-pwgen.la \
 	$(yapet_libdir)/crypt/libyapet-crypt.la \
+	$(yapet_libdir)/file/libyapet-file.la \
 	$(yapet_libdir)/consts/libyapet-consts.la \
 	$(yapet_libdir)/utils/libyapet-utils.la \
 	$(yapet_libdir)/cfg/libyapet-cfg.la \

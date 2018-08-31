@@ -34,356 +34,58 @@
 #define _FILE_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <cassert>
-#include <string>
 #include <list>
+#include <memory>
+#include <string>
 
 #include "yapetexception.h"
 
 #include "bdbuffer.h"
-#include "structs.h"
 #include "key.h"
 #include "partdec.h"
+#include "structs.h"
+#include "yapet10file.hh"
+#include "yapetfile.hh"
 
 namespace YAPET {
-    /**
-     * @brief Class for storing and retrieving encrypted data to and from disk
-     *
-     * This class takes care of storing and retrieving encrypted password
-     * records to and from disk.
-     *
-     * Each file created by this class starts with a unencrypted recognition
-     * string which currently consists of the 8 bytes "YAPET1.0" as depicted
-     * below.
-     *
-    @verbatim
-    +--------+--------+--------+--------+--------+--------+--------+--------+
-    |   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
-    | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte |
-    +--------+--------+--------+--------+--------+--------+--------+--------+
-    @endverbatim
-     *
-     * After the recognition string a 4 byte unsigned integer which is stored
-     * in big-endian order follows. This indicator is read to determine how
-     * many bytes to read in order to get the encrypted header.
-     *
-    @verbatim
-    +--------+--------+--------+--------+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted header exactly as many bytes    |
-    |        indicated by the prefix             |
-    +--------+--------+--------+--------+--...---+
-    @endverbatim
-     *
-     * The decrypted header is 25 bytes in size (pre version 0.6). The first
-     * byte indicates the version of the file. The next 20 bytes are used as
-     * control string. After decryption, the control string is compared to the
-     * predefined clear text control string, in order to find out whether or
-     * not the key used to decrypt was the same used to encrypt.
-     *
-    @verbatim
-    +--------+
-    |Version |
-    | 1 byte |
-    +--------+--------+--------+--...---+
-    |          Control String           |
-    |             20 bytes              |
-    +--------+--------+--------+--...---+
-    |  Time when the Password  |
-    |    was set (4 bytes)     |
-    +--------+--------+--------+
-    @endverbatim
-    *
-    * As of version 0.6, it File reads headers using a time_t value of 32 or 64
-    * bits (see above for 32 bits header). It writes always a header with 64
-    * bits as shown below. The header size is 29 bytes.
-    *
-    @verbatim
-    +--------+
-    |Version |
-    | 1 byte |
-    +--------+--------+--------+--...---+
-    |          Control String           |
-    |             20 bytes              |
-    +--------+--------+--------+--...---+--------+--------+--------+--------+
-    |             Time when the Password was set (8 bytes)                  |
-    |                                                                       |
-    +--------+--------+--------+--------+--------+--------+--------+--------+
-    @endverbatim
-    *
-    * Each encrypted password record is prefixed by a 4 byte unsigned integer
-    * which is stored in big-endian order. The methods take care returning them
-    * in the appropriate order of the host system. That integer is used to
-    * indicate the length of the following encrypted data chunk.
-    *
-    @verbatim
-    +--------+--------+--------+--------+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted password record of exactly as   |
-    |   many bytes as indicated by the prefix    |
-    +--------+--------+--------+--------+--...---+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted password record of exactly as   |
-    |   many bytes as indicated by the prefix    |
-    +--------+--------+--------+--------+--...---+
-          [ . . . ]
-    @endverbatim
-    *
-    * Putting this together, an encrypted file created by this class looks like
-    * this
-    *
-    @verbatim
-    +--------+--------+--------+--------+--------+--------+--------+--------+
-    |   Y    |   A    |   P    |   E    |   T    |   1    |   .    |   0    |
-    | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte | 1 byte |
-    +--------+--------+--------+--------+--------+--------+--------+--------+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted header exactly as many bytes    |
-    |        indicated by the prefix             |
-    +--------+--------+--------+--------+--...---+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted password record of exactly as   |
-    |   many bytes as indicated by the prefix    |
-    +--------+--------+--------+--------+--...---+
-    |   Length indicator in big-endian  |
-    |         order (4 bytes)           |
-    +--------+--------+--------+--------+--...---+
-    |  Encrypted password record of exactly as   |
-    |   many bytes as indicated by the prefix    |
-    +--------+--------+--------+--------+--...---+
-          [ . . . ]
-    @endverbatim
-    *
-    * Instances of this class keeps the file open for the lifetime of the
-    * instance.
-    *
-    * When saving a password record list, the file is reopened with the \c
-    * O_TRUNC specified. The recognition string and header are copied over from
-    * the former version of the file.
-    *
-    * The term 32bit header refers to the FileHeader_32 struct, because of the
-    * use of int32_t for storing the time the password was set.
-    *
-    * The term 64bit header refers to the FileHeader_64 struct, because of the
-    * use of int64_t for storing the time the password was set.
-    *
-    * @sa Record, FileHeader, PasswordRecord
-    */
-    class File {
-        private:
-            /**
-             * @brief The file descriptor of the password file
-             *
-             * The file descriptor of the password file.
-             */
-            int fd;
-            /**
-             * @brief The file name of the file
-             *
-             * The file name of the file.
-             */
-            std::string filename;
-            /**
-             * @brief The modification time of the file.
-             *
-             * Holds the modification time of the file. It has to be
-             * updated each time a write occurs.
-             *
-             * This is used to detect file modification made outside
-             * this class.
-	     *
-	     * As of version 0.6, a 64 bit variable is used
-             */
-	    int64_t mtime;
+class File {
+   private:
+    uint64_t _fileModificationTime;
+    std::unique_ptr<yapet::YapetFile> _yapetFile;
 
-            /**
-             * @brief Flag for enabling file security.
-             *
-             * In this context "file security" means tight access restrictions
-             * on the files created, or refusing to read a file that has not
-             * tight access restriction set.
-             *
-             * If this flag is \c true, reading a file not having the mode 0600
-             * is not allowed and files created will have the mode
-             * 0600. Setting this to \c false, will disable the checks and not
-             * enforce the mode 0600 when writing files.
-             */
-            bool usefsecurity;
+    void initializeEmptyFile(const Key& key);
 
-            //! Checks the permissions and owner of a file for security
-            void checkFileSecurity();
-            //! Sets the owner and permissions on a file
-            void setFileSecurity();
+   public:
+    //! Constructor
+    File(const std::string& filename, const Key& key, bool create = false,
+         bool secure = true);
 
-            //! Creates and opens a new file.
-            void openCreate();
-            //! Opens an existing file
-            void openNoCreate();
-            //! Returns the last modification time of the open file
-            int64_t lastModified() const;
-            //! Seek to a position relative to the current offset
-            void seekCurr (off_t offset) const;
-            //! Seek to an absolute offset
-            void seekAbs (off_t offset) const;
-            //! Prepare the file for saving the password records.
-            void preparePWSave();
+    File(File&& f);
+    File& operator=(File&& f);
 
-        protected:
-	    template <class t>
-            union ENDIAN {
-		    /**
-		     * @brief 32 bits unsigned integer in host order.
-		     *
-		     * 32 bits unsigned integer in host order.
-		     */
-		    t value;
-		    uint8_t fields[sizeof(t)];
-            };
+    File(const File&) = delete;
+    File& operator=(const File&) = delete;
+    ~File();
 
-#ifndef WORDS_BIGENDIAN
-	    /**
-	     * @brief The given integer will be converted to big endian format
-	     *
-	     * Converts the length indicator provided to the big endian byte
-	     * order, suitable for writing to disk.
-	     *
-	     * @param i the length indicator in host byte order
-	     *
-	     * @return an unsigned integer in big-endian format.
-	     */
-	    template<class t>
-            t int_to_disk (t le) const {
-		ENDIAN<t> in;
-		ENDIAN<t> out;
-		in.value = le;
-		out.value = 0;
-		for (unsigned int i=0; i < sizeof(t); i++)
-		    out.fields[(sizeof(t)-1)-i] = in.fields[i];
-		return out.value;
-	    }
-	    /**
-	     * @brief The given integer will be converted to the endianess of the host
-	     *
-	     * Converts the length indicator read from the file to the host byte
-	     * order. The length indicator is always stored in big endian order.
-	     *
-	     * @param i the length indicator as read from the file
-	     *
-	     * @return an unsigned 32 bits integer in host byte order.
-	     */
-	    template<class t>
-	    t int_from_disk (t i) const {
-		return int_to_disk<t>(i);
-	    }
-#else
-            /**
-             * @brief The given integer will be converted to big
-             * endian format
-             *
-             * Converts the length indicator provided to the big endian byte
-             * order, suitable for writing to disk.
-             *
-             * @param i the length indicator in host byte order
-             *
-             * @return an unsigned integer in big-endian format.
-             */
-	    template<class t>
-            t int_to_disk (t i) const {
-                return i;
-            }
-            /**
-             * @brief The given integer will be converted to the
-             * endianess of the host
-             *
-             * Converts the length indicator read from the file to the
-             * host byte order. The length indicator is always stored
-             * in big endian order.
-             *
-             * @param i the length indicator as read from the file
-             *
-             * @return an unsigned integer in host byte order.
-             */
-	    template<class t>
-            t int_from_disk (t i) const {
-                return i;
-            }
-#endif // WORDS_BIGENDIAN
+    //! Saves a password record list.
+    void save(const std::list<PartDec>& records, bool forcewrite = false);
+    //! Reads the stored password records from the file.
+    std::list<PartDec> read(const Key& key) const;
+    //! Returns the file name of the current file.
+    std::string getFilename() const { return _yapetFile->filename(); }
+    //! Sets a new encryption key for the current file.
+    void setNewKey(const Key& oldkey, const Key& newkey,
+                   bool forcewrite = false);
+    int64_t getMasterPWSet(const Key& key) const;
+    //! Return the file version
+    FILE_VERSION getFileVersion(const Key& key) const;
 
-            //! Seeks to the first password record length indicator in
-            //! the file
-            void seekDataSection() const;
-
-            //! Reads from the current offset in the file
-            BDBuffer* read() const;
-            //! Writes at the current offset in the file
-            void write (const BDBuffer& buff,
-                        bool forceappend = false)
-           ;
-            //! Indicates whether or not the file is empty
-            bool isempty() const;
-            //! Initializes an empty file
-            void initFile (const Key& key);
-            //! Writes the given header encrypted to the file
-            void writeHeader (const Record<FileHeader_64>& header,
-                              const Key& key)
-           ;
-            //! Writes the given encrypted header to the file
-            void writeHeader (const BDBuffer& enc_header);
-            //! Reads the encrypted header
-            BDBuffer* readHeader() const;
-	    //! Reads the encrypted header and return it decrypted
-	    void readHeader(const Key& key, Record<FileHeader_32>** ptr32, Record<FileHeader_64>** ptr64) const;
-            //! Validates the given key
-            void validateKey (const Key& key);
-
-        public:
-            //! Constructor
-            File (const std::string& fn,
-                  const Key& key,
-                  bool create = false,
-                  bool secure = true)
-           ;
-            File (const File& f);
-            ~File();
-
-            //! Saves a password record list.
-            void save (const std::list<PartDec>& records, bool forcewrite=false);
-            //! Reads the stored password records from the file.
-            std::list<PartDec> read (const Key& key) const;
-            //! Returns the file name of the current file.
-            std::string getFilename() const {
-                return filename;
-            }
-            //! Sets a new encryption key for the current file.
-            void setNewKey (const Key& oldkey, const Key& newkey,
-			    bool forcewrite=false);
-            int64_t getMasterPWSet (const Key& key) const;
-	    //! Return the file version
-	    FILE_VERSION getFileVersion(const Key& key) const;
-            //! Returns the time the master password was set
-            const File& operator= (const File& f);
-
-            //! Returns whether or not file security is enabled
-            bool filesecurityEnabled() const {
-                return usefsecurity;
-            }
-            //! Sets file security
-            void setFilesecurity (bool secure) {
-                usefsecurity = secure;
-            }
-    };
-}
-#endif // _FILE_H
+    //! Returns whether or not file security is enabled
+    bool filesecurityEnabled() const { return _yapetFile->isSecure(); }
+};
+}  // namespace YAPET
+#endif  // _FILE_H

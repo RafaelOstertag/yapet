@@ -18,17 +18,29 @@ noinst_PROGRAMS = checktestpwrecord checkmasterpwchange istty
 
 checktestpwrecord_SOURCES = checktestpwrecord.cc
 checktestpwrecord_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
+	-I$(yapet_lib_srcdir)/file \
+	-I$(yapet_lib_srcdir)/utils \
 	-I$(top_builddir) \
 	-I$(top_srcdir) \
 	 $(OPENSSL_INCLUDES)
-checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la $(LIBINTL)
+checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
+	$(yapet_libs)/file/libyapet-file.la \
+	$(yapet_libs)/utils/libyapet-utils.la \
+	$(LIBINTL) 
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc
 checkmasterpwchange_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
+	-I$(yapet_lib_srcdir)/crypt \
+	-I$(yapet_lib_srcdir)/file \
+	-I$(yapet_lib_srcdir)/utils \
 	-I$(top_builddir) \
 	-I$(top_srcdir) \
 	$(OPENSSL_INCLUDES)
-checkmasterpwchange_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la $(LIBINTL)
+checkmasterpwchange_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
+	$(yapet_libs)/file/libyapet-file.la \
+	$(yapet_libs)/utils/libyapet-utils.la \
+	$(LIBINTL)
+
 
 istty_SOURCES = istty.cc
 

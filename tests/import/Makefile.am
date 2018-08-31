@@ -20,6 +20,8 @@ TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
+	-I$(yapet_libs_srcdir)/file \
+	-I$(yapet_libs_srcdir)/utils \
     -I$(yapet_srcdir)/converters/csv2yapet \
 	-I$(srcdir)/.. \
 	-I$(top_srcdir)

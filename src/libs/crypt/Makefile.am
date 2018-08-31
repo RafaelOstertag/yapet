@@ -1,4 +1,13 @@
-AM_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir) $(OPENSSL_INCLUDES)
+yapet_srcdir = $(top_srcdir)/src
+yapet_src_libdir = $(yapet_srcdir)/libs
+yapet_builddir = $(top_builddir)/src
+yapet_libs_builddir = $(yapet_builddir)/libs
+
+AM_CPPFLAGS = -I$(yapet_src_libdir)/file \
+    -I$(yapet_src_libdir)/utils \
+    -I$(top_srcdir) \
+    $(OPENSSL_INCLUDES) \
+    -DLOCALEDIR=\"$(localedir)\"
 AM_LDFLAGS = $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
 
 if DISABLE_DEBUG
