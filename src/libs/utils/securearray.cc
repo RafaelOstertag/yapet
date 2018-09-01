@@ -118,6 +118,10 @@ SecureArray& SecureArray::operator<<(const SecureArray& source) {
 
 SecureArray yapet::toSecureArray(const char* str) {
     auto len = std::strlen(str);
+    if (len == 0) {
+        return SecureArray{};
+    }
+
     SecureArray result{len};
     std::memcpy(*result, str, len);
 
@@ -125,8 +129,12 @@ SecureArray yapet::toSecureArray(const char* str) {
 }
 
 SecureArray yapet::toSecureArray(const std::string& str) {
-    SecureArray result{str.length()};
-    std::memcpy(*result, str.c_str(), str.length());
+    auto len = str.length();
+    if (len == 0) {
+        return SecureArray{};
+    }
+    SecureArray result{len};
+    std::memcpy(*result, str.c_str(), len);
 
     return result;
 }

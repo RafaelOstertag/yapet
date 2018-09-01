@@ -44,6 +44,9 @@ class SecureArrayTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "test toSecureArray", &SecureArrayTest::testToSecureArray));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "test toSecureArray with empty string",
+            &SecureArrayTest::testToSecureArrayEmpty));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "test SecureArray copy operator",
             &SecureArrayTest::testCopyOperator));
 
@@ -234,6 +237,14 @@ class SecureArrayTest : public CppUnit::TestFixture {
         yapet::SecureArray b = yapet::toSecureArray(std::string{"ABCDE"});
 
         CPPUNIT_ASSERT(a == b);
+    }
+
+    void testToSecureArrayEmpty() {
+        yapet::SecureArray a = yapet::toSecureArray("");
+        CPPUNIT_ASSERT(a == yapet::SecureArray{});
+
+        yapet::SecureArray b = yapet::toSecureArray(std::string{""});
+        CPPUNIT_ASSERT(b == yapet::SecureArray{});
     }
 
     void testCopyOperator() {
