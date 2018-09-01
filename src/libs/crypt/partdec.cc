@@ -32,51 +32,45 @@
 
 #include "partdec.h"
 
-#include "record.h"
 #include "crypt.h"
+#include "record.h"
 
 using namespace YAPET;
 
-PartDec::PartDec() {
-    std::memset (name, 0, NAME_SIZE);
+PartDec::PartDec() { std::memset(name, 0, NAME_SIZE); }
+
+PartDec::PartDec(BDBuffer& bd, const yapet::Crypto& crypto) : enc_data(bd) {
+    // Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord> (bd);
+    // PasswordRecord* ptr_dec_pw_rec = *dec_pw_rec;
+    // std::memcpy (name, ptr_dec_pw_rec->name, NAME_SIZE);
+    // delete dec_pw_rec;
 }
 
-PartDec::PartDec (BDBuffer& bd, const Key& key) : enc_data (bd) {
-    Crypt crypt (key);
-    Record<PasswordRecord>* dec_pw_rec = crypt.decrypt<PasswordRecord> (bd);
-    PasswordRecord* ptr_dec_pw_rec = *dec_pw_rec;
-    std::memcpy (name, ptr_dec_pw_rec->name, NAME_SIZE);
-    delete dec_pw_rec;
+PartDec::PartDec(Record<PasswordRecord>& pr, const yapet::Crypto& key) {
+    setRecord(pr, key);
 }
 
-PartDec::PartDec (Record<PasswordRecord>& pr, const Key& key) {
-    setRecord (pr, key);
+PartDec::PartDec(const PartDec& pd) : enc_data(pd.enc_data) {
+    std::memcpy(name, pd.name, NAME_SIZE);
 }
 
-PartDec::PartDec (const PartDec& pd) : enc_data (pd.enc_data) {
-    std::memcpy (name, pd.name, NAME_SIZE);
+PartDec::~PartDec() { std::memset(name, 0, NAME_SIZE); }
+
+void PartDec::setRecord(Record<PasswordRecord>& pr,
+                        const yapet::Crypto& crypto) {
+    // PasswordRecord* ptr_pr = pr;
+    // std::memcpy (name, ptr_pr->name, NAME_SIZE);
+    // Crypt crypt (key);
+    // BDBuffer* enc_pr = crypt.encrypt (pr);
+    // enc_data = *enc_pr;
+    // delete enc_pr;
 }
 
-PartDec::~PartDec() {
-    std::memset (name, 0, NAME_SIZE);
-}
-
-void
-PartDec::setRecord (Record<PasswordRecord>& pr, const Key& key) {
-    PasswordRecord* ptr_pr = pr;
-    std::memcpy (name, ptr_pr->name, NAME_SIZE);
-    Crypt crypt (key);
-    BDBuffer* enc_pr = crypt.encrypt (pr);
-    enc_data = *enc_pr;
-    delete enc_pr;
-}
-
-const PartDec&
-PartDec::operator= (const PartDec & pd) {
+const PartDec& PartDec::operator=(const PartDec& pd) {
     if (this == &pd) return *this;
 
-    std::memset (name, 0, NAME_SIZE);
-    std::memcpy (name, pd.name, NAME_SIZE);
+    std::memset(name, 0, NAME_SIZE);
+    std::memcpy(name, pd.name, NAME_SIZE);
     enc_data = pd.enc_data;
     return *this;
 }
@@ -84,22 +78,18 @@ PartDec::operator= (const PartDec & pd) {
 /**
  * This is mainly used for sorting the entries...
  */
-bool
-PartDec::operator< (const PartDec& pd) const {
+bool PartDec::operator<(const PartDec& pd) const {
     if (this == &pd) return false;
 
-    if (std::strcmp ( (const char*) name, (const char*) pd.name) < 0)
-        return true;
+    if (std::strcmp((const char*)name, (const char*)pd.name) < 0) return true;
 
     return false;
 }
 
-bool
-PartDec::operator> (const PartDec& pd) const {
+bool PartDec::operator>(const PartDec& pd) const {
     if (this == &pd) return false;
 
-    if (std::strcmp ( (const char*) name, (const char*) pd.name) > 0)
-        return true;
+    if (std::strcmp((const char*)name, (const char*)pd.name) > 0) return true;
 
     return false;
 }

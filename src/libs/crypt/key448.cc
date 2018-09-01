@@ -33,7 +33,7 @@
 #endif
 
 #include "intl.h"
-#include "key448.h"
+#include "key448.hh"
 
 #include <cstring>
 
@@ -81,25 +81,24 @@ inline void destroyContext(EVP_MD_CTX* context) {
 #endif
 }
 
-inline SecureArray hash(const SecureArray& text,
-                               const EVP_MD* md) {
-    if (md == 0) throw YAPETException(_("Empty EVP_MD structure"));
+inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
+    if (md == 0) throw YAPET::YAPETException(_("Empty EVP_MD structure"));
 
     EVP_MD_CTX* mdctx = createContext();
     if (mdctx == nullptr) {
-        throw YAPETException(_("Error initializing MD context"));
+        throw YAPET::YAPETException(_("Error initializing MD context"));
     }
 
     int retval = EVP_DigestInit_ex(mdctx, md, 0);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPETException(_("Unable to initialize the digest"));
+        throw YAPET::YAPETException(_("Unable to initialize the digest"));
     }
 
     retval = EVP_DigestUpdate(mdctx, *text, text.size());
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPETException(_("Unable to update the digest"));
+        throw YAPET::YAPETException(_("Unable to update the digest"));
     }
 
     int hashSize = EVP_MD_size(md);
@@ -108,7 +107,7 @@ inline SecureArray hash(const SecureArray& text,
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPETException(_("Unable to finalize the digest"));
+        throw YAPET::YAPETException(_("Unable to finalize the digest"));
     }
     destroyContext(mdctx);
 
@@ -125,7 +124,7 @@ inline SecureArray hash(const SecureArray& text,
  */
 Key448::Key448() : _key{0}, _ivec{IVEC_LENGTH} {}
 
-void Key448::setPassword(const SecureArray& password) {
+void Key448::password(const SecureArray& password) {
     SecureArray sha1Hash{hash(password, EVP_sha1())};
     SecureArray md5Hash{hash(sha1Hash, EVP_md5())};
     SecureArray ripemd160Hash{hash(sha1Hash + md5Hash, EVP_ripemd160())};
@@ -137,14 +136,15 @@ void Key448::setPassword(const SecureArray& password) {
                  _("Effective key length of %d does not match expected key "
                    "length %d"),
                  _key.size(), KEY_LENGTH);
-        throw YAPETException(tmp);
+        throw YAPET::YAPETException(tmp);
     }
 
     SecureArray keyHash{hash(_key, EVP_md5())};
     std::memcpy(*_ivec, *keyHash, IVEC_LENGTH);
 }
 
-Key448::Key448(Key448&& k) : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
+Key448::Key448(Key448&& k)
+    : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
 
 Key448::Key448(const Key448& k) : _key{k._key}, _ivec{k._ivec} {}
 

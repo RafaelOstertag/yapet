@@ -91,7 +91,7 @@ class Key448 : public Key {
     Key448& operator=(Key448&& key);
     ~Key448(){};
 
-    void setPassword(const SecureArray& password);
+    void password(const SecureArray& password);
 
     SecureArray key() const { return _key; }
 
@@ -105,8 +105,24 @@ class Key448 : public Key {
     bool operator==(const Key448& k) const {
         return _key == k._key && _ivec == k._ivec;
     }
+    bool operator==(const Key& k) const {
+        if (typeid(k) != typeid(*this)) {
+            return false;
+        }
+
+        return operator==(dynamic_cast<const Key448&>(k));
+    }
+
     //! Compares two keys for inequality
     bool operator!=(const Key448& k) const { return !operator==(k); }
+
+    bool operator!=(const Key& k) const {
+        if (typeid(k) != typeid(*this)) {
+            return true;
+        }
+
+        return operator!=(dynamic_cast<const Key448&>(k));
+    }
 };
 
 }  // namespace yapet

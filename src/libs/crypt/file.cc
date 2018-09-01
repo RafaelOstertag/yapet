@@ -70,7 +70,7 @@
 using namespace YAPET;
 using namespace yapet;
 
-void File::initializeEmptyFile(const Key& key) {
+void File::initializeEmptyFile(const Key448& key) {
     // Crypt crypt(key);
     // yapet::Header10 header;
 
@@ -120,7 +120,7 @@ void File::initializeEmptyFile(const Key& key) {
  * access. Else, the owner has read and write access, the group and world has
  * read access.
  */
-File::File(const std::string& filename, const Key& key, bool create,
+File::File(const std::string& filename, const Key448& key, bool create,
            bool secure)
     : _yapetFile{new yapet::Yapet10File{filename, create, secure}},
       _fileModificationTime{0} {
@@ -183,7 +183,7 @@ void File::save(const std::list<PartDec>& records, bool forcewrite) {
  *
  * @sa PartDec
  */
-std::list<PartDec> File::read(const Key& key) const {
+std::list<PartDec> File::read(const Key448& key) const {
     // seekDataSection();
     // BDBuffer* buff = 0;
     // std::list<PartDec> retval;
@@ -219,7 +219,8 @@ std::list<PartDec> File::read(const Key& key) const {
  *
  * @param newkey the new key used to encrypt the records
  */
-void File::setNewKey(const Key& oldkey, const Key& newkey, bool forcewrite) {
+void File::setNewKey(const Key448& oldkey, const Key448& newkey,
+                     bool forcewrite) {
     // if ((mtime != lastModified()) && !forcewrite)
     //     throw YAPETRetryException(_("File has been externally modified"));
 
@@ -288,7 +289,7 @@ void File::setNewKey(const Key& oldkey, const Key& newkey, bool forcewrite) {
  * @return a \c uint64_t representing the time the master password was
  * set.
  */
-int64_t File::getMasterPWSet(const Key& key) const {
+int64_t File::getMasterPWSet(const Key448& key) const {
     // Expect either a 32bit or 64bit header
     // Record<FileHeader_32>* dec_header_32 = 0;
     // Record<FileHeader_64>* dec_header_64 = 0;
@@ -323,7 +324,7 @@ int64_t File::getMasterPWSet(const Key& key) const {
  * Return the file version.
  */
 FILE_VERSION
-File::getFileVersion(const Key& key) const {
+File::getFileVersion(const Key448& key) const {
     // Expect either a 32bit or 64bit header
     // Record<FileHeader_32>* dec_header_32 = 0;
     // Record<FileHeader_64>* dec_header_64 = 0;

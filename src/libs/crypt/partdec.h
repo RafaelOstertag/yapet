@@ -42,7 +42,7 @@
 #endif
 
 #include "record.h"
-#include "key.h"
+#include "crypto.hh"
 #include "yapetexception.h"
 #include "bdbuffer.h"
 #include "structs.h"
@@ -83,17 +83,17 @@ namespace YAPET {
             PartDec();
 
             PartDec (BDBuffer& bd,
-                     const Key& key);
+                     const yapet::Crypto& crypto);
 
             PartDec (Record<PasswordRecord>& pr,
-                     const Key& key);
+                     const yapet::Crypto& crypto);
 
             PartDec (const PartDec& pd);
 
             ~PartDec();
 
             void setRecord (Record<PasswordRecord>& pr,
-                            const Key& key);
+                            const yapet::Crypto& crypto);
             /**
              * @brief Get the encrypted password record.
              *

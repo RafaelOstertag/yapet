@@ -45,7 +45,7 @@
 #include "yapetexception.h"
 
 #include "bdbuffer.h"
-#include "key.h"
+#include "key448.hh"
 #include "partdec.h"
 #include "structs.h"
 #include "yapet10file.hh"
@@ -57,11 +57,11 @@ class File {
     uint64_t _fileModificationTime;
     std::unique_ptr<yapet::YapetFile> _yapetFile;
 
-    void initializeEmptyFile(const Key& key);
+    void initializeEmptyFile(const yapet::Key448& key);
 
    public:
     //! Constructor
-    File(const std::string& filename, const Key& key, bool create = false,
+    File(const std::string& filename, const yapet::Key448& key, bool create = false,
          bool secure = true);
 
     File(File&& f);
@@ -74,15 +74,15 @@ class File {
     //! Saves a password record list.
     void save(const std::list<PartDec>& records, bool forcewrite = false);
     //! Reads the stored password records from the file.
-    std::list<PartDec> read(const Key& key) const;
+    std::list<PartDec> read(const yapet::Key448& key) const;
     //! Returns the file name of the current file.
     std::string getFilename() const { return _yapetFile->filename(); }
     //! Sets a new encryption key for the current file.
-    void setNewKey(const Key& oldkey, const Key& newkey,
+    void setNewKey(const yapet::Key448& oldkey, const yapet::Key448& newkey,
                    bool forcewrite = false);
-    int64_t getMasterPWSet(const Key& key) const;
+    int64_t getMasterPWSet(const yapet::Key448& key) const;
     //! Return the file version
-    FILE_VERSION getFileVersion(const Key& key) const;
+    FILE_VERSION getFileVersion(const yapet::Key448& key) const;
 
     //! Returns whether or not file security is enabled
     bool filesecurityEnabled() const { return _yapetFile->isSecure(); }
