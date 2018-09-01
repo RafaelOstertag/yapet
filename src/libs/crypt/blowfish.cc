@@ -34,19 +34,6 @@
 
 using namespace yapet;
 
-/**
- * Initializes the class with the given key, which is used for
- * encryption and decryption.
- *
- * The constructor tries to set the key length of the cipher used to
- * the length of the key provided. If this fails, a \c YAPETException is
- * thrown.
- *
- * @param k the key used for encryption/decryption.
- *
- * @throw YAPETException in case the key length of the cipher cannot be
- * set to the length of the key provided.
- */
 Blowfish::Blowfish(const std::shared_ptr<Key>& key) : Crypto(key) {}
 
 Blowfish::Blowfish(const Blowfish& c) : Crypto(c) {}
