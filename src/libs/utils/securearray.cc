@@ -105,3 +105,18 @@ SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {
 
     return result;
 }
+
+SecureArray yapet::toSecureArray(const char* str) {
+    auto len = std::strlen(str);
+    SecureArray result{len};
+    std::memcpy(*result, str, len);
+
+    return result;
+}
+
+SecureArray yapet::toSecureArray(const std::string& str) {
+    SecureArray result{str.length()};
+    std::memcpy(*result, str.c_str(), str.length());
+
+    return result;
+}

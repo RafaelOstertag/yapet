@@ -41,6 +41,8 @@ class SecureArrayTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "should properly add two secure arrays",
             &SecureArrayTest::testAdd));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "test toSecureArray", &SecureArrayTest::testToSecureArray));
 
         return suiteOfTests;
     }
@@ -222,6 +224,13 @@ class SecureArrayTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(result.size() == 2);
         CPPUNIT_ASSERT(**result == 'A');
         CPPUNIT_ASSERT((*result)[1] == 'B');
+    }
+
+    void testToSecureArray() {
+        yapet::SecureArray a = yapet::toSecureArray("ABCDE");
+        yapet::SecureArray b = yapet::toSecureArray(std::string{"ABCDE"});
+
+        CPPUNIT_ASSERT(a == b);
     }
 };
 

@@ -47,5 +47,8 @@ class SecureArray {
 };
 
 SecureArray operator+(const SecureArray& a, const SecureArray& b);
+
+SecureArray toSecureArray(const char* str);
+SecureArray toSecureArray(const std::string& str);
 }  // namespace yapet
 #endif
