@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <string>
 
 namespace yapet {
 
