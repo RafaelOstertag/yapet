@@ -136,6 +136,8 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
     effectiveEncryptedDataLength += writtenDataLength;
     SecureArray encryptedData{effectiveEncryptedDataLength};
 
+    destroyContext(context);
+
     return (encryptedData << temporaryEncryptedData);
 }
 
@@ -170,6 +172,8 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
 
     effectiveDecryptedDataLength += writtenDataLength;
     SecureArray encryptedData{effectiveDecryptedDataLength};
+
+    destroyContext(context);
 
     return (encryptedData << temporaryDecryptedData);
 }
