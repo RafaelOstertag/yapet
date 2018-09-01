@@ -30,34 +30,9 @@
 
 #include "intl.h"
 
-#include "crypt.h"
+#include "blowfish.h"
 
 using namespace YAPET;
-
-EVP_CIPHER_CTX*
-Crypt::create_context() {
-#ifdef HAVE_EVP_CIPHER_CTX_INIT
-    EVP_CIPHER_CTX *context = (EVP_CIPHER_CTX*) std::malloc(sizeof(EVP_CIPHER_CTX));
-    EVP_CIPHER_CTX_init(context);
-    return context;
-#elif HAVE_EVP_CIPHER_CTX_NEW
-    return EVP_CIPHER_CTX_new();
-#else
-    #error "Neither EVP_CIPHER_CTX_init() nor EVP_CIPHER_CTX_new() available"
-#endif
-}
-
-void
-Crypt::destroy_context(EVP_CIPHER_CTX *context) {
-#ifdef HAVE_EVP_CIPHER_CTX_CLEANUP
-    EVP_CIPHER_CTX_cleanup(context);
-    std::free(context);
-#elif HAVE_EVP_CIPHER_CTX_FREE
-    EVP_CIPHER_CTX_free(context);
-#else
-#error "Neither EVP_CIPHER_CTX_cleanup() nor EVP_CIPHER_CTX_free() available"
-#endif
-}
 
 /**
  * Initializes the class with the given key, which is used for
@@ -72,49 +47,25 @@ Crypt::destroy_context(EVP_CIPHER_CTX *context) {
  * @throw YAPETException in case the key length of the cipher cannot be
  * set to the length of the key provided.
  */
-Crypt::Crypt (const Key& k) : cipher (0),
-        iv_length (0),
-        key_length (0),
-        key (k) {
-    cipher = EVP_bf_cbc();
+Blowfish::Blowfish(const std::shared_ptr<yapet::Key>& key)
+    : yapet::Crypto(key) {}
 
-    if (cipher == 0)
-        throw YAPETException (_ ("Unable to get cipher") );
+Blowfish::Blowfish(const Blowfish& c) : yapet::Crypto(c) {}
 
-    // Test if key length is ok
-    EVP_CIPHER_CTX* ctx = create_context();
-    int retval = EVP_CipherInit_ex (ctx, cipher, 0, 0, 0, 0);
-
-    if (retval == 0) {
-        destroy_context(ctx);
-        throw YAPETException (_ ("Error initializing cipher") );
-    }
-
-    retval = EVP_CIPHER_CTX_set_key_length (ctx, key.size() );
-
-    if (retval == 0) {
-	destroy_context(ctx);
-        throw YAPETException (_ ("Error setting the key length") );
-    }
-
-    iv_length = EVP_CIPHER_CTX_iv_length (ctx);
-    key_length = EVP_CIPHER_CTX_key_length (ctx);
-    destroy_context(ctx);
-}
-
-Crypt::Crypt (const Crypt& c) : cipher (c.cipher),
-        iv_length (c.iv_length),
-        key_length (c.key_length),
-        key (c.key) {
-}
-
-const Crypt&
-Crypt::operator= (const Crypt & c) {
+Blowfish& Blowfish::operator=(const Blowfish& c) {
     if (this == &c) return *this;
 
-    iv_length = c.iv_length;
-    key_length = c.key_length;
-    cipher = c.cipher;
-    key = c.key;
+    yapet::Crypto::operator=(c);
+
+    return *this;
+}
+
+Blowfish::Blowfish(Blowfish&& c) : yapet::Crypto{c} {}
+
+Blowfish& Blowfish::operator=(Blowfish&& c) {
+    if (this == &c) return *this;
+
+    yapet::Crypto::operator=(c);
+
     return *this;
 }
