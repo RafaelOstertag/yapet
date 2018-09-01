@@ -94,16 +94,26 @@ bool SecureArray::operator==(const SecureArray& other) const {
     return std::memcmp(_array, other._array, _size) == 0;
 }
 
-SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {
-    auto aSize = a.size();
-    auto bSize = b.size();
-    SecureArray result{aSize + bSize};
+SecureArray& SecureArray::operator<<(const SecureArray& source) {
+    if (this == &source) return *this;
 
-    std::memcpy(*result, *a, aSize);
-    auto ptrToBDest = *result + aSize;
-    std::memcpy(ptrToBDest, *b, bSize);
+    if (source._size == 0 || _size == 0) {
+        return *this;
+    }
 
-    return result;
+    if (source._size > _size) {
+        std::memcpy(_array, source._array, _size);
+        return *this;
+    }
+
+    clearMemory();
+    freeMemory();
+
+    _array = new std::uint8_t[source._size];
+    _size = source._size;
+    std::memcpy(_array, source._array, _size);
+
+    return *this;
 }
 
 SecureArray yapet::toSecureArray(const char* str) {
@@ -117,6 +127,18 @@ SecureArray yapet::toSecureArray(const char* str) {
 SecureArray yapet::toSecureArray(const std::string& str) {
     SecureArray result{str.length()};
     std::memcpy(*result, str.c_str(), str.length());
+
+    return result;
+}
+
+SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {
+    auto aSize = a.size();
+    auto bSize = b.size();
+    SecureArray result{aSize + bSize};
+
+    std::memcpy(*result, *a, aSize);
+    auto ptrToBDest = *result + aSize;
+    std::memcpy(ptrToBDest, *b, bSize);
 
     return result;
 }

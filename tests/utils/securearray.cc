@@ -43,6 +43,9 @@ class SecureArrayTest : public CppUnit::TestFixture {
             &SecureArrayTest::testAdd));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "test toSecureArray", &SecureArrayTest::testToSecureArray));
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "test SecureArray copy operator",
+            &SecureArrayTest::testCopyOperator));
 
         return suiteOfTests;
     }
@@ -231,6 +234,45 @@ class SecureArrayTest : public CppUnit::TestFixture {
         yapet::SecureArray b = yapet::toSecureArray(std::string{"ABCDE"});
 
         CPPUNIT_ASSERT(a == b);
+    }
+
+    void testCopyOperator() {
+        yapet::SecureArray empty{};
+        yapet::SecureArray a{1};
+        **a = 'A';
+
+        empty << a;
+        CPPUNIT_ASSERT(empty.size() == 0);
+        CPPUNIT_ASSERT(*empty == nullptr);
+        CPPUNIT_ASSERT(a.size() == 1);
+        CPPUNIT_ASSERT(**a == 'A');
+
+        a << empty;
+        CPPUNIT_ASSERT(a.size() == 1);
+        CPPUNIT_ASSERT(**a == 'A');
+        CPPUNIT_ASSERT(empty.size() == 0);
+        CPPUNIT_ASSERT(*empty == nullptr);
+
+        yapet::SecureArray bc{2};
+        (*bc)[0] = 'B';
+        (*bc)[1] = 'C';
+
+        a << bc;
+        CPPUNIT_ASSERT(a.size() == 1);
+        CPPUNIT_ASSERT(**a == 'B');
+        CPPUNIT_ASSERT(bc.size() == 2);
+        CPPUNIT_ASSERT((*bc)[0] == 'B' && (*bc)[1] == 'C');
+        CPPUNIT_ASSERT(*a != *bc);
+
+        yapet::SecureArray d{1};
+        **d = 'D';
+
+        bc << d;
+        CPPUNIT_ASSERT(bc.size() == 1);
+        CPPUNIT_ASSERT(**bc == 'D');
+        CPPUNIT_ASSERT(d.size() == 1);
+        CPPUNIT_ASSERT(**d == 'D');
+        CPPUNIT_ASSERT(*bc != *d);
     }
 };
 

@@ -44,6 +44,20 @@ class SecureArray {
         return !this->operator==(other);
     };
 
+    /**
+     * Copy content of \c other to this.
+     *
+     * If this SecureArray is smaller than the source SecureArray, then only as
+     * much data as fitting into this SecureArray are copied from the source
+     * SecureArray.
+     *
+     * If the source SecureArray is smaller than this SecureArray, this
+     * SecureArray is shrunk to the size of the source SecureArray.
+     * 
+     * Copying from or to an empty SecureArray will have no effect.
+     */
+    SecureArray& operator<<(const SecureArray& source);
+
     size_type size() const { return _size; }
 };
 
@@ -51,5 +65,6 @@ SecureArray operator+(const SecureArray& a, const SecureArray& b);
 
 SecureArray toSecureArray(const char* str);
 SecureArray toSecureArray(const std::string& str);
+
 }  // namespace yapet
 #endif
