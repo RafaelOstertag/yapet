@@ -42,7 +42,7 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key record bdbuffer enc partdec file1 file2	\
+check_PROGRAMS = key448 record bdbuffer enc partdec file1 file2	\
 file3 file4 file5 file6 corrupt foreign
 
 TESTS = $(check_PROGRAMS)
@@ -68,7 +68,7 @@ foreign_SOURCES = foreign.cc
 foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 
-key_SOURCES = key.cc
+key448_SOURCES = key448.cc
 
 record_SOURCES = record.cc
 

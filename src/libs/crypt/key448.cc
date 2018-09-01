@@ -33,11 +33,11 @@
 #endif
 
 #include "intl.h"
-#include "key.h"
+#include "key448.h"
 
 #include <cstring>
 
-using namespace YAPET;
+using namespace yapet;
 
 namespace {
 /**
@@ -81,7 +81,7 @@ inline void destroyContext(EVP_MD_CTX* context) {
 #endif
 }
 
-inline yapet::SecureArray hash(const yapet::SecureArray& text,
+inline SecureArray hash(const SecureArray& text,
                                const EVP_MD* md) {
     if (md == 0) throw YAPETException(_("Empty EVP_MD structure"));
 
@@ -103,7 +103,7 @@ inline yapet::SecureArray hash(const yapet::SecureArray& text,
     }
 
     int hashSize = EVP_MD_size(md);
-    yapet::SecureArray hash{hashSize};
+    SecureArray hash{hashSize};
 
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);
     if (retval == 0) {
@@ -123,10 +123,12 @@ inline yapet::SecureArray hash(const yapet::SecureArray& text,
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key::Key(const yapet::SecureArray& password) : _key{0}, _ivec{IVEC_LENGTH} {
-    yapet::SecureArray sha1Hash{hash(password, EVP_sha1())};
-    yapet::SecureArray md5Hash{hash(sha1Hash, EVP_md5())};
-    yapet::SecureArray ripemd160Hash{hash(sha1Hash + md5Hash, EVP_ripemd160())};
+Key448::Key448() : _key{0}, _ivec{IVEC_LENGTH} {}
+
+void Key448::setPassword(const SecureArray& password) {
+    SecureArray sha1Hash{hash(password, EVP_sha1())};
+    SecureArray md5Hash{hash(sha1Hash, EVP_md5())};
+    SecureArray ripemd160Hash{hash(sha1Hash + md5Hash, EVP_ripemd160())};
 
     _key = sha1Hash + md5Hash + ripemd160Hash;
     if (_key.size() != KEY_LENGTH) {
@@ -138,15 +140,15 @@ Key::Key(const yapet::SecureArray& password) : _key{0}, _ivec{IVEC_LENGTH} {
         throw YAPETException(tmp);
     }
 
-    yapet::SecureArray keyHash{hash(_key, EVP_md5())};
+    SecureArray keyHash{hash(_key, EVP_md5())};
     std::memcpy(*_ivec, *keyHash, IVEC_LENGTH);
 }
 
-Key::Key(Key&& k) : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
+Key448::Key448(Key448&& k) : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
 
-Key::Key(const Key& k) : _key{k._key}, _ivec{k._ivec} {}
+Key448::Key448(const Key448& k) : _key{k._key}, _ivec{k._ivec} {}
 
-Key& Key::operator=(const Key& k) {
+Key448& Key448::operator=(const Key448& k) {
     if (this == &k) return *this;
 
     _key = k._key;
@@ -154,7 +156,7 @@ Key& Key::operator=(const Key& k) {
     return *this;
 }
 
-Key& Key::operator=(Key&& k) {
+Key448& Key448::operator=(Key448&& k) {
     if (this == &k) return *this;
 
     _key = std::move(k._key);

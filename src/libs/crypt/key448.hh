@@ -35,8 +35,8 @@
 
 #include <openssl/evp.h>
 
+#include "key.hh"
 #include "securearray.hh"
-
 #include "yapetexception.h"
 
 /**
@@ -45,9 +45,9 @@
  * Namespace for cryptographic stuff. Has no front-end and relies on
  * openssl.
  */
-namespace YAPET {
+namespace yapet {
 /**
- * @brief Converts the password into the key
+ * @brief Converts the password into the 448bits key
  *
  * Converts the password into the key which is used by the other
  * cryptographic related classes.
@@ -65,49 +65,50 @@ namespace YAPET {
  * The initialization vector is computed by hashing the key using
  * the md5 algorithm and taking only the first eight bytes.
  */
-class Key {
+class Key448 : public Key {
    private:
     /**
      * @brief Holds the key
      *
      * This is the key used to encrypt and decrypt data.
      */
-    yapet::SecureArray _key;
+    SecureArray _key;
     /**
      * @brief Holds the initialization vector
      *
      * The initialization vector used for encryption and
      * decryption.
      */
-    yapet::SecureArray _ivec;
+    SecureArray _ivec;
 
    public:
-    //! Initializes the key
-    Key(const yapet::SecureArray& password);
+    Key448();
 
-    Key(const Key& k);
-    Key& operator=(const Key& k);
+    Key448(const Key448& k);
+    Key448& operator=(const Key448& k);
 
-    Key(Key&& k);
-    Key& operator=(Key&& key);
-    ~Key(){};
+    Key448(Key448&& k);
+    Key448& operator=(Key448&& key);
+    ~Key448(){};
 
-    yapet::SecureArray key() const { return _key; }
+    void setPassword(const SecureArray& password);
 
-    yapet::SecureArray::size_type keySize() const { return _key.size(); }
+    SecureArray key() const { return _key; }
 
-    yapet::SecureArray ivec() const { return _ivec; }
+    SecureArray::size_type keySize() const { return _key.size(); }
 
-    yapet::SecureArray::size_type ivecSize() const { return _ivec.size(); }
+    SecureArray ivec() const { return _ivec; }
+
+    SecureArray::size_type ivecSize() const { return _ivec.size(); }
 
     //! Compares two keys for equality
-    bool operator==(const Key& k) const {
+    bool operator==(const Key448& k) const {
         return _key == k._key && _ivec == k._ivec;
     }
     //! Compares two keys for inequality
-    bool operator!=(const Key& k) const { return !operator==(k); }
+    bool operator!=(const Key448& k) const { return !operator==(k); }
 };
 
-}  // namespace YAPET
+}  // namespace yapet
 
 #endif  // _KEY_H

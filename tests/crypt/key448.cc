@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-#include "key.h"
+#include "key448.hh"
 
 constexpr std::uint8_t expected_key[] = {
     0x3e, 0xc3, 0x34, 0x5d, 0x72, 0x83, 0xbd, 0x09, 0x60, 0xa3, 0x4f, 0x6b,
@@ -43,7 +43,7 @@ class Header10Test : public CppUnit::TestFixture {
     }
 
     void testKey() {
-        YAPET::Key key(passwordArray);
+        yapet::Key448 key(passwordArray);
 
         for (unsigned int i = 0; i < key.keySize(); i++) {
             CPPUNIT_ASSERT((*key.key())[i] == expected_key[i]);
@@ -51,7 +51,7 @@ class Header10Test : public CppUnit::TestFixture {
     }
 
     void testIV() {
-        YAPET::Key key(passwordArray);
+        yapet::Key448 key(passwordArray);
 
         for (unsigned int i = 0; i < key.ivecSize(); i++) {
             CPPUNIT_ASSERT((*key.ivec())[i] == expected_ivec[i]);
