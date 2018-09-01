@@ -30,9 +30,9 @@
 
 #include "intl.h"
 
-#include "blowfish.h"
+#include "blowfish.hh"
 
-using namespace YAPET;
+using namespace yapet;
 
 /**
  * Initializes the class with the given key, which is used for
@@ -47,25 +47,24 @@ using namespace YAPET;
  * @throw YAPETException in case the key length of the cipher cannot be
  * set to the length of the key provided.
  */
-Blowfish::Blowfish(const std::shared_ptr<yapet::Key>& key)
-    : yapet::Crypto(key) {}
+Blowfish::Blowfish(const std::shared_ptr<Key>& key) : Crypto(key) {}
 
-Blowfish::Blowfish(const Blowfish& c) : yapet::Crypto(c) {}
+Blowfish::Blowfish(const Blowfish& c) : Crypto(c) {}
 
 Blowfish& Blowfish::operator=(const Blowfish& c) {
     if (this == &c) return *this;
 
-    yapet::Crypto::operator=(c);
+    Crypto::operator=(c);
 
     return *this;
 }
 
-Blowfish::Blowfish(Blowfish&& c) : yapet::Crypto{c} {}
+Blowfish::Blowfish(Blowfish&& c) : Crypto{c} {}
 
 Blowfish& Blowfish::operator=(Blowfish&& c) {
     if (this == &c) return *this;
 
-    yapet::Crypto::operator=(c);
+    Crypto::operator=(c);
 
     return *this;
 }

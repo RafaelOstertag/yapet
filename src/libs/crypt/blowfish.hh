@@ -30,8 +30,8 @@
 // well as that of the covered work.
 //
 
-#ifndef _CRYPT_H
-#define _CRYPT_H 1
+#ifndef _BLOWFISH_HH
+#define _BLOWFISH_HH 1
 
 #include <openssl/evp.h>
 #include <memory>
@@ -44,17 +44,17 @@
 #include "securearray.hh"
 #include "yapetexception.h"
 
-namespace YAPET {
+namespace yapet {
 /**
  * Encrypt/decrypt data using Blowfish algorithm.
  */
-class Blowfish : public yapet::Crypto {
+class Blowfish : public Crypto {
    protected:
     const EVP_CIPHER* getCipher() const { return EVP_bf_cbc(); }
 
    public:
     //! Constructor
-    Blowfish(const std::shared_ptr<yapet::Key>& key);
+    Blowfish(const std::shared_ptr<Key>& key);
     Blowfish(const Blowfish&);
     Blowfish& operator=(const Blowfish& c);
 
@@ -63,6 +63,6 @@ class Blowfish : public yapet::Crypto {
 
     ~Blowfish() {}
 };
-}  // namespace YAPET
+}  // namespace yapet
 
-#endif  // _CRYPT_H
+#endif  // _BLOWFISH_HH
