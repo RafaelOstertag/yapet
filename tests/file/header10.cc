@@ -42,6 +42,14 @@ class Header10Test : public CppUnit::TestFixture {
         yapet::Header10 deserializedHeader{};
         CPPUNIT_ASSERT_THROW(deserializedHeader = serialized,
                              yapet::HeaderError);
+
+        yapet::Header10 header{};
+
+        serialized = header.serialize();
+        (*serialized)[4] = 'Z';
+
+        CPPUNIT_ASSERT_THROW(deserializedHeader = serialized,
+                             yapet::HeaderError);
     }
 };
 
