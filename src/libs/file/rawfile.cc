@@ -183,8 +183,8 @@ RawFile::seek_type RawFile::getPosition() {
 }
 
 void RawFile::flush() {
-    auto success{fflush(_file)};
-    if (!success) {
+    auto error{fflush(_file)};
+    if (error) {
         throw FileError(_("Unable to flush data"), errno);
     }
 }
