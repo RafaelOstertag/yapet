@@ -52,7 +52,21 @@ class BlowfishTest : public CppUnit::TestFixture {
         corrupt << cipherText;
 
         CPPUNIT_ASSERT_THROW(blowfish->decrypt(corrupt),
-                             YAPET::YAPETEncryptionException);
+                             YAPET::YAPETInvalidPasswordException);
+    }
+
+    void decryptWithWrongPassword() {
+        auto plainText{yapet::toSecureArray("Encryption test")};
+        auto cipherText = blowfish->encrypt(plainText);
+
+        std::shared_ptr<yapet::Key> otherKey{new yapet::Key448{}};
+        otherKey->password(yapet::toSecureArray("invalid"));
+
+        auto otherBlowfish{
+            std::unique_ptr<yapet::Blowfish>{new yapet::Blowfish{otherKey}}};
+
+        CPPUNIT_ASSERT_THROW(otherBlowfish->decrypt(cipherText),
+                             YAPET::YAPETInvalidPasswordException);
     }
 
     void throwOnEmptyPlainAndCipherText() {
