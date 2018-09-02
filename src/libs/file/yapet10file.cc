@@ -145,6 +145,7 @@ void Yapet10File::writeMetaData(const SecureArray& metaData) {
     rawFile.seekAbsolute(Yapet10File::_recognitionStringSize);
 
     rawFile.write(metaData);
+    rawFile.flush();
 }
 
 void Yapet10File::writePasswordRecords(
@@ -168,4 +169,6 @@ void Yapet10File::writePasswordRecords(
     for (auto password : passwords) {
         rawFile.write(password);
     }
+
+    rawFile.flush();
 }
