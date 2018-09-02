@@ -21,7 +21,7 @@ constexpr std::uint8_t expected_ivec[] = {0xb2, 0x19, 0x22, 0x33,
 constexpr char password[] = "JustATestPasswordForKeepingSecret";
 auto passwordLength = std::strlen(password);
 
-class Header10Test : public CppUnit::TestFixture {
+class Key448Test : public CppUnit::TestFixture {
    private:
     yapet::SecureArray passwordArray{0};
 
@@ -29,10 +29,10 @@ class Header10Test : public CppUnit::TestFixture {
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Key");
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
-            "should create proper key", &Header10Test::testKey));
-        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
-            "should create proper IV", &Header10Test::testIV));
+        suiteOfTests->addTest(new CppUnit::TestCaller<Key448Test>(
+            "should create proper key", &Key448Test::testKey));
+        suiteOfTests->addTest(new CppUnit::TestCaller<Key448Test>(
+            "should create proper IV", &Key448Test::testIV));
 
         return suiteOfTests;
     }
@@ -63,6 +63,6 @@ class Header10Test : public CppUnit::TestFixture {
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest(Header10Test::suite());
+    runner.addTest(Key448Test::suite());
     return runner.run() ? 0 : 1;
 }

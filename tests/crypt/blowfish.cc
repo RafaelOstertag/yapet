@@ -7,7 +7,7 @@
 #include "blowfish.hh"
 #include "key448.hh"
 
-class Header10Test : public CppUnit::TestFixture {
+class BlowfishTest : public CppUnit::TestFixture {
    private:
     std::unique_ptr<yapet::Blowfish> blowfish;
 
@@ -15,16 +15,16 @@ class Header10Test : public CppUnit::TestFixture {
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Blowfish");
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
-            "should encrypt and decrypt", &Header10Test::encryptDecrypt));
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishTest>(
+            "should encrypt and decrypt", &BlowfishTest::encryptDecrypt));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishTest>(
             "should throw on decrypting corrupted data",
-            &Header10Test::decryptCorruptData));
+            &BlowfishTest::decryptCorruptData));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishTest>(
             "should throw on empty plain/cipher text",
-            &Header10Test::throwOnEmptyPlainAndCipherText));
+            &BlowfishTest::throwOnEmptyPlainAndCipherText));
 
         return suiteOfTests;
     }
@@ -65,6 +65,6 @@ class Header10Test : public CppUnit::TestFixture {
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest(Header10Test::suite());
+    runner.addTest(BlowfishTest::suite());
     return runner.run() ? 0 : 1;
 }
