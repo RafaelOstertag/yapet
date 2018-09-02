@@ -91,6 +91,8 @@ std::uint8_t SecureArray::operator[](size_type index) const {
 bool SecureArray::operator==(const SecureArray& other) const {
     if (other._size != _size) return false;
 
+    if (other._array == nullptr && _array == nullptr) return true;
+
     return std::memcmp(_array, other._array, _size) == 0;
 }
 
