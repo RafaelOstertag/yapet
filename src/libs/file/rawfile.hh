@@ -86,6 +86,11 @@ class RawFile {
      * Get current stream position measured in bytes
      */
      seek_type getPosition();
+
+     /**
+      * Write remaining buffered data to disk.
+      */
+     void flush();
 };
 }  // namespace yapet
 
