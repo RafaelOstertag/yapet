@@ -42,12 +42,14 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 blowfish partdec file1 file2	\
-file3 file4 file5 file6 corrupt foreign
+check_PROGRAMS = key448 blowfish file1 \
+ file4 file5 file6 corrupt foreign
 
 TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
+	-I$(yapet_libs_srcdir)/passwordrecord \
+	-I$(yapet_libs_srcdir)/interfaces \
 	-I$(yapet_libs_srcdir)/pwgen \
 	-I$(yapet_libs_srcdir)/file \
 	-I$(yapet_libs_srcdir)/utils \
@@ -59,6 +61,7 @@ LDADD = $(LIBINTL)
 AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/file/libyapet-file.la \
 	$(yapet_libs_builddir)/utils/libyapet-utils.la \
+	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
 	$(CPPUNIT_LIBS)
 
 corrupt_SOURCES = corrupt.cc
@@ -72,13 +75,7 @@ key448_SOURCES = key448.cc
 
 blowfish_SOURCES = blowfish.cc
 
-partdec_SOURCES = partdec.cc
-
 file1_SOURCES = file1.cc
-
-file2_SOURCES = file2.cc
-
-file3_SOURCES = file3.cc
 
 file4_SOURCES = file4.cc
 

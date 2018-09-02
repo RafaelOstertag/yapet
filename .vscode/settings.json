@@ -68,7 +68,8 @@
         "thread": "cpp",
         "typeindex": "cpp",
         "algorithm": "cpp",
-        "cerrno": "cpp"
+        "cerrno": "cpp",
+        "complex": "cpp"
     },
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true

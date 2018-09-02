@@ -28,181 +28,92 @@
 // well as that of the covered work.
 //
 
-#include <unistd.h>
+#include <algorithm>
 
-#ifdef TIME_WITH_SYS_TIME
-#include <sys/time.h>
-#include <time.h>
-#else
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#else
-#include <time.h>
-#endif
-#endif  // TIME_WITH_SYS_TIME
-
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#endif
-
-#include <sys/types.h>
-
-#include <sys/stat.h>
-
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-
-#ifdef HAVE_ALLOCA_H
-#include <alloca.h>
-#endif
-
-#include <cerrno>
-
-#include "crypt.h"
 #include "file.h"
 #include "fileutils.hh"
 #include "header10.hh"
 #include "intl.h"
-#include "record.h"
-#include "structs.h"
 
 using namespace YAPET;
 using namespace yapet;
 
-void File::initializeEmptyFile(const Key448& key) {
-    // Crypt crypt(key);
-    // yapet::Header10 header;
+void File::initializeEmptyFile() {
+    Header10 header{time(0)};
 
-    // mtime = lastModified();
-    // writeHeader(header, key);
+    _yapetFile->writeIdentifier();
 
-    // // Sanity checks
-    // BDBuffer* buff = readHeader();
-    // if (buff == 0)
-    //     throw YAPETException(_("EOF encountered while reading header"));
-    // Record<FileHeader_64>* dec_hdr = crypt.decrypt<FileHeader_64>(*buff);
-    // FileHeader_64* ptr_dec_hdr = *dec_hdr;
-    // int retval =
-    //     std::memcmp(ptr_dec_hdr->control, ptr->control, HEADER_CONTROL_SIZE);
-    // if (retval != 0)
-    //     throw YAPETException(_("Sanity check for control field failed"));
-    // delete buff;
-    // delete dec_hdr;
+    auto encryptedSerializedHeader = _crypto->encrypt(header.serialize());
+
+    _yapetFile->writeMetaData(encryptedSerializedHeader);
 }
 
-/**
- * Opens the file specified. Optionally creates the file if it does
- * not exist and \c create is set \c true.
- *
- * When opening an existing file, the key provided is validated. When
- * creating a new file, the key is used to encrypt the header.
- *
- * The file opened or created will stay open as long as the instance
- * of this class exists. There is no method for closing the file. Only
- * the destructor closes the file.
- *
- * @param fn string holding the file name
- *
- * @param key the key used for verification or encrypting the file
- * header
- *
- * @param create flag indicating whether the file should be created
- * (\c true) or just opened (\c false). Be aware that passing \c true
- * to this flag always causes the file to be created. Even if it
- * already exists. Existing files will be truncated and the data
- * stored will be lost.
- *
- * @param secure if \c true, the functions checks whether or not the file
- * permissions are secure. If \c false, file permissions are not checked for
- * security. When creating a file and the value is \c true, the file is created
- * using secure file permissions meaning only the owner has write and read
- * access. Else, the owner has read and write access, the group and world has
- * read access.
- */
-File::File(const std::string& filename, const Key448& key, bool create,
-           bool secure)
-    : _yapetFile{new yapet::Yapet10File{filename, create, secure}},
-      _fileModificationTime{0} {
-    // if (getFileSize(filename) == 0) {
-    //     initializeEmptyFile(key);
-    // } else {
-    //     validateKey(key);
-    // }
+void File::validateExistingFile() {
+    auto encryptedSerializedHeader = _yapetFile->readMetaData();
+    auto serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
+
+    Header10 header{serializedHeader};
+    // If we read an invalid header version, intToHeaderVersion() will throw an
+    // exception
+    intToHeaderVersion(header.version());
 }
 
-/**
- * Closes the file.
- */
+void File::notModifiedOrThrow() {
+    auto currentFileModificationTime{
+        yapet::getModificationTime(_yapetFile->filename())};
+    if (currentFileModificationTime != _fileModificationTime) {
+        throw YAPET::YAPETRetryException(
+            _("File has been externally modified"));
+    }
+}
+
+File::File(const yapet::AbstractCryptoFactory& abstractCryptoFactory,
+           const std::string& filename, const SecureArray& password,
+           bool create, bool secure)
+    : _fileModificationTime{0},
+      _yapetFile{abstractCryptoFactory.file(filename, create, secure)},
+      _crypto{abstractCryptoFactory.crypto(password)} {
+    if (getFileSize(filename) == 0) {
+        initializeEmptyFile();
+    } else {
+        validateExistingFile();
+    }
+
+    _fileModificationTime = getModificationTime(_yapetFile->filename());
+}
+
 File::~File() {}
 
-/**
- * Stores the list of \c PartDec records in the file.
- *
- * @param records list of \c PartDec records
- *
- * @param forcewrite before writing any data, the method checks
- * whether the last modification date stored in \c mtime matches the
- * date returned by \c lastModified(). If they differ, and this flag
- * is set to \c false, the write operation will fail and an exception
- * is thrown. If the flag is set to \c true, it writes the data to the
- * file regardless of the last modification date.
- *
- * @throw YAPETRetryException if the file has been externally modified
- * (outside of this class), and \c forcewrite is not \c true, this
- * exception is thrown.
- *
- * @sa PartDec
- */
-void File::save(const std::list<PartDec>& records, bool forcewrite) {
-    // if ((_fileModificationTime != getModificationTime(_rawFile->file)) &&
-    //     !forcewrite)
-    //     throw YAPETRetryException(_("File has been externally modified"));
+void File::save(const std::list<PasswordListItem>& records, bool forcewrite) {
+    if (!forcewrite) {
+        notModifiedOrThrow();
+    }
 
-    // if (usefsecurity) setFileSecurity();
+    std::list<SecureArray> encryptedPasswordRecords{};
+    std::for_each(records.begin(), records.end(),
+                  [&encryptedPasswordRecords](const PasswordListItem& i) {
+                      encryptedPasswordRecords.push_back(i.encryptedRecord());
+                  });
 
-    // preparePWSave();
-    // std::list<PartDec>::const_iterator it = records.begin();
-
-    // while (it != records.end()) {
-    //     write(it->getEncRecord());
-    //     ++it;
-    // }
+    _yapetFile->writePasswordRecords(encryptedPasswordRecords);
+    _fileModificationTime = yapet::getModificationTime(_yapetFile->filename());
 }
 
-/**
- * Reads the stored records from the file using the key provided and
- * returns a list holding the partially decrypted records. If the file
- * has no records stored, it returns an empty list.
- *
- * @param key the key used to decrypt the records. It has to be same
- * key that was used to encrypt the records, of course.
- *
- * @return a list holding the partially decrypted records. Or an empty
- * list if no records are stored in the file
- *
- * @sa PartDec
- */
-std::list<PartDec> File::read(const Key448& key) const {
-    // seekDataSection();
-    // BDBuffer* buff = 0;
-    // std::list<PartDec> retval;
+std::list<PasswordListItem> File::read() const {
+    auto encryptedPasswordRecords{_yapetFile->readPasswordRecords()};
 
-    // try {
-    //     buff = read();
+    std::list<SecureArray>::iterator it = encryptedPasswordRecords.begin();
+    std::list<PasswordListItem> result;
+    while (it != encryptedPasswordRecords.end()) {
+        auto decryptedSerializedPasswordRecord{_crypto->decrypt(*it)};
+        PasswordRecord passwordRecord{decryptedSerializedPasswordRecord};
 
-    //     while (buff != 0) {
-    //         retval.push_back(PartDec(*buff, key));
-    //         delete buff;
-    //         buff = read();
-    //     }
-    // } catch (YAPETException& ex) {
-    //     if (buff != 0) delete buff;
+        result.push_back(PasswordListItem{
+            reinterpret_cast<const char*>(passwordRecord.name()), *it});
+        it++;
+    }
 
-    //     throw;
-    // }
-
-    // return retval;
+    return result;
 }
 
 /**
@@ -219,8 +130,7 @@ std::list<PartDec> File::read(const Key448& key) const {
  *
  * @param newkey the new key used to encrypt the records
  */
-void File::setNewKey(const Key448& oldkey, const Key448& newkey,
-                     bool forcewrite) {
+void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
     // if ((mtime != lastModified()) && !forcewrite)
     //     throw YAPETRetryException(_("File has been externally modified"));
 
@@ -289,7 +199,7 @@ void File::setNewKey(const Key448& oldkey, const Key448& newkey,
  * @return a \c uint64_t representing the time the master password was
  * set.
  */
-int64_t File::getMasterPWSet(const Key448& key) const {
+int64_t File::getMasterPWSet() const {
     // Expect either a 32bit or 64bit header
     // Record<FileHeader_32>* dec_header_32 = 0;
     // Record<FileHeader_64>* dec_header_64 = 0;
@@ -323,32 +233,14 @@ int64_t File::getMasterPWSet(const Key448& key) const {
  *
  * Return the file version.
  */
-FILE_VERSION
-File::getFileVersion(const Key448& key) const {
-    // Expect either a 32bit or 64bit header
-    // Record<FileHeader_32>* dec_header_32 = 0;
-    // Record<FileHeader_64>* dec_header_64 = 0;
+SecureArray File::getFileVersion() const {
+    return _yapetFile->readIdentifier();
+}
 
-    // readHeader(key, &dec_header_32, &dec_header_64);
-    // assert(dec_header_32 != 0 || dec_header_64 != 0);
+HEADER_VERSION File::getHeaderVersion() const {
+    auto encryptedSerializedHeader{_yapetFile->readMetaData()};
+    auto serializedHeader{_crypto->decrypt(encryptedSerializedHeader)};
 
-    // FileHeader_32* ptr_dec_header_32 =
-    //     (dec_header_32 != 0) ? static_cast<FileHeader_32*>(*dec_header_32) :
-    //     0;
-    // FileHeader_64* ptr_dec_header_64 =
-    //     (dec_header_64 != 0) ? static_cast<FileHeader_64*>(*dec_header_64) :
-    //     0;
-
-    // FILE_VERSION v;
-    // if (ptr_dec_header_32 != 0) {
-    //     v = static_cast<FILE_VERSION>(ptr_dec_header_32->version);
-    // } else {
-    //     assert(ptr_dec_header_64 != 0);
-    //     v = static_cast<FILE_VERSION>(ptr_dec_header_64->version);
-    // }
-
-    // if (dec_header_32 != 0) delete dec_header_32;
-    // if (dec_header_64 != 0) delete dec_header_64;
-
-    // return v;
+    Header10 header{serializedHeader};
+    return yapet::intToHeaderVersion(header.version());
 }

@@ -36,11 +36,9 @@
 #include <openssl/evp.h>
 #include <memory>
 
-#include "bdbuffer.h"
 #include "crypto.hh"
 #include "intl.h"
 #include "key.hh"
-#include "record.h"
 #include "securearray.hh"
 #include "yapetexception.h"
 

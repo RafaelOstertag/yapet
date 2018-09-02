@@ -37,32 +37,35 @@
 #include "config.h"
 #endif
 
-#include <cassert>
 #include <list>
 #include <memory>
 #include <string>
 
-#include "yapetexception.h"
-
-#include "bdbuffer.h"
-#include "key448.hh"
-#include "partdec.h"
-#include "structs.h"
+#include "abstractcryptofactory.hh"
+#include "crypto.hh"
+#include "headerversion.hh"
+#include "passwordlistitem.hh"
+#include "passwordrecord.hh"
 #include "yapet10file.hh"
+#include "yapetexception.h"
 #include "yapetfile.hh"
 
 namespace YAPET {
 class File {
    private:
     uint64_t _fileModificationTime;
-    std::unique_ptr<yapet::YapetFile> _yapetFile;
+    std::shared_ptr<yapet::YapetFile> _yapetFile;
+    std::shared_ptr<yapet::Crypto> _crypto;
 
-    void initializeEmptyFile(const yapet::Key448& key);
+    void initializeEmptyFile();
+    void validateExistingFile();
+    void notModifiedOrThrow();
 
    public:
     //! Constructor
-    File(const std::string& filename, const yapet::Key448& key, bool create = false,
-         bool secure = true);
+    File(const yapet::AbstractCryptoFactory& abstractCryptoFactory,
+         const std::string& filename, const yapet::SecureArray& password,
+         bool create = false, bool secure = true);
 
     File(File&& f);
     File& operator=(File&& f);
@@ -72,20 +75,22 @@ class File {
     ~File();
 
     //! Saves a password record list.
-    void save(const std::list<PartDec>& records, bool forcewrite = false);
+    void save(const std::list<yapet::PasswordListItem>& records,
+              bool forcewrite = false);
     //! Reads the stored password records from the file.
-    std::list<PartDec> read(const yapet::Key448& key) const;
+    std::list<yapet::PasswordListItem> read() const;
     //! Returns the file name of the current file.
     std::string getFilename() const { return _yapetFile->filename(); }
     //! Sets a new encryption key for the current file.
-    void setNewKey(const yapet::Key448& oldkey, const yapet::Key448& newkey,
+    void setNewKey(const yapet::SecureArray& newPassword,
                    bool forcewrite = false);
-    int64_t getMasterPWSet(const yapet::Key448& key) const;
-    //! Return the file version
-    FILE_VERSION getFileVersion(const yapet::Key448& key) const;
+    std::int64_t getMasterPWSet() const;
 
     //! Returns whether or not file security is enabled
     bool filesecurityEnabled() const { return _yapetFile->isSecure(); }
+
+    yapet::SecureArray getFileVersion() const;
+    yapet::HEADER_VERSION getHeaderVersion() const;
 };
 }  // namespace YAPET
 #endif  // _FILE_H
