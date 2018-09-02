@@ -14,7 +14,7 @@ void Header10::testIfControlStringMatchesOrThrow(
     auto result = std::memcmp(pointerToControlString, CONTROL_STRING,
                               CONTROL_STRING_SIZE);
     if (result != 0) {
-        throw InvalidPasswordError(_("Invalid password"));
+        throw HeaderError(_("Control string does not match"));
     }
 }
 
