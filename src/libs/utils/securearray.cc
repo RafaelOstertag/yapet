@@ -48,6 +48,7 @@ SecureArray& SecureArray::operator=(const SecureArray& other) {
 SecureArray::SecureArray(SecureArray&& other)
     : _size{other._size}, _array{other._array} {
     other._array = nullptr;
+    other._size = 0;
 }
 
 SecureArray& SecureArray::operator=(SecureArray&& other) {
@@ -61,6 +62,7 @@ SecureArray& SecureArray::operator=(SecureArray&& other) {
     _size = other._size;
     _array = other._array;
     other._array = nullptr;
+    other._size = 0;
 
     return *this;
 }

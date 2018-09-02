@@ -114,8 +114,11 @@ class SecureArrayTest : public CppUnit::TestFixture {
 
         yapet::SecureArray b{std::move(a)};
 
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *a);
+        CPPUNIT_ASSERT(nullptr == *a);
         CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **b);
+
+        CPPUNIT_ASSERT(a.size() == 0);
+        CPPUNIT_ASSERT(b.size() == 1);
     }
 
     void testMoveAssignment() {
@@ -129,7 +132,10 @@ class SecureArrayTest : public CppUnit::TestFixture {
 
         b = std::move(a);
 
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *a);
+        CPPUNIT_ASSERT(nullptr == *a);
+        CPPUNIT_ASSERT(a.size() == 0);
+        CPPUNIT_ASSERT(b.size() == 1);
+
         CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **b);
         CPPUNIT_ASSERT_EQUAL(ptrAArray, ptrBArray);
         CPPUNIT_ASSERT_EQUAL((std::uint8_t)0, *ptrAArray);
