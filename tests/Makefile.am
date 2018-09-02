@@ -1,2 +1,2 @@
 EXTRA_DIST = tests.h
-SUBDIRS = crypt cfg file pwgen import converters utils preload
+SUBDIRS = utils passwordrecord crypt cfg file pwgen import converters  preload

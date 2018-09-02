@@ -14,8 +14,6 @@ else
 AM_CPPFLAGS += -DDEBUG
 endif
 
-noinst_LTLIBRARIES = libyapet-file.la
-libyapet_file_la_SOURCES = rawfile.cc rawfile.hh \
-ods.hh fileerror.hh fileerror.cc fileutils.cc fileutils.hh yapetfile.hh \
-yapetfile.cc yapet10file.hh yapet10file.cc header10.cc header10.hh \
-headererror.hh headerversion.hh
+noinst_LTLIBRARIES = libyapet-passwordrecord.la
+libyapet_passwordrecord_la_SOURCES = passwordrecord.hh passwordrecord.cc \
+    passwordlistitem.hh passwordlistitem.cc

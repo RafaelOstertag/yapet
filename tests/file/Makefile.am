@@ -8,7 +8,7 @@ AUTOMAKE_OPTIONS = serial-tests
 
 EXTRA_DIST = testpaths.h.in
 
-check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file header10 passwordrecord
+check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file header10
 
 TESTS = $(check_PROGRAMS)       
 
@@ -26,4 +26,3 @@ fileutils_SOURCES = fileutils.cc
 yapetfile_SOURCES = yapetfile.cc
 yapet10file_SOURCES = yapet10file.cc
 header10_SOURCES = header10.cc
-passwordrecord_SOURCES = passwordrecord.cc
