@@ -167,7 +167,8 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error finalizing decryption"));
+        // The error is most likely caused by an invalid password
+        throw YAPET::YAPETInvalidPasswordException(_("Invalid password"));
     }
 
     effectiveDecryptedDataLength += writtenDataLength;
