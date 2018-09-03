@@ -14,7 +14,7 @@
 #include "testpaths.h"
 #include "yapet10file.hh"
 
-#define TEST_FILE BUILDDIR "/yapet-test-file"
+constexpr auto TEST_FILE {BUILDDIR "/yapet-yapet10file-test"};
 
 class Yapet10FileTest : public CppUnit::TestFixture {
    public:

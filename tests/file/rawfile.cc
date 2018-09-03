@@ -9,7 +9,7 @@
 #include "rawfile.hh"
 #include "testpaths.h"
 
-#define TEST_FILE BUILDDIR "/yapet-test-file"
+constexpr auto TEST_FILE {BUILDDIR "/yapet-rawfile-test"};
 
 class RawFileTest : public CppUnit::TestFixture {
    public:

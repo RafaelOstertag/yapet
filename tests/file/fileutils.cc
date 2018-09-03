@@ -13,7 +13,7 @@
 #include "fileutils.hh"
 #include "testpaths.h"
 
-#define TEST_FILE BUILDDIR "/yapet-test-file"
+constexpr auto TEST_FILE{BUILDDIR "/yapet-fileutils-test"};
 
 class FileUtilsTest : public CppUnit::TestFixture {
    public:
@@ -119,13 +119,15 @@ class FileUtilsTest : public CppUnit::TestFixture {
     void renameFile() {
         createFile();
 
-        yapet::renameFile(TEST_FILE, TEST_FILE ".renamed");
+        std::string newFilename{TEST_FILE};
+        newFilename += ".renamed";
+        yapet::renameFile(TEST_FILE, newFilename);
 
         struct stat wdc;
-        CPPUNIT_ASSERT_EQUAL(0, ::stat(TEST_FILE ".renamed", &wdc));
+        CPPUNIT_ASSERT_EQUAL(0, ::stat(newFilename.c_str(), &wdc));
 
         // Rename it back so it will be deleted by tearDown()
-        yapet::renameFile(TEST_FILE ".renamed", TEST_FILE);
+        yapet::renameFile(newFilename, TEST_FILE);
 
         CPPUNIT_ASSERT_EQUAL(0, ::stat(TEST_FILE, &wdc));
     }

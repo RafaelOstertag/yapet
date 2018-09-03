@@ -14,7 +14,7 @@
 #include "testpaths.h"
 #include "yapetfile.hh"
 
-#define TEST_FILE BUILDDIR "/yapet-test-file"
+constexpr auto TEST_FILE{BUILDDIR "/yapet-yapetfile-test"};
 
 class YapetFileMock : public yapet::YapetFile {
    public:
