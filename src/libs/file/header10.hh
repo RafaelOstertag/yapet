@@ -19,7 +19,7 @@ namespace yapet {
 class Header10 : public Serializable {
    private:
     std::uint8_t _version;
-    std::uint64_t _passwordSetTime;
+    std::int64_t _passwordSetTime;
 
     static constexpr std::uint8_t CONTROL_STRING[]{
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -52,7 +52,7 @@ class Header10 : public Serializable {
     void deserializeVersion1Header(const SecureArray& serializedHeader);
 
    public:
-    Header10(std::uint64_t passwordSetTime = std::time(0),
+    Header10(std::int64_t passwordSetTime = std::time(0),
              std::uint8_t version = VERSION_2)
         : _version{version}, _passwordSetTime{passwordSetTime} {};
 
@@ -60,7 +60,7 @@ class Header10 : public Serializable {
     virtual ~Header10() {}
 
     Header10& operator=(const SecureArray& serializedHeader);
-    std::uint64_t passwordSetTime() const { return _passwordSetTime; }
+    std::int64_t passwordSetTime() const { return _passwordSetTime; }
     void passwordSetTime(std::uint64_t passwordSetTime) {
         _passwordSetTime = passwordSetTime;
     }

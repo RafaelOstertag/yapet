@@ -41,7 +41,7 @@ void yapet::setSecurePermissionsAndOwner(const std::string& filename) {
     }
 }
 
-std::uint64_t yapet::getModificationTime(const std::string& filename) {
+std::int64_t yapet::getModificationTime(const std::string& filename) {
     struct stat fileStat;
     getFileStat(filename, &fileStat);
     return fileStat.st_mtime;
