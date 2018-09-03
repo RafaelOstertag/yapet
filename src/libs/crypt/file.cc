@@ -32,11 +32,16 @@
 
 #include "file.h"
 #include "fileutils.hh"
-#include "header10.hh"
 #include "intl.h"
 
 using namespace YAPET;
 using namespace yapet;
+
+Header10 File::readHeader() {
+    auto encryptedSerializedHeader{_yapetFile->readMetaData()};
+    auto serializedHeader{_crypto->decrypt(encryptedSerializedHeader)};
+    return Header10{serializedHeader};
+}
 
 void File::initializeEmptyFile() {
     Header10 header{time(0)};
@@ -67,12 +72,13 @@ void File::notModifiedOrThrow() {
     }
 }
 
-File::File(const yapet::AbstractCryptoFactory& abstractCryptoFactory,
+File::File(std::shared_ptr<yapet::AbstractCryptoFactory> abstractCryptoFactory,
            const std::string& filename, const SecureArray& password,
            bool create, bool secure)
     : _fileModificationTime{0},
-      _yapetFile{abstractCryptoFactory.file(filename, create, secure)},
-      _crypto{abstractCryptoFactory.crypto(password)} {
+      _abstractCryptoFactory{abstractCryptoFactory},
+      _yapetFile{abstractCryptoFactory->file(filename, create, secure)},
+      _crypto{abstractCryptoFactory->crypto(password)} {
     if (getFileSize(filename) == 0) {
         initializeEmptyFile();
     } else {
@@ -99,7 +105,7 @@ void File::save(const std::list<PasswordListItem>& records, bool forcewrite) {
     _fileModificationTime = yapet::getModificationTime(_yapetFile->filename());
 }
 
-std::list<PasswordListItem> File::read() const {
+std::list<PasswordListItem> File::read() {
     auto encryptedPasswordRecords{_yapetFile->readPasswordRecords()};
 
     std::list<SecureArray>::iterator it = encryptedPasswordRecords.begin();
@@ -116,116 +122,45 @@ std::list<PasswordListItem> File::read() const {
     return result;
 }
 
-/**
- * Uses a new key to encrypt the records in the file. The records
- * stored in the file are decrypted using the old key and then
- * encrypted using the new key.
- *
- * Before performing this operation, it renames the file encrypted
- * with the old key to 'filename + ".bak"'. It then reads the data
- * from this file and writes it to the newly created file named
- * 'filename'.
- *
- * @param oldkey the old key used to encrypt the records
- *
- * @param newkey the new key used to encrypt the records
- */
 void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
-    // if ((mtime != lastModified()) && !forcewrite)
-    //     throw YAPETRetryException(_("File has been externally modified"));
+    if (!forcewrite) {
+        notModifiedOrThrow();
+    }
 
-    // close(fd);
-    // std::string backupfilename(filename + ".bak");
-    // int retval = rename(filename.c_str(), backupfilename.c_str());
+    bool isSecure = _yapetFile->isSecure();
+    std::string filename{_yapetFile->filename()};
 
-    // if (retval == -1) {
-    //     // Reopen the old file
-    //     openNoCreate();
-    //     throw YAPETException(std::strerror(errno));
-    // }
+    // close and destroy old file
+    _yapetFile.reset();
 
-    // File* oldfile = 0;
+    std::string backupfilename(filename + ".bak");
+    yapet::renameFile(filename, backupfilename);
 
-    // try {
-    //     // Reopen the old (backup) file
-    //     oldfile = new File(backupfilename, oldkey, false, false);
-    //     // Initialize the (this) file with the new key
-    //     openCreate();
-    //     initFile(newkey);
-    //     // Retrieve the records encrypted with the old key
-    //     std::list<PartDec> entries = oldfile->read(oldkey);
-    //     std::list<PartDec>::iterator it = entries.begin();
-    //     Crypt oldcrypt(oldkey);
-    //     Crypt newcrypt(newkey);
+    std::shared_ptr<yapet::YapetFile> otherFile{
+        _abstractCryptoFactory->file(backupfilename, false, false)};
 
-    //     while (it != entries.end()) {
-    //         Record<PasswordRecord>* dec_rec_ptr = 0;
-    //         BDBuffer* new_enc_rec = 0;
+    _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);
 
-    //         try {
-    //             // Decrypt with the old key
-    //             const BDBuffer old_enc_rec = (*it).getEncRecord();
-    //             dec_rec_ptr = oldcrypt.decrypt<PasswordRecord>(old_enc_rec);
-    //             new_enc_rec = newcrypt.encrypt(*dec_rec_ptr);
-    //             write(*new_enc_rec);
-    //             delete dec_rec_ptr;
-    //             delete new_enc_rec;
-    //         } catch (YAPETException& ex) {
-    //             if (dec_rec_ptr != 0) delete dec_rec_ptr;
+    std::shared_ptr<Crypto> otherCrypto{
+        _abstractCryptoFactory->crypto(newPassword)};
 
-    //             if (new_enc_rec != 0) delete new_enc_rec;
+    _crypto.swap(otherCrypto);
 
-    //             throw;
-    //         }
+    initializeEmptyFile();
+    std::list<yapet::SecureArray> newlyEncryptedRecords{};
+    for (auto encryptedSerializedRecord : otherFile->readPasswordRecords()) {
+        auto serializedRecord{otherCrypto->decrypt(encryptedSerializedRecord)};
+        auto newlyEncryptedSerializedRecord{_crypto->encrypt(serializedRecord)};
+        newlyEncryptedRecords.push_back(newlyEncryptedSerializedRecord);
+    }
 
-    //         ++it;
-    //     }
-    // } catch (YAPETException& ex) {
-    //     if (oldfile != 0) delete oldfile;
-
-    //     throw;
-    // }
-
-    // delete oldfile;
+    _yapetFile->writePasswordRecords(newlyEncryptedRecords);
+    _fileModificationTime = yapet::getModificationTime(_yapetFile->filename());
 }
 
-/**
- * Modified in version 0.6.
- *
- * Returns the time as a \c uint64_t when the master password was set.
- *
- * @param key the key used to decrypt the header.
- *
- * @return a \c uint64_t representing the time the master password was
- * set.
- */
-int64_t File::getMasterPWSet() const {
-    // Expect either a 32bit or 64bit header
-    // Record<FileHeader_32>* dec_header_32 = 0;
-    // Record<FileHeader_64>* dec_header_64 = 0;
-
-    // readHeader(key, &dec_header_32, &dec_header_64);
-    // assert(dec_header_32 != 0 || dec_header_64 != 0);
-
-    // FileHeader_32* ptr_dec_header_32 =
-    //     (dec_header_32 != 0) ? static_cast<FileHeader_32*>(*dec_header_32) :
-    //     0;
-    // FileHeader_64* ptr_dec_header_64 =
-    //     (dec_header_64 != 0) ? static_cast<FileHeader_64*>(*dec_header_64) :
-    //     0;
-
-    // int64_t t;
-    // if (ptr_dec_header_32 != 0) {
-    //     t = int_from_disk<int32_t>(ptr_dec_header_32->pwset);
-    // } else {
-    //     assert(ptr_dec_header_64 != 0);
-    //     t = int_from_disk<int64_t>(ptr_dec_header_64->pwset);
-    // }
-
-    // if (dec_header_32 != 0) delete dec_header_32;
-    // if (dec_header_64 != 0) delete dec_header_64;
-
-    // return t;
+int64_t File::getMasterPWSet() {
+    auto header{readHeader()};
+    return header.passwordSetTime();
 }
 
 /**
@@ -233,11 +168,9 @@ int64_t File::getMasterPWSet() const {
  *
  * Return the file version.
  */
-SecureArray File::getFileVersion() const {
-    return _yapetFile->readIdentifier();
-}
+SecureArray File::getFileVersion() { return _yapetFile->readIdentifier(); }
 
-HEADER_VERSION File::getHeaderVersion() const {
+HEADER_VERSION File::getHeaderVersion() {
     auto encryptedSerializedHeader{_yapetFile->readMetaData()};
     auto serializedHeader{_crypto->decrypt(encryptedSerializedHeader)};
 

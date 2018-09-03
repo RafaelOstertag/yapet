@@ -3,9 +3,6 @@ yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir= $(top_builddir)/src
 yapet_libs_builddir = $(top_builddir)/src/libs
 
-# Tests may fail if not run serial
-AUTOMAKE_OPTIONS = serial-tests
-
 # For silent rules
 cpy_verbose = $(cpy_verbose_$(V))
 cpy_verbose_ = $(cpy_verbose_$(AM_DEFAULT_VERBOSITY))
@@ -15,7 +12,7 @@ chmod_verbose = $(chmod_verbose_$(V))
 chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
 chmod_verbose_0 = @echo "  CHMOD  $@";
 
-CLEANFILES = testfile.gps encryptiontest.gps encryptiontest.gps.bak	\
+CLEANFILES = testfile.gps testfile.gps.bak encryptiontest.gps encryptiontest.gps.bak	\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
 test8.pet test9.pet test10.pet corrupt.pet f32le0.5.pet	\
 f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
@@ -42,8 +39,7 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 blowfish file1 \
- file4 file5 file6 corrupt foreign
+check_PROGRAMS = key448 blowfish file foreign
 
 TESTS = $(check_PROGRAMS)
 
@@ -64,9 +60,6 @@ AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
 	$(CPPUNIT_LIBS)
 
-corrupt_SOURCES = corrupt.cc
-corrupt_DEPENDENCIES = corrupt.pet
-
 foreign_SOURCES = foreign.cc
 foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
@@ -75,12 +68,7 @@ key448_SOURCES = key448.cc
 
 blowfish_SOURCES = blowfish.cc
 
-file1_SOURCES = file1.cc
-
-file4_SOURCES = file4.cc
-
-file5_SOURCES = file5.cc
-
-file6_SOURCES = file6.cc
+file_SOURCES = file.cc
+file_DEPENDENCIES = corrupt.pet
 
 SUFFIXES = .pet .pet.in

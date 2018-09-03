@@ -43,6 +43,7 @@
 
 #include "abstractcryptofactory.hh"
 #include "crypto.hh"
+#include "header10.hh"
 #include "headerversion.hh"
 #include "passwordlistitem.hh"
 #include "passwordrecord.hh"
@@ -53,9 +54,13 @@
 namespace YAPET {
 class File {
    private:
-    uint64_t _fileModificationTime;
+    int64_t _fileModificationTime;
+    // Required when setting new password
+    std::shared_ptr<yapet::AbstractCryptoFactory> _abstractCryptoFactory;
     std::shared_ptr<yapet::YapetFile> _yapetFile;
     std::shared_ptr<yapet::Crypto> _crypto;
+
+    yapet::Header10 readHeader();
 
     void initializeEmptyFile();
     void validateExistingFile();
@@ -63,7 +68,7 @@ class File {
 
    public:
     //! Constructor
-    File(const yapet::AbstractCryptoFactory& abstractCryptoFactory,
+    File(std::shared_ptr<yapet::AbstractCryptoFactory> abstractCryptoFactory,
          const std::string& filename, const yapet::SecureArray& password,
          bool create = false, bool secure = true);
 
@@ -78,19 +83,19 @@ class File {
     void save(const std::list<yapet::PasswordListItem>& records,
               bool forcewrite = false);
     //! Reads the stored password records from the file.
-    std::list<yapet::PasswordListItem> read() const;
-    //! Returns the file name of the current file.
-    std::string getFilename() const { return _yapetFile->filename(); }
+    std::list<yapet::PasswordListItem> read();
+
     //! Sets a new encryption key for the current file.
     void setNewKey(const yapet::SecureArray& newPassword,
                    bool forcewrite = false);
-    std::int64_t getMasterPWSet() const;
+    std::int64_t getMasterPWSet() ;
+    yapet::SecureArray getFileVersion() ;
+    yapet::HEADER_VERSION getHeaderVersion() ;
 
+    //! Returns the file name of the current file.
+    std::string getFilename() const { return _yapetFile->filename(); }
     //! Returns whether or not file security is enabled
     bool filesecurityEnabled() const { return _yapetFile->isSecure(); }
-
-    yapet::SecureArray getFileVersion() const;
-    yapet::HEADER_VERSION getHeaderVersion() const;
 };
 }  // namespace YAPET
 #endif  // _FILE_H
