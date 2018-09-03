@@ -1,7 +1,13 @@
 #include "passwordrecord.hh"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <algorithm>
 #include <cstring>
+
+#include "intl.h"
 
 using namespace yapet;
 
@@ -33,7 +39,37 @@ PasswordRecord::PasswordRecord()
       _password{PASSWORD_SIZE},
       _comment{COMMENT_SIZE} {}
 
-PasswordRecord::PasswordRecord(const SecureArray& serialized) { assert(false); }
+PasswordRecord::PasswordRecord(const SecureArray& serialized)
+    : _name{NAME_SIZE},
+      _host{HOST_SIZE},
+      _username{USERNAME_SIZE},
+      _password{PASSWORD_SIZE},
+      _comment{COMMENT_SIZE} {
+    if (serialized.size() != TOTAL_SIZE) {
+        std::string msg{_("Password record is expected to be of size ")};
+        msg += std::to_string(TOTAL_SIZE);
+        msg += _("bytes but got ");
+        msg += std::to_string(serialized.size());
+        msg += _("bytes");
+        throw DeserializationError{msg.c_str()};
+    }
+
+    auto positionInBuffer = 0;
+
+    std::memcpy(*_name, *serialized + positionInBuffer, NAME_SIZE);
+    positionInBuffer += NAME_SIZE;
+
+    std::memcpy(*_host, *serialized + positionInBuffer, HOST_SIZE);
+    positionInBuffer += HOST_SIZE;
+
+    std::memcpy(*_username, *serialized + positionInBuffer, USERNAME_SIZE);
+    positionInBuffer += USERNAME_SIZE;
+
+    std::memcpy(*_password, *serialized + positionInBuffer, PASSWORD_SIZE);
+    positionInBuffer += PASSWORD_SIZE;
+
+    std::memcpy(*_comment, *serialized + positionInBuffer, COMMENT_SIZE);
+}
 
 PasswordRecord::PasswordRecord(const PasswordRecord& p)
     : _name{p._name},

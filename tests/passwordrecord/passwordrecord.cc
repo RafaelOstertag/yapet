@@ -58,7 +58,12 @@ class PasswordRecordTest : public CppUnit::TestFixture {
             "uint8_t  Setter and getter",
             &PasswordRecordTest::uint8SetterAndGetter));
         suiteOfTests->addTest(new CppUnit::TestCaller<PasswordRecordTest>(
-            "serialize", &PasswordRecordTest::serialize));
+            "serialize and deserialize",
+            &PasswordRecordTest::serializeAndDeserialize));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<PasswordRecordTest>(
+            "deserialize non-matching size",
+            &PasswordRecordTest::deserializeNonMatchingSize));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<PasswordRecordTest>(
             "Copy ctor and assignment", &PasswordRecordTest::copyCtor));
@@ -111,7 +116,7 @@ class PasswordRecordTest : public CppUnit::TestFixture {
                                    COMMENT_LEN) == 0);
     }
 
-    void serialize() {
+    void serializeAndDeserialize() {
         yapet::PasswordRecord passwordRecord{};
 
         passwordRecord.name(NAME_CHAR);
@@ -125,6 +130,29 @@ class PasswordRecordTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(std::memcmp(
             *serialized, serializedPasswordRecord,
             NAME_LEN + HOST_LEN + USERNAME_LEN + PASSWORD_LEN + COMMENT_LEN));
+
+        yapet::PasswordRecord fromSerialized{serialized};
+
+        CPPUNIT_ASSERT(
+            std::memcmp(fromSerialized.name(), NAME_CHAR, NAME_LEN) == 0);
+        CPPUNIT_ASSERT(
+            std::memcmp(fromSerialized.host(), HOST_CHAR, HOST_LEN) == 0);
+        CPPUNIT_ASSERT(std::memcmp(fromSerialized.username(), USERNAME_CHAR,
+                                   USERNAME_LEN) == 0);
+        CPPUNIT_ASSERT(std::memcmp(fromSerialized.password(), PASSWORD_CHAR,
+                                   PASSWORD_LEN) == 0);
+        CPPUNIT_ASSERT(std::memcmp(fromSerialized.comment(), COMMENT_CHAR,
+                                   COMMENT_LEN) == 0);
+    }
+
+    void deserializeNonMatchingSize() {
+        yapet::SecureArray tooSmall{yapet::PasswordRecord::TOTAL_SIZE - 1};
+        CPPUNIT_ASSERT_THROW(yapet::PasswordRecord{tooSmall},
+                             yapet::DeserializationError);
+
+        yapet::SecureArray tooBig{yapet::PasswordRecord::TOTAL_SIZE + 1};
+        CPPUNIT_ASSERT_THROW(yapet::PasswordRecord{tooSmall},
+                             yapet::DeserializationError);
     }
 
     void copyCtor() {

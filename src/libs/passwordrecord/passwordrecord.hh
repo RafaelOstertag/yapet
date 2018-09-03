@@ -1,6 +1,8 @@
 #ifndef _PASSWORDRECORD_HH
 #define _PASSWORDRECORD_HH
 
+#include <stdexcept>
+
 #include "securearray.hh"
 #include "serializable.hh"
 
@@ -75,6 +77,11 @@ class PasswordRecord : public Serializable {
 
     void comment(const char* comment);
     void comment(const std::uint8_t* comment, int l);
+};
+
+class DeserializationError : public std::runtime_error {
+   public:
+    DeserializationError(const char* msg) : runtime_error{msg} {}
 };
 
 }  // namespace yapet
