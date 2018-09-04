@@ -182,6 +182,8 @@ class Yapet10File : public YapetFile {
     static const std::uint8_t _recognitionString[];
     static const int _recognitionStringSize;
 
+    bool hasValidFormat();
+
    public:
     static const std::uint8_t* getRecognitionString();
     Yapet10File(const std::string& filename, bool create = false,
@@ -194,8 +196,6 @@ class Yapet10File : public YapetFile {
     Yapet10File& operator=(Yapet10File&& other);
 
     ~Yapet10File();
-
-    virtual bool hasValidFormat();
 
     virtual SecureArray readIdentifier();
 

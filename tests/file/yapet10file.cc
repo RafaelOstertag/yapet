@@ -4,6 +4,8 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
+#include <cstring>
+
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -14,7 +16,7 @@
 #include "testpaths.h"
 #include "yapet10file.hh"
 
-constexpr auto TEST_FILE {BUILDDIR "/yapet-yapet10file-test"};
+constexpr auto TEST_FILE{BUILDDIR "/yapet-yapet10file-test"};
 
 class Yapet10FileTest : public CppUnit::TestFixture {
    public:
@@ -22,8 +24,15 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         CppUnit::TestSuite* suiteOfTests =
             new CppUnit::TestSuite("Yapet10File test");
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
+            "should not fail opening a new file",
+            &Yapet10FileTest::openNewFile});
+        suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
             "should fail reading empty identifier",
-            &Yapet10FileTest::failReadingEmptyIdentifier});
+            &Yapet10FileTest::failOpeningEmptyFile});
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
+            "should fail opening a file with wrong identifier",
+            &Yapet10FileTest::failOpeningFileWithWrongIdentifier});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
             "should read identifier", &Yapet10FileTest::readIdentifier});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
@@ -49,15 +58,21 @@ class Yapet10FileTest : public CppUnit::TestFixture {
 
     void tearDown() { ::unlink(TEST_FILE); }
 
-    void failReadingEmptyIdentifier() {
-        yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+    void openNewFile() { yapet::Yapet10File newFile{TEST_FILE, true, false}; }
 
-        CPPUNIT_ASSERT_THROW(yapet10File.readIdentifier(),
+    void failOpeningEmptyFile() {
+        int fd = ::open(TEST_FILE, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
+        CPPUNIT_ASSERT(fd > -1);
+        ::close(fd);
+        CPPUNIT_ASSERT_THROW((yapet::Yapet10File{TEST_FILE, false, false}),
                              yapet::FileFormatError);
+    }
 
-        yapet::Yapet10File yapet10File2{TEST_FILE, true, false};
-
-        CPPUNIT_ASSERT(yapet10File2.hasValidFormat() == false);
+    void failOpeningFileWithWrongIdentifier() {
+        CPPUNIT_ASSERT_THROW(
+            (yapet::Yapet10File{SRCDIR "/yapet10file-corrupt-identifier.dat",
+                                false, false}),
+            yapet::FileFormatError);
     }
 
     void readIdentifier() {
@@ -65,14 +80,13 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         try {
             yapet::Yapet10File yapet10File{TEST_FILE, true, false};
             yapet10File.writeIdentifier();
-
-            CPPUNIT_ASSERT(yapet10File.hasValidFormat() == true);
         } catch (...) {
             CPPUNIT_FAIL("No exception expected");
         }
 
         yapet::Yapet10File yapet10File2{TEST_FILE, false, false};
-        CPPUNIT_ASSERT(yapet10File2.hasValidFormat() == true);
+        CPPUNIT_ASSERT(
+            std::memcmp(*yapet10File2.readIdentifier(), "YAPET1.0", 8) == 0);
     }
 
     void failReadingEmptyMetaData() {

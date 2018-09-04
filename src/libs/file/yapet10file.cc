@@ -52,25 +52,6 @@ const std::uint8_t* Yapet10File::getRecognitionString() {
     return Yapet10File::_recognitionString;
 }
 
-Yapet10File::Yapet10File(const std::string& filename, bool create, bool secure)
-    : YapetFile{filename, create, secure} {
-    openRawFile();
-}
-
-Yapet10File::Yapet10File(Yapet10File&& other) : YapetFile{std::move(other)} {}
-
-Yapet10File& Yapet10File::operator=(Yapet10File&& other) {
-    if (&other == this) {
-        return *this;
-    }
-
-    YapetFile::operator=(std::move(other));
-
-    return *this;
-}
-
-Yapet10File::~Yapet10File() {}
-
 bool Yapet10File::hasValidFormat() {
     SecureArray identifier;
     try {
@@ -91,6 +72,31 @@ bool Yapet10File::hasValidFormat() {
 
     return true;
 }
+
+Yapet10File::Yapet10File(const std::string& filename, bool create, bool secure)
+    : YapetFile{filename, create, secure} {
+    openRawFile();
+    if (!create && !hasValidFormat()) {
+        std::string message{_("File ")};
+        message += filename;
+        message += _(" is not a YAPET 1.0 file");
+        throw FileFormatError(message.c_str());
+    }
+}
+
+Yapet10File::Yapet10File(Yapet10File&& other) : YapetFile{std::move(other)} {}
+
+Yapet10File& Yapet10File::operator=(Yapet10File&& other) {
+    if (&other == this) {
+        return *this;
+    }
+
+    YapetFile::operator=(std::move(other));
+
+    return *this;
+}
+
+Yapet10File::~Yapet10File() {}
 
 SecureArray Yapet10File::readIdentifier() {
     RawFile& rawFile{getRawFile()};
