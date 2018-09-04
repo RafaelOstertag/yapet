@@ -50,6 +50,7 @@ class Header10 : public Serializable {
         const SecureArray& serializedHeader) const;
     void deserializeVersion2Header(const SecureArray& serializedHeader);
     void deserializeVersion1Header(const SecureArray& serializedHeader);
+    void deserializeHeader(const SecureArray& serializedHeader);
 
    public:
     Header10(std::int64_t passwordSetTime = std::time(0),

@@ -13,8 +13,11 @@ class Header10Test : public CppUnit::TestFixture {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Header 1.0");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
-            "should serialize and deserialize",
-            &Header10Test::serializeAndDeserialize));
+            "should serialize and deserialize with constructor",
+            &Header10Test::serializeAndDeserializeWithCtor));
+        suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
+            "should serialize and deserialize by assignment",
+            &Header10Test::serializeAndDeserializeWithAssignment));
         suiteOfTests->addTest(new CppUnit::TestCaller<Header10Test>(
             "should throw on deserializing invalid header",
             &Header10Test::invalidHeader));
@@ -22,10 +25,22 @@ class Header10Test : public CppUnit::TestFixture {
         return suiteOfTests;
     }
 
-    void serializeAndDeserialize() {
+    void serializeAndDeserializeWithCtor() {
         yapet::Header10 header10{};
 
         yapet::SecureArray serialized{header10.serialize()};
+
+        yapet::Header10 fromSerializedHeader{serialized};
+
+        CPPUNIT_ASSERT(header10.passwordSetTime() ==
+                       fromSerializedHeader.passwordSetTime());
+        CPPUNIT_ASSERT(header10.version() == fromSerializedHeader.version());
+    }
+
+    void serializeAndDeserializeWithAssignment() {
+        yapet::Header10 header10{};
+
+        yapet::SecureArray serialized = header10.serialize();
 
         yapet::Header10 fromSerializedHeader{serialized};
 
