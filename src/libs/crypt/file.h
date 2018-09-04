@@ -57,8 +57,8 @@ class File {
     int64_t _fileModificationTime;
     // Required when setting new password
     std::shared_ptr<yapet::AbstractCryptoFactory> _abstractCryptoFactory;
-    std::shared_ptr<yapet::YapetFile> _yapetFile;
-    std::shared_ptr<yapet::Crypto> _crypto;
+    std::unique_ptr<yapet::YapetFile> _yapetFile;
+    std::unique_ptr<yapet::Crypto> _crypto;
 
     yapet::Header10 readHeader();
 
@@ -88,9 +88,9 @@ class File {
     //! Sets a new encryption key for the current file.
     void setNewKey(const yapet::SecureArray& newPassword,
                    bool forcewrite = false);
-    std::int64_t getMasterPWSet() ;
-    yapet::SecureArray getFileVersion() ;
-    yapet::HEADER_VERSION getHeaderVersion() ;
+    std::int64_t getMasterPWSet();
+    yapet::SecureArray getFileVersion();
+    yapet::HEADER_VERSION getHeaderVersion();
 
     //! Returns the file name of the current file.
     std::string getFilename() const { return _yapetFile->filename(); }

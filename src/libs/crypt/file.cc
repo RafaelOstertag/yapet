@@ -142,12 +142,12 @@ void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
     std::string backupfilename(filename + ".bak");
     yapet::renameFile(filename, backupfilename);
 
-    std::shared_ptr<yapet::YapetFile> otherFile{
+    std::unique_ptr<yapet::YapetFile> otherFile{
         _abstractCryptoFactory->file(backupfilename, false, false)};
 
     _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);
 
-    std::shared_ptr<Crypto> otherCrypto{
+    std::unique_ptr<Crypto> otherCrypto{
         _abstractCryptoFactory->crypto(newPassword)};
 
     _crypto.swap(otherCrypto);

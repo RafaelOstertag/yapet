@@ -60,7 +60,7 @@ inline yapet::PasswordRecord makePasswordRecord(int number) {
 }
 
 inline std::list<yapet::PasswordListItem> createPasswordList(
-    std::shared_ptr<yapet::Crypto> blowfish) {
+    std::unique_ptr<yapet::Crypto> &blowfish) {
     std::list<yapet::PasswordListItem> passwordList{};
     for (int i = 0; i < ROUNDS; i++) {
         auto passwordRecord{makePasswordRecord(i)};
