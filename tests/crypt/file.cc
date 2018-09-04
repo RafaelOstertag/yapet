@@ -462,13 +462,16 @@ class FileTest : public CppUnit::TestFixture {
     }
 
     void corruptFile() {
-        auto password{yapet::toSecureArray("corrupt")};
+        // The file has the byte at offset 0x2e changed from 0x05 to 0x06,
+        // messing up the length indicator for the first record
+        auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
             new yapet::BlowfishFactory{}};
 
-        CPPUNIT_ASSERT_THROW((YAPET::File{factory, BUILDDIR "/corrupt.pet",
-                                          password, false, false}),
-                             yapet::HeaderError);
+        YAPET::File file{factory, BUILDDIR "/corrupt.pet", password, false,
+                         false};
+
+        CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
     }
 };
 

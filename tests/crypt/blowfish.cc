@@ -23,6 +23,10 @@ class BlowfishTest : public CppUnit::TestFixture {
             &BlowfishTest::decryptCorruptData));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishTest>(
+            "should throw on decrypting with wrong password",
+            &BlowfishTest::decryptWithWrongPassword));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishTest>(
             "should throw on empty plain/cipher text",
             &BlowfishTest::throwOnEmptyPlainAndCipherText));
 
@@ -52,7 +56,7 @@ class BlowfishTest : public CppUnit::TestFixture {
         corrupt << cipherText;
 
         CPPUNIT_ASSERT_THROW(blowfish->decrypt(corrupt),
-                             YAPET::YAPETInvalidPasswordException);
+                             YAPET::YAPETEncryptionException);
     }
 
     void decryptWithWrongPassword() {
@@ -66,7 +70,7 @@ class BlowfishTest : public CppUnit::TestFixture {
             std::unique_ptr<yapet::Blowfish>{new yapet::Blowfish{otherKey}}};
 
         CPPUNIT_ASSERT_THROW(otherBlowfish->decrypt(cipherText),
-                             YAPET::YAPETInvalidPasswordException);
+                             YAPET::YAPETEncryptionException);
     }
 
     void throwOnEmptyPlainAndCipherText() {

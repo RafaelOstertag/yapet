@@ -55,7 +55,13 @@ void File::initializeEmptyFile() {
 
 void File::validateExistingFile() {
     auto encryptedSerializedHeader = _yapetFile->readMetaData();
-    auto serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
+    yapet::SecureArray serializedHeader;
+    try {
+        serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
+    } catch (YAPET::YAPETEncryptionException& e) {
+        // most likely caused by invalid password
+        throw YAPET::YAPETInvalidPasswordException{_("Invalid password")};
+    }
 
     Header10 header{serializedHeader};
     // If we read an invalid header version, intToHeaderVersion() will throw an
