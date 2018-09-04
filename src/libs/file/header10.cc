@@ -51,9 +51,15 @@ void Header10::deserializeVersion2Header(const SecureArray& serializedHeader) {
 }
 
 Header10::Header10(const SecureArray& serializedHeader) {
-    if (serializedHeader.size() == TOTAL_HEADER_SIZE_VERSION_2) {
+    auto headerSize{serializedHeader.size()};
+
+    // The header size of headers create by previous version may be bigger than
+    // the exact total byte size, since previous versions encrypted the entire
+    // struct{} instead of the serialized struct{}
+    if (headerSize >= TOTAL_HEADER_SIZE_VERSION_2) {
         deserializeVersion2Header(serializedHeader);
-    } else if (serializedHeader.size() == TOTAL_HEADER_SIZE_VERSION_1) {
+    } else if ((headerSize >= TOTAL_HEADER_SIZE_VERSION_1) &&
+               (headerSize < TOTAL_HEADER_SIZE_VERSION_2)) {
         deserializeVersion1Header(serializedHeader);
     } else {
         throw HeaderError{_("Invalid header size")};
