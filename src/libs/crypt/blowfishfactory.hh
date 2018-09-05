@@ -8,21 +8,25 @@
 
 namespace yapet {
 class BlowfishFactory : public AbstractCryptoFactory {
+   private:
+    std::shared_ptr<Key> _key448;
+
    public:
+    BlowfishFactory(const SecureArray& password);
+    BlowfishFactory(const BlowfishFactory&)=delete;
+    BlowfishFactory(BlowfishFactory&&) = delete;
+    BlowfishFactory& operator=(const BlowfishFactory&)=delete;
+    BlowfishFactory& operator=(BlowfishFactory&&) = delete;
     ~BlowfishFactory(){};
 
-    virtual std::unique_ptr<Crypto> crypto(const SecureArray& password) const {
-        std::shared_ptr<Key> key{new Key448{}};
-        key->password(password);
+    virtual std::shared_ptr<AbstractCryptoFactory> newFactory(const SecureArray& password) const;
 
-        return std::unique_ptr<Crypto>{new Blowfish{key}};
-    }
+    virtual std::unique_ptr<Crypto> crypto() const;
+
+    virtual std::shared_ptr<Key> key() const { return _key448; }
 
     virtual std::unique_ptr<YapetFile> file(const std::string& filename,
-                                            bool create, bool secure) const {
-        return std::unique_ptr<YapetFile>{
-            new Yapet10File{filename, create, secure}};
-    }
+                                            bool create, bool secure) const;
 };
 }  // namespace yapet
 

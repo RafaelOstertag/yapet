@@ -69,8 +69,7 @@ class File {
    public:
     //! Constructor
     File(std::shared_ptr<yapet::AbstractCryptoFactory> abstractCryptoFactory,
-         const std::string& filename, const yapet::SecureArray& password,
-         bool create = false, bool secure = true);
+         const std::string& filename, bool create = false, bool secure = true);
 
     File(File&& f);
     File& operator=(File&& f);

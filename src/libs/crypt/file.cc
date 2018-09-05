@@ -79,12 +79,11 @@ void File::notModifiedOrThrow() {
 }
 
 File::File(std::shared_ptr<yapet::AbstractCryptoFactory> abstractCryptoFactory,
-           const std::string& filename, const SecureArray& password,
-           bool create, bool secure)
+           const std::string& filename, bool create, bool secure)
     : _fileModificationTime{0},
       _abstractCryptoFactory{abstractCryptoFactory},
       _yapetFile{abstractCryptoFactory->file(filename, create, secure)},
-      _crypto{abstractCryptoFactory->crypto(password)} {
+      _crypto{abstractCryptoFactory->crypto()} {
     if (getFileSize(filename) == 0) {
         initializeEmptyFile();
     } else {
@@ -142,19 +141,21 @@ void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
     std::string backupfilename(filename + ".bak");
     yapet::renameFile(filename, backupfilename);
 
-    std::unique_ptr<yapet::YapetFile> otherFile{
+    std::unique_ptr<yapet::YapetFile> oldFile{
         _abstractCryptoFactory->file(backupfilename, false, false)};
+
+    std::shared_ptr<yapet::AbstractCryptoFactory> otherCryptoFactory{
+        _abstractCryptoFactory->newFactory(newPassword)};
+    std::unique_ptr<Crypto> otherCrypto{otherCryptoFactory->crypto()};
+
+    _abstractCryptoFactory.swap(otherCryptoFactory);
+    _crypto.swap(otherCrypto);
 
     _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);
 
-    std::unique_ptr<Crypto> otherCrypto{
-        _abstractCryptoFactory->crypto(newPassword)};
-
-    _crypto.swap(otherCrypto);
-
     initializeEmptyFile();
     std::list<yapet::SecureArray> newlyEncryptedRecords{};
-    for (auto encryptedSerializedRecord : otherFile->readPasswordRecords()) {
+    for (auto encryptedSerializedRecord : oldFile->readPasswordRecords()) {
         auto serializedRecord{otherCrypto->decrypt(encryptedSerializedRecord)};
         auto newlyEncryptedSerializedRecord{_crypto->encrypt(serializedRecord)};
         newlyEncryptedRecords.push_back(newlyEncryptedSerializedRecord);

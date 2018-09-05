@@ -12,7 +12,7 @@ chmod_verbose = $(chmod_verbose_$(V))
 chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
 chmod_verbose_0 = @echo "  CHMOD  $@";
 
-CLEANFILES = testfile.gps testfile.gps.bak encryptiontest.gps encryptiontest.gps.bak	\
+CLEANFILES = blowfishfactory-test testfile.gps testfile.gps.bak encryptiontest.gps encryptiontest.gps.bak	\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
 test8.pet test9.pet test10.pet corrupt.pet f32le0.5.pet	\
 f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
@@ -39,7 +39,7 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 blowfish file foreign
+check_PROGRAMS = key448 blowfish blowfishfactory file foreign
 
 TESTS = $(check_PROGRAMS)
 
@@ -65,8 +65,8 @@ foreign_DEPENDENCIES = f32le0.5.pet f32be0.5.pet f64le0.5.pet f64be0.5.pet	\
 f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 
 key448_SOURCES = key448.cc
-
 blowfish_SOURCES = blowfish.cc
+blowfishfactory_SOURCES = blowfishfactory.cc
 
 file_SOURCES = file.cc
 file_DEPENDENCIES = corrupt.pet

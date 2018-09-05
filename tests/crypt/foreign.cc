@@ -87,11 +87,11 @@ inline void comparePasswordRecords(const yapet::PasswordRecord &actual,
 inline void testFile(const char *filename) {
     auto password{yapet::toSecureArray("test1")};
     std::shared_ptr<yapet::AbstractCryptoFactory> factory{
-        new yapet::BlowfishFactory{}};
+        new yapet::BlowfishFactory{password}};
 
-    auto crypto{factory->crypto(password)};
+    auto crypto{factory->crypto()};
 
-    YAPET::File file{factory, filename, password, false, false};
+    YAPET::File file{factory, filename, false, false};
 
     auto passwords{file.read()};
     CPPUNIT_ASSERT(passwords.size() == ROUNDS);

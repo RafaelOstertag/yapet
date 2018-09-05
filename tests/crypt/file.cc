@@ -146,9 +146,9 @@ class FileTest : public CppUnit::TestFixture {
     void createNewFile() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
-            new yapet::BlowfishFactory{}};
+            new yapet::BlowfishFactory{password}};
 
-        YAPET::File file{factory, FN, password, true};
+        YAPET::File file{factory, FN, true};
         auto expectedFileVersion{yapet::toSecureArray("YAPET1.0")};
 
         CPPUNIT_ASSERT(std::memcmp(*file.getFileVersion(), *expectedFileVersion,
@@ -161,9 +161,9 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            YAPET::File file{factory, FN, password, true};
+            YAPET::File file{factory, FN, true};
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
         }
@@ -171,9 +171,9 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            YAPET::File file{factory, FN, password, false};
+            YAPET::File file{factory, FN, false};
             auto expectedFileVersion{yapet::toSecureArray("YAPET1.0")};
 
             CPPUNIT_ASSERT(std::memcmp(*file.getFileVersion(),
@@ -190,9 +190,9 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            YAPET::File file{factory, FN, password, true};
+            YAPET::File file{factory, FN, true};
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
         }
@@ -200,9 +200,9 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray("InvalidPassword")};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, password, false}),
+            CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, false}),
                                  YAPET::YAPETInvalidPasswordException);
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
@@ -213,11 +213,11 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            auto blowfish{factory->crypto(password)};
+            auto blowfish{factory->crypto()};
 
-            YAPET::File file{factory, FN, password, true};
+            YAPET::File file{factory, FN, true};
 
             auto passwordList{createPasswordList(blowfish)};
 
@@ -232,11 +232,11 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            auto blowfish{factory->crypto(password)};
+            auto blowfish{factory->crypto()};
 
-            YAPET::File file{factory, FN, password, false};
+            YAPET::File file{factory, FN,  false};
 
             std::list<yapet::PasswordListItem> list = file.read();
             CPPUNIT_ASSERT(list.size() == ROUNDS);
@@ -266,17 +266,17 @@ class FileTest : public CppUnit::TestFixture {
     void detectModificationOnSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
-            new yapet::BlowfishFactory{}};
+            new yapet::BlowfishFactory{password}};
 
-        YAPET::File file1{factory, FN, password, true};
-        YAPET::File file2{factory, FN, password, false};
+        YAPET::File file1{factory, FN, true};
+        YAPET::File file2{factory, FN,  false};
 
         std::list<yapet::PasswordListItem> passwordList{};
         auto passwordRecord{makePasswordRecord(1)};
 
         auto serializedPasswordRecord{passwordRecord.serialize()};
 
-        auto blowfish{factory->crypto(password)};
+        auto blowfish{factory->crypto()};
         auto encryptedSerializedPasswordRecord{
             blowfish->encrypt(serializedPasswordRecord)};
 
@@ -304,15 +304,15 @@ class FileTest : public CppUnit::TestFixture {
     void forceSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
-            new yapet::BlowfishFactory{}};
+            new yapet::BlowfishFactory{password}};
 
-        YAPET::File file1{factory, FN, password, true};
-        YAPET::File file2{factory, FN, password, false};
+        YAPET::File file1{factory, FN, true};
+        YAPET::File file2{factory, FN, false};
 
         std::list<yapet::PasswordListItem> passwordList{};
         auto passwordRecord{makePasswordRecord(1)};
         auto serializedPasswordRecord{passwordRecord.serialize()};
-        auto blowfish{factory->crypto(password)};
+        auto blowfish{factory->crypto()};
         auto encryptedSerializedPasswordRecord{
             blowfish->encrypt(serializedPasswordRecord)};
 
@@ -360,10 +360,10 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
             approxTimePasswordSet = std::time(0);
-            YAPET::File file{factory, FN, password, true};
+            YAPET::File file{factory, FN, true};
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
         }
@@ -371,9 +371,9 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            YAPET::File file{factory, FN, password, false};
+            YAPET::File file{factory, FN, false};
             int64_t passwordSet{file.getMasterPWSet()};
 
             CPPUNIT_ASSERT(((approxTimePasswordSet - 10) < passwordSet) &&
@@ -387,11 +387,11 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            auto blowfish{factory->crypto(password)};
+            auto blowfish{factory->crypto()};
 
-            YAPET::File file{factory, FN, password, true};
+            YAPET::File file{factory, FN, true};
 
             auto passwordList{createPasswordList(blowfish)};
 
@@ -409,11 +409,11 @@ class FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray("NewSecret")};
             std::shared_ptr<yapet::BlowfishFactory> factory{
-                new yapet::BlowfishFactory{}};
+                new yapet::BlowfishFactory{password}};
 
-            auto blowfish{factory->crypto(password)};
+            auto blowfish{factory->crypto()};
 
-            YAPET::File file{factory, FN, password, false};
+            YAPET::File file{factory, FN, false};
 
             std::list<yapet::PasswordListItem> list = file.read();
             CPPUNIT_ASSERT(list.size() == ROUNDS);
@@ -443,11 +443,11 @@ class FileTest : public CppUnit::TestFixture {
     void allowSaveAfterPasswordSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
-            new yapet::BlowfishFactory{}};
+            new yapet::BlowfishFactory{password}};
 
-        auto blowfish{factory->crypto(password)};
+        auto blowfish{factory->crypto()};
 
-        YAPET::File file{factory, FN, password, true};
+        YAPET::File file{factory, FN, true};
 
         auto passwordList{createPasswordList(blowfish)};
 
@@ -466,9 +466,9 @@ class FileTest : public CppUnit::TestFixture {
         // messing up the length indicator for the first record
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
-            new yapet::BlowfishFactory{}};
+            new yapet::BlowfishFactory{password}};
 
-        YAPET::File file{factory, BUILDDIR "/corrupt.pet", password, false,
+        YAPET::File file{factory, BUILDDIR "/corrupt.pet", false,
                          false};
 
         CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
