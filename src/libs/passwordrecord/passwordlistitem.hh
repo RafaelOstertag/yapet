@@ -10,6 +10,7 @@ class PasswordListItem {
     SecureArray _encryptedRecord;
 
    public:
+    using size_type = SecureArray::size_type;
     PasswordListItem(const char* name, const SecureArray& encryptedRecord);
 
     PasswordListItem(const PasswordListItem& item);
