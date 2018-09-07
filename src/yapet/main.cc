@@ -74,7 +74,7 @@
  */
 
 const char COPYRIGHT[] = "YAPET -- Yet Another Password Encryption Tool\n" \
-                         "Copyright (C) 2008-2011, 2013, 2014  Rafael Ostertag\n"               \
+                         "Copyright (C) 2008-2011, 2013, 2014, 2018  Rafael Ostertag\n"               \
                          "\n"                                \
                          "This program is free software: you can redistribute it and/or modify\n" \
                          "it under the terms of the GNU General Public License as published by\n" \

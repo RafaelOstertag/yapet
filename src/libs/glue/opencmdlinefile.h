@@ -24,9 +24,9 @@
 #define _OPENCMDLINEFILE_H 1
 
 #include "mainwindow.h"
-#include "yacurs.h"
-#include "promptpassword.h"
 #include "newpassworddialog.h"
+#include "promptpassword.h"
+#include "yacurs.h"
 
 /**
  * Handle loading a file from command line.
@@ -44,30 +44,28 @@
  *    password.
  */
 class LoadFileCmdLine {
-    private:
-	MainWindow& mainwindow;
-	PromptPassword* promptpassword;
-	NewPasswordDialog* newpassworddia;
-	YACURS::MessageBox3* createfile;
-	YACURS::MessageBox2* errormsg;
-	YACURS::MessageBox2* generror;
-	std::string file;
+   private:
+    MainWindow& mainwindow;
+    PromptPassword* promptpassword;
+    NewPasswordDialog* newpassworddia;
+    YACURS::MessageBox3* createfile;
+    YACURS::MessageBox2* errormsg;
+    YACURS::MessageBox2* generror;
+    std::string _file;
 
-	LoadFileCmdLine(const LoadFileCmdLine& l) : mainwindow(l.mainwindow) {}
+    void apoptosis_handler(YACURS::Event& e);
 
-	const LoadFileCmdLine& operator=(const LoadFileCmdLine&) {
-	    return *this;
-	}
+    void window_close_handler(YACURS::Event& e);
 
-	void apoptosis_handler(YACURS::Event& e);
+   public:
+    LoadFileCmdLine(MainWindow& mw, const std::string& file);
+    LoadFileCmdLine(const LoadFileCmdLine&) = delete;
+    LoadFileCmdLine(LoadFileCmdLine&&) = delete;
+    LoadFileCmdLine& operator=(const LoadFileCmdLine&) = delete;
+    LoadFileCmdLine& operator=(LoadFileCmdLine&&) = delete;
+    ~LoadFileCmdLine();
 
-	void window_close_handler(YACURS::Event& e);
-
-    public:
-	LoadFileCmdLine(MainWindow& mw, const std::string& _file);
-	~LoadFileCmdLine();
-
-	void run();
+    void run();
 };
 
-#endif // _OPENCMDLINEFILE_H
+#endif  // _OPENCMDLINEFILE_H

@@ -19,15 +19,14 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include "globals.h"
 
 using namespace YAPET;
 
-Key* Globals::key;
-File* Globals::file;
+static std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory;
 bool Globals::records_changed;
 
 CONFIG::Config Globals::config;

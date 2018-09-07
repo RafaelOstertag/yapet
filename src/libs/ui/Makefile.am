@@ -13,6 +13,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/yapet \
     -I$(yapet_src_libdir)/cfg \
     -I$(yapet_src_libdir)/file \
     -I$(yapet_src_libdir)/utils \
+    -I$(yapet_src_libdir)/interfaces \
+    -I$(yapet_src_libdir)/passwordrecord \
     -I$(top_srcdir)/libyacurs/include		\
 	-I$(top_builddir)/libyacurs/include	\
     -I$(top_srcdir) \

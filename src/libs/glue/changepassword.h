@@ -24,9 +24,9 @@
 #define _CHANGEPASSWORD_H 1
 
 #include "mainwindow.h"
-#include "yacurs.h"
 #include "newpassworddialog.h"
 #include "passworddialog.h"
+#include "yacurs.h"
 
 /**
  * Handle changing password of YAPET file
@@ -41,28 +41,27 @@
  * 2. If old password matches, show new password prompt.
  */
 class ChangePassword {
-    private:
-	MainWindow& mainwindow;
-	PasswordDialog* promptoldpassword;
-	NewPasswordDialog* promptpassword;
-	YACURS::MessageBox2* nonmatch;
-	YACURS::MessageBox3* confirmsave;
-	YACURS::MessageBox2* generror;
-	std::string __filepath;
+   private:
+    MainWindow& mainwindow;
+    PasswordDialog* promptoldpassword;
+    NewPasswordDialog* promptpassword;
+    YACURS::MessageBox2* nonmatch;
+    YACURS::MessageBox3* confirmsave;
+    YACURS::MessageBox2* generror;
+    std::string _currentFilename;
 
-	ChangePassword(const ChangePassword& c) : mainwindow(c.mainwindow) {}
+    void window_close_handler(YACURS::Event& e);
 
-	const ChangePassword& operator=(const ChangePassword&) {
-	    return *this;
-	}
+   public:
+    ChangePassword(MainWindow& mw);
+    ChangePassword(const ChangePassword&) = delete;
+    ChangePassword(ChangePassword&&) = delete;
+    ChangePassword& operator=(const ChangePassword&) = delete;
+    ChangePassword& operator=(ChangePassword&&) = delete;
 
-	void window_close_handler(YACURS::Event& e);
+    ~ChangePassword();
 
-    public:
-	ChangePassword(MainWindow& mw);
-	~ChangePassword();
-
-	void run();
+    void run();
 };
 
-#endif // _CHANGEPASSWORD_H
+#endif  // _CHANGEPASSWORD_H

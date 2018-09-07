@@ -28,24 +28,25 @@
 /**
  * @brief Shows a dialog for entering the password for an existsing YAPET file.
  */
-class PasswordDialog : public YACURS::Dialog  {
-    private:
-        YACURS::Input<std::string>* pwinput1;
-	YACURS::Label* line1;
-	YACURS::Label* linefn;
+class PasswordDialog : public YACURS::Dialog {
+   private:
+    YACURS::Input<std::string>* pwinput1;
+    YACURS::Label* line1;
+    YACURS::Label* linefn;
 
-        const PasswordDialog& operator=(const PasswordDialog&) {
-            return *this;
-        }
+   public:
+    PasswordDialog(const std::string& fn);
+    PasswordDialog(const PasswordDialog&) = delete;
+    PasswordDialog(PasswordDialog&&) = delete;
+    PasswordDialog& operator=(const PasswordDialog&) = delete;
+    PasswordDialog& operator=(PasswordDialog&&) = delete;
 
-    public:
-        PasswordDialog(std::string& fn);
-        ~PasswordDialog();
+    ~PasswordDialog();
 
-	std::string password() const {
-	    assert(pwinput1!=0);
-	    return pwinput1->input();
-	}
+    std::string password() const {
+        assert(pwinput1 != 0);
+        return pwinput1->input();
+    }
 };
 
-#endif // _PASSWORDDIALOG_H
+#endif  // _PASSWORDDIALOG_H

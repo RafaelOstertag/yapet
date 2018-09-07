@@ -24,8 +24,8 @@
 #define _CREATEFILE_H 1
 
 #include "mainwindow.h"
-#include "yacurs.h"
 #include "newpassworddialog.h"
+#include "yacurs.h"
 
 /**
  * Handle creating a file.
@@ -40,28 +40,28 @@
  * 3. If save dialog was successful, show new password prompt.
  */
 class CreateFile {
-    private:
-	MainWindow& mainwindow;
-	NewPasswordDialog* promptpassword;
-	YACURS::FileSaveDialog* filesavedialog;
-	YACURS::MessageBox2* confirmsave;
-	YACURS::MessageBox2* generror;
-	std::string __filepath;
-	bool ignore_unsaved_file;
+   private:
+    MainWindow& mainwindow;
+    NewPasswordDialog* promptpassword;
+    YACURS::FileSaveDialog* filesavedialog;
+    YACURS::MessageBox2* confirmsave;
+    YACURS::MessageBox2* generror;
+    std::string _currentLoadedFile;
+    std::string _filepath;
+    bool ignore_unsaved_file;
 
-	CreateFile(const CreateFile& c) : mainwindow(c.mainwindow) {}
+    void window_close_handler(YACURS::Event& e);
 
-	const CreateFile& operator=(const CreateFile&) {
-	    return *this;
-	}
+   public:
+    CreateFile(MainWindow& mw);
+    CreateFile(const CreateFile&) = delete;
+    CreateFile(const CreateFile&&) = delete;
+    CreateFile& operator=(const CreateFile&) = delete;
+    CreateFile& operator=(CreateFile&&) = delete;
 
-	void window_close_handler(YACURS::Event& e);
+    ~CreateFile();
 
-    public:
-	CreateFile(MainWindow& mw);
-	~CreateFile();
-
-	void run();
+    void run();
 };
 
-#endif // _CREATEFILE_H
+#endif  // _CREATEFILE_H

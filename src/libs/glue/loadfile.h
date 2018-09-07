@@ -49,11 +49,9 @@ class LoadFile {
     PromptPassword* promptpassword;
     YACURS::FileLoadDialog* fileloaddialog;
     YACURS::MessageBox2* confirmsave;
+    std::string _selectedFilename;
+    std::string _currentLoadedFile;
     bool ignore_unsaved_file;
-
-    LoadFile(const LoadFile& l) : mainwindow(l.mainwindow) {}
-
-    const LoadFile& operator=(const LoadFile&) { return *this; }
 
     void apoptosis_handler(YACURS::Event& e);
 
@@ -61,6 +59,9 @@ class LoadFile {
 
    public:
     LoadFile(MainWindow& mw);
+    LoadFile(const LoadFile& l) = delete;
+    LoadFile& operator=(const LoadFile&) = delete;
+
     ~LoadFile();
 
     void run();

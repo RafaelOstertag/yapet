@@ -26,32 +26,31 @@
 // Crypt
 #include <file.h>
 
-#include "yacurs.h"
 #include "cfg.h"
+#include "yacurs.h"
 
 namespace YAPET {
-    class Globals {
-	public:
-	    static Key* key;
-	    static File* file;
-	    static bool records_changed;
-	    static CONFIG::Config config;
-    };
+class Globals {
+   public:
+    static std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory;
+    static bool records_changed;
+    static CONFIG::Config config;
+};
 
-    /**
-     * Submitted by an object requesting self destruction.
-     *
-     * Since we're mostly event driven, we need an event in order to
-     * request self destruction. This allows for an object to be
-     * created by a class without requiring the creating class to keep
-     * track of states of said object, i.e. once the object has done
-     * its chores, it can request self destruction without having the
-     * creating class know the exact moment.
-     *
-     * @see LoadFile
-     * @see PromptPassword
-     */
-    const YACURS::EventType EVT_APOPTOSIS("EVT_APOPTOSIS");
-}
+/**
+ * Submitted by an object requesting self destruction.
+ *
+ * Since we're mostly event driven, we need an event in order to
+ * request self destruction. This allows for an object to be
+ * created by a class without requiring the creating class to keep
+ * track of states of said object, i.e. once the object has done
+ * its chores, it can request self destruction without having the
+ * creating class know the exact moment.
+ *
+ * @see LoadFile
+ * @see PromptPassword
+ */
+const YACURS::EventType EVT_APOPTOSIS("EVT_APOPTOSIS");
+}  // namespace YAPET
 
-#endif // _MAINWINDOW_H
+#endif  // _MAINWINDOW_H

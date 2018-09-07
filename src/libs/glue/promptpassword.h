@@ -23,10 +23,11 @@
 #ifndef _PROMPTPASSWORD_H
 #define _PROMPTPASSWORD_H 1
 
-#include "file.h"
+#include <memory>
 
-#include "yacurs.h"
+#include "abstractcryptofactory.hh"
 #include "passworddialog.h"
+#include "yacurs.h"
 
 /**
  * Prompt for a password and try to open a given file.
@@ -34,46 +35,37 @@
  * Prompt for a password to open a given file. If the password does
  * not match on the file, ask the user whether to try again or cancel.
  *
- * Only if opening the file succeeds with a given password,
- * PromptPassowrd::key() and PromptPassword::yapet_file() return a
- * non-null value.
  *
-* Once the object has done it's job, it submits a EVT_APOPTOSIS
+ * Once the object has done it's job, it submits a EVT_APOPTOSIS
  * event.
  */
 class PromptPassword {
-    private:
-	PasswordDialog* pwdialog;
-	YACURS::MessageBox3* pwerror;
-	YACURS::MessageBox2* generror;
-	YAPET::File* __file;
-	YAPET::Key* __key;
-	std::string __filename;
+   private:
+    PasswordDialog* pwdialog;
+    YACURS::MessageBox3* pwerror;
+    YACURS::MessageBox2* generror;
+    std::string _filename;
 
-	PromptPassword(const PromptPassword&) {}
+    std::shared_ptr<yapet::AbstractCryptoFactory> _cryptoFactory;
 
-        const PromptPassword& operator=(const PromptPassword&) {
-            return *this;
-        }
+    void window_close_handler(YACURS::Event& e);
 
-	void window_close_handler(YACURS::Event& e);
+   public:
+    /**
+     * @param fn the filename to prompt password for.
+     */
+    PromptPassword(const std::string& filename);
+    ~PromptPassword();
+    PromptPassword(const PromptPassword&) = delete;
+    PromptPassword(PromptPassword&&) = delete;
+    PromptPassword& operator=(const PromptPassword&) = delete;
+    PromptPassword& operator=(PromptPassword&&) = delete;
 
-    public:
-	/**
-	 * @param fn the filename to prompt password for.
-	 */
-        PromptPassword(const std::string& fn);
-        ~PromptPassword();
+    void run();
 
-	void run();
-
-	YAPET::Key* key() const {
-	    return __key;
-	}
-
-	YAPET::File* yapet_file() const {
-	    return __file;
-	}
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory() const {
+        return _cryptoFactory;
+    }
 };
 
-#endif // _PROMPTPASSWORD_H
+#endif  // _PROMPTPASSWORD_H

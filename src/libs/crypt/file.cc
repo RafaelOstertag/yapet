@@ -127,7 +127,9 @@ std::list<PasswordListItem> File::read() {
     return result;
 }
 
-void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
+void File::setNewKey(
+    const std::shared_ptr<yapet::AbstractCryptoFactory>& newCryptoFactory,
+    bool forcewrite) {
     if (!forcewrite) {
         notModifiedOrThrow();
     }
@@ -144,11 +146,10 @@ void File::setNewKey(const SecureArray& newPassword, bool forcewrite) {
     std::unique_ptr<yapet::YapetFile> oldFile{
         _abstractCryptoFactory->file(backupfilename, false, false)};
 
-    std::shared_ptr<yapet::AbstractCryptoFactory> otherCryptoFactory{
-        _abstractCryptoFactory->newFactory(newPassword)};
-    std::unique_ptr<Crypto> otherCrypto{otherCryptoFactory->crypto()};
+    auto cryptoFactory{newCryptoFactory};
+    auto otherCrypto{cryptoFactory->crypto()};
+    _abstractCryptoFactory.swap(cryptoFactory);
 
-    _abstractCryptoFactory.swap(otherCryptoFactory);
     _crypto.swap(otherCrypto);
 
     _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);

@@ -18,121 +18,119 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "intl.h"
-#include "globals.h"
+#include <cassert>
+#include <memory>
+#include <typeinfo>
+
+#include "blowfishfactory.hh"
 #include "consts.h"
 #include "createfile.h"
-
-#include <typeinfo>
-#include <cassert>
+#include "globals.h"
+#include "intl.h"
 
 //
 // Private
 //
 
-void
-CreateFile::window_close_handler(YACURS::Event& e) {
+void CreateFile::window_close_handler(YACURS::Event& e) {
     assert(e == YACURS::EVT_WINDOW_CLOSE);
 
     YACURS::EventEx<YACURS::WindowBase*>& evt =
-	dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
+        dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (evt.data() == filesavedialog) {
-	if (filesavedialog->dialog_state() == YACURS::DIALOG_OK) {
-	    __filepath = filesavedialog->filepath();
-	    assert(promptpassword==0);
-	    promptpassword = new NewPasswordDialog(__filepath);
-	    promptpassword->show();
-	} else {
-	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
-	}
+        if (filesavedialog->dialog_state() == YACURS::DIALOG_OK) {
+            _filepath = filesavedialog->filepath();
+            assert(promptpassword == 0);
+            promptpassword = new NewPasswordDialog(_filepath);
+            promptpassword->show();
+        } else {
+            YACURS::EventQueue::submit(
+                YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+        }
 
-	delete filesavedialog;
-	filesavedialog=0;
+        delete filesavedialog;
+        filesavedialog = 0;
 
-	return;
+        return;
     }
 
     if (evt.data() == promptpassword) {
-	if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
-	    assert(promptpassword->match());
-	    assert(!__filepath.empty());
+        if (promptpassword->dialog_state() == YACURS::DIALOG_OK) {
+            assert(promptpassword->match());
+            assert(!_filepath.empty());
 
-	    // Set file into configuration, so that it receives .pet
-	    // suffix
-	    YAPET::Globals::config.petfile.set(__filepath);
+            // Set file into configuration, so that it receives .pet
+            // suffix
+            YAPET::Globals::config.petfile.set(_filepath);
 
-	    YAPET::Key* _key=0;
-	    YAPET::File* _file=0;
-	    try {
-		// Must not be delete by CreateFile
-		_key = new YAPET::Key(promptpassword->password().c_str());
-		// Must not be delete by CreateFile
-		_file = new YAPET::File(YAPET::Globals::config.petfile,
-					*_key,
-					true,
-					YAPET::Globals::config.filesecurity);
-		mainwindow.load_password_file(_file, _key);
+            try {
+                auto password{yapet::toSecureArray(promptpassword->password())};
+                std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+                    new yapet::BlowfishFactory{password}};
+                mainwindow.load_password_file(YAPET::Globals::config.petfile,
+                                              cryptoFactory, true);
 
-		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
-	    } catch (std::exception& ex) {
-		assert(generror==0);
-		generror = new YACURS::MessageBox2(_("Error"),
-						   _("Got following error"),
-						   ex.what(),
-						   YACURS::OK_ONLY);
-		generror->show();
+                YACURS::EventQueue::submit(
+                    YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+            } catch (std::exception& ex) {
+                assert(generror == 0);
+                generror = new YACURS::MessageBox2(_("Error"),
+                                                   _("Got following error"),
+                                                   ex.what(), YACURS::OK_ONLY);
+                generror->show();
+            }
 
-		if (_key) delete _key;
-		if (_file) delete _file;
-	    }
+        } else {
+            YACURS::EventQueue::submit(
+                YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+        }
 
-	} else {
-	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
-	}
+        // Do not put aptoptosis here, since here we can't decide
+        // whether we had an exception or not. And if we had an
+        // exception, generror is active and we have to wait for the
+        // user to close it. If we have an exception, generror handler
+        // takes care
 
-	// Do not put aptoptosis here, since here we can't decide
-	// whether we had an exception or not. And if we had an
-	// exception, generror is active and we have to wait for the
-	// user to close it. If we have an exception, generror handler
-	// takes care
+        delete promptpassword;
+        promptpassword = 0;
 
-
-	delete promptpassword;
-	promptpassword=0;
-
-	return;
+        return;
     }
 
     if (evt.data() == confirmsave) {
-	switch (confirmsave->dialog_state()) {
-	case YACURS::DIALOG_YES:
-	    if (mainwindow.save_records())
-		run();
-	    else
-		YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
-	    break;
-	case YACURS::DIALOG_NO:
-	    ignore_unsaved_file=true;
-	    run();
-	    break;
-	case YACURS::DIALOG_CANCEL:
-	    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
-	    break;
-	default:
-	    throw std::runtime_error(_("Unexpected dialog state for confirmsave dialog"));
-	    break;
-	}
+        switch (confirmsave->dialog_state()) {
+            case YACURS::DIALOG_YES:
+                if (mainwindow.save_records())
+                    run();
+                else
+                    YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(
+                        YAPET::EVT_APOPTOSIS, this));
+                break;
+            case YACURS::DIALOG_NO:
+                ignore_unsaved_file = true;
+                run();
+                break;
+            case YACURS::DIALOG_CANCEL:
+                YACURS::EventQueue::submit(
+                    YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+                break;
+            default:
+                throw std::runtime_error(
+                    _("Unexpected dialog state for confirmsave dialog"));
+                break;
+        }
 
-	delete confirmsave;
-	confirmsave = 0;
-	return;
+        delete confirmsave;
+        confirmsave = 0;
+        return;
     }
 
     if (evt.data() == generror) {
-	delete generror;
-	generror = 0;
-	YACURS::EventQueue::submit(YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
+        delete generror;
+        generror = 0;
+        YACURS::EventQueue::submit(
+            YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
     }
 }
 
@@ -140,20 +138,17 @@ CreateFile::window_close_handler(YACURS::Event& e) {
 // Public
 //
 
-CreateFile::CreateFile(MainWindow& mw): mainwindow(mw),
-					promptpassword(0),
-					filesavedialog(0),
-					confirmsave(0),
-					generror(0),
-					ignore_unsaved_file(false) {
-
-    YACURS::EventQueue::
-	connect_event(YACURS::EventConnectorMethod1<
-		      CreateFile>(YACURS::
-				EVT_WINDOW_CLOSE,
-				this,
-				&CreateFile::
-				window_close_handler) );
+CreateFile::CreateFile(MainWindow& mw)
+    : mainwindow{mw},
+      promptpassword{nullptr},
+      filesavedialog{nullptr},
+      confirmsave{nullptr},
+      generror{nullptr},
+      _currentLoadedFile{mw.currentFilename()},
+      _filepath{},
+      ignore_unsaved_file{false} {
+    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<CreateFile>(
+        YACURS::EVT_WINDOW_CLOSE, this, &CreateFile::window_close_handler));
 }
 
 CreateFile::~CreateFile() {
@@ -162,31 +157,24 @@ CreateFile::~CreateFile() {
     if (confirmsave) delete confirmsave;
     if (generror) delete generror;
 
-    YACURS::EventQueue::
-	disconnect_event(YACURS::EventConnectorMethod1<
-			 CreateFile>(YACURS::
-				   EVT_WINDOW_CLOSE,
-				   this,
-				   &CreateFile::
-				   window_close_handler) );
+    YACURS::EventQueue::disconnect_event(
+        YACURS::EventConnectorMethod1<CreateFile>(
+            YACURS::EVT_WINDOW_CLOSE, this, &CreateFile::window_close_handler));
 }
 
-void
-CreateFile::run() {
-    if (!ignore_unsaved_file &&
-	YAPET::Globals::records_changed) {
-	assert(YAPET::Globals::file!=0);
-	assert(confirmsave == 0);
-	confirmsave = new YACURS::MessageBox2(_("Unsaved Changes"),
-					      YAPET::Globals::file->getFilename(),
-					      _("has unsaved changes. Do you want to save?"),
-					      YACURS::YESNOCANCEL);
-	confirmsave->show();
+void CreateFile::run() {
+    if (!ignore_unsaved_file && YAPET::Globals::records_changed) {
+        assert(confirmsave == 0);
+        confirmsave = new YACURS::MessageBox2(
+            _("Unsaved Changes"), _currentLoadedFile,
+            _("has unsaved changes. Do you want to save?"),
+            YACURS::YESNOCANCEL);
+        confirmsave->show();
     } else {
-	assert(filesavedialog==0);
-	// FileSaveDialog uses chdir().
-	filesavedialog = new YACURS::FileSaveDialog(std::string(),true);
-	filesavedialog->suffix(YAPET::Consts::default_suffix);
-	filesavedialog->show();
+        assert(filesavedialog == 0);
+        // FileSaveDialog uses chdir().
+        filesavedialog = new YACURS::FileSaveDialog(std::string(), true);
+        filesavedialog->suffix(YAPET::Consts::default_suffix);
+        filesavedialog->show();
     }
 }

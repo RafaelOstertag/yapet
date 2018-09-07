@@ -24,15 +24,13 @@
 #define _PASSWORDRECORD_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
-#include <string>
 #include <yacurs.h>
+#include <string>
 
 #include "file.h"
-#include "key.h"
-#include "partdec.h"
 #include "pwgendialog.h"
 
 /**
@@ -58,105 +56,104 @@
  * take care of this.
  */
 class PasswordRecord : public YACURS::Dialog {
-    private:
-        YACURS::VPack* vpack;
-        YACURS::Label* lname;
-        YACURS::Label* lhost;
-        YACURS::Label* lusername;
-        YACURS::Label* lpassword;
-        YACURS::Label* lcomment;
-        YACURS::Input<std::string>* name;
-        YACURS::Input<std::string>* host;
-        YACURS::Input<std::string>* username;
-        YACURS::Input<std::string>* password;
-        YACURS::Input<std::string>* comment;
-        YACURS::Button* pwgenbutton;
-	YACURS::Spacer* pwgenbutton_spacer;
+   private:
+    YACURS::VPack* vpack;
+    YACURS::Label* lname;
+    YACURS::Label* lhost;
+    YACURS::Label* lusername;
+    YACURS::Label* lpassword;
+    YACURS::Label* lcomment;
+    YACURS::Input<std::string>* name;
+    YACURS::Input<std::string>* host;
+    YACURS::Input<std::string>* username;
+    YACURS::Input<std::string>* password;
+    YACURS::Input<std::string>* comment;
+    YACURS::Button* pwgenbutton;
+    YACURS::Spacer* pwgenbutton_spacer;
 
-        YACURS::MessageBox* errordialog;
-	YACURS::MessageBox* confirmdialog;
-	PwGenDialog* pwgendialog;
-	YAPET::PartDec* encentry;
-	const YAPET::Key* __key;
-	bool __newrecord;
-        bool __readonly;
-	bool __password_hidden;
+    YACURS::MessageBox* errordialog;
+    YACURS::MessageBox* confirmdialog;
+    PwGenDialog* pwgendialog;
 
-	/**
-	 * When @c true, dialog will be closed without asked for
-	 * confirmation if cancel has been pressed.
-	 */
-	bool __force_close;
-	bool __modified_by_pwgen;
+    std::shared_ptr<yapet::AbstractCryptoFactory> _cryptoFactory;
+    std::shared_ptr<yapet::PasswordListItem> _passwordListItem;
+    bool _newrecord;
+    bool _readonly;
+    bool _password_hidden;
 
-        const PasswordRecord& operator=(const PasswordRecord&) {
-            return *this;
-        }
+    /**
+     * When @c true, dialog will be closed without asked for
+     * confirmation if cancel has been pressed.
+     */
+    bool _force_close;
+    bool _modified_by_pwgen;
 
-        virtual void on_ok_button();
+    virtual void on_ok_button();
 
-        void button_press_handler(YACURS::Event& e);
+    void button_press_handler(YACURS::Event& e);
 
-        void window_close_handler(YACURS::Event& e);
+    void window_close_handler(YACURS::Event& e);
 
-	virtual bool on_close();
+    virtual bool on_close();
 
-    public:
-        /**
-         * @brief Constructor.
-         *
-         * Depending on the value passed in \c pe, either an empty
-         * record is showed or the decrypted password record including
-         * the password stored in the record in plain text is showed
-         * except the password record is displaying in read-only mode.
-         */
-        PasswordRecord( const YAPET::Key* key, const YAPET::PartDec* pe=0);
-        ~PasswordRecord();
+   public:
+    /**
+     * @brief Constructor.
+     *
+     * Depending on the value passed in \c pe, either an empty
+     * record is showed or the decrypted password record including
+     * the password stored in the record in plain text is showed
+     * except the password record is displaying in read-only mode.
+     */
+    PasswordRecord(std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory,
+                   const yapet::PasswordListItem& passwordListItem);
+    PasswordRecord(
+        std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory);
+    ~PasswordRecord();
 
-        /**
-         * @brief Returns the password record.
-         *
-         * Returns the new or altered password record as \c PartDec
-         * object. The caller is responsible for freeing the memory
-         * associated with the pointer returned.
-         *
-         * It returns \c 0 if the dialog has been canceled.
-         *
-         * @return pointer to the new or altered password record, or
-         * \c 0 if the dialog has been canceled. The caller is
-         * responsible for freeing the memory associated with the
-         * pointer returned.
-         */
-        YAPET::PartDec* getEncEntry() const {
-            return encentry;
-        }
+    PasswordRecord(const PasswordRecord&) = delete;
+    PasswordRecord(PasswordRecord&&) = delete;
+    PasswordRecord& operator=(const PasswordRecord&) = delete;
+    PasswordRecord& operator=(PasswordRecord&&) = delete;
 
-        /**
-         * @brief Indicates whether or not the record has been
-         * changed.
-         *
-         * Indicates whether or not the record has been changed.
-         *
-         * @return \c true if the record has been changed, \c false
-         * otherwise.
-         */
-        bool changed() const;
+    /**
+     * @brief Returns the password record.
+     *
+     * Returns the new or altered password record as \c PasswordListItem
+     * object. The caller is responsible for freeing the memory
+     * associated with the pointer returned.
+     *
+     * It returns \c 0 if the dialog has been canceled.
+     *
+     * @return pointer to the new or altered password record, or
+     * \c 0 if the dialog has been canceled. The caller is
+     * responsible for freeing the memory associated with the
+     * pointer returned.
+     */
+    std::shared_ptr<yapet::PasswordListItem> getEncEntry() const {
+        return _passwordListItem;
+    }
 
-	void readonly(bool f);
+    /**
+     * @brief Indicates whether or not the record has been
+     * changed.
+     *
+     * Indicates whether or not the record has been changed.
+     *
+     * @return \c true if the record has been changed, \c false
+     * otherwise.
+     */
+    bool changed() const;
 
-        bool readonly() const {
-            return __readonly;
-        }
+    void readonly(bool f);
 
-	void password_hidden(bool f);
+    bool readonly() const { return _readonly; }
 
-	bool password_hidden() const {
-	    return __password_hidden;
-	}
+    void password_hidden(bool f);
 
-	bool newrecord() const {
-	    return __newrecord;
-	}
+    bool password_hidden() const { return _password_hidden; }
+
+    bool newrecord() const { return _newrecord; }
 };
 
-#endif // _PASSWORDRECORD_H
+#endif  // _PASSWORDRECORD_H

@@ -85,8 +85,9 @@ class File {
     std::list<yapet::PasswordListItem> read();
 
     //! Sets a new encryption key for the current file.
-    void setNewKey(const yapet::SecureArray& newPassword,
-                   bool forcewrite = false);
+    void setNewKey(
+        const std::shared_ptr<yapet::AbstractCryptoFactory>& newCryptoFactory,
+        bool forcewrite = false);
     std::int64_t getMasterPWSet();
     yapet::SecureArray getFileVersion();
     yapet::HEADER_VERSION getHeaderVersion();
