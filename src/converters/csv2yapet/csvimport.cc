@@ -42,7 +42,6 @@
 #include "blowfishfactory.hh"
 #include "csvimport.h"
 #include "file.h"
-#include "structs.h"
 
 /**
  * Removes the double quotes at the beginning and any escaped double quotes.
@@ -124,9 +123,11 @@ void CSVImport::import(const char* pw) {
 
     // the max line length. Computed from the field sizes of a YAPET password
     // record.
-    const int max_len = YAPET::NAME_SIZE + YAPET::HOST_SIZE +
-                        YAPET::USERNAME_SIZE + YAPET::PASSWORD_SIZE +
-                        YAPET::COMMENT_SIZE +
+    const int max_len = yapet::PasswordRecord::NAME_SIZE +
+                        yapet::PasswordRecord::HOST_SIZE +
+                        yapet::PasswordRecord::USERNAME_SIZE +
+                        yapet::PasswordRecord::PASSWORD_SIZE +
+                        yapet::PasswordRecord::COMMENT_SIZE +
                         // for the separators
                         NUM_SEPARATORS;
     // used for logging purpose

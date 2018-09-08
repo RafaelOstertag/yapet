@@ -44,7 +44,6 @@
 #include "csvexport.h"
 #include "file.h"
 #include "passwordrecord.hh"
-#include "structs.h"
 
 std::string CSVExport::prepareline(const std::string& l) const {
     //
