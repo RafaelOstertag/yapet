@@ -45,18 +45,6 @@ namespace {
  */
 constexpr auto KEY_LENGTH = 56;
 /**
- * The length of the output of md5 (128 bits)
- */
-constexpr auto MD5_LENGTH = 16;
-/**
- * The length of the output of sha1 (160 bits)
- */
-constexpr auto SHA1_LENGTH = 20;
-/**
- * The lenght of the output of ripemd-160 (160 bits)
- */
-constexpr auto RIPEMD16_LENGTH = 20;
-/**
  * The length of the initialization vector
  */
 constexpr auto IVEC_LENGTH = 8;
@@ -101,7 +89,7 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
         throw YAPET::YAPETException(_("Unable to update the digest"));
     }
 
-    int hashSize = EVP_MD_size(md);
+    SecureArray::size_type hashSize = EVP_MD_size(md);
     SecureArray hash{hashSize};
 
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);

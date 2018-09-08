@@ -15,7 +15,9 @@ namespace yapet {
  */
 class SecureArray {
    public:
-    using size_type = unsigned int;
+    // Using int since SecureArray is most likely used in conjunction with
+    // OpenSSL routines which use int
+    using size_type = int;
 
    private:
     size_type _size;
@@ -53,7 +55,7 @@ class SecureArray {
      *
      * If the source SecureArray is smaller than this SecureArray, this
      * SecureArray is shrunk to the size of the source SecureArray.
-     * 
+     *
      * Copying from or to an empty SecureArray will have no effect.
      */
     SecureArray& operator<<(const SecureArray& source);

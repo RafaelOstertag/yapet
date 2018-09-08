@@ -11,6 +11,11 @@ class SecureArrayTest : public CppUnit::TestFixture {
     static CppUnit::TestSuite *suite() {
         CppUnit::TestSuite *suiteOfTests =
             new CppUnit::TestSuite("SecureArrayTest");
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
+            "should not allow initialization with negative size",
+            &SecureArrayTest::testNegativeSize));
+
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
             "test empty array", &SecureArrayTest::testEmptyArray));
         suiteOfTests->addTest(new CppUnit::TestCaller<SecureArrayTest>(
@@ -51,6 +56,10 @@ class SecureArrayTest : public CppUnit::TestFixture {
             &SecureArrayTest::testCopyOperator));
 
         return suiteOfTests;
+    }
+
+    void testNegativeSize() {
+        CPPUNIT_ASSERT_THROW(yapet::SecureArray{-1}, std::invalid_argument);
     }
 
     void testEmptyArray() {

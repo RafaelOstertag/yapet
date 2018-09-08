@@ -8,7 +8,6 @@
 
 namespace {
 constexpr auto SSL_SUCCESS{1};
-constexpr auto SSL_FAILURE{0};
 
 enum MODE { DECRYPTION = 0, ENCRYPTION = 1 };
 
@@ -114,7 +113,7 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
     auto blockSize = cipherBlockSize(getCipher());
 
     SecureArray temporaryEncryptedData{plainText.size() + (2 * blockSize)};
-    int writtenDataLength;
+    yapet::SecureArray::size_type writtenDataLength;
 
     auto success =
         EVP_CipherUpdate(context, *temporaryEncryptedData, &writtenDataLength,

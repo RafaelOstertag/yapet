@@ -1,5 +1,6 @@
 
 #include <cstring>
+#include <limits>
 #include <stdexcept>
 
 #include "intl.h"
@@ -7,7 +8,28 @@
 
 using namespace yapet;
 
+namespace {
+inline SecureArray::size_type castToSizeTypeOrThrow(size_t otherSize) {
+    if (otherSize < 0) {
+        throw std::invalid_argument{_("Size must not be negative")};
+    }
+
+    int maxSize = std::numeric_limits<SecureArray::size_type>::max();
+    size_t castedMaxSize = static_cast<size_t>(maxSize);
+    if (otherSize > castedMaxSize) {
+        throw std::invalid_argument(
+            _("Provided size exceeds maximum size of SecureArray"));
+    }
+
+    return static_cast<SecureArray::size_type>(otherSize);
+}
+}  // namespace
+
 SecureArray::SecureArray(size_type size) : _size{size}, _array{nullptr} {
+    if (_size < 0) {
+        throw std::invalid_argument{_("Size must not be negative")};
+    }
+
     if (_size != 0) {
         _array = new std::uint8_t[_size];
     }
@@ -126,7 +148,9 @@ SecureArray yapet::toSecureArray(const char* str) {
         return SecureArray{};
     }
 
-    SecureArray result{len};
+    auto castedSize = castToSizeTypeOrThrow(len);
+
+    SecureArray result{castedSize};
     std::memcpy(*result, str, len);
 
     return result;
@@ -137,7 +161,10 @@ SecureArray yapet::toSecureArray(const std::string& str) {
     if (len == 0) {
         return SecureArray{};
     }
-    SecureArray result{len};
+
+    auto castedSize = castToSizeTypeOrThrow(len);
+
+    SecureArray result{castedSize};
     std::memcpy(*result, str.c_str(), len);
 
     return result;
