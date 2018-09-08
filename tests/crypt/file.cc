@@ -236,7 +236,7 @@ class FileTest : public CppUnit::TestFixture {
 
             auto blowfish{factory->crypto()};
 
-            YAPET::File file{factory, FN,  false};
+            YAPET::File file{factory, FN, false};
 
             std::list<yapet::PasswordListItem> list = file.read();
             CPPUNIT_ASSERT(list.size() == ROUNDS);
@@ -269,7 +269,7 @@ class FileTest : public CppUnit::TestFixture {
             new yapet::BlowfishFactory{password}};
 
         YAPET::File file1{factory, FN, true};
-        YAPET::File file2{factory, FN,  false};
+        YAPET::File file2{factory, FN, false};
 
         std::list<yapet::PasswordListItem> passwordList{};
         auto passwordRecord{makePasswordRecord(1)};
@@ -398,7 +398,9 @@ class FileTest : public CppUnit::TestFixture {
             file.save(passwordList);
 
             auto newPassword{yapet::toSecureArray("NewSecret")};
-            file.setNewKey(newPassword);
+            std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
+                new yapet::BlowfishFactory{newPassword}};
+            file.setNewKey(newCrypto);
         } catch (std::exception &ex) {
             std::cout << std::endl;
             std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
@@ -456,20 +458,21 @@ class FileTest : public CppUnit::TestFixture {
         // Make sure mtime change may be picked up
         ::sleep(1);
         auto newPassword{yapet::toSecureArray("NewSecret")};
-        file.setNewKey(newPassword);
+        std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
+            new yapet::BlowfishFactory{newPassword}};
+        file.setNewKey(newCrypto);
 
         file.save(passwordList);
     }
 
     void corruptFile() {
-        // The file has the byte at offset 0x2e changed from 0x05 to 0x06,
+        // The file has the byte at offset 0x2f changed from 0x88 to 0x89,
         // messing up the length indicator for the first record
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
         std::shared_ptr<yapet::BlowfishFactory> factory{
             new yapet::BlowfishFactory{password}};
 
-        YAPET::File file{factory, BUILDDIR "/corrupt.pet", false,
-                         false};
+        YAPET::File file{factory, BUILDDIR "/corrupt.pet", false, false};
 
         CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
     }

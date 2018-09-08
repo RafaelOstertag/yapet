@@ -24,7 +24,7 @@
 #include "securearray.hh"
 #include "testpaths.h"
 
-constexpr auto TEST_PASSWORD{"Secret"};
+constexpr auto TEST_PASSWORD{"test1"};
 
 constexpr auto ROUNDS{200};
 
@@ -85,7 +85,7 @@ inline void comparePasswordRecords(const yapet::PasswordRecord &actual,
 }
 
 inline void testFile(const char *filename) {
-    auto password{yapet::toSecureArray("test1")};
+    auto password{yapet::toSecureArray(TEST_PASSWORD)};
     std::shared_ptr<yapet::AbstractCryptoFactory> factory{
         new yapet::BlowfishFactory{password}};
 

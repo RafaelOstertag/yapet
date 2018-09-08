@@ -19,7 +19,8 @@ constexpr std::uint8_t expected_ivec[] = {0xb2, 0x19, 0x22, 0x33,
                                           0x6d, 0x96, 0x15, 0x85};
 
 constexpr char password[] = "JustATestPasswordForKeepingSecret";
-auto passwordLength = std::strlen(password);
+auto passwordLength =
+    static_cast<yapet::SecureArray::size_type>(std::strlen(password));
 
 class Key448Test : public CppUnit::TestFixture {
    private:
