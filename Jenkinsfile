@@ -4,6 +4,12 @@ pipeline {
     options {
         ansiColor('xterm')
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+        timeout(time: 1, unit: 'HOURS')
+        timestamps()
+    }
+
+    triggers {
+        pollSCM '@hourly'
     }
 
     stages {
