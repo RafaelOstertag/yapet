@@ -105,7 +105,7 @@ const std::uint8_t* SecureArray::operator*() const { return _array; }
 std::uint8_t* SecureArray::operator*() { return _array; }
 
 std::uint8_t SecureArray::operator[](size_type index) const {
-    if (index >= _size) {
+    if (index >= _size || index < 0) {
         throw std::out_of_range{_("Index out of range")};
     }
 
@@ -143,7 +143,7 @@ SecureArray& SecureArray::operator<<(const SecureArray& source) {
 }
 
 SecureArray yapet::toSecureArray(const char* str) {
-    auto len = std::strlen(str);
+    auto len = std::strlen(str) + 1;
     if (len == 0) {
         return SecureArray{};
     }
@@ -157,17 +157,7 @@ SecureArray yapet::toSecureArray(const char* str) {
 }
 
 SecureArray yapet::toSecureArray(const std::string& str) {
-    auto len = str.length();
-    if (len == 0) {
-        return SecureArray{};
-    }
-
-    auto castedSize = castToSizeTypeOrThrow(len);
-
-    SecureArray result{castedSize};
-    std::memcpy(*result, str.c_str(), len);
-
-    return result;
+    return toSecureArray(str.c_str());
 }
 
 SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {

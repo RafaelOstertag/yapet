@@ -19,8 +19,17 @@ class PasswordListItem {
     PasswordListItem(PasswordListItem&& item);
     PasswordListItem& operator=(PasswordListItem&& item);
 
+    bool operator==(const PasswordListItem& other) const;
+    bool operator!=(const PasswordListItem& other) const {
+        return !operator==(other);
+    }
+
     const std::uint8_t* name() const { return *_name; }
+    SecureArray::size_type nameSize() const { return _name.size(); }
     const SecureArray& encryptedRecord() const { return _encryptedRecord; }
 };
+
+bool operator<(const PasswordListItem& a, const PasswordListItem& b);
+
 }  // namespace yapet
 #endif

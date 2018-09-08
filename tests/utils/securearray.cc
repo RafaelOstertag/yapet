@@ -65,15 +65,15 @@ class SecureArrayTest : public CppUnit::TestFixture {
     void testEmptyArray() {
         yapet::SecureArray *ptr{new yapet::SecureArray()};
 
-        CPPUNIT_ASSERT_EQUAL(0u, ptr->size());
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, ptr->operator*());
+        CPPUNIT_ASSERT(ptr->size() == 0);
+        CPPUNIT_ASSERT(ptr->operator*() == nullptr);
 
         delete ptr;
 
         ptr = new yapet::SecureArray(0);
 
-        CPPUNIT_ASSERT_EQUAL(0u, ptr->size());
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, ptr->operator*());
+        CPPUNIT_ASSERT(ptr->size() == 0);
+        CPPUNIT_ASSERT(ptr->operator*() == nullptr);
 
         delete ptr;
     }
@@ -88,7 +88,9 @@ class SecureArrayTest : public CppUnit::TestFixture {
         std::uint8_t *array = **subject;
         delete subject;
         for (auto i = 0; i < 3; i++) {
-            CPPUNIT_ASSERT_EQUAL((std::uint8_t)0, array[i]);
+            // it is not guaranteed that upon free the memory retains it
+            // content, i.e. zeros.
+            CPPUNIT_ASSERT(array[i] != 42);
         }
     }
 
@@ -98,8 +100,8 @@ class SecureArrayTest : public CppUnit::TestFixture {
 
         yapet::SecureArray b = yapet::SecureArray{a};
 
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **a);
-        CPPUNIT_ASSERT_EQUAL(**a, **b);
+        CPPUNIT_ASSERT(**a == 42);
+        CPPUNIT_ASSERT(**a == **b);
 
         CPPUNIT_ASSERT(*a != *b);
     }
@@ -113,7 +115,7 @@ class SecureArrayTest : public CppUnit::TestFixture {
 
         a = b;
 
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **a);
+        CPPUNIT_ASSERT(**a == 42);
         CPPUNIT_ASSERT(*a != *b);
     }
 
@@ -124,7 +126,7 @@ class SecureArrayTest : public CppUnit::TestFixture {
         yapet::SecureArray b{std::move(a)};
 
         CPPUNIT_ASSERT(nullptr == *a);
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **b);
+        CPPUNIT_ASSERT(**b == 42);
 
         CPPUNIT_ASSERT(a.size() == 0);
         CPPUNIT_ASSERT(b.size() == 1);
@@ -145,9 +147,9 @@ class SecureArrayTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(a.size() == 0);
         CPPUNIT_ASSERT(b.size() == 1);
 
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t)42, **b);
-        CPPUNIT_ASSERT_EQUAL(ptrAArray, ptrBArray);
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t)0, *ptrAArray);
+        CPPUNIT_ASSERT(**b == 42);
+        CPPUNIT_ASSERT(ptrAArray == ptrBArray);
+        CPPUNIT_ASSERT(*ptrAArray == 0);
     }
 
     void testEquality() {
@@ -184,7 +186,7 @@ class SecureArrayTest : public CppUnit::TestFixture {
 
         for (auto i = 0; i < 3; i++) {
             (*secureArray)[i] = i;
-            CPPUNIT_ASSERT_EQUAL((std::uint8_t)i, secureArray[i]);
+            CPPUNIT_ASSERT(secureArray[i] == i);
         }
     }
 
@@ -192,14 +194,14 @@ class SecureArrayTest : public CppUnit::TestFixture {
         yapet::SecureArray empty;
         yapet::SecureArray nonEmpty{1};
         nonEmpty = empty;
-        CPPUNIT_ASSERT_EQUAL(0u, nonEmpty.size());
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *nonEmpty);
+        CPPUNIT_ASSERT(nonEmpty.size() == 0);
+        CPPUNIT_ASSERT(*nonEmpty == nullptr);
 
         yapet::SecureArray nonEmpty2{2};
         (*nonEmpty2)[0] = 'A';
         (*nonEmpty2)[1] = 'B';
         empty = nonEmpty2;
-        CPPUNIT_ASSERT_EQUAL(2u, empty.size());
+        CPPUNIT_ASSERT(empty.size() == 2);
         CPPUNIT_ASSERT((*empty)[0] == (std::uint8_t)'A');
         CPPUNIT_ASSERT((*empty)[1] == (std::uint8_t)'B');
     }
@@ -207,14 +209,14 @@ class SecureArrayTest : public CppUnit::TestFixture {
     void testEmptyCopy() {
         yapet::SecureArray empty;
         yapet::SecureArray empty2{empty};
-        CPPUNIT_ASSERT_EQUAL(0u, empty2.size());
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *empty2);
+        CPPUNIT_ASSERT(empty2.size() == 0);
+        CPPUNIT_ASSERT(*empty2 == nullptr);
 
         yapet::SecureArray nonEmpty{2};
         (*nonEmpty)[0] = 'A';
         (*nonEmpty)[1] = 'B';
         yapet::SecureArray empty3{nonEmpty};
-        CPPUNIT_ASSERT_EQUAL(2u, empty3.size());
+        CPPUNIT_ASSERT(empty3.size() == 2);
         CPPUNIT_ASSERT((*empty3)[0] == (std::uint8_t)'A');
         CPPUNIT_ASSERT((*empty3)[1] == (std::uint8_t)'B');
     }
@@ -222,14 +224,14 @@ class SecureArrayTest : public CppUnit::TestFixture {
     void testEmptyMove() {
         yapet::SecureArray empty;
         yapet::SecureArray empty2{std::move(empty)};
-        CPPUNIT_ASSERT_EQUAL(0u, empty2.size());
-        CPPUNIT_ASSERT_EQUAL((std::uint8_t *)nullptr, *empty2);
+        CPPUNIT_ASSERT(empty2.size() == 0);
+        CPPUNIT_ASSERT(*empty2 == nullptr);
 
         yapet::SecureArray nonEmpty{2};
         (*nonEmpty)[0] = 'A';
         (*nonEmpty)[1] = 'B';
         yapet::SecureArray empty3{std::move(nonEmpty)};
-        CPPUNIT_ASSERT_EQUAL(2u, empty3.size());
+        CPPUNIT_ASSERT(empty3.size() == 2);
         CPPUNIT_ASSERT((*empty3)[0] == (std::uint8_t)'A');
         CPPUNIT_ASSERT((*empty3)[1] == (std::uint8_t)'B');
     }
@@ -252,14 +254,18 @@ class SecureArrayTest : public CppUnit::TestFixture {
         yapet::SecureArray b = yapet::toSecureArray(std::string{"ABCDE"});
 
         CPPUNIT_ASSERT(a == b);
+        CPPUNIT_ASSERT(a.size() == 6);
+        CPPUNIT_ASSERT(b.size() == 6);
     }
 
     void testToSecureArrayEmpty() {
         yapet::SecureArray a = yapet::toSecureArray("");
-        CPPUNIT_ASSERT(a == yapet::SecureArray{});
+        yapet::SecureArray expectedEmptySecureArrayFromCstring{1};
+        **expectedEmptySecureArrayFromCstring = '\0';
+        CPPUNIT_ASSERT(a == expectedEmptySecureArrayFromCstring);
 
         yapet::SecureArray b = yapet::toSecureArray(std::string{""});
-        CPPUNIT_ASSERT(b == yapet::SecureArray{});
+        CPPUNIT_ASSERT(b == expectedEmptySecureArrayFromCstring);
     }
 
     void testCopyOperator() {

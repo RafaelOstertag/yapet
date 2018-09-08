@@ -179,9 +179,9 @@ void MainWindow::window_show_handler(YACURS::Event& e) {
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (evt.data() == this) {
-        if (!file_load_on_show.empty())
+        if (!_fileToLoadOnShow.empty())
             // does aptoptosis, no need to keep the pointer
-            (new LoadFileCmdLine(*this, file_load_on_show))->run();
+            (new LoadFileCmdLine(*this, _fileToLoadOnShow))->run();
     }
 }
 
@@ -338,10 +338,10 @@ void MainWindow::listbox_enter_handler(YACURS::Event& e) {
 //
 // Public
 //
-MainWindow::MainWindow(const std::string& _file_load_on_show)
+MainWindow::MainWindow(const std::string& fileToLoadOnShow)
     : Window{YACURS::Margin{1, 0, 1, 0}},
       recordlist{new YACURS::ListBox<yapet::PasswordListItem>()},
-      file_load_on_show{_file_load_on_show},
+      _fileToLoadOnShow{fileToLoadOnShow},
       helpdialog{nullptr},
       infodialog{nullptr},
       confirmdelete{nullptr},
@@ -351,9 +351,8 @@ MainWindow::MainWindow(const std::string& _file_load_on_show)
       searchdialog{nullptr},
       pwgendialog{nullptr},
       finder{nullptr},
-      record_index{-1},
+      record_index{NO_INDEX},
       last_search_index{0},
-      _currentFile{_file_load_on_show},
       _yapetFile{nullptr},
       _cryptoFactory{nullptr} {
     Window::widget(recordlist);
@@ -473,8 +472,6 @@ void MainWindow::load_password_file(
         std::free(tmp);
 #endif
         YACURS::Curses::set_terminal_title(ttl);
-
-        _currentFile = filename;
     } catch (std::exception& e) {
         recordlist->clear();
 
@@ -499,26 +496,25 @@ void MainWindow::show_password_record(bool selected) {
                (YACURS::ListBox<yapet::PasswordListItem>::lsz_t) - 1);
         record_index = recordlist->selected_index();
         passwordrecord =
-            new PasswordRecord(YAPET::Globals::key, &(recordlist->selected()));
+            new PasswordRecord(_cryptoFactory, recordlist->selected());
     } else {
-        passwordrecord = new PasswordRecord(YAPET::Globals::key);
+        passwordrecord = new PasswordRecord(_cryptoFactory);
     }
 
     passwordrecord->show();
 }
 
 bool MainWindow::save_records() {
-    if (YAPET::Globals::file == 0) {
+    if (!_yapetFile) {
         // Do nothing and return
         return true;
     }
 
     try {
         if (YAPET::Globals::records_changed) {
-            YAPET::Globals::file->save(recordlist->list());
+            _yapetFile->save(recordlist->list());
             std::string msg(_("Saved file: "));
-            YACURS::Curses::statusbar()->set(
-                msg + YAPET::Globals::file->getFilename());
+            YACURS::Curses::statusbar()->set(msg + _yapetFile->getFilename());
             YAPET::Globals::records_changed = false;
         } else {
             YACURS::Curses::statusbar()->set(_("No changes need to be saved"));
@@ -543,21 +539,13 @@ void MainWindow::change_password(
         throw std::invalid_argument(_("New key must not be 0"));
 
     try {
-        _yapetFile->_cryptoFactory = cryptoFactory;
-        _yapetFile = std::unique_ptr<YAPET::File>{
-            new YAPET::File{_cryptoFactory, filename, create,
-                            YAPET::Globals::config.filesecurity}};
-        YAPET::Globals::file->setNewKey(*YAPET::Globals::key, *nk);
-        // Replace existing key
-        delete YAPET::Globals::key;
-        YAPET::Globals::key = nk;
-
+        _cryptoFactory = newCryptoFactory;
+        _yapetFile->setNewKey(_cryptoFactory);
         // Reread the records
-        recordlist->set(YAPET::Globals::file->read(*YAPET::Globals::key));
+        recordlist->set(_yapetFile->read());
 
         YACURS::Curses::statusbar()->set(
-            std::string(_("Changed password on ")) +
-            YAPET::Globals::file->getFilename());
+            std::string(_("Changed password on ")) + _yapetFile->getFilename());
     } catch (std::exception& e) {
         assert(errormsgdialog == 0);
 
@@ -573,9 +561,7 @@ void MainWindow::delete_selected() {
 
     if (recordlist->empty()) return;
 
-    if (YAPET::Globals::key == 0 || YAPET::Globals::file == 0) return;
-
-    assert(record_index == (YACURS::ListBox<YAPET::PartDec>::lsz_t) - 1);
+    assert(record_index == NO_INDEX);
     record_index = recordlist->selected_index();
     confirmdelete = new YACURS::MessageBox(
         _("Confirm Deletion"), _("Do you want to delete the selected record?"),
@@ -635,9 +621,7 @@ bool MainWindow::sort_asc() const {
 void MainWindow::search_first() {
     assert(searchdialog == 0);
 
-    if (YAPET::Globals::file == 0 || YAPET::Globals::key == 0 ||
-        recordlist->empty())
-        return;  // there is nothing to search
+    if (recordlist->empty()) return;  // there is nothing to search
 
 #if defined(HAVE_STRCASESTR) || defined(HAVE_TOLOWER) || defined(HAVE_TOWLOWER)
     searchdialog = new YACURS::InputBox(_("Search"), _("Enter search term"));
@@ -649,9 +633,7 @@ void MainWindow::search_first() {
 }
 
 void MainWindow::search_next() {
-    if (YAPET::Globals::file == 0 || YAPET::Globals::key == 0 ||
-        recordlist->empty())
-        return;  // there is nothing to search
+    if (recordlist->empty()) return;  // there is nothing to search
 
     if (finder == 0) {
         YACURS::Curses::statusbar()->set(
@@ -673,4 +655,12 @@ void MainWindow::search_next() {
             std::string(_("Next match for ")) +
             static_cast<const std::string&>(*finder));
     }
+}
+
+std::string MainWindow::currentFilename() const {
+    if (!_yapetFile) {
+        return std::string{};
+    }
+
+    return _yapetFile->getFilename();
 }

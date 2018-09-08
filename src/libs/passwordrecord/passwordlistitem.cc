@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstring>
 
 #include "passwordlistitem.hh"
@@ -41,4 +42,18 @@ PasswordListItem& PasswordListItem::operator=(PasswordListItem&& item) {
     _encryptedRecord = std::move(item._encryptedRecord);
 
     return *this;
+}
+
+bool PasswordListItem::operator==(const PasswordListItem& other) const {
+    return _name == other._name;
+}
+
+bool yapet::operator<(const PasswordListItem& a, const PasswordListItem& b) {
+    const char* aName = reinterpret_cast<const char*>(a.name());
+    const char* bName = reinterpret_cast<const char*>(b.name());
+
+    auto result{
+        std::strncmp(aName, bName, std::min(a.nameSize(), b.nameSize()))};
+
+    return result < 0;
 }

@@ -34,6 +34,7 @@
 #include <yacurs.h>
 
 #include <cstring>
+#include <limits>
 #include <string>
 
 #include "file.h"
@@ -52,7 +53,7 @@ class Finder;
 class MainWindow : public YACURS::Window {
    private:
     YACURS::ListBox<yapet::PasswordListItem>* recordlist;
-    std::string file_load_on_show;
+    std::string _fileToLoadOnShow;
     HelpDialog* helpdialog;
     InfoDialog* infodialog;
     YACURS::MessageBox* confirmdelete;
@@ -66,10 +67,11 @@ class MainWindow : public YACURS::Window {
     // to store the index, so that it can be reselect in case of a
     // window resize.
     YACURS::ListBox<yapet::PasswordListItem>::lsz_t record_index;
+    constexpr static auto NO_INDEX{std::numeric_limits<
+        YACURS::ListBox<yapet::PasswordListItem>::lsz_t>::max()};
     // Used for search. Keeps the position of the last succesfull
     // match.
     YACURS::ListBox<yapet::PasswordListItem>::lsz_t last_search_index;
-    std::string _currentFile;
     std::unique_ptr<YAPET::File> _yapetFile;
     std::shared_ptr<yapet::AbstractCryptoFactory> _cryptoFactory;
 
@@ -143,7 +145,7 @@ class MainWindow : public YACURS::Window {
 
     void search_next();
 
-    std::string currentFilename() const { return _currentFile; }
+    std::string currentFilename() const;
 };
 
 #endif  // _MAINWINDOW_H

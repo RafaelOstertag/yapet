@@ -12,9 +12,9 @@ constexpr auto NAME_CHAR{"name"};
 // Length includes '\0'
 constexpr auto NAME_LEN{5};
 
+constexpr auto NAME_CHAR_2{"name 2"};
+
 constexpr auto ENCRYPTED{"encrypted"};
-// Length includes '\0'
-constexpr auto ENCRYPTED_LEN{10};
 
 class PasswordListItemTest : public CppUnit::TestFixture {
    public:
@@ -30,6 +30,10 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<PasswordListItemTest>(
             "Move ctor and assignment", &PasswordListItemTest::moveCtor));
 
+        suiteOfTests->addTest(new CppUnit::TestCaller<PasswordListItemTest>(
+            "Should properly use comperators",
+            &PasswordListItemTest::comperators));
+
         return suiteOfTests;
     }
 
@@ -41,6 +45,8 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(
             std::memcmp(passwordListItem.name(), NAME_CHAR, NAME_LEN) == 0);
         CPPUNIT_ASSERT(encrypted == passwordListItem.encryptedRecord());
+
+        CPPUNIT_ASSERT(passwordListItem.nameSize() == NAME_LEN);
     }
 
     void copyCtor() {
@@ -89,6 +95,25 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(passwordListItem.encryptedRecord() !=
                        moved2.encryptedRecord());
         CPPUNIT_ASSERT(moved2.encryptedRecord() == encrypted);
+    }
+
+    void comperators() {
+        auto encrypted{yapet::toSecureArray(ENCRYPTED)};
+        yapet::PasswordListItem passwordListItem1{NAME_CHAR, encrypted};
+        yapet::PasswordListItem passwordListItem2{NAME_CHAR, encrypted};
+        yapet::PasswordListItem passwordListItem3{NAME_CHAR_2, encrypted};
+
+        CPPUNIT_ASSERT(passwordListItem1 == passwordListItem1);
+        CPPUNIT_ASSERT(passwordListItem1 == passwordListItem2);
+
+        CPPUNIT_ASSERT(!(passwordListItem1 != passwordListItem1));
+        CPPUNIT_ASSERT(!(passwordListItem1 != passwordListItem2));
+
+        CPPUNIT_ASSERT(passwordListItem1 != passwordListItem3);
+        CPPUNIT_ASSERT(!(passwordListItem1 == passwordListItem3));
+
+        CPPUNIT_ASSERT(!(passwordListItem1 < passwordListItem2));
+        CPPUNIT_ASSERT(passwordListItem1 < passwordListItem3);
     }
 };
 
