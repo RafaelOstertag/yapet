@@ -144,7 +144,7 @@ bool PasswordRecord::on_close() {
 PasswordRecord::PasswordRecord(
     std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory,
     const yapet::PasswordListItem& passwordListItem)
-    : PasswordRecord{_cryptoFactory} {
+    : PasswordRecord{cryptoFactory} {
     _newrecord = false;
     try {
         auto crypto{_cryptoFactory->crypto()};
@@ -191,8 +191,8 @@ PasswordRecord::PasswordRecord(
       errordialog{nullptr},
       confirmdialog{nullptr},
       pwgendialog{nullptr},
-      _passwordListItem{nullptr},
       _cryptoFactory{cryptoFactory},
+      _passwordListItem{nullptr},
       _newrecord{true},
       _readonly{false},
       _password_hidden{false},

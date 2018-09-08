@@ -107,8 +107,7 @@ class PasswordRecord : public YACURS::Dialog {
      */
     PasswordRecord(std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory,
                    const yapet::PasswordListItem& passwordListItem);
-    PasswordRecord(
-        std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory);
+    PasswordRecord(std::shared_ptr<yapet::AbstractCryptoFactory>& cryptoFactory);
     ~PasswordRecord();
 
     PasswordRecord(const PasswordRecord&) = delete;
