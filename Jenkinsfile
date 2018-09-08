@@ -174,9 +174,9 @@ pipeline {
 
                         stage("(SOL) Configure") {
                             steps {
-                                withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkg-config']) {
+                                withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkgconfig']) {
                                     dir("obj") {
-                                        sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
+                                        sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic' LDFLAGS='-R/usr/local/lib'"
                                     }
                                 }
                             }
