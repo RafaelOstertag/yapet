@@ -40,7 +40,6 @@
 #include <iostream>
 
 #include "blowfishfactory.hh"
-#include "crypt.h"
 #include "csvexport.h"
 #include "file.h"
 #include "passwordrecord.hh"

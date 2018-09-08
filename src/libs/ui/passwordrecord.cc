@@ -22,7 +22,6 @@
 #include "config.h"
 #endif
 
-#include "crypt.h"
 #include "globals.h"
 #include "intl.h"
 #include "passwordrecord.h"
