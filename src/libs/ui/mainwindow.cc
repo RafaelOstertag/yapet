@@ -48,7 +48,8 @@ class Finder {
                 _("Finder(): Unable to convert to wide character string"));
 
         wchar_t* wstr = new wchar_t[reqsize + 1];
-        if (wstr == 0) throw std::runtime_error(_("Finder(): out of memory"));
+        if (wstr == nullptr)
+            throw std::runtime_error(_("Finder(): out of memory"));
         if (std::mbstowcs(wstr, mbs.c_str(), reqsize + 1) != reqsize) {
             delete[] wstr;
             throw std::runtime_error(
@@ -65,7 +66,7 @@ class Finder {
         }
 
         char* str = new char[reqsize + 1];
-        if (str == 0) {
+        if (str == nullptr) {
             delete[] wstr;
             throw std::runtime_error(_("Finder(): out of memory"));
         }
@@ -190,25 +191,25 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
     YACURS::EventEx<YACURS::WindowBase*>& evt =
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
-    if (helpdialog != 0 && evt.data() == helpdialog) {
+    if (helpdialog != nullptr && evt.data() == helpdialog) {
         delete helpdialog;
-        helpdialog = 0;
+        helpdialog = nullptr;
         return;
     }
 
-    if (infodialog != 0 && evt.data() == infodialog) {
+    if (infodialog != nullptr && evt.data() == infodialog) {
         delete infodialog;
-        infodialog = 0;
+        infodialog = nullptr;
         return;
     }
 
-    if (pwgendialog != 0 && evt.data() == pwgendialog) {
+    if (pwgendialog != nullptr && evt.data() == pwgendialog) {
         delete pwgendialog;
-        pwgendialog = 0;
+        pwgendialog = nullptr;
         return;
     }
 
-    if (passwordrecord != 0 && evt.data() == passwordrecord) {
+    if (passwordrecord != nullptr && evt.data() == passwordrecord) {
         if (passwordrecord->dialog_state() == YACURS::DIALOG_OK) {
             if (passwordrecord->changed()) {
                 if (passwordrecord->newrecord()) {
@@ -235,11 +236,11 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         record_index = -1;
 
         delete passwordrecord;
-        passwordrecord = 0;
+        passwordrecord = nullptr;
         return;
     }
 
-    if (confirmdelete != 0 && evt.data() == confirmdelete) {
+    if (confirmdelete != nullptr && evt.data() == confirmdelete) {
         if (confirmdelete->dialog_state() == YACURS::DIALOG_YES) {
             assert(record_index !=
                    (YACURS::ListBox<yapet::PasswordListItem>::lsz_t) - 1);
@@ -257,11 +258,11 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         record_index = -1;
 
         delete confirmdelete;
-        confirmdelete = 0;
+        confirmdelete = nullptr;
         return;
     }
 
-    if (confirmquit != 0 && evt.data() == confirmquit) {
+    if (confirmquit != nullptr && evt.data() == confirmquit) {
         switch (confirmquit->dialog_state()) {
             case YACURS::DIALOG_YES:
                 // do not continue in case there were errors during save
@@ -280,17 +281,17 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         }
 
         delete confirmquit;
-        confirmquit = 0;
+        confirmquit = nullptr;
         return;
     }
 
-    if (searchdialog != 0 && evt.data() == searchdialog) {
+    if (searchdialog != nullptr && evt.data() == searchdialog) {
         if (searchdialog->dialog_state() == YACURS::DIALOG_OK) {
             // Make sure we don't search for an empty string.
             if (searchdialog->input().empty()) {
                 YACURS::Curses::statusbar()->set(_("Empty search string"));
             } else {
-                if (finder != 0) delete finder;
+                if (finder != nullptr) delete finder;
 
                 finder = new INTERNAL::Finder(searchdialog->input());
 
@@ -304,13 +305,13 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         }
 
         delete searchdialog;
-        searchdialog = 0;
+        searchdialog = nullptr;
         return;
     }
 
-    if (errormsgdialog != 0 && evt.data() == errormsgdialog) {
+    if (errormsgdialog != nullptr && evt.data() == errormsgdialog) {
         delete errormsgdialog;
-        errormsgdialog = 0;
+        errormsgdialog = nullptr;
         return;
     }
 }
@@ -325,7 +326,7 @@ void MainWindow::listbox_enter_handler(YACURS::Event& e) {
                 YACURS::EventEx<YACURS::ListBox<yapet::PasswordListItem>*>&>(e);
         if (evt.data() != recordlist) return;
 
-        assert(passwordrecord == 0);
+        assert(passwordrecord == nullptr);
         show_password_record(true);
         return;
     }
@@ -415,7 +416,7 @@ MainWindow::MainWindow(const std::string& fileToLoadOnShow)
 }
 
 MainWindow::~MainWindow() {
-    assert(recordlist != 0);
+    assert(recordlist != nullptr);
     delete recordlist;
 
     if (helpdialog) delete helpdialog;
@@ -475,7 +476,7 @@ void MainWindow::load_password_file(
     } catch (std::exception& e) {
         recordlist->clear();
 
-        assert(errormsgdialog == 0);
+        assert(errormsgdialog == nullptr);
 
         errormsgdialog =
             new YACURS::MessageBox2(_("Error"), _("Error while reading file:"),
@@ -485,7 +486,7 @@ void MainWindow::load_password_file(
 }
 
 void MainWindow::show_password_record(bool selected) {
-    assert(passwordrecord == 0);
+    assert(passwordrecord == nullptr);
 
     if (!_yapetFile) return;
 
@@ -521,7 +522,7 @@ bool MainWindow::save_records() {
         }
         return true;
     } catch (std::exception& e) {
-        assert(errormsgdialog == 0);
+        assert(errormsgdialog == nullptr);
 
         errormsgdialog =
             new YACURS::MessageBox2(_("Error"), _("Error while saving file:"),
@@ -536,7 +537,7 @@ void MainWindow::change_password(
     if (!_cryptoFactory) return;
 
     if (!newCryptoFactory)
-        throw std::invalid_argument(_("New key must not be 0"));
+        throw std::invalid_argument(_("New key must not be nullptr"));
 
     try {
         _cryptoFactory = newCryptoFactory;
@@ -547,7 +548,7 @@ void MainWindow::change_password(
         YACURS::Curses::statusbar()->set(
             std::string(_("Changed password on ")) + _yapetFile->getFilename());
     } catch (std::exception& e) {
-        assert(errormsgdialog == 0);
+        assert(errormsgdialog == nullptr);
 
         errormsgdialog = new YACURS::MessageBox2(
             _("Error"), _("Error while changing password:"), e.what(),
@@ -557,7 +558,7 @@ void MainWindow::change_password(
 }
 
 void MainWindow::delete_selected() {
-    assert(confirmdelete == 0);
+    assert(confirmdelete == nullptr);
 
     if (recordlist->empty()) return;
 
@@ -571,21 +572,21 @@ void MainWindow::delete_selected() {
 }
 
 void MainWindow::show_help() {
-    assert(helpdialog == 0);
+    assert(helpdialog == nullptr);
 
     helpdialog = new HelpDialog;
     helpdialog->show();
 }
 
 void MainWindow::show_info() {
-    assert(infodialog == 0);
+    assert(infodialog == nullptr);
 
     infodialog = new InfoDialog(*this, recordlist->list().size());
     infodialog->show();
 }
 
 void MainWindow::show_pwgen() {
-    assert(pwgendialog == 0);
+    assert(pwgendialog == nullptr);
 
     pwgendialog = new PwGenDialog;
     pwgendialog->show();
@@ -593,7 +594,7 @@ void MainWindow::show_pwgen() {
 
 void MainWindow::quit() {
     if (YAPET::Globals::records_changed) {
-        assert(confirmquit == 0);
+        assert(confirmquit == nullptr);
         confirmquit = new YACURS::MessageBox2(
             _("Confirmation"), _("There are unsaved changes."),
             _("Do you want to save changes, before leaving?"),
@@ -619,7 +620,7 @@ bool MainWindow::sort_asc() const {
 }
 
 void MainWindow::search_first() {
-    assert(searchdialog == 0);
+    assert(searchdialog == nullptr);
 
     if (recordlist->empty()) return;  // there is nothing to search
 
@@ -635,7 +636,7 @@ void MainWindow::search_first() {
 void MainWindow::search_next() {
     if (recordlist->empty()) return;  // there is nothing to search
 
-    if (finder == 0) {
+    if (finder == nullptr) {
         YACURS::Curses::statusbar()->set(
             _("No previous search. Press '/' to search."));
         return;
@@ -649,7 +650,7 @@ void MainWindow::search_next() {
             std::string(_(" found")));
         last_search_index = 0;
         delete finder;
-        finder = 0;
+        finder = nullptr;
     } else {
         YACURS::Curses::statusbar()->set(
             std::string(_("Next match for ")) +
