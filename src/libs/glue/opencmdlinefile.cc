@@ -48,7 +48,7 @@ void LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
             YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
 
         delete promptpassword;
-        promptpassword = 0;
+        promptpassword = nullptr;
         evt.stop(true);
     }
     return;
@@ -62,15 +62,17 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
 
     if (evt.data() == createfile) {
         if (createfile->dialog_state() == YACURS::DIALOG_YES) {
-            assert(newpassworddia == 0);
+            assert(newpassworddia == nullptr);
+            _createNewFile = true;
             newpassworddia = new NewPasswordDialog(_file);
             newpassworddia->show();
         } else {
+            _createNewFile = false;
             YACURS::EventQueue::submit(
                 YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
         }
         delete createfile;
-        createfile = 0;
+        createfile = nullptr;
     }
 
     if (evt.data() == newpassworddia) {
@@ -87,12 +89,12 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
                 std::shared_ptr<yapet::AbstractCryptoFactory> factory{
                     new yapet::BlowfishFactory{password}};
                 mainwindow.load_password_file(YAPET::Globals::config.petfile,
-                                              factory, false);
+                                              factory, _createNewFile);
 
                 YACURS::EventQueue::submit(YACURS::EventEx<LoadFileCmdLine*>(
                     YAPET::EVT_APOPTOSIS, this));
             } catch (std::exception& ex) {
-                assert(generror == 0);
+                assert(generror == nullptr);
                 generror = new YACURS::MessageBox2(_("Error"),
                                                    _("Got following error"),
                                                    ex.what(), YACURS::OK_ONLY);
@@ -110,14 +112,14 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
         // user to close it.
 
         delete newpassworddia;
-        newpassworddia = 0;
+        newpassworddia = nullptr;
 
         return;
     }
 
     if (evt.data() == generror) {
         delete generror;
-        generror = 0;
+        generror = nullptr;
         YACURS::EventQueue::submit(
             YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
     }
@@ -128,12 +130,13 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
 //
 
 LoadFileCmdLine::LoadFileCmdLine(MainWindow& mw, const std::string& file)
-    : mainwindow(mw),
-      promptpassword(0),
-      newpassworddia(0),
-      createfile(0),
-      errormsg(0),
-      generror(0),
+    : mainwindow{mw},
+      promptpassword{nullptr},
+      newpassworddia{nullptr},
+      createfile{nullptr},
+      errormsg{nullptr},
+      generror{nullptr},
+      _createNewFile{false},
       _file(file) {
     YACURS::EventQueue::connect_event(
         YACURS::EventConnectorMethod1<LoadFileCmdLine>(
@@ -164,7 +167,7 @@ LoadFileCmdLine::~LoadFileCmdLine() {
 
 void LoadFileCmdLine::run() {
     if (::access(_file.c_str(), F_OK | R_OK) == -1) {
-        assert(createfile == 0);
+        assert(createfile == nullptr);
         createfile = new YACURS::MessageBox3(
             _("Create new File?"), _("The file"), _file,
             _("does not exist. Create?"), YACURS::YESNO);

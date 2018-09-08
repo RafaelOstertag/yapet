@@ -51,6 +51,7 @@ class LoadFileCmdLine {
     YACURS::MessageBox3* createfile;
     YACURS::MessageBox2* errormsg;
     YACURS::MessageBox2* generror;
+    bool _createNewFile;
     std::string _file;
 
     void apoptosis_handler(YACURS::Event& e);
