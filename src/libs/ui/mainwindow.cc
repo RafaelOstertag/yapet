@@ -580,7 +580,7 @@ void MainWindow::show_help() {
 void MainWindow::show_info() {
     assert(infodialog == 0);
 
-    infodialog = new InfoDialog(recordlist->list().size());
+    infodialog = new InfoDialog(*this, recordlist->list().size());
     infodialog->show();
 }
 
@@ -663,4 +663,44 @@ std::string MainWindow::currentFilename() const {
     }
 
     return _yapetFile->getFilename();
+}
+
+std::string MainWindow::fileVersion() const {
+    if (!_yapetFile) {
+        return std::string{};
+    }
+
+    auto fileVersion{_yapetFile->getFileVersion()};
+
+    auto stringSize{fileVersion.size() + 1};
+
+    char* buffer{new char[stringSize]};
+    std::memcpy(buffer, *fileVersion, fileVersion.size());
+    buffer[stringSize - 1] = '\0';
+
+    std::string returnValue{buffer};
+
+    delete[] buffer;
+    return returnValue;
+}
+
+std::int64_t MainWindow::passwordLastChanged() const {
+    if (!_yapetFile) {
+        return -1;
+    }
+    return _yapetFile->getMasterPWSet();
+}
+
+bool MainWindow::matchPasswordWithCurrent(
+    const yapet::SecureArray& password) const {
+    if (!_cryptoFactory) {
+        return false;
+    }
+
+    auto temporayCryptoFactory{_cryptoFactory->newFactory(password)};
+
+    auto currentKey{_cryptoFactory->key()};
+    auto keyFromPassword{temporayCryptoFactory->key()};
+
+    return *currentKey == *keyFromPassword;
 }

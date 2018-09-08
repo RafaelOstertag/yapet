@@ -35,7 +35,7 @@ class PasswordDialog : public YACURS::Dialog {
     YACURS::Label* linefn;
 
    public:
-    PasswordDialog(const std::string& fn);
+    PasswordDialog(const std::string& filename);
     PasswordDialog(const PasswordDialog&) = delete;
     PasswordDialog(PasswordDialog&&) = delete;
     PasswordDialog& operator=(const PasswordDialog&) = delete;

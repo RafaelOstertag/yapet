@@ -18,29 +18,30 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "intl.h"
 #include "passworddialog.h"
+#include "intl.h"
 
 #include <cassert>
 
-PasswordDialog::PasswordDialog(std::string& fn) : Dialog(_("Enter Password")),
-						  pwinput1(new YACURS::Input<>()),
-						  line1(new YACURS::Label(_("Enter password for "))),
-						  linefn(new YACURS::Label(fn)) {
-    pwinput1->obscure_input(true); 
+PasswordDialog::PasswordDialog(const std::string& filename)
+    : Dialog(_("Enter Password")),
+      pwinput1(new YACURS::Input<>()),
+      line1(new YACURS::Label(_("Enter password for "))),
+      linefn(new YACURS::Label(filename)) {
+    pwinput1->obscure_input(true);
     widget(pwinput1);
-    
-    widget(linefn); // add label to dialog
-    widget(line1); // add label to dialog
-    
+
+    widget(linefn);  // add label to dialog
+    widget(line1);   // add label to dialog
+
     linefn->color(YACURS::DIALOG);
     line1->color(YACURS::DIALOG);
 }
 
 PasswordDialog::~PasswordDialog() {
-    assert(pwinput1!=0);
-    assert(line1!=0);
-    assert(linefn!=0);
+    assert(pwinput1 != 0);
+    assert(line1 != 0);
+    assert(linefn != 0);
 
     delete pwinput1;
     delete line1;

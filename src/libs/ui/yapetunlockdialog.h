@@ -31,33 +31,35 @@
 #include "mainwindow.h"
 
 class YapetUnlockDialog : public YACURS::UnlockDialog {
-    private:
-	MainWindow& mainwin;
+   private:
+    const MainWindow& _mainWindow;
 
-	YACURS::VPack* __vpack;
-	YACURS::DynLabel* __text1;
-	YACURS::DynLabel* __text2;
-	YACURS::DynLabel* __text3;
-	YACURS::Input<>* __secret_input;
-	YACURS::Button* __quit;
-	YACURS::Spacer* __quit_spacer;
-	
-	YapetUnlockDialog& operator=(const YapetUnlockDialog&);
+    YACURS::VPack* __vpack;
+    YACURS::DynLabel* __text1;
+    YACURS::DynLabel* __text2;
+    YACURS::DynLabel* __text3;
+    YACURS::Input<>* __secret_input;
+    YACURS::Button* __quit;
+    YACURS::Spacer* __quit_spacer;
 
-    protected:
-	void window_show_handler(YACURS::Event& _e);
+   protected:
+    void window_show_handler(YACURS::Event& _e);
 
-	// From dialog
-	void button_press_handler(YACURS::Event& _e);
+    // From dialog
+    void button_press_handler(YACURS::Event& _e);
 
-    public:
-	YapetUnlockDialog(Window& mw);
-	
-	~YapetUnlockDialog();
+   public:
+    YapetUnlockDialog(const YACURS::Window& mainWindow);
+    ~YapetUnlockDialog();
 
-	bool unlock();
-	
-	void clear();
+    YapetUnlockDialog(const YapetUnlockDialog&) = delete;
+    YapetUnlockDialog& operator=(const YapetUnlockDialog&) = delete;
+    YapetUnlockDialog(YapetUnlockDialog&&) = delete;
+    YapetUnlockDialog& operator=(YapetUnlockDialog&&) = delete;
+
+    bool unlock();
+
+    void clear();
 };
 
-#endif // _YAPETUNLOCKDIALOG_H
+#endif  // _YAPETUNLOCKDIALOG_H

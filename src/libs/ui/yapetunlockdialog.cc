@@ -19,71 +19,55 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
-#include "intl.h"
 #include "globals.h"
+#include "intl.h"
 #include "yapetunlockdialog.h"
-
-//
-// Private
-//
-
-YapetUnlockDialog&
-YapetUnlockDialog::operator=(const YapetUnlockDialog&) {
-    throw YACURS::EXCEPTIONS::NotSupported();
-    return *this;
-}
 
 //
 // Protected
 //
-void
-YapetUnlockDialog::window_show_handler(YACURS::Event& _e) {
+void YapetUnlockDialog::window_show_handler(YACURS::Event& _e) {
     assert(_e == YACURS::EVT_WINDOW_SHOW);
 
     YACURS::EventEx<YACURS::WindowBase*>& evt =
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(_e);
 
     if (evt.data() == this) {
-	assert(__text2!=0);
-	assert(YAPET::Globals::file != 0);
-	assert(YAPET::Globals::key != 0);
-	__text2->label(YAPET::Globals::file->getFilename());
+        assert(!_mainWindow.currentFilename().empty());
+        __text2->label(_mainWindow.currentFilename());
 
-	if (__quit)
-	    __quit->enabled(!YAPET::Globals::records_changed);
+        if (__quit) __quit->enabled(!YAPET::Globals::records_changed);
     }
 }
 
-void
-YapetUnlockDialog::button_press_handler(YACURS::Event& _e) {
+void YapetUnlockDialog::button_press_handler(YACURS::Event& _e) {
     UnlockDialog::button_press_handler(_e);
 
-    YACURS::EventEx<YACURS::Button*>& evt = 
-	dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(_e);
+    YACURS::EventEx<YACURS::Button*>& evt =
+        dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(_e);
 
-    if (__quit !=0 && evt.data() == __quit) {
-	assert(!YAPET::Globals::records_changed);
-	YACURS::EventQueue::submit(YACURS::EVT_QUIT);
+    if (__quit != 0 && evt.data() == __quit) {
+        assert(!YAPET::Globals::records_changed);
+        YACURS::EventQueue::submit(YACURS::EVT_QUIT);
     }
 }
 
 //
 // Public
 //
-YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
-    UnlockDialog(_("Unlock Screen")),
-    mainwin(dynamic_cast<MainWindow&>(mw)),
-    __vpack(0),
-    __text1(new YACURS::DynLabel(_("Please enter password for"))),
-    __text2(new YACURS::DynLabel(_("<unknown>"))),
-    __text3(new YACURS::DynLabel(_("in order to unlock screen") )),
-    __secret_input(new YACURS::Input<>),
-    __quit(0),
-    __quit_spacer(0) {
-
+YapetUnlockDialog::YapetUnlockDialog(const YACURS::Window& mainWindow)
+    : UnlockDialog{_("Unlock Screen")},
+      _mainWindow{dynamic_cast<const MainWindow&>(mainWindow)},
+      __vpack{0},
+      __text1{new YACURS::DynLabel{_("Please enter password for")}},
+      __text2{new YACURS::DynLabel{_("<unknown>")}},
+      __text3{new YACURS::DynLabel{_("in order to unlock screen")}},
+      __secret_input{new YACURS::Input<>{}},
+      __quit{0},
+      __quit_spacer{0} {
     __vpack = new YACURS::VPack;
     __vpack->always_dynamic(true);
 
@@ -99,18 +83,18 @@ YapetUnlockDialog::YapetUnlockDialog(Window& mw) :
     __vpack->add_back(__secret_input);
 
     if (YAPET::Globals::config.allow_lock_quit) {
-	__quit_spacer = new YACURS::Spacer;
-	add_button(__quit_spacer);
-	__quit = new YACURS::Button(_("Quit"));
-	add_button(__quit);
+        __quit_spacer = new YACURS::Spacer;
+        add_button(__quit_spacer);
+        __quit = new YACURS::Button(_("Quit"));
+        add_button(__quit);
     }
 
     widget(__vpack);
 
-    YACURS::EventQueue::connect_event(YACURS::EventConnectorMethod1<YapetUnlockDialog>(
-										       YACURS::EVT_WINDOW_SHOW,
-										       this,
-										       &YapetUnlockDialog::window_show_handler) );
+    YACURS::EventQueue::connect_event(
+        YACURS::EventConnectorMethod1<YapetUnlockDialog>(
+            YACURS::EVT_WINDOW_SHOW, this,
+            &YapetUnlockDialog::window_show_handler));
 }
 
 YapetUnlockDialog::~YapetUnlockDialog() {
@@ -120,10 +104,10 @@ YapetUnlockDialog::~YapetUnlockDialog() {
     assert(__text3 != 0);
     assert(__secret_input != 0);
 
-    YACURS::EventQueue::disconnect_event(YACURS::EventConnectorMethod1<YapetUnlockDialog>(
-											  YACURS::EVT_WINDOW_SHOW,
-											  this,
-											  &YapetUnlockDialog::window_show_handler) );
+    YACURS::EventQueue::disconnect_event(
+        YACURS::EventConnectorMethod1<YapetUnlockDialog>(
+            YACURS::EVT_WINDOW_SHOW, this,
+            &YapetUnlockDialog::window_show_handler));
 
     delete __text1;
     delete __text2;
@@ -136,23 +120,13 @@ YapetUnlockDialog::~YapetUnlockDialog() {
     delete __vpack;
 }
 
-bool
-YapetUnlockDialog::unlock() {
-    assert(YAPET::Globals::file != 0);
-    assert(YAPET::Globals::key != 0);
-
+bool YapetUnlockDialog::unlock() {
     if (dialog_state() == YACURS::DIALOG_OK) {
-	YAPET::Key testkey(__secret_input->input().c_str() );
-	if (testkey != *YAPET::Globals::key)
-	    return false;
-	else 
-	    return true;
+        auto suppliedPassword{yapet::toSecureArray(__secret_input->input())};
+        return _mainWindow.matchPasswordWithCurrent(suppliedPassword);
     }
 
     return false;
 }
 
-void
-YapetUnlockDialog::clear() {
-    __secret_input->clear();
-}
+void YapetUnlockDialog::clear() { __secret_input->clear(); }

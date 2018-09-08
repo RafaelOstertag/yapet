@@ -61,9 +61,11 @@ void PasswordRecord::on_ok_button() {
 
     try {
         auto serializedPasswordRecord{passwordRecord.serialize()};
-        auto encryptedPasswordRecord{
-            _crypto->encrypt(serializedPasswordRecord)};
-        _passwordListItem = std::shared_ptr<yapet::PasswordListItem>(new yapet::PasswordListItem(name->input().c_str(), encryptedPasswordRecord);
+        auto crypto{_cryptoFactory->crypto()};
+        auto encryptedPasswordRecord{crypto->encrypt(serializedPasswordRecord)};
+        _passwordListItem = std::shared_ptr<yapet::PasswordListItem>{
+            new yapet::PasswordListItem{name->input().c_str(),
+                                        encryptedPasswordRecord}};
     } catch (YAPET::YAPETException& ex) {
         errordialog = new YACURS::MessageBox(_("Error"), ex.what());
         errordialog->show();

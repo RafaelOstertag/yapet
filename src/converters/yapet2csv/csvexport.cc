@@ -29,23 +29,24 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <unistd.h>
 
-#include <cstring>
 #include <cstdio>
-#include <iostream>
+#include <cstring>
 #include <fstream>
+#include <iostream>
 
+#include "blowfishfactory.hh"
+#include "crypt.h"
 #include "csvexport.h"
-#include <structs.h>
-#include <file.h>
-#include <crypt.h>
+#include "file.h"
+#include "passwordrecord.hh"
+#include "structs.h"
 
-std::string
-CSVExport::prepareline(const std::string& l) const {
+std::string CSVExport::prepareline(const std::string& l) const {
     //
     // see http://tools.ietf.org/html/rfc4180 for an informal
     // definition of csv
@@ -54,20 +55,20 @@ CSVExport::prepareline(const std::string& l) const {
 
     std::string workstr(l);
 
-    std::string::size_type pos=0;
+    std::string::size_type pos = 0;
     // is there a double quote in the string, if so, add another double quote
-    while ( (pos=workstr.find('"',pos)) != std::string::npos ) {
-	workstr.insert(pos, 1, '"');
-	if ((pos+=2) > (workstr.size()-1))
-	    break;
+    while ((pos = workstr.find('"', pos)) != std::string::npos) {
+        workstr.insert(pos, 1, '"');
+        if ((pos += 2) > (workstr.size() - 1)) break;
     }
 
     if (workstr.find(' ') != std::string::npos ||
-	workstr.find('\t') != std::string::npos ||
-	workstr.find(separator) != std::string::npos) {
-	// there is a white space or a separator, thus sourround with double quotes
-	workstr.push_back('"');
-	workstr.insert(static_cast<std::string::size_type>(0),1,'"');
+        workstr.find('\t') != std::string::npos ||
+        workstr.find(separator) != std::string::npos) {
+        // there is a white space or a separator, thus sourround with double
+        // quotes
+        workstr.push_back('"');
+        workstr.insert(static_cast<std::string::size_type>(0), 1, '"');
     }
 
     return workstr;
@@ -86,18 +87,15 @@ CSVExport::prepareline(const std::string& l) const {
  * @param verb enable/disable verbosity. Default \c true.
  */
 
-CSVExport::CSVExport (std::string src,
-		      std::string dst,
-		      char sep,
-		      bool verb,
-		      bool print_header):
-        srcfile (src),
-        dstfile (dst),
-        separator (sep),
-        __verbose (verb),
-	__print_header(print_header) {
-    if (access (srcfile.c_str(), R_OK | F_OK) == -1)
-        throw std::runtime_error ("Cannot access " + srcfile);
+CSVExport::CSVExport(std::string src, std::string dst, char sep, bool verb,
+                     bool print_header)
+    : srcfile(src),
+      dstfile(dst),
+      separator(sep),
+      __verbose(verb),
+      __print_header(print_header) {
+    if (access(srcfile.c_str(), R_OK | F_OK) == -1)
+        throw std::runtime_error("Cannot access " + srcfile);
 }
 
 /**
@@ -105,44 +103,52 @@ CSVExport::CSVExport (std::string src,
  *
  * @param pw the password set on the destination file.
  */
-void
-CSVExport::doexport (const char* pw) {
-    std::ofstream csvfile (dstfile.c_str() );
+void CSVExport::doexport(const char* pw) {
+    std::ofstream csvfile(dstfile.c_str());
 
-    if (!csvfile)
-        throw std::runtime_error ("Cannot open " + dstfile);
+    if (!csvfile) throw std::runtime_error("Cannot open " + dstfile);
 
-    YAPET::Key key (pw);
-    YAPET::Crypt crypt (key);
-    YAPET::File yapetfile (srcfile, key, false);
-    std::list<YAPET::PartDec> list = yapetfile.read (key);
+    auto password{yapet::toSecureArray(pw)};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+        new yapet::BlowfishFactory{password}};
+    auto crypto{cryptoFactory->crypto()};
+    auto yapetFile{new YAPET::File{cryptoFactory, srcfile, false, false}};
 
-    std::list<YAPET::PartDec>::iterator it = list.begin();
+    std::list<yapet::PasswordListItem> list = yapetFile->read();
+
+    std::list<yapet::PasswordListItem>::iterator it = list.begin();
 
     if (!list.empty() && __print_header) {
-	csvfile << "name" << separator
-		<< "host" << separator
-		<< "username" << separator
-		<< "password" << separator
-		<< "comment" << std::endl;
+        csvfile << "name" << separator << "host" << separator << "username"
+                << separator << "password" << separator << "comment"
+                << std::endl;
     }
 
-    while ( it!=list.end() ) {
-	const YAPET::BDBuffer& enc_rec = it->getEncRecord();
-	YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec = crypt.decrypt<YAPET::PasswordRecord> (enc_rec);
-	YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
+    while (it != list.end()) {
+        auto decryptedPasswordRecord{crypto->decrypt(it->encryptedRecord())};
+        yapet::PasswordRecord passwordRecord{decryptedPasswordRecord};
 
-	csvfile << prepareline(std::string((char*) ptr_pw->name)) << separator
-		<< prepareline(std::string((char*) ptr_pw->host)) << separator
-		<< prepareline(std::string((char*) ptr_pw->username)) << separator
-		<< prepareline(std::string((char*) ptr_pw->password)) << separator
-		<< prepareline(std::string((char*) ptr_pw->comment)) << std::endl;
+        csvfile << prepareline(std::string(
+                       reinterpret_cast<const char*>(passwordRecord.name())))
+                << separator
+                << prepareline(std::string(
+                       reinterpret_cast<const char*>(passwordRecord.host())))
+                << separator
+                << prepareline(std::string(reinterpret_cast<const char*>(
+                       passwordRecord.username())))
+                << separator
+                << prepareline(std::string(reinterpret_cast<const char*>(
+                       passwordRecord.password())))
+                << separator
+                << prepareline(std::string(
+                       reinterpret_cast<const char*>(passwordRecord.comment())))
+                << std::endl;
 
-	if (__verbose) {
-	    std::cout << ".";
-	    std::cout.flush();
-	}
-	it++;
+        if (__verbose) {
+            std::cout << ".";
+            std::cout.flush();
+        }
+        it++;
     }
 
     if (__verbose) std::cout << std::endl;

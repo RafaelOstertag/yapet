@@ -9,6 +9,8 @@ AM_CPPFLAGS = -I$(yapet_src_libdir)/crypt	\
     -I$(yapet_src_libdir)/pwgen \
     -I$(yapet_src_libdir)/utils \
 	-I$(yapet_src_libdir)/file \
+    -I$(yapet_src_libdir)/interfaces \
+	-I$(yapet_src_libdir)/passwordrecord \
     -I$(top_srcdir) \
     $(OPENSSL_INCLUDES) \
     -DLOCALEDIR=\"$(localedir)\"
@@ -29,6 +31,7 @@ libyapet_export_la_LIBADD = $(yapet_libdir)/crypt/libyapet-crypt.la \
 
 bin_PROGRAMS = yapet2csv
 yapet2csv_SOURCES = main.cc
-yapet2csv_LDADD = $(builddir)/libyapet-export.la
+yapet2csv_LDADD = $(builddir)/libyapet-export.la \
+    $(yapet_libdir)/passwordrecord/libyapet-passwordrecord.la
  
 

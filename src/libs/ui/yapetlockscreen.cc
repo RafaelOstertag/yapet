@@ -19,48 +19,37 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #ifdef HAVE_LIBGEN_H
-# include <libgen.h>
+#include <libgen.h>
 #endif
 
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
 
-#include "intl.h"
 #include "globals.h"
+#include "intl.h"
 #include "yapetlockscreen.h"
-
-//
-// Private
-//
-YapetLockScreen&
-YapetLockScreen::operator=(const YapetLockScreen&) {
-    throw YACURS::EXCEPTIONS::NotSupported();
-    return *this;
-}
 
 //
 // Public
 //
 
-YapetLockScreen::YapetLockScreen(YACURS::Window& mw,
-				 YACURS::UnlockDialog* _unlock,
-				 unsigned int timeout,
-				 unsigned int ulck_timeout) : 
-    LockScreen(_unlock,timeout,ulck_timeout),
-    mainwin(dynamic_cast<MainWindow&>(mw)) {}
+YapetLockScreen::YapetLockScreen(YACURS::Window& mainWindow,
+                                 YACURS::UnlockDialog* _unlock,
+                                 unsigned int timeout,
+                                 unsigned int ulck_timeout)
+    : LockScreen(_unlock, timeout, ulck_timeout),
+      _mainWindow(dynamic_cast<const MainWindow&>(mainWindow)) {}
 
 YapetLockScreen::~YapetLockScreen() {}
 
-void
-YapetLockScreen::show() {
-    if (YAPET::Globals::file == 0 ||
-	YAPET::Globals::key == 0) {
-	// we cannot lock, there is no open file
-	return;
+void YapetLockScreen::show() {
+    if (_mainWindow.currentFilename().empty()) {
+        // we cannot lock, there is no open file
+        return;
     }
 
     LockScreen::show();
@@ -68,22 +57,20 @@ YapetLockScreen::show() {
     YACURS::Curses::set_terminal_title(_("YAPET LOCKED"));
 }
 
-void
-YapetLockScreen::close() {
+void YapetLockScreen::close() {
     LockScreen::close();
 
-    if (YAPET::Globals::file != 0 &&
-	YAPET::Globals::key != 0) {
-	std::string ttl("YAPET");
+    if (!_mainWindow.currentFilename().empty()) {
+        std::string ttl("YAPET");
 #ifdef HAVE_BASENAME
-	ttl += " (";
-	// basename may modify the string
-	char *tmp = strdup(YAPET::Globals::file->getFilename().c_str());
-	ttl += basename(tmp);
+        ttl += " (";
+        // basename may modify the string
+        char* tmp = strdup(_mainWindow.currentFilename().c_str());
+        ttl += basename(tmp);
 
-	ttl += ")";
-	std::free(tmp);
+        ttl += ")";
+        std::free(tmp);
 #endif
-	YACURS::Curses::set_terminal_title(ttl);
+        YACURS::Curses::set_terminal_title(ttl);
     }
 }

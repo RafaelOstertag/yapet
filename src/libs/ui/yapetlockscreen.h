@@ -31,22 +31,22 @@
 #include "mainwindow.h"
 
 class YapetLockScreen : public YACURS::LockScreen {
-    private:
-	MainWindow& mainwin;
+   private:
+    const MainWindow& _mainWindow;
 
-	// Not supported
-	YapetLockScreen& operator=(const YapetLockScreen&);
+   public:
+    YapetLockScreen(YACURS::Window& mainWindow, YACURS::UnlockDialog* _unlock,
+                    unsigned int timeout, unsigned int ulck_timeout);
 
-    public:
-	YapetLockScreen(YACURS::Window& mw,
-			YACURS::UnlockDialog* _unlock,
-			unsigned int timeout,
-			unsigned int ulck_timeout);
-	virtual ~YapetLockScreen();
+    YapetLockScreen(const YapetLockScreen&) = delete;
+    YapetLockScreen(YapetLockScreen&&) = delete;
+    YapetLockScreen& operator=(const YapetLockScreen&) = delete;
+    YapetLockScreen& operator=(YapetLockScreen&&) = delete;
+    virtual ~YapetLockScreen();
 
-	void show();
+    void show();
 
-	void close();
+    void close();
 };
 
-#endif // _YAPETLOCKSCREEN_H
+#endif  // _YAPETLOCKSCREEN_H

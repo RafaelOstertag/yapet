@@ -12,6 +12,8 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/cfg \
 	-I$(yapet_libs_srcdir)/file \
 	-I$(yapet_libs_srcdir)/utils \
+	-I$(yapet_libs_srcdir)/interfaces \
+	-I$(yapet_libs_srcdir)/passwordrecord \
 	-I$(top_srcdir)/libyacurs/include		\
 	-I$(top_builddir)/libyacurs/include	\
 	-I$(top_srcdir) \
@@ -32,6 +34,7 @@ LDADD = $(yapet_libdir)/ui/libyapet-ui.la \
 	$(yapet_libdir)/consts/libyapet-consts.la \
 	$(yapet_libdir)/utils/libyapet-utils.la \
 	$(yapet_libdir)/cfg/libyapet-cfg.la \
+	$(yapet_libdir)/passwordrecord/libyapet-passwordrecord.la \
 	$(top_builddir)/libyacurs/src/libyacurs.la
 
 AM_LDFLAGS = $(LIBINTL)

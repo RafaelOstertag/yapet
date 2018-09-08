@@ -27,52 +27,53 @@
 #include "config.h"
 #endif
 
+#include <mainwindow.h>
 #include <yacurs.h>
 
 /**
  */
 class InfoDialog : public YACURS::Dialog {
-    private:
-	YACURS::HPack mainpack;
-	YACURS::VPack leftpack;
-	YACURS::VPack rightpack;
+   private:
+    YACURS::HPack mainpack;
+    YACURS::VPack leftpack;
+    YACURS::VPack rightpack;
 
-	YACURS::Label fn;
-	YACURS::DynLabel fn_status;
+    YACURS::Label fn;
+    YACURS::DynLabel fn_status;
 
-	YACURS::Label fp;
-	YACURS::Label fp_status;
+    YACURS::Label fp;
+    YACURS::Label fp_status;
 
-	YACURS::Label slt;
-	YACURS::Label slt_status;
+    YACURS::Label slt;
+    YACURS::Label slt_status;
 
-	YACURS::Label sult;
-	YACURS::Label sult_status;
+    YACURS::Label sult;
+    YACURS::Label sult_status;
 
-	YACURS::Label ent;
-	YACURS::Label ent_status;
+    YACURS::Label ent;
+    YACURS::Label ent_status;
 
-	YACURS::Label mod;
-	YACURS::Label mod_status;
+    YACURS::Label mod;
+    YACURS::Label mod_status;
 
-	YACURS::Label ver;
-	YACURS::Label ver_status;
+    YACURS::Label ver;
+    YACURS::Label ver_status;
 
-	YACURS::Label pwset;
-	YACURS::Label pwset_status;
+    YACURS::Label pwset;
+    YACURS::Label pwset_status;
 
-	YACURS::Label arch;
-	YACURS::Label arch_status;
+    YACURS::Label arch;
+    YACURS::Label arch_status;
 
-	YACURS::Label ssl;
-	YACURS::Label ssl_status;
+    YACURS::Label ssl;
+    YACURS::Label ssl_status;
 
-	YACURS::Label cfs;
-	YACURS::Label cfs_status;
+    YACURS::Label cfs;
+    YACURS::Label cfs_status;
 
-    public:
-        InfoDialog(YACURS::ListBox<>::lsz_t entries);
-        virtual ~InfoDialog();
+   public:
+    InfoDialog(const MainWindow& mainWindow, YACURS::ListBox<>::lsz_t entries);
+    virtual ~InfoDialog();
 };
 
-#endif // _INFO_H
+#endif  // _INFO_H

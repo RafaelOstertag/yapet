@@ -31,6 +31,11 @@
 #include <strings.h>
 #endif
 
+// Forward declaration required for resolving cyclic dependency of info.h and
+// this file
+class MainWindow;
+class InfoDialog;
+
 #include <yacurs.h>
 
 #include <cstring>
@@ -146,6 +151,9 @@ class MainWindow : public YACURS::Window {
     void search_next();
 
     std::string currentFilename() const;
+    std::string fileVersion() const;
+    std::int64_t passwordLastChanged() const;
+    bool matchPasswordWithCurrent(const yapet::SecureArray& password) const;
 };
 
 #endif  // _MAINWINDOW_H
