@@ -45,8 +45,6 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(
             std::memcmp(passwordListItem.name(), NAME_CHAR, NAME_LEN) == 0);
         CPPUNIT_ASSERT(encrypted == passwordListItem.encryptedRecord());
-
-        CPPUNIT_ASSERT(passwordListItem.nameSize() == NAME_LEN);
     }
 
     void copyCtor() {
@@ -114,6 +112,11 @@ class PasswordListItemTest : public CppUnit::TestFixture {
 
         CPPUNIT_ASSERT(!(passwordListItem1 < passwordListItem2));
         CPPUNIT_ASSERT(passwordListItem1 < passwordListItem3);
+        CPPUNIT_ASSERT(!(passwordListItem3 < passwordListItem1));
+
+        CPPUNIT_ASSERT(!(passwordListItem1 > passwordListItem2));
+        CPPUNIT_ASSERT(!(passwordListItem1 > passwordListItem3));
+        CPPUNIT_ASSERT(passwordListItem3 > passwordListItem1);
     }
 };
 

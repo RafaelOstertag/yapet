@@ -30,6 +30,7 @@ class PasswordListItem {
 };
 
 bool operator<(const PasswordListItem& a, const PasswordListItem& b);
+bool operator>(const PasswordListItem& a, const PasswordListItem& b);
 
 }  // namespace yapet
 #endif

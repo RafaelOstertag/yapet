@@ -57,3 +57,13 @@ bool yapet::operator<(const PasswordListItem& a, const PasswordListItem& b) {
 
     return result < 0;
 }
+
+bool yapet::operator>(const PasswordListItem& a, const PasswordListItem& b) {
+    const char* aName = reinterpret_cast<const char*>(a.name());
+    const char* bName = reinterpret_cast<const char*>(b.name());
+
+    auto result{
+        std::strncmp(aName, bName, std::min(a.nameSize(), b.nameSize()))};
+
+    return result > 0;
+}
