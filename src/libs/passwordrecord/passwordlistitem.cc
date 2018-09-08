@@ -47,7 +47,9 @@ PasswordListItem& PasswordListItem::operator=(PasswordListItem&& item) {
 }
 
 bool PasswordListItem::operator==(const PasswordListItem& other) const {
-    return _name == other._name;
+    return std::strncmp(reinterpret_cast<const char*>(*_name),
+                        reinterpret_cast<const char*>(*other._name),
+                        _name.size()) == 0;
 }
 
 PasswordListItem::operator std::string() const {
