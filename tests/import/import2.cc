@@ -22,7 +22,6 @@
 #endif
 
 #include "blowfishfactory.hh"
-#include "crypt.h"
 #include "file.h"
 
 #include "testpaths.h"

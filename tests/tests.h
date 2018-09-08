@@ -8,7 +8,6 @@
 #include <stdexcept>
 
 #include "abstractcryptofactory.hh"
-#include "crypt.h"
 #include "passwordlistitem.hh"
 
 #ifndef ROUNDS

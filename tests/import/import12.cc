@@ -21,7 +21,6 @@
 #endif
 
 #include "blowfishfactory.hh"
-#include "crypt.h"
 #include "file.h"
 
 // Keep them define's here, since tests.h only defines the default if they are

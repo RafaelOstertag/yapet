@@ -7,7 +7,6 @@
 #include <sstream>
 
 #include "blowfishfactory.hh"
-#include "crypt.h"
 #include "file.h"
 
 struct control_struct {
