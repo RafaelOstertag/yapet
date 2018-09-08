@@ -3,7 +3,7 @@
 // Test
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <iostream>
@@ -16,232 +16,267 @@
 #include <sys/stat.h>
 
 #ifdef HAVE_FCNTL_H
-# include <fcntl.h>
+#include <fcntl.h>
 #endif
 
+#include "blowfishfactory.hh"
+#include "crypt.h"
 #include "csvimport.h"
+#include "file.h"
 #include "testpaths.h"
-#include <crypt.h>
-#include <file.h>
 
-const char* VAL128 = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefg";
+const char* VAL128 =
+    "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmn"
+    "opqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefg";
 
-const char* VAL256 = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmno";
+const char* VAL256 =
+    "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmn"
+    "opqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABC"
+    "DEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQ"
+    "RSTUVXYZ0123456789abcdefghijklmno";
 
-const char* VAL512 = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEF";
+const char* VAL512 =
+    "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmn"
+    "opqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABC"
+    "DEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQ"
+    "RSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ012345"
+    "6789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghij"
+    "klmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxy"
+    "zABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEF";
 
-int main (int, char**) {
+int main(int, char**) {
 #ifndef TESTS_VERBOSE
     int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
-    dup2(stdout_redir_fd,STDOUT_FILENO);
+    dup2(stdout_redir_fd, STDOUT_FILENO);
 #endif
     std::cout << std::endl;
 
     try {
-	std::cout << " ==> Importing from test10.csv" << std::endl;
-	std::cout << " ==> Testing import of oversized lines" << std::endl;
-	CSVImport imp ( SRCDIR "/test10.csv", BUILDDIR "/test10.pet", ';');
-	imp.import ("test10");
+        std::cout << " ==> Importing from test10.csv" << std::endl;
+        std::cout << " ==> Testing import of oversized lines" << std::endl;
+        CSVImport imp(SRCDIR "/test10.csv", BUILDDIR "/test10.pet", ';');
+        imp.import("test10");
 
-	if (!imp.hadErrors() ) {
-	    imp.printLog();
-	    return 1;
-	}
+        if (!imp.hadErrors()) {
+            imp.printLog();
+            return 1;
+        }
 
-	if (imp.numErrors() != 3) {
-	    std::cerr << "Expected 3 errors, got " << imp.numErrors() << std::endl;
-	    imp.printLog();
-	    return 1;
-	}
+        if (imp.numErrors() != 3) {
+            std::cerr << "Expected 3 errors, got " << imp.numErrors()
+                      << std::endl;
+            imp.printLog();
+            return 1;
+        }
 
-	imp.printLog();
+        imp.printLog();
     } catch (std::exception& ex) {
-	std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
-	return 1;
+        std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
 
     try {
-	YAPET::Key key ("test10");
-	YAPET::Crypt yacrypt(key);
-	YAPET::File file ( BUILDDIR "/test10.pet", key, false);
-	assert(file.getFileVersion(key) == YAPET::VERSION_2);
-	std::list<YAPET::PartDec> list = file.read (key);
+        auto password{yapet::toSecureArray("test10")};
+        std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+            new yapet::BlowfishFactory{password}};
+        auto crypto{cryptoFactory->crypto()};
 
-	if (list.size() != 4) {
-	    std::cerr << "List size expected to be 3, got " << list.size() << std::endl;
-	    return 1;
-	}
+        YAPET::File file{cryptoFactory, BUILDDIR "/test10.pet", false};
 
-	std::list<YAPET::PartDec>::iterator it = list.begin();
+        assert(file.getHeaderVersion() == yapet::HEADER_VERSION::VERSION_2);
+        std::list<yapet::PasswordListItem> list = file.read();
 
-	//
-	// Check first record
-	//
+        if (list.size() != 4) {
+            std::cerr << "List size expected to be 3, got " << list.size()
+                      << std::endl;
+            return 1;
+        }
 
-	const YAPET::BDBuffer& enc_rec1 = it->getEncRecord();
-	YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec = yacrypt.decrypt<YAPET::PasswordRecord> (enc_rec1);
-	YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
+        std::list<yapet::PasswordListItem>::iterator it = list.begin();
 
-	if (std::strcmp((char*) ptr_pw->name, VAL128) != 0) {
-	    std::cerr << "Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        //
+        // Check first record
+        //
 
-	if (std::strcmp((char*) ptr_pw->host, VAL256) != 0) {
-	    std::cerr << "Host does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        yapet::PasswordRecord passwordRecord{
+            crypto->decrypt(it->encryptedRecord())};
 
-	if (std::strcmp((char*) ptr_pw->username, VAL256) != 0) {
-	    std::cerr << "User Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.name()),
+                        VAL128) != 0) {
+            std::cerr << "Name does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->password, VAL256) != 0) {
-	    std::cerr << "Password does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->comment, VAL512) != 0) {
-	    std::cerr << "Comment does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.host()),
+                        VAL256) != 0) {
+            std::cerr << "Host does not match" << std::endl;
 
-	delete ptr_dec_rec;
+            return 1;
+        }
 
-	//
-	// Check second record
-	//
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.username()),
+                VAL256) != 0) {
+            std::cerr << "User Name does not match" << std::endl;
 
-	it++;
-	const YAPET::BDBuffer& enc_rec2 = it->getEncRecord();
-	ptr_dec_rec = yacrypt.decrypt<YAPET::PasswordRecord> (enc_rec2);
-	ptr_pw = *ptr_dec_rec;
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->name, "name1") != 0) {
-	    std::cerr << "Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.password()),
+                VAL256) != 0) {
+            std::cerr << "Password does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->host, "host1") != 0) {
-	    std::cerr << "Host does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->username, "username1") != 0) {
-	    std::cerr << "User Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.comment()),
+                        VAL512) != 0) {
+            std::cerr << "Comment does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->password, "password1") != 0) {
-	    std::cerr << "Password does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->comment, "comment1") != 0) {
-	    std::cerr << "Comment does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        //
+        // Check second record
+        //
 
-	delete ptr_dec_rec;
+        it++;
+        passwordRecord =
+            yapet::PasswordRecord{crypto->decrypt(it->encryptedRecord())};
 
-	//
-	// Check third record
-	//
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.name()),
+                        "name1") != 0) {
+            std::cerr << "Name does not match" << std::endl;
 
-	it++;
-	const YAPET::BDBuffer& enc_rec3 = it->getEncRecord();
-	ptr_dec_rec = yacrypt.decrypt<YAPET::PasswordRecord> (enc_rec3);
-	ptr_pw = *ptr_dec_rec;
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->name, "name2") != 0) {
-	    std::cerr << "Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.host()),
+                        "host1") != 0) {
+            std::cerr << "Host does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->host, "host2") != 0) {
-	    std::cerr << "Host does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->username, "username2") != 0) {
-	    std::cerr << "User Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.username()),
+                "username1") != 0) {
+            std::cerr << "User Name does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->password, "password2") != 0) {
-	    std::cerr << "Password does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->comment, "comment2") != 0) {
-	    std::cerr << "Comment does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.password()),
+                "password1") != 0) {
+            std::cerr << "Password does not match" << std::endl;
 
-	delete ptr_dec_rec;
+            return 1;
+        }
 
-	//
-	// Check fourth record
-	//
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.comment()),
+                        "comment1") != 0) {
+            std::cerr << "Comment does not match" << std::endl;
 
-	it++;
-	const YAPET::BDBuffer& enc_rec4 = it->getEncRecord();
-	ptr_dec_rec = yacrypt.decrypt<YAPET::PasswordRecord> (enc_rec4);
-	ptr_pw = *ptr_dec_rec;
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->name, "name3") != 0) {
-	    std::cerr << "Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        //
+        // Check third record
+        //
 
-	if (std::strcmp((char*) ptr_pw->host, "host3") != 0) {
-	    std::cerr << "Host does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        it++;
+        passwordRecord =
+            yapet::PasswordRecord{crypto->decrypt(it->encryptedRecord())};
 
-	if (std::strcmp((char*) ptr_pw->username, "username3") != 0) {
-	    std::cerr << "User Name does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.name()),
+                        "name2") != 0) {
+            std::cerr << "Name does not match" << std::endl;
 
-	if (std::strcmp((char*) ptr_pw->password, "password3") != 0) {
-	    std::cerr << "Password does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+            return 1;
+        }
 
-	if (std::strcmp((char*) ptr_pw->comment, "comment3") != 0) {
-	    std::cerr << "Comment does not match" << std::endl;
-	    delete ptr_dec_rec;
-	    return 1;
-	}
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.host()),
+                        "host2") != 0) {
+            std::cerr << "Host does not match" << std::endl;
 
-	delete ptr_dec_rec;
+            return 1;
+        }
+
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.username()),
+                "username2") != 0) {
+            std::cerr << "User Name does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.password()),
+                "password2") != 0) {
+            std::cerr << "Password does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.comment()),
+                        "comment2") != 0) {
+            std::cerr << "Comment does not match" << std::endl;
+
+            return 1;
+        }
+
+        //
+        // Check fourth record
+        //
+
+        it++;
+        passwordRecord =
+            yapet::PasswordRecord{crypto->decrypt(it->encryptedRecord())};
+
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.name()),
+                        "name3") != 0) {
+            std::cerr << "Name does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.host()),
+                        "host3") != 0) {
+            std::cerr << "Host does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.username()),
+                "username3") != 0) {
+            std::cerr << "User Name does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(
+                reinterpret_cast<const char*>(passwordRecord.password()),
+                "password3") != 0) {
+            std::cerr << "Password does not match" << std::endl;
+
+            return 1;
+        }
+
+        if (std::strcmp(reinterpret_cast<const char*>(passwordRecord.comment()),
+                        "comment3") != 0) {
+            std::cerr << "Comment does not match" << std::endl;
+
+            return 1;
+        }
 
     } catch (std::exception& ex) {
-	std::cout << typeid (ex).name() << ": " << ex.what() << std::endl;
-	return 1;
+        std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
+        return 1;
     }
 
     return 0;
-
 }

@@ -7,10 +7,9 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "abstractcryptofactory.hh"
 #include "crypt.h"
-#include "key.hh"
-#include "partdec.h"
-#include "structs.h"
+#include "passwordlistitem.hh"
 
 #ifndef ROUNDS
 #define ROUNDS 5000
@@ -38,98 +37,105 @@
 #define COMMENT "Test comment %d"
 #endif
 
-// inline
-// void progress() {
-//     static int n = 0;
+inline void progress() {
+    static int n = 0;
 
-//     // I change the progress indicator to somewhat less verbose, since the
-//     // above indicator looks terrible in build logs of automated builds,
-//     e.g.:
-//     // https://buildd.debian.org/pkg.cgi?pkg=yapet
-//     if ( (n % 100) == 0 && ! ( (n % 1000) == 0) ) {
-//         std::cout << ".";
-//         std::cout.flush();
-//     }
+    // I change the progress indicator to somewhat less verbose, since the
+    // above indicator looks terrible in build logs of automated builds,
+    // e.g. :
+    // https://buildd.debian.org/pkg.cgi?pkg=yapet
+    if ((n % 100) == 0 && !((n % 1000) == 0)) {
+        std::cout << ".";
+        std::cout.flush();
+    }
 
-//     if ( (n % 1000) == 0 && n != 0) {
-//         std::cout << "#";
-//         std::cout.flush();
-//     }
+    if ((n % 1000) == 0 && n != 0) {
+        std::cout << "#";
+        std::cout.flush();
+    }
 
-//     n++;
-// }
+    n++;
+}
 
-// inline
-// void print_record (YAPET::PartDec& pd, const YAPET::Key& key) {
-//     YAPET::Crypt crypt (key);
-//     std::cout << "PartDec Name:\t" << pd.getName() << std::endl;
-//     const YAPET::BDBuffer& enc_rec = pd.getEncRecord();
-//     YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec =
-//     crypt.decrypt<YAPET::PasswordRecord> (enc_rec); YAPET::PasswordRecord*
-//     ptr_pw = *ptr_dec_rec; std::cout << "\tName:\t" << ptr_pw->name <<
-//     std::endl; std::cout << "\tHost:\t" << ptr_pw->host << std::endl;
-//     std::cout << "\tUname:\t" << ptr_pw->username << std::endl;
-//     std::cout << "\tPW:\t" << ptr_pw->password << std::endl;
-//     std::cout << "\tCMT:\t" << ptr_pw->comment << std::endl;
-//     std::cout << std::endl;
-//     delete ptr_dec_rec;
-// }
+inline void print_record(
+    const yapet::PasswordListItem& passwordListItem,
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory) {
+    auto crypto{cryptoFactory->crypto()};
 
-// inline
-// void check_record (YAPET::PartDec& pd, const YAPET::Key& key, int rec_no) {
-//     progress();
-//     YAPET::Crypt crypt (key);
-//     char _name[YAPET::NAME_SIZE];
-//     char _host[YAPET::HOST_SIZE];
-//     char _uname[YAPET::USERNAME_SIZE];
-//     char _pw[YAPET::PASSWORD_SIZE];
-//     char _cmt[YAPET::COMMENT_SIZE];
-//     snprintf (_name, YAPET::NAME_SIZE, NAME, rec_no);
-//     snprintf (_host, YAPET::HOST_SIZE, HOST, rec_no);
-//     snprintf (_uname, YAPET::USERNAME_SIZE, UNAME, rec_no);
-//     snprintf (_pw, YAPET::PASSWORD_SIZE, PW, rec_no);
-//     snprintf (_cmt, YAPET::COMMENT_SIZE, COMMENT, rec_no);
+    std::cout << "PasswordListItemName Name:\t" << passwordListItem.name()
+              << std::endl;
 
-//     if (std::strncmp (_name, (char*) pd.getName(), YAPET::NAME_SIZE) != 0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("Name does not match");
-//     }
+    yapet::PasswordRecord passwordRecord{
+        crypto->decrypt(passwordListItem.encryptedRecord())};
 
-//     const YAPET::BDBuffer& enc_rec = pd.getEncRecord();
+    std::cout << "\tName:\t" << passwordRecord.name() << std::endl;
+    std::cout << "\tHost:\t" << passwordRecord.host() << std::endl;
+    std::cout << "\tUname:\t" << passwordRecord.username() << std::endl;
+    std::cout << "\tPW:\t" << passwordRecord.password() << std::endl;
+    std::cout << "\tCMT:\t" << passwordRecord.comment() << std::endl;
+    std::cout << std::endl;
+}
 
-//     YAPET::Record<YAPET::PasswordRecord>* ptr_dec_rec =
-//     crypt.decrypt<YAPET::PasswordRecord> (enc_rec);
+inline void check_record(
+    const yapet::PasswordListItem& passwordListItem,
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory, int rec_no) {
+    progress();
 
-//     YAPET::PasswordRecord* ptr_pw = *ptr_dec_rec;
+    auto crypto{cryptoFactory->crypto()};
 
-//     if (std::strncmp (_name, (char*) ptr_pw->name, YAPET::NAME_SIZE) != 0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("Name does not match");
-//     }
+    char _name[yapet::PasswordRecord::NAME_SIZE];
+    char _host[yapet::PasswordRecord::HOST_SIZE];
+    char _uname[yapet::PasswordRecord::USERNAME_SIZE];
+    char _pw[yapet::PasswordRecord::PASSWORD_SIZE];
+    char _cmt[yapet::PasswordRecord::COMMENT_SIZE];
+    snprintf(_name, yapet::PasswordRecord::NAME_SIZE, NAME, rec_no);
+    snprintf(_host, yapet::PasswordRecord::HOST_SIZE, HOST, rec_no);
+    snprintf(_uname, yapet::PasswordRecord::USERNAME_SIZE, UNAME, rec_no);
+    snprintf(_pw, yapet::PasswordRecord::PASSWORD_SIZE, PW, rec_no);
+    snprintf(_cmt, yapet::PasswordRecord::COMMENT_SIZE, COMMENT, rec_no);
 
-//     if (std::strncmp (_host, (char*) ptr_pw->host, YAPET::HOST_SIZE) != 0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("Host does not match");
-//     }
+    yapet::PasswordRecord passwordRecord{
+        crypto->decrypt(passwordListItem.encryptedRecord())};
 
-//     if (std::strncmp (_uname, (char*) ptr_pw->username, YAPET::USERNAME_SIZE)
-//     != 0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("username does not match");
-//     }
+    if (std::strncmp(_name,
+                     reinterpret_cast<const char*>(passwordListItem.name()),
+                     yapet::PasswordRecord::NAME_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("Name does not match");
+    }
 
-//     if (std::strncmp (_pw, (char*) ptr_pw->password, YAPET::PASSWORD_SIZE) !=
-//     0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("password does not match");
-//     }
+    if (std::strncmp(_name,
+                     reinterpret_cast<const char*>(passwordRecord.name()),
+                     yapet::PasswordRecord::NAME_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("Name does not match");
+    }
 
-//     if (std::strncmp (_cmt, (char*) ptr_pw->comment, YAPET::COMMENT_SIZE) !=
-//     0) {
-//         print_record (pd, key);
-//         throw std::logic_error ("comment does not match");
-//     }
+    if (std::strncmp(_host,
+                     reinterpret_cast<const char*>(passwordRecord.host()),
+                     yapet::PasswordRecord::HOST_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("Host does not match");
+    }
 
-//     delete ptr_dec_rec;
-//     /*    std::cout << "\r"; */
-// }
+    if (std::strncmp(_uname,
+                     reinterpret_cast<const char*>(passwordRecord.username()),
+                     yapet::PasswordRecord::USERNAME_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("username does not match");
+    }
+
+    if (std::strncmp(_pw,
+                     reinterpret_cast<const char*>(passwordRecord.password()),
+                     yapet::PasswordRecord::PASSWORD_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("password does not match");
+    }
+
+    if (std::strncmp(_cmt,
+                     reinterpret_cast<const char*>(passwordRecord.comment()),
+                     yapet::PasswordRecord::COMMENT_SIZE) != 0) {
+        print_record(passwordListItem, cryptoFactory);
+        throw std::logic_error("comment does not match");
+    }
+}

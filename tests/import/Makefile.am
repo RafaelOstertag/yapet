@@ -22,12 +22,16 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
 	-I$(yapet_libs_srcdir)/file \
 	-I$(yapet_libs_srcdir)/utils \
+	-I$(yapet_libs_srcdir)/interfaces \
+	-I$(yapet_libs_srcdir)/passwordrecord \
     -I$(yapet_srcdir)/converters/csv2yapet \
 	-I$(srcdir)/.. \
 	-I$(top_srcdir)
 
 LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la \
-    $(yapet_builddir)/converters/csv2yapet/libyapet-import.la
+    $(yapet_builddir)/converters/csv2yapet/libyapet-import.la \
+	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la
+
 AM_LDFLAGS = $(LIBINTL)
 
 import1_SOURCES = import1.cc 
