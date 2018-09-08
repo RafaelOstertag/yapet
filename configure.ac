@@ -75,7 +75,7 @@ AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_D
 	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
 AC_CHECK_FUNCS([EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_free EVP_CIPHER_CTX_init EVP_CIPHER_CTX_new EVP_MD_CTX_destroy EVP_MD_CTX_create EVP_MD_CTX_free EVP_MD_CTX_new])
 AC_MSG_NOTICE([Checking support functions])
-AC_CHECK_FUNCS([SSLeay_version])
+AC_CHECK_FUNCS([SSLeay_version OpenSSL_version])
 LIBS="$LIBS_SAVE"
 LDFLAGS="$LDFLAGS_SAVE"
 CPPFLAGS="$CPPFLAGS_SAVE"

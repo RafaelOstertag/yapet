@@ -71,6 +71,8 @@ InfoDialog::InfoDialog(const MainWindow& mainWindow,
       ssl{"OpenSSL:"},
 #if defined(HAVE_SSLEAY_VERSION)
       ssl_status{SSLeay_version(SSLEAY_VERSION)},
+#elif defined(HAVE_OPENSSL_VERSION)
+      ssl_status{OpenSSL_version(OPENSSL_VERSION)},
 #else
       ssl_status{_("n/a")},
 #endif
