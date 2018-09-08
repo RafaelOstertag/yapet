@@ -152,7 +152,7 @@ class FileTest : public CppUnit::TestFixture {
         auto expectedFileVersion{yapet::toSecureArray("YAPET1.0")};
 
         CPPUNIT_ASSERT(std::memcmp(*file.getFileVersion(), *expectedFileVersion,
-                                   expectedFileVersion.size()) == 0);
+                                   expectedFileVersion.size() - 1) == 0);
         CPPUNIT_ASSERT(file.getHeaderVersion() ==
                        yapet::HEADER_VERSION::VERSION_2);
     }
@@ -178,7 +178,7 @@ class FileTest : public CppUnit::TestFixture {
 
             CPPUNIT_ASSERT(std::memcmp(*file.getFileVersion(),
                                        *expectedFileVersion,
-                                       expectedFileVersion.size()) == 0);
+                                       expectedFileVersion.size() - 1) == 0);
             CPPUNIT_ASSERT(file.getHeaderVersion() ==
                            yapet::HEADER_VERSION::VERSION_2);
         } catch (...) {
