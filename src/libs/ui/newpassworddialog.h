@@ -32,47 +32,46 @@
  *
  * Shows dialog for entering a new password.
  */
-class NewPasswordDialog : public YACURS::Dialog  {
-    private:
-	YACURS::MessageBox2* nomatchdialog;
-        YACURS::Input<std::string>* pwinput1;
-        YACURS::Input<std::string>* pwinput2;
-	YACURS::Label* line1;
-	YACURS::Label* line2;
-	YACURS::Label* linefn;
+class NewPasswordDialog : public YACURS::Dialog {
+   private:
+    YACURS::MessageBox2* nomatchdialog;
+    YACURS::Input<std::string>* pwinput1;
+    YACURS::Input<std::string>* pwinput2;
+    YACURS::Label* line1;
+    YACURS::Label* line2;
+    YACURS::Label* linefn;
 
-        const NewPasswordDialog& operator=(const NewPasswordDialog&) {
-            return *this;
+    const NewPasswordDialog& operator=(const NewPasswordDialog&) {
+        return *this;
+    }
+
+    bool on_close();
+
+    void window_close_handler(YACURS::Event& _e);
+
+   public:
+    /**
+     * Constructor
+     *
+     * @param fn file name for which password has to be set.
+     */
+    NewPasswordDialog(std::string& fn);
+    ~NewPasswordDialog();
+
+    bool match() const { return pwinput1->input() == pwinput2->input(); }
+
+    std::string password() const {
+        assert(pwinput1 != 0);
+        if (dialog_state() != YACURS::DIALOG_OK || !match()) {
+            // Now, it doesn't make sense to call password if
+            // there is no match or the dialog is not in state
+            // DIALOG_OK
+            throw std::logic_error(
+                _("Calling NewPasswordDialog::password() while "
+                  "dialog_state()!=DIALOG_OK or !match()"));
         }
-
-	bool on_close();
-
-	void window_close_handler(YACURS::Event& _e);
-
-    public:
-	/**
-	 * Constructor
-	 *
-	 * @param fn file name for which password has to be set.
-	 */
-        NewPasswordDialog(std::string& fn);
-        ~NewPasswordDialog();
-
-	bool match() const {
-	    return pwinput1->input() == pwinput2->input();
-	}
-
-	std::string password() const {
-	    assert(pwinput1!=0);
-	    if (dialog_state()!=YACURS::DIALOG_OK ||
-		!match()) {
-		// Now, it doesn't make sense to call password if
-		// there is no match or the dialog is not in state
-		// DIALOG_OK
-		throw std::logic_error(_("Calling NewPasswordDialog::password() while dialog_state()!=DIALOG_OK or !match()"));
-	    }
-	    return pwinput1->input();
-	}
+        return pwinput1->input();
+    }
 };
 
-#endif // _NEWPASSWORDDIALOG_H
+#endif  // _NEWPASSWORDDIALOG_H
