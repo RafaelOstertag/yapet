@@ -32,10 +32,10 @@
 #include "config.h"
 #endif
 
+#include <cstring>
+
 #include "intl.h"
 #include "key448.hh"
-
-#include <cstring>
 
 using namespace yapet;
 
@@ -113,7 +113,10 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
 Key448::Key448() : _key{0}, _ivec{IVEC_LENGTH} {}
 
 void Key448::password(const SecureArray& password) {
-    SecureArray sha1Hash{hash(password, EVP_sha1())};
+    SecureArray passwordWithoutZeroTerminator{password.size() - 1};
+    passwordWithoutZeroTerminator << password;
+
+    SecureArray sha1Hash{hash(passwordWithoutZeroTerminator, EVP_sha1())};
     SecureArray md5Hash{hash(sha1Hash, EVP_md5())};
     SecureArray ripemd160Hash{hash(sha1Hash + md5Hash, EVP_ripemd160())};
 

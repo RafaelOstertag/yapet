@@ -9,6 +9,14 @@ namespace yapet {
 class Key {
    public:
     virtual ~Key() {}
+    /**
+     * The password from which the key is derived.
+     *
+     * The password provided in \c password is expected to be terminated by \c
+     * \0.
+     *
+     * @param password \c SecureArray containing password terminated by \c \0.
+     */
     virtual void password(const SecureArray& password) = 0;
 
     virtual SecureArray key() const = 0;

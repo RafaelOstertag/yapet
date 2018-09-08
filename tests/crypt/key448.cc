@@ -38,10 +38,7 @@ class Key448Test : public CppUnit::TestFixture {
         return suiteOfTests;
     }
 
-    void setUp() {
-        passwordArray = yapet::SecureArray{passwordLength};
-        std::memcpy(*passwordArray, password, passwordLength);
-    }
+    void setUp() { passwordArray = yapet::toSecureArray(password); }
 
     void testKey() {
         yapet::Key448 key{};
