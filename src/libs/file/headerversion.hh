@@ -1,6 +1,8 @@
 #ifndef _HEADERVERSION_HH
 #define _HEADERVERSION_HH
 
+#include <string>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
