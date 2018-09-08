@@ -32,7 +32,6 @@
 namespace YAPET {
 class Globals {
    public:
-    static std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory;
     static bool records_changed;
     static CONFIG::Config config;
 };

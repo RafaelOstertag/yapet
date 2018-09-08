@@ -26,7 +26,6 @@
 
 using namespace YAPET;
 
-static std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory;
 bool Globals::records_changed;
 
 CONFIG::Config Globals::config;
