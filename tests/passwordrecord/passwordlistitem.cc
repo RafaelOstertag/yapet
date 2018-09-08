@@ -31,8 +31,15 @@ class PasswordListItemTest : public CppUnit::TestFixture {
             "Move ctor and assignment", &PasswordListItemTest::moveCtor));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<PasswordListItemTest>(
+            "Default constructor", &PasswordListItemTest::defaultConstructor));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<PasswordListItemTest>(
             "Should properly use comperators",
             &PasswordListItemTest::comperators));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<PasswordListItemTest>(
+            "Should properly cast to std::string",
+            &PasswordListItemTest::stringCastOperator));
 
         return suiteOfTests;
     }
@@ -95,6 +102,12 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(moved2.encryptedRecord() == encrypted);
     }
 
+    void defaultConstructor() {
+        yapet::PasswordListItem passwordListItem;
+        CPPUNIT_ASSERT(passwordListItem.name() == nullptr);
+        CPPUNIT_ASSERT(passwordListItem.nameSize() == 0);
+    }
+
     void comperators() {
         auto encrypted{yapet::toSecureArray(ENCRYPTED)};
         yapet::PasswordListItem passwordListItem1{NAME_CHAR, encrypted};
@@ -117,6 +130,15 @@ class PasswordListItemTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(!(passwordListItem1 > passwordListItem2));
         CPPUNIT_ASSERT(!(passwordListItem1 > passwordListItem3));
         CPPUNIT_ASSERT(passwordListItem3 > passwordListItem1);
+    }
+
+    void stringCastOperator() {
+        auto encrypted{yapet::toSecureArray(ENCRYPTED)};
+        yapet::PasswordListItem passwordListItem1{NAME_CHAR, encrypted};
+
+        std::string actual{passwordListItem1};
+        std::string expected{NAME_CHAR};
+        CPPUNIT_ASSERT(actual == expected);
     }
 };
 

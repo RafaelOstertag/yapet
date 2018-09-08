@@ -5,6 +5,8 @@
 
 using namespace yapet;
 
+PasswordListItem::PasswordListItem() : _name{}, _encryptedRecord{} {}
+
 PasswordListItem::PasswordListItem(const char* host,
                                    const SecureArray& encryptedRecord)
     : _name{PasswordRecord::NAME_SIZE}, _encryptedRecord{encryptedRecord} {
@@ -46,6 +48,10 @@ PasswordListItem& PasswordListItem::operator=(PasswordListItem&& item) {
 
 bool PasswordListItem::operator==(const PasswordListItem& other) const {
     return _name == other._name;
+}
+
+PasswordListItem::operator std::string() const {
+    return std::string{reinterpret_cast<const char*>(*_name)};
 }
 
 bool yapet::operator<(const PasswordListItem& a, const PasswordListItem& b) {
