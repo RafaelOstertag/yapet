@@ -2,6 +2,10 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_EVP_CIPHER_CTX_INIT
+#include <cstdlib>
+#endif
+
 #include "crypto.hh"
 #include "intl.h"
 #include "yapetexception.h"
