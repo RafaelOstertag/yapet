@@ -33,6 +33,8 @@
 #ifndef _KEY_H
 #define _KEY_H 1
 
+#include<typeinfo>
+
 #include <openssl/evp.h>
 
 #include "key.hh"
