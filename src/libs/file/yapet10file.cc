@@ -55,13 +55,15 @@ bool Yapet10File::hasValidFormat() {
     } catch (std::exception& e) {
         return false;
     }
+    auto recognitionStringSizeVar { recognitionStringSize() };
 
-    if (identifier.size() != recognitionStringSize()) {
+    if (identifier.size() != recognitionStringSizeVar) {
         return false;
     }
 
-    for (auto i{0}; i < recognitionStringSize(); i++) {
-        if (recognitionString()[i] != (*identifier)[i]) {
+    auto recognitionStringPtr{recognitionString()};
+    for (auto i{0}; i < recognitionStringSizeVar; i++) {
+        if (recognitionStringPtr[i] != (*identifier)[i]) {
             return false;
         }
     }
@@ -137,8 +139,7 @@ std::list<SecureArray> Yapet10File::readPasswordRecords() {
 void Yapet10File::writeIdentifier() {
     RawFile& rawFile{getRawFile()};
     rawFile.rewind();
-    rawFile.write(recognitionString(),
-                  recognitionStringSize());
+    rawFile.write(recognitionString(), recognitionStringSize());
 }
 
 void Yapet10File::writeMetaData(const SecureArray& metaData) {
