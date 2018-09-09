@@ -19,14 +19,14 @@ class Crypto {
     static constexpr auto SSL_SUCCESS{1};
     enum MODE { DECRYPTION = 0, ENCRYPTION = 1 };
 
-    void checkIVSizeOrThrow(int expectedIVSize, int supportedIVSize);
-    EVP_CIPHER_CTX* createContext();
-    void destroyContext(EVP_CIPHER_CTX* context);
-    void validateCipherOrThrow(const EVP_CIPHER* cipher, int ivSize);
-    EVP_CIPHER_CTX* initializeOrThrow(const EVP_CIPHER* cipher,
-                                      const std::shared_ptr<yapet::Key>& key,
-                                      MODE mode);
-    int cipherBlockSize(const EVP_CIPHER* cipher);
+    virtual void checkIVSizeOrThrow();
+    virtual EVP_CIPHER_CTX* createContext();
+    virtual void destroyContext(EVP_CIPHER_CTX* context);
+    virtual void validateCipherOrThrow();
+    virtual EVP_CIPHER_CTX* initializeOrThrow(MODE mode);
+
+    int cipherIvecSize();
+    int cipherBlockSize();
 
     std::shared_ptr<Key> getKey() const { return _key; }
 

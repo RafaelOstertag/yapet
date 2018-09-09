@@ -12,7 +12,10 @@
 
 using namespace yapet;
 
-void Crypto::checkIVSizeOrThrow(int expectedIVSize, int supportedIVSize) {
+void Crypto::checkIVSizeOrThrow() {
+    auto supportedIVSize{cipherIvecSize()};
+    auto expectedIVSize{_key->ivecSize()};
+
     if (supportedIVSize != expectedIVSize) {
         std::string message{_("Expect cipher to support IV size ")};
         message += std::to_string(expectedIVSize);
@@ -46,38 +49,37 @@ void Crypto::destroyContext(EVP_CIPHER_CTX* context) {
 #endif
 }
 
-void Crypto::validateCipherOrThrow(const EVP_CIPHER* cipher, int ivSize) {
-    if (cipher == 0) throw YAPET::YAPETException{_("Unable to get cipher")};
+void Crypto::validateCipherOrThrow() {
+    if (getCipher() == nullptr)
+        throw YAPET::YAPETException{_("Unable to get cipher")};
 
-    checkIVSizeOrThrow(ivSize, EVP_CIPHER_iv_length(cipher));
+    checkIVSizeOrThrow();
 }
 
-EVP_CIPHER_CTX* Crypto::initializeOrThrow(
-    const EVP_CIPHER* cipher, const std::shared_ptr<yapet::Key>& key,
-    MODE mode) {
+EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
     EVP_CIPHER_CTX* context = createContext();
 
-    auto success = EVP_CipherInit_ex(context, cipher, nullptr, *key->key(),
-                                     *key->ivec(), mode);
+    auto success = EVP_CipherInit_ex(context, getCipher(), nullptr,
+                                     *_key->key(), *_key->ivec(), mode);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
         throw YAPET::YAPETException(_("Error initializing cipher"));
     }
 
-    success = EVP_CIPHER_CTX_set_key_length(context, key->keySize());
+    success = EVP_CIPHER_CTX_set_key_length(context, _key->keySize());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
         std::string message{_("Cannot set key length on context to ")};
-        message += std::to_string(key->keySize());
+        message += std::to_string(_key->keySize());
         throw YAPET::YAPETException(message);
     }
 
     return context;
 }
 
-int Crypto::cipherBlockSize(const EVP_CIPHER* cipher) {
-    return EVP_CIPHER_block_size(cipher);
-}
+int Crypto::cipherBlockSize() { return EVP_CIPHER_block_size(getCipher()); }
+
+int Crypto::cipherIvecSize() { return EVP_CIPHER_iv_length(getCipher()); }
 
 Crypto::Crypto(const std::shared_ptr<yapet::Key>& key) : _key{key} {}
 
@@ -104,10 +106,10 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
         throw YAPET::YAPETException(_("Cannot encrypt empty plain text"));
     }
 
-    validateCipherOrThrow(getCipher(), _key->ivecSize());
-    EVP_CIPHER_CTX* context = initializeOrThrow(getCipher(), _key, ENCRYPTION);
+    validateCipherOrThrow();
+    EVP_CIPHER_CTX* context = initializeOrThrow(ENCRYPTION);
 
-    auto blockSize = cipherBlockSize(getCipher());
+    auto blockSize = cipherBlockSize();
 
     SecureArray temporaryEncryptedData{plainText.size() + (2 * blockSize)};
     yapet::SecureArray::size_type writtenDataLength;
@@ -141,10 +143,12 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
     if (cipherText.size() == 0) {
         throw YAPET::YAPETException(_("Cannot decrypt empty cipher text"));
     }
-    validateCipherOrThrow(getCipher(), _key->ivecSize());
-    EVP_CIPHER_CTX* context = initializeOrThrow(getCipher(), _key, DECRYPTION);
 
-    auto blockSize = cipherBlockSize(getCipher());
+    validateCipherOrThrow();
+
+    EVP_CIPHER_CTX* context = initializeOrThrow(DECRYPTION);
+
+    auto blockSize = cipherBlockSize();
 
     SecureArray temporaryDecryptedData{cipherText.size() + blockSize};
     int writtenDataLength;
