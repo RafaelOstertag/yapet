@@ -30,8 +30,8 @@
 // well as that of the covered work.
 //
 
-#ifndef _KEY_H
-#define _KEY_H 1
+#ifndef _KEY448_HH
+#define _KEY448_HH 1
 
 #include <typeinfo>
 
@@ -129,4 +129,4 @@ class Key448 : public Key {
 
 }  // namespace yapet
 
-#endif  // _KEY_H
+#endif  // _KEY448_HH
