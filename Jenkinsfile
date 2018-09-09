@@ -190,16 +190,16 @@ pipeline {
                             }
                         }
 
-                        stage("(SOL) Fix libyacurs build") {
-                            steps {
-                                dir("obj/libyacurs/src") {
-                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                                }
-                                dir("obj/libyacurs/tests/preloadlib") {
-                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                                }
-                            }
-                        }
+                        // stage("(SOL) Fix libyacurs build") {
+                        //     steps {
+                        //         dir("obj/libyacurs/src") {
+                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
+                        //         }
+                        //         dir("obj/libyacurs/tests/preloadlib") {
+                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
+                        //         }
+                        //     }
+                        // }
 
                         stage("(SOL) Build Docs") {
                             steps {
