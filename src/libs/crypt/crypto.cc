@@ -10,12 +10,9 @@
 #include "intl.h"
 #include "yapetexception.h"
 
-namespace {
-constexpr auto SSL_SUCCESS{1};
+using namespace yapet;
 
-enum MODE { DECRYPTION = 0, ENCRYPTION = 1 };
-
-inline void checkIVSizeOrThrow(int expectedIVSize, int supportedIVSize) {
+void Crypto::checkIVSizeOrThrow(int expectedIVSize, int supportedIVSize) {
     if (supportedIVSize != expectedIVSize) {
         std::string message{_("Expect cipher to support IV size ")};
         message += std::to_string(expectedIVSize);
@@ -25,7 +22,7 @@ inline void checkIVSizeOrThrow(int expectedIVSize, int supportedIVSize) {
     }
 }
 
-inline EVP_CIPHER_CTX* createContext() {
+EVP_CIPHER_CTX* Crypto::createContext() {
 #ifdef HAVE_EVP_CIPHER_CTX_INIT
     EVP_CIPHER_CTX* context =
         (EVP_CIPHER_CTX*)std::malloc(sizeof(EVP_CIPHER_CTX));
@@ -38,7 +35,7 @@ inline EVP_CIPHER_CTX* createContext() {
 #endif
 }
 
-inline void destroyContext(EVP_CIPHER_CTX* context) {
+void Crypto::destroyContext(EVP_CIPHER_CTX* context) {
 #ifdef HAVE_EVP_CIPHER_CTX_CLEANUP
     EVP_CIPHER_CTX_cleanup(context);
     std::free(context);
@@ -49,13 +46,13 @@ inline void destroyContext(EVP_CIPHER_CTX* context) {
 #endif
 }
 
-inline void validateCipherOrThrow(const EVP_CIPHER* cipher, int ivSize) {
+void Crypto::validateCipherOrThrow(const EVP_CIPHER* cipher, int ivSize) {
     if (cipher == 0) throw YAPET::YAPETException{_("Unable to get cipher")};
 
     checkIVSizeOrThrow(ivSize, EVP_CIPHER_iv_length(cipher));
 }
 
-inline EVP_CIPHER_CTX* initializeOrThrow(
+EVP_CIPHER_CTX* Crypto::initializeOrThrow(
     const EVP_CIPHER* cipher, const std::shared_ptr<yapet::Key>& key,
     MODE mode) {
     EVP_CIPHER_CTX* context = createContext();
@@ -78,13 +75,9 @@ inline EVP_CIPHER_CTX* initializeOrThrow(
     return context;
 }
 
-inline int cipherBlockSize(const EVP_CIPHER* cipher) {
+int Crypto::cipherBlockSize(const EVP_CIPHER* cipher) {
     return EVP_CIPHER_block_size(cipher);
 }
-
-}  // namespace
-
-using namespace yapet;
 
 Crypto::Crypto(const std::shared_ptr<yapet::Key>& key) : _key{key} {}
 
