@@ -47,8 +47,18 @@ namespace yapet {
  * Encrypt/decrypt data using Blowfish algorithm.
  */
 class Aes256 : public Crypto {
+   private:
+    SecureArray randomIV() const;
+    SecureArray extractIVFromRecord(const SecureArray& record) const;
+    SecureArray extractCipherTextFromRecord(const SecureArray& record) const;
+
    protected:
     const EVP_CIPHER* getCipher() const { return EVP_aes_256_cbc(); }
+
+    EVP_CIPHER_CTX* initializeOrThrow(const SecureArray& ivec, MODE mode);
+
+    void checkIVSizeOrThrow(const SecureArray& ivec);
+    void validateCipherOrThrow(const SecureArray& ivec);
 
    public:
     //! Constructor
@@ -60,6 +70,9 @@ class Aes256 : public Crypto {
     Aes256& operator=(Aes256&& c);
 
     ~Aes256() {}
+
+    virtual SecureArray encrypt(const SecureArray& plainText);
+    virtual SecureArray decrypt(const SecureArray& cipherText);
 };
 }  // namespace yapet
 

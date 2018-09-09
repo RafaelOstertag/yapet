@@ -70,7 +70,7 @@ LIBS="$LIBS $OPENSSL_LIBS"
 LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
 CPPFLAGS="$CPPFLAGS $OPENSSL_INCLUDES"
 AC_MSG_NOTICE([Checking encryption functions])
-AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_md5 EVP_ripemd160 EVP_sha1 EVP_sha256 EVP_aes_256_cbc],
+AC_CHECK_FUNCS([EVP_bf_cbc EVP_CIPHER_CTX_set_key_length EVP_CipherInit_ex EVP_DigestFinal_ex EVP_DigestInit_ex EVP_DigestUpdate EVP_md5 EVP_ripemd160 EVP_sha1 EVP_sha256 EVP_aes_256_cbc RAND_bytes],
 	[],
 	[AC_MSG_ERROR([You are missing a crucial function required for $PACKAGE_NAME])])
 AC_CHECK_FUNCS([EVP_CIPHER_CTX_cleanup EVP_CIPHER_CTX_free EVP_CIPHER_CTX_init EVP_CIPHER_CTX_new EVP_MD_CTX_destroy EVP_MD_CTX_create EVP_MD_CTX_free EVP_MD_CTX_new])

@@ -77,9 +77,11 @@ EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
     return context;
 }
 
-int Crypto::cipherBlockSize() { return EVP_CIPHER_block_size(getCipher()); }
+int Crypto::cipherBlockSize() const {
+    return EVP_CIPHER_block_size(getCipher());
+}
 
-int Crypto::cipherIvecSize() { return EVP_CIPHER_iv_length(getCipher()); }
+int Crypto::cipherIvecSize() const { return EVP_CIPHER_iv_length(getCipher()); }
 
 Crypto::Crypto(const std::shared_ptr<yapet::Key>& key) : _key{key} {}
 
@@ -132,6 +134,8 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
     }
 
     effectiveEncryptedDataLength += writtenDataLength;
+    assert(effectiveEncryptedDataLength <= temporaryEncryptedData.size());
+
     SecureArray encryptedData{effectiveEncryptedDataLength};
 
     destroyContext(context);
@@ -172,9 +176,11 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
     }
 
     effectiveDecryptedDataLength += writtenDataLength;
-    SecureArray encryptedData{effectiveDecryptedDataLength};
+    assert(effectiveDecryptedDataLength <= temporaryDecryptedData.size());
+
+    SecureArray decryptedData{effectiveDecryptedDataLength};
 
     destroyContext(context);
 
-    return (encryptedData << temporaryDecryptedData);
+    return (decryptedData << temporaryDecryptedData);
 }

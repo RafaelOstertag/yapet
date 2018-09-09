@@ -28,11 +28,96 @@
 // well as that of the covered work.
 //
 
+#include <openssl/rand.h>
+#include <cstring>
+
 #include "intl.h"
 
 #include "aes256.hh"
 
 using namespace yapet;
+
+SecureArray Aes256::randomIV() const {
+    SecureArray ivec{cipherIvecSize()};
+
+    auto result = RAND_bytes((*ivec), ivec.size());
+    if (result != SSL_SUCCESS) {
+        throw YAPET::YAPETEncryptionException(
+            _("Cannot generate random initialization vector"));
+    }
+
+    return ivec;
+}
+
+SecureArray Aes256::extractIVFromRecord(const SecureArray& record) const {
+    if (record.size() < cipherIvecSize()) {
+        throw YAPET::YAPETEncryptionException(
+            _("Record does not contain initialization vector"));
+    }
+
+    SecureArray ivec{cipherIvecSize()};
+    ivec << record;
+    return ivec;
+}
+
+SecureArray Aes256::extractCipherTextFromRecord(
+    const SecureArray& record) const {
+    auto ivecSize{cipherIvecSize()};
+    if (record.size() <= ivecSize) {
+        throw YAPET::YAPETEncryptionException(
+            _("Record does not contain encrypted data"));
+    }
+
+    auto pointerToCipherText{*record + ivecSize};
+
+    auto cipherTextSize{record.size() - ivecSize};
+    SecureArray cipherText{cipherTextSize};
+
+    std::memcpy(*cipherText, pointerToCipherText, cipherTextSize);
+
+    return cipherText;
+}
+
+void Aes256::checkIVSizeOrThrow(const SecureArray& ivec) {
+    auto supportedIVSize{cipherIvecSize()};
+    auto expectedIVSize{ivec.size()};
+
+    if (supportedIVSize != expectedIVSize) {
+        std::string message{_("Expect cipher to support IV size ")};
+        message += std::to_string(expectedIVSize);
+        message += _(" but cipher supports only IV size ");
+        message += std::to_string(supportedIVSize);
+        throw YAPET::YAPETException(message);
+    }
+}
+
+void Aes256::validateCipherOrThrow(const SecureArray& ivec) {
+    if (getCipher() == nullptr)
+        throw YAPET::YAPETException{_("Unable to get cipher")};
+
+    checkIVSizeOrThrow(ivec);
+}
+
+EVP_CIPHER_CTX* Aes256::initializeOrThrow(const SecureArray& ivec, MODE mode) {
+    EVP_CIPHER_CTX* context = createContext();
+
+    auto success = EVP_CipherInit_ex(context, getCipher(), nullptr,
+                                     *getKey()->key(), *ivec, mode);
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        throw YAPET::YAPETException(_("Error initializing cipher"));
+    }
+
+    success = EVP_CIPHER_CTX_set_key_length(context, getKey()->keySize());
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        std::string message{_("Cannot set key length on context to ")};
+        message += std::to_string(getKey()->keySize());
+        throw YAPET::YAPETException(message);
+    }
+
+    return context;
+}
 
 Aes256::Aes256(const std::shared_ptr<Key>& key) : Crypto(key) {}
 
@@ -54,4 +139,93 @@ Aes256& Aes256::operator=(Aes256&& c) {
     Crypto::operator=(c);
 
     return *this;
+}
+
+SecureArray Aes256::encrypt(const SecureArray& plainText) {
+    if (plainText.size() == 0) {
+        throw YAPET::YAPETException(_("Cannot encrypt empty plain text"));
+    }
+
+    SecureArray ivec{randomIV()};
+
+    validateCipherOrThrow(ivec);
+    EVP_CIPHER_CTX* context = initializeOrThrow(ivec, ENCRYPTION);
+
+    auto blockSize = cipherBlockSize();
+
+    SecureArray temporaryEncryptedData{plainText.size() + (2 * blockSize)};
+    yapet::SecureArray::size_type writtenDataLength;
+
+    auto success =
+        EVP_CipherUpdate(context, *temporaryEncryptedData, &writtenDataLength,
+                         *plainText, plainText.size());
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        throw YAPET::YAPETEncryptionException(_("Error encrypting data"));
+    }
+
+    auto effectiveEncryptedDataLength = writtenDataLength;
+    success = EVP_CipherFinal_ex(context,
+                                 (*temporaryEncryptedData) + writtenDataLength,
+                                 &writtenDataLength);
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        throw YAPET::YAPETEncryptionException(_("Error finalizing encryption"));
+    }
+
+    effectiveEncryptedDataLength += writtenDataLength;
+    assert(effectiveEncryptedDataLength <= temporaryEncryptedData.size());
+
+    SecureArray encryptedData{effectiveEncryptedDataLength};
+
+    destroyContext(context);
+
+    return ivec + (encryptedData << temporaryEncryptedData);
+}
+
+SecureArray Aes256::decrypt(const SecureArray& cipherText) {
+    if (cipherText.size() == 0) {
+        throw YAPET::YAPETException(_("Cannot decrypt empty cipher text"));
+    }
+
+    SecureArray ivec{extractIVFromRecord(cipherText)};
+
+    validateCipherOrThrow(ivec);
+
+    EVP_CIPHER_CTX* context = initializeOrThrow(ivec, DECRYPTION);
+
+    auto blockSize = cipherBlockSize();
+
+    SecureArray cipherTextOnly{extractCipherTextFromRecord(cipherText)};
+
+    SecureArray temporaryDecryptedData{cipherTextOnly.size() + blockSize};
+    int writtenDataLength;
+
+    auto success =
+        EVP_CipherUpdate(context, *temporaryDecryptedData, &writtenDataLength,
+                         *cipherTextOnly, cipherTextOnly.size());
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        throw YAPET::YAPETEncryptionException(_("Error decrypting data"));
+    }
+
+    auto effectiveDecryptedDataLength = writtenDataLength;
+    success = EVP_CipherFinal_ex(context,
+                                 (*temporaryDecryptedData) + writtenDataLength,
+                                 &writtenDataLength);
+    if (success != SSL_SUCCESS) {
+        destroyContext(context);
+        throw YAPET::YAPETEncryptionException(
+            _("Error finalizing decrypting data"));
+    }
+
+    effectiveDecryptedDataLength += writtenDataLength;
+
+    assert(effectiveDecryptedDataLength <= temporaryDecryptedData.size());
+
+    SecureArray decryptedData{effectiveDecryptedDataLength};
+
+    destroyContext(context);
+
+    return (decryptedData << temporaryDecryptedData);
 }

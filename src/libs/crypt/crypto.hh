@@ -19,15 +19,15 @@ class Crypto {
     static constexpr auto SSL_SUCCESS{1};
     enum MODE { DECRYPTION = 0, ENCRYPTION = 1 };
 
-    virtual EVP_CIPHER_CTX* createContext();
-    virtual void destroyContext(EVP_CIPHER_CTX* context);
-    virtual EVP_CIPHER_CTX* initializeOrThrow(MODE mode);
+    EVP_CIPHER_CTX* createContext();
+    void destroyContext(EVP_CIPHER_CTX* context);
+    EVP_CIPHER_CTX* initializeOrThrow(MODE mode);
 
-    virtual void checkIVSizeOrThrow();
-    virtual void validateCipherOrThrow();
+    void checkIVSizeOrThrow();
+    void validateCipherOrThrow();
 
-    int cipherIvecSize();
-    int cipherBlockSize();
+    int cipherIvecSize() const;
+    int cipherBlockSize() const;
 
     std::shared_ptr<Key> getKey() const { return _key; }
 

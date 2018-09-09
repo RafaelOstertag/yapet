@@ -9,7 +9,7 @@
 
 class Aes256Test : public CppUnit::TestFixture {
    private:
-    std::unique_ptr<yapet::Aes256> blowfish;
+    std::unique_ptr<yapet::Aes256> aes256;
 
    public:
     static CppUnit::TestSuite *suite() {
@@ -37,31 +37,31 @@ class Aes256Test : public CppUnit::TestFixture {
         std::shared_ptr<yapet::Key> key{new yapet::Key256{}};
         key->password(yapet::toSecureArray("test"));
 
-        blowfish = std::unique_ptr<yapet::Aes256>{new yapet::Aes256{key}};
+        aes256 = std::unique_ptr<yapet::Aes256>{new yapet::Aes256{key}};
     }
 
     void encryptDecrypt() {
         auto plainText{yapet::toSecureArray("Encryption test")};
-        auto cipherText = blowfish->encrypt(plainText);
-        auto actual = blowfish->decrypt(cipherText);
+        auto cipherText = aes256->encrypt(plainText);
+        auto actual = aes256->decrypt(cipherText);
 
         CPPUNIT_ASSERT(plainText == actual);
     }
 
     void decryptCorruptData() {
         auto plainText{yapet::toSecureArray("Encryption test")};
-        auto cipherText = blowfish->encrypt(plainText);
+        auto cipherText = aes256->encrypt(plainText);
 
         yapet::SecureArray corrupt{cipherText.size() - 2};
         corrupt << cipherText;
 
-        CPPUNIT_ASSERT_THROW(blowfish->decrypt(corrupt),
+        CPPUNIT_ASSERT_THROW(aes256->decrypt(corrupt),
                              YAPET::YAPETEncryptionException);
     }
 
     void decryptWithWrongPassword() {
         auto plainText{yapet::toSecureArray("Encryption test")};
-        auto cipherText = blowfish->encrypt(plainText);
+        auto cipherText = aes256->encrypt(plainText);
 
         std::shared_ptr<yapet::Key> otherKey{new yapet::Key256{}};
         otherKey->password(yapet::toSecureArray("invalid"));
@@ -76,8 +76,8 @@ class Aes256Test : public CppUnit::TestFixture {
     void throwOnEmptyPlainAndCipherText() {
         yapet::SecureArray empty{};
 
-        CPPUNIT_ASSERT_THROW(blowfish->encrypt(empty), YAPET::YAPETException);
-        CPPUNIT_ASSERT_THROW(blowfish->decrypt(empty), YAPET::YAPETException);
+        CPPUNIT_ASSERT_THROW(aes256->encrypt(empty), YAPET::YAPETException);
+        CPPUNIT_ASSERT_THROW(aes256->decrypt(empty), YAPET::YAPETException);
     }
 };
 
