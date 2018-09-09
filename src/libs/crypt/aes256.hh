@@ -44,7 +44,10 @@
 
 namespace yapet {
 /**
- * Encrypt/decrypt data using Blowfish algorithm.
+ * Encrypt/decrypt data using AES 256 algorithm.
+ *
+ * This class does not use the IV provided by the key. Instead it expects the IV
+ * prepended to encrypted data and returns encrypted data with IV prepended.
  */
 class Aes256 : public Crypto {
    private:
@@ -71,7 +74,18 @@ class Aes256 : public Crypto {
 
     ~Aes256() {}
 
+    /**
+     * Encrypt the plain text.
+     *
+     * The encrypted data has the 16 byte IV prepended.
+     */
     virtual SecureArray encrypt(const SecureArray& plainText);
+
+    /**
+     * Decrypt the cipher text.
+     *
+     * The cipher text must have the 16 byte IV prepended.
+     */
     virtual SecureArray decrypt(const SecureArray& cipherText);
 };
 }  // namespace yapet
