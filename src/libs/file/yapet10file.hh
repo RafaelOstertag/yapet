@@ -164,18 +164,6 @@ namespace yapet {
  *
  * Instances of this class keeps the file open for the lifetime of the
  * instance.
- *
- * When saving a password record list, the file is reopened with the \c
- * O_TRUNC specified. The recognition string and header are copied over from
- * the former version of the file.
- *
- * The term 32bit header refers to the FileHeader_32 struct, because of the
- * use of int32_t for storing the time the password was set.
- *
- * The term 64bit header refers to the FileHeader_64 struct, because of the
- * use of int64_t for storing the time the password was set.
- *
- * @sa Record, FileHeader, PasswordRecord
  */
 class Yapet10File : public YapetFile {
    private:
