@@ -184,7 +184,7 @@ pipeline {
                             steps {
                                 withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkgconfig']) {
                                     dir("obj") {
-                                        sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic' LDFLAGS='-R/usr/local/lib'"
+                                        sh "../configure --enable-debug CC=cc CXX=CC LDFLAGS='-R/usr/local/lib'"
                                     }
                                 }
                             }
