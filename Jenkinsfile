@@ -88,10 +88,10 @@ pipeline {
                             }
                         }
 
-                        stage("(LX) Build Docs") {
+                        stage("(LX) Mock Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5'
                                 }
                             }
                         }
