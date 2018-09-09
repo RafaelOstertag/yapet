@@ -139,8 +139,8 @@ pipeline {
 
                         stage("(OB) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
@@ -201,8 +201,8 @@ pipeline {
 
                         stage("(SOL) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
@@ -250,8 +250,8 @@ pipeline {
 
                         stage("(NB) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
