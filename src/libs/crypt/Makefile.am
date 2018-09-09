@@ -25,4 +25,4 @@ noinst_LTLIBRARIES = libyapet-crypt.la
 
 libyapet_crypt_la_SOURCES = yapetexception.h	\
 file.h key448.hh key448.cc key256.hh key256.cc file.cc blowfish.hh blowfish.cc aes256.hh aes256.cc		\
-crypto.hh crypto.cc abstractcryptofactory.hh blowfishfactory.hh blowfishfactory.cc
+crypto.hh crypto.cc abstractcryptofactory.hh blowfishfactory.hh blowfishfactory.cc aes256factory.hh aes256factory.cc
