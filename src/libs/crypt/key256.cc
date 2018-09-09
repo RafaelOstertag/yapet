@@ -44,10 +44,6 @@ namespace {
  * The max length of the blowfish key in bytes (448 bits)
  */
 constexpr auto KEY_LENGTH = 32;
-/**
- * The length of the initialization vector
- */
-constexpr auto IVEC_LENGTH = 16;
 
 inline EVP_MD_CTX* createContext() {
 #ifdef HAVE_EVP_MD_CTX_CREATE
@@ -110,7 +106,7 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key256::Key256() : _key{0}, _ivec{IVEC_LENGTH} {}
+Key256::Key256() : _key{0} {}
 
 void Key256::password(const SecureArray& password) {
     SecureArray passwordWithoutZeroTerminator{password.size() - 1};
@@ -126,20 +122,16 @@ void Key256::password(const SecureArray& password) {
                  _key.size(), KEY_LENGTH);
         throw YAPET::YAPETException(tmp);
     }
-
-    std::memcpy(*_ivec, *_key, IVEC_LENGTH);
 }
 
-Key256::Key256(Key256&& k)
-    : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
+Key256::Key256(Key256&& k) : _key{std::move(k._key)} {}
 
-Key256::Key256(const Key256& k) : _key{k._key}, _ivec{k._ivec} {}
+Key256::Key256(const Key256& k) : _key{k._key} {}
 
 Key256& Key256::operator=(const Key256& k) {
     if (this == &k) return *this;
 
     _key = k._key;
-    _ivec = k._ivec;
     return *this;
 }
 
@@ -147,6 +139,5 @@ Key256& Key256::operator=(Key256&& k) {
     if (this == &k) return *this;
 
     _key = std::move(k._key);
-    _ivec = std::move(k._ivec);
     return *this;
 }

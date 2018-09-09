@@ -49,23 +49,19 @@
  */
 namespace yapet {
 /**
- * @brief Converts the password into the 448bits key
+ * @brief Converts the password into the 256bits key
  *
  * Converts the password into the key which is used by the other
  * cryptographic related classes.
  *
- * The key uses the maximum length of 448bits (56bytes) allowed
- * for blowfish.
+ * The key uses the maximum length of 256bits (32bytes) allowed
+ * for AES 256.
  *
- * The key is computed using three passes. The first pass hashes
- * the password using the sha1 algorithm. This hash is then
- * re-hashed using md5 which is then appended to the key generated
- * by the previous pass (sha1 + md5). The last pass hashes the
- * result of the former two passes using RIPEMD-160 and appended
- * the result to the key (sha1 + md5 + ripemd160).
+ * The key is computed hashing the password using SHA-256
  *
- * The initialization vector is computed by hashing the key using
- * the md5 algorithm and taking only the first eight bytes.
+ * This class does not support initialization vector by deriving it from the
+ * password. When using this class, the initialization vector must be obtained
+ * by other means.
  */
 class Key256 : public Key {
    private:
@@ -75,13 +71,6 @@ class Key256 : public Key {
      * This is the key used to encrypt and decrypt data.
      */
     SecureArray _key;
-    /**
-     * @brief Holds the initialization vector
-     *
-     * The initialization vector used for encryption and
-     * decryption.
-     */
-    SecureArray _ivec;
 
    public:
     Key256();
@@ -99,14 +88,12 @@ class Key256 : public Key {
 
     SecureArray::size_type keySize() const { return _key.size(); }
 
-    SecureArray ivec() const { return _ivec; }
+    SecureArray ivec() const { return SecureArray{}; }
 
-    SecureArray::size_type ivecSize() const { return _ivec.size(); }
+    SecureArray::size_type ivecSize() const { return 0; }
 
     //! Compares two keys for equality
-    bool operator==(const Key256& k) const {
-        return _key == k._key && _ivec == k._ivec;
-    }
+    bool operator==(const Key256& k) const { return _key == k._key; }
     bool operator==(const Key& k) const {
         if (typeid(k) != typeid(*this)) {
             return false;
