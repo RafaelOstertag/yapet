@@ -55,7 +55,7 @@ inline void validateCipherOrThrow(const EVP_CIPHER* cipher, int ivSize) {
     checkIVSizeOrThrow(ivSize, EVP_CIPHER_iv_length(cipher));
 }
 
-inline EVP_CIPHER_CTX* initializetOrThrow(
+inline EVP_CIPHER_CTX* initializeOrThrow(
     const EVP_CIPHER* cipher, const std::shared_ptr<yapet::Key>& key,
     MODE mode) {
     EVP_CIPHER_CTX* context = createContext();
@@ -112,7 +112,7 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
     }
 
     validateCipherOrThrow(getCipher(), _key->ivecSize());
-    EVP_CIPHER_CTX* context = initializetOrThrow(getCipher(), _key, ENCRYPTION);
+    EVP_CIPHER_CTX* context = initializeOrThrow(getCipher(), _key, ENCRYPTION);
 
     auto blockSize = cipherBlockSize(getCipher());
 
@@ -149,7 +149,7 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
         throw YAPET::YAPETException(_("Cannot decrypt empty cipher text"));
     }
     validateCipherOrThrow(getCipher(), _key->ivecSize());
-    EVP_CIPHER_CTX* context = initializetOrThrow(getCipher(), _key, DECRYPTION);
+    EVP_CIPHER_CTX* context = initializeOrThrow(getCipher(), _key, DECRYPTION);
 
     auto blockSize = cipherBlockSize(getCipher());
 
