@@ -164,69 +164,6 @@ pipeline {
 					}
 				} // stage("OpenBSD")
 
-				stage("Solaris") {
-					agent {
-						label "solaris"
-					}
-					stages {
-						stage("(SOL) Bootstrap Build") {
-                             steps {
-                                sh "git log --stat > ChangeLog"
-                                dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
-                                }
-                                sh "touch README"
-                                sh "autoreconf -I m4 -I /usr/share/aclocal -i"
-                            }
-                        }
-
-                        stage("(SOL) Configure") {
-                            steps {
-                                withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkgconfig']) {
-                                    dir("obj") {
-                                        sh "../configure --enable-debug CC=cc CXX=CC LDFLAGS='-R/usr/local/lib'"
-                                    }
-                                }
-                            }
-                        }
-
-                        // stage("(SOL) Fix libyacurs build") {
-                        //     steps {
-                        //         dir("obj/libyacurs/src") {
-                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                        //         }
-                        //         dir("obj/libyacurs/tests/preloadlib") {
-                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                        //         }
-                        //     }
-                        // }
-
-                        stage("(SOL) Build Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                                sh 'touch DESIGN README.Cygwin'
-                            }
-                        }
-						 stage("(SOL) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all'
-                                }
-                             }
-                         }
-
-                        stage("(SOL) Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check'
-                                }
-                            }
-                        }
-					}
-				} // stage("Solaris")
-
 				stage("NetBSD") {
 					agent {
 						label "netbsd"
