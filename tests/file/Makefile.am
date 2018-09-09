@@ -3,10 +3,10 @@ yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
-EXTRA_DIST = testpaths.h.in yapet10file-corrupt-identifier.dat
-CLEANFILES = yapet-fileutils-test yapet-rawfile-test yapet-yapet10file-test yapet-yapetfile-test
+EXTRA_DIST = testpaths.h.in yapet10file-corrupt-identifier.dat yapet20file-corrupt-identifier.dat
+CLEANFILES = yapet-fileutils-test yapet-rawfile-test yapet-yapet10file-test yapet-yapet20file-test yapet-yapetfile-test
 
-check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file header10 headerversion
+check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file yapet20file header10 headerversion
 TESTS = $(check_PROGRAMS)       
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/utils \
@@ -22,5 +22,6 @@ rawfile_SOURCES = rawfile.cc
 fileutils_SOURCES = fileutils.cc
 yapetfile_SOURCES = yapetfile.cc
 yapet10file_SOURCES = yapet10file.cc
+yapet20file_SOURCES = yapet20file.cc
 header10_SOURCES = header10.cc
 headerversion_SOURCES = headerversion.cc
