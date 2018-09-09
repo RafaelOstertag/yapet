@@ -91,7 +91,7 @@ pipeline {
                         stage("(LX) Mock Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
