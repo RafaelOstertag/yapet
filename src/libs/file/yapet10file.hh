@@ -173,10 +173,6 @@ class Yapet10File : public YapetFile {
     bool hasValidFormat();
 
    public:
-    const std::uint8_t* recognitionString() const {
-        return _RECOGNITION_STRING;
-    };
-    int recognitionStringSize() const { return _RECOGNITION_STRING_SIZE; };
     Yapet10File(const std::string& filename, bool create = false,
                 bool secure = true);
 
@@ -199,6 +195,14 @@ class Yapet10File : public YapetFile {
     virtual void writeMetaData(const SecureArray& metaData);
 
     virtual void writePasswordRecords(const std::list<SecureArray>& passwords);
+
+    virtual const std::uint8_t* recognitionString() const {
+        return _RECOGNITION_STRING;
+    };
+
+    virtual int recognitionStringSize() const {
+        return _RECOGNITION_STRING_SIZE;
+    };
 };
 }  // namespace yapet
 
