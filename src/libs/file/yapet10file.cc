@@ -43,14 +43,10 @@
 
 using namespace yapet;
 
-const std::uint8_t Yapet10File::_recognitionString[]{'Y', 'A', 'P', 'E',
-                                                     'T', '1', '.', '0'};
-const int Yapet10File::_recognitionStringSize{
-    sizeof(Yapet10File::_recognitionString)};
-
-const std::uint8_t* Yapet10File::getRecognitionString() {
-    return Yapet10File::_recognitionString;
-}
+const std::uint8_t Yapet10File::_RECOGNITION_STRING[]{'Y', 'A', 'P', 'E',
+                                                      'T', '1', '.', '0'};
+const int Yapet10File::_RECOGNITION_STRING_SIZE{
+    sizeof(Yapet10File::_RECOGNITION_STRING)};
 
 bool Yapet10File::hasValidFormat() {
     SecureArray identifier;
@@ -60,12 +56,12 @@ bool Yapet10File::hasValidFormat() {
         return false;
     }
 
-    if (identifier.size() != Yapet10File::_recognitionStringSize) {
+    if (identifier.size() != recognitionStringSize()) {
         return false;
     }
 
-    for (auto i{0}; i < Yapet10File::_recognitionStringSize; i++) {
-        if (Yapet10File::_recognitionString[i] != (*identifier)[i]) {
+    for (auto i{0}; i < recognitionStringSize(); i++) {
+        if (recognitionString()[i] != (*identifier)[i]) {
             return false;
         }
     }
@@ -102,7 +98,7 @@ SecureArray Yapet10File::readIdentifier() {
     RawFile& rawFile{getRawFile()};
 
     rawFile.rewind();
-    auto result = rawFile.read(Yapet10File::_recognitionStringSize);
+    auto result = rawFile.read(recognitionStringSize());
     if (result.second == false) {
         throw FileFormatError{_("Cannot read recognition string")};
     }
@@ -114,7 +110,7 @@ SecureArray Yapet10File::readMetaData() {
     RawFile& rawFile{getRawFile()};
 
     // Skip the recognition string.
-    rawFile.seekAbsolute(Yapet10File::_recognitionStringSize);
+    rawFile.seekAbsolute(recognitionStringSize());
     auto resultPair{rawFile.read()};
     if (resultPair.second == false) {
         throw FileFormatError{_("Cannot read meta data")};
@@ -141,14 +137,14 @@ std::list<SecureArray> Yapet10File::readPasswordRecords() {
 void Yapet10File::writeIdentifier() {
     RawFile& rawFile{getRawFile()};
     rawFile.rewind();
-    rawFile.write(Yapet10File::_recognitionString,
-                  Yapet10File::_recognitionStringSize);
+    rawFile.write(recognitionString(),
+                  recognitionStringSize());
 }
 
 void Yapet10File::writeMetaData(const SecureArray& metaData) {
     RawFile& rawFile{getRawFile()};
 
-    rawFile.seekAbsolute(Yapet10File::_recognitionStringSize);
+    rawFile.seekAbsolute(recognitionStringSize());
 
     rawFile.write(metaData);
     rawFile.flush();

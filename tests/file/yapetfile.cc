@@ -51,6 +51,14 @@ class YapetFileMock : public yapet::YapetFile {
         throw std::runtime_error("Not implemented");
     }
 
+    const std::uint8_t* recognitionString() const {
+        throw std::runtime_error("Not implemented");
+    }
+
+    int recognitionStringSize() const {
+        throw std::runtime_error("Not implemented");
+    }
+
     void open() { openRawFile(); }
 };
 

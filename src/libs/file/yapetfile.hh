@@ -48,6 +48,8 @@ class YapetFile {
     bool _secure;
 
    protected:
+    virtual int recognitionStringSize() const = 0;
+    virtual const uint8_t* recognitionString() const = 0;
     inline RawFile& getRawFile() { return _rawFile; }
 
     void openRawFile();

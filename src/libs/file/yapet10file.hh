@@ -167,13 +167,16 @@ namespace yapet {
  */
 class Yapet10File : public YapetFile {
    private:
-    static const std::uint8_t _recognitionString[];
-    static const int _recognitionStringSize;
+    static const std::uint8_t _RECOGNITION_STRING[];
+    static const int _RECOGNITION_STRING_SIZE;
 
     bool hasValidFormat();
 
    public:
-    static const std::uint8_t* getRecognitionString();
+    const std::uint8_t* recognitionString() const {
+        return _RECOGNITION_STRING;
+    };
+    int recognitionStringSize() const { return _RECOGNITION_STRING_SIZE; };
     Yapet10File(const std::string& filename, bool create = false,
                 bool secure = true);
 
