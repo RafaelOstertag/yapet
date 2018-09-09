@@ -19,11 +19,12 @@ class Crypto {
     static constexpr auto SSL_SUCCESS{1};
     enum MODE { DECRYPTION = 0, ENCRYPTION = 1 };
 
-    virtual void checkIVSizeOrThrow();
     virtual EVP_CIPHER_CTX* createContext();
     virtual void destroyContext(EVP_CIPHER_CTX* context);
-    virtual void validateCipherOrThrow();
     virtual EVP_CIPHER_CTX* initializeOrThrow(MODE mode);
+
+    virtual void checkIVSizeOrThrow();
+    virtual void validateCipherOrThrow();
 
     int cipherIvecSize();
     int cipherBlockSize();
