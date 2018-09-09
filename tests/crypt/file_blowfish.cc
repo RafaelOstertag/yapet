@@ -19,7 +19,7 @@
 
 constexpr auto TEST_PASSWORD{"Secret"};
 
-constexpr auto FN{BUILDDIR "/testfile.gps"};
+constexpr auto FN{BUILDDIR "/testfile_blowfish.gps"};
 constexpr auto ROUNDS{10};
 
 constexpr auto NAME{"Name"};
@@ -96,45 +96,46 @@ inline void comparePasswordRecords(const yapet::PasswordRecord &actual,
                     reinterpret_cast<const char *>(expected.comment())) == 0);
 }
 
-class FileTest : public CppUnit::TestFixture {
+class BlowfishFileTest : public CppUnit::TestFixture {
    public:
     static CppUnit::TestSuite *suite() {
-        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Blowfish");
+        CppUnit::TestSuite *suiteOfTests =
+            new CppUnit::TestSuite("Blowfish File");
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
-            "should correctly read empty file", &FileTest::createNewFile));
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
+            "should correctly read empty file", &BlowfishFileTest::createNewFile));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should correctly read empty file",
-            &FileTest::createAndReadEmptyFile));
+            &BlowfishFileTest::createAndReadEmptyFile));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should throw expected exception on invalid password",
-            &FileTest::openEmptyFileWithInvalidPassword));
+            &BlowfishFileTest::openEmptyFileWithInvalidPassword));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
-            "should write passwords", &FileTest::writePasswords));
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
+            "should write passwords", &BlowfishFileTest::writePasswords));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should detect file modification on password save",
-            &FileTest::detectModificationOnSave));
+            &BlowfishFileTest::detectModificationOnSave));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should force password save on modified file",
-            &FileTest::forceSave));
+            &BlowfishFileTest::forceSave));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should get the correct time when the master password was set",
-            &FileTest::timeMasterPasswordSet));
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
-            "should properly set new password", &FileTest::setNewPassword));
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+            &BlowfishFileTest::timeMasterPasswordSet));
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
+            "should properly set new password", &BlowfishFileTest::setNewPassword));
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should allow saving passwords after password change",
-            &FileTest::allowSaveAfterPasswordSave));
+            &BlowfishFileTest::allowSaveAfterPasswordSave));
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<FileTest>(
+        suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should throw exception on reading corrupt file",
-            &FileTest::corruptFile));
+            &BlowfishFileTest::corruptFile));
 
         return suiteOfTests;
     }
@@ -472,7 +473,7 @@ class FileTest : public CppUnit::TestFixture {
         std::shared_ptr<yapet::BlowfishFactory> factory{
             new yapet::BlowfishFactory{password}};
 
-        YAPET::File file{factory, BUILDDIR "/corrupt.pet", false, false};
+        YAPET::File file{factory, BUILDDIR "/corrupt_blowfish.pet", false, false};
 
         CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
     }
@@ -480,6 +481,6 @@ class FileTest : public CppUnit::TestFixture {
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest(FileTest ::suite());
+    runner.addTest(BlowfishFileTest ::suite());
     return runner.run() ? 0 : 1;
 }

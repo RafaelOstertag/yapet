@@ -12,9 +12,9 @@ chmod_verbose = $(chmod_verbose_$(V))
 chmod_verbose_ = $(chmod_verbose_$(AM_DEFAULT_VERBOSITY))
 chmod_verbose_0 = @echo "  CHMOD  $@";
 
-CLEANFILES = testfile.gps testfile.gps.bak encryptiontest.gps encryptiontest.gps.bak	\
+CLEANFILES = testfile_blowfish.gps testfile_blowfish.gps.bak encryptiontest.gps encryptiontest.gps.bak	\
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
-test8.pet test9.pet test10.pet corrupt.pet f32le0.5.pet	\
+test8.pet test9.pet test10.pet corrupt_blowfish.pet corrupt_aes256.pet f32le0.5.pet	\
 f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
 f64le0.6.pet f64be0.6.pet
 
@@ -30,7 +30,7 @@ f64le0.6.pet f64be0.6.pet
 # f32be0.6.pet.in	file created on 32bit big endian arch with a 0.6 version
 # f64le0.6.pet.in	file created on 64bit little endian arch with a 0.6 version
 # f64be0.6.pet.in	file created on 64bit big endian arch with a 0.6 version
-EXTRA_DIST = corrupt.pet.in f32le0.5.pet.in		\
+EXTRA_DIST = corrupt_blowfish.pet.in corrupt_aes256.pet.in f32le0.5.pet.in		\
 f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
 f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 
@@ -39,7 +39,7 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory file foreign
+check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign
 
 TESTS = $(check_PROGRAMS)
 
@@ -71,7 +71,10 @@ aes256_SOURCES = aes256.cc
 blowfishfactory_SOURCES = blowfishfactory.cc
 aes256factory_SOURCES = aes256factory.cc
 
-file_SOURCES = file.cc
-file_DEPENDENCIES = corrupt.pet
+file_blowfish_SOURCES = file_blowfish.cc
+file_blowfish_DEPENDENCIES = corrupt_blowfish.pet
+
+file_aes256_SOURCES = file_aes256.cc
+file_aes256_DEPENDENCIES = corrupt_aes256.pet
 
 SUFFIXES = .pet .pet.in
