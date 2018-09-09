@@ -28,7 +28,7 @@ class Key448Test : public CppUnit::TestFixture {
 
    public:
     static CppUnit::TestSuite *suite() {
-        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Key");
+        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("Key 448");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<Key448Test>(
             "should create proper key", &Key448Test::testKey));
