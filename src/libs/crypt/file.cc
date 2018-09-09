@@ -84,6 +84,7 @@ File::File(std::shared_ptr<yapet::AbstractCryptoFactory> abstractCryptoFactory,
       _abstractCryptoFactory{abstractCryptoFactory},
       _yapetFile{abstractCryptoFactory->file(filename, create, secure)},
       _crypto{abstractCryptoFactory->crypto()} {
+    _yapetFile->open();
     if (getFileSize(filename) == 0) {
         initializeEmptyFile();
     } else {
@@ -145,6 +146,7 @@ void File::setNewKey(
 
     std::unique_ptr<yapet::YapetFile> oldFile{
         _abstractCryptoFactory->file(backupfilename, false, false)};
+    oldFile->open();
 
     auto cryptoFactory{newCryptoFactory};
     auto otherCrypto{cryptoFactory->crypto()};
@@ -153,6 +155,7 @@ void File::setNewKey(
     _crypto.swap(otherCrypto);
 
     _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);
+    _yapetFile->open();
 
     initializeEmptyFile();
     std::list<yapet::SecureArray> newlyEncryptedRecords{};

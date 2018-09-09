@@ -48,8 +48,6 @@ class YapetFile {
     bool _secure;
 
    protected:
-    virtual int recognitionStringSize() const = 0;
-    virtual const uint8_t* recognitionString() const = 0;
     inline RawFile& getRawFile() { return _rawFile; }
 
     void openRawFile();
@@ -72,6 +70,8 @@ class YapetFile {
     YapetFile& operator=(YapetFile&& other);
 
     virtual ~YapetFile();
+
+    virtual void open() = 0;
 
     /**
      * Indicate whether the file has valid format.
@@ -116,6 +116,9 @@ class YapetFile {
     bool isCreate() const { return _create; }
 
     std::string filename() const { return _rawFile.filename(); }
+
+    virtual int recognitionStringSize() const = 0;
+    virtual const uint8_t* recognitionString() const = 0;
 };
 }  // namespace yapet
 

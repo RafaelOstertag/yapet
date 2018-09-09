@@ -44,9 +44,54 @@
 
 using namespace yapet;
 
-const std::uint8_t Yapet10File::_RECOGNITION_STRING[]{'Y', 'A', 'P', 'E',
-                                                      'T', '1', '.', '0'};
-const int Yapet10File::_RECOGNITION_STRING_SIZE{8};
+namespace {
+constexpr std::uint8_t _RECOGNITION_STRING_10[]{'Y', 'A', 'P', 'E',
+                                                'T', '1', '.', '0'};
+constexpr int _RECOGNITION_STRING_10_SIZE{8};
+}  // namespace
+
+std::string Yapet10File::recognitionStringAsString() const {
+    auto recogStringSize{recognitionStringSize()};
+
+    char* buffer{new char[recogStringSize + 1]};
+    std::memcpy(buffer, reinterpret_cast<const char*>(recognitionString()),
+                recogStringSize);
+
+    buffer[recogStringSize] = '\0';
+    std::string result{buffer};
+    delete[] buffer;
+
+    return result;
+}
+
+Yapet10File::Yapet10File(const std::string& filename, bool create, bool secure)
+    : YapetFile{filename, create, secure} {}
+
+Yapet10File::Yapet10File(Yapet10File&& other) : YapetFile{std::move(other)} {}
+
+Yapet10File& Yapet10File::operator=(Yapet10File&& other) {
+    if (&other == this) {
+        return *this;
+    }
+
+    YapetFile::operator=(std::move(other));
+
+    return *this;
+}
+
+Yapet10File::~Yapet10File() {}
+
+void Yapet10File::open() {
+    openRawFile();
+    if (!isCreate() && !hasValidFormat()) {
+        std::string message{_("File ")};
+        message += filename();
+        message += _(" is not a ");
+        message += recognitionStringAsString();
+        message += _(" file");
+        throw FileFormatError(message.c_str());
+    }
+}
 
 bool Yapet10File::hasValidFormat() {
     SecureArray identifier;
@@ -70,47 +115,6 @@ bool Yapet10File::hasValidFormat() {
 
     return true;
 }
-
-std::string Yapet10File::recognitionStringAsString() const {
-    auto recogStringSize{recognitionStringSize()};
-
-    char* buffer{new char[recogStringSize + 1]};
-    std::memcpy(buffer, reinterpret_cast<const char*>(recognitionString()),
-                recogStringSize);
-
-    buffer[recogStringSize] = '\0';
-    std::string result{buffer};
-    delete[] buffer;
-
-    return result;
-}
-
-Yapet10File::Yapet10File(const std::string& filename, bool create, bool secure)
-    : YapetFile{filename, create, secure} {
-    openRawFile();
-    if (!create && !hasValidFormat()) {
-        std::string message{_("File ")};
-        message += filename;
-        message += _(" is not a ");
-        message += recognitionStringAsString();
-        message += _(" file");
-        throw FileFormatError(message.c_str());
-    }
-}
-
-Yapet10File::Yapet10File(Yapet10File&& other) : YapetFile{std::move(other)} {}
-
-Yapet10File& Yapet10File::operator=(Yapet10File&& other) {
-    if (&other == this) {
-        return *this;
-    }
-
-    YapetFile::operator=(std::move(other));
-
-    return *this;
-}
-
-Yapet10File::~Yapet10File() {}
 
 SecureArray Yapet10File::readIdentifier() {
     RawFile& rawFile{getRawFile()};
@@ -190,4 +194,12 @@ void Yapet10File::writePasswordRecords(
     }
 
     rawFile.flush();
+}
+
+const std::uint8_t* Yapet10File::recognitionString() const {
+    return _RECOGNITION_STRING_10;
+};
+
+int Yapet10File::recognitionStringSize() const {
+    return _RECOGNITION_STRING_10_SIZE;
 }

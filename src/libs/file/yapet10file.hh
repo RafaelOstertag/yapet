@@ -27,13 +27,6 @@
 // well as that of the covered work.
 //
 
-/*
- * File:   Yapet10File.hh
- * Author: rafi
- *
- * Created on August 19, 2018, 3:12 PM
- */
-
 #ifndef _YAPET10FILE_HH
 #define _YAPET10FILE_HH
 
@@ -167,10 +160,6 @@ namespace yapet {
  */
 class Yapet10File : public YapetFile {
    private:
-    static const std::uint8_t _RECOGNITION_STRING[];
-    static const int _RECOGNITION_STRING_SIZE;
-
-    bool hasValidFormat();
     std::string recognitionStringAsString() const;
 
    public:
@@ -183,7 +172,11 @@ class Yapet10File : public YapetFile {
     Yapet10File(Yapet10File&& other);
     Yapet10File& operator=(Yapet10File&& other);
 
-    ~Yapet10File();
+    virtual ~Yapet10File();
+
+    virtual void open();
+
+    virtual bool hasValidFormat();
 
     virtual SecureArray readIdentifier();
 
@@ -197,13 +190,8 @@ class Yapet10File : public YapetFile {
 
     virtual void writePasswordRecords(const std::list<SecureArray>& passwords);
 
-    virtual const std::uint8_t* recognitionString() const {
-        return _RECOGNITION_STRING;
-    };
-
-    virtual int recognitionStringSize() const {
-        return _RECOGNITION_STRING_SIZE;
-    };
+    virtual int recognitionStringSize() const;
+    virtual const uint8_t* recognitionString() const;
 };
 }  // namespace yapet
 

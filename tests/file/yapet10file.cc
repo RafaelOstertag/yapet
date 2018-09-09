@@ -22,7 +22,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
    public:
     static CppUnit::TestSuite* suite() {
         CppUnit::TestSuite* suiteOfTests =
-            new CppUnit::TestSuite("Yapet10File test");
+            new CppUnit::TestSuite("Yapet 1.0 File test");
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
             "should not fail opening a new file",
             &Yapet10FileTest::openNewFile});
@@ -58,39 +58,45 @@ class Yapet10FileTest : public CppUnit::TestFixture {
 
     void tearDown() { ::unlink(TEST_FILE); }
 
-    void openNewFile() { yapet::Yapet10File newFile{TEST_FILE, true, false}; }
+    void openNewFile() {
+        yapet::Yapet10File newFile{TEST_FILE, true, false};
+        newFile.open();
+    }
 
     void failOpeningEmptyFile() {
         int fd = ::open(TEST_FILE, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
         CPPUNIT_ASSERT(fd > -1);
         ::close(fd);
-        CPPUNIT_ASSERT_THROW((yapet::Yapet10File{TEST_FILE, false, false}),
-                             yapet::FileFormatError);
+
+        yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        CPPUNIT_ASSERT_THROW(yapet10File.open(), yapet::FileFormatError);
     }
 
     void failOpeningFileWithWrongIdentifier() {
-        CPPUNIT_ASSERT_THROW(
-            (yapet::Yapet10File{SRCDIR "/yapet10file-corrupt-identifier.dat",
-                                false, false}),
-            yapet::FileFormatError);
+        yapet::Yapet10File yapet10File{
+            SRCDIR "/yapet10file-corrupt-identifier.dat", false, false};
+        CPPUNIT_ASSERT_THROW(yapet10File.open(), yapet::FileFormatError);
     }
 
     void readIdentifier() {
         // try/catch block to close file when yapet10File goes out of scope
         try {
             yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+            yapet10File.open();
             yapet10File.writeIdentifier();
         } catch (...) {
             CPPUNIT_FAIL("No exception expected");
         }
 
         yapet::Yapet10File yapet10File2{TEST_FILE, false, false};
+        yapet10File2.open();
         CPPUNIT_ASSERT(
             std::memcmp(*yapet10File2.readIdentifier(), "YAPET1.0", 8) == 0);
     }
 
     void failReadingEmptyMetaData() {
         yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+        yapet10File.open();
         yapet10File.writeIdentifier();
 
         CPPUNIT_ASSERT_THROW(yapet10File.readMetaData(),
@@ -101,6 +107,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         // try/catch block to close file when yapet10File goes out of scope
         try {
             yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+            yapet10File.open();
             yapet10File.writeIdentifier();
 
             yapet::SecureArray metaData(2);
@@ -112,6 +119,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         }
 
         yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        yapet10File.open();
         auto metaData = yapet10File.readMetaData();
 
         CPPUNIT_ASSERT((*metaData)[0] == 'A' && (*metaData)[1] == 'B');
@@ -121,6 +129,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         // try/catch block to close file when yapet10File goes out of scope
         try {
             yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+            yapet10File.open();
             yapet10File.writeIdentifier();
 
             yapet::SecureArray metaData(1);
@@ -131,12 +140,15 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         }
 
         yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        yapet10File.open();
+
         auto passwords = yapet10File.readPasswordRecords();
         CPPUNIT_ASSERT(passwords.size() == 0);
     }
 
     void writeTestPasswords() {
         yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+        yapet10File.open();
         yapet10File.writeIdentifier();
 
         yapet::SecureArray metaData(1);
@@ -167,6 +179,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         writeTestPasswords();
 
         yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        yapet10File.open();
         auto passwords = yapet10File.readPasswordRecords();
 
         testPasswordRecords(passwords);
@@ -176,6 +189,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         writeTestPasswords();
 
         yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        yapet10File.open();
 
         yapet::Yapet10File yapet10FileMoved{std::move(yapet10File)};
 
@@ -190,6 +204,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         writeTestPasswords();
 
         yapet::Yapet10File yapet10File{TEST_FILE, false, false};
+        yapet10File.open();
 
         yapet::Yapet10File yapet10FileMoved = std::move(yapet10File);
 
