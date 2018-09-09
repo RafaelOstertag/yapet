@@ -171,6 +171,7 @@ class Yapet10File : public YapetFile {
     static const int _RECOGNITION_STRING_SIZE;
 
     bool hasValidFormat();
+    std::string recognitionStringAsString() const;
 
    public:
     Yapet10File(const std::string& filename, bool create = false,
