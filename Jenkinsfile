@@ -88,11 +88,12 @@ pipeline {
                             }
                         }
 
-                        stage("(LX) Build Docs") {
+                        stage("(LX) Mock Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
+                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(LX) Build") {
@@ -139,9 +140,10 @@ pipeline {
 
                         stage("(OB) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
+                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(OB) Build") {
@@ -182,28 +184,29 @@ pipeline {
                             steps {
                                 withEnv(['PKG_CONFIG_PATH=/usr/local/lib/pkgconfig']) {
                                     dir("obj") {
-                                        sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic' LDFLAGS='-R/usr/local/lib'"
+                                        sh "../configure --enable-debug CC=cc CXX=CC LDFLAGS='-R/usr/local/lib'"
                                     }
                                 }
                             }
                         }
 
-                        stage("(SOL) Fix libyacurs build") {
-                            steps {
-                                dir("obj/libyacurs/src") {
-                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                                }
-                                dir("obj/libyacurs/tests/preloadlib") {
-                                    sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
-                                }
-                            }
-                        }
+                        // stage("(SOL) Fix libyacurs build") {
+                        //     steps {
+                        //         dir("obj/libyacurs/src") {
+                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
+                        //         }
+                        //         dir("obj/libyacurs/tests/preloadlib") {
+                        //             sh 'gsed -i s/-std=c++98/-std=c++14/g Makefile'
+                        //         }
+                        //     }
+                        // }
 
                         stage("(SOL) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
+                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(SOL) Build") {
@@ -250,9 +253,10 @@ pipeline {
 
                         stage("(NB) Build Docs") {
                             steps {
-                                dir("obj/doc") {
-                                    sh '$MAKE -f Makefile.doc'
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
+                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(NB) Build") {
