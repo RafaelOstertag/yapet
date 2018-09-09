@@ -39,7 +39,7 @@ f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 key256 blowfish blowfishfactory file foreign
+check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory file foreign
 
 TESTS = $(check_PROGRAMS)
 
@@ -67,6 +67,7 @@ f32le0.6.pet f32be0.6.pet f64le0.6.pet f64be0.6.pet
 key448_SOURCES = key448.cc
 key256_SOURCES = key256.cc
 blowfish_SOURCES = blowfish.cc
+aes256_SOURCES = aes256.cc
 blowfishfactory_SOURCES = blowfishfactory.cc
 
 file_SOURCES = file.cc
