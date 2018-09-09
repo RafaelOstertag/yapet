@@ -43,7 +43,7 @@ namespace yapet {
  * records to and from disk.
  *
  * Each file created by this class starts with a unencrypted recognition
- * string which currently consists of the 8 bytes "YAPET1.0" as depicted
+ * string which currently consists of the 8 bytes "YAPET2.0" as depicted
  * below.
  *
 @verbatim
@@ -55,19 +55,25 @@ namespace yapet {
  *
  * After the recognition string a 4 byte unsigned integer which is stored
  * in big-endian order follows. This indicator is read to determine how
- * many bytes to read in order to get the encrypted header.
+ * many bytes to read in order to get the IV and encrypted data.
+ *
+ * All encrypted data follows this scheme.
  *
 @verbatim
 +--------+--------+--------+--------+
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted header exactly as many bytes    |
-|        indicated by the prefix             |
+|          Initialization vector (IV)        |
+|               16 bytes                     |
++--------+--------+--------+--------+--...---+
+|  Encrypted password record of length       |
+|   (length indicator) - 16 bytes            |
 +--------+--------+--------+--------+--...---+
 @endverbatim
  *
-  The unencrypted header size is 29 bytes.
+ * The first record after the recognition string is the header. The
+ * unencrypted header size is 29 bytes.
  *
 @verbatim
 +--------+
@@ -82,24 +88,21 @@ namespace yapet {
 +--------+--------+--------+--------+--------+--------+--------+--------+
 @endverbatim
  *
- * Each encrypted password record is prefixed by a 4 byte unsigned integer
- * which is stored in big-endian order. The methods take care returning them
- * in the appropriate order of the host system. That integer is used to
- * indicate the length of the following encrypted data chunk.
+ * After the encrypted header, the encrypted password records follow.
  *
 @verbatim
 +--------+--------+--------+--------+
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted password record of exactly as   |
-|   many bytes as indicated by the prefix    |
+|  IV and encrypted password record of       |
+|   exactly as many bytes as indicated       |
 +--------+--------+--------+--------+--...---+
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted password record of exactly as   |
-|   many bytes as indicated by the prefix    |
+|  IV and encrypted password record of       |
+|   exactly as many bytes as indicated       |
 +--------+--------+--------+--------+--...---+
       [ . . . ]
 @endverbatim
@@ -115,20 +118,20 @@ namespace yapet {
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted header exactly as many bytes    |
-|        indicated by the prefix             |
+| IV and encrypted header of exactly as many |
+| bytes as indicated by the length indicator |
 +--------+--------+--------+--------+--...---+
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted password record of exactly as   |
-|   many bytes as indicated by the prefix    |
+|  IV and encrypted password record of       |
+|  excatly many bytes as indicated           |
 +--------+--------+--------+--------+--...---+
 |   Length indicator in big-endian  |
 |         order (4 bytes)           |
 +--------+--------+--------+--------+--...---+
-|  Encrypted password record of exactly as   |
-|   many bytes as indicated by the prefix    |
+|  IV and encrypted password record of       |
+|  excatly many bytes as indicated           |
 +--------+--------+--------+--------+--...---+
       [ . . . ]
 @endverbatim
