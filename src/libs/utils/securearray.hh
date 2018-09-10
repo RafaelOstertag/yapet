@@ -67,6 +67,7 @@ SecureArray operator+(const SecureArray& a, const SecureArray& b);
 
 SecureArray toSecureArray(const char* str);
 SecureArray toSecureArray(const std::string& str);
+SecureArray toSecureArray(const std::uint8_t* ptr, SecureArray::size_type size);
 
 }  // namespace yapet
 #endif

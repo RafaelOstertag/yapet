@@ -252,10 +252,14 @@ class SecureArrayTest : public CppUnit::TestFixture {
     void testToSecureArray() {
         yapet::SecureArray a = yapet::toSecureArray("ABCDE");
         yapet::SecureArray b = yapet::toSecureArray(std::string{"ABCDE"});
+        yapet::SecureArray c = yapet::toSecureArray(
+            reinterpret_cast<const std::uint8_t *>("ABCDE"), 6);
 
         CPPUNIT_ASSERT(a == b);
+        CPPUNIT_ASSERT(b == c);
         CPPUNIT_ASSERT(a.size() == 6);
         CPPUNIT_ASSERT(b.size() == 6);
+        CPPUNIT_ASSERT(c.size() == 6);
     }
 
     void testToSecureArrayEmpty() {

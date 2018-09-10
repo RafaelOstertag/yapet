@@ -160,6 +160,18 @@ SecureArray yapet::toSecureArray(const std::string& str) {
     return toSecureArray(str.c_str());
 }
 
+SecureArray yapet::toSecureArray(const std::uint8_t* ptr,
+                                 SecureArray::size_type size) {
+    if (ptr == nullptr) {
+        throw std::invalid_argument(_("Pointer must not be null"));
+    }
+
+    SecureArray secureArray{size};
+    std::memcpy(*secureArray, ptr, size);
+
+    return secureArray;
+}
+
 SecureArray yapet::operator+(const SecureArray& a, const SecureArray& b) {
     auto aSize = a.size();
     auto bSize = b.size();
