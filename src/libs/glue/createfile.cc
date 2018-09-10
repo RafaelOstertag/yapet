@@ -22,7 +22,7 @@
 #include <memory>
 #include <typeinfo>
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "consts.h"
 #include "createfile.h"
 #include "globals.h"
@@ -67,7 +67,7 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
             try {
                 auto password{yapet::toSecureArray(promptpassword->password())};
                 std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-                    new yapet::BlowfishFactory{password}};
+                    new yapet::Aes256Factory{password}};
                 mainwindow.load_password_file(YAPET::Globals::config.petfile,
                                               cryptoFactory, true);
 

@@ -20,7 +20,7 @@
 
 #include <cassert>
 
-#include "blowfishfactory.hh"
+#include "cryptofactoryhelper.hh"
 #include "file.h"
 #include "globals.h"
 #include "intl.h"
@@ -43,7 +43,11 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                     yapet::toSecureArray(pwdialog->password().c_str())};
 
                 std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-                    new yapet::BlowfishFactory{password}};
+                    yapet::getCryptoFactoryForFile(_filename, password)};
+
+                if (!cryptoFactory) {
+                    throw YAPET::YAPETException(_("File not recognized"));
+                }
 
                 auto yapetFile{cryptoFactory->file(
                     _filename, false, YAPET::Globals::config.filesecurity)};

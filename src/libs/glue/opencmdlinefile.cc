@@ -21,7 +21,8 @@
 #include <cassert>
 #include <typeinfo>
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
+#include "cryptofactoryhelper.hh"
 #include "file.h"
 #include "globals.h"
 #include "opencmdlinefile.h"
@@ -40,8 +41,7 @@ void LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
         if (evt.data() == promptpassword) {
             auto cryptoFactory{promptpassword->cryptoFactory()};
             assert(cryptoFactory);
-            mainwindow.load_password_file(std::move(_file), cryptoFactory,
-                                          false);
+            mainwindow.load_password_file(_file, cryptoFactory, false);
         }
 
         YACURS::EventQueue::submit(
@@ -87,7 +87,7 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
                 auto password{yapet::toSecureArray(newpassworddia->password())};
 
                 std::shared_ptr<yapet::AbstractCryptoFactory> factory{
-                    new yapet::BlowfishFactory{password}};
+                    new yapet::Aes256Factory{password}};
                 mainwindow.load_password_file(YAPET::Globals::config.petfile,
                                               factory, _createNewFile);
 

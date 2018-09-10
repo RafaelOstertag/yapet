@@ -22,9 +22,10 @@
 #include <memory>
 #include <typeinfo>
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "cfg.h"
 #include "changepassword.h"
+#include "cryptofactoryhelper.hh"
 #include "globals.h"
 #include "intl.h"
 
@@ -45,13 +46,16 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     yapet::toSecureArray(promptoldpassword->password())};
 
                 std::shared_ptr<yapet::AbstractCryptoFactory>
-                    cryptoWithOldPassword{
-                        new yapet::BlowfishFactory{oldPassword}};
+                    cryptoFactoryWithOldPassword{yapet::getCryptoFactoryForFile(
+                        _currentFilename, oldPassword)};
+                if (!cryptoFactoryWithOldPassword) {
+                    throw YAPET::YAPETException(_("File not recognized"));
+                }
 
                 try {
                     // Test if we can read the file with the old password
-                    YAPET::File{cryptoWithOldPassword, _currentFilename, false,
-                                YAPET::Globals::config.filesecurity};
+                    YAPET::File{cryptoFactoryWithOldPassword, _currentFilename,
+                                false, YAPET::Globals::config.filesecurity};
                     assert(promptpassword == 0);
                     promptpassword = new NewPasswordDialog(_currentFilename);
                     promptpassword->show();
@@ -105,7 +109,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     yapet::toSecureArray(promptpassword->password())};
 
                 std::shared_ptr<yapet::AbstractCryptoFactory> newCryptoFactory{
-                    new yapet::BlowfishFactory{newPassword}};
+                    new yapet::Aes256Factory{newPassword}};
 
                 // Try to open the current file with new password, if that
                 // succeeds, the new and old password are the same and we do
