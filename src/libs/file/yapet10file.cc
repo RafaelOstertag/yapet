@@ -44,11 +44,7 @@
 
 using namespace yapet;
 
-namespace {
-constexpr std::uint8_t _RECOGNITION_STRING_10[]{'Y', 'A', 'P', 'E',
-                                                'T', '1', '.', '0'};
-constexpr int _RECOGNITION_STRING_10_SIZE{8};
-}  // namespace
+constexpr std::uint8_t Yapet10File::RECOGNITION_STRING[];
 
 std::string Yapet10File::recognitionStringAsString() const {
     auto recogStringSize{recognitionStringSize()};
@@ -197,9 +193,9 @@ void Yapet10File::writePasswordRecords(
 }
 
 const std::uint8_t* Yapet10File::recognitionString() const {
-    return _RECOGNITION_STRING_10;
+    return Yapet10File::RECOGNITION_STRING;
 };
 
 int Yapet10File::recognitionStringSize() const {
-    return _RECOGNITION_STRING_10_SIZE;
+    return Yapet10File::RECOGNITION_STRING_SIZE;
 }

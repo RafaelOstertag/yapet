@@ -34,11 +34,7 @@
 
 using namespace yapet;
 
-namespace {
-constexpr std::uint8_t _RECOGNITION_STRING_20[]{'Y', 'A', 'P', 'E',
-                                             'T', '2', '.', '0'};
-constexpr int _RECOGNITION_STRING_20_SIZE{8};
-}  // namespace
+constexpr std::uint8_t Yapet20File::RECOGNITION_STRING[];
 
 Yapet20File::Yapet20File(const std::string& filename, bool create, bool secure)
     : Yapet10File{filename, create, secure} {}
@@ -58,9 +54,9 @@ Yapet20File& Yapet20File::operator=(Yapet20File&& other) {
 Yapet20File::~Yapet20File() {}
 
 const std::uint8_t* Yapet20File::recognitionString() const {
-    return _RECOGNITION_STRING_20;
+    return Yapet20File::RECOGNITION_STRING;
 };
 
 int Yapet20File::recognitionStringSize() const {
-    return _RECOGNITION_STRING_20_SIZE;
+    return Yapet20File::RECOGNITION_STRING_SIZE;
 };

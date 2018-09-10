@@ -142,6 +142,11 @@ namespace yapet {
  */
 class Yapet20File : public Yapet10File {
    public:
+    static constexpr std::uint8_t RECOGNITION_STRING[]{'Y', 'A', 'P', 'E',
+                                                       'T', '2', '.', '0'};
+
+    static constexpr int RECOGNITION_STRING_SIZE{8};
+
     Yapet20File(const std::string& filename, bool create = false,
                 bool secure = true);
 
@@ -151,10 +156,10 @@ class Yapet20File : public Yapet10File {
     Yapet20File(Yapet20File&& other);
     Yapet20File& operator=(Yapet20File&& other);
 
-    virtual ~Yapet20File() override;
+    virtual ~Yapet20File();
 
-    virtual int recognitionStringSize() const override;
-    virtual const uint8_t* recognitionString() const override;
+    virtual int recognitionStringSize() const;
+    virtual const uint8_t* recognitionString() const;
 };
 }  // namespace yapet
 

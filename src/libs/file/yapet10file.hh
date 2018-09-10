@@ -163,6 +163,10 @@ class Yapet10File : public YapetFile {
     std::string recognitionStringAsString() const;
 
    public:
+    static constexpr std::uint8_t RECOGNITION_STRING[]{'Y', 'A', 'P', 'E',
+                                                'T', '1', '.', '0'};
+    static constexpr int RECOGNITION_STRING_SIZE{8};
+
     Yapet10File(const std::string& filename, bool create = false,
                 bool secure = true);
 

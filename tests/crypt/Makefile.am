@@ -32,14 +32,15 @@ f64le0.6.pet f64be0.6.pet
 # f64be0.6.pet.in	file created on 64bit big endian arch with a 0.6 version
 EXTRA_DIST = corrupt_blowfish.pet.in corrupt_aes256.pet.in f32le0.5.pet.in		\
 f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
-f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in
+f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in \
+cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet cryptofactoryhelper-unknown.pet cryptofactoryhelper-tooshort.pet
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign
+check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign cryptofactoryhelper
 
 TESTS = $(check_PROGRAMS)
 
@@ -76,5 +77,7 @@ file_blowfish_DEPENDENCIES = corrupt_blowfish.pet
 
 file_aes256_SOURCES = file_aes256.cc
 file_aes256_DEPENDENCIES = corrupt_aes256.pet
+
+cryptofactoryhelper_SOURCES = cryptofactoryhelper.cc
 
 SUFFIXES = .pet .pet.in

@@ -71,11 +71,8 @@ SecureArray Aes256::extractCipherTextFromRecord(
     auto pointerToCipherText{*record + ivecSize};
 
     auto cipherTextSize{record.size() - ivecSize};
-    SecureArray cipherText{cipherTextSize};
-
-    std::memcpy(*cipherText, pointerToCipherText, cipherTextSize);
-
-    return cipherText;
+    
+    return toSecureArray(pointerToCipherText, cipherTextSize);
 }
 
 void Aes256::checkIVSizeOrThrow(const SecureArray& ivec) {
