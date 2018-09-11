@@ -49,8 +49,9 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                     throw YAPET::YAPETException(_("File not recognized"));
                 }
 
-                auto yapetFile{cryptoFactory->file(
-                    _filename, false, YAPET::Globals::config.filesecurity)};
+                // This will raise an exception if password is wrong
+                YAPET::File{cryptoFactory, _filename, false,
+                            YAPET::Globals::config.filesecurity};
 
                 // We were able to open the file with the given password,
                 // remember that cryptFactory
