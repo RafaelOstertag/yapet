@@ -34,13 +34,13 @@ class YapetUnlockDialog : public YACURS::UnlockDialog {
    private:
     const MainWindow& _mainWindow;
 
-    YACURS::VPack* __vpack;
-    YACURS::DynLabel* __text1;
-    YACURS::DynLabel* __text2;
-    YACURS::DynLabel* __text3;
-    YACURS::Input<>* __secret_input;
-    YACURS::Button* __quit;
-    YACURS::Spacer* __quit_spacer;
+    YACURS::VPack* _vpack;
+    YACURS::DynLabel* _text1;
+    YACURS::DynLabel* _text2;
+    YACURS::DynLabel* _text3;
+    YACURS::Input<>* _secret_input;
+    YACURS::Button* _quit;
+    YACURS::Spacer* _quit_spacer;
 
    protected:
     void window_show_handler(YACURS::Event& _e);
