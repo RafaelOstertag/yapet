@@ -23,6 +23,8 @@
 #ifndef _CHANGEPASSWORD_H
 #define _CHANGEPASSWORD_H 1
 
+#include <memory>
+
 #include "mainwindow.h"
 #include "newpassworddialog.h"
 #include "passworddialog.h"
@@ -48,7 +50,9 @@ class ChangePassword {
     YACURS::MessageBox2* nonmatch;
     YACURS::MessageBox3* confirmsave;
     YACURS::MessageBox2* generror;
+
     std::string _currentFilename;
+    std::shared_ptr<yapet::AbstractCryptoFactory> _oldCryptoFactory;
 
     void window_close_handler(YACURS::Event& e);
 

@@ -42,20 +42,22 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
     if (evt.data() == promptoldpassword) {
         if (promptoldpassword->dialog_state() == YACURS::DIALOG_OK) {
             try {
+                assert(!_oldCryptoFactory);
+
                 auto oldPassword{
                     yapet::toSecureArray(promptoldpassword->password())};
 
-                std::shared_ptr<yapet::AbstractCryptoFactory>
-                    cryptoFactoryWithOldPassword{yapet::getCryptoFactoryForFile(
-                        _currentFilename, oldPassword)};
-                if (!cryptoFactoryWithOldPassword) {
+                _oldCryptoFactory = yapet::getCryptoFactoryForFile(
+                    _currentFilename, oldPassword);
+                if (!_oldCryptoFactory) {
                     throw YAPET::YAPETException(_("File not recognized"));
                 }
 
                 try {
                     // Test if we can read the file with the old password
-                    YAPET::File{cryptoFactoryWithOldPassword, _currentFilename,
-                                false, YAPET::Globals::config.filesecurity};
+                    YAPET::File{_oldCryptoFactory, _currentFilename, false,
+                                YAPET::Globals::config.filesecurity};
+
                     assert(promptpassword == 0);
                     promptpassword = new NewPasswordDialog(_currentFilename);
                     promptpassword->show();
@@ -105,6 +107,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
             assert(!_currentFilename.empty());
 
             try {
+                assert(_oldCryptoFactory);
                 auto newPassword{
                     yapet::toSecureArray(promptpassword->password())};
 
@@ -115,7 +118,10 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 // succeeds, the new and old password are the same and we do
                 // nothing
                 try {
-                    YAPET::File{newCryptoFactory, _currentFilename, false,
+                    auto _oldCryptoFactoryWithNewPassword{
+                        _oldCryptoFactory->newFactory(newPassword)};
+                    YAPET::File{_oldCryptoFactoryWithNewPassword,
+                                _currentFilename, false,
                                 YAPET::Globals::config.filesecurity};
                     YACURS::Curses::statusbar()->set(
                         _("Password not changed. Old and new password "
@@ -186,7 +192,8 @@ ChangePassword::ChangePassword(MainWindow& mw)
       nonmatch{0},
       confirmsave{0},
       generror{0},
-      _currentFilename{mw.currentFilename()} {
+      _currentFilename{mw.currentFilename()},
+      _oldCryptoFactory{nullptr} {
     YACURS::EventQueue::connect_event(
         YACURS::EventConnectorMethod1<ChangePassword>(
             YACURS::EVT_WINDOW_CLOSE, this,
