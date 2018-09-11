@@ -34,32 +34,33 @@
 #include "pwgen.h"
 
 namespace YAPET {
-    class Consts {
-	public:
-	    //! Holds the default suffix for yapet files
-	    static const std::string default_suffix;
-	    //! The default file name of the config file
-	    static const std::string default_rcfilename;
-	    //! Default for checking file security
-	    static const bool def_filesecurity;
-	    static const bool def_allow_lock_quit;
-	    static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
+class Consts {
+   public:
+    //! Holds the default suffix for yapet files
+    static const std::string default_suffix;
+    //! The default file name of the config file
+    static const std::string default_rcfilename;
+    //! Default for checking file security
+    static const bool def_filesecurity;
+    static const bool def_allow_lock_quit;
+    static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
 
-	    enum {
-		//! Maximum password length
-		max_pwlen = 256,
-		//! Maximum password length
-		min_pwlen = 2,
-		//! The minimum lock timeout
-		min_locktimeout = 10,
-		max_config_line_length = 1024,
-		//! The default lock timeout
-		def_locktimeout = 600,
-		//! Default password length for Password Generator
-		def_pwlen = 15,
-		def_pw_input_timeout = 60,
-		def_character_pools = YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS | YAPET::PWGEN::PUNCT | YAPET::PWGEN::SPECIAL
-	    };
-        };
-}
-#endif // _CONSTS_H
+    enum {
+        //! Maximum password length
+        max_pwlen = 256,
+        //! Maximum password length
+        min_pwlen = 2,
+        //! The minimum lock timeout
+        min_locktimeout = 10,
+        max_config_line_length = 1024,
+        //! The default lock timeout
+        def_locktimeout = 600,
+        //! Default password length for Password Generator
+        def_pwlen = 15,
+        def_pw_input_timeout = 60,
+        def_character_pools = YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS |
+                              YAPET::PWGEN::PUNCT | YAPET::PWGEN::SPECIAL
+    };
+};
+}  // namespace YAPET
+#endif  // _CONSTS_H
