@@ -131,17 +131,17 @@ void PwGenDialog::button_press_handler(YACURS::Event& _e) {
 // Public
 //
 PwGenDialog::PwGenDialog()
-    : YACURS::Dialog(_("Password Generator"), YACURS::OKCANCEL,
-                     YACURS::AUTOMATIC),
-      pwgen(YAPET::Globals::config.character_pools()),
-      mainpack(),
-      boxespack(),
-      genpwlabel(_("Generated password")),
-      genpw(),
-      pwlenlabel(_("Password length")),
-      pwlen(),
-      regenbutton_spacer(),
-      regenbutton(_("Regenerate")) {
+    : YACURS::Dialog{_("Password Generator"), YACURS::OKCANCEL,
+                     YACURS::AUTOMATIC},
+      pwgen{YAPET::Globals::config.character_pools()},
+      mainpack{},
+      boxespack{},
+      genpwlabel{_("Generated password")},
+      genpw{},
+      pwlenlabel{_("Password length")},
+      pwlen{},
+      regenbutton_spacer{},
+      regenbutton{_("Regenerate")} {
     // Make sure configuration does meet available rngs
     YAPET::PWGEN::RNGENGINE requested_rng =
         YAPET::Globals::config.pwgen_rng.get();

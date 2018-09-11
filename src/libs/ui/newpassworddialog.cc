@@ -72,13 +72,13 @@ void NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
 //
 
 NewPasswordDialog::NewPasswordDialog(std::string& fn)
-    : Dialog(_("New Password")),
-      nomatchdialog(nullptr),
-      pwinput1(new YACURS::Input<>()),
-      pwinput2(new YACURS::Input<>()),
-      line1(new YACURS::Label(_("Enter password for "))),
-      line2(new YACURS::Label(_("Confirm password"))),
-      linefn(new YACURS::Label(fn)) {
+    : Dialog{_("New Password")},
+      nomatchdialog{nullptr},
+      pwinput1{new YACURS::Input<>{}},
+      pwinput2{new YACURS::Input<>{}},
+      line1{new YACURS::Label{_("Enter password for ")}},
+      line2{new YACURS::Label{_("Confirm password")}},
+      linefn{new YACURS::Label{fn}} {
     YACURS::EventQueue::connect_event(
         YACURS::EventConnectorMethod1<NewPasswordDialog>(
             YACURS::EVT_WINDOW_CLOSE, this,

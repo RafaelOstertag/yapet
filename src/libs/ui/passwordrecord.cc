@@ -32,8 +32,8 @@ class HotKeyCtrlR : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlR(PasswordRecord* p) : HotKey(18), ptr(p) { assert(p != nullptr); }
-    HotKeyCtrlR(const HotKeyCtrlR& hk) : HotKey(hk), ptr(hk.ptr) {}
+    HotKeyCtrlR(PasswordRecord* p) : HotKey{18}, ptr{p} { assert(p != nullptr); }
+    HotKeyCtrlR(const HotKeyCtrlR& hk) : HotKey{hk}, ptr{hk.ptr} {}
     void action() { ptr->readonly(!ptr->readonly()); }
 
     HotKey* clone() const { return new HotKeyCtrlR(*this); }
@@ -44,8 +44,8 @@ class HotKeyCtrlT : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlT(PasswordRecord* p) : HotKey(20), ptr(p) { assert(p != nullptr); }
-    HotKeyCtrlT(const HotKeyCtrlT& hk) : HotKey(hk), ptr(hk.ptr) {}
+    HotKeyCtrlT(PasswordRecord* p) : HotKey{20}, ptr{p} { assert(p != nullptr); }
+    HotKeyCtrlT(const HotKeyCtrlT& hk) : HotKey{hk}, ptr{hk.ptr} {}
     void action() { ptr->password_hidden(!ptr->password_hidden()); }
 
     HotKey* clone() const { return new HotKeyCtrlT(*this); }

@@ -24,10 +24,10 @@
 #include <cassert>
 
 PasswordDialog::PasswordDialog(const std::string& filename)
-    : Dialog(_("Enter Password")),
-      pwinput1(new YACURS::Input<>()),
-      line1(new YACURS::Label(_("Enter password for "))),
-      linefn(new YACURS::Label(filename)) {
+    : Dialog{_("Enter Password")},
+      pwinput1{new YACURS::Input<>{}},
+      line1{new YACURS::Label{_("Enter password for ")}},
+      linefn{new YACURS::Label{filename}} {
     pwinput1->obscure_input(true);
     widget(pwinput1);
 

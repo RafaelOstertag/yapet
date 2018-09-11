@@ -41,8 +41,8 @@ YapetLockScreen::YapetLockScreen(YACURS::Window& mainWindow,
                                  YACURS::UnlockDialog* _unlock,
                                  unsigned int timeout,
                                  unsigned int ulck_timeout)
-    : LockScreen(_unlock, timeout, ulck_timeout),
-      _mainWindow(dynamic_cast<const MainWindow&>(mainWindow)) {}
+    : LockScreen{_unlock, timeout, ulck_timeout},
+      _mainWindow{dynamic_cast<const MainWindow&>(mainWindow)} {}
 
 YapetLockScreen::~YapetLockScreen() {}
 
