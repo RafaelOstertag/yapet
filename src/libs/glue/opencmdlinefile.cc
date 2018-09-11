@@ -40,8 +40,9 @@ void LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
 
         if (evt.data() == promptpassword) {
             auto cryptoFactory{promptpassword->cryptoFactory()};
-            assert(cryptoFactory);
-            mainwindow.load_password_file(_file, cryptoFactory, false);
+            if (cryptoFactory) {
+                mainwindow.load_password_file(_file, cryptoFactory, false);
+            }
         }
 
         YACURS::EventQueue::submit(
