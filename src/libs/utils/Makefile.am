@@ -7,4 +7,4 @@ AM_CPPFLAGS += -DDEBUG
 endif
 
 noinst_LTLIBRARIES = libyapet-utils.la
-libyapet_utils_la_SOURCES = securearray.hh securearray.cc
+libyapet_utils_la_SOURCES = securearray.hh securearray.cc utils.hh
