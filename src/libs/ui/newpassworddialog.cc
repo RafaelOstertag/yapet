@@ -20,6 +20,7 @@
 
 #include "newpassworddialog.h"
 #include "intl.h"
+#include "utils.hh"
 
 #include <cassert>
 
@@ -62,8 +63,7 @@ void NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
             dialog_state(YACURS::DIALOG_CANCEL);
             close();
         }
-        delete nomatchdialog;
-        nomatchdialog = 0;
+        yapet::deleteAndZero(&nomatchdialog);
     }
 }
 

@@ -18,11 +18,12 @@
 // YAPET.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "loadfile.h"
-#include "globals.h"
-
 #include <cassert>
 #include <typeinfo>
+
+#include "globals.h"
+#include "loadfile.h"
+#include "utils.hh"
 
 //
 // Private
@@ -47,8 +48,7 @@ void LoadFile::apoptosis_handler(YACURS::Event& e) {
             YACURS::EventQueue::submit(
                 YACURS::EventEx<LoadFile*>(YAPET::EVT_APOPTOSIS, this));
 
-            delete promptpassword;
-            promptpassword = 0;
+            yapet::deleteAndZero(&promptpassword);
             evt.stop(true);
         }
         return;
@@ -72,8 +72,7 @@ void LoadFile::window_close_handler(YACURS::Event& e) {
                 YACURS::EventEx<LoadFile*>(YAPET::EVT_APOPTOSIS, this));
         }
 
-        delete fileloaddialog;
-        fileloaddialog = 0;
+        yapet::deleteAndZero(&fileloaddialog);
         return;
     }
 
@@ -100,8 +99,7 @@ void LoadFile::window_close_handler(YACURS::Event& e) {
                 break;
         }
 
-        delete confirmsave;
-        confirmsave = 0;
+        yapet::deleteAndZero(&confirmsave);
         return;
     }
 }

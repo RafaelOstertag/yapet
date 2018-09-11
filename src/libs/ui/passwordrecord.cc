@@ -25,6 +25,7 @@
 #include "globals.h"
 #include "intl.h"
 #include "passwordrecord.h"
+#include "utils.hh"
 
 class HotKeyCtrlR : public YACURS::HotKey {
    private:
@@ -94,8 +95,7 @@ void PasswordRecord::window_close_handler(YACURS::Event& e) {
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
     if (errordialog != 0 && evt.data() == errordialog) {
-        delete errordialog;
-        errordialog = 0;
+        yapet::deleteAndZero(&errordialog);
         return;
     }
 
@@ -106,8 +106,7 @@ void PasswordRecord::window_close_handler(YACURS::Event& e) {
             _force_close = true;
             close();
         }
-        delete confirmdialog;
-        confirmdialog = 0;
+        yapet::deleteAndZero(&confirmdialog);
         return;
     }
 
@@ -118,8 +117,7 @@ void PasswordRecord::window_close_handler(YACURS::Event& e) {
             _modified_by_pwgen = true;
         }
 
-        delete pwgendialog;
-        pwgendialog = 0;
+        yapet::deleteAndZero(&pwgendialog);
         return;
     }
 }

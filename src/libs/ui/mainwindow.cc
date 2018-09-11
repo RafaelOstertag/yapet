@@ -35,6 +35,7 @@
 #include "mainwindowhotkeys.h"
 #include "opencmdlinefile.h"
 #include "passworddialog.h"
+#include "utils.hh"
 
 namespace INTERNAL {
 class Finder {
@@ -257,8 +258,7 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         // Reset the record index
         record_index = -1;
 
-        delete confirmdelete;
-        confirmdelete = nullptr;
+        yapet::deleteAndZero(&confirmdelete);
         return;
     }
 
@@ -280,8 +280,7 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
                 break;
         }
 
-        delete confirmquit;
-        confirmquit = nullptr;
+        yapet::deleteAndZero(&confirmquit);
         return;
     }
 
@@ -304,14 +303,12 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
             }
         }
 
-        delete searchdialog;
-        searchdialog = nullptr;
+        yapet::deleteAndZero(&searchdialog);
         return;
     }
 
     if (errormsgdialog != nullptr && evt.data() == errormsgdialog) {
-        delete errormsgdialog;
-        errormsgdialog = nullptr;
+        yapet::deleteAndZero(&errormsgdialog);
         return;
     }
 }
@@ -649,8 +646,8 @@ void MainWindow::search_next() {
             static_cast<const std::string&>(*finder) +
             std::string(_(" found")));
         last_search_index = 0;
-        delete finder;
-        finder = nullptr;
+
+        yapet::deleteAndZero(&finder);
     } else {
         YACURS::Curses::statusbar()->set(
             std::string(_("Next match for ")) +

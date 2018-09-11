@@ -26,6 +26,7 @@
 #include "file.h"
 #include "globals.h"
 #include "opencmdlinefile.h"
+#include "utils.hh"
 
 //
 // Private
@@ -48,8 +49,7 @@ void LoadFileCmdLine::apoptosis_handler(YACURS::Event& e) {
         YACURS::EventQueue::submit(
             YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
 
-        delete promptpassword;
-        promptpassword = nullptr;
+        yapet::deleteAndZero(&promptpassword);
         evt.stop(true);
     }
     return;
@@ -72,8 +72,8 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
             YACURS::EventQueue::submit(
                 YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
         }
-        delete createfile;
-        createfile = nullptr;
+
+        yapet::deleteAndZero(&createfile);
     }
 
     if (evt.data() == newpassworddia) {
@@ -112,15 +112,14 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
         // exception, generror is active and we have to wait for the
         // user to close it.
 
-        delete newpassworddia;
-        newpassworddia = nullptr;
+        yapet::deleteAndZero(&newpassworddia);
 
         return;
     }
 
     if (evt.data() == generror) {
-        delete generror;
-        generror = nullptr;
+        yapet::deleteAndZero(&generror);
+
         YACURS::EventQueue::submit(
             YACURS::EventEx<LoadFileCmdLine*>(YAPET::EVT_APOPTOSIS, this));
     }

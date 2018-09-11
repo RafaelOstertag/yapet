@@ -27,6 +27,7 @@
 #include "createfile.h"
 #include "globals.h"
 #include "intl.h"
+#include "utils.hh"
 
 //
 // Private
@@ -49,8 +50,7 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
                 YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
         }
 
-        delete filesavedialog;
-        filesavedialog = 0;
+        yapet::deleteAndZero(&filesavedialog);
 
         return;
     }
@@ -92,9 +92,7 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
         // user to close it. If we have an exception, generror handler
         // takes care
 
-        delete promptpassword;
-        promptpassword = 0;
-
+        yapet::deleteAndZero(&promptpassword);
         return;
     }
 
@@ -121,14 +119,12 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
                 break;
         }
 
-        delete confirmsave;
-        confirmsave = 0;
+        yapet::deleteAndZero(&confirmsave);
         return;
     }
 
     if (evt.data() == generror) {
-        delete generror;
-        generror = 0;
+        yapet::deleteAndZero(&generror);
         YACURS::EventQueue::submit(
             YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
     }

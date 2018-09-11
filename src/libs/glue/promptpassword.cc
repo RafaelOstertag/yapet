@@ -25,6 +25,7 @@
 #include "globals.h"
 #include "intl.h"
 #include "promptpassword.h"
+#include "utils.hh"
 
 //
 // Private
@@ -79,8 +80,7 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                 YACURS::EventEx<PromptPassword*>(YAPET::EVT_APOPTOSIS, this));
         }
 
-        delete pwdialog;
-        pwdialog = 0;
+        yapet::deleteAndZero(&pwdialog);
         return;
     }
 
@@ -91,14 +91,12 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
             YACURS::EventQueue::submit(
                 YACURS::EventEx<PromptPassword*>(YAPET::EVT_APOPTOSIS, this));
         }
-        delete pwerror;
-        pwerror = 0;
+        yapet::deleteAndZero(&pwerror);
         return;
     }
 
     if (generror && evt.data() == generror) {
-        delete generror;
-        generror = 0;
+        yapet::deleteAndZero(&generror);
         YACURS::EventQueue::submit(
             YACURS::EventEx<PromptPassword*>(YAPET::EVT_APOPTOSIS, this));
     }

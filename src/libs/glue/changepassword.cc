@@ -28,6 +28,7 @@
 #include "cryptofactoryhelper.hh"
 #include "globals.h"
 #include "intl.h"
+#include "utils.hh"
 
 //
 // Private
@@ -85,8 +86,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
         // exception, generror is active and we have to wait for the
         // user to close it.
 
-        delete promptoldpassword;
-        promptoldpassword = 0;
+        yapet::deleteAndZero(&promptoldpassword);
     }
 
     if (evt.data() == nonmatch) {
@@ -97,8 +97,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
         }
 
-        delete nonmatch;
-        nonmatch = 0;
+        yapet::deleteAndZero(&nonmatch);
     }
 
     if (evt.data() == promptpassword) {
@@ -146,8 +145,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
         // exception, generror is active and we have to wait for the
         // user to close it.
 
-        delete promptpassword;
-        promptpassword = 0;
+        yapet::deleteAndZero(&promptpassword);
 
         return;
     }
@@ -168,14 +166,12 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 break;
         }
 
-        delete confirmsave;
-        confirmsave = 0;
+        yapet::deleteAndZero(&confirmsave);
         return;
     }
 
     if (evt.data() == generror) {
-        delete generror;
-        generror = 0;
+        yapet::deleteAndZero(&generror);
         YACURS::EventQueue::submit(
             YACURS::EventEx<ChangePassword*>(YAPET::EVT_APOPTOSIS, this));
     }
