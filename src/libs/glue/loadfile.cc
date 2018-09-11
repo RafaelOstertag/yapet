@@ -110,9 +110,9 @@ void LoadFile::window_close_handler(YACURS::Event& e) {
 
 LoadFile::LoadFile(MainWindow& mw)
     : mainwindow{mw},
-      promptpassword{0},
-      fileloaddialog{0},
-      confirmsave{0},
+      promptpassword{nullptr},
+      fileloaddialog{nullptr},
+      confirmsave{nullptr},
       _selectedFilename{},
       _currentLoadedFile{mw.currentFilename()},
       ignore_unsaved_file{false} {

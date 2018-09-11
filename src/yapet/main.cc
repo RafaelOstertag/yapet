@@ -280,7 +280,7 @@ main(int argc, char** argv) {
     // again.
     YAPET::Globals::config.unlock();
 
-    YapetUnlockDialog* yunlockdia = 0;
+    YapetUnlockDialog* yunlockdia = nullptr;
     try {
         try {
             YACURS::Curses::init(YAPET::Globals::config.colors);

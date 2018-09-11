@@ -29,7 +29,7 @@
 //
 bool NewPasswordDialog::on_close() {
     if (!match() && dialog_state() != YACURS::DIALOG_CANCEL) {
-        assert(nomatchdialog == 0);
+        assert(nomatchdialog == nullptr);
         nomatchdialog = new YACURS::MessageBox2(
             _("Password Missmatch"), _("Passwords do not match."),
             _("Do you want to retry?"), YACURS::YESNO);
@@ -38,7 +38,7 @@ bool NewPasswordDialog::on_close() {
     }
 
     if (pwinput1->input().empty() && dialog_state() != YACURS::DIALOG_CANCEL) {
-        assert(nomatchdialog == 0);
+        assert(nomatchdialog == nullptr);
         nomatchdialog = new YACURS::MessageBox2(
             _("Password Missmatch"), _("Password must not be empty."),
             _("Do you want to retry?"), YACURS::YESNO);
@@ -73,7 +73,7 @@ void NewPasswordDialog::window_close_handler(YACURS::Event& _e) {
 
 NewPasswordDialog::NewPasswordDialog(std::string& fn)
     : Dialog(_("New Password")),
-      nomatchdialog(0),
+      nomatchdialog(nullptr),
       pwinput1(new YACURS::Input<>()),
       pwinput2(new YACURS::Input<>()),
       line1(new YACURS::Label(_("Enter password for "))),
@@ -101,13 +101,13 @@ NewPasswordDialog::NewPasswordDialog(std::string& fn)
 }
 
 NewPasswordDialog::~NewPasswordDialog() {
-    assert(pwinput1 != 0);
-    assert(pwinput2 != 0);
-    assert(line1 != 0);
-    assert(line2 != 0);
-    assert(linefn != 0);
+    assert(pwinput1 != nullptr);
+    assert(pwinput2 != nullptr);
+    assert(line1 != nullptr);
+    assert(line2 != nullptr);
+    assert(linefn != nullptr);
 
-    if (nomatchdialog != 0) delete nomatchdialog;
+    if (nomatchdialog != nullptr) delete nomatchdialog;
     delete pwinput1;
     delete pwinput2;
     delete line1;

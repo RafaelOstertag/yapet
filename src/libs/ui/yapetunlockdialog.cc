@@ -49,7 +49,7 @@ void YapetUnlockDialog::button_press_handler(YACURS::Event& _e) {
     YACURS::EventEx<YACURS::Button*>& evt =
         dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(_e);
 
-    if (__quit != 0 && evt.data() == __quit) {
+    if (__quit != nullptr && evt.data() == __quit) {
         assert(!YAPET::Globals::records_changed);
         YACURS::EventQueue::submit(YACURS::EVT_QUIT);
     }
@@ -61,13 +61,13 @@ void YapetUnlockDialog::button_press_handler(YACURS::Event& _e) {
 YapetUnlockDialog::YapetUnlockDialog(const YACURS::Window& mainWindow)
     : UnlockDialog{_("Unlock Screen")},
       _mainWindow{dynamic_cast<const MainWindow&>(mainWindow)},
-      __vpack{0},
+      __vpack{nullptr},
       __text1{new YACURS::DynLabel{_("Please enter password for")}},
       __text2{new YACURS::DynLabel{_("<unknown>")}},
       __text3{new YACURS::DynLabel{_("in order to unlock screen")}},
       __secret_input{new YACURS::Input<>{}},
-      __quit{0},
-      __quit_spacer{0} {
+      __quit{nullptr},
+      __quit_spacer{nullptr} {
     __vpack = new YACURS::VPack;
     __vpack->always_dynamic(true);
 
@@ -98,11 +98,11 @@ YapetUnlockDialog::YapetUnlockDialog(const YACURS::Window& mainWindow)
 }
 
 YapetUnlockDialog::~YapetUnlockDialog() {
-    assert(__vpack != 0);
-    assert(__text1 != 0);
-    assert(__text2 != 0);
-    assert(__text3 != 0);
-    assert(__secret_input != 0);
+    assert(__vpack != nullptr);
+    assert(__text1 != nullptr);
+    assert(__text2 != nullptr);
+    assert(__text3 != nullptr);
+    assert(__secret_input != nullptr);
 
     YACURS::EventQueue::disconnect_event(
         YACURS::EventConnectorMethod1<YapetUnlockDialog>(

@@ -42,7 +42,7 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
     if (evt.data() == filesavedialog) {
         if (filesavedialog->dialog_state() == YACURS::DIALOG_OK) {
             _filepath = filesavedialog->filepath();
-            assert(promptpassword == 0);
+            assert(promptpassword == nullptr);
             promptpassword = new NewPasswordDialog(_filepath);
             promptpassword->show();
         } else {
@@ -74,7 +74,7 @@ void CreateFile::window_close_handler(YACURS::Event& e) {
                 YACURS::EventQueue::submit(
                     YACURS::EventEx<CreateFile*>(YAPET::EVT_APOPTOSIS, this));
             } catch (std::exception& ex) {
-                assert(generror == 0);
+                assert(generror == nullptr);
                 generror = new YACURS::MessageBox2(_("Error"),
                                                    _("Got following error"),
                                                    ex.what(), YACURS::OK_ONLY);
@@ -160,14 +160,14 @@ CreateFile::~CreateFile() {
 
 void CreateFile::run() {
     if (!ignore_unsaved_file && YAPET::Globals::records_changed) {
-        assert(confirmsave == 0);
+        assert(confirmsave == nullptr);
         confirmsave = new YACURS::MessageBox2(
             _("Unsaved Changes"), _currentLoadedFile,
             _("has unsaved changes. Do you want to save?"),
             YACURS::YESNOCANCEL);
         confirmsave->show();
     } else {
-        assert(filesavedialog == 0);
+        assert(filesavedialog == nullptr);
         // FileSaveDialog uses chdir().
         filesavedialog = new YACURS::FileSaveDialog(std::string(), true);
         filesavedialog->suffix(YAPET::Consts::default_suffix);

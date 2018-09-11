@@ -37,7 +37,7 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
     YACURS::EventEx<YACURS::WindowBase*>& evt =
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
-    if (pwdialog != 0 && evt.data() == pwdialog) {
+    if (pwdialog != nullptr && evt.data() == pwdialog) {
         if (pwdialog->dialog_state() == YACURS::DIALOG_OK) {
             try {
                 yapet::SecureArray password{
@@ -60,14 +60,14 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                 YACURS::EventQueue::submit(YACURS::EventEx<PromptPassword*>(
                     YAPET::EVT_APOPTOSIS, this));
             } catch (YAPET::YAPETInvalidPasswordException& ex) {
-                assert(pwerror == 0);
+                assert(pwerror == nullptr);
                 pwerror = new YACURS::MessageBox3(
                     _("Invalid Password"), _("Password for file"), _filename,
                     _("is not correct. Do you want to try again?"),
                     YACURS::YESNO);
                 pwerror->show();
             } catch (std::exception& ex) {
-                assert(generror == 0);
+                assert(generror == nullptr);
                 generror = new YACURS::MessageBox2(_("Error"),
                                                    _("Got following error"),
                                                    ex.what(), YACURS::OK_ONLY);
@@ -130,7 +130,7 @@ PromptPassword::~PromptPassword() {
 }
 
 void PromptPassword::run() {
-    assert(pwdialog == 0);
+    assert(pwdialog == nullptr);
     pwdialog = new PasswordDialog(_filename);
     pwdialog->show();
 }

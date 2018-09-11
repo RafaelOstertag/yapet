@@ -59,18 +59,18 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     YAPET::File{_oldCryptoFactory, _currentFilename, false,
                                 YAPET::Globals::config.filesecurity};
 
-                    assert(promptpassword == 0);
+                    assert(promptpassword == nullptr);
                     promptpassword = new NewPasswordDialog(_currentFilename);
                     promptpassword->show();
                 } catch (YAPET::YAPETInvalidPasswordException& e) {
-                    assert(nonmatch == 0);
+                    assert(nonmatch == nullptr);
                     nonmatch = new YACURS::MessageBox2(
                         _("Error"), _("Password does not match old password"),
                         _("Retry?"), YACURS::YESNO);
                     nonmatch->show();
                 }
             } catch (std::exception& ex) {
-                assert(generror == 0);
+                assert(generror == nullptr);
                 generror = new YACURS::MessageBox2(_("Error"),
                                                    _("Got following error"),
                                                    ex.what(), YACURS::OK_ONLY);
@@ -132,7 +132,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 YACURS::EventQueue::submit(YACURS::EventEx<ChangePassword*>(
                     YAPET::EVT_APOPTOSIS, this));
             } catch (std::exception& ex) {
-                assert(generror == 0);
+                assert(generror == nullptr);
                 generror = new YACURS::MessageBox2(_("Error"),
                                                    _("Got following error"),
                                                    ex.what(), YACURS::OK_ONLY);
@@ -183,11 +183,11 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
 
 ChangePassword::ChangePassword(MainWindow& mw)
     : mainwindow{mw},
-      promptoldpassword{0},
-      promptpassword{0},
-      nonmatch{0},
-      confirmsave{0},
-      generror{0},
+      promptoldpassword{nullptr},
+      promptpassword{nullptr},
+      nonmatch{nullptr},
+      confirmsave{nullptr},
+      generror{nullptr},
       _currentFilename{mw.currentFilename()},
       _oldCryptoFactory{nullptr} {
     YACURS::EventQueue::connect_event(

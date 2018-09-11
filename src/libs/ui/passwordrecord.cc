@@ -32,7 +32,7 @@ class HotKeyCtrlR : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlR(PasswordRecord* p) : HotKey(18), ptr(p) { assert(p != 0); }
+    HotKeyCtrlR(PasswordRecord* p) : HotKey(18), ptr(p) { assert(p != nullptr); }
     HotKeyCtrlR(const HotKeyCtrlR& hk) : HotKey(hk), ptr(hk.ptr) {}
     void action() { ptr->readonly(!ptr->readonly()); }
 
@@ -44,7 +44,7 @@ class HotKeyCtrlT : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlT(PasswordRecord* p) : HotKey(20), ptr(p) { assert(p != 0); }
+    HotKeyCtrlT(PasswordRecord* p) : HotKey(20), ptr(p) { assert(p != nullptr); }
     HotKeyCtrlT(const HotKeyCtrlT& hk) : HotKey(hk), ptr(hk.ptr) {}
     void action() { ptr->password_hidden(!ptr->password_hidden()); }
 
@@ -83,7 +83,7 @@ void PasswordRecord::button_press_handler(YACURS::Event& e) {
         dynamic_cast<YACURS::EventEx<YACURS::Button*>&>(e);
 
     if (evt.data() == pwgenbutton) {
-        assert(pwgendialog == 0);
+        assert(pwgendialog == nullptr);
         pwgendialog = new PwGenDialog();
         pwgendialog->show();
     }
@@ -94,14 +94,14 @@ void PasswordRecord::window_close_handler(YACURS::Event& e) {
     YACURS::EventEx<YACURS::WindowBase*>& evt =
         dynamic_cast<YACURS::EventEx<YACURS::WindowBase*>&>(e);
 
-    if (errordialog != 0 && evt.data() == errordialog) {
+    if (errordialog != nullptr && evt.data() == errordialog) {
         yapet::deleteAndZero(&errordialog);
         return;
     }
 
     // Handle the confirmation of whether dialog should be closed
     // (cancelled) with pending changes.
-    if (confirmdialog != 0 && evt.data() == confirmdialog) {
+    if (confirmdialog != nullptr && evt.data() == confirmdialog) {
         if (confirmdialog->dialog_state() == YACURS::DIALOG_YES) {
             _force_close = true;
             close();
@@ -124,7 +124,7 @@ void PasswordRecord::window_close_handler(YACURS::Event& e) {
 
 bool PasswordRecord::on_close() {
     if (changed() && dialog_state() != YACURS::DIALOG_OK && !_force_close) {
-        assert(confirmdialog == 0);
+        assert(confirmdialog == nullptr);
         confirmdialog = new YACURS::MessageBox(
             _("Pending Changes"), _("Do you want to discard changes?"),
             YACURS::YESNO);
@@ -162,7 +162,7 @@ PasswordRecord::PasswordRecord(
             errordialog = new YACURS::MessageBox(_("Error"), ex.what());
             errordialog->show();
         } catch (YACURS::EXCEPTIONS::BaseCurEx&) {
-            if (errordialog != 0) delete errordialog;
+            if (errordialog != nullptr) delete errordialog;
 
             // What should I do else, looks pretty screwed up??
         }

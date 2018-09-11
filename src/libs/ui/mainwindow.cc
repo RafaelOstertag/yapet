@@ -234,7 +234,7 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         }
 
         // Reset the record index
-        record_index = -1;
+        record_index = NO_INDEX;
 
         delete passwordrecord;
         passwordrecord = nullptr;
@@ -256,7 +256,7 @@ void MainWindow::window_close_handler(YACURS::Event& e) {
         }
 
         // Reset the record index
-        record_index = -1;
+        record_index = NO_INDEX;
 
         yapet::deleteAndZero(&confirmdelete);
         return;

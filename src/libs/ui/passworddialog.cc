@@ -39,9 +39,9 @@ PasswordDialog::PasswordDialog(const std::string& filename)
 }
 
 PasswordDialog::~PasswordDialog() {
-    assert(pwinput1 != 0);
-    assert(line1 != 0);
-    assert(linefn != 0);
+    assert(pwinput1 != nullptr);
+    assert(line1 != nullptr);
+    assert(linefn != nullptr);
 
     delete pwinput1;
     delete line1;
