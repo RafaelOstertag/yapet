@@ -40,14 +40,19 @@ class BlowfishFactoryTest : public CppUnit::TestFixture {
     }
 
     void crypto() {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*blowfishFactory->crypto()) ==
                        typeid(yapet::Blowfish));
+#pragma clang diagnostic pop
     }
 
     void key() {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*blowfishFactory->key()) ==
                        typeid(yapet::Key448));
-
+#pragma clang diagnostic pop
         yapet::Key448 key{};
 
         auto password{yapet::toSecureArray("test")};
@@ -57,16 +62,22 @@ class BlowfishFactoryTest : public CppUnit::TestFixture {
     }
 
     void file() {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*blowfishFactory->file(
                            BUILDDIR "/blowfishfactory-test", true, false)) ==
                        typeid(yapet::Yapet10File));
+#pragma clang diagnostic pop
     }
 
     void newFactory() {
         auto password{yapet::toSecureArray("test2")};
         auto factory{blowfishFactory->newFactory(password)};
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*factory) == typeid(yapet::BlowfishFactory));
+#pragma clang diagnostic pop
         yapet::Key448 key{};
 
         auto newPassword{yapet::toSecureArray("test2")};

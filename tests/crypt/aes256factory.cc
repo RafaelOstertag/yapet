@@ -40,13 +40,18 @@ class Aes256FactoryTest : public CppUnit::TestFixture {
     }
 
     void crypto() {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*aes256Factory->crypto()) ==
                        typeid(yapet::Aes256));
+#pragma clang diagnostic pop
     }
 
     void key() {
-        CPPUNIT_ASSERT(typeid(*aes256Factory->key()) ==
-                       typeid(yapet::Key256));
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
+        CPPUNIT_ASSERT(typeid(*aes256Factory->key()) == typeid(yapet::Key256));
+#pragma clang diagnostic pop
 
         yapet::Key256 key{};
 
@@ -57,16 +62,22 @@ class Aes256FactoryTest : public CppUnit::TestFixture {
     }
 
     void file() {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*aes256Factory->file(
                            BUILDDIR "/aes256factory-test", true, false)) ==
                        typeid(yapet::Yapet20File));
+#pragma clang diagnostic pop
     }
 
     void newFactory() {
         auto password{yapet::toSecureArray("test2")};
         auto factory{aes256Factory->newFactory(password)};
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*factory) == typeid(yapet::Aes256Factory));
+#pragma clang diagnostic pop
         yapet::Key256 key{};
 
         auto newPassword{yapet::toSecureArray("test2")};

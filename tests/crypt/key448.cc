@@ -44,7 +44,7 @@ class Key448Test : public CppUnit::TestFixture {
         yapet::Key448 key{};
         key.password(passwordArray);
 
-        for (unsigned int i = 0; i < key.keySize(); i++) {
+        for (int i = 0; i < key.keySize(); i++) {
             CPPUNIT_ASSERT((*key.key())[i] == expected_key[i]);
         }
     }
@@ -53,7 +53,7 @@ class Key448Test : public CppUnit::TestFixture {
         yapet::Key448 key{};
         key.password(passwordArray);
 
-        for (unsigned int i = 0; i < key.ivecSize(); i++) {
+        for (int i = 0; i < key.ivecSize(); i++) {
             CPPUNIT_ASSERT((*key.ivec())[i] == expected_ivec[i]);
         }
     }

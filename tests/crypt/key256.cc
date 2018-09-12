@@ -39,7 +39,7 @@ class Key256Test : public CppUnit::TestFixture {
         yapet::Key256 key{};
         key.password(passwordArray);
 
-        for (unsigned int i = 0; i < key.keySize(); i++) {
+        for (int i = 0; i < key.keySize(); i++) {
             CPPUNIT_ASSERT((*key.key())[i] == expected_key[i]);
         }
     }

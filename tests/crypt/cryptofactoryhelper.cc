@@ -42,7 +42,10 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
             SRCDIR "/cryptofactoryhelper-1.0.pet",
             yapet::toSecureArray("wdc"))};
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*factory) == typeid(yapet::BlowfishFactory));
+#pragma clang diagnostic pop
     }
 
     void yapet20file() {
@@ -50,7 +53,10 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
             SRCDIR "/cryptofactoryhelper-2.0.pet",
             yapet::toSecureArray("wdc"))};
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*factory) == typeid(yapet::Aes256Factory));
+#pragma clang diagnostic pop
     }
 
     void unknownFile() {
