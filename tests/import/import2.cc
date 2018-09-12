@@ -2,6 +2,9 @@
 // Checks whether or not the import of import1 worked.
 // Relies on test1.csv
 
+#include <iostream>
+#include <typeinfo>
+
 #include "aes256factory.hh"
 #include "file.h"
 

@@ -3,6 +3,7 @@
 // Relies on test6.csv
 
 #include <iostream>
+#include <typeinfo>
 
 #include "aes256factory.hh"
 #include "file.h"

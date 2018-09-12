@@ -6,6 +6,7 @@
 // Relies on test9.csv
 
 #include <iostream>
+#include <typeinfo>
 
 #include "csvimport.h"
 #include "testpaths.h"

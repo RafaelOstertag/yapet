@@ -2,6 +2,7 @@
 // Tests whether or not import works under lab conditions.
 // Relies on test1.csv
 
+#include <typeinfo>
 #include <iostream>
 
 #include "csvimport.h"
