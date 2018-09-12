@@ -39,9 +39,10 @@
 #include <fstream>
 #include <iostream>
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "csvimport.h"
 #include "file.h"
+#include "intl.h"
 
 /**
  * Removes the double quotes at the beginning and any escaped double quotes.
@@ -108,7 +109,7 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb)
       had_errors(false),
       num_errors(0) {
     if (access(srcfile.c_str(), R_OK | F_OK) == -1)
-        throw std::runtime_error("Cannot access " + srcfile);
+        throw std::runtime_error(_("Cannot access ") + srcfile);
 }
 
 /**
@@ -119,7 +120,7 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb)
 void CSVImport::import(const char* pw) {
     std::ifstream csvfile(srcfile.c_str());
 
-    if (!csvfile) throw std::runtime_error("Cannot open " + srcfile);
+    if (!csvfile) throw std::runtime_error(_("Cannot open ") + srcfile);
 
     // the max line length. Computed from the field sizes of a YAPET password
     // record.
@@ -137,8 +138,7 @@ void CSVImport::import(const char* pw) {
 
     auto password{yapet::toSecureArray(pw)};
 
-    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-        new yapet::BlowfishFactory{password}};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{new yapet::Aes256Factory(password)};
 
     auto crypto{cryptoFactory->crypto()};
 
@@ -173,7 +173,7 @@ void CSVImport::import(const char* pw) {
             // that the line counter keeps accurate.
             failmode = false;
             lineno++;
-            logError(lineno, "Failed reading line (line too long?)");
+            logError(lineno, _("Failed reading line (line too long?)"));
             continue;
         }
 
@@ -205,9 +205,9 @@ void CSVImport::import(const char* pw) {
                 num_sep_found++;
 
                 if (num_sep_found > NUM_SEPARATORS) {
-                    std::string tmp("Too many fields. Expected ");
+                    std::string tmp(("Too many fields. Expected "));
                     tmp += num_fields_str;
-                    tmp += " fields.";
+                    tmp += _(" fields.");
                     logError(lineno, tmp);
                     scan_error = true;
                     break;
@@ -230,9 +230,9 @@ void CSVImport::import(const char* pw) {
         }
 
         if (!inquote && (num_sep_found < NUM_SEPARATORS)) {
-            std::string tmp("Too few fields. Expected ");
+            std::string tmp(("Too few fields. Expected "));
             tmp += num_fields_str;
-            tmp += " fields.";
+            tmp += _(" fields.");
             logError(lineno, tmp);
             continue;
         }
@@ -274,7 +274,7 @@ void CSVImport::printLog() const {
     std::list<LogEntry>::const_iterator it = logs.begin();
 
     while (it != logs.end()) {
-        std::cout << "Line " << (*it).lineno << ": " << (*it).message
+        std::cout << _("Line ") << (*it).lineno << ": " << (*it).message
                   << std::endl;
         it++;
     }

@@ -39,7 +39,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "blowfishfactory.hh"
+#include "cryptofactoryhelper.hh"
 #include "csvexport.h"
 #include "file.h"
 #include "passwordrecord.hh"
@@ -93,7 +93,7 @@ CSVExport::CSVExport(std::string src, std::string dst, char sep, bool verb,
       __verbose(verb),
       __print_header(print_header) {
     if (access(srcfile.c_str(), R_OK | F_OK) == -1)
-        throw std::runtime_error("Cannot access " + srcfile);
+        throw std::runtime_error(_("Cannot access ") + srcfile);
 }
 
 /**
@@ -104,11 +104,11 @@ CSVExport::CSVExport(std::string src, std::string dst, char sep, bool verb,
 void CSVExport::doexport(const char* pw) {
     std::ofstream csvfile(dstfile.c_str());
 
-    if (!csvfile) throw std::runtime_error("Cannot open " + dstfile);
+    if (!csvfile) throw std::runtime_error(_("Cannot open ") + dstfile);
 
     auto password{yapet::toSecureArray(pw)};
-    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-        new yapet::BlowfishFactory{password}};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{yapet::getCryptoFactoryForFile(srcfile, password)};
+
     auto crypto{cryptoFactory->crypto()};
     auto yapetFile{new YAPET::File{cryptoFactory, srcfile, false, false}};
 

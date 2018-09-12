@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #endif
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "file.h"
 
 #include "testpaths.h"
@@ -43,7 +43,7 @@ int main(int, char**) {
     try {
         auto password{yapet::toSecureArray("test1")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::BlowfishFactory{password}};
+            new yapet::Aes256Factory{password}};
 
         auto crypto{cryptoFactory->crypto()};
 

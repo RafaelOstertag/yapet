@@ -18,7 +18,7 @@
 #include <fcntl.h>
 #endif
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "file.h"
 
 #include "tests.h"
@@ -39,7 +39,7 @@ int main(int, char**) {
     try {
         auto password{yapet::toSecureArray("test4")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::BlowfishFactory{password}};
+            new yapet::Aes256Factory{password}};
 
         YAPET::File file{cryptoFactory, "test4.pet", false};
         std::list<yapet::PasswordListItem> list = file.read();

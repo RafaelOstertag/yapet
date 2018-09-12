@@ -20,7 +20,7 @@
 #include <fcntl.h>
 #endif
 
-#include "blowfishfactory.hh"
+#include "aes256factory.hh"
 #include "file.h"
 
 // Keep them define's here, since tests.h only defines the default if they are
@@ -46,7 +46,7 @@ int main(int, char**) {
     try {
         auto password{yapet::toSecureArray("test6")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::BlowfishFactory{password}};
+            new yapet::Aes256Factory{password}};
 
         YAPET::File file{cryptoFactory, "test6.pet", false};
 

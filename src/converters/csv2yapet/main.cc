@@ -143,7 +143,7 @@ void enable_echo() {
 }
 
 void show_version() {
-    std::cout << "csv2yapet is part of ";
+    std::cout << _("csv2yapet is part of ");
     std::cout << PACKAGE_STRING << std::endl;
 }
 
@@ -157,35 +157,35 @@ void show_help (char* prgname) {
               << " [-h] [-p <password>] [-q] [-s <char>] [-V] <src> <dst>"
               << std::endl
               << std::endl;
-    std::cout << "-c\tshow copyright information"
+    std::cout << "-c\t" << _("show copyright information")
               << std::endl
               << std::endl;
-    std::cout << "-h\tshow this help text"
+    std::cout << "-h\t" << _("show this help text")
               << std::endl
               << std::endl;
-    std::cout << "-p\tuse <password> as the master password for the YAPET file."
+    std::cout << "-p\t" << _("use <password> as the master password for the YAPET file.")
               << std::endl
-              << "\tThe use of this option is discouraged."
-              << std::endl
-              << std::endl;
-    std::cout << "-q\toperate quietly"
+              << "\t" << _("The use of this option is discouraged.")
               << std::endl
               << std::endl;
-    std::cout << "-s\tuse <char> as field separator."
-              << std::endl
-              << "\tDefault: ,"
+    std::cout << "-q\t" << _("operate quietly")
               << std::endl
               << std::endl;
-    std::cout << "-V\tshow the version of csv2yapet"
+    std::cout << "-s\t:" << _("use <char> as field separator.")
+              << std::endl
+              << "\t" << _("Default: ,")
               << std::endl
               << std::endl;
-    std::cout << "<src>\tthe source csv file"
+    std::cout << "-V\t" << _("show the version of csv2yapet")
               << std::endl
               << std::endl;
-    std::cout << "<dst>\tthe output file"
+    std::cout << "<src>\t" << _("the source csv file")
               << std::endl
               << std::endl;
-    std::cout << "csv2yapet converts CSV text files to YAPET files."
+    std::cout << "<dst>\t" << _("the output file")
+              << std::endl
+              << std::endl;
+    std::cout << _("csv2yapet converts CSV text files to YAPET files.")
               << std::endl
               << std::endl;
 }
@@ -225,11 +225,11 @@ int main (int argc, char** argv) {
                 show_version();
                 return 0;
             case ':':
-                std::cerr << "-" << (char) optopt << " without argument"
+                std::cerr << "-" << (char) optopt << _(" without argument")
                           << std::endl;
                 return ERR_CMDLINE;
             case '?':
-                std::cerr << "unknown argument" << " '" << (char) optopt << "'"
+                std::cerr << _("unknown argument") << " '" << (char) optopt << "'"
                           << std::endl;
                 return ERR_CMDLINE;
         }
@@ -239,7 +239,7 @@ int main (int argc, char** argv) {
         srcfile = argv[optind];
         dstfile = argv[++optind];
     } else {
-        std::cerr << "Missing argument." << std::endl;
+        std::cerr << _("Missing argument.") << std::endl;
 
         if (!quiet)
             show_help (argv[0]);
@@ -254,7 +254,7 @@ int main (int argc, char** argv) {
         dstfile += YAPET::Consts::default_suffix;
 
     if (access (dstfile.c_str(), F_OK) == 0) {
-        std::cerr << dstfile << " already exists. Aborting." << std::endl;
+        std::cerr << dstfile << _(" already exists. Aborting.") << std::endl;
         return ERR_FILEEXISTS;
     }
 
@@ -262,14 +262,14 @@ int main (int argc, char** argv) {
         // We read the password from stdin only if the user did not provide the
         // -p switch.
         if (!cmdline_pw) {
-            std::cout << "Please enter the password for " << dstfile << ": ";
+            std::cout << _("Please enter the password for ") << dstfile << ": ";
             std::cout.flush();
             std::string pw1;
             disable_echo();
             std::getline (std::cin, pw1);
             std::cout << std::endl;
             enable_echo();
-            std::cout << "Please re-type the password: ";
+            std::cout << _("Please re-type the password: ");
             std::cout.flush();
             std::string pw2;
             disable_echo();
@@ -279,7 +279,7 @@ int main (int argc, char** argv) {
             std::cout << std::endl;
 
             if (pw1 != pw2) {
-                std::cerr << "Passwords do not match." << std::endl;
+                std::cerr << _("Passwords do not match.") << std::endl;
                 return ERR_PASSWDMISMATCH;
             }
 
@@ -290,13 +290,13 @@ int main (int argc, char** argv) {
         imp.import (passwd);
 
         if (imp.hadErrors() && !quiet) {
-            std::cout << "Had " << imp.numErrors() << " errors:" << std::endl;
+            std::cout << _("Had ") << imp.numErrors() << _(" errors:") << std::endl;
             imp.printLog();
             std::cout << std::endl;
-            std::cout << dstfile << " created with errors." << std::endl;
+            std::cout << dstfile << _(" created with errors.") << std::endl;
         } else {
             if (!quiet) {
-                std::cout << dstfile << " successfully created." << std::endl;
+                std::cout << dstfile << _(" successfully created.") << std::endl;
             }
         }
     } catch (std::exception& ex) {
