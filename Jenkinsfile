@@ -38,7 +38,7 @@ pipeline {
                         stage("(FB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug
+                                    sh "../configure --enable-debug"
                                 }
                             }
                         }
