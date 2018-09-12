@@ -359,7 +359,7 @@ class BlowfishFileTest : public CppUnit::TestFixture {
     }
 
     void timeMasterPasswordSet() {
-        std::time_t approxTimePasswordSet;
+        std::time_t approxTimePasswordSet{0};
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::BlowfishFactory> factory{
