@@ -8,6 +8,10 @@ pipeline {
         timestamps()
     }
 
+    environment {
+        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3"
+    }
+
     triggers {
         pollSCM '@hourly'
     }
@@ -34,7 +38,7 @@ pipeline {
                         stage("(FB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug
                                 }
                             }
                         }
@@ -49,7 +53,7 @@ pipeline {
 						 stage("(FB) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
                          }
@@ -57,7 +61,7 @@ pipeline {
                         stage("(FB) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
@@ -83,7 +87,7 @@ pipeline {
                         stage("(LX) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug"
                                 }
                             }
                         }
@@ -99,7 +103,7 @@ pipeline {
 						 stage("(LX) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
                          }
@@ -107,7 +111,7 @@ pipeline {
                         stage("(LX) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
@@ -133,7 +137,7 @@ pipeline {
                         stage("(OB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug CC=cc CXX=c++ CXXFLAGS='-Wall -pedantic'"
+                                    sh "../configure --enable-debug CC=cc CXX=c++"
                                 }
                             }
                         }
@@ -149,7 +153,7 @@ pipeline {
 						 stage("(OB) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
                          }
@@ -157,7 +161,7 @@ pipeline {
                         stage("(OB) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
@@ -183,7 +187,7 @@ pipeline {
                         stage("(NB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug CXXFLAGS='-Wall -pedantic' LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib'"
+                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib'"
                                 }
                             }
                         }
@@ -199,7 +203,7 @@ pipeline {
 						 stage("(NB) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
                          }
@@ -207,7 +211,7 @@ pipeline {
                         stage("(NB) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
