@@ -3,6 +3,7 @@
 // Relies on test5.csv
 
 #include <iostream>
+#include <typeinfo>
 
 #include "csvimport.h"
 
