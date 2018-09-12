@@ -10,10 +10,6 @@ using namespace yapet;
 
 namespace {
 inline SecureArray::size_type castToSizeTypeOrThrow(size_t otherSize) {
-    if (otherSize < 0) {
-        throw std::invalid_argument{_("Size must not be negative")};
-    }
-
     int maxSize = std::numeric_limits<SecureArray::size_type>::max();
     size_t castedMaxSize = static_cast<size_t>(maxSize);
     if (otherSize > castedMaxSize) {
