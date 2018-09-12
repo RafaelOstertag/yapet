@@ -55,8 +55,8 @@ Yapet20File::~Yapet20File() {}
 
 const std::uint8_t* Yapet20File::recognitionString() const {
     return Yapet20File::RECOGNITION_STRING;
-};
+}
 
 int Yapet20File::recognitionStringSize() const {
     return Yapet20File::RECOGNITION_STRING_SIZE;
-};
+}
