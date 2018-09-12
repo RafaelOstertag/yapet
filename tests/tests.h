@@ -36,26 +36,6 @@
 #define COMMENT "Test comment %d"
 #endif
 
-inline void progress() {
-    static int n = 0;
-
-    // I change the progress indicator to somewhat less verbose, since the
-    // above indicator looks terrible in build logs of automated builds,
-    // e.g. :
-    // https://buildd.debian.org/pkg.cgi?pkg=yapet
-    if ((n % 100) == 0 && !((n % 1000) == 0)) {
-        std::cout << ".";
-        std::cout.flush();
-    }
-
-    if ((n % 1000) == 0 && n != 0) {
-        std::cout << "#";
-        std::cout.flush();
-    }
-
-    n++;
-}
-
 inline void print_record(
     const yapet::PasswordListItem& passwordListItem,
     std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory) {
@@ -78,8 +58,6 @@ inline void print_record(
 inline void check_record(
     const yapet::PasswordListItem& passwordListItem,
     std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory, int rec_no) {
-    progress();
-
     auto crypto{cryptoFactory->crypto()};
 
     char _name[yapet::PasswordRecord::NAME_SIZE];

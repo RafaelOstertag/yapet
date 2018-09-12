@@ -2,22 +2,7 @@
 //
 // Test
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <iostream>
-#include <typeinfo>
-
-#include <unistd.h>
-
-#include <sys/types.h>
-
-#include <sys/stat.h>
-
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
 
 #include "aes256factory.hh"
 #include "csvimport.h"
@@ -44,15 +29,7 @@ const char* VAL512 =
     "zABCDEFGHIJKLMNOPQRSTUVXYZ0123456789abcdefghijklmnopqrstuvxyzABCDEF";
 
 int main(int, char**) {
-#ifndef TESTS_VERBOSE
-    int stdout_redir_fd = open("/dev/null", O_WRONLY | O_APPEND);
-    dup2(stdout_redir_fd, STDOUT_FILENO);
-#endif
-    std::cout << std::endl;
-
     try {
-        std::cout << " ==> Importing from test10.csv" << std::endl;
-        std::cout << " ==> Testing import of oversized lines" << std::endl;
         CSVImport imp(SRCDIR "/test10.csv", BUILDDIR "/test10.pet", ';');
         imp.import("test10");
 
