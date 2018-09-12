@@ -194,7 +194,7 @@ void Yapet10File::writePasswordRecords(
 
 const std::uint8_t* Yapet10File::recognitionString() const {
     return Yapet10File::RECOGNITION_STRING;
-};
+}
 
 int Yapet10File::recognitionStringSize() const {
     return Yapet10File::RECOGNITION_STRING_SIZE;
