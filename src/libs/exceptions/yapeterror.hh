@@ -16,8 +16,7 @@ namespace yapet {
 class RetryableError : public YAPETBaseError {
    public:
     RetryableError() noexcept : YAPETBaseError{_("Retry")} {}
-    RetryableError(const std::string& msg) noexcept
-        : YAPETBaseError{msg.c_str()} {}
+    RetryableError(const char* msg) noexcept : YAPETBaseError{msg} {}
 };
 
 /**
@@ -30,10 +29,8 @@ class RetryableError : public YAPETBaseError {
  */
 class InvalidPasswordError : public YAPETBaseError {
    public:
-    InvalidPasswordError() noexcept
-        : YAPETBaseError{_("Invalid password")} {}
-    InvalidPasswordError(const std::string& msg) noexcept
-        : YAPETBaseError{msg.c_str()} {}
+    InvalidPasswordError() noexcept : YAPETBaseError{_("Invalid password")} {}
+    InvalidPasswordError(const char* msg) noexcept : YAPETBaseError{msg} {}
 };
 }  // namespace yapet
 

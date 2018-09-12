@@ -43,8 +43,7 @@ SecureArray Aes256::randomIV() const {
 
     auto result = RAND_bytes((*ivec), ivec.size());
     if (result != SSL_SUCCESS) {
-        throw CipherError{
-            _("Cannot generate random initialization vector")};
+        throw CipherError{_("Cannot generate random initialization vector")};
     }
 
     return ivec;
@@ -52,8 +51,7 @@ SecureArray Aes256::randomIV() const {
 
 SecureArray Aes256::extractIVFromRecord(const SecureArray& record) const {
     if (record.size() < cipherIvecSize()) {
-        throw CipherError{
-            _("Record does not contain initialization vector")};
+        throw CipherError{_("Record does not contain initialization vector")};
     }
 
     SecureArray ivec{cipherIvecSize()};
@@ -84,13 +82,12 @@ void Aes256::checkIVSizeOrThrow(const SecureArray& ivec) {
         message += std::to_string(expectedIVSize);
         message += _(" but cipher supports only IV size ");
         message += std::to_string(supportedIVSize);
-        throw CipherError{message};
+        throw CipherError{message.c_str()};
     }
 }
 
 void Aes256::validateCipherOrThrow(const SecureArray& ivec) {
-    if (getCipher() == nullptr)
-        throw CipherError{_("Unable to get cipher")};
+    if (getCipher() == nullptr) throw CipherError{_("Unable to get cipher")};
 
     checkIVSizeOrThrow(ivec);
 }
@@ -110,7 +107,7 @@ EVP_CIPHER_CTX* Aes256::initializeOrThrow(const SecureArray& ivec, MODE mode) {
         destroyContext(context);
         std::string message{_("Cannot set key length on context to ")};
         message += std::to_string(getKey()->keySize());
-        throw CipherError{message};
+        throw CipherError{message.c_str()};
     }
 
     return context;

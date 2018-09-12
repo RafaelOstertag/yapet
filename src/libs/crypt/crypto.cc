@@ -21,7 +21,7 @@ void Crypto::checkIVSizeOrThrow() {
         message += std::to_string(expectedIVSize);
         message += _(" but cipher supports only IV size ");
         message += std::to_string(supportedIVSize);
-        throw CipherError{message};
+        throw CipherError{message.c_str()};
     }
 }
 
@@ -70,7 +70,7 @@ EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
         destroyContext(context);
         std::string message{_("Cannot set key length on context to ")};
         message += std::to_string(_key->keySize());
-        throw CipherError{message};
+        throw CipherError{message.c_str()};
     }
 
     return context;

@@ -8,8 +8,8 @@ namespace yapet {
 class CipherError : public YAPETBaseError {
    public:
     CipherError() noexcept : YAPETBaseError{_("Cipher error")} {}
-    CipherError(const std::string& msg) noexcept
-        : YAPETBaseError{msg.c_str()} {}
+    CipherError(const char* msg) noexcept
+        : YAPETBaseError{msg} {}
 };
 
 /**
@@ -22,8 +22,8 @@ class EncryptionError : public YAPETBaseError {
    public:
     EncryptionError() noexcept
         : YAPETBaseError{_("Encryption error")} {}
-    EncryptionError(const std::string& msg) noexcept
-        : YAPETBaseError{msg.c_str()} {}
+    EncryptionError(const char* msg) noexcept
+        : YAPETBaseError{msg} {}
 };
 };  // namespace yapet
 
