@@ -39,7 +39,6 @@
 
 #include "key.hh"
 #include "securearray.hh"
-#include "yapetexception.h"
 
 /**
  * @brief Namespace for cryptographic stuff
@@ -104,27 +103,12 @@ class Key448 : public Key {
     SecureArray::size_type ivecSize() const { return _ivec.size(); }
 
     //! Compares two keys for equality
-    bool operator==(const Key448& k) const {
-        return _key == k._key && _ivec == k._ivec;
-    }
-    bool operator==(const Key& k) const {
-        if (typeid(k) != typeid(*this)) {
-            return false;
-        }
-
-        return operator==(dynamic_cast<const Key448&>(k));
-    }
+    bool operator==(const Key448& k) const;
+    bool operator==(const Key& k) const;
 
     //! Compares two keys for inequality
-    bool operator!=(const Key448& k) const { return !operator==(k); }
-
-    bool operator!=(const Key& k) const {
-        if (typeid(k) != typeid(*this)) {
-            return true;
-        }
-
-        return operator!=(dynamic_cast<const Key448&>(k));
-    }
+    bool operator!=(const Key448& k) const;
+    bool operator!=(const Key& k) const;
 };
 
 }  // namespace yapet

@@ -9,7 +9,8 @@ CLEANFILES = yapet-fileutils-test yapet-rawfile-test yapet-yapet10file-test yape
 check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file yapet20file header10 headerversion
 TESTS = $(check_PROGRAMS)       
 
-AM_CPPFLAGS = -I$(yapet_libs_srcdir)/utils \
+AM_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+    -I$(yapet_libs_srcdir)/utils \
     -I$(yapet_libs_srcdir)/interfaces \
     -I$(yapet_libs_srcdir)/file \
     -I$(top_srcdir) 

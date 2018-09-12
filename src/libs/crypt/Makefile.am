@@ -3,7 +3,8 @@ yapet_src_libdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libdir)/file \
+AM_CPPFLAGS = -I$(yapet_src_libdir)/exceptions \
+    -I$(yapet_src_libdir)/file \
     -I$(yapet_src_libdir)/passwordrecord \
     -I$(yapet_src_libdir)/utils \
     -I$(yapet_src_libdir)/interfaces \
@@ -23,7 +24,6 @@ endif
 
 noinst_LTLIBRARIES = libyapet-crypt.la
 
-libyapet_crypt_la_SOURCES = yapetexception.h	\
-file.h key448.hh key448.cc key256.hh key256.cc file.cc blowfish.hh blowfish.cc aes256.hh aes256.cc		\
+libyapet_crypt_la_SOURCES = file.h key448.hh key448.cc key256.hh key256.cc file.cc blowfish.hh blowfish.cc aes256.hh aes256.cc		\
 crypto.hh crypto.cc abstractcryptofactory.hh blowfishfactory.hh blowfishfactory.cc aes256factory.hh \
 aes256factory.cc cryptofactoryhelper.hh cryptofactoryhelper.cc

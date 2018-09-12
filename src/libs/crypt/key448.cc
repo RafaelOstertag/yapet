@@ -36,6 +36,7 @@
 
 #include "intl.h"
 #include "key448.hh"
+#include "cryptoerror.hh"
 
 using namespace yapet;
 
@@ -70,23 +71,23 @@ inline void destroyContext(EVP_MD_CTX* context) {
 }
 
 inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
-    if (md == 0) throw YAPET::YAPETException(_("Empty EVP_MD structure"));
+    if (md == 0) throw CipherError{_("Empty EVP_MD structure")};
 
     EVP_MD_CTX* mdctx = createContext();
     if (mdctx == nullptr) {
-        throw YAPET::YAPETException(_("Error initializing MD context"));
+        throw CipherError{_("Error initializing MD context")};
     }
 
     int retval = EVP_DigestInit_ex(mdctx, md, 0);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to initialize the digest"));
+        throw CipherError{_("Unable to initialize the digest")};
     }
 
     retval = EVP_DigestUpdate(mdctx, *text, text.size());
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to update the digest"));
+        throw CipherError{_("Unable to update the digest")};
     }
 
     SecureArray::size_type hashSize = EVP_MD_size(md);
@@ -95,7 +96,7 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to finalize the digest"));
+        throw CipherError{_("Unable to finalize the digest")};
     }
     destroyContext(mdctx);
 
@@ -127,7 +128,7 @@ void Key448::password(const SecureArray& password) {
                  _("Effective key length of %d does not match expected key "
                    "length %d"),
                  _key.size(), KEY_LENGTH);
-        throw YAPET::YAPETException(tmp);
+        throw CipherError{tmp};
     }
 
     SecureArray keyHash{hash(_key, EVP_md5())};
@@ -153,4 +154,25 @@ Key448& Key448::operator=(Key448&& k) {
     _key = std::move(k._key);
     _ivec = std::move(k._ivec);
     return *this;
+}
+
+bool Key448::operator==(const Key448& k) const {
+    return _key == k._key && _ivec == k._ivec;
+}
+bool Key448::operator==(const Key& k) const {
+    if (typeid(k) != typeid(*this)) {
+        return false;
+    }
+
+    return operator==(dynamic_cast<const Key448&>(k));
+}
+
+bool Key448::operator!=(const Key448& k) const { return !operator==(k); }
+
+bool Key448::operator!=(const Key& k) const {
+    if (typeid(k) != typeid(*this)) {
+        return true;
+    }
+
+    return operator!=(dynamic_cast<const Key448&>(k));
 }

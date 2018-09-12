@@ -34,6 +34,7 @@
 #include "intl.h"
 
 #include "aes256.hh"
+#include "cryptoerror.hh"
 
 using namespace yapet;
 
@@ -42,8 +43,8 @@ SecureArray Aes256::randomIV() const {
 
     auto result = RAND_bytes((*ivec), ivec.size());
     if (result != SSL_SUCCESS) {
-        throw YAPET::YAPETEncryptionException(
-            _("Cannot generate random initialization vector"));
+        throw CipherError{
+            _("Cannot generate random initialization vector")};
     }
 
     return ivec;
@@ -51,8 +52,8 @@ SecureArray Aes256::randomIV() const {
 
 SecureArray Aes256::extractIVFromRecord(const SecureArray& record) const {
     if (record.size() < cipherIvecSize()) {
-        throw YAPET::YAPETEncryptionException(
-            _("Record does not contain initialization vector"));
+        throw CipherError{
+            _("Record does not contain initialization vector")};
     }
 
     SecureArray ivec{cipherIvecSize()};
@@ -64,14 +65,13 @@ SecureArray Aes256::extractCipherTextFromRecord(
     const SecureArray& record) const {
     auto ivecSize{cipherIvecSize()};
     if (record.size() <= ivecSize) {
-        throw YAPET::YAPETEncryptionException(
-            _("Record does not contain encrypted data"));
+        throw CipherError{_("Record does not contain encrypted data")};
     }
 
     auto pointerToCipherText{*record + ivecSize};
 
     auto cipherTextSize{record.size() - ivecSize};
-    
+
     return toSecureArray(pointerToCipherText, cipherTextSize);
 }
 
@@ -84,13 +84,13 @@ void Aes256::checkIVSizeOrThrow(const SecureArray& ivec) {
         message += std::to_string(expectedIVSize);
         message += _(" but cipher supports only IV size ");
         message += std::to_string(supportedIVSize);
-        throw YAPET::YAPETException(message);
+        throw CipherError{message};
     }
 }
 
 void Aes256::validateCipherOrThrow(const SecureArray& ivec) {
     if (getCipher() == nullptr)
-        throw YAPET::YAPETException{_("Unable to get cipher")};
+        throw CipherError{_("Unable to get cipher")};
 
     checkIVSizeOrThrow(ivec);
 }
@@ -102,7 +102,7 @@ EVP_CIPHER_CTX* Aes256::initializeOrThrow(const SecureArray& ivec, MODE mode) {
                                      *getKey()->key(), *ivec, mode);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETException(_("Error initializing cipher"));
+        throw CipherError{_("Error initializing cipher")};
     }
 
     success = EVP_CIPHER_CTX_set_key_length(context, getKey()->keySize());
@@ -110,7 +110,7 @@ EVP_CIPHER_CTX* Aes256::initializeOrThrow(const SecureArray& ivec, MODE mode) {
         destroyContext(context);
         std::string message{_("Cannot set key length on context to ")};
         message += std::to_string(getKey()->keySize());
-        throw YAPET::YAPETException(message);
+        throw CipherError{message};
     }
 
     return context;
@@ -140,7 +140,7 @@ Aes256& Aes256::operator=(Aes256&& c) {
 
 SecureArray Aes256::encrypt(const SecureArray& plainText) {
     if (plainText.size() == 0) {
-        throw YAPET::YAPETException(_("Cannot encrypt empty plain text"));
+        throw EncryptionError{_("Cannot encrypt empty plain text")};
     }
 
     SecureArray ivec{randomIV()};
@@ -158,7 +158,7 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
                          *plainText, plainText.size());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error encrypting data"));
+        throw EncryptionError{_("Error encrypting data")};
     }
 
     auto effectiveEncryptedDataLength = writtenDataLength;
@@ -167,7 +167,7 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error finalizing encryption"));
+        throw EncryptionError{_("Error finalizing encryption")};
     }
 
     effectiveEncryptedDataLength += writtenDataLength;
@@ -182,7 +182,7 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
 
 SecureArray Aes256::decrypt(const SecureArray& cipherText) {
     if (cipherText.size() == 0) {
-        throw YAPET::YAPETException(_("Cannot decrypt empty cipher text"));
+        throw EncryptionError{_("Cannot decrypt empty cipher text")};
     }
 
     SecureArray ivec{extractIVFromRecord(cipherText)};
@@ -203,7 +203,7 @@ SecureArray Aes256::decrypt(const SecureArray& cipherText) {
                          *cipherTextOnly, cipherTextOnly.size());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error decrypting data"));
+        throw EncryptionError{_("Error decrypting data")};
     }
 
     auto effectiveDecryptedDataLength = writtenDataLength;
@@ -212,8 +212,7 @@ SecureArray Aes256::decrypt(const SecureArray& cipherText) {
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(
-            _("Error finalizing decrypting data"));
+        throw EncryptionError{_("Error finalizing decrypting data")};
     }
 
     effectiveDecryptedDataLength += writtenDataLength;

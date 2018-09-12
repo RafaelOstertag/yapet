@@ -22,10 +22,12 @@
 
 #include "cryptofactoryhelper.hh"
 #include "file.h"
+#include "fileerror.hh"
 #include "globals.h"
 #include "intl.h"
 #include "promptpassword.h"
 #include "utils.hh"
+#include "yapeterror.hh"
 
 //
 // Private
@@ -47,7 +49,7 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                     yapet::getCryptoFactoryForFile(_filename, password)};
 
                 if (!cryptoFactory) {
-                    throw YAPET::YAPETException(_("File not recognized"));
+                    throw yapet::FileFormatError{_("File not recognized")};
                 }
 
                 // This will raise an exception if password is wrong
@@ -59,7 +61,7 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                 _cryptoFactory = cryptoFactory;
                 YACURS::EventQueue::submit(YACURS::EventEx<PromptPassword*>(
                     YAPET::EVT_APOPTOSIS, this));
-            } catch (YAPET::YAPETInvalidPasswordException& ex) {
+            } catch (yapet::InvalidPasswordError& ex) {
                 assert(pwerror == nullptr);
                 pwerror = new YACURS::MessageBox3(
                     _("Invalid Password"), _("Password for file"), _filename,

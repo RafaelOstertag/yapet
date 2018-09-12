@@ -5,6 +5,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "aes256.hh"
+#include "cryptoerror.hh"
 #include "key256.hh"
 
 class Aes256Test : public CppUnit::TestFixture {
@@ -55,8 +56,7 @@ class Aes256Test : public CppUnit::TestFixture {
         yapet::SecureArray corrupt{cipherText.size() - 2};
         corrupt << cipherText;
 
-        CPPUNIT_ASSERT_THROW(aes256->decrypt(corrupt),
-                             YAPET::YAPETEncryptionException);
+        CPPUNIT_ASSERT_THROW(aes256->decrypt(corrupt), yapet::EncryptionError);
     }
 
     void decryptWithWrongPassword() {
@@ -70,14 +70,14 @@ class Aes256Test : public CppUnit::TestFixture {
             std::unique_ptr<yapet::Aes256>{new yapet::Aes256{otherKey}}};
 
         CPPUNIT_ASSERT_THROW(otherBlowfish->decrypt(cipherText),
-                             YAPET::YAPETEncryptionException);
+                             yapet::EncryptionError);
     }
 
     void throwOnEmptyPlainAndCipherText() {
         yapet::SecureArray empty{};
 
-        CPPUNIT_ASSERT_THROW(aes256->encrypt(empty), YAPET::YAPETException);
-        CPPUNIT_ASSERT_THROW(aes256->decrypt(empty), YAPET::YAPETException);
+        CPPUNIT_ASSERT_THROW(aes256->encrypt(empty), yapet::EncryptionError);
+        CPPUNIT_ASSERT_THROW(aes256->decrypt(empty), yapet::EncryptionError);
     }
 };
 

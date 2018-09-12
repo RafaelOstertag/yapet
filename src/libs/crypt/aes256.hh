@@ -40,7 +40,6 @@
 #include "intl.h"
 #include "key.hh"
 #include "securearray.hh"
-#include "yapetexception.h"
 
 namespace yapet {
 /**

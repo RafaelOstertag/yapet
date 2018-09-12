@@ -26,9 +26,11 @@
 #include "cfg.h"
 #include "changepassword.h"
 #include "cryptofactoryhelper.hh"
+#include "fileerror.hh"
 #include "globals.h"
 #include "intl.h"
 #include "utils.hh"
+#include "yapeterror.hh"
 
 //
 // Private
@@ -51,7 +53,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 _oldCryptoFactory = yapet::getCryptoFactoryForFile(
                     _currentFilename, oldPassword);
                 if (!_oldCryptoFactory) {
-                    throw YAPET::YAPETException(_("File not recognized"));
+                    throw yapet::FileFormatError{_("File not recognized")};
                 }
 
                 try {
@@ -62,7 +64,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     assert(promptpassword == nullptr);
                     promptpassword = new NewPasswordDialog(_currentFilename);
                     promptpassword->show();
-                } catch (YAPET::YAPETInvalidPasswordException& e) {
+                } catch (yapet::InvalidPasswordError& e) {
                     assert(nonmatch == nullptr);
                     nonmatch = new YACURS::MessageBox2(
                         _("Error"), _("Password does not match old password"),
@@ -125,7 +127,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     YACURS::Curses::statusbar()->set(
                         _("Password not changed. Old and new password "
                           "identical."));
-                } catch (YAPET::YAPETInvalidPasswordException& e) {
+                } catch (yapet::InvalidPasswordError& e) {
                     mainwindow.change_password(newCryptoFactory);
                 }
 

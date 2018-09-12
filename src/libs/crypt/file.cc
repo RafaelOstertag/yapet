@@ -32,6 +32,8 @@
 
 #include "file.h"
 #include "fileutils.hh"
+#include "yapeterror.hh"
+#include "cryptoerror.hh"
 #include "intl.h"
 
 using namespace YAPET;
@@ -58,9 +60,9 @@ void File::validateExistingFile() {
     yapet::SecureArray serializedHeader;
     try {
         serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
-    } catch (YAPET::YAPETEncryptionException& e) {
+    } catch (EncryptionError& e) {
         // most likely caused by invalid password
-        throw YAPET::YAPETInvalidPasswordException{_("Invalid password")};
+        throw InvalidPasswordError{_("Invalid password")};
     }
 
     Header10 header{serializedHeader};
@@ -73,8 +75,8 @@ void File::notModifiedOrThrow() {
     auto currentFileModificationTime{
         yapet::getModificationTime(_yapetFile->filename())};
     if (currentFileModificationTime != _fileModificationTime) {
-        throw YAPET::YAPETRetryException(
-            _("File has been externally modified"));
+        throw RetryableError{
+            _("File has been externally modified")};
     }
 }
 

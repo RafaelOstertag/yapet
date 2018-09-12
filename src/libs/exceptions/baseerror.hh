@@ -2,7 +2,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2018  Rafael Ostertag
+// Copyright (C) 2008-2010  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -30,36 +30,30 @@
 // well as that of the covered work.
 //
 
-#ifndef _BLOWFISH_HH
-#define _BLOWFISH_HH 1
+#ifndef _YAPETEXCEPTION_HH
+#define _YAPETEXCEPTION_HH 1
 
-#include <openssl/evp.h>
-#include <memory>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-#include "crypto.hh"
+#include <stdexcept>
+
 #include "intl.h"
-#include "key.hh"
-#include "securearray.hh"
 
 namespace yapet {
+
 /**
- * Encrypt/decrypt data using Blowfish algorithm.
+ * @brief The exception base class for YAPET.
+ *
  */
-class Blowfish : public Crypto {
-   protected:
-    const EVP_CIPHER* getCipher() const { return EVP_bf_cbc(); }
-
+class YAPETBaseError : public std::runtime_error {
    public:
-    //! Constructor
-    Blowfish(const std::shared_ptr<Key>& key);
-    Blowfish(const Blowfish&);
-    Blowfish& operator=(const Blowfish& c);
-
-    Blowfish(Blowfish&& c);
-    Blowfish& operator=(Blowfish&& c);
-
-    ~Blowfish() {}
+    YAPETBaseError() noexcept
+        : std::runtime_error{_("Generic exception message")} {}
+    YAPETBaseError(const char* msg) noexcept : std::runtime_error{msg} {}
 };
+
 }  // namespace yapet
 
-#endif  // _BLOWFISH_HH
+#endif  // _YAPETEXCEPTION_HH

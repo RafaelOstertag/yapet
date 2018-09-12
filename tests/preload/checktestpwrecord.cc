@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
-#include "blowfishfactory.hh"
+#include "cryptofactoryhelper.hh"
 #include "file.h"
 
 struct control_struct {
@@ -25,12 +25,14 @@ std::string comm("Test Comment ");
 
 std::list<control_struct> control_data;
 
+constexpr auto TEST_FILE{"/tmp/testpwrecord.pet"};
+
 auto password{yapet::toSecureArray("pleasechange")};
 std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-    new yapet::BlowfishFactory{password}};
+    yapet::getCryptoFactoryForFile(TEST_FILE, password)};
 auto crypto{cryptoFactory->crypto()};
 
-YAPET::File testfile(cryptoFactory, "/tmp/testpwrecord.pet", false, false);
+YAPET::File testfile(cryptoFactory, TEST_FILE, false, false);
 
 bool operator==(const yapet::PasswordListItem& a, const control_struct& b) {
     std::string name{reinterpret_cast<const char*>(a.name())};

@@ -7,7 +7,7 @@
 # will be built which is also installed. That we don't want either.
 
 yapet_srcdir = $(top_srcdir)/src
-yapet_lib_srcdir = $(yapet_srcdir)/libs
+yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs = $(yapet_builddir)/libs
 
@@ -17,11 +17,12 @@ EXTRA_DIST = istty.cc pwrecord.cc checkyapet.cc masterpwchange.cc
 noinst_PROGRAMS = checktestpwrecord checkmasterpwchange istty
 
 checktestpwrecord_SOURCES = checktestpwrecord.cc
-checktestpwrecord_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
-	-I$(yapet_lib_srcdir)/file \
-	-I$(yapet_lib_srcdir)/utils \
-	-I$(yapet_lib_srcdir)/passwordrecord \
-	-I$(yapet_lib_srcdir)/interfaces \
+checktestpwrecord_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+	-I$(yapet_libs_srcdir)/crypt \
+	-I$(yapet_libs_srcdir)/file \
+	-I$(yapet_libs_srcdir)/utils \
+	-I$(yapet_libs_srcdir)/passwordrecord \
+	-I$(yapet_libs_srcdir)/interfaces \
 	-I$(top_builddir) \
 	-I$(top_srcdir) \
 	 $(OPENSSL_INCLUDES)
@@ -32,12 +33,12 @@ checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
 	$(LIBINTL) 
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc
-checkmasterpwchange_CPPFLAGS = -I$(yapet_lib_srcdir)/crypt \
-	-I$(yapet_lib_srcdir)/crypt \
-	-I$(yapet_lib_srcdir)/file \
-	-I$(yapet_lib_srcdir)/utils \
-	-I$(yapet_lib_srcdir)/passwordrecord \
-	-I$(yapet_lib_srcdir)/interfaces \
+checkmasterpwchange_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+	-I$(yapet_libs_srcdir)/crypt \
+	-I$(yapet_libs_srcdir)/file \
+	-I$(yapet_libs_srcdir)/utils \
+	-I$(yapet_libs_srcdir)/passwordrecord \
+	-I$(yapet_libs_srcdir)/interfaces \
 	-I$(top_builddir) \
 	-I$(top_srcdir) \
 	$(OPENSSL_INCLUDES)

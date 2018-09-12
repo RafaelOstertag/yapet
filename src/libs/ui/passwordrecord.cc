@@ -22,6 +22,7 @@
 #include "config.h"
 #endif
 
+#include "baseerror.hh"
 #include "globals.h"
 #include "intl.h"
 #include "passwordrecord.h"
@@ -32,7 +33,9 @@ class HotKeyCtrlR : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlR(PasswordRecord* p) : HotKey{18}, ptr{p} { assert(p != nullptr); }
+    HotKeyCtrlR(PasswordRecord* p) : HotKey{18}, ptr{p} {
+        assert(p != nullptr);
+    }
     HotKeyCtrlR(const HotKeyCtrlR& hk) : HotKey{hk}, ptr{hk.ptr} {}
     void action() { ptr->readonly(!ptr->readonly()); }
 
@@ -44,7 +47,9 @@ class HotKeyCtrlT : public YACURS::HotKey {
     PasswordRecord* ptr;
 
    public:
-    HotKeyCtrlT(PasswordRecord* p) : HotKey{20}, ptr{p} { assert(p != nullptr); }
+    HotKeyCtrlT(PasswordRecord* p) : HotKey{20}, ptr{p} {
+        assert(p != nullptr);
+    }
     HotKeyCtrlT(const HotKeyCtrlT& hk) : HotKey{hk}, ptr{hk.ptr} {}
     void action() { ptr->password_hidden(!ptr->password_hidden()); }
 
@@ -66,7 +71,7 @@ void PasswordRecord::on_ok_button() {
         _passwordListItem = std::shared_ptr<yapet::PasswordListItem>{
             new yapet::PasswordListItem{name->input().c_str(),
                                         encryptedPasswordRecord}};
-    } catch (YAPET::YAPETException& ex) {
+    } catch (yapet::YAPETBaseError& ex) {
         errordialog = new YACURS::MessageBox(_("Error"), ex.what());
         errordialog->show();
     }
@@ -157,7 +162,7 @@ PasswordRecord::PasswordRecord(
         password->input(
             reinterpret_cast<const char*>(passwordRecord.password()));
         comment->input(reinterpret_cast<const char*>(passwordRecord.comment()));
-    } catch (YAPET::YAPETException& ex) {
+    } catch (yapet::YAPETBaseError& ex) {
         try {
             errordialog = new YACURS::MessageBox(_("Error"), ex.what());
             errordialog->show();

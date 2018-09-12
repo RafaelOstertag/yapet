@@ -7,8 +7,8 @@
 #endif
 
 #include "crypto.hh"
+#include "cryptoerror.hh"
 #include "intl.h"
-#include "yapetexception.h"
 
 using namespace yapet;
 
@@ -21,7 +21,7 @@ void Crypto::checkIVSizeOrThrow() {
         message += std::to_string(expectedIVSize);
         message += _(" but cipher supports only IV size ");
         message += std::to_string(supportedIVSize);
-        throw YAPET::YAPETException(message);
+        throw CipherError{message};
     }
 }
 
@@ -50,8 +50,7 @@ void Crypto::destroyContext(EVP_CIPHER_CTX* context) {
 }
 
 void Crypto::validateCipherOrThrow() {
-    if (getCipher() == nullptr)
-        throw YAPET::YAPETException{_("Unable to get cipher")};
+    if (getCipher() == nullptr) throw CipherError{_("Unable to get cipher")};
 
     checkIVSizeOrThrow();
 }
@@ -63,7 +62,7 @@ EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
                                      *_key->key(), *_key->ivec(), mode);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETException(_("Error initializing cipher"));
+        throw CipherError{_("Error initializing cipher")};
     }
 
     success = EVP_CIPHER_CTX_set_key_length(context, _key->keySize());
@@ -71,7 +70,7 @@ EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
         destroyContext(context);
         std::string message{_("Cannot set key length on context to ")};
         message += std::to_string(_key->keySize());
-        throw YAPET::YAPETException(message);
+        throw CipherError{message};
     }
 
     return context;
@@ -105,7 +104,7 @@ Crypto& Crypto::operator=(Crypto&& c) {
 
 SecureArray Crypto::encrypt(const SecureArray& plainText) {
     if (plainText.size() == 0) {
-        throw YAPET::YAPETException(_("Cannot encrypt empty plain text"));
+        throw EncryptionError{_("Cannot encrypt empty plain text")};
     }
 
     validateCipherOrThrow();
@@ -121,7 +120,7 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
                          *plainText, plainText.size());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error encrypting data"));
+        throw EncryptionError{_("Error encrypting data")};
     }
 
     auto effectiveEncryptedDataLength = writtenDataLength;
@@ -130,7 +129,7 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error finalizing encryption"));
+        throw EncryptionError{_("Error finalizing encryption")};
     }
 
     effectiveEncryptedDataLength += writtenDataLength;
@@ -145,7 +144,7 @@ SecureArray Crypto::encrypt(const SecureArray& plainText) {
 
 SecureArray Crypto::decrypt(const SecureArray& cipherText) {
     if (cipherText.size() == 0) {
-        throw YAPET::YAPETException(_("Cannot decrypt empty cipher text"));
+        throw EncryptionError{_("Cannot decrypt empty cipher text")};
     }
 
     validateCipherOrThrow();
@@ -162,7 +161,7 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
                          *cipherText, cipherText.size());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(_("Error decrypting data"));
+        throw EncryptionError{_("Error decrypting data")};
     }
 
     auto effectiveDecryptedDataLength = writtenDataLength;
@@ -171,8 +170,7 @@ SecureArray Crypto::decrypt(const SecureArray& cipherText) {
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        throw YAPET::YAPETEncryptionException(
-            _("Error finalizing decrypting data"));
+        throw EncryptionError{_("Error finalizing decrypting data")};
     }
 
     effectiveDecryptedDataLength += writtenDataLength;

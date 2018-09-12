@@ -34,6 +34,7 @@
 
 #include <cstring>
 
+#include "cryptoerror.hh"
 #include "intl.h"
 #include "key256.hh"
 
@@ -66,23 +67,23 @@ inline void destroyContext(EVP_MD_CTX* context) {
 }
 
 inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
-    if (md == 0) throw YAPET::YAPETException(_("Empty EVP_MD structure"));
+    if (md == 0) throw CipherError{_("Empty EVP_MD structure")};
 
     EVP_MD_CTX* mdctx = createContext();
     if (mdctx == nullptr) {
-        throw YAPET::YAPETException(_("Error initializing MD context"));
+        throw CipherError{_("Error initializing MD context")};
     }
 
     int retval = EVP_DigestInit_ex(mdctx, md, 0);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to initialize the digest"));
+        throw CipherError{_("Unable to initialize the digest")};
     }
 
     retval = EVP_DigestUpdate(mdctx, *text, text.size());
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to update the digest"));
+        throw CipherError{_("Unable to update the digest")};
     }
 
     SecureArray::size_type hashSize = EVP_MD_size(md);
@@ -91,7 +92,7 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw YAPET::YAPETException(_("Unable to finalize the digest"));
+        throw CipherError{_("Unable to finalize the digest")};
     }
     destroyContext(mdctx);
 
@@ -120,7 +121,7 @@ void Key256::password(const SecureArray& password) {
                  _("Effective key length of %d does not match expected key "
                    "length %d"),
                  _key.size(), KEY_LENGTH);
-        throw YAPET::YAPETException(tmp);
+        throw CipherError{tmp};
     }
 }
 
@@ -140,4 +141,23 @@ Key256& Key256::operator=(Key256&& k) {
 
     _key = std::move(k._key);
     return *this;
+}
+
+bool Key256::operator==(const Key256& k) const { return _key == k._key; }
+bool Key256::operator==(const Key& k) const {
+    if (typeid(k) != typeid(*this)) {
+        return false;
+    }
+
+    return operator==(dynamic_cast<const Key256&>(k));
+}
+
+bool Key256::operator!=(const Key256& k) const { return !operator==(k); }
+
+bool Key256::operator!=(const Key& k) const {
+    if (typeid(k) != typeid(*this)) {
+        return true;
+    }
+
+    return operator!=(dynamic_cast<const Key256&>(k));
 }

@@ -13,9 +13,11 @@
 #include <list>
 
 #include "aes256factory.hh"
+#include "cryptoerror.hh"
 #include "file.h"
 #include "securearray.hh"
 #include "testpaths.h"
+#include "yapeterror.hh"
 
 constexpr auto TEST_PASSWORD{"Secret"};
 
@@ -206,7 +208,7 @@ class Aes256FileTest : public CppUnit::TestFixture {
                 new yapet::Aes256Factory{password}};
 
             CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, false}),
-                                 YAPET::YAPETInvalidPasswordException);
+                                 yapet::InvalidPasswordError);
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
         }
@@ -296,8 +298,7 @@ class Aes256FileTest : public CppUnit::TestFixture {
         file1.save(passwordList);
 
         // the modification of the file's mtime should be detected here
-        CPPUNIT_ASSERT_THROW(file2.save(passwordList),
-                             YAPET::YAPETRetryException);
+        CPPUNIT_ASSERT_THROW(file2.save(passwordList), yapet::RetryableError);
 
         ::sleep(1);
         // file1 must allow to re-save
@@ -343,8 +344,7 @@ class Aes256FileTest : public CppUnit::TestFixture {
         passwordList2.push_back(passwordListItem2);
 
         // the modification of the file's mtime should be detected here
-        CPPUNIT_ASSERT_THROW(file2.save(passwordList2),
-                             YAPET::YAPETRetryException);
+        CPPUNIT_ASSERT_THROW(file2.save(passwordList2), yapet::RetryableError);
         file2.save(passwordList2, true);
 
         auto actual{file2.read()};
@@ -477,7 +477,7 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
         YAPET::File file{factory, BUILDDIR "/corrupt_aes256.pet", false, false};
 
-        CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
+        CPPUNIT_ASSERT_THROW(file.read(), yapet::EncryptionError);
     }
 };
 

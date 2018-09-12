@@ -44,7 +44,8 @@ check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory fil
 
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(yapet_libs_srcdir)/crypt \
+AM_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/passwordrecord \
 	-I$(yapet_libs_srcdir)/interfaces \
 	-I$(yapet_libs_srcdir)/pwgen \

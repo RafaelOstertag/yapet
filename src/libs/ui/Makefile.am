@@ -6,6 +6,7 @@ yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
 AM_CPPFLAGS = -I$(top_srcdir)/src/yapet \
+    -I$(yapet_src_libdir)/exceptions \
     -I$(yapet_src_libdir)/pwgen \
     -I$(yapet_src_libdir)/crypt \
     -I$(yapet_src_libdir)/glue \

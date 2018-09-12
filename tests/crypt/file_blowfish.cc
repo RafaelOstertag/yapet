@@ -13,9 +13,11 @@
 #include <list>
 
 #include "blowfishfactory.hh"
+#include "cryptoerror.hh"
 #include "file.h"
 #include "securearray.hh"
 #include "testpaths.h"
+#include "yapeterror.hh"
 
 constexpr auto TEST_PASSWORD{"Secret"};
 
@@ -103,7 +105,8 @@ class BlowfishFileTest : public CppUnit::TestFixture {
             new CppUnit::TestSuite("Blowfish File");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
-            "should correctly read empty file", &BlowfishFileTest::createNewFile));
+            "should correctly read empty file",
+            &BlowfishFileTest::createNewFile));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should correctly read empty file",
@@ -128,7 +131,8 @@ class BlowfishFileTest : public CppUnit::TestFixture {
             "should get the correct time when the master password was set",
             &BlowfishFileTest::timeMasterPasswordSet));
         suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
-            "should properly set new password", &BlowfishFileTest::setNewPassword));
+            "should properly set new password",
+            &BlowfishFileTest::setNewPassword));
         suiteOfTests->addTest(new CppUnit::TestCaller<BlowfishFileTest>(
             "should allow saving passwords after password change",
             &BlowfishFileTest::allowSaveAfterPasswordSave));
@@ -204,7 +208,7 @@ class BlowfishFileTest : public CppUnit::TestFixture {
                 new yapet::BlowfishFactory{password}};
 
             CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, false}),
-                                 YAPET::YAPETInvalidPasswordException);
+                                 yapet::InvalidPasswordError);
         } catch (...) {
             CPPUNIT_FAIL("unexpected exception");
         }
@@ -294,8 +298,7 @@ class BlowfishFileTest : public CppUnit::TestFixture {
         file1.save(passwordList);
 
         // the modification of the file's mtime should be detected here
-        CPPUNIT_ASSERT_THROW(file2.save(passwordList),
-                             YAPET::YAPETRetryException);
+        CPPUNIT_ASSERT_THROW(file2.save(passwordList), yapet::RetryableError);
 
         ::sleep(1);
         // file1 must allow to re-save
@@ -341,8 +344,7 @@ class BlowfishFileTest : public CppUnit::TestFixture {
         passwordList2.push_back(passwordListItem2);
 
         // the modification of the file's mtime should be detected here
-        CPPUNIT_ASSERT_THROW(file2.save(passwordList2),
-                             YAPET::YAPETRetryException);
+        CPPUNIT_ASSERT_THROW(file2.save(passwordList2), yapet::RetryableError);
         file2.save(passwordList2, true);
 
         auto actual{file2.read()};
@@ -473,9 +475,10 @@ class BlowfishFileTest : public CppUnit::TestFixture {
         std::shared_ptr<yapet::BlowfishFactory> factory{
             new yapet::BlowfishFactory{password}};
 
-        YAPET::File file{factory, BUILDDIR "/corrupt_blowfish.pet", false, false};
+        YAPET::File file{factory, BUILDDIR "/corrupt_blowfish.pet", false,
+                         false};
 
-        CPPUNIT_ASSERT_THROW(file.read(), YAPET::YAPETEncryptionException);
+        CPPUNIT_ASSERT_THROW(file.read(), yapet::EncryptionError);
     }
 };
 

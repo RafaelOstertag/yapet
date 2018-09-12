@@ -4,7 +4,8 @@ yapet_src = $(top_srcdir)/src
 yapet_src_libdir = $(yapet_src)/libs
 yapet_libdir = $(top_builddir)/src/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libdir)/crypt	\
+AM_CPPFLAGS = -I$(yapet_src_libdir)/exceptions \
+	-I$(yapet_src_libdir)/crypt	\
 	-I$(yapet_src_libdir)/consts \
 	-I$(yapet_src_libdir)/pwgen \
 	-I$(yapet_src_libdir)/utils \

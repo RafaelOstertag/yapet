@@ -48,7 +48,6 @@
 #include "passwordlistitem.hh"
 #include "passwordrecord.hh"
 #include "yapet10file.hh"
-#include "yapetexception.h"
 #include "yapetfile.hh"
 
 namespace YAPET {

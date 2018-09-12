@@ -5,6 +5,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "blowfish.hh"
+#include "cryptoerror.hh"
 #include "key448.hh"
 
 class BlowfishTest : public CppUnit::TestFixture {
@@ -56,7 +57,7 @@ class BlowfishTest : public CppUnit::TestFixture {
         corrupt << cipherText;
 
         CPPUNIT_ASSERT_THROW(blowfish->decrypt(corrupt),
-                             YAPET::YAPETEncryptionException);
+                             yapet::EncryptionError);
     }
 
     void decryptWithWrongPassword() {
@@ -70,14 +71,14 @@ class BlowfishTest : public CppUnit::TestFixture {
             std::unique_ptr<yapet::Blowfish>{new yapet::Blowfish{otherKey}}};
 
         CPPUNIT_ASSERT_THROW(otherBlowfish->decrypt(cipherText),
-                             YAPET::YAPETEncryptionException);
+                             yapet::EncryptionError);
     }
 
     void throwOnEmptyPlainAndCipherText() {
         yapet::SecureArray empty{};
 
-        CPPUNIT_ASSERT_THROW(blowfish->encrypt(empty), YAPET::YAPETException);
-        CPPUNIT_ASSERT_THROW(blowfish->decrypt(empty), YAPET::YAPETException);
+        CPPUNIT_ASSERT_THROW(blowfish->encrypt(empty), yapet::EncryptionError);
+        CPPUNIT_ASSERT_THROW(blowfish->decrypt(empty), yapet::EncryptionError);
     }
 };
 
