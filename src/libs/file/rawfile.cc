@@ -1,6 +1,8 @@
 #include <cerrno>
+#include <cstdio>
 #include <stdexcept>
 
+#include "consts.h"
 #include "fileerror.hh"
 #include "intl.h"
 #include "ods.hh"
@@ -62,7 +64,10 @@ void RawFile::openExisting() {
 
     _file = std::fopen(_filename.c_str(), READ_WRITE_EXISTING_MODE);
     if (_file == nullptr) {
-        throw FileError{_("Cannot open existing file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot open existing file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
     _openFlag = true;
 }
@@ -72,7 +77,10 @@ void RawFile::openNew() {
 
     _file = std::fopen(_filename.c_str(), CREATE_NEW_MODE);
     if (_file == nullptr) {
-        throw FileError{_("Cannot create new file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot create new file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
     _openFlag = true;
 }
@@ -91,7 +99,10 @@ std::pair<SecureArray, bool> RawFile::read(std::uint32_t size) {
         return std::pair<SecureArray, bool>{SecureArray{1}, false};
     }
     if (std::ferror(_file) || res != ONE_ITEM) {
-        throw FileError{_("Error reading file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error reading file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
 
     return std::pair<SecureArray, bool>{array, true};
@@ -109,7 +120,11 @@ std::pair<SecureArray, bool> RawFile::read() {
     }
 
     if (std::ferror(_file)) {
-        throw FileError{_("Error reading record length from file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error reading record length from file '%s'"),
+                      _filename.c_str());
+        throw FileError{msg, errno};
     }
 
     auto hostRecordSize = toHost(odsRecordSize);
@@ -126,7 +141,11 @@ void RawFile::write(const SecureArray& secureArray) {
     auto res =
         std::fwrite(&odsRecordSize, sizeof(record_size_type), ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file) || std::ferror(_file)) {
-        throw FileError{_("Cannot write record size to file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot write record size to file '%s'"),
+                      _filename.c_str());
+        throw FileError{msg, errno};
     }
 
     write(*secureArray, hostRecordSize);
@@ -137,7 +156,10 @@ void RawFile::write(const std::uint8_t* buffer, std::uint32_t size) {
 
     auto res = std::fwrite(buffer, size, ONE_ITEM, _file);
     if (res != ONE_ITEM || std::feof(_file) || std::ferror(_file)) {
-        throw FileError{_("Cannot write buffer to file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot write buffer to file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
 }
 
@@ -152,7 +174,10 @@ void RawFile::seekAbsolute(seek_type position) {
 
     auto error = std::fseek(_file, position, SEEK_SET);
     if (error || std::feof(_file) || std::ferror(_file)) {
-        throw FileError{_("Error seeking in file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error seeking in file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
 }
 
@@ -169,14 +194,21 @@ void RawFile::reopen() {
 
     _file = ::freopen(_filename.c_str(), READ_WRITE_EXISTING_MODE, _file);
     if (_file == nullptr) {
-        throw FileError(_("Error re-opening file"), errno);
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error re-opening file '%s'"), _filename.c_str());
+        throw FileError{msg, errno};
     }
 }
 
 RawFile::seek_type RawFile::getPosition() {
     auto currentPosition = ::ftell(_file);
     if (currentPosition == -1) {
-        throw FileError(_("Unable to get current position in file"), errno);
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Unable to get current position in file '%s'"),
+                      _filename.c_str());
+        throw FileError{msg, errno};
     }
 
     return currentPosition;
@@ -185,6 +217,10 @@ RawFile::seek_type RawFile::getPosition() {
 void RawFile::flush() {
     auto error{fflush(_file)};
     if (error) {
-        throw FileError(_("Unable to flush data"), errno);
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Unable to flush data to file '%s'"),
+                      _filename.c_str());
+        throw FileError{msg, errno};
     }
 }

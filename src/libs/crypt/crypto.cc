@@ -6,6 +6,9 @@
 #include <cstdlib>
 #endif
 
+#include <cstdio>
+
+#include "consts.h"
 #include "crypto.hh"
 #include "cryptoerror.hh"
 #include "intl.h"
@@ -17,11 +20,12 @@ void Crypto::checkIVSizeOrThrow() {
     auto expectedIVSize{_key->ivecSize()};
 
     if (supportedIVSize != expectedIVSize) {
-        std::string message{_("Expect cipher to support IV size ")};
-        message += std::to_string(expectedIVSize);
-        message += _(" but cipher supports only IV size ");
-        message += std::to_string(supportedIVSize);
-        throw CipherError{message.c_str()};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Expect cipher to support IV size %d but cipher "
+                        "supports only IV size %d"),
+                      expectedIVSize, supportedIVSize);
+        throw CipherError{msg};
     }
 }
 
@@ -68,9 +72,11 @@ EVP_CIPHER_CTX* Crypto::initializeOrThrow(MODE mode) {
     success = EVP_CIPHER_CTX_set_key_length(context, _key->keySize());
     if (success != SSL_SUCCESS) {
         destroyContext(context);
-        std::string message{_("Cannot set key length on context to ")};
-        message += std::to_string(_key->keySize());
-        throw CipherError{message.c_str()};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot set key length on context to %d"),
+                      _key->keySize());
+        throw CipherError{msg};
     }
 
     return context;

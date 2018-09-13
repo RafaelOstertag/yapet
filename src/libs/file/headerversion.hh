@@ -1,12 +1,14 @@
 #ifndef _HEADERVERSION_HH
 #define _HEADERVERSION_HH
 
+#include <cstdio>
 #include <string>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include "consts.h"
 #include "headererror.hh"
 #include "intl.h"
 
@@ -29,9 +31,10 @@ inline HEADER_VERSION intToHeaderVersion(int version) {
         case 2:
             return VERSION_2;
         default:
-            std::string msg = std::to_string(version);
-            msg += _(" is not a known header version");
-            throw HeaderError(msg.c_str());
+            char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+            std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                          _("%d is not a known header version"), version);
+            throw HeaderError(msg);
     }
 }
 }  // namespace yapet

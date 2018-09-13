@@ -40,6 +40,7 @@
 #include <iostream>
 
 #include "aes256factory.hh"
+#include "consts.h"
 #include "csvimport.h"
 #include "file.h"
 #include "intl.h"
@@ -108,8 +109,12 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb)
       verbose(verb),
       had_errors(false),
       num_errors(0) {
-    if (access(srcfile.c_str(), R_OK | F_OK) == -1)
-        throw std::runtime_error(_("Cannot access ") + srcfile);
+    if (access(srcfile.c_str(), R_OK | F_OK) == -1) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot access '%s'"), srcfile.c_str());
+        throw std::runtime_error(msg);
+    }
 }
 
 /**
@@ -120,7 +125,12 @@ CSVImport::CSVImport(std::string src, std::string dst, char sep, bool verb)
 void CSVImport::import(const char* pw) {
     std::ifstream csvfile(srcfile.c_str());
 
-    if (!csvfile) throw std::runtime_error(_("Cannot open ") + srcfile);
+    if (!csvfile) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot open '%s'"), srcfile.c_str());
+        throw std::runtime_error(msg);
+    }
 
     // the max line length. Computed from the field sizes of a YAPET password
     // record.
@@ -134,11 +144,12 @@ void CSVImport::import(const char* pw) {
     // used for logging purpose
     const unsigned int num_fields = NUM_SEPARATORS + 1;
     char num_fields_str[5];
-    snprintf(num_fields_str, 5, "%u", num_fields);
+    std::snprintf(num_fields_str, 5, "%u", num_fields);
 
     auto password{yapet::toSecureArray(pw)};
 
-    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{new yapet::Aes256Factory(password)};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+        new yapet::Aes256Factory(password)};
 
     auto crypto{cryptoFactory->crypto()};
 

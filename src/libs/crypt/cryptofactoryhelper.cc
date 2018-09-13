@@ -2,6 +2,7 @@
 #include "aes256factory.hh"
 #include "blowfishfactory.hh"
 #include "fileerror.hh"
+#include "intl.h"
 #include "rawfile.hh"
 
 using namespace yapet;

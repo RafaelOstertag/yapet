@@ -34,38 +34,35 @@
 /**
  */
 class PwGenDialog : public YACURS::Dialog {
-    private:
-        YAPET::PWGEN::PWGen pwgen;
-	YACURS::VPack mainpack;
-	YACURS::HPack boxespack;
+   private:
+    YAPET::PWGEN::PWGen pwgen;
+    YACURS::VPack mainpack;
+    YACURS::HPack boxespack;
 
+    YACURS::Label genpwlabel;
+    YACURS::Input<> genpw;
 
-	YACURS::Label genpwlabel;
-	YACURS::Input<> genpw;
+    YACURS::Label pwlenlabel;
+    YACURS::Input<> pwlen;
 
-	YACURS::Label pwlenlabel;
-	YACURS::Input<> pwlen;
+    YACURS::Spacer regenbutton_spacer;
+    YACURS::Button regenbutton;
 
-	YACURS::Spacer regenbutton_spacer;
-	YACURS::Button regenbutton;
+    YACURS::CheckBox* charpools;
+    YACURS::RadioBox* sources;
 
-	YACURS::CheckBox* charpools;
-	YACURS::RadioBox* sources;
+    std::string get_name_of_rng() const;
 
-	std::string get_name_of_rng() const;
+   protected:
+    virtual void checkbox_selection_handler(YACURS::Event& _e);
 
-    protected:
-	virtual void checkbox_selection_handler(YACURS::Event& _e);
+    void button_press_handler(YACURS::Event& _e);
 
-	void button_press_handler(YACURS::Event& _e);
+   public:
+    PwGenDialog();
+    virtual ~PwGenDialog();
 
-    public:
-        PwGenDialog();
-        virtual ~PwGenDialog();
-
-	const std::string& password() const {
-	    return genpw.input();
-	}
+    const std::string& password() const { return genpw.input(); }
 };
 
-#endif // _PWGENDIALOG_H
+#endif  // _PWGENDIALOG_H

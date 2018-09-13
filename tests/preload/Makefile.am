@@ -17,7 +17,9 @@ EXTRA_DIST = istty.cc pwrecord.cc checkyapet.cc masterpwchange.cc
 noinst_PROGRAMS = checktestpwrecord checkmasterpwchange istty
 
 checktestpwrecord_SOURCES = checktestpwrecord.cc
-checktestpwrecord_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+checktestpwrecord_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
+	-I$(yapet_libs_srcdir)/consts \
+	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/file \
 	-I$(yapet_libs_srcdir)/utils \
@@ -33,7 +35,9 @@ checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
 	$(LIBINTL) 
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc
-checkmasterpwchange_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+checkmasterpwchange_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
+	-I$(yapet_libs_srcdir)/consts \ 
+	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/file \
 	-I$(yapet_libs_srcdir)/utils \

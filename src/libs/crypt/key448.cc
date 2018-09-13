@@ -32,11 +32,13 @@
 #include "config.h"
 #endif
 
+#include <cstdio>
 #include <cstring>
 
+#include "consts.h"
+#include "cryptoerror.hh"
 #include "intl.h"
 #include "key448.hh"
-#include "cryptoerror.hh"
 
 using namespace yapet;
 
@@ -123,8 +125,8 @@ void Key448::password(const SecureArray& password) {
 
     _key = sha1Hash + md5Hash + ripemd160Hash;
     if (_key.size() != KEY_LENGTH) {
-        char tmp[100];
-        snprintf(tmp, 100,
+        char tmp[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        snprintf(tmp, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
                  _("Effective key length of %d does not match expected key "
                    "length %d"),
                  _key.size(), KEY_LENGTH);

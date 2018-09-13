@@ -32,10 +32,13 @@
  * Created on August 19, 2018, 6:27 PM
  */
 
-#include "yapetfile.hh"
+#include <cstdio>
+
+#include "consts.h"
 #include "fileerror.hh"
 #include "fileutils.hh"
 #include "intl.h"
+#include "yapetfile.hh"
 
 using namespace yapet;
 
@@ -67,7 +70,11 @@ void YapetFile::openRawFile() {
         setSecurePermissionsAndOwner(_rawFile.filename());
     } else {
         if (_secure && !hasSecurePermissions(_rawFile.filename())) {
-            throw FileInsecureError{_("File has insecure permissions")};
+            char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+            std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                          _("'%s' has insecure permissions"),
+                          _rawFile.filename().c_str());
+            throw FileInsecureError{msg};
         }
 
         _rawFile.openExisting();

@@ -27,6 +27,7 @@
 #endif
 
 #include <cctype>
+#include <cstdio>
 #include <cstdlib>
 
 #include <pwd.h>
@@ -155,7 +156,10 @@ void CfgValBool::set_str(const std::string& s) {
         return;
     }
 
-    throw std::invalid_argument(sanitized + _(" is not a valid bool"));
+    char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+    std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                  _("'%s' is not a valid bool"), sanitized.c_str());
+    throw std::invalid_argument(msg);
 }
 
 //
@@ -194,7 +198,10 @@ void CfgValRNG::set_str(const std::string& s) {
         return;
     }
 
-    throw std::invalid_argument(sanitized + _(" is not a valid RNG"));
+    char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+    std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                  _("'%s' is not a valid RNG"), sanitized.c_str());
+    throw std::invalid_argument(msg);
 }
 
 void Config::setup_map() {
@@ -340,9 +347,12 @@ CfgValBase& Config::operator[](const std::string& key) {
 
     std::map<std::string, CfgValBase*>::iterator it = __options.find(key);
 
-    if (it == __options.end())
-        throw std::invalid_argument(std::string(_("Configuration key '")) +
-                                    key + std::string(_("' not found")));
+    if (it == __options.end()) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Configuration key '%s' not found"), key.c_str());
+        throw std::invalid_argument(msg);
+    }
 
     return *((*it).second);
 }

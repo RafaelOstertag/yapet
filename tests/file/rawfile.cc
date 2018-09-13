@@ -9,7 +9,7 @@
 #include "rawfile.hh"
 #include "testpaths.h"
 
-constexpr auto TEST_FILE {BUILDDIR "/yapet-rawfile-test"};
+constexpr auto TEST_FILE{BUILDDIR "/yapet-rawfile-test"};
 
 class RawFileTest : public CppUnit::TestFixture {
    public:
@@ -46,8 +46,7 @@ class RawFileTest : public CppUnit::TestFixture {
             "should get current position",
             &RawFileTest::testGetCurrentPosition});
         suiteOfTests->addTest(new CppUnit::TestCaller<RawFileTest>{
-            "should get the current filename",
-            &RawFileTest::testFilename});
+            "should get the current filename", &RawFileTest::testFilename});
 
         return suiteOfTests;
     }
@@ -212,7 +211,7 @@ class RawFileTest : public CppUnit::TestFixture {
     void testFilename() {
         yapet::RawFile file{TEST_FILE};
 
-        std::string expected {TEST_FILE};
+        std::string expected{TEST_FILE};
         CPPUNIT_ASSERT_EQUAL(expected, file.filename());
     }
 };

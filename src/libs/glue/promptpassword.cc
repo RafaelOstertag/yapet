@@ -19,6 +19,7 @@
 //
 
 #include <cassert>
+#include <cstdio>
 
 #include "cryptofactoryhelper.hh"
 #include "file.h"
@@ -49,7 +50,11 @@ void PromptPassword::window_close_handler(YACURS::Event& e) {
                     yapet::getCryptoFactoryForFile(_filename, password)};
 
                 if (!cryptoFactory) {
-                    throw yapet::FileFormatError{_("File not recognized")};
+                    char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+                    std::snprintf(
+                        msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                        _("File '%s' not recognized"), _filename.c_str());
+                    throw yapet::FileFormatError{msg};
                 }
 
                 // This will raise an exception if password is wrong

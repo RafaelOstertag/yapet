@@ -13,13 +13,14 @@ class BlowfishFactory : public AbstractCryptoFactory {
 
    public:
     BlowfishFactory(const SecureArray& password);
-    BlowfishFactory(const BlowfishFactory&)=delete;
+    BlowfishFactory(const BlowfishFactory&) = delete;
     BlowfishFactory(BlowfishFactory&&) = delete;
-    BlowfishFactory& operator=(const BlowfishFactory&)=delete;
+    BlowfishFactory& operator=(const BlowfishFactory&) = delete;
     BlowfishFactory& operator=(BlowfishFactory&&) = delete;
     ~BlowfishFactory(){};
 
-    virtual std::shared_ptr<AbstractCryptoFactory> newFactory(const SecureArray& password) const;
+    virtual std::shared_ptr<AbstractCryptoFactory> newFactory(
+        const SecureArray& password) const;
 
     virtual std::unique_ptr<Crypto> crypto() const;
 

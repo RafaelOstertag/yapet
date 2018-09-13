@@ -1,5 +1,3 @@
-# $Id$
-
 yapet_srcdir = $(top_srcdir)/src
 yapet_src_libdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src

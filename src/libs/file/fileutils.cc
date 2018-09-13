@@ -4,7 +4,9 @@
 #include <unistd.h>
 #include <cerrno>
 #include <cinttypes>
+#include <cstdio>
 
+#include "consts.h"
 #include "fileerror.hh"
 #include "fileutils.hh"
 #include "intl.h"
@@ -22,7 +24,10 @@ inline gid_t getCurrentGid() { return ::getgid(); }
 inline void getFileStat(const std::string& filename, struct stat* statPtr) {
     auto error = ::stat(filename.c_str(), statPtr);
     if (error) {
-        throw FileError{_("Unable to get stat for file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Unable to get stat for file '%s'"), filename.c_str());
+        throw FileError{msg, errno};
     }
 }
 }  // namespace
@@ -32,12 +37,19 @@ void yapet::setSecurePermissionsAndOwner(const std::string& filename) {
     auto gid = getCurrentGid();
     auto error = ::chown(filename.c_str(), uid, gid);
     if (error) {
-        throw FileError{_("Error setting owner of file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error setting owner of file '%s'"), filename.c_str());
+        throw FileError{msg, errno};
     }
 
     error = ::chmod(filename.c_str(), S_IRUSR | S_IWUSR);
     if (error) {
-        throw FileError{_("Error setting file mode"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error setting file mode of file '%s'"),
+                      filename.c_str());
+        throw FileError{msg, errno};
     }
 }
 
@@ -74,10 +86,13 @@ bool yapet::hasSecurePermissions(const std::string& filename) {
 
 void yapet::renameFile(const std::string& oldName, const std::string& newName) {
     if (oldName == newName) {
-        throw FileError(_("Old and new name cannot be the same"));
+        throw FileError{_("Old and new name cannot be the same")};
     }
     auto error = ::rename(oldName.c_str(), newName.c_str());
     if (error) {
-        throw FileError{_("Cannot rename file"), errno};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot rename file '%s'"), oldName.c_str());
+        throw FileError{msg, errno};
     }
 }

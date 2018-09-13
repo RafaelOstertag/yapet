@@ -1,7 +1,9 @@
-#include "intl.h"
+#include <cstdio>
 
+#include "consts.h"
 #include "header10.hh"
 #include "headererror.hh"
+#include "intl.h"
 #include "ods.hh"
 
 using namespace yapet;
@@ -14,7 +16,7 @@ void Header10::testIfControlStringMatchesOrThrow(
     auto result = std::memcmp(pointerToControlString, CONTROL_STRING,
                               CONTROL_STRING_SIZE);
     if (result != 0) {
-        throw HeaderError(_("Control string does not match"));
+        throw HeaderError{_("Control string does not match")};
     }
 }
 
@@ -27,7 +29,10 @@ void Header10::deserializeVersion1Header(const SecureArray& serializedHeader) {
 
     _version = **serializedHeader;
     if (_version != VERSION_1) {
-        throw HeaderError(_("Expected header version 1"));
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Expected header version 1 got %d"), _version);
+        throw HeaderError{msg};
     }
 
     _passwordSetTime =
@@ -47,9 +52,10 @@ void Header10::deserializeVersion2Header(const SecureArray& serializedHeader) {
     // time_t types and thus are identified as as version 2 headers by taking
     // the size into consideration only
     if ((_version != VERSION_2) && (_version != VERSION_1)) {
-        std::string message{_("Expected header version 1 or 2, got ")};
-        message += std::to_string(_version);
-        throw HeaderError(message.c_str());
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Expected header version 1 or 2, got %d"), _version);
+        throw HeaderError(msg);
     }
 
     _passwordSetTime =
@@ -68,7 +74,10 @@ void Header10::deserializeHeader(const SecureArray& serializedHeader) {
                (headerSize < TOTAL_HEADER_SIZE_VERSION_2)) {
         deserializeVersion1Header(serializedHeader);
     } else {
-        throw HeaderError{_("Invalid header size")};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Invalid header size %d"), headerSize);
+        throw HeaderError{msg};
     }
 }
 

@@ -24,7 +24,7 @@
 #define _CFGFILE_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <sys/types.h>
@@ -42,31 +42,31 @@
  * All YAPET configuration stuff is contained herein.
  */
 namespace YAPET {
-    namespace CONFIG {
-	// Forward declaration
-	class Config;
-	class CfgValBase;
-	
-        /**
-         * @brief Parses the configuration file.
-         *
-         * This class parses the per user configuration file.
-         */
-        class ConfigFile {
-	    private:
-		Config& __cfg;
-		std::string filepath;
+namespace CONFIG {
+// Forward declaration
+class Config;
+class CfgValBase;
 
-            public:
-                ConfigFile(Config& cfg, std::string cfgfile=std::string());
-                ConfigFile(const ConfigFile& cfgfile);
-                ~ConfigFile() {};
+/**
+ * @brief Parses the configuration file.
+ *
+ * This class parses the per user configuration file.
+ */
+class ConfigFile {
+   private:
+    Config& __cfg;
+    std::string filepath;
 
-                const ConfigFile& operator=(const ConfigFile& cfgfile);
+   public:
+    ConfigFile(Config& cfg, std::string cfgfile = std::string());
+    ConfigFile(const ConfigFile& cfgfile);
+    ~ConfigFile(){};
 
-                void parse();
-        };
-    }
-}
+    const ConfigFile& operator=(const ConfigFile& cfgfile);
 
-#endif // _CFGFILE_H
+    void parse();
+};
+}  // namespace CONFIG
+}  // namespace YAPET
+
+#endif  // _CFGFILE_H

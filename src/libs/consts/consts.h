@@ -61,6 +61,8 @@ class Consts {
     static constexpr auto DEFAULT_CHARACTER_POOLS{
         YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS | YAPET::PWGEN::PUNCT |
         YAPET::PWGEN::SPECIAL};
+
+    static constexpr auto EXCEPTION_MESSAGE_BUFFER_SIZE{512};
 };
 }  // namespace YAPET
 #endif  // _CONSTS_H

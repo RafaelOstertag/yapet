@@ -23,57 +23,53 @@
 #ifndef _CSVEXPORT_H
 #define _CSVEXPORT_H 1
 
-
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
-#include <string>
-#include <stdexcept>
 #include <list>
+#include <stdexcept>
+#include <string>
 
 /**
  * The class taking care of converting a pet file to a csv file.
  */
 class CSVExport {
-    private:
-	/**
-         * The file path of the source (csv) file.
-         */
-        std::string srcfile;
-        /**
-         * The file path of the destination (pet) file.
-         */
-        std::string dstfile;
-        /**
-         * The separator character.
-         */
-        char separator;
-        /**
-         * Verbosity enabled/disabled.
-         */
-        bool __verbose;
+   private:
+    /**
+     * The file path of the source (csv) file.
+     */
+    std::string srcfile;
+    /**
+     * The file path of the destination (pet) file.
+     */
+    std::string dstfile;
+    /**
+     * The separator character.
+     */
+    char separator;
+    /**
+     * Verbosity enabled/disabled.
+     */
+    bool __verbose;
 
-	/**
-	 * Print header
-	 */
-	bool __print_header;
+    /**
+     * Print header
+     */
+    bool __print_header;
 
-	std::string prepareline(const std::string& l) const;
+    std::string prepareline(const std::string& l) const;
 
-    public:
-	CSVExport (std::string src, std::string dst, char sep, bool verb = true, bool print_header = false);
-        ~CSVExport() {};
-        /// Do the import.
-        void doexport (const char* pw);
-        /// Set the verbosity.
-        inline void verbose(bool v) {
-            __verbose = v;
-        }
-        /// Get the verbosity.
-        inline bool verbose() const {
-            return __verbose;
-        }
+   public:
+    CSVExport(std::string src, std::string dst, char sep, bool verb = true,
+              bool print_header = false);
+    ~CSVExport(){};
+    /// Do the import.
+    void doexport(const char* pw);
+    /// Set the verbosity.
+    inline void verbose(bool v) { __verbose = v; }
+    /// Get the verbosity.
+    inline bool verbose() const { return __verbose; }
 };
 
-#endif // _CSVEXPORT_H
+#endif  // _CSVEXPORT_H

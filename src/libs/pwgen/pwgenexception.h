@@ -24,7 +24,7 @@
 #define _PWGENEXCEPTION_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <exception>
@@ -32,75 +32,78 @@
 
 #include "intl.h"
 
-
 namespace YAPET {
 
-    namespace PWGEN {
-        /**
-         * @brief PWGen exception base class.
-         *
-         * Base class for PWGen exceptions.
-         */
-        class PWGenException : public std::exception {
-            private:
-                std::string message;
+namespace PWGEN {
+/**
+ * @brief PWGen exception base class.
+ *
+ * Base class for PWGen exceptions.
+ */
+class PWGenException : public std::exception {
+   private:
+    std::string message;
 
-            public:
-                inline PWGenException() throw() : exception(), message (_ ("Generic exception message") ) {}
-                inline PWGenException (std::string msg) throw() : exception(), message (msg) {}
-                inline PWGenException (const PWGenException& ex) throw() {
-                    message = ex.message;
-                }
-                inline virtual ~PWGenException() throw() {}
-                inline const PWGenException& operator= (const PWGenException& ex)
-                throw() {
-                    if (this == &ex) return *this;
-
-                    message = ex.message;
-                    return *this;
-                }
-                inline virtual const char* what() const throw() {
-                    return message.c_str();
-                }
-        };
-
-        /**
-         * @brief No RNG is available.
-         *
-         * No RNG is available.
-         */
-        class PWGenNoRNGException : public PWGenException {
-            public:
-                inline PWGenNoRNGException() throw() : PWGenException (_ ("No Random Number Generator available") ) {}
-                inline PWGenNoRNGException (std::string msg) throw() : PWGenException (msg) {}
-                inline PWGenNoRNGException (const PWGenNoRNGException& ex) throw() : PWGenException (ex) {}
-                inline virtual ~PWGenNoRNGException() throw() {}
-                inline const PWGenNoRNGException& operator= (const PWGenNoRNGException& ex)
-                throw() {
-		    PWGenException::operator= ( ex );
-		    return *this;
-                }
-        };
-
-        /**
-         * @brief Requested RNG is not available
-         *
-         * The requested RNG is not available
-         */
-        class PWGenRNGNotAvailable : public PWGenException {
-            public:
-                inline PWGenRNGNotAvailable() throw() : PWGenException (_ ("The requested RNG is not available") ) {}
-                inline PWGenRNGNotAvailable (std::string msg) throw() : PWGenException (msg) {}
-                inline PWGenRNGNotAvailable (const PWGenRNGNotAvailable& ex) throw() : PWGenException (ex) {}
-                inline virtual ~PWGenRNGNotAvailable() throw() {}
-                inline const PWGenRNGNotAvailable& operator= (const PWGenRNGNotAvailable& ex)
-                throw() {
-                    PWGenException::operator= ( ex );
-                    return *this;
-                }
-        };
-
+   public:
+    inline PWGenException() throw()
+        : exception(), message(_("Generic exception message")) {}
+    inline PWGenException(std::string msg) throw()
+        : exception(), message(msg) {}
+    inline PWGenException(const PWGenException& ex) throw() {
+        message = ex.message;
     }
-}
+    inline virtual ~PWGenException() throw() {}
+    inline const PWGenException& operator=(const PWGenException& ex) throw() {
+        if (this == &ex) return *this;
 
-#endif // _PWGENEXCEPTION_H
+        message = ex.message;
+        return *this;
+    }
+    inline virtual const char* what() const throw() { return message.c_str(); }
+};
+
+/**
+ * @brief No RNG is available.
+ *
+ * No RNG is available.
+ */
+class PWGenNoRNGException : public PWGenException {
+   public:
+    inline PWGenNoRNGException() throw()
+        : PWGenException(_("No Random Number Generator available")) {}
+    inline PWGenNoRNGException(std::string msg) throw() : PWGenException(msg) {}
+    inline PWGenNoRNGException(const PWGenNoRNGException& ex) throw()
+        : PWGenException(ex) {}
+    inline virtual ~PWGenNoRNGException() throw() {}
+    inline const PWGenNoRNGException& operator=(
+        const PWGenNoRNGException& ex) throw() {
+        PWGenException::operator=(ex);
+        return *this;
+    }
+};
+
+/**
+ * @brief Requested RNG is not available
+ *
+ * The requested RNG is not available
+ */
+class PWGenRNGNotAvailable : public PWGenException {
+   public:
+    inline PWGenRNGNotAvailable() throw()
+        : PWGenException(_("The requested RNG is not available")) {}
+    inline PWGenRNGNotAvailable(std::string msg) throw()
+        : PWGenException(msg) {}
+    inline PWGenRNGNotAvailable(const PWGenRNGNotAvailable& ex) throw()
+        : PWGenException(ex) {}
+    inline virtual ~PWGenRNGNotAvailable() throw() {}
+    inline const PWGenRNGNotAvailable& operator=(
+        const PWGenRNGNotAvailable& ex) throw() {
+        PWGenException::operator=(ex);
+        return *this;
+    }
+};
+
+}  // namespace PWGEN
+}  // namespace YAPET
+
+#endif  // _PWGENEXCEPTION_H

@@ -30,11 +30,11 @@
 
 #include <algorithm>
 
+#include "cryptoerror.hh"
 #include "file.h"
 #include "fileutils.hh"
-#include "yapeterror.hh"
-#include "cryptoerror.hh"
 #include "intl.h"
+#include "yapeterror.hh"
 
 using namespace YAPET;
 using namespace yapet;
@@ -75,8 +75,7 @@ void File::notModifiedOrThrow() {
     auto currentFileModificationTime{
         yapet::getModificationTime(_yapetFile->filename())};
     if (currentFileModificationTime != _fileModificationTime) {
-        throw RetryableError{
-            _("File has been externally modified")};
+        throw RetryableError{_("File has been externally modified")};
     }
 }
 

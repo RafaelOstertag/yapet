@@ -24,70 +24,68 @@
 #define _PWGEN_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <stdexcept>
 
 #include "intl.h"
 
-#include "rng.h"
 #include "charpool.h"
+#include "rng.h"
 
 namespace YAPET {
+/**
+ * @brief Namespace for pwgen.
+ *
+ * All password generator related classes belong to this namespace.
+ */
+namespace PWGEN {
+/**
+ * @brief Generates a password.
+ *
+ * Generates a more or less secure password depending on the character pool
+ * used.
+ *
+ * @see CharacterPool
+ */
+class PWGen {
+   private:
+    CharacterPool* cp;
+    RNG* rng;
     /**
-     * @brief Namespace for pwgen.
+     * @brief will hold the password.
      *
-     * All password generator related classes belong to this namespace.
+     * This will hold the (zero terminated) password. It is entierly managed by
+     * this class. When PWGen returns a password, it is always a pointer to this
+     * buffer.
      */
-    namespace PWGEN {
-        /**
-         * @brief Generates a password.
-         *
-         * Generates a more or less secure password depending on the character pool used.
-         *
-         * @see CharacterPool
-         */
-        class PWGen {
-            private:
-                CharacterPool* cp;
-                RNG* rng;
-                /**
-                 * @brief will hold the password.
-                 *
-                 * This will hold the (zero terminated) password. It is entierly managed by this
-                 * class. When PWGen returns a password, it is always a pointer
-                 * to this buffer.
-                 */
-                const char* password;
-                size_t password_len;
+    const char* password;
+    size_t password_len;
 
-		void sanitize_password();
-		char getCharFromUnusedPools();
-                void init (int p, RNGENGINE rnge);
+    void sanitize_password();
+    char getCharFromUnusedPools();
+    void init(int p, RNGENGINE rnge);
 
-            public:
-                PWGen (SUBPOOLS p, RNGENGINE rnge=AUTO);
-                PWGen (int p, RNGENGINE rnge=AUTO);
-                PWGen (const PWGen& pw) throw();
-                virtual ~PWGen() throw();
+   public:
+    PWGen(SUBPOOLS p, RNGENGINE rnge = AUTO);
+    PWGen(int p, RNGENGINE rnge = AUTO);
+    PWGen(const PWGen& pw);
+    virtual ~PWGen();
 
-                void setNewPool (int p);
-		void setNewRNG (RNGENGINE rnge);
-                void generatePassword (size_t len);
-                const char* getPassword() const throw();
-                inline RNGENGINE getRNGUsed() const {
-                    return rng->getRNGEngineUsed();
-                }
-		inline int getCharacterPools() const {
-		    if (cp != 0)
-			return cp->getAllocatedPools();
-		    return 0;
-		}
-
-                const PWGen& operator= (const PWGen& pw) throw();
-        };
+    void setNewPool(int p);
+    void setNewRNG(RNGENGINE rnge);
+    void generatePassword(size_t len);
+    const char* getPassword() const;
+    inline RNGENGINE getRNGUsed() const { return rng->getRNGEngineUsed(); }
+    inline int getCharacterPools() const {
+        if (cp != 0) return cp->getAllocatedPools();
+        return 0;
     }
-}
 
-#endif // _PWGEN_H
+    const PWGen& operator=(const PWGen& pw);
+};
+}  // namespace PWGEN
+}  // namespace YAPET
+
+#endif  // _PWGEN_H

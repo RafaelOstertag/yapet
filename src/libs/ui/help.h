@@ -32,56 +32,56 @@
 /**
  */
 class HelpDialog : public YACURS::Dialog {
-    private:
-	YACURS::HPack* mainpack;
-	YACURS::VPack* leftpack;
-	YACURS::VPack* rightpack;
+   private:
+    YACURS::HPack* mainpack;
+    YACURS::VPack* leftpack;
+    YACURS::VPack* rightpack;
 
-	YACURS::Label* savekey;
-	YACURS::Label* savedescr;
+    YACURS::Label* savekey;
+    YACURS::Label* savedescr;
 
-	YACURS::Label* loadkey;
-	YACURS::Label* loaddescr;
+    YACURS::Label* loadkey;
+    YACURS::Label* loaddescr;
 
-	YACURS::Label* createkey;
-	YACURS::Label* createdescr;
+    YACURS::Label* createkey;
+    YACURS::Label* createdescr;
 
-	YACURS::Label* lockkey;
-	YACURS::Label* lockdescr;
+    YACURS::Label* lockkey;
+    YACURS::Label* lockdescr;
 
-	YACURS::Label* addkey;
-	YACURS::Label* adddescr;
+    YACURS::Label* addkey;
+    YACURS::Label* adddescr;
 
-	YACURS::Label* delkey;
-	YACURS::Label* deldescr;
+    YACURS::Label* delkey;
+    YACURS::Label* deldescr;
 
-	YACURS::Label* sortkey;
-	YACURS::Label* sortdescr;
+    YACURS::Label* sortkey;
+    YACURS::Label* sortdescr;
 
-	YACURS::Label* searchkey;
-	YACURS::Label* searchdescr;
+    YACURS::Label* searchkey;
+    YACURS::Label* searchdescr;
 
-	YACURS::Label* searchnkey;
-	YACURS::Label* searchndescr;
+    YACURS::Label* searchnkey;
+    YACURS::Label* searchndescr;
 
-	YACURS::Label* chpwkey;
-	YACURS::Label* chpwdescr;
+    YACURS::Label* chpwkey;
+    YACURS::Label* chpwdescr;
 
-	YACURS::Label* infokey;
-	YACURS::Label* infodescr;
+    YACURS::Label* infokey;
+    YACURS::Label* infodescr;
 
-	YACURS::Label* redrawkey;
-	YACURS::Label* redrawdescr;
+    YACURS::Label* redrawkey;
+    YACURS::Label* redrawdescr;
 
-	YACURS::Label* quitkey;
-	YACURS::Label* quitdescr;
+    YACURS::Label* quitkey;
+    YACURS::Label* quitdescr;
 
-	YACURS::Label* pwgenkey;
-	YACURS::Label* pwgendescr;
-	
-    public:
-        HelpDialog();
-        virtual ~HelpDialog();
+    YACURS::Label* pwgenkey;
+    YACURS::Label* pwgendescr;
+
+   public:
+    HelpDialog();
+    virtual ~HelpDialog();
 };
 
-#endif // _HELP_H
+#endif  // _HELP_H

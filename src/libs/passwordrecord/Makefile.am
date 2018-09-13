@@ -3,7 +3,9 @@ yapet_src_libdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libdir)/utils \
+AM_CPPFLAGS = -I$(yapet_src_libdir)/pwgen \ 
+    -I$(yapet_src_libdir)/consts \ 
+    -I$(yapet_src_libdir)/utils \
     -I$(yapet_src_libdir)/interfaces \
     -I$(top_srcdir) \
     -DLOCALEDIR=\"$(localedir)\"  

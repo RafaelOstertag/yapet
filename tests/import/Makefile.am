@@ -18,7 +18,8 @@ import8 import9 import10 import11 import12 import13 import14 import15
 
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(yapet_libs_srcdir)/exceptions \
+AM_CPPFLAGS = -I$(yapet_libs_srcdir)/consts \
+	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
 	-I$(yapet_libs_srcdir)/file \

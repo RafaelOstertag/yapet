@@ -1,8 +1,10 @@
 
+#include <cstdio>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
 
+#include "consts.h"
 #include "intl.h"
 #include "securearray.hh"
 
@@ -102,7 +104,10 @@ std::uint8_t* SecureArray::operator*() { return _array; }
 
 std::uint8_t SecureArray::operator[](size_type index) const {
     if (index >= _size || index < 0) {
-        throw std::out_of_range{_("Index out of range")};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Index out of rang: %d"), index);
+        throw std::out_of_range{msg};
     }
 
     return _array[index];

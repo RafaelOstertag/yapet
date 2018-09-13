@@ -25,7 +25,7 @@ std::string comm("Test Comment ");
 
 std::list<control_struct> control_data;
 
-constexpr auto TEST_FILE { "/tmp/masterpwchange.pet" };
+constexpr auto TEST_FILE{"/tmp/masterpwchange.pet"};
 
 auto password{yapet::toSecureArray("pleasechange08")};
 std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{

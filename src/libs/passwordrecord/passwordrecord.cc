@@ -5,8 +5,10 @@
 #endif
 
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 
+#include "consts.h"
 #include "intl.h"
 
 using namespace yapet;
@@ -46,12 +48,13 @@ PasswordRecord::PasswordRecord(const SecureArray& serialized)
       _password{PASSWORD_SIZE},
       _comment{COMMENT_SIZE} {
     if (serialized.size() != TOTAL_SIZE) {
-        std::string msg{_("Password record is expected to be of size ")};
-        msg += std::to_string(TOTAL_SIZE);
-        msg += _("bytes but got ");
-        msg += std::to_string(serialized.size());
-        msg += _("bytes");
-        throw DeserializationError{msg.c_str()};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Password record is expected to be of size %d bytes "
+                        "but got %d bytes"),
+                      TOTAL_SIZE, serialized.size());
+
+        throw DeserializationError{msg};
     }
 
     auto positionInBuffer = 0;

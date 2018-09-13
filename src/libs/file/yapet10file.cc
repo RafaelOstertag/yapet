@@ -35,9 +35,11 @@
  */
 
 #include <unistd.h>
+#include <cstdio>
 #include <cstring>
 #include <exception>
 
+#include "consts.h"
 #include "fileerror.hh"
 #include "intl.h"
 #include "yapet10file.hh"
@@ -80,12 +82,11 @@ Yapet10File::~Yapet10File() {}
 void Yapet10File::open() {
     openRawFile();
     if (!isCreate() && !hasValidFormat()) {
-        std::string message{_("File ")};
-        message += filename();
-        message += _(" is not a ");
-        message += recognitionStringAsString();
-        message += _(" file");
-        throw FileFormatError(message.c_str());
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("File '%s' is not a '%s' file"), filename().c_str(),
+                      recognitionStringAsString().c_str());
+        throw FileFormatError{msg};
     }
 }
 
@@ -118,7 +119,11 @@ SecureArray Yapet10File::readIdentifier() {
     rawFile.rewind();
     auto result = rawFile.read(recognitionStringSize());
     if (result.second == false) {
-        throw FileFormatError{_("Cannot read recognition string")};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot read recognition string from file '%s'"),
+                      rawFile.filename().c_str());
+        throw FileFormatError{msg};
     }
 
     return result.first;
@@ -131,7 +136,11 @@ SecureArray Yapet10File::readMetaData() {
     rawFile.seekAbsolute(recognitionStringSize());
     auto resultPair{rawFile.read()};
     if (resultPair.second == false) {
-        throw FileFormatError{_("Cannot read meta data")};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot read meta data from file '%s'"),
+                      rawFile.filename().c_str());
+        throw FileFormatError{msg};
     }
 
     return resultPair.first;
@@ -179,7 +188,11 @@ void Yapet10File::writePasswordRecords(
     rawFile.close();
     auto error = ::truncate(rawFile.filename().c_str(), trimSize);
     if (error) {
-        throw yapet::FileError(_("Error truncating file"), errno);
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Error truncating file '%s'"),
+                      rawFile.filename().c_str());
+        throw yapet::FileError{msg, errno};
     }
 
     rawFile.openExisting();

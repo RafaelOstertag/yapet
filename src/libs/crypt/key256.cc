@@ -32,8 +32,10 @@
 #include "config.h"
 #endif
 
+#include <cstdio>
 #include <cstring>
 
+#include "consts.h"
 #include "cryptoerror.hh"
 #include "intl.h"
 #include "key256.hh"
@@ -116,12 +118,13 @@ void Key256::password(const SecureArray& password) {
     _key = hash(passwordWithoutZeroTerminator, EVP_sha256());
 
     if (_key.size() != KEY_LENGTH) {
-        char tmp[100];
-        snprintf(tmp, 100,
-                 _("Effective key length of %d does not match expected key "
-                   "length %d"),
-                 _key.size(), KEY_LENGTH);
-        throw CipherError{tmp};
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(
+            msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+            _("Effective key length of %d does not match expected key "
+              "length %d"),
+            _key.size(), KEY_LENGTH);
+        throw CipherError{msg};
     }
 }
 

@@ -19,6 +19,7 @@
 //
 
 #include <cassert>
+#include <cstdio>
 #include <memory>
 #include <typeinfo>
 
@@ -53,7 +54,12 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 _oldCryptoFactory = yapet::getCryptoFactoryForFile(
                     _currentFilename, oldPassword);
                 if (!_oldCryptoFactory) {
-                    throw yapet::FileFormatError{_("File not recognized")};
+                    char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+                    std::snprintf(msg,
+                                  YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                                  _("File '%s' not recognized"),
+                                  _currentFilename.c_str());
+                    throw yapet::FileFormatError{msg};
                 }
 
                 try {
@@ -163,8 +169,8 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     YAPET::EVT_APOPTOSIS, this));
                 break;
             default:
-                throw std::runtime_error(
-                    _("Unexpected dialog state for confirmsave dialog"));
+                throw std::runtime_error{
+                    _("Unexpected dialog state for confirmsave dialog")};
                 break;
         }
 

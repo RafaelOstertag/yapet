@@ -24,7 +24,7 @@
 #define _RNG_H 1
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <stdexcept>
@@ -37,93 +37,88 @@
 
 namespace YAPET {
 
-    namespace PWGEN {
+namespace PWGEN {
 
-        enum RNGENGINE {
-            DEVRANDOM = (1 << 0),
-            DEVURANDOM = (1 << 1),
-            LRAND48 = (1 << 2),
-            RAND = (1 << 3),
-            AUTO = (1 << 4),
-            NONE = 0
-        };
+enum RNGENGINE {
+    DEVRANDOM = (1 << 0),
+    DEVURANDOM = (1 << 1),
+    LRAND48 = (1 << 2),
+    RAND = (1 << 3),
+    AUTO = (1 << 4),
+    NONE = 0
+};
 
-        /**
-         * @brief class for interfacing random number generators.
-         *
-         * Class for interfacing random number generators. It tries the
-         * following random generators:
-         *
-         * - /dev/random
-         * - /dev/urandom
-         * - lrand48
-         * - rand
-         *
-         * The random numbers are in the range of \c size_t, since this is the
-         * range of the pool \c CharacterPool.
-         *
-         * @see CharacterPool
-         */
-        class RNG {
-            private:
-                /**
-                 * @brief file descriptor
-                 *
-                 * File descriptor, used with /dev/[u]random.
-                 */
-                int fd;
+/**
+ * @brief class for interfacing random number generators.
+ *
+ * Class for interfacing random number generators. It tries the
+ * following random generators:
+ *
+ * - /dev/random
+ * - /dev/urandom
+ * - lrand48
+ * - rand
+ *
+ * The random numbers are in the range of \c size_t, since this is the
+ * range of the pool \c CharacterPool.
+ *
+ * @see CharacterPool
+ */
+class RNG {
+   private:
+    /**
+     * @brief file descriptor
+     *
+     * File descriptor, used with /dev/[u]random.
+     */
+    int fd;
 
-                /**
-                 * @brief is rng initialized
-                 *
-                 * Indicates that whatever steps are need to initialize the
-                 * rng, they have been taken.
-                 */
-                bool rng_initialized;
+    /**
+     * @brief is rng initialized
+     *
+     * Indicates that whatever steps are need to initialize the
+     * rng, they have been taken.
+     */
+    bool rng_initialized;
 
-                /**
-                 * @brief which rng is used
-                 *
-                 * stores which rng is used.
-                 */
-                RNGENGINE rng_used;
+    /**
+     * @brief which rng is used
+     *
+     * stores which rng is used.
+     */
+    RNGENGINE rng_used;
 
-                /**
-                 * @brief which rng are available
-                 *
-                 * stores which rng are available.
-                 */
-                static int rng_available;
+    /**
+     * @brief which rng are available
+     *
+     * stores which rng are available.
+     */
+    static int rng_available;
 
-                static void check_availability();
-                //! Initializes the given engine.
-                void init_rng (RNGENGINE request);
+    static void check_availability();
+    //! Initializes the given engine.
+    void init_rng(RNGENGINE request);
 
+    size_t devrandom(size_t ceil);
+    size_t _lrand48(size_t ceil);
+    size_t _rand(size_t ceil);
 
-                size_t devrandom (size_t ceil);
-                size_t _lrand48 (size_t ceil) throw();
-                size_t _rand (size_t ceil) throw();
+   public:
+    //! Try a specific RNG Engine or use automatically determination
+    RNG(RNGENGINE request = AUTO);
+    RNG(const RNG& r);
+    virtual ~RNG();
 
-            public:
-                //! Try a specific RNG Engine or use automatically determination
-                RNG (RNGENGINE request = AUTO);
-                RNG (const RNG& r);
-                virtual ~RNG() throw();
+    size_t getRandomNumber(size_t ceil);
 
-                size_t getRandomNumber (size_t ceil);
+    static int getAvailableRNGs();
 
-		static int getAvailableRNGs();
+    RNGENGINE getRNGEngineUsed() const { return rng_used; }
 
-                RNGENGINE getRNGEngineUsed() const throw() {
-                    return rng_used;
-                }
+    inline size_t operator()(size_t ceil) { return getRandomNumber(ceil); }
+    const RNG& operator=(const RNG& r);
+};
+}  // namespace PWGEN
+}  // namespace YAPET
 
-                inline size_t operator() (size_t ceil) {
-                    return getRandomNumber (ceil);
-                }
-                const RNG& operator= (const RNG& r) throw();
-        };
-    }
-}
-
-#endif // _RNG_H
+#endif  // _RNG_H

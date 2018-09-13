@@ -25,6 +25,7 @@
 #include <unistd.h>
 
 #include <cassert>
+#include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -41,7 +42,10 @@ ConfigFile::ConfigFile(Config& cfg, std::string cfgfile)
                    ? getHomeDir() + YAPET::Consts::DEFAULT_RC_FILENAME
                    : cfgfile) {
     if (access(filepath.c_str(), R_OK | F_OK) == -1) {
-        throw std::runtime_error(std::string(_("Cannot open ") + filepath));
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot open '%s'"), filepath.c_str());
+        throw std::runtime_error(msg);
     }
 }
 
@@ -74,9 +78,12 @@ void ConfigFile::parse() {
             std::string::size_type pos = l.find("=");
 
             if (pos == std::string::npos) {
-                std::cerr << "'" << line << "' "
-                          << _("is invalid configuration option (missing '=')")
-                          << std::endl;
+                char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+                std::snprintf(
+                    msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                    _("'%s' is a invalid configuration option (missing '=')"),
+                    line);
+                std::cerr << msg << std::endl;
                 continue;
             }
 
@@ -84,8 +91,10 @@ void ConfigFile::parse() {
             std::string val(l.substr(pos + 1));
 
             if (val.empty()) {
-                std::cerr << "'" << option << "' " << _("has no value")
-                          << std::endl;
+                char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+                std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                              _("'%s' has no value"), option.c_str());
+                std::cerr << msg << std::endl;
                 continue;
             }
 
