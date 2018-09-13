@@ -19,7 +19,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #ifdef CFGDEBUG
@@ -29,8 +29,8 @@
 #include <cctype>
 #include <cstdlib>
 
-#include <unistd.h>
 #include <pwd.h>
+#include <unistd.h>
 
 #include "cfg.h"
 
@@ -38,138 +38,121 @@ using namespace YAPET;
 using namespace YAPET::CONFIG;
 
 namespace YAPET {
-    namespace CONFIG {
-	std::string
-	trim(const std::string& s) {
-	    if (s.empty()) return s;
-	    
-	    // find leading spaces
-	    std::string::size_type pos=0;
-	    while(std::isspace(s[pos++]) && s.length() > pos);
-	    pos--;
-	    assert(pos < s.length());
-	    
-	    std::string working_copy(s.substr(pos));
-	    
-	    // find trailing spaces
-	    pos = working_copy.length()-1;
-	    while(std::isspace(working_copy[pos]) && pos != 0) {
-		pos--;
-	    }
-	    assert(pos<working_copy.length());
-	    
-	    return working_copy.substr(0, pos+1);
-	}
+namespace CONFIG {
+std::string trim(const std::string& s) {
+    if (s.empty()) return s;
 
-	std::string
-	getHomeDir() {
-	    std::string homedir("");
-	    
-	    char* hd = getenv("HOME");
-	    
-	    if (hd != 0) {
-		homedir = hd;
-		
-		if (homedir[homedir.length() ] != '/')
-		    homedir.push_back('/');
-		
-		return homedir;
-	    }
+    // find leading spaces
+    std::string::size_type pos = 0;
+    while (std::isspace(s[pos++]) && s.length() > pos)
+        ;
+    pos--;
+    assert(pos < s.length());
 
-	    struct passwd* pwd;
-	    pwd = getpwuid(getuid() );
-	    
-	    if (pwd != 0) {
-		homedir = pwd->pw_dir;
-		
-		if (homedir[homedir.length() ] != '/')
-		    homedir.push_back('/');
+    std::string working_copy(s.substr(pos));
 
-		return homedir;
-	    }
-
-	    assert(!homedir.empty() );
-	    return homedir;
-	}
+    // find trailing spaces
+    pos = working_copy.length() - 1;
+    while (std::isspace(working_copy[pos]) && pos != 0) {
+        pos--;
     }
+    assert(pos < working_copy.length());
+
+    return working_copy.substr(0, pos + 1);
 }
+
+std::string getHomeDir() {
+    std::string homedir("");
+
+    char* hd = getenv("HOME");
+
+    if (hd != 0) {
+        homedir = hd;
+
+        if (homedir[homedir.length()] != '/') homedir.push_back('/');
+
+        return homedir;
+    }
+
+    struct passwd* pwd;
+    pwd = getpwuid(getuid());
+
+    if (pwd != 0) {
+        homedir = pwd->pw_dir;
+
+        if (homedir[homedir.length()] != '/') homedir.push_back('/');
+
+        return homedir;
+    }
+
+    assert(!homedir.empty());
+    return homedir;
+}
+}  // namespace CONFIG
+}  // namespace YAPET
 
 //
 // Class CfgValPetFile
 //
-std::string
-CfgValPetFile::cleanup_path(const std::string& p) {
+std::string CfgValPetFile::cleanup_path(const std::string& p) {
     if (p.empty()) return p;
 
     std::string working_copy(p);
 
     // If there is a ~ at the very first position, replace that with
     // the home directory of the user.
-    if (working_copy[0] == '~') 
-	working_copy.replace(0,1,getHomeDir());
+    if (working_copy[0] == '~') working_copy.replace(0, 1, getHomeDir());
 
     if (working_copy.find("//") == std::string::npos) return working_copy;
 
-    std::string::size_type pos=0;
+    std::string::size_type pos = 0;
 
-    while ( (pos=working_copy.find("//")) != std::string::npos )
-	working_copy = working_copy.replace(pos, 2, "/");
+    while ((pos = working_copy.find("//")) != std::string::npos)
+        working_copy = working_copy.replace(pos, 2, "/");
 
     return working_copy;
 }
 
-std::string
-CfgValPetFile::add_suffix(const std::string& p) {
+std::string CfgValPetFile::add_suffix(const std::string& p) {
     if (p.empty()) {
-	return p;
+        return p;
     }
 
     if (p.length() < 4) {
-	// Since this holds, there can no ".pet"
-	return p+Consts::default_suffix;
+        // Since this holds, there can no ".pet"
+        return p + Consts::DEFAULT_FILE_SUFFIX;
     }
 
     // We don't have to check for the string length, because that
     // already happened above.
-    if (p.substr(p.length()-4,4) != Consts::default_suffix) {
-	return p+Consts::default_suffix;
+    if (p.substr(p.length() - 4, 4) != Consts::DEFAULT_FILE_SUFFIX) {
+        return p + Consts::DEFAULT_FILE_SUFFIX;
     }
 
     return p;
 }
 
-void
-CfgValPetFile::set(const std::string& s) {
+void CfgValPetFile::set(const std::string& s) {
     CfgValStr::set(add_suffix(cleanup_path(s)));
 }
 
-void
-CfgValPetFile::set_str(const std::string& s) {
-    set(s);
-}
+void CfgValPetFile::set_str(const std::string& s) { set(s); }
 //
 // Class CfgValBool
 //
-void
-CfgValBool::set_str(const std::string& s) {
+void CfgValBool::set_str(const std::string& s) {
     std::string sanitized(tolower(trim(s)));
 
-    if (sanitized == "0" ||
-	sanitized == "false" ||
-	sanitized == "no" ||
-	sanitized == "disable" ||
-	sanitized == "disabled") {
-	set(false);
-	return;
+    if (sanitized == "0" || sanitized == "false" || sanitized == "no" ||
+        sanitized == "disable" || sanitized == "disabled") {
+        set(false);
+        return;
     }
 
-    if (sanitized == "1" ||
-	sanitized == "true" ||
-	sanitized == "yes" ||
-	sanitized == "enable" ||
-	sanitized == "enabled") {
-	set(true);
-	return;
+    if (sanitized == "1" || sanitized == "true" || sanitized == "yes" ||
+        sanitized == "enable" || sanitized == "enabled") {
+        set(true);
+        return;
     }
 
     throw std::invalid_argument(sanitized + _(" is not a valid bool"));
@@ -178,116 +161,105 @@ CfgValBool::set_str(const std::string& s) {
 //
 // Class CfgValInt
 //
-void
-CfgValInt::set_str(const std::string& s) {
-    set(std::atoi(s.c_str()));
-}
+void CfgValInt::set_str(const std::string& s) { set(std::atoi(s.c_str())); }
 
 //
 // Class CfgValRNG
 //
-void
-CfgValRNG::set_str(const std::string& s) {
+void CfgValRNG::set_str(const std::string& s) {
     std::string sanitized(tolower(remove_space(s)));
 
     if (sanitized == "devrandom") {
-	set(PWGEN::DEVRANDOM);
-	return;
+        set(PWGEN::DEVRANDOM);
+        return;
     }
 
     if (sanitized == "devurandom") {
-	set(PWGEN::DEVURANDOM);
-	return;
+        set(PWGEN::DEVURANDOM);
+        return;
     }
 
     if (sanitized == "lrand48") {
-	set(PWGEN::LRAND48);
-	return;
+        set(PWGEN::LRAND48);
+        return;
     }
 
     if (sanitized == "rand") {
-	set(PWGEN::RAND);
-	return;
+        set(PWGEN::RAND);
+        return;
     }
 
     if (sanitized == "auto") {
-	set(PWGEN::AUTO);
-	return;
+        set(PWGEN::AUTO);
+        return;
     }
 
     throw std::invalid_argument(sanitized + _(" is not a valid RNG"));
 }
 
-void
-Config::setup_map() {
+void Config::setup_map() {
     __options.clear();
 
-    __options["load"]=&petfile;
-    __options["locktimeout"]=&timeout;
-    __options["checkfsecurity"]=&filesecurity;
-    __options["allowlockquit"]=&allow_lock_quit;
-    __options["pwinputtimeout"]=&pw_input_timeout;
-    __options["pwgen_rng"]=&pwgen_rng;
-    __options["pwgen_pwlen"]=&pwgenpwlen;
-    __options["pwgen_letters"]=&pwgen_letters;
-    __options["pwgen_digits"]=&pwgen_digits;
-    __options["pwgen_punct"]=&pwgen_punct;
-    __options["pwgen_special"]=&pwgen_special;
-    __options["pwgen_other"]=&pwgen_other;
-    __options["colors"]=&colors;
+    __options["load"] = &petfile;
+    __options["locktimeout"] = &timeout;
+    __options["checkfsecurity"] = &filesecurity;
+    __options["allowlockquit"] = &allow_lock_quit;
+    __options["pwinputtimeout"] = &pw_input_timeout;
+    __options["pwgen_rng"] = &pwgen_rng;
+    __options["pwgen_pwlen"] = &pwgenpwlen;
+    __options["pwgen_letters"] = &pwgen_letters;
+    __options["pwgen_digits"] = &pwgen_digits;
+    __options["pwgen_punct"] = &pwgen_punct;
+    __options["pwgen_special"] = &pwgen_special;
+    __options["pwgen_other"] = &pwgen_other;
+    __options["colors"] = &colors;
     // ignorerc can't be set in the configuration file
 }
 
-Config::Config() : 
-    petfile(std::string()),
-    timeout(Consts::def_locktimeout,
-	    Consts::min_locktimeout,
-	    Consts::min_locktimeout),
-    filesecurity(Consts::def_filesecurity),
-    pwgenpwlen(Consts::def_pwlen,
-	       Consts::def_pwlen,
-	       Consts::min_pwlen,
-	       Consts::max_pwlen),
-    pwgen_rng(Consts::def_pwgen_rng ),
-    pwgen_letters(PWGEN::HAS_LETTERS(Consts::def_character_pools)),
-    pwgen_digits(PWGEN::HAS_DIGITS(Consts::def_character_pools)),
-    pwgen_punct(PWGEN::HAS_PUNCT(Consts::def_character_pools)),
-    pwgen_special(PWGEN::HAS_SPECIAL(Consts::def_character_pools)),
-    pwgen_other(PWGEN::HAS_OTHER(Consts::def_character_pools)),
-    allow_lock_quit(Consts::def_allow_lock_quit),
-    pw_input_timeout(Consts::def_pw_input_timeout,
-		     Consts::min_locktimeout,
-		     Consts::min_locktimeout),
-    ignorerc(false),
-    colors() {
+Config::Config()
+    : petfile(std::string()),
+      timeout(Consts::DEFAULT_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT,
+              Consts::MIN_LOCK_TIMEOUT),
+      filesecurity(Consts::DEFAULT_FILE_SECURITY),
+      pwgenpwlen(Consts::DEFAULT_PASSWORD_LENGTH,
+                 Consts::DEFAULT_PASSWORD_LENGTH, Consts::MIN_PASSWORD_LENGTH,
+                 Consts::MAX_PASSWORD_LENGTH),
+      pwgen_rng(Consts::DEFAULT_PWGEN_RNG),
+      pwgen_letters(PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS)),
+      pwgen_digits(PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS)),
+      pwgen_punct(PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS)),
+      pwgen_special(PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS)),
+      pwgen_other(PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS)),
+      allow_lock_quit(Consts::DEFAULT_ALLOW_LOCK_QUIT),
+      pw_input_timeout(Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT,
+                       Consts::MIN_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT),
+      ignorerc(false),
+      colors() {
     setup_map();
 }
 
-Config::Config(const Config& c) :
-    petfile(c.petfile),
-    timeout(c.timeout),
-    filesecurity(c.filesecurity),
-    pwgenpwlen(c.pwgenpwlen),
-    pwgen_rng(c.pwgen_rng),
-    pwgen_letters(c.pwgen_letters),
-    pwgen_digits(c.pwgen_digits),
-    pwgen_punct(c.pwgen_punct),
-    pwgen_special(c.pwgen_special),
-    pwgen_other(c.pwgen_other),
-    allow_lock_quit(c.allow_lock_quit),
-    pw_input_timeout(c.pw_input_timeout),
-    ignorerc(c.ignorerc),
-    colors(c.colors) {
+Config::Config(const Config& c)
+    : petfile(c.petfile),
+      timeout(c.timeout),
+      filesecurity(c.filesecurity),
+      pwgenpwlen(c.pwgenpwlen),
+      pwgen_rng(c.pwgen_rng),
+      pwgen_letters(c.pwgen_letters),
+      pwgen_digits(c.pwgen_digits),
+      pwgen_punct(c.pwgen_punct),
+      pwgen_special(c.pwgen_special),
+      pwgen_other(c.pwgen_other),
+      allow_lock_quit(c.allow_lock_quit),
+      pw_input_timeout(c.pw_input_timeout),
+      ignorerc(c.ignorerc),
+      colors(c.colors) {
     setup_map();
 }
 
-Config::~Config() {
-}
+Config::~Config() {}
 
-const Config&
-Config::operator=(const Config& c) {
-    if (&c == this)
-	return *this;
+const Config& Config::operator=(const Config& c) {
+    if (&c == this) return *this;
 
     //
     // We don't need to (re)setup the map, because the pointers in the
@@ -312,30 +284,23 @@ Config::operator=(const Config& c) {
     return *this;
 }
 
-int
-Config::character_pools() const {
-    int pools=0;
+int Config::character_pools() const {
+    int pools = 0;
 
-    if (pwgen_letters)
-	pools|=PWGEN::LETTERS;
+    if (pwgen_letters) pools |= PWGEN::LETTERS;
 
-    if (pwgen_digits)
-	pools|=PWGEN::DIGITS;
+    if (pwgen_digits) pools |= PWGEN::DIGITS;
 
-    if (pwgen_punct)
-	pools|=PWGEN::PUNCT;
+    if (pwgen_punct) pools |= PWGEN::PUNCT;
 
-    if (pwgen_special)
-	pools|=PWGEN::SPECIAL;
+    if (pwgen_special) pools |= PWGEN::SPECIAL;
 
-    if (pwgen_other)
-	pools|=PWGEN::OTHER;
+    if (pwgen_other) pools |= PWGEN::OTHER;
 
     return pools;
 }
 
-void
-Config::lock() {
+void Config::lock() {
     petfile.lock();
     timeout.lock();
     filesecurity.lock();
@@ -352,8 +317,7 @@ Config::lock() {
     colors.lock();
 }
 
-void
-Config::unlock() {
+void Config::unlock() {
     petfile.unlock();
     timeout.unlock();
     filesecurity.unlock();
@@ -370,16 +334,15 @@ Config::unlock() {
     colors.unlock();
 }
 
-CfgValBase&
-Config::operator[](const std::string& key) {
+CfgValBase& Config::operator[](const std::string& key) {
     if (key.empty())
-	throw std::invalid_argument(_("Configuration key must not be empty"));
-    
-    std::map<std::string,CfgValBase*>::iterator it =
-	__options.find(key);
+        throw std::invalid_argument(_("Configuration key must not be empty"));
+
+    std::map<std::string, CfgValBase*>::iterator it = __options.find(key);
 
     if (it == __options.end())
-	throw std::invalid_argument(std::string(_("Configuration key '")) + key + std::string(_("' not found")));
+        throw std::invalid_argument(std::string(_("Configuration key '")) +
+                                    key + std::string(_("' not found")));
 
     return *((*it).second);
 }

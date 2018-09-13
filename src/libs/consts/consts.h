@@ -37,30 +37,30 @@ namespace YAPET {
 class Consts {
    public:
     //! Holds the default suffix for yapet files
-    static const std::string default_suffix;
+    static const std::string DEFAULT_FILE_SUFFIX;
     //! The default file name of the config file
-    static const std::string default_rcfilename;
+    static const std::string DEFAULT_RC_FILENAME;
     //! Default for checking file security
-    static const bool def_filesecurity;
-    static const bool def_allow_lock_quit;
-    static const YAPET::PWGEN::RNGENGINE def_pwgen_rng;
+    static constexpr bool DEFAULT_FILE_SECURITY{true};
+    static constexpr bool DEFAULT_ALLOW_LOCK_QUIT{true};
+    static constexpr YAPET::PWGEN::RNGENGINE DEFAULT_PWGEN_RNG{
+        YAPET::PWGEN::AUTO};
 
-    enum {
-        //! Maximum password length
-        max_pwlen = 256,
-        //! Maximum password length
-        min_pwlen = 2,
-        //! The minimum lock timeout
-        min_locktimeout = 10,
-        max_config_line_length = 1024,
-        //! The default lock timeout
-        def_locktimeout = 600,
-        //! Default password length for Password Generator
-        def_pwlen = 15,
-        def_pw_input_timeout = 60,
-        def_character_pools = YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS |
-                              YAPET::PWGEN::PUNCT | YAPET::PWGEN::SPECIAL
-    };
+    //! Maximum password length
+    static constexpr auto MAX_PASSWORD_LENGTH{256};
+    //! Minimum password length
+    static constexpr auto MIN_PASSWORD_LENGTH{2};
+    //! The minimum lock timeout
+    static constexpr auto MIN_LOCK_TIMEOUT{10};
+    static constexpr auto MAX_CONFIG_LINE_LENGTH{1024};
+    //! The default lock timeout
+    static constexpr auto DEFAULT_LOCK_TIMEOUT{600};
+    //! Default password length for Password Generator
+    static constexpr auto DEFAULT_PASSWORD_LENGTH{15};
+    static constexpr auto DEFAULT_PASSWORD_INPUT_TIMEOUT{60};
+    static constexpr auto DEFAULT_CHARACTER_POOLS{
+        YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS | YAPET::PWGEN::PUNCT |
+        YAPET::PWGEN::SPECIAL};
 };
 }  // namespace YAPET
 #endif  // _CONSTS_H

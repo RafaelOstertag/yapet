@@ -234,10 +234,10 @@ int main(int argc, char** argv) {
     }
 
     if (srcfile.find(
-            YAPET::Consts::default_suffix,
-            srcfile.length() - YAPET::Consts::default_suffix.length()) ==
+            YAPET::Consts::DEFAULT_FILE_SUFFIX,
+            srcfile.length() - YAPET::Consts::DEFAULT_FILE_SUFFIX.length()) ==
         std::string::npos)
-        srcfile += YAPET::Consts::default_suffix;
+        srcfile += YAPET::Consts::DEFAULT_FILE_SUFFIX;
 
     if (access(dstfile.c_str(), F_OK) == 0) {
         std::cerr << dstfile << _(" already exists. Aborting.") << std::endl;

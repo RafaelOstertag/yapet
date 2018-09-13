@@ -19,7 +19,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <unistd.h>
@@ -27,33 +27,29 @@
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
-#include "consts.h"
 #include "cfgfile.h"
+#include "consts.h"
 
 using namespace YAPET::CONFIG;
 
-ConfigFile::ConfigFile(Config& cfg, std::string cfgfile):
-    __cfg(cfg),
-    filepath(cfgfile.empty() ?
-	     getHomeDir() + YAPET::Consts::default_rcfilename :
-	     cfgfile) {
-
+ConfigFile::ConfigFile(Config& cfg, std::string cfgfile)
+    : __cfg(cfg),
+      filepath(cfgfile.empty()
+                   ? getHomeDir() + YAPET::Consts::DEFAULT_RC_FILENAME
+                   : cfgfile) {
     if (access(filepath.c_str(), R_OK | F_OK) == -1) {
-	throw std::runtime_error(std::string(_("Cannot open ") + filepath));
+        throw std::runtime_error(std::string(_("Cannot open ") + filepath));
     }
 }
 
-ConfigFile::ConfigFile(const ConfigFile& cfgfile) :
-    __cfg(cfgfile.__cfg),
-    filepath(cfgfile.filepath) {}
+ConfigFile::ConfigFile(const ConfigFile& cfgfile)
+    : __cfg(cfgfile.__cfg), filepath(cfgfile.filepath) {}
 
-const ConfigFile&
-ConfigFile::operator=(const ConfigFile& cfgfile) {
-    if (&cfgfile == this)
-        return *this;
+const ConfigFile& ConfigFile::operator=(const ConfigFile& cfgfile) {
+    if (&cfgfile == this) return *this;
 
     __cfg = cfgfile.__cfg;
     filepath = cfgfile.filepath;
@@ -61,44 +57,45 @@ ConfigFile::operator=(const ConfigFile& cfgfile) {
     return *this;
 }
 
-void
-ConfigFile::parse() {
+void ConfigFile::parse() {
     try {
-        std::ifstream cfgsin(filepath.c_str() );
+        std::ifstream cfgsin(filepath.c_str());
 
-        if (cfgsin.bad())
-            return;
+        if (cfgsin.bad()) return;
 
-	char line[YAPET::Consts::max_config_line_length];
-        while (cfgsin.getline(line, YAPET::Consts::max_config_line_length) ) {
-	    if (std::strlen(line)<1) continue;
+        char line[YAPET::Consts::MAX_CONFIG_LINE_LENGTH];
+        while (cfgsin.getline(line, YAPET::Consts::MAX_CONFIG_LINE_LENGTH)) {
+            if (std::strlen(line) < 1) continue;
 
-	    if (line[0]== '#') continue;
+            if (line[0] == '#') continue;
 
             std::string l(line);
 
-	    std::string::size_type pos = l.find("=");
+            std::string::size_type pos = l.find("=");
 
-	    if (pos == std::string::npos) {
-		std::cerr << "'" <<line << "' " << _("is invalid configuration option (missing '=')") << std::endl;
-		continue;
-	    }
+            if (pos == std::string::npos) {
+                std::cerr << "'" << line << "' "
+                          << _("is invalid configuration option (missing '=')")
+                          << std::endl;
+                continue;
+            }
 
-	    std::string option(l.substr(0,pos));
-	    std::string val(l.substr(pos+1));
+            std::string option(l.substr(0, pos));
+            std::string val(l.substr(pos + 1));
 
-	    if (val.empty()) {
-		std::cerr << "'" << option << "' " << _("has no value") << std::endl;
-		continue;
-	    }
+            if (val.empty()) {
+                std::cerr << "'" << option << "' " << _("has no value")
+                          << std::endl;
+                continue;
+            }
 
-	    // here we set the value
-	    try {
-		__cfg[trim(option)].set_str(val);
-	    } catch (std::invalid_argument& e) {
-		std::cerr << e.what() << std::endl;
-	    }
-	}
+            // here we set the value
+            try {
+                __cfg[trim(option)].set_str(val);
+            } catch (std::invalid_argument& e) {
+                std::cerr << e.what() << std::endl;
+            }
+        }
         cfgsin.close();
     } catch (...) {
         // lazy me

@@ -170,7 +170,7 @@ void CreateFile::run() {
         assert(filesavedialog == nullptr);
         // FileSaveDialog uses chdir().
         filesavedialog = new YACURS::FileSaveDialog(std::string(), true);
-        filesavedialog->suffix(YAPET::Consts::default_suffix);
+        filesavedialog->suffix(YAPET::Consts::DEFAULT_FILE_SUFFIX);
         filesavedialog->show();
     }
 }

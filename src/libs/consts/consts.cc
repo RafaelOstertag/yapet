@@ -22,8 +22,5 @@
 
 using namespace YAPET;
 
-const std::string Consts::default_suffix(".pet");
-const std::string Consts::default_rcfilename(".yapet");
-const bool Consts::def_filesecurity(true);
-const bool Consts::def_allow_lock_quit(true);
-const YAPET::PWGEN::RNGENGINE Consts::def_pwgen_rng(YAPET::PWGEN::AUTO);
+const std::string Consts::DEFAULT_FILE_SUFFIX(".pet");
+const std::string Consts::DEFAULT_RC_FILENAME(".yapet");
