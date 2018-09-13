@@ -75,9 +75,9 @@ pipeline {
 					stages {
 						stage("(LX) Bootstrap Build") {
                              steps {
-                                sh "git log --stat > ChangeLog"
+                                sh "touch ChangeLog"
                                 dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
+                                    sh "touch ChangeLog"
                                 }
                                 sh "touch README"
                                 sh "autoreconf -I m4 -i"
@@ -125,9 +125,9 @@ pipeline {
 					stages {
 						stage("(OB) Bootstrap Build") {
                              steps {
-                                sh "git log --stat > ChangeLog"
+                                sh "touch ChangeLog"
                                 dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
+                                    sh "touch ChangeLog"
                                 }
                                 sh "touch README"
                                 sh "autoreconf -I m4 -i"
@@ -175,9 +175,9 @@ pipeline {
 					stages {
 						stage("(NB) Bootstrap Build") {
                              steps {
-                                sh "git log --stat > ChangeLog"
+                                sh "touch ChangeLog"
                                 dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
+                                    sh "touch ChangeLog"
                                 }
                                 sh "touch README"
                                 sh "autoreconf -I m4 -i"
