@@ -1,7 +1,7 @@
 # $Id$
 AC_PREREQ([2.61])
 AC_REVISION([$Revision$])
-AC_INIT([YAPET],[1.2-dev],[https://bugs.guengel.ch/enter_bug.cgi?product=YAPET])
+AC_INIT([YAPET],[2.0-dev],[https://bugs.guengel.ch/enter_bug.cgi?product=YAPET])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
