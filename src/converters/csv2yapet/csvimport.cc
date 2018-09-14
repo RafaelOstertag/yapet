@@ -46,6 +46,11 @@
 #include "intl.h"
 
 /**
+ * The expected number of separators.
+ */
+constexpr auto NUM_SEPARATORS{4};
+
+/**
  * Removes the double quotes at the beginning and any escaped double quotes.
  *
  * @param str the string to be cleaned up.

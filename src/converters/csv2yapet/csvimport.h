@@ -51,13 +51,6 @@ class CSVImport {
     };
 
    private:
-    enum {
-        /**
-         * The expected number of separators.
-         */
-        NUM_SEPARATORS = 4
-    };
-
     /**
      * The file path of the source (csv) file.
      */
