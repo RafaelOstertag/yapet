@@ -51,12 +51,12 @@ class CSVExport {
     /**
      * Verbosity enabled/disabled.
      */
-    bool __verbose;
+    bool _verbose;
 
     /**
      * Print header
      */
-    bool __print_header;
+    bool _print_header;
 
     std::string prepareline(const std::string& l) const;
 
@@ -67,9 +67,9 @@ class CSVExport {
     /// Do the import.
     void doexport(const char* pw);
     /// Set the verbosity.
-    inline void verbose(bool v) { __verbose = v; }
+    inline void verbose(bool v) { _verbose = v; }
     /// Get the verbosity.
-    inline bool verbose() const { return __verbose; }
+    inline bool verbose() const { return _verbose; }
 };
 
 #endif  // _CSVEXPORT_H

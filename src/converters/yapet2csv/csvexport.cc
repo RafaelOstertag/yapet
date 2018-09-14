@@ -91,8 +91,8 @@ CSVExport::CSVExport(std::string src, std::string dst, char sep, bool verb,
     : srcfile(src),
       dstfile(dst),
       separator(sep),
-      __verbose(verb),
-      __print_header(print_header) {
+      _verbose(verb),
+      _print_header(print_header) {
     if (access(srcfile.c_str(), R_OK | F_OK) == -1) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
@@ -127,7 +127,7 @@ void CSVExport::doexport(const char* pw) {
 
     std::list<yapet::PasswordListItem>::iterator it = list.begin();
 
-    if (!list.empty() && __print_header) {
+    if (!list.empty() && _print_header) {
         csvfile << "name" << separator << "host" << separator << "username"
                 << separator << "password" << separator << "comment"
                 << std::endl;
@@ -153,14 +153,14 @@ void CSVExport::doexport(const char* pw) {
                        reinterpret_cast<const char*>(passwordRecord.comment())))
                 << std::endl;
 
-        if (__verbose) {
+        if (_verbose) {
             std::cout << ".";
             std::cout.flush();
         }
         it++;
     }
 
-    if (__verbose) std::cout << std::endl;
+    if (_verbose) std::cout << std::endl;
 
     csvfile.close();
 }

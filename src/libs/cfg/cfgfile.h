@@ -54,7 +54,7 @@ class CfgValBase;
  */
 class ConfigFile {
    private:
-    Config& __cfg;
+    Config& _cfg;
     std::string filepath;
 
    public:

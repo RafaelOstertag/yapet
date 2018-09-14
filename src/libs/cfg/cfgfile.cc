@@ -37,7 +37,7 @@
 using namespace YAPET::CONFIG;
 
 ConfigFile::ConfigFile(Config& cfg, std::string cfgfile)
-    : __cfg(cfg),
+    : _cfg(cfg),
       filepath(cfgfile.empty()
                    ? getHomeDir() + YAPET::Consts::DEFAULT_RC_FILENAME
                    : cfgfile) {
@@ -50,12 +50,12 @@ ConfigFile::ConfigFile(Config& cfg, std::string cfgfile)
 }
 
 ConfigFile::ConfigFile(const ConfigFile& cfgfile)
-    : __cfg(cfgfile.__cfg), filepath(cfgfile.filepath) {}
+    : _cfg(cfgfile._cfg), filepath(cfgfile.filepath) {}
 
 const ConfigFile& ConfigFile::operator=(const ConfigFile& cfgfile) {
     if (&cfgfile == this) return *this;
 
-    __cfg = cfgfile.__cfg;
+    _cfg = cfgfile._cfg;
     filepath = cfgfile.filepath;
 
     return *this;
@@ -100,7 +100,7 @@ void ConfigFile::parse() {
 
             // here we set the value
             try {
-                __cfg[trim(option)].set_str(val);
+                _cfg[trim(option)].set_str(val);
             } catch (std::invalid_argument& e) {
                 std::cerr << e.what() << std::endl;
             }
