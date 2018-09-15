@@ -16,14 +16,19 @@ void CSVLine::validIndexOrThrow(field_index_type index) const {
     }
 }
 
-CSVLine::CSVLine(field_index_type numberOfFields)
-    : _numberOfFields{numberOfFields}, _line{_numberOfFields} {}
+CSVLine::CSVLine(field_index_type numberOfFields, char separator)
+    : _numberOfFields{numberOfFields},
+      _line{_numberOfFields},
+      _separator{separator} {}
 
 CSVLine::CSVLine(const CSVLine& other)
-    : _numberOfFields{other._numberOfFields}, _line{other._line} {}
+    : _numberOfFields{other._numberOfFields},
+      _line{other._line},
+      _separator{other._separator} {}
 CSVLine::CSVLine(CSVLine&& other)
     : _numberOfFields{std::move(other._numberOfFields)},
-      _line{std::move(other._line)} {}
+      _line{std::move(other._line)},
+      _separator{other._separator} {}
 
 CSVLine& CSVLine::operator=(const CSVLine& other) {
     if (this == &other) {
@@ -32,6 +37,7 @@ CSVLine& CSVLine::operator=(const CSVLine& other) {
 
     _numberOfFields = other._numberOfFields;
     _line = other._line;
+    _separator = other._separator;
 
     return *this;
 }
@@ -43,6 +49,7 @@ CSVLine& CSVLine::operator=(CSVLine&& other) {
 
     _numberOfFields = std::move(other._numberOfFields);
     _line = std::move(other._line);
+    _separator = other._separator;
 
     return *this;
 }
@@ -50,7 +57,7 @@ CSVLine& CSVLine::operator=(CSVLine&& other) {
 void CSVLine::addField(field_index_type index, const std::string& value) {
     validIndexOrThrow(index);
 
-    CSVStringField field{value};
+    CSVStringField field{value, _separator};
     _line[index] = field;
 }
 
@@ -70,7 +77,7 @@ void CSVLine::addStringAsCsvFieldToLine(const std::string& field,
         throw std::invalid_argument(msg);
     }
 
-    CSVStringField csvField{field};
+    CSVStringField csvField{field, _separator};
     _line[atIndex] = csvField;
 }
 
@@ -91,7 +98,7 @@ void CSVLine::parseLine(const std::string& line) {
             inEscapedField = !inEscapedField;
         }
 
-        if (currentChar == CSVLine::DEFAULT_SEPARATOR && !inEscapedField) {
+        if (currentChar == _separator && !inEscapedField) {
             addStringAsCsvFieldToLine(fieldBuffer, currentIndex);
             currentIndex++;
             fieldBuffer = std::string{};
@@ -118,7 +125,7 @@ std::string CSVLine::getLine() {
     for (field_index_type i = 0; i < _numberOfFields; i++) {
         lineAsString += _line[i].escape();
         if (i < (_numberOfFields - 1)) {
-            lineAsString += CSVLine::DEFAULT_SEPARATOR;
+            lineAsString += _separator;
         }
     }
 

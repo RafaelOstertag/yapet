@@ -44,6 +44,9 @@ class CSVLineTest : public CppUnit::TestFixture {
             "should throw on malformed line",
             &CSVLineTest::throwMalformedLine));
 
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVLineTest>(
+            "should use different separator", &CSVLineTest::separator));
+
         return suiteOfTests;
     }
 
@@ -133,6 +136,24 @@ class CSVLineTest : public CppUnit::TestFixture {
         yapet::CSVLine csvLine1{3};
         CPPUNIT_ASSERT_THROW(csvLine1.parseLine("a,\"b,c"),
                              std::invalid_argument);
+    }
+
+    void separator() {
+        yapet::CSVLine csvLine1{4, ';'};
+        csvLine1.parseLine("\"a;\";b\"\";\"c;\"\"\";\"d\"");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a;"}, csvLine1[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"b\"\""}, csvLine1[1]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"c;\""}, csvLine1[2]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"d"}, csvLine1[3]);
+
+        yapet::CSVLine csvLine2{3, ';'};
+        csvLine2.addField(0, "Field 1");
+        csvLine2.addField(1, "Field;2");
+        csvLine2.addField(2, "Field\";3");
+
+        std::string actual{csvLine2.getLine()};
+        std::string expected{"Field 1;\"Field;2\";\"Field\"\";3\""};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 };
 

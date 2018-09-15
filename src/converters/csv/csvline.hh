@@ -14,14 +14,17 @@ class CSVLine {
     static constexpr char ESCAPE_CHAR{'"'};
     static constexpr char DEFAULT_SEPARATOR{','};
 
-    void addStringAsCsvFieldToLine(const std::string& field,
-                                         field_index_type atIndex);
-    void validIndexOrThrow(field_index_type index) const;
     field_index_type _numberOfFields;
     std::vector<CSVStringField> _line;
+    char _separator;
+
+    void addStringAsCsvFieldToLine(const std::string& field,
+                                   field_index_type atIndex);
+    void validIndexOrThrow(field_index_type index) const;
 
    public:
-    CSVLine(field_index_type numberOfFields);
+    CSVLine(field_index_type numberOfFields,
+            char separator = CSVLine::DEFAULT_SEPARATOR);
     CSVLine(const CSVLine& other);
     CSVLine(CSVLine&& other);
     CSVLine& operator=(const CSVLine& other);
