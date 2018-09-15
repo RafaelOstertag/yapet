@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <sstream>
 #include <stdexcept>
 
 #include "consts.h"
@@ -23,23 +22,23 @@ std::string CSVStringField::performEscapeing() {
         return _string;
     }
 
-    std::stringstream stringstream;
+    std::string buffer;
 
-    stringstream << DOUBLE_QUOTE;
+    buffer += DOUBLE_QUOTE;
 
-    for (int i = 0; i < _string.size(); i++) {
+    for (std::string::size_type i = 0; i < _string.size(); i++) {
         char currentCharacter = _string[i];
 
         // Escape a double quote by adding another double quote in front
         if (currentCharacter == DOUBLE_QUOTE) {
-            stringstream << DOUBLE_QUOTE;
+            buffer += DOUBLE_QUOTE;
         }
 
-        stringstream << currentCharacter;
+        buffer += currentCharacter;
     }
 
-    stringstream << DOUBLE_QUOTE;
-    return stringstream.str();
+    buffer += DOUBLE_QUOTE;
+    return buffer;
 }
 
 std::string CSVStringField::performUnescapeing() {
@@ -47,10 +46,10 @@ std::string CSVStringField::performUnescapeing() {
         return _string;
     }
 
-    std::stringstream stringstream;
+    std::string buffer;
 
     bool nextCharacterDoubleQuote{false};
-    for (int i = 1; i < _string.size() - 1; i++) {
+    for (std::string::size_type i = 1; i < _string.size() - 1; i++) {
         char currentCharacter{_string[i]};
         if (nextCharacterDoubleQuote) {
             if (currentCharacter != DOUBLE_QUOTE) {
@@ -60,7 +59,7 @@ std::string CSVStringField::performUnescapeing() {
                 throw std::invalid_argument(msg);
             }
 
-            stringstream << DOUBLE_QUOTE;
+            buffer += DOUBLE_QUOTE;
             nextCharacterDoubleQuote = false;
             continue;
         }
@@ -70,10 +69,10 @@ std::string CSVStringField::performUnescapeing() {
             continue;
         }
 
-        stringstream << currentCharacter;
+        buffer += currentCharacter;
     }
 
-    return stringstream.str();
+    return buffer;
 }
 
 CSVStringField::CSVStringField()
