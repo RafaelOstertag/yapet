@@ -22,7 +22,7 @@ AM_CPPFLAGS += -DDEBUG
 endif
 
 noinst_LTLIBRARIES = libyapet-import.la
-libyapet_import_la_SOURCES = csvstringfield.hh csvstringfield.cc csvstring.cc csvimport.h csvimport.cc
+libyapet_import_la_SOURCES = csvimport.h csvimport.cc
 libyapet_import_la_LIBADD = $(yapet_libdir)/crypt/libyapet-crypt.la	\
 	$(yapet_libdir)/consts/libyapet-consts.la			\
 	$(yapet_libdir)/file/libyapet-file.la				\
