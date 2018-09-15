@@ -1,9 +1,4 @@
-SUBDIRS = import
-
-yapet_srcdir = $(top_srcdir)/srcdir
-yapet_libs_srcdir = $(yapet_srcdir)/libs
-yapet_builddir= $(top_builddir)/src
-
+SUBDIRS = csv import
 EXTRA_DIST = testimport.csv
 
 check-local:

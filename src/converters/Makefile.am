@@ -1,1 +1,1 @@
-SUBDIRS = csv2yapet yapet2csv
+SUBDIRS = csv csv2yapet yapet2csv

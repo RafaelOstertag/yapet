@@ -103,6 +103,7 @@ AC_CONFIG_FILES([
 	doc/Makefile.doc
 	Makefile
 	po/Makefile.in
+	src/converters/csv/Makefile
 	src/converters/csv2yapet/Makefile
 	src/converters/Makefile
 	src/converters/yapet2csv/Makefile
@@ -122,6 +123,7 @@ AC_CONFIG_FILES([
 	src/yapet/Makefile
 	tests/cfg/Makefile
 	tests/cfg/testpaths.h
+	tests/converters/csv/Makefile
 	tests/converters/import/Makefile
 	tests/converters/import/testpaths.h
 	tests/converters/Makefile
