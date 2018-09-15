@@ -5,12 +5,12 @@ yapet_libs_builddir = $(yapet_builddir)/libs
 
 check_PROGRAMS = passwordrecord passwordlistitem
 
-TESTS = $(check_PROGRAMS)       
+TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/passwordrecord \
     -I$(yapet_libs_srcdir)/utils \
     -I$(yapet_libs_srcdir)/interfaces \
-    -I$(top_srcdir) 
+    -I$(top_srcdir)
 LDADD = $(yapet_libs_builddir)/utils/libyapet-utils.la \
     $(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la
 AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)

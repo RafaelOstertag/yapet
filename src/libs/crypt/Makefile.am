@@ -4,7 +4,7 @@ yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
 AM_CPPFLAGS = -I$(yapet_src_libdir)/pwgen \
-    -I$(yapet_src_libdir)/consts \ 
+    -I$(yapet_src_libdir)/consts \
     -I$(yapet_src_libdir)/exceptions \
     -I$(yapet_src_libdir)/file \
     -I$(yapet_src_libdir)/passwordrecord \

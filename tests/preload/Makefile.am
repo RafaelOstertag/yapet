@@ -1,5 +1,3 @@
-# $Id$
-
 # Building preload library has been taken out of the regular build
 # flow, so that we don't have to rely on the noinst_ prefix, which
 # doesn't produce a shared library, but a static one unable to be used
@@ -32,11 +30,11 @@ checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
 	$(yapet_libs)/file/libyapet-file.la \
 	$(yapet_libs)/utils/libyapet-utils.la \
 	$(yapet_libs)/passwordrecord/libyapet-passwordrecord.la \
-	$(LIBINTL) 
+	$(LIBINTL)
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc
 checkmasterpwchange_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
-	-I$(yapet_libs_srcdir)/consts \ 
+	-I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/file \

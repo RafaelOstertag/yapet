@@ -36,7 +36,7 @@ LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la \
 
 AM_LDFLAGS = $(LIBINTL)
 
-import1_SOURCES = import1.cc 
+import1_SOURCES = import1.cc
 import2_SOURCES = import2.cc
 import3_SOURCES = import3.cc
 import4_SOURCES = import4.cc

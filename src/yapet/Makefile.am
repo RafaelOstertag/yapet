@@ -1,5 +1,3 @@
-# $Id$
-
 yapet_srcdir = $(top_srcdir)/src
 yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_libdir = $(top_builddir)/src/libs
@@ -27,15 +25,15 @@ else
 AM_CPPFLAGS += -DDEBUG
 endif
 
-LDADD = $(yapet_libdir)/ui/libyapet-ui.la \
-	$(yapet_libdir)/glue/libyapet-glue.la \
-	$(yapet_libdir)/pwgen/libyapet-pwgen.la \
-	$(yapet_libdir)/crypt/libyapet-crypt.la \
-	$(yapet_libdir)/file/libyapet-file.la \
-	$(yapet_libdir)/consts/libyapet-consts.la \
-	$(yapet_libdir)/utils/libyapet-utils.la \
-	$(yapet_libdir)/cfg/libyapet-cfg.la \
-	$(yapet_libdir)/passwordrecord/libyapet-passwordrecord.la \
+LDADD = $(yapet_libdir)/ui/libyapet-ui.la				\
+	$(yapet_libdir)/glue/libyapet-glue.la				\
+	$(yapet_libdir)/pwgen/libyapet-pwgen.la				\
+	$(yapet_libdir)/crypt/libyapet-crypt.la				\
+	$(yapet_libdir)/file/libyapet-file.la				\
+	$(yapet_libdir)/consts/libyapet-consts.la			\
+	$(yapet_libdir)/utils/libyapet-utils.la				\
+	$(yapet_libdir)/cfg/libyapet-cfg.la				\
+	$(yapet_libdir)/passwordrecord/libyapet-passwordrecord.la	\
 	$(top_builddir)/libyacurs/src/libyacurs.la
 
 AM_LDFLAGS = $(LIBINTL)

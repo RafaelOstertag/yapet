@@ -7,7 +7,7 @@ EXTRA_DIST = testpaths.h.in yapet10file-corrupt-identifier.dat yapet20file-corru
 CLEANFILES = yapet-fileutils-test yapet-rawfile-test yapet-yapet10file-test yapet-yapet20file-test yapet-yapetfile-test
 
 check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file yapet20file header10 headerversion
-TESTS = $(check_PROGRAMS)       
+TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
     -I$(yapet_libs_srcdir)/consts \
@@ -15,7 +15,7 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
     -I$(yapet_libs_srcdir)/utils \
     -I$(yapet_libs_srcdir)/interfaces \
     -I$(yapet_libs_srcdir)/file \
-    -I$(top_srcdir) 
+    -I$(top_srcdir)
 LDADD = $(yapet_libs_builddir)/file/libyapet-file.la $(yapet_libs_builddir)/utils/libyapet-utils.la
 AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)
 AM_CXXFLAGS =  $(CPPUNIT_CFLAGS)

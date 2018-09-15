@@ -16,8 +16,8 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/cfg \
 	-I$(srcdir) \
 	-I$(top_srcdir)
 LDADD = $(LIBINTL)
-AM_LDFLAGS = $(yapet_libs_builddir)/cfg/libyapet-cfg.la $(yapet_libs_builddir)/pwgen/libyapet-pwgen.la $(yapet_libs_builddir)/consts/libyapet-consts.la 
+AM_LDFLAGS = $(yapet_libs_builddir)/cfg/libyapet-cfg.la $(yapet_libs_builddir)/pwgen/libyapet-pwgen.la $(yapet_libs_builddir)/consts/libyapet-consts.la
 
 
 cfg1_SOURCES = cfg1.cc
-cfgfile1_SOURCES = cfgfile1.cc 
+cfgfile1_SOURCES = cfgfile1.cc
