@@ -1,8 +1,6 @@
 // -*- c++ -*-
 //
-// $Id$
-//
-// Copyright (C) 2014  Rafael Ostertag
+// Copyright (C) 2014-2018  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -31,6 +29,9 @@
 #include <stdexcept>
 #include <string>
 
+#include "crypto.hh"
+#include "csvline.hh"
+
 /**
  * The class taking care of converting a pet file to a csv file.
  */
@@ -57,8 +58,6 @@ class CSVExport {
      * Print header
      */
     bool _print_header;
-
-    std::string prepareline(const std::string& l) const;
 
    public:
     CSVExport(std::string src, std::string dst, char sep, bool verb = true,

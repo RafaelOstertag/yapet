@@ -1,8 +1,6 @@
 // -*- c++ -*-
 //
-// $Id$
-//
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2018  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -28,25 +26,24 @@
 #endif
 
 #include <list>
-#include <stdexcept>
+#include <memory>
 #include <string>
+
+#include "crypto.hh"
+#include "csvline.hh"
+#include "passwordlistitem.hh"
 
 /**
  * The class taking care of converting a csv file.
  */
 class CSVImport {
    public:
+    using line_number_type = unsigned int;
     /**
      * Log entry.
      */
     struct LogEntry {
-        /**
-         * The line number where the error occurred.
-         */
-        unsigned int lineno;
-        /**
-         * The error message.
-         */
+        line_number_type lineNumber;
         std::string message;
     };
 
@@ -82,10 +79,17 @@ class CSVImport {
      */
     std::list<LogEntry> logs;
 
-    //! Cleanup the field values
-    void cleanupValue(std::string& str);
-    //! Log the given error
+    /**
+     * Logs the given error.
+     *
+     * @param lno the line number the error occurred.
+     *
+     * @param errmsg the error message.
+     */
     void logError(unsigned long lno, const std::string& errmsg);
+
+    yapet::PasswordListItem csvLineToPasswordRecord(
+        yapet::CSVLine& csvLine, std::unique_ptr<yapet::Crypto>& crypto);
 
    public:
     CSVImport(std::string src, std::string dst, char sep, bool verb = true);

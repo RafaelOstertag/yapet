@@ -42,36 +42,9 @@
 #include "consts.h"
 #include "cryptofactoryhelper.hh"
 #include "csvexport.h"
+#include "csvline.hh"
 #include "file.h"
 #include "passwordrecord.hh"
-
-std::string CSVExport::prepareline(const std::string& l) const {
-    //
-    // see http://tools.ietf.org/html/rfc4180 for an informal
-    // definition of csv
-    //
-    if (l.empty()) return l;
-
-    std::string workstr(l);
-
-    std::string::size_type pos = 0;
-    // is there a double quote in the string, if so, add another double quote
-    while ((pos = workstr.find('"', pos)) != std::string::npos) {
-        workstr.insert(pos, 1, '"');
-        if ((pos += 2) > (workstr.size() - 1)) break;
-    }
-
-    if (workstr.find(' ') != std::string::npos ||
-        workstr.find('\t') != std::string::npos ||
-        workstr.find(separator) != std::string::npos) {
-        // there is a white space or a separator, thus sourround with double
-        // quotes
-        workstr.push_back('"');
-        workstr.insert(static_cast<std::string::size_type>(0), 1, '"');
-    }
-
-    return workstr;
-}
 
 /**
  * The constructor tests whether the given source file exists and can be
@@ -101,20 +74,28 @@ CSVExport::CSVExport(std::string src, std::string dst, char sep, bool verb,
     }
 }
 
+namespace {
+inline std::ofstream openCsvFile(const std::string& fileName) {
+    std::ofstream csvFile(fileName);
+
+    if (!csvFile) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot open '%s'"), fileName.c_str());
+        throw std::runtime_error(msg);
+    }
+
+    return csvFile;
+}
+}  // namespace
+
 /**
  * Does the export.
  *
  * @param pw the password set on the destination file.
  */
 void CSVExport::doexport(const char* pw) {
-    std::ofstream csvfile(dstfile.c_str());
-
-    if (!csvfile) {
-        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Cannot open '%s'"), dstfile.c_str());
-        throw std::runtime_error(msg);
-    }
+    auto csvFile{::openCsvFile(dstfile)};
 
     auto password{yapet::toSecureArray(pw)};
     std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
@@ -127,31 +108,34 @@ void CSVExport::doexport(const char* pw) {
 
     std::list<yapet::PasswordListItem>::iterator it = list.begin();
 
+    yapet::CSVLine csvLine{5, separator};
     if (!list.empty() && _print_header) {
-        csvfile << "name" << separator << "host" << separator << "username"
-                << separator << "password" << separator << "comment"
-                << std::endl;
+        csvLine.addField(0, std::string{"name"});
+        csvLine.addField(1, std::string{"host"});
+        csvLine.addField(2, std::string{"username"});
+        csvLine.addField(3, std::string{"password"});
+        csvLine.addField(4, std::string{"comment"});
+        csvFile << csvLine.getLine() << std::endl;
     }
 
     while (it != list.end()) {
         auto decryptedPasswordRecord{crypto->decrypt(it->encryptedRecord())};
         yapet::PasswordRecord passwordRecord{decryptedPasswordRecord};
 
-        csvfile << prepareline(std::string(
-                       reinterpret_cast<const char*>(passwordRecord.name())))
-                << separator
-                << prepareline(std::string(
-                       reinterpret_cast<const char*>(passwordRecord.host())))
-                << separator
-                << prepareline(std::string(reinterpret_cast<const char*>(
-                       passwordRecord.username())))
-                << separator
-                << prepareline(std::string(reinterpret_cast<const char*>(
-                       passwordRecord.password())))
-                << separator
-                << prepareline(std::string(
-                       reinterpret_cast<const char*>(passwordRecord.comment())))
-                << std::endl;
+        csvLine.addField(
+            0,
+            std::string(reinterpret_cast<const char*>(passwordRecord.name())));
+        csvLine.addField(
+            1,
+            std::string(reinterpret_cast<const char*>(passwordRecord.host())));
+        csvLine.addField(2, std::string(reinterpret_cast<const char*>(
+                                passwordRecord.username())));
+        csvLine.addField(3, std::string(reinterpret_cast<const char*>(
+                                passwordRecord.password())));
+        csvLine.addField(4, std::string(reinterpret_cast<const char*>(
+                                passwordRecord.comment())));
+
+        csvFile << csvLine.getLine() << std::endl;
 
         if (_verbose) {
             std::cout << ".";
@@ -162,5 +146,5 @@ void CSVExport::doexport(const char* pw) {
 
     if (_verbose) std::cout << std::endl;
 
-    csvfile.close();
+    csvFile.close();
 }
