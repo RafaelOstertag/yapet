@@ -73,7 +73,7 @@ void CSVLine::addStringAsCsvFieldToLine(const std::string& field,
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
                       _("Expected %d fields in line, read %d"), _numberOfFields,
-                      atIndex);
+                      atIndex + 1);
         throw std::invalid_argument(msg);
     }
 
@@ -112,7 +112,7 @@ void CSVLine::parseLine(const std::string& line) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
                       _("Expected %d fields in line, read only %d"),
-                      _numberOfFields, currentIndex);
+                      _numberOfFields, currentIndex + 1);
         throw std::invalid_argument(msg);
     }
 
