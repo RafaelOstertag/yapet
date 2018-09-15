@@ -55,7 +55,8 @@ std::string CSVStringField::performUnescapeing() {
             if (currentCharacter != DOUBLE_QUOTE) {
                 char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
                 std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                              _("Expected '\"' but got %c"), currentCharacter);
+                              _("Expected '%c' but got %c"), DOUBLE_QUOTE,
+                              currentCharacter);
                 throw std::invalid_argument(msg);
             }
 
