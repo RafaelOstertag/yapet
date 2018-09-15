@@ -14,7 +14,8 @@ bool CSVStringField::isEscaped() {
 }
 
 bool CSVStringField::requireEscaping() {
-    return _string.find(_fieldSeparator) != std::string::npos;
+    return _string.find(_fieldSeparator) != std::string::npos ||
+           _string.find('\n') != std::string::npos;
 }
 
 std::string CSVStringField::performEscapeing() {

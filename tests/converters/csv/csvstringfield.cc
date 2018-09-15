@@ -67,8 +67,14 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
     void escape() {
         yapet::CSVStringField csvStringField{"Test,field"};
 
-        std::string actual = csvStringField.escape();
+        std::string actual{csvStringField.escape()};
         std::string expected{"\"Test,field\""};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField2{"Test\nfield"};
+
+        actual = csvStringField2.escape();
+        expected = "\"Test\nfield\"";
         CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 
