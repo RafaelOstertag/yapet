@@ -122,13 +122,13 @@ AC_CONFIG_FILES([
 	src/yapet/Makefile
 	tests/cfg/Makefile
 	tests/cfg/testpaths.h
+	tests/converters/import/Makefile
+	tests/converters/import/testpaths.h
 	tests/converters/Makefile
 	tests/crypt/Makefile
 	tests/crypt/testpaths.h
 	tests/file/Makefile
 	tests/file/testpaths.h
-	tests/import/Makefile
-	tests/import/testpaths.h
 	tests/Makefile
 	tests/passwordrecord/Makefile
 	tests/preload/Makefile
