@@ -41,6 +41,26 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
             "should properly handle empty field",
             &CSVStringFieldTest::unescapeEmptyField));
 
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVStringFieldTest>(
+            "should properly construct empty",
+            &CSVStringFieldTest::defaultConstructed));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVStringFieldTest>(
+            "should properly copy without prior function call",
+            &CSVStringFieldTest::copyNoPriorCall));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVStringFieldTest>(
+            "should properly copy with prior call",
+            &CSVStringFieldTest::copyPriorCall));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVStringFieldTest>(
+            "should properly move without prior function call",
+            &CSVStringFieldTest::moveNoPriorCall));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVStringFieldTest>(
+            "should properly move with prior call",
+            &CSVStringFieldTest::movePriorCall));
+
         return suiteOfTests;
     }
 
@@ -63,6 +83,11 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
 
         actual = csvStringField2.escape();
         expected = "Test \"field\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField3{",\"\"\""};
+        actual = csvStringField3.escape();
+        expected = "\",\"\"\"\"\"\"\"";
         CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 
@@ -95,6 +120,11 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
         actual = csvStringField2.unescape();
         expected = "\"";
         CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField3{"\",\"\"\"\"\"\"\""};
+        actual = csvStringField3.unescape();
+        expected = ",\"\"\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 
     void unescapeWronglyEscapedField() {
@@ -122,6 +152,158 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
 
         std::string actual = csvStringField.unescape();
         std::string expected{""};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+    }
+
+    void defaultConstructed() {
+        yapet::CSVStringField defaultConstructed;
+        std::string emptyString{};
+
+        CPPUNIT_ASSERT_EQUAL(emptyString, defaultConstructed.escape());
+        CPPUNIT_ASSERT_EQUAL(emptyString, defaultConstructed.unescape());
+    }
+
+    void copyNoPriorCall() {
+        // Unescape
+        yapet::CSVStringField csvStringField{"\"test,\"\"field\""};
+        yapet::CSVStringField empty{csvStringField};
+
+        std::string actual = empty.unescape();
+        std::string expected{"test,\"field"};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField2{"\"test,\"\"field\""};
+        yapet::CSVStringField empty2{};
+
+        empty2 = csvStringField2;
+
+        actual = empty2.unescape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        // Escape
+        yapet::CSVStringField csvStringField3{"Test,field"};
+        yapet::CSVStringField empty3{csvStringField3};
+
+        actual = empty3.escape();
+        expected = "\"Test,field\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"Test,field"};
+        yapet::CSVStringField empty4;
+
+        empty4 = csvStringField4;
+
+        actual = empty4.escape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+    }
+
+    void copyPriorCall() {
+        // Unescape
+        yapet::CSVStringField csvStringField{"\"test,\"\"field\""};
+        csvStringField.unescape();
+        yapet::CSVStringField empty{csvStringField};
+
+        std::string actual = empty.unescape();
+        std::string expected{"test,\"field"};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField2{"\"test,\"\"field\""};
+        csvStringField2.unescape();
+        yapet::CSVStringField empty2{};
+
+        empty2 = csvStringField2;
+
+        actual = empty2.unescape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        // Escape
+        yapet::CSVStringField csvStringField3{"Test,field"};
+        csvStringField3.escape();
+        yapet::CSVStringField empty3{csvStringField3};
+
+        actual = empty3.escape();
+        expected = "\"Test,field\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"Test,field"};
+        csvStringField4.escape();
+        yapet::CSVStringField empty4;
+
+        empty4 = csvStringField4;
+
+        actual = empty4.escape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+    }
+
+    void moveNoPriorCall() {
+        // Unescape
+        yapet::CSVStringField csvStringField{"\"test,\"\"field\""};
+        yapet::CSVStringField empty{std::move(csvStringField)};
+
+        std::string actual = empty.unescape();
+        std::string expected{"test,\"field"};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField2{"\"test,\"\"field\""};
+        yapet::CSVStringField empty2{};
+
+        empty2 = std::move(csvStringField2);
+
+        actual = empty2.unescape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        // Escape
+        yapet::CSVStringField csvStringField3{"Test,field"};
+        yapet::CSVStringField empty3{std::move(csvStringField3)};
+
+        actual = empty3.escape();
+        expected = "\"Test,field\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"Test,field"};
+        yapet::CSVStringField empty4;
+
+        empty4 = std::move(csvStringField4);
+
+        actual = empty4.escape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+    }
+
+    void movePriorCall() {
+        // Unescape
+        yapet::CSVStringField csvStringField{"\"test,\"\"field\""};
+        csvStringField.unescape();
+        yapet::CSVStringField empty{std::move(csvStringField)};
+
+        std::string actual = empty.unescape();
+        std::string expected{"test,\"field"};
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField2{"\"test,\"\"field\""};
+        csvStringField2.unescape();
+        yapet::CSVStringField empty2{};
+
+        empty2 = std::move(csvStringField2);
+
+        actual = empty2.unescape();
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        // Escape
+        yapet::CSVStringField csvStringField3{"Test,field"};
+        csvStringField3.escape();
+        yapet::CSVStringField empty3{std::move(csvStringField3)};
+
+        actual = empty3.escape();
+        expected = "\"Test,field\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"Test,field"};
+        csvStringField4.escape();
+        yapet::CSVStringField empty4;
+
+        empty4 = std::move(csvStringField4);
+
+        actual = empty4.escape();
         CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 };

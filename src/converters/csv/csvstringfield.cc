@@ -1,5 +1,8 @@
+#include <cstdio>
 #include <sstream>
+#include <stdexcept>
 
+#include "consts.h"
 #include "csvstringfield.hh"
 
 using namespace yapet;
@@ -45,9 +48,39 @@ std::string CSVStringField::performUnescapeing() {
     }
 
     std::stringstream stringstream;
+
+    bool nextCharacterDoubleQuote{false};
     for (int i = 1; i < _string.size() - 1; i++) {
+        char currentCharacter{_string[i]};
+        if (nextCharacterDoubleQuote) {
+            if (currentCharacter != DOUBLE_QUOTE) {
+                char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+                std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                              _("Expected '\"' but got %c"), currentCharacter);
+                throw std::invalid_argument(msg);
+            }
+
+            stringstream << DOUBLE_QUOTE;
+            nextCharacterDoubleQuote = false;
+            continue;
+        }
+
+        if (currentCharacter == DOUBLE_QUOTE) {
+            nextCharacterDoubleQuote = true;
+            continue;
+        }
+
+        stringstream << currentCharacter;
     }
+
+    return stringstream.str();
 }
+
+CSVStringField::CSVStringField()
+    : _escapedString{},
+      _unescapedString{},
+      _string{},
+      _fieldSeparator{CSVStringField::DEFAULT_SEPARATOR} {}
 
 CSVStringField::CSVStringField(const std::string& str, char fieldSeparator)
     : _escapedString{},
@@ -118,5 +151,5 @@ std::string CSVStringField::escape() {
         _escapedString = _string;
     }
 
-    return _unescapedString;
+    return _escapedString;
 }

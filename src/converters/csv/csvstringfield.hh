@@ -7,6 +7,8 @@ namespace yapet {
 
 class CSVStringField {
    private:
+    static constexpr char DEFAULT_SEPARATOR{','};
+
     std::string _escapedString;
     std::string _unescapedString;
     std::string _string;
@@ -17,15 +19,16 @@ class CSVStringField {
     std::string performEscapeing();
     std::string performUnescapeing();
 
-
    public:
+    CSVStringField();
     /**
      * Constructor.
      *
      * @param str CSV field string encoded as per
      * .
      */
-    CSVStringField(const std::string& str, char fieldSeparator=',');
+    CSVStringField(const std::string& str,
+                   char fieldSeparator = CSVStringField::DEFAULT_SEPARATOR);
     CSVStringField(const CSVStringField& other);
     CSVStringField(CSVStringField&& other);
     CSVStringField& operator=(const CSVStringField& other);
@@ -33,14 +36,15 @@ class CSVStringField {
 
     /**
      * Unescape string.
-     * 
-     * Unescape string assuming it is escaped as per https://www.ietf.org/rfc/rfc4180.txt
+     *
+     * Unescape string assuming it is escaped as per
+     * https://www.ietf.org/rfc/rfc4180.txt
      */
     std::string unescape();
 
     /**
      * Escape string if necessary.
-     * 
+     *
      * Escape string as per https://www.ietf.org/rfc/rfc4180.txt
      */
     std::string escape();
