@@ -79,7 +79,7 @@ void CSVLine::parseLine(const std::string& line) {
     field_index_type currentIndex{0};
 
     std::string fieldBuffer;
-    for (int i = 0; i < line.size(); i++) {
+    for (std::string::size_type i = 0; i < line.size(); i++) {
         char currentChar{line[i]};
         // Skip newline
         if (currentChar == '\n') {
@@ -115,7 +115,7 @@ void CSVLine::parseLine(const std::string& line) {
 
 std::string CSVLine::getLine() {
     std::string lineAsString;
-    for (int i = 0; i < _numberOfFields; i++) {
+    for (field_index_type i = 0; i < _numberOfFields; i++) {
         lineAsString += _line[i].escape();
         if (i < (_numberOfFields - 1)) {
             lineAsString += CSVLine::DEFAULT_SEPARATOR;
