@@ -3,6 +3,8 @@ yapet_libs_srcdir = $(yapet_srcdir)/libs
 yapet_builddir= $(top_builddir)/src
 yapet_libs_builddir = $(top_builddir)/src/libs
 
+
+
 # Tests may fail if not run serial
 AUTOMAKE_OPTIONS = serial-tests
 
@@ -27,7 +29,7 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/interfaces \
 	-I$(yapet_libs_srcdir)/passwordrecord \
     -I$(yapet_srcdir)/converters/csv2yapet \
-	-I$(srcdir)/.. \
+	-I$(srcdir) \
 	-I$(top_srcdir)
 
 LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la \
