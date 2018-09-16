@@ -8,6 +8,7 @@
 *.gcda
 *.log
 *.trs
+*.gcov
 *~
 obj*/
 .dirstamp
