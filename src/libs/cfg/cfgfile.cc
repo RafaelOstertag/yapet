@@ -78,11 +78,12 @@ void ConfigFile::parse() {
             std::string::size_type pos = l.find("=");
 
             if (pos == std::string::npos) {
-                char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-                std::snprintf(
-                    msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                    _("'%s' is a invalid configuration option (missing '=')"),
-                    line);
+                char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE * 3];
+                std::snprintf(msg,
+                              YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE * 3,
+                              _("'%s' is not a invalid configuration option "
+                                "(missing '=')"),
+                              line);
                 std::cerr << msg << std::endl;
                 continue;
             }
