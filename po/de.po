@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2018-09-14 06:34+0200\n"
-"PO-Revision-Date: 2013-12-28 19:53+0100\n"
+"POT-Creation-Date: 2018-09-16 16:49+0200\n"
+"PO-Revision-Date: 2018-09-16 16:50+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,28 +19,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/converters/csv2yapet/csvimport.cc:120
-#: src/converters/yapet2csv/csvexport.cc:99
+#: src/converters/csv2yapet/csvimport.cc:118
+#: src/converters/yapet2csv/csvexport.cc:72
 #, c-format
 msgid "Cannot access '%s'"
 msgstr "Kann auf '%s' nicht zugreifen"
 
-#: src/converters/csv2yapet/csvimport.cc:136
-#: src/converters/yapet2csv/csvexport.cc:115 src/libs/cfg/cfgfile.cc:47
+#: src/converters/csv2yapet/csvimport.cc:130
+#: src/converters/yapet2csv/csvexport.cc:84 src/libs/cfg/cfgfile.cc:47
 #, c-format
 msgid "Cannot open '%s'"
 msgstr "Kann Datei '%s' nicht öffnen"
 
-#: src/converters/csv2yapet/csvimport.cc:192
-msgid "Failed reading line (line too long?)"
-msgstr "Fehler beim Lesen der Zeile (Zeile zu lang?)"
+#: src/converters/csv2yapet/csvimport.cc:191
+msgid "Line too long"
+msgstr ""
 
 #: src/converters/csv2yapet/csvimport.cc:226
-#: src/converters/csv2yapet/csvimport.cc:251
-msgid " fields."
-msgstr " Felder."
-
-#: src/converters/csv2yapet/csvimport.cc:293
 msgid "Line "
 msgstr "Zeile "
 
@@ -189,10 +184,10 @@ msgstr "Konfigurationsschlüssel '%s' nicht gefunden"
 
 #: src/libs/cfg/cfgfile.cc:84
 #, c-format
-msgid "'%s' is a invalid configuration option (missing '=')"
+msgid "'%s' is not a invalid configuration option (missing '=')"
 msgstr "'%s' ist keine gültige Konfigurationsoption ('=' fehlt)"
 
-#: src/libs/cfg/cfgfile.cc:96
+#: src/libs/cfg/cfgfile.cc:97
 #, c-format
 msgid "'%s' has no value"
 msgstr "'%s' hat keinen Wert"
@@ -212,7 +207,9 @@ msgstr "Datensatz enthält keine verschlüsselten Daten"
 #: src/libs/crypt/aes256.cc:84 src/libs/crypt/crypto.cc:25
 #, c-format
 msgid "Expect cipher to support IV size %d but cipher supports only IV size %d"
-msgstr "Erwarte Unterstützung für IV der Grösse %d. Schiffre unterstützt nur die Grösse %d"
+msgstr ""
+"Erwarte Unterstützung für IV der Grösse %d. Schiffre unterstützt nur die "
+"Grösse %d"
 
 #: src/libs/crypt/aes256.cc:93 src/libs/crypt/crypto.cc:57
 msgid "Unable to get cipher"
@@ -527,7 +524,8 @@ msgstr "ist nicht korrekt. Nochmals versuchen?"
 #: src/libs/passwordrecord/passwordrecord.cc:53
 #, c-format
 msgid "Password record is expected to be of size %d bytes but got %d bytes"
-msgstr "Passwort-Datensatz muss die Grösse %d bytes haben, hat aber nur %d bytes"
+msgstr ""
+"Passwort-Datensatz muss die Grösse %d bytes haben, hat aber nur %d bytes"
 
 #: src/libs/pwgen/charpool.cc:51
 msgid "Subpools may not be zero"
@@ -550,7 +548,8 @@ msgstr "0 Zeiger ermittelt."
 msgid ""
 "Cannot get character from unused pool because no unused pools are available"
 msgstr ""
-"Kann kein Zeichen von unbenutztem Pool holen, da kein unbenutzter Pool vorhanden ist"
+"Kann kein Zeichen von unbenutztem Pool holen, da kein unbenutzter Pool "
+"vorhanden ist"
 
 #: src/libs/pwgen/pwgenexception.h:73
 msgid "No Random Number Generator available"
@@ -791,7 +790,6 @@ msgid "Error while saving file:"
 msgstr "Fehler beim Öffnen der Datei:"
 
 #: src/libs/ui/mainwindow.cc:537
-#, fuzzy
 msgid "New key must not be nullptr"
 msgstr "Neuer Schlüssel darf nicht 0 sein"
 
@@ -1090,3 +1088,9 @@ msgstr ""
 #: src/yapet/main.cc:298
 msgid "Press 'H' for help"
 msgstr "Für Hilfe 'H' drücken"
+
+#~ msgid "Failed reading line (line too long?)"
+#~ msgstr "Fehler beim Lesen der Zeile (Zeile zu lang?)"
+
+#~ msgid " fields."
+#~ msgstr " Felder."
