@@ -1,8 +1,10 @@
 News
 ====
 
-YAPET 1.2-dev
+YAPET 2.0-dev
 ---
+
+ * Use AES-256 encrypted files by default
 
 YAPET 1.1
 ---
