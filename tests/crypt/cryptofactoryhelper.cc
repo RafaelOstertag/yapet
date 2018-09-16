@@ -39,8 +39,10 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
 
     void yapet10file() {
         auto factory{yapet::getCryptoFactoryForFile(
-            SRCDIR "/cryptofactoryhelper-1.0.pet",
+            BUILDDIR "/cryptofactoryhelper-1.0.pet",
             yapet::toSecureArray("wdc"))};
+
+        CPPUNIT_ASSERT(factory);
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
@@ -50,8 +52,10 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
 
     void yapet20file() {
         auto factory{yapet::getCryptoFactoryForFile(
-            SRCDIR "/cryptofactoryhelper-2.0.pet",
+            BUILDDIR "/cryptofactoryhelper-2.0.pet",
             yapet::toSecureArray("wdc"))};
+
+        CPPUNIT_ASSERT(factory);
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
@@ -61,7 +65,7 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
 
     void unknownFile() {
         auto factory{yapet::getCryptoFactoryForFile(
-            SRCDIR "/cryptofactoryhelper-unknown.pet",
+            BUILDDIR "/cryptofactoryhelper-unknown.pet",
             yapet::toSecureArray("wdc"))};
 
         CPPUNIT_ASSERT(!factory);
@@ -69,7 +73,7 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
 
     void errorFile() {
         auto factory{yapet::getCryptoFactoryForFile(
-            SRCDIR "/cryptofactoryhelper-tooshort.pet",
+            BUILDDIR "/cryptofactoryhelper-tooshort.pet",
             yapet::toSecureArray("wdc"))};
 
         CPPUNIT_ASSERT(!factory);

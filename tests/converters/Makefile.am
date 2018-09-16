@@ -1,7 +1,7 @@
 yapet_builddir= $(top_builddir)/src
 
 SUBDIRS = csv import
-EXTRA_DIST = testimport.csv tests.h
+EXTRA_DIST = testimport.csv
 
 check-local:
 	rm -f /tmp/yapettestimport.pet /tmp/yapettestexport.csv

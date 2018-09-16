@@ -74,7 +74,7 @@ class Yapet20FileTest : public CppUnit::TestFixture {
 
     void failOpeningFileWithWrongIdentifier() {
         yapet::Yapet20File yapet20File{
-            SRCDIR "/yapet20file-corrupt-identifier.dat", false, false};
+            BUILDDIR "/yapet20file-corrupt-identifier.pet", false, false};
         CPPUNIT_ASSERT_THROW(yapet20File.open(), yapet::FileFormatError);
     }
 

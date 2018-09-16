@@ -16,8 +16,14 @@ CLEANFILES = testfile_blowfish.gps testfile_blowfish.gps.bak encryptiontest.gps 
 test1.pet test2.pet test3.pet test4.pet test5.pet test6.pet test7.pet	\
 test8.pet test9.pet test10.pet corrupt_blowfish.pet corrupt_aes256.pet f32le0.5.pet	\
 f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
-f64le0.6.pet f64be0.6.pet
+f64le0.6.pet f64be0.6.pet cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet \
+cryptofactoryhelper-tooshort.pet cryptofactoryhelper-unknown.pet \
+testfile_aes256.gps.bak testfile_aes256.gps
 
+# We have to copy the files under test to the build dir and adjust the permission
+# to read/write. This is necessary when running distcheck, which makes the source
+# directories read-only. Tests may fail when they try to open these files 
+# read/write
 #
 # Files used for foreign test
 #
@@ -33,7 +39,8 @@ f64le0.6.pet f64be0.6.pet
 EXTRA_DIST = corrupt_blowfish.pet.in corrupt_aes256.pet.in f32le0.5.pet.in		\
 f32be0.5.pet.in f64le0.5.pet.in f64be0.5.pet.in f32le0.6.pet.in		\
 f32be0.6.pet.in f64le0.6.pet.in f64be0.6.pet.in testpaths.h.in \
-cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet cryptofactoryhelper-unknown.pet cryptofactoryhelper-tooshort.pet
+cryptofactoryhelper-1.0.pet.in cryptofactoryhelper-2.0.pet.in \
+cryptofactoryhelper-unknown.pet.in cryptofactoryhelper-tooshort.pet.in
 
 # Listed as _DEPENDENCIES for corrupt and foreign
 .pet.in.pet:
@@ -81,5 +88,7 @@ file_aes256_SOURCES = file_aes256.cc
 file_aes256_DEPENDENCIES = corrupt_aes256.pet
 
 cryptofactoryhelper_SOURCES = cryptofactoryhelper.cc
+cryptofactoryhelper_DEPENDENCIES = cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet \
+cryptofactoryhelper-unknown.pet cryptofactoryhelper-tooshort.pet
 
 SUFFIXES = .pet .pet.in
