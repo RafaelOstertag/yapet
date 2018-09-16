@@ -33,8 +33,5 @@ DISTCLEANFILES = yapet.desktop
 
 ACLOCAL_AMFLAGS = -I m4
 
-clean-local:
-	rm -rf SunWS_cache
-
 maintainer-clean-local:
 	rm -f README.Cygwin
