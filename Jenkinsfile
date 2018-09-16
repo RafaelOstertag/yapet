@@ -50,18 +50,43 @@ pipeline {
                                 }
                             }
                         }
-						 stage("(FB) Build") {
+
+						stage("(FB) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
-                             }
-                         }
+                            }
+                        }
 
                         stage("(FB) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                }
+                            }
+                        }
+
+                        stage("Build distribution") {
+                            when { 
+                                branch 'release/*'
+                            }
+
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE distcheck'
+                                }
+                            }
+
+                            post {
+                                always {
+                                    // If distcheck fails, it leaves certain directories with read-only permissions.
+                                    // We unconditionally set write mode
+                                    dir("obj") {
+                                        sh "chmod -R u+w ."
+                                    }
+
+                                    cleanWs notFailBuild: true
                                 }
                             }
                         }
@@ -220,17 +245,4 @@ pipeline {
     		} // parallel
         } // stage("OS Build")
     } // stages
-
-    post {
-        always {
-            // If distcheck fails, it leaves certain directories with read-only permissions.
-            // We unconditionally set write mode
-            dir("obj") {
-                sh "chmod -R u+w ."
-            }
-
-            cleanWs notFailBuild: true
-        }
-    }
-
 }
