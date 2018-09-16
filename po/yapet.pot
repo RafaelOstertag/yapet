@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yapet 1.2-dev\n"
+"Project-Id-Version: yapet 2.0-dev\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2018-09-14 06:34+0200\n"
+"POT-Creation-Date: 2018-09-16 16:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/converters/csv2yapet/csvimport.cc:120
-#: src/converters/yapet2csv/csvexport.cc:99
+#: src/converters/csv2yapet/csvimport.cc:118
+#: src/converters/yapet2csv/csvexport.cc:72
 #, c-format
 msgid "Cannot access '%s'"
 msgstr ""
 
-#: src/converters/csv2yapet/csvimport.cc:136
-#: src/converters/yapet2csv/csvexport.cc:115 src/libs/cfg/cfgfile.cc:47
+#: src/converters/csv2yapet/csvimport.cc:130
+#: src/converters/yapet2csv/csvexport.cc:84 src/libs/cfg/cfgfile.cc:47
 #, c-format
 msgid "Cannot open '%s'"
 msgstr ""
 
-#: src/converters/csv2yapet/csvimport.cc:192
-msgid "Failed reading line (line too long?)"
+#: src/converters/csv2yapet/csvimport.cc:191
+msgid "Line too long"
 msgstr ""
 
 #: src/converters/csv2yapet/csvimport.cc:226
-#: src/converters/csv2yapet/csvimport.cc:251
-msgid " fields."
-msgstr ""
-
-#: src/converters/csv2yapet/csvimport.cc:293
 msgid "Line "
 msgstr ""
 
@@ -187,10 +182,10 @@ msgstr ""
 
 #: src/libs/cfg/cfgfile.cc:84
 #, c-format
-msgid "'%s' is a invalid configuration option (missing '=')"
+msgid "'%s' is not a invalid configuration option (missing '=')"
 msgstr ""
 
-#: src/libs/cfg/cfgfile.cc:96
+#: src/libs/cfg/cfgfile.cc:97
 #, c-format
 msgid "'%s' has no value"
 msgstr ""
