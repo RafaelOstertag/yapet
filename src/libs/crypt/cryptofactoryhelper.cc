@@ -46,7 +46,7 @@ std::shared_ptr<AbstractCryptoFactory> yapet::getCryptoFactoryForFile(
             return std::shared_ptr<AbstractCryptoFactory>{
                 new BlowfishFactory{password}};
         }
-    } catch (std::exception) {
+    } catch (std::exception&) {
         // Ok, not a Yapet file
     }
 
@@ -55,7 +55,7 @@ std::shared_ptr<AbstractCryptoFactory> yapet::getCryptoFactoryForFile(
             return std::shared_ptr<AbstractCryptoFactory>{
                 new Aes256Factory{password}};
         }
-    } catch (std::exception) {
+    } catch (std::exception&) {
         // Ok, not a Yapet file
     }
 
