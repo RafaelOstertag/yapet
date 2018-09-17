@@ -25,13 +25,6 @@
  * well as that of the covered work.
  */
 
-/*
- * File:   YapetFile.hh
- * Author: rafi
- *
- * Created on August 19, 2018, 6:27 PM
- */
-
 #ifndef _YAPETFILE_HH
 #define _YAPETFILE_HH
 
