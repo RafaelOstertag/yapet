@@ -9,7 +9,7 @@
 #include "file.h"
 #include "testpaths.h"
 
-constexpr auto ROUNDS{200};
+constexpr auto ROUNDS{10};
 
 constexpr char NAME_FORMAT[]{"Test name %d"};
 constexpr char HOST_FORMAT[]{"Test host %d"};
