@@ -16,7 +16,7 @@ check_PROGRAMS = import import2
 
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(yapet_converters_srcdir)/csv \ 
+AM_CPPFLAGS = -I$(yapet_converters_srcdir)/csv \
 	-I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
