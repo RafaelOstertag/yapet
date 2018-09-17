@@ -116,6 +116,11 @@ class CSVLineTest : public CppUnit::TestFixture {
 
         yapet::CSVLine csvLine5{2};
         CPPUNIT_ASSERT_THROW(csvLine5.parseLine("a"), std::invalid_argument);
+
+        yapet::CSVLine csvLine6{2};
+        csvLine6.parseLine("a\",b");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a\""}, csvLine6[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, csvLine6[1]);
     }
 
     void parseEmptyCsvLine() {

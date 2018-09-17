@@ -76,6 +76,16 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
         actual = csvStringField2.escape();
         expected = "\"Test\nfield\"";
         CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField3{"a\"a"};
+        actual = csvStringField3.escape();
+        expected = "a\"a";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"a\""};
+        actual = csvStringField4.escape();
+        expected = "a\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 
     void escapeDoubleQuote() {
@@ -130,6 +140,16 @@ class CSVStringFieldTest : public CppUnit::TestFixture {
         yapet::CSVStringField csvStringField3{"\",\"\"\"\"\"\"\""};
         actual = csvStringField3.unescape();
         expected = ",\"\"\"";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField4{"a\"a"};
+        actual = csvStringField4.unescape();
+        expected = "a\"a";
+        CPPUNIT_ASSERT_EQUAL(expected, actual);
+
+        yapet::CSVStringField csvStringField5{"a\""};
+        actual = csvStringField5.unescape();
+        expected = "a\"";
         CPPUNIT_ASSERT_EQUAL(expected, actual);
     }
 
