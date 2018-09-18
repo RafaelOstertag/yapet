@@ -34,6 +34,10 @@ class CSVLineTest : public CppUnit::TestFixture {
             "should parse line correctly", &CSVLineTest::parseLine));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<CSVLineTest>(
+            "should parse corner case lines correctly",
+            &CSVLineTest::parseCornerCases));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CSVLineTest>(
             "should parse empty CSV line correctly",
             &CSVLineTest::parseEmptyCsvLine));
 
@@ -99,28 +103,38 @@ class CSVLineTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT_EQUAL(std::string{"b"}, csvLine1[1]);
         CPPUNIT_ASSERT_EQUAL(std::string{"c"}, csvLine1[2]);
 
-        yapet::CSVLine csvLine2{4};
-        csvLine2.parseLine("\"a,\",b\"\",\"c,\"\"\",\"d\"");
-        CPPUNIT_ASSERT_EQUAL(std::string{"a,"}, csvLine2[0]);
-        CPPUNIT_ASSERT_EQUAL(std::string{"b\"\""}, csvLine2[1]);
-        CPPUNIT_ASSERT_EQUAL(std::string{"c,\""}, csvLine2[2]);
-        CPPUNIT_ASSERT_EQUAL(std::string{"d"}, csvLine2[3]);
+        yapet::CSVLine csvLine2{1};
+        csvLine2.parseLine("a");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine2[0]);
 
-        yapet::CSVLine csvLine3{1};
-        csvLine3.parseLine("a");
-        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine3[0]);
-
-        yapet::CSVLine csvLine4{2};
-        CPPUNIT_ASSERT_THROW(csvLine4.parseLine("a,b,c"),
+        yapet::CSVLine csvLine3{2};
+        CPPUNIT_ASSERT_THROW(csvLine3.parseLine("a,b,c"),
                              std::invalid_argument);
 
-        yapet::CSVLine csvLine5{2};
-        CPPUNIT_ASSERT_THROW(csvLine5.parseLine("a"), std::invalid_argument);
+        yapet::CSVLine csvLine4{2};
+        CPPUNIT_ASSERT_THROW(csvLine4.parseLine("a"), std::invalid_argument);
+    }
 
-        yapet::CSVLine csvLine6{2};
-        csvLine6.parseLine("a\",b");
-        CPPUNIT_ASSERT_EQUAL(std::string{"a\""}, csvLine6[0]);
-        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, csvLine6[1]);
+    void parseCornerCases() {
+        yapet::CSVLine csvLine1{6};
+        csvLine1.parseLine("\"a,\",b\",\"c,\"\"\",\"d\",\"\",\"");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a,"}, csvLine1[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"b\""}, csvLine1[1]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"c,\""}, csvLine1[2]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"d"}, csvLine1[3]);
+        CPPUNIT_ASSERT_EQUAL(std::string{""}, csvLine1[4]);
+        CPPUNIT_ASSERT_EQUAL(std::string{""}, csvLine1[4]);
+
+        yapet::CSVLine csvLine2{3};
+        csvLine2.parseLine("a,b\",");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine2[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"b\""}, csvLine2[1]);
+        CPPUNIT_ASSERT_EQUAL(std::string{}, csvLine2[2]);
+
+        yapet::CSVLine csvLine3{2};
+        csvLine3.parseLine("a\",b");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a\""}, csvLine3[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, csvLine3[1]);
     }
 
     void parseEmptyCsvLine() {
