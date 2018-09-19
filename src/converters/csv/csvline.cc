@@ -98,6 +98,14 @@ void CSVLine::parseLine(const std::string& line) {
             continue;
         }
 
+        if (currentChar == CSVLine::ESCAPE_CHAR &&
+            lookAhead == CSVLine::ESCAPE_CHAR && inEscapedField) {
+            fieldBuffer += CSVLine::ESCAPE_CHAR;
+            fieldBuffer += CSVLine::ESCAPE_CHAR;
+            column++;
+            continue;
+        }
+
         if (currentChar == CSVLine::ESCAPE_CHAR && lookAhead == _separator) {
             fieldBuffer += CSVLine::ESCAPE_CHAR;
             inEscapedField = false;
