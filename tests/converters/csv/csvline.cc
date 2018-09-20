@@ -196,6 +196,16 @@ class CSVLineTest : public CppUnit::TestFixture {
         csvLine2.parseLine("a,\"\"");
         CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine2[0]);
         CPPUNIT_ASSERT_EQUAL(std::string{""}, csvLine2[1]);
+
+        csvLine3.parseLine("a,\"\",\",\"");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine3[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{""}, csvLine3[1]);
+        CPPUNIT_ASSERT_EQUAL(std::string{","}, csvLine3[2]);
+
+        csvLine3.parseLine("a,\"\"\"\",\",\"");
+        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine3[0]);
+        CPPUNIT_ASSERT_EQUAL(std::string{"\""}, csvLine3[1]);
+        CPPUNIT_ASSERT_EQUAL(std::string{","}, csvLine3[2]);
     }
 
     void parseEmptyCsvLine() {
