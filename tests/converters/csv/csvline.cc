@@ -177,7 +177,6 @@ class CSVLineTest : public CppUnit::TestFixture {
 
         csvLine3.parseLine("a,,\"\"\",\"");
         CPPUNIT_ASSERT_EQUAL(std::string{"a"}, csvLine3[0]);
-        // That's most likely a bug
         CPPUNIT_ASSERT_EQUAL(std::string{""}, csvLine3[1]);
         CPPUNIT_ASSERT_EQUAL(std::string{"\","}, csvLine3[2]);
 
