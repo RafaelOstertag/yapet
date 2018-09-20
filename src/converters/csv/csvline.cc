@@ -90,7 +90,7 @@ void CSVLine::parseLine(const std::string& line) {
     std::string fieldBuffer;
     for (std::string::size_type column = 0; column < line.size(); column++) {
         char currentChar{line[column]};
-        char lookAhead{column + 1 < line.size() ? line[column + 1] : ','};
+        char lookAhead{column + 1 < line.size() ? line[column + 1] : _separator};
 
         if (currentChar == CSVLine::ESCAPE_CHAR && column == START_OF_LINE) {
             fieldBuffer = CSVLine::ESCAPE_CHAR;
@@ -127,6 +127,10 @@ void CSVLine::parseLine(const std::string& line) {
         }
 
         fieldBuffer += currentChar;
+    }
+
+    if (inEscapedField) {
+        throw std::invalid_argument(_("'\"' mismatch"));
     }
 
     if (currentIndex < (_numberOfFields - 1)) {
