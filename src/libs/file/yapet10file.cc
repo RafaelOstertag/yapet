@@ -129,6 +129,8 @@ SecureArray Yapet10File::readIdentifier() {
     return result.first;
 }
 
+SecureArray Yapet10File::readUnencryptedMetaData() { return SecureArray{}; }
+
 SecureArray Yapet10File::readHeader() {
     RawFile& rawFile{getRawFile()};
 
@@ -165,6 +167,10 @@ void Yapet10File::writeIdentifier() {
     RawFile& rawFile{getRawFile()};
     rawFile.rewind();
     rawFile.write(recognitionString(), recognitionStringSize());
+}
+
+void Yapet10File::writeUnencryptedMetaData(const SecureArray&) {
+    // Intentionally empty
 }
 
 void Yapet10File::writeHeader(const SecureArray& header) {

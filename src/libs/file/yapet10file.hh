@@ -184,11 +184,21 @@ class Yapet10File : public YapetFile {
 
     virtual SecureArray readIdentifier();
 
+    /**
+     * This is a noop on YAPET 1.0 files
+     */
+    virtual SecureArray readUnencryptedMetaData();
+
     virtual SecureArray readHeader();
 
     virtual std::list<SecureArray> readPasswordRecords();
 
     virtual void writeIdentifier();
+
+    /**
+     * This is a noop on YAPET 1.0 files
+     */
+    virtual void writeUnencryptedMetaData(const SecureArray&);
 
     virtual void writeHeader(const SecureArray& header);
 

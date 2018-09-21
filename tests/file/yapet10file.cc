@@ -36,6 +36,10 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
             "should read identifier", &Yapet10FileTest::readIdentifier});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
+            "should return zero SecureArray on readUnencryptedMetaData",
+            &Yapet10FileTest::readUnencryptedMetaData});
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
             "should fail reading empty header",
             &Yapet10FileTest::failReadingEmptyHeader});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet10FileTest>{
@@ -92,6 +96,13 @@ class Yapet10FileTest : public CppUnit::TestFixture {
         yapet10File2.open();
         CPPUNIT_ASSERT(
             std::memcmp(*yapet10File2.readIdentifier(), "YAPET1.0", 8) == 0);
+    }
+
+    void readUnencryptedMetaData() {
+        yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+        auto emptyMetaData{yapet10File.readUnencryptedMetaData()};
+
+        CPPUNIT_ASSERT(emptyMetaData == yapet::SecureArray{});
     }
 
     void failReadingEmptyHeader() {

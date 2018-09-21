@@ -80,6 +80,8 @@ class YapetFile {
      */
     virtual SecureArray readIdentifier() = 0;
 
+    virtual SecureArray readUnencryptedMetaData() = 0;
+
     /**
      * Read the header data.
      * @return header data
@@ -92,6 +94,8 @@ class YapetFile {
      * Write the identifier
      */
     virtual void writeIdentifier() = 0;
+
+    virtual void writeUnencryptedMetaData(const SecureArray& metaData) = 0;
 
     /**
      * Write header data
