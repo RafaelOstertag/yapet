@@ -33,7 +33,7 @@ class YapetFileMock : public yapet::YapetFile {
         throw std::runtime_error("Not implemented");
     }
 
-    yapet::SecureArray readMetaData() {
+    yapet::SecureArray readHeader() {
         throw std::runtime_error("Not implemented");
     }
 
@@ -43,7 +43,7 @@ class YapetFileMock : public yapet::YapetFile {
 
     void writeIdentifier() { throw std::runtime_error("Not implemented"); }
 
-    void writeMetaData(const yapet::SecureArray&) {
+    void writeHeader(const yapet::SecureArray&) {
         throw std::runtime_error("Not implemented");
     }
 

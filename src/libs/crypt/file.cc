@@ -40,7 +40,7 @@ using namespace YAPET;
 using namespace yapet;
 
 Header10 File::readHeader() {
-    auto encryptedSerializedHeader{_yapetFile->readMetaData()};
+    auto encryptedSerializedHeader{_yapetFile->readHeader()};
     auto serializedHeader{_crypto->decrypt(encryptedSerializedHeader)};
     return Header10{serializedHeader};
 }
@@ -52,11 +52,11 @@ void File::initializeEmptyFile() {
 
     auto encryptedSerializedHeader = _crypto->encrypt(header.serialize());
 
-    _yapetFile->writeMetaData(encryptedSerializedHeader);
+    _yapetFile->writeHeader(encryptedSerializedHeader);
 }
 
 void File::validateExistingFile() {
-    auto encryptedSerializedHeader = _yapetFile->readMetaData();
+    auto encryptedSerializedHeader = _yapetFile->readHeader();
     yapet::SecureArray serializedHeader;
     try {
         serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
@@ -183,7 +183,7 @@ int64_t File::getMasterPWSet() {
 SecureArray File::getFileVersion() { return _yapetFile->readIdentifier(); }
 
 HEADER_VERSION File::getHeaderVersion() {
-    auto encryptedSerializedHeader{_yapetFile->readMetaData()};
+    auto encryptedSerializedHeader{_yapetFile->readHeader()};
     auto serializedHeader{_crypto->decrypt(encryptedSerializedHeader)};
 
     Header10 header{serializedHeader};

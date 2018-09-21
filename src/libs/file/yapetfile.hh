@@ -81,10 +81,10 @@ class YapetFile {
     virtual SecureArray readIdentifier() = 0;
 
     /**
-     * Read the meta data.
-     * @return meta data
+     * Read the header data.
+     * @return header data
      */
-    virtual SecureArray readMetaData() = 0;
+    virtual SecureArray readHeader() = 0;
 
     virtual std::list<SecureArray> readPasswordRecords() = 0;
 
@@ -94,9 +94,9 @@ class YapetFile {
     virtual void writeIdentifier() = 0;
 
     /**
-     * Write meta data
+     * Write header data
      */
-    virtual void writeMetaData(const SecureArray& metaData) = 0;
+    virtual void writeHeader(const SecureArray& header) = 0;
 
     /**
      * Write password records

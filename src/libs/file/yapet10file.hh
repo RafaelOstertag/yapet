@@ -184,13 +184,13 @@ class Yapet10File : public YapetFile {
 
     virtual SecureArray readIdentifier();
 
-    virtual SecureArray readMetaData();
+    virtual SecureArray readHeader();
 
     virtual std::list<SecureArray> readPasswordRecords();
 
     virtual void writeIdentifier();
 
-    virtual void writeMetaData(const SecureArray& metaData);
+    virtual void writeHeader(const SecureArray& header);
 
     virtual void writePasswordRecords(const std::list<SecureArray>& passwords);
 

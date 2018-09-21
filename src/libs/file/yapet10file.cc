@@ -129,7 +129,7 @@ SecureArray Yapet10File::readIdentifier() {
     return result.first;
 }
 
-SecureArray Yapet10File::readMetaData() {
+SecureArray Yapet10File::readHeader() {
     RawFile& rawFile{getRawFile()};
 
     // Skip the recognition string.
@@ -138,7 +138,7 @@ SecureArray Yapet10File::readMetaData() {
     if (resultPair.second == false) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Cannot read meta data from file '%s'"),
+                      _("Cannot read header data from file '%s'"),
                       rawFile.filename().c_str());
         throw FileFormatError{msg};
     }
@@ -149,7 +149,7 @@ SecureArray Yapet10File::readMetaData() {
 std::list<SecureArray> Yapet10File::readPasswordRecords() {
     // This read is expected to leave the file position indicatory pointing to
     // the first password record length indicator
-    readMetaData();
+    readHeader();
 
     std::list<SecureArray> passwordRecords;
     RawFile& rawFile{getRawFile()};
@@ -167,12 +167,12 @@ void Yapet10File::writeIdentifier() {
     rawFile.write(recognitionString(), recognitionStringSize());
 }
 
-void Yapet10File::writeMetaData(const SecureArray& metaData) {
+void Yapet10File::writeHeader(const SecureArray& header) {
     RawFile& rawFile{getRawFile()};
 
     rawFile.seekAbsolute(recognitionStringSize());
 
-    rawFile.write(metaData);
+    rawFile.write(header);
     rawFile.flush();
 }
 
@@ -180,7 +180,7 @@ void Yapet10File::writePasswordRecords(
     const std::list<SecureArray>& passwords) {
     // This will position the file pointer on to the size indicator of the first
     // password record
-    readMetaData();
+    readHeader();
 
     RawFile& rawFile{getRawFile()};
     RawFile::seek_type trimSize = rawFile.getPosition();
