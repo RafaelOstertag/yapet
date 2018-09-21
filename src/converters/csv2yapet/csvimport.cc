@@ -1,6 +1,6 @@
 // $Id$
 //
-// Copyright (C) 2009-2010  Rafael Ostertag
+// Copyright (C) 2009-2018  Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -57,7 +57,8 @@ constexpr int MAX_LINE_LENGTH{
     yapet::PasswordRecord::USERNAME_SIZE +
     yapet::PasswordRecord::PASSWORD_SIZE + yapet::PasswordRecord::COMMENT_SIZE +
     // for the separators
-    NUMBER_OF_FIELDS - 1
+    NUMBER_OF_FIELDS -
+    1
     // null terminators, one for each field
     - 5};
 
@@ -134,29 +135,76 @@ inline std::ifstream openCsvFile(const std::string& fileName) {
     return file;
 }
 
+inline char read(std::ifstream& csvFile, char& lookAhead) {
+    char tmp = lookAhead;
+    csvFile.get(lookAhead);
+    return tmp;
+}
+
 /**
  * Read a line and honor escaped newline character.
  */
-inline std::string readLine(std::ifstream& csvFile,
+inline std::string readLine(std::ifstream& csvFile, char separator,
                             CSVImport::line_number_type& lineNumber) {
     std::string line;
 
-    bool inEscape = false;
-    for (char c; csvFile.get(c), !csvFile.eof();) {
-        // This test is necessary to maintain a proper line count
-        if (c == NEW_LINE_CHARACTER) {
+    bool inEscapedField = false;
+    bool startOfLine = true;
+
+    char currentCharacter;
+    char lookAhead;
+
+    csvFile.get(lookAhead);
+    while (!csvFile.eof()) {
+        currentCharacter = read(csvFile, lookAhead);
+
+        if (currentCharacter == NEW_LINE_CHARACTER) {
             lineNumber++;
         }
 
-        if (c == NEW_LINE_CHARACTER && !inEscape) {
+        if (currentCharacter == NEW_LINE_CHARACTER && !inEscapedField) {
+            csvFile.putback(lookAhead);
+            csvFile.clear();
             break;
         }
 
-        if (c == DOUBLE_QUOTE) {
-            inEscape = !inEscape;
+        if (startOfLine && currentCharacter == DOUBLE_QUOTE) {
+            startOfLine = false;
+            inEscapedField = true;
+            line += DOUBLE_QUOTE;
+            continue;
         }
 
-        line += c;
+        if (currentCharacter == DOUBLE_QUOTE && lookAhead == DOUBLE_QUOTE &&
+            inEscapedField) {
+            line += currentCharacter;
+            line += read(csvFile, lookAhead);
+            continue;
+        }
+
+        if (currentCharacter == DOUBLE_QUOTE &&
+            (lookAhead == separator || lookAhead == NEW_LINE_CHARACTER)) {
+            inEscapedField = false;
+            line += currentCharacter;
+            continue;
+        }
+
+        if (currentCharacter == separator && !inEscapedField) {
+            line += currentCharacter;
+
+            if (lookAhead == DOUBLE_QUOTE) {
+                inEscapedField = true;
+                line += read(csvFile, lookAhead);
+            }
+            continue;
+        }
+
+        line += currentCharacter;
+        startOfLine = false;
+    }
+
+    if (inEscapedField) {
+        throw std::invalid_argument(_("'\"' mismatch"));
     }
 
     return line;
@@ -186,7 +234,7 @@ void CSVImport::import(const char* pw) {
     yapet::CSVLine csvLine{NUMBER_OF_FIELDS, separator};
 
     for (std::string line;
-         line = ::readLine(csvFile, lineNumber), !csvFile.eof();) {
+         line = ::readLine(csvFile, separator, lineNumber), !csvFile.eof();) {
         if (line.size() > MAX_LINE_LENGTH) {
             logError(lineNumber, _("Line too long"));
             continue;

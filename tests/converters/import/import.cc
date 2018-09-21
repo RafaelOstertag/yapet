@@ -225,7 +225,7 @@ class ImportTest : public CppUnit::TestFixture {
 
         std::list<CSVImport::LogEntry>::const_iterator it = logs.begin();
 
-        CPPUNIT_ASSERT((*it).lineNumber == 3);
+        CPPUNIT_ASSERT((*it).lineNumber == 2);
     }
 
     void handleDoubleQuotesProperly() {
