@@ -106,7 +106,7 @@ std::uint8_t SecureArray::operator[](size_type index) const {
     if (index >= _size || index < 0) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Index out of rang: %d"), index);
+                      _("Index out of range: %d"), index);
         throw std::out_of_range{msg};
     }
 
