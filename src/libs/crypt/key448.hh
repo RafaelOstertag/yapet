@@ -33,10 +33,6 @@
 #ifndef _KEY448_HH
 #define _KEY448_HH 1
 
-#include <typeinfo>
-
-#include <openssl/evp.h>
-
 #include "key.hh"
 #include "securearray.hh"
 

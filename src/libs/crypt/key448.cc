@@ -32,8 +32,10 @@
 #include "config.h"
 #endif
 
+#include <openssl/evp.h>
 #include <cstdio>
 #include <cstring>
+#include <typeinfo>
 
 #include "consts.h"
 #include "cryptoerror.hh"
