@@ -18,6 +18,7 @@ TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_converters_srcdir)/csv \
 	-I$(yapet_libs_srcdir)/consts \
+	-I$(yapet_libs_srcdir)/metadata \
 	-I$(yapet_libs_srcdir)/exceptions \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/pwgen \
@@ -34,6 +35,7 @@ AM_CXXFLAGS = $(CPPUNIT_CFLAGS)
 LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la \
     $(yapet_builddir)/converters/csv2yapet/libyapet-import.la \
 	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
+	$(yapet_libs_builddir)/metadata/libyapet-metadata.la \
 	$(yapet_converters_builddir)/csv/libyapet-csv.la
 
 AM_LDFLAGS = $(LIBINTL) $(CPPUNIT_LIBS)

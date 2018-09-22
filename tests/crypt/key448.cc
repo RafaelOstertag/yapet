@@ -35,6 +35,10 @@ class Key448Test : public CppUnit::TestFixture {
         suiteOfTests->addTest(new CppUnit::TestCaller<Key448Test>(
             "should create proper IV", &Key448Test::testIV));
 
+        suiteOfTests->addTest(new CppUnit::TestCaller<Key448Test>(
+            "should return empty key parameters",
+            &Key448Test::emtpyKeyParameters));
+
         return suiteOfTests;
     }
 
@@ -56,6 +60,12 @@ class Key448Test : public CppUnit::TestFixture {
         for (int i = 0; i < key.ivecSize(); i++) {
             CPPUNIT_ASSERT((*key.ivec())[i] == expected_ivec[i]);
         }
+    }
+
+    void emtpyKeyParameters() {
+        yapet::Key448 key{};
+
+        CPPUNIT_ASSERT(key.keyingParameters().size() == 0);
     }
 };
 

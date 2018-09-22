@@ -7,6 +7,7 @@ yapet_build_libdir = $(top_builddir)/src/libs
 
 AM_CPPFLAGS = -I$(yapet_src_convertersdir)/csv \
     -I$(yapet_src_libdir)/exceptions \
+    -I$(yapet_src_libdir)/metadata \
     -I$(yapet_src_libdir)/crypt	\
     -I$(yapet_src_libdir)/consts \
     -I$(yapet_src_libdir)/pwgen \
@@ -31,6 +32,7 @@ libyapet_export_la_LIBADD = $(yapet_build_libdir)/crypt/libyapet-crypt.la	\
     $(yapet_build_libdir)/consts/libyapet-consts.la				\
     $(yapet_build_libdir)/file/libyapet-file.la				\
     $(yapet_build_libdir)/utils/libyapet-utils.la           \
+    $(yapet_build_libdir)/metadata/libyapet-metadata.la           \
     $(yapet_build_convertersdir)/csv/libyapet-csv.la
 
 bin_PROGRAMS = yapet2csv

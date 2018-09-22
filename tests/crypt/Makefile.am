@@ -53,6 +53,7 @@ TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/exceptions \
+	-I$(yapet_libs_srcdir)/metadata \
 	-I$(yapet_libs_srcdir)/crypt \
 	-I$(yapet_libs_srcdir)/passwordrecord \
 	-I$(yapet_libs_srcdir)/interfaces \
@@ -68,6 +69,7 @@ AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/file/libyapet-file.la \
 	$(yapet_libs_builddir)/utils/libyapet-utils.la \
 	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
+	$(yapet_libs_builddir)/metadata/libyapet-metadata.la \
 	$(CPPUNIT_LIBS)
 
 foreign_SOURCES = foreign.cc

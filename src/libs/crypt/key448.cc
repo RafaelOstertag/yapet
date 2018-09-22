@@ -113,7 +113,13 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key448::Key448() : _key{0}, _ivec{IVEC_LENGTH} {}
+Key448::Key448() : _key{0}, _ivec{IVEC_LENGTH}, _parameters{} {}
+
+void Key448::keyingParameters(const MetaData&) {
+    // intentionally empty
+}
+
+const MetaData& Key448::keyingParameters() const { return _parameters; }
 
 void Key448::password(const SecureArray& password) {
     SecureArray passwordWithoutZeroTerminator{password.size() - 1};
@@ -138,15 +144,20 @@ void Key448::password(const SecureArray& password) {
 }
 
 Key448::Key448(Key448&& k)
-    : _key{std::move(k._key)}, _ivec{std::move(k._ivec)} {}
+    : _key{std::move(k._key)},
+      _ivec{std::move(k._ivec)},
+      _parameters{std::move(k._parameters)} {}
 
-Key448::Key448(const Key448& k) : _key{k._key}, _ivec{k._ivec} {}
+Key448::Key448(const Key448& k)
+    : _key{k._key}, _ivec{k._ivec}, _parameters{k._parameters} {}
 
 Key448& Key448::operator=(const Key448& k) {
     if (this == &k) return *this;
 
     _key = k._key;
     _ivec = k._ivec;
+    _parameters = k._parameters;
+
     return *this;
 }
 
@@ -155,6 +166,8 @@ Key448& Key448::operator=(Key448&& k) {
 
     _key = std::move(k._key);
     _ivec = std::move(k._ivec);
+    _parameters = std::move(k._parameters);
+
     return *this;
 }
 

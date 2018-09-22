@@ -1,7 +1,9 @@
 #ifndef _KEY_HH
 #define _KEY_HH
 
+#include "metadata.hh"
 #include "securearray.hh"
+
 namespace yapet {
 /**
  * Interface for encryption/decryption keys
@@ -9,13 +11,25 @@ namespace yapet {
 class Key {
    public:
     virtual ~Key() {}
+
+    /**
+     * Set parameters for key generator
+     */
+    virtual void keyingParameters(const MetaData& parameters) = 0;
+
+    virtual const MetaData& keyingParameters() const = 0;
+
     /**
      * The password from which the key is derived.
      *
-     * The password provided in \c password is expected to be terminated by \c
-     * \0.
+     * The password provided in \c password is expected to be terminated by
+     * \c \0.
      *
-     * @param password \c SecureArray containing password terminated by \c \0.
+     * If the key computation requires key parameters, they must be set
+     * before calling this function.
+     *
+     * @param password \c SecureArray containing password terminated by \c
+     * \0.
      */
     virtual void password(const SecureArray& password) = 0;
 

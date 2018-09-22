@@ -82,6 +82,11 @@ class Key448 : public Key {
      */
     SecureArray _ivec;
 
+    /**
+     * Only used to satisfy interface. No influence on key generation.
+     */
+    MetaData _parameters;
+
    public:
     Key448();
 
@@ -91,6 +96,16 @@ class Key448 : public Key {
     Key448(Key448&& k);
     Key448& operator=(Key448&& key);
     ~Key448(){};
+
+    /**
+     * This is a noop, this key does not support parameters.
+     */
+    void keyingParameters(const MetaData& parameters);
+
+    /**
+     * Will always return empty meta data.
+     */
+    const MetaData& keyingParameters() const;
 
     void password(const SecureArray& password);
 

@@ -109,7 +109,13 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
  * @param password a pointer to the location the password is
  * stored. The password has to be zero-terminated.
  */
-Key256::Key256() : _key{0} {}
+Key256::Key256() : _key{0}, _keyingParameters{} {}
+
+void Key256::keyingParameters(const MetaData& parameters) {
+    _keyingParameters = parameters;
+}
+
+const MetaData& Key256::keyingParameters() const { return _keyingParameters; }
 
 void Key256::password(const SecureArray& password) {
     SecureArray passwordWithoutZeroTerminator{password.size() - 1};
@@ -128,14 +134,19 @@ void Key256::password(const SecureArray& password) {
     }
 }
 
-Key256::Key256(Key256&& k) : _key{std::move(k._key)} {}
+Key256::Key256(Key256&& k)
+    : _key{std::move(k._key)},
+      _keyingParameters{std::move(k._keyingParameters)} {}
 
-Key256::Key256(const Key256& k) : _key{k._key} {}
+Key256::Key256(const Key256& k)
+    : _key{k._key}, _keyingParameters{k._keyingParameters} {}
 
 Key256& Key256::operator=(const Key256& k) {
     if (this == &k) return *this;
 
     _key = k._key;
+    _keyingParameters = k._key;
+
     return *this;
 }
 
@@ -143,6 +154,8 @@ Key256& Key256::operator=(Key256&& k) {
     if (this == &k) return *this;
 
     _key = std::move(k._key);
+    _keyingParameters = std::move(k._keyingParameters);
+
     return *this;
 }
 

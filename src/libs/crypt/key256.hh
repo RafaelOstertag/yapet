@@ -71,6 +71,8 @@ class Key256 : public Key {
      */
     SecureArray _key;
 
+    MetaData _keyingParameters;
+
    public:
     Key256();
 
@@ -80,6 +82,10 @@ class Key256 : public Key {
     Key256(Key256&& k);
     Key256& operator=(Key256&& key);
     ~Key256(){};
+
+    virtual void keyingParameters(const MetaData& parameters);
+
+    virtual const MetaData& keyingParameters() const;
 
     void password(const SecureArray& password);
 
