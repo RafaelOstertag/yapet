@@ -16,6 +16,9 @@ class MetaDataTest : public CppUnit::TestFixture {
             "should set and get meta data", &MetaDataTest::basic));
 
         suiteOfTests->addTest(new CppUnit::TestCaller<MetaDataTest>(
+            "should get proper size", &MetaDataTest::size));
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<MetaDataTest>(
             "should throw on non-existing key",
             &MetaDataTest::throwOnNonExistingKey));
 
@@ -40,6 +43,14 @@ class MetaDataTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT(metaData.getValue("test") == 42);
     }
 
+    void size() {
+        yapet::MetaData metaData;
+        CPPUNIT_ASSERT(metaData.size() == 0);
+
+        metaData.setValue("test", 42);
+        CPPUNIT_ASSERT(metaData.size() == 1);
+    }
+
     void throwOnNonExistingKey() {
         yapet::MetaData metaData;
 
@@ -54,7 +65,8 @@ class MetaDataTest : public CppUnit::TestFixture {
     void throwOnInvalidSecureArray() {
         yapet::SecureArray secureArray{yapet::toSecureArray("test")};
 
-        CPPUNIT_ASSERT_THROW(yapet::MetaData{secureArray}, std::invalid_argument);
+        CPPUNIT_ASSERT_THROW(yapet::MetaData{secureArray},
+                             std::invalid_argument);
     }
 
     void serializeAndDeserialize() {

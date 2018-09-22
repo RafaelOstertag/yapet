@@ -21,6 +21,8 @@ class MetaData : public Serializable {
     int getValue(const std::string& key) const;
     void setValue(const std::string& key, int value);
 
+    std::unordered_map<std::string, int>::size_type size() const;
+
     SecureArray serialize() const;
 };
 }  // namespace yapet

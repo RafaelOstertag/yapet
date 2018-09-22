@@ -83,6 +83,10 @@ void MetaData::setValue(const std::string& key, int value) {
     _dataItems[key] = value;
 }
 
+std::unordered_map<std::string, int>::size_type MetaData::size() const {
+    return _dataItems.size();
+}
+
 namespace {
 void addStringToBuffer(std::vector<std::uint8_t>& buffer,
                        const std::string& str) {
