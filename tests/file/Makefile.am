@@ -16,7 +16,7 @@ EXTRA_DIST = testpaths.h.in yapet10file-corrupt-identifier.pet.in yapet20file-co
 CLEANFILES = yapet-fileutils-test yapet-rawfile-test yapet-yapet10file-test yapet-yapet20file-test \
  yapet-yapetfile-test yapet10file-corrupt-identifier.pet yapet20file-corrupt-identifier.pet
 
-check_PROGRAMS = ods rawfile fileutils yapetfile yapet10file yapet20file header10 headerversion
+check_PROGRAMS = rawfile fileutils yapetfile yapet10file yapet20file header10 headerversion
 TESTS = $(check_PROGRAMS)
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/pwgen \
@@ -35,7 +35,6 @@ AM_CXXFLAGS =  $(CPPUNIT_CFLAGS)
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-ods_SOURCES = ods.cc
 rawfile_SOURCES = rawfile.cc
 fileutils_SOURCES = fileutils.cc
 yapetfile_SOURCES = yapetfile.cc

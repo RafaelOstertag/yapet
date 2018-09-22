@@ -19,6 +19,6 @@ endif
 
 noinst_LTLIBRARIES = libyapet-file.la
 libyapet_file_la_SOURCES = rawfile.cc rawfile.hh \
-ods.hh fileutils.cc fileutils.hh yapetfile.hh \
+fileutils.cc fileutils.hh yapetfile.hh \
 yapetfile.cc yapet10file.hh yapet10file.cc yapet20file.hh yapet20file.cc header10.cc header10.hh \
- headerversion.hh
+headerversion.hh

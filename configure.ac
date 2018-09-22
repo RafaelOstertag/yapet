@@ -115,6 +115,7 @@ AC_CONFIG_FILES([
 	src/libs/glue/Makefile
 	src/libs/interfaces/Makefile
 	src/libs/Makefile
+	src/libs/metadata/Makefile
 	src/libs/passwordrecord/Makefile
 	src/libs/pwgen/Makefile
 	src/libs/ui/Makefile
@@ -132,6 +133,7 @@ AC_CONFIG_FILES([
 	tests/file/Makefile
 	tests/file/testpaths.h
 	tests/Makefile
+	tests/metadata/Makefile
 	tests/passwordrecord/Makefile
 	tests/preload/Makefile
 	tests/pwgen/Makefile

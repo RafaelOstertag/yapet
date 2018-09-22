@@ -1,1 +1,1 @@
-SUBDIRS = utils passwordrecord crypt cfg file pwgen converters preload
+SUBDIRS = utils metadata passwordrecord crypt cfg file pwgen converters preload
