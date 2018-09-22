@@ -75,23 +75,23 @@ inline void destroyContext(EVP_MD_CTX* context) {
 }
 
 inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
-    if (md == 0) throw CipherError{_("Empty EVP_MD structure")};
+    if (md == 0) throw HashError{_("Empty EVP_MD structure")};
 
     EVP_MD_CTX* mdctx = createContext();
     if (mdctx == nullptr) {
-        throw CipherError{_("Error initializing MD context")};
+        throw HashError{_("Error initializing MD context")};
     }
 
     int retval = EVP_DigestInit_ex(mdctx, md, 0);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw CipherError{_("Unable to initialize the digest")};
+        throw HashError{_("Unable to initialize the digest")};
     }
 
     retval = EVP_DigestUpdate(mdctx, *text, text.size());
     if (retval == 0) {
         destroyContext(mdctx);
-        throw CipherError{_("Unable to update the digest")};
+        throw HashError{_("Unable to update the digest")};
     }
 
     SecureArray::size_type hashSize = EVP_MD_size(md);
@@ -100,7 +100,7 @@ inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
     retval = EVP_DigestFinal(mdctx, *hash, nullptr);
     if (retval == 0) {
         destroyContext(mdctx);
-        throw CipherError{_("Unable to finalize the digest")};
+        throw HashError{_("Unable to finalize the digest")};
     }
     destroyContext(mdctx);
 
@@ -138,7 +138,7 @@ void Key448::password(const SecureArray& password) {
                  _("Effective key length of %d does not match expected key "
                    "length %d"),
                  _key.size(), KEY_LENGTH);
-        throw CipherError{tmp};
+        throw HashError{tmp};
     }
 
     SecureArray keyHash{hash(_key, EVP_md5())};

@@ -6,12 +6,14 @@
 
 #include <cstring>
 
+#include "consts.h"
 #include "key256.hh"
 
 constexpr std::uint8_t expected_key[] = {
-    0x77, 0xd4, 0x48, 0x04, 0x61, 0xc0, 0x9c, 0x54, 0x33, 0xe1, 0x64,
-    0x4a, 0x50, 0x31, 0x15, 0xb7, 0x1f, 0xc1, 0x9d, 0xfe, 0x93, 0xe8,
-    0x1a, 0xdb, 0x45, 0x18, 0x24, 0xcf, 0x03, 0xa8, 0xdb, 0x21};
+    0x85, 0x9c, 0xb0, 0x9e, 0xa2, 0x17, 0xb7, 0xb6, 0x6b, 0xd6, 0x2f,
+    0x08, 0xa1, 0xcd, 0x44, 0xcb, 0xb6, 0x8a, 0xdd, 0x4a, 0x55, 0x17,
+    0x1e, 0xbb, 0xa6, 0xe1, 0xe9, 0xbe, 0x06, 0x9a, 0x46, 0xab,
+};
 
 constexpr char password[] = "JustATestPasswordForKeepingSecret";
 auto passwordLength =
@@ -20,6 +22,7 @@ auto passwordLength =
 class Key256Test : public CppUnit::TestFixture {
    private:
     yapet::SecureArray passwordArray{0};
+    yapet::MetaData parameters;
 
    public:
     static CppUnit::TestSuite *suite() {
@@ -33,10 +36,23 @@ class Key256Test : public CppUnit::TestFixture {
         return suiteOfTests;
     }
 
-    void setUp() { passwordArray = yapet::toSecureArray(password); }
+    void setUp() {
+        passwordArray = yapet::toSecureArray(password);
+        yapet::MetaData p;
+        p.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, 262144);
+        p.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, 16);
+        p.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, 5);
+        p.setValue(YAPET::Consts::ARGON2_SALT1_KEY, 0x61626364);
+        p.setValue(YAPET::Consts::ARGON2_SALT2_KEY, 0x65666768);
+        p.setValue(YAPET::Consts::ARGON2_SALT3_KEY, 0x696a6b6c);
+        p.setValue(YAPET::Consts::ARGON2_SALT4_KEY, 0x6d6e6f70);
+
+        parameters = p;
+    }
 
     void testKey() {
         yapet::Key256 key{};
+        key.keyingParameters(parameters);
         key.password(passwordArray);
 
         for (int i = 0; i < key.keySize(); i++) {
@@ -46,6 +62,7 @@ class Key256Test : public CppUnit::TestFixture {
 
     void testIV() {
         yapet::Key256 key{};
+        key.keyingParameters(parameters);
         key.password(passwordArray);
 
         CPPUNIT_ASSERT(key.ivecSize() == 0);

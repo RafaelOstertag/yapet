@@ -11,6 +11,12 @@ class CipherError : public YAPETBaseError {
     CipherError(const char* msg) noexcept : YAPETBaseError{msg} {}
 };
 
+class HashError : public YAPETBaseError {
+   public:
+    HashError() noexcept : YAPETBaseError{_("Hash error")} {}
+    HashError(const char* msg) noexcept : YAPETBaseError{msg} {}
+};
+
 /**
  * @brief Indicates an error while encrypting/decrypting.
  *

@@ -13,11 +13,12 @@ AM_CPPFLAGS = -I$(yapet_src_libdir)/pwgen \
     -I$(yapet_src_libdir)/interfaces \
     -I$(top_srcdir) \
     $(OPENSSL_INCLUDES) \
+    $(ARGON2_CFLAGS) \
     -DLOCALEDIR=\"$(localedir)\"
 LDADD = $(yapet_libs_builddir)/file/libyapet-file.la \
     $(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
     $(yapet_libs_builddir)/utils/libyapet-utils.la
-AM_LDFLAGS = $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
+AM_LDFLAGS = $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS) $(ARGON2_LIBS)
 
 if DISABLE_DEBUG
 AM_CPPFLAGS += -DNDEBUG

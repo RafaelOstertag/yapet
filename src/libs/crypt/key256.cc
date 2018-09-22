@@ -1,6 +1,4 @@
-// $Id$
-//
-// Copyright (C) 2018  Rafael Ostertag
+// Copyright (C) 2018 Rafael Ostertag
 //
 // This file is part of YAPET.
 //
@@ -32,72 +30,70 @@
 #include "config.h"
 #endif
 
+#include <argon2.h>
 #include <cstdio>
 #include <cstring>
+#include <typeinfo>
 
 #include "consts.h"
 #include "cryptoerror.hh"
 #include "intl.h"
 #include "key256.hh"
+#include "ods.hh"
 
 using namespace yapet;
 
 namespace {
 /**
- * The max length of the blowfish key in bytes (448 bits)
+ * The max length of key in bytes (256 bits)
  */
-constexpr auto KEY_LENGTH = 32;
+constexpr auto KEY_LENGTH{32};
 
-inline EVP_MD_CTX* createContext() {
-#ifdef HAVE_EVP_MD_CTX_CREATE
-    return EVP_MD_CTX_create();
-#elif HAVE_EVP_MD_CTX_NEW
-    return EVP_MD_CTX_new();
-#else
-#error "Neither EVP_MD_CTX_create() nor EVP_MD_CTX_new() available"
-#endif
+// in bytes
+constexpr auto SALT_NIBBLE_SIZE{sizeof(int)};
+constexpr auto NUMBER_OF_SALT_NIBBLES{4};
+// In bytes
+constexpr auto SALT_LENGTH = SALT_NIBBLE_SIZE * NUMBER_OF_SALT_NIBBLES;
+
+union architecture_agnostic_salt_type {
+    int nibbles[NUMBER_OF_SALT_NIBBLES];
+    uint8_t bytes[SALT_LENGTH];
+};
+
+inline void composeSaltFromIntegers(const int* nibbles, uint8_t* saltBuffer) {
+    architecture_agnostic_salt_type archAgnosticSalt;
+    for (int i = 0; i < NUMBER_OF_SALT_NIBBLES; i++) {
+        archAgnosticSalt.nibbles[i] = toODS(nibbles[i]);
+    }
+
+    std::memcpy(saltBuffer, archAgnosticSalt.bytes, SALT_LENGTH);
 }
 
-inline void destroyContext(EVP_MD_CTX* context) {
-#ifdef HAVE_EVP_MD_CTX_DESTROY
-    EVP_MD_CTX_destroy(context);
-#elif HAVE_EVP_MD_CTX_FREE
-    EVP_MD_CTX_free(context);
-#else
-#error "Neither EVP_MD_CTX_destroy() nor EVP_MD_CTX_free() available"
-#endif
-}
+inline SecureArray hash(const SecureArray& password,
+                        const MetaData& parameters) {
+    int timeCost = parameters.getValue(YAPET::Consts::ARGON2_TIME_COST_KEY);
+    int memoryCost = parameters.getValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY);
+    int parallelism =
+        parameters.getValue(YAPET::Consts::ARGON2_PARALLELISM_KEY);
 
-inline SecureArray hash(const SecureArray& text, const EVP_MD* md) {
-    if (md == 0) throw CipherError{_("Empty EVP_MD structure")};
+    int saltNibbles[NUMBER_OF_SALT_NIBBLES];
+    saltNibbles[0] = parameters.getValue(YAPET::Consts::ARGON2_SALT1_KEY);
+    saltNibbles[1] = parameters.getValue(YAPET::Consts::ARGON2_SALT2_KEY);
+    saltNibbles[2] = parameters.getValue(YAPET::Consts::ARGON2_SALT3_KEY);
+    saltNibbles[3] = parameters.getValue(YAPET::Consts::ARGON2_SALT4_KEY);
 
-    EVP_MD_CTX* mdctx = createContext();
-    if (mdctx == nullptr) {
-        throw CipherError{_("Error initializing MD context")};
+    uint8_t saltBuffer[SALT_LENGTH];
+    composeSaltFromIntegers(saltNibbles, saltBuffer);
+
+    SecureArray hash{KEY_LENGTH};
+
+    int status = argon2i_hash_raw(timeCost, memoryCost, parallelism, *password,
+                                  password.size(), saltBuffer, SALT_LENGTH,
+                                  *hash, hash.size());
+
+    if (status != ARGON2_OK) {
+        throw HashError(_("Error hashing password using Argon2"));
     }
-
-    int retval = EVP_DigestInit_ex(mdctx, md, 0);
-    if (retval == 0) {
-        destroyContext(mdctx);
-        throw CipherError{_("Unable to initialize the digest")};
-    }
-
-    retval = EVP_DigestUpdate(mdctx, *text, text.size());
-    if (retval == 0) {
-        destroyContext(mdctx);
-        throw CipherError{_("Unable to update the digest")};
-    }
-
-    SecureArray::size_type hashSize = EVP_MD_size(md);
-    SecureArray hash{hashSize};
-
-    retval = EVP_DigestFinal(mdctx, *hash, nullptr);
-    if (retval == 0) {
-        destroyContext(mdctx);
-        throw CipherError{_("Unable to finalize the digest")};
-    }
-    destroyContext(mdctx);
-
     return hash;
 }
 }  // namespace
@@ -121,7 +117,7 @@ void Key256::password(const SecureArray& password) {
     SecureArray passwordWithoutZeroTerminator{password.size() - 1};
     passwordWithoutZeroTerminator << password;
 
-    _key = hash(passwordWithoutZeroTerminator, EVP_sha256());
+    _key = hash(passwordWithoutZeroTerminator, _keyingParameters);
 
     if (_key.size() != KEY_LENGTH) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
@@ -130,7 +126,7 @@ void Key256::password(const SecureArray& password) {
             _("Effective key length of %d does not match expected key "
               "length %d"),
             _key.size(), KEY_LENGTH);
-        throw CipherError{msg};
+        throw HashError{msg};
     }
 }
 

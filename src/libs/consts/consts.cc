@@ -22,5 +22,12 @@
 
 using namespace YAPET;
 
-const std::string Consts::DEFAULT_FILE_SUFFIX(".pet");
-const std::string Consts::DEFAULT_RC_FILENAME(".yapet");
+const std::string Consts::ARGON2_TIME_COST_KEY{"A2_TC"};
+const std::string Consts::ARGON2_MEMORY_COST_KEY{"A2_MC"};
+const std::string Consts::ARGON2_PARALLELISM_KEY{"A2_PA"};
+const std::string Consts::ARGON2_SALT1_KEY{"A2_S1"};
+const std::string Consts::ARGON2_SALT2_KEY{"A2_S2"};
+const std::string Consts::ARGON2_SALT3_KEY{"A2_S3"};
+const std::string Consts::ARGON2_SALT4_KEY{"A2_S4"};
+const std::string Consts::DEFAULT_FILE_SUFFIX{".pet"};
+const std::string Consts::DEFAULT_RC_FILENAME{".yapet"};

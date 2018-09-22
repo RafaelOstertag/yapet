@@ -32,6 +32,7 @@ checktestpwrecord_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
 	$(yapet_libs)/utils/libyapet-utils.la \
 	$(yapet_libs)/passwordrecord/libyapet-passwordrecord.la \
 	$(yapet_libs)/metadata/libyapet-metadata.la \
+	$(yapet_libs)/consts/libyapet-consts.la \
 	$(LIBINTL)
 
 checkmasterpwchange_SOURCES = checkmasterpwchange.cc
@@ -52,6 +53,7 @@ checkmasterpwchange_LDADD = $(yapet_libs)/crypt/libyapet-crypt.la \
 	$(yapet_libs)/utils/libyapet-utils.la \
 	$(yapet_libs)/passwordrecord/libyapet-passwordrecord.la \
 	$(yapet_libs)/metadata/libyapet-metadata.la \
+	$(yapet_libs)/consts/libyapet-consts.la \
 	$(LIBINTL)
 
 

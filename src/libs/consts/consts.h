@@ -36,6 +36,13 @@
 namespace YAPET {
 class Consts {
    public:
+    static const std::string ARGON2_TIME_COST_KEY;
+    static const std::string ARGON2_MEMORY_COST_KEY;
+    static const std::string ARGON2_PARALLELISM_KEY;
+    static const std::string ARGON2_SALT1_KEY;
+    static const std::string ARGON2_SALT2_KEY;
+    static const std::string ARGON2_SALT3_KEY;
+    static const std::string ARGON2_SALT4_KEY;
     //! Holds the default suffix for yapet files
     static const std::string DEFAULT_FILE_SUFFIX;
     //! The default file name of the config file
