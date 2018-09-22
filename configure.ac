@@ -93,6 +93,7 @@ AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18.1])
 
 PKG_CHECK_MODULES([CPPUNIT], [cppunit])
+PKG_CHECK_MODULES([ARGON2], [libargon2])
 
 # Some conditionals for the makefileS
 AM_CONDITIONAL([USE_NLS], [test x$USE_NLS = xyes])
