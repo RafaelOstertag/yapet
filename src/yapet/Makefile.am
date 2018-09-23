@@ -38,7 +38,7 @@ LDADD = $(yapet_build_libsdir)/ui/libyapet-ui.la				\
 	$(yapet_build_libsdir)/passwordrecord/libyapet-passwordrecord.la	\
 	$(top_builddir)/libyacurs/src/libyacurs.la
 
-AM_LDFLAGS = $(LIBINTL)
+AM_LDFLAGS = $(LIBINTL) $(ARGON2_LIBS)
 
 bin_PROGRAMS = yapet
 
