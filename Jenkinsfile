@@ -212,7 +212,7 @@ pipeline {
                         stage("(NB) Configure") {
                             steps {
                                 dir("obj") {
-                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib'"
+                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
                                 }
                             }
                         }
