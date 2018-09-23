@@ -23,9 +23,6 @@
 #ifndef _GLOBALS_H
 #define _GLOBALS_H 1
 
-// Crypt
-#include <file.h>
-
 #include "cfg.h"
 #include "yacurs.h"
 

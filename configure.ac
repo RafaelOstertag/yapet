@@ -113,6 +113,7 @@ AC_CONFIG_FILES([
 	src/libs/crypt/Makefile
 	src/libs/exceptions/Makefile
 	src/libs/file/Makefile
+	src/libs/globals/Makefile
 	src/libs/glue/Makefile
 	src/libs/interfaces/Makefile
 	src/libs/Makefile

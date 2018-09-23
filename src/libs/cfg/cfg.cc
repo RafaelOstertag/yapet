@@ -205,73 +205,84 @@ void CfgValRNG::set_str(const std::string& s) {
 }
 
 void Config::setup_map() {
-    __options.clear();
+    _options.clear();
 
-    __options["load"] = &petfile;
-    __options["locktimeout"] = &timeout;
-    __options["checkfsecurity"] = &filesecurity;
-    __options["allowlockquit"] = &allow_lock_quit;
-    __options["pwinputtimeout"] = &pw_input_timeout;
-    __options["pwgen_rng"] = &pwgen_rng;
-    __options["pwgen_pwlen"] = &pwgenpwlen;
-    __options["pwgen_letters"] = &pwgen_letters;
-    __options["pwgen_digits"] = &pwgen_digits;
-    __options["pwgen_punct"] = &pwgen_punct;
-    __options["pwgen_special"] = &pwgen_special;
-    __options["pwgen_other"] = &pwgen_other;
-    __options["colors"] = &colors;
+    _options["load"] = &petfile;
+    _options["locktimeout"] = &timeout;
+    _options["checkfsecurity"] = &filesecurity;
+    _options["allowlockquit"] = &allow_lock_quit;
+    _options["pwinputtimeout"] = &pw_input_timeout;
+    _options["pwgen_rng"] = &pwgen_rng;
+    _options["pwgen_pwlen"] = &pwgenpwlen;
+    _options["pwgen_letters"] = &pwgen_letters;
+    _options["pwgen_digits"] = &pwgen_digits;
+    _options["pwgen_punct"] = &pwgen_punct;
+    _options["pwgen_special"] = &pwgen_special;
+    _options["pwgen_other"] = &pwgen_other;
+    _options["argon2_memory"] = &argon2_memory;
+    _options["argon2_parallelism"] = &argon2_parallelism;
+    _options["argon2_iterations"] = &argon2_iterations;
+    _options["colors"] = &colors;
     // ignorerc can't be set in the configuration file
 }
 
 Config::Config()
-    : petfile(std::string()),
-      timeout(Consts::DEFAULT_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT,
-              Consts::MIN_LOCK_TIMEOUT),
-      filesecurity(Consts::DEFAULT_FILE_SECURITY),
-      pwgenpwlen(Consts::DEFAULT_PASSWORD_LENGTH,
+    : _options{},
+      petfile{std::string{}},
+      timeout{Consts::DEFAULT_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT,
+              Consts::MIN_LOCK_TIMEOUT},
+      filesecurity{Consts::DEFAULT_FILE_SECURITY},
+      pwgenpwlen{Consts::DEFAULT_PASSWORD_LENGTH,
                  Consts::DEFAULT_PASSWORD_LENGTH, Consts::MIN_PASSWORD_LENGTH,
-                 Consts::MAX_PASSWORD_LENGTH),
-      pwgen_rng(Consts::DEFAULT_PWGEN_RNG),
-      pwgen_letters(PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS)),
-      pwgen_digits(PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS)),
-      pwgen_punct(PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS)),
-      pwgen_special(PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS)),
-      pwgen_other(PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS)),
-      allow_lock_quit(Consts::DEFAULT_ALLOW_LOCK_QUIT),
-      pw_input_timeout(Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT,
-                       Consts::MIN_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT),
-      ignorerc(false),
-      colors() {
+                 Consts::MAX_PASSWORD_LENGTH},
+      pwgen_rng{Consts::DEFAULT_PWGEN_RNG},
+      pwgen_letters{PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_digits{PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_punct{PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_special{PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_other{PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS)},
+      allow_lock_quit{Consts::DEFAULT_ALLOW_LOCK_QUIT},
+      pw_input_timeout{Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT,
+                       Consts::MIN_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT},
+      argon2_memory{Consts::DEFAULT_ARGON2_MEMORY,
+                    Consts::DEFAULT_ARGON2_MEMORY, Consts::MIN_ARGON2_MEMORY},
+      argon2_parallelism{Consts::DEFAULT_ARGON2_PARALLELISM,
+                         Consts::DEFAULT_ARGON2_PARALLELISM,
+                         Consts::MIN_ARGON2_PARALLELISM},
+      argon2_iterations{Consts::DEFAULT_ARGON2_TIME_COST,
+                        Consts::DEFAULT_ARGON2_TIME_COST,
+                        Consts::MIN_ARGON2_TIME_COSTS},
+      ignorerc{false},
+      colors{} {
     setup_map();
 }
 
 Config::Config(const Config& c)
-    : petfile(c.petfile),
-      timeout(c.timeout),
-      filesecurity(c.filesecurity),
-      pwgenpwlen(c.pwgenpwlen),
-      pwgen_rng(c.pwgen_rng),
-      pwgen_letters(c.pwgen_letters),
-      pwgen_digits(c.pwgen_digits),
-      pwgen_punct(c.pwgen_punct),
-      pwgen_special(c.pwgen_special),
-      pwgen_other(c.pwgen_other),
-      allow_lock_quit(c.allow_lock_quit),
-      pw_input_timeout(c.pw_input_timeout),
-      ignorerc(c.ignorerc),
-      colors(c.colors) {
+    : _options{},
+      petfile{c.petfile},
+      timeout{c.timeout},
+      filesecurity{c.filesecurity},
+      pwgenpwlen{c.pwgenpwlen},
+      pwgen_rng{c.pwgen_rng},
+      pwgen_letters{c.pwgen_letters},
+      pwgen_digits{c.pwgen_digits},
+      pwgen_punct{c.pwgen_punct},
+      pwgen_special{c.pwgen_special},
+      pwgen_other{c.pwgen_other},
+      allow_lock_quit{c.allow_lock_quit},
+      pw_input_timeout{c.pw_input_timeout},
+      argon2_memory{c.argon2_memory},
+      argon2_parallelism{c.argon2_parallelism},
+      argon2_iterations{c.argon2_iterations},
+      ignorerc{c.ignorerc},
+      colors{c.colors} {
     setup_map();
 }
 
 Config::~Config() {}
 
-const Config& Config::operator=(const Config& c) {
+Config& Config::operator=(const Config& c) {
     if (&c == this) return *this;
-
-    //
-    // We don't need to (re)setup the map, because the pointers in the
-    // map did not change!
-    //
 
     petfile = c.petfile;
     timeout = c.timeout;
@@ -285,8 +296,13 @@ const Config& Config::operator=(const Config& c) {
     pwgen_other = c.pwgen_other;
     allow_lock_quit = c.allow_lock_quit;
     pw_input_timeout = c.pw_input_timeout;
+    argon2_memory = c.argon2_memory;
+    argon2_parallelism = c.argon2_parallelism;
+    argon2_iterations = c.argon2_iterations;
     ignorerc = c.ignorerc;
     colors = c.colors;
+
+    setup_map();
 
     return *this;
 }
@@ -320,6 +336,9 @@ void Config::lock() {
     pwgen_other.lock();
     allow_lock_quit.lock();
     pw_input_timeout.lock();
+    argon2_iterations.lock();
+    argon2_memory.lock();
+    argon2_parallelism.lock();
     ignorerc.lock();
     colors.lock();
 }
@@ -337,6 +356,9 @@ void Config::unlock() {
     pwgen_other.unlock();
     allow_lock_quit.unlock();
     pw_input_timeout.unlock();
+    argon2_iterations.unlock();
+    argon2_memory.unlock();
+    argon2_parallelism.unlock();
     ignorerc.unlock();
     colors.unlock();
 }
@@ -345,9 +367,9 @@ CfgValBase& Config::operator[](const std::string& key) {
     if (key.empty())
         throw std::invalid_argument(_("Configuration key must not be empty"));
 
-    std::map<std::string, CfgValBase*>::iterator it = __options.find(key);
+    std::map<std::string, CfgValBase*>::iterator it = _options.find(key);
 
-    if (it == __options.end()) {
+    if (it == _options.end()) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
                       _("Configuration key '%s' not found"), key.c_str());

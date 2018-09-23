@@ -92,6 +92,21 @@ int main(int, char**) {
             abort();
         }
 
+        if (cfg.argon2_iterations != 84) {
+            std::cerr << "argon2_iterations does not match (#1)" << std::endl;
+            abort();
+        }
+
+        if (cfg.argon2_memory != 84000) {
+            std::cerr << "argon2_memory does not match (#1)" << std::endl;
+            abort();
+        }
+
+        if (cfg.argon2_parallelism != 42) {
+            std::cerr << "argon2_parallelism does not match (#1)" << std::endl;
+            abort();
+        }
+
         //
         // test 2
         //

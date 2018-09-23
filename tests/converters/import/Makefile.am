@@ -36,7 +36,10 @@ LDADD = $(yapet_libs_builddir)/crypt/libyapet-crypt.la \
     $(yapet_builddir)/converters/csv2yapet/libyapet-import.la \
 	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
 	$(yapet_libs_builddir)/metadata/libyapet-metadata.la \
-	$(yapet_converters_builddir)/csv/libyapet-csv.la
+	$(yapet_converters_builddir)/csv/libyapet-csv.la \
+	$(yapet_libs_builddir)/globals/libyapet-globals.la \
+	$(yapet_libs_builddir)/cfg/libyapet-cfg.la \
+	$(top_builddir)/libyacurs/src/libyacurs.la
 
 AM_LDFLAGS = $(LIBINTL) $(CPPUNIT_LIBS)
 

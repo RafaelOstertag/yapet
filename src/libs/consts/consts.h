@@ -69,6 +69,18 @@ class Consts {
         YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS | YAPET::PWGEN::PUNCT |
         YAPET::PWGEN::SPECIAL};
 
+    // Argon2 options
+
+    // in kibi
+    static constexpr int DEFAULT_ARGON2_MEMORY{262144};
+    static constexpr int MIN_ARGON2_MEMORY{65536};
+    // threads
+    static constexpr int DEFAULT_ARGON2_PARALLELISM{16};
+    static constexpr int MIN_ARGON2_PARALLELISM{1};
+    // iterations
+    static constexpr int DEFAULT_ARGON2_TIME_COST{5};
+    static constexpr int MIN_ARGON2_TIME_COSTS{2};
+
     static constexpr auto EXCEPTION_MESSAGE_BUFFER_SIZE{512};
 };
 }  // namespace YAPET

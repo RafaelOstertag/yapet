@@ -6,6 +6,7 @@ yapet_build_convertersdir = $(top_builddir)/src/converters
 yapet_build_libdir = $(top_builddir)/src/libs
 
 AM_CPPFLAGS = -I$(yapet_src_convertersdir)/csv \
+	-I$(yapet_src_libdir)/globals \
 	-I$(yapet_src_libdir)/exceptions \
 	-I$(yapet_src_libdir)/metadata \
 	-I$(yapet_src_libdir)/crypt	\
@@ -15,6 +16,8 @@ AM_CPPFLAGS = -I$(yapet_src_convertersdir)/csv \
 	-I$(yapet_src_libdir)/file \
 	-I$(yapet_src_libdir)/interfaces \
 	-I$(yapet_src_libdir)/passwordrecord \
+	-I$(top_srcdir)/libyacurs/include \
+	-I$(top_builddir)/libyacurs/include \
 	-I$(top_srcdir) \
 	$(OPENSSL_INCLUDES) \
 	-DLOCALEDIR=\"$(localedir)\"
@@ -38,4 +41,7 @@ libyapet_import_la_LIBADD =	$(yapet_build_libdir)/crypt/libyapet-crypt.la	\
 bin_PROGRAMS = csv2yapet
 csv2yapet_SOURCES = main.cc
 csv2yapet_LDADD = $(builddir)/libyapet-import.la \
-	$(yapet_build_libdir)/passwordrecord/libyapet-passwordrecord.la
+	$(yapet_build_libdir)/passwordrecord/libyapet-passwordrecord.la \
+	$(yapet_build_libdir)/globals/libyapet-globals.la \
+	$(yapet_build_libdir)/cfg/libyapet-cfg.la \
+	$(top_builddir)/libyacurs/src/libyacurs.la

@@ -71,6 +71,9 @@ AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/passwordrecord/libyapet-passwordrecord.la \
 	$(yapet_libs_builddir)/metadata/libyapet-metadata.la \
 	$(yapet_libs_builddir)/consts/libyapet-consts.la \
+	$(yapet_libs_builddir)/globals/libyapet-globals.la \
+	$(yapet_libs_builddir)/cfg/libyapet-cfg.la \
+	$(top_builddir)/libyacurs/src/libyacurs.la \
 	$(CPPUNIT_LIBS)
 
 foreign_SOURCES = foreign.cc

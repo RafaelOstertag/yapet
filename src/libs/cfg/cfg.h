@@ -261,7 +261,7 @@ class CfgValColor : public CfgValStr {
 class Config {
    private:
     // mainly used by ConfigFile;
-    std::map<std::string, CfgValBase*> __options;
+    std::map<std::string, CfgValBase*> _options;
     //! Removes two or more consecutive slashes from the path
     std::string cleanupPath(const std::string& s) const;
 
@@ -281,14 +281,20 @@ class Config {
     CfgValBool pwgen_other;
     CfgValBool allow_lock_quit;
     CfgValInt pw_input_timeout;
+    // in kibi
+    CfgValInt argon2_memory;
+    CfgValInt argon2_parallelism;
+    CfgValInt argon2_iterations;
     CfgValBool ignorerc;
     CfgValColor colors;
 
     Config();
     Config(const Config& c);
+    Config(Config&& c) = delete;
     ~Config();
 
-    const Config& operator=(const Config& c);
+    Config& operator=(Config&& c) = delete;
+    Config& operator=(const Config& c);
 
     /**
      * Convenience method.

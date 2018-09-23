@@ -2,9 +2,11 @@ yapet_srcdir = $(top_srcdir)/src
 yapet_src_libsdir = $(yapet_srcdir)/libs
 yapet_build_libsdir = $(top_builddir)/src/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libsdir)/exceptions \
+AM_CPPFLAGS = -I$(yapet_src_libdir)/globals	\
+	-I$(yapet_src_libsdir)/exceptions \
 	-I$(yapet_src_libsdir)/crypt \
 	-I$(yapet_src_libsdir)/metadata \
+	-I$(yapet_src_libsdir)/globals \
 	-I$(yapet_src_libsdir)/glue	\
 	-I$(yapet_src_libsdir)/ui \
 	-I$(yapet_src_libsdir)/pwgen \
@@ -36,10 +38,11 @@ LDADD = $(yapet_build_libsdir)/ui/libyapet-ui.la				\
 	$(yapet_build_libsdir)/cfg/libyapet-cfg.la				\
 	$(yapet_build_libsdir)/metadata/libyapet-metadata.la				\
 	$(yapet_build_libsdir)/passwordrecord/libyapet-passwordrecord.la	\
+	$(yapet_build_libsdir)/globals/libyapet-globals.la \
 	$(top_builddir)/libyacurs/src/libyacurs.la
 
 AM_LDFLAGS = $(LIBINTL)
 
 bin_PROGRAMS = yapet
 
-yapet_SOURCES = main.cc globals.cc globals.h
+yapet_SOURCES = main.cc

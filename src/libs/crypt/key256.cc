@@ -41,6 +41,7 @@
 #include "intl.h"
 #include "key256.hh"
 #include "ods.hh"
+#include "globals.h"
 
 using namespace yapet;
 
@@ -112,9 +113,9 @@ int randomInt() {
 
 MetaData Key256::newDefaultKeyingParameters() {
     MetaData metaData{};
-    metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, 262144);
-    metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, 16);
-    metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, 5);
+    metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, YAPET::Globals::config.argon2_memory.get());
+    metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, YAPET::Globals::config.argon2_parallelism.get());
+    metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, YAPET::Globals::config.argon2_iterations.get());
     metaData.setValue(YAPET::Consts::ARGON2_SALT1_KEY, randomInt());
     metaData.setValue(YAPET::Consts::ARGON2_SALT2_KEY, randomInt());
     metaData.setValue(YAPET::Consts::ARGON2_SALT3_KEY, randomInt());

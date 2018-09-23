@@ -1,1 +1,1 @@
-SUBDIRS = interfaces exceptions consts utils metadata passwordrecord file crypt glue pwgen cfg ui
+SUBDIRS = interfaces exceptions consts cfg globals utils metadata passwordrecord file crypt glue pwgen ui

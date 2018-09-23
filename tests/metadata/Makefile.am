@@ -7,11 +7,11 @@ check_PROGRAMS = metadata
 
 TESTS = $(check_PROGRAMS)
 
-AM_CPPFLAGS = -I$(yapet_libs_srcdir)/metadata \ 
+AM_CPPFLAGS = -I$(yapet_libs_srcdir)/metadata \
     -I$(yapet_libs_srcdir)/utils \
     -I$(yapet_libs_srcdir)/interfaces \
     -I$(top_srcdir)
-LDADD = $(yapet_libs_builddir)/metadata/libyapet-metadata.la\
+LDADD = $(yapet_libs_builddir)/metadata/libyapet-metadata.la \
     $(yapet_libs_builddir)/utils/libyapet-utils.la
     
 AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)
