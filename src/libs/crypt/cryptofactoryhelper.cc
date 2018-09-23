@@ -2,40 +2,24 @@
 #include "aes256factory.hh"
 #include "blowfishfactory.hh"
 #include "fileerror.hh"
+#include "filehelper.hh"
 #include "intl.h"
-#include "rawfile.hh"
 
 using namespace yapet;
 
 namespace {
 bool isYapet10File(const std::string& filename) {
-    RawFile file{filename};
-    file.openExisting();
-
-    auto actualIdentifierPair{file.read(Yapet10File::RECOGNITION_STRING_SIZE)};
-    if (actualIdentifierPair.second == false) {
-        throw FileFormatError{_("Cannot read file identifier from file")};
-    }
-
     SecureArray expectedIdentifier{toSecureArray(
         Yapet10File::RECOGNITION_STRING, Yapet10File::RECOGNITION_STRING_SIZE)};
 
-    return actualIdentifierPair.first == expectedIdentifier;
+    return isFileType(expectedIdentifier, filename);
 }
 
 bool isYapet20File(const std::string& filename) {
-    RawFile file{filename};
-    file.openExisting();
-
-    auto actualIdentifierPair{file.read(Yapet20File::RECOGNITION_STRING_SIZE)};
-    if (actualIdentifierPair.second == false) {
-        throw FileFormatError{_("Cannot read file identifier from file")};
-    }
-
     SecureArray expectedIdentifier{toSecureArray(
         Yapet20File::RECOGNITION_STRING, Yapet20File::RECOGNITION_STRING_SIZE)};
 
-    return actualIdentifierPair.first == expectedIdentifier;
+    return isFileType(expectedIdentifier, filename);
 }
 }  // namespace
 
