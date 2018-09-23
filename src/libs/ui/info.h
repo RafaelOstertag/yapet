@@ -71,6 +71,15 @@ class InfoDialog : public YACURS::Dialog {
     YACURS::Label cfs;
     YACURS::Label cfs_status;
 
+    YACURS::Label argon2Memory;
+    YACURS::Label argon2MemoryStatus;
+
+    YACURS::Label argon2Paralleism;
+    YACURS::Label argon2ParalleismStatus;
+
+    YACURS::Label argon2Iterations;
+    YACURS::Label argon2IterationsStatus;
+
    public:
     InfoDialog(const MainWindow& mainWindow, YACURS::ListBox<>::lsz_t entries);
     virtual ~InfoDialog();

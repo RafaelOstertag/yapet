@@ -30,6 +30,7 @@
 
 #include <sstream>
 
+#include "filehelper.hh"
 #include "globals.h"
 #include "info.h"
 #include "intl.h"
@@ -79,15 +80,16 @@ InfoDialog::InfoDialog(const MainWindow& mainWindow,
 
       cfs{_("Core File:")},
 #if defined(RLIMIT_CORE) && !defined(DEBUG)
-      cfs_status {
-    _("suppressed")
-}
+      cfs_status{_("suppressed")},
 #else
-      cfs_status {
-    _("not suppressed")
-}
+      cfs_status{_("not suppressed")},
 #endif
-{
+      argon2Memory{_("Argon2 Memory")},
+      argon2MemoryStatus{_("n/a")},
+      argon2Paralleism{_("Argon2 Parallelism")},
+      argon2ParalleismStatus{_("n/a")},
+      argon2Iterations{_("Argon2 Iterations")},
+      argon2IterationsStatus{_("n/a")} {
     // used to make the file name label get the entire space available
     // to the pack.
     rightpack.always_dynamic(true);
@@ -182,6 +184,31 @@ InfoDialog::InfoDialog(const MainWindow& mainWindow,
     leftpack.add_back(&cfs);
     rightpack.add_back(&cfs_status);
 
+    if (!mainWindow.currentFilename().empty()) {
+        try {
+            auto metaData{
+                yapet::readMetaData(mainWindow.currentFilename(), false)};
+
+            argon2IterationsStatus.label(std::to_string(
+                metaData.getValue(YAPET::Consts::ARGON2_TIME_COST_KEY)));
+            argon2MemoryStatus.label(std::to_string(
+                metaData.getValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY)));
+            argon2ParalleismStatus.label(std::to_string(
+                metaData.getValue(YAPET::Consts::ARGON2_PARALLELISM_KEY)));
+        } catch (...) {
+            // ok, maybe not a YAPET 2.0 file
+        }
+    }
+
+    leftpack.add_back(&argon2Iterations);
+    rightpack.add_back(&argon2IterationsStatus);
+
+    leftpack.add_back(&argon2Memory);
+    rightpack.add_back(&argon2MemoryStatus);
+
+    leftpack.add_back(&argon2Paralleism);
+    rightpack.add_back(&argon2ParalleismStatus);
+
     // colors
     fn.color(YACURS::DIALOG);
     fn_status.color(YACURS::DIALOG);
@@ -215,6 +242,15 @@ InfoDialog::InfoDialog(const MainWindow& mainWindow,
 
     cfs.color(YACURS::DIALOG);
     cfs_status.color(YACURS::DIALOG);
+
+    argon2Iterations.color(YACURS::DIALOG);
+    argon2IterationsStatus.color(YACURS::DIALOG);
+
+    argon2Memory.color(YACURS::DIALOG);
+    argon2MemoryStatus.color(YACURS::DIALOG);
+
+    argon2Paralleism.color(YACURS::DIALOG);
+    argon2ParalleismStatus.color(YACURS::DIALOG);
 }
 
 InfoDialog::~InfoDialog() {}
