@@ -129,13 +129,18 @@ SecureArray Yapet10File::readIdentifier() {
     return result.first;
 }
 
-SecureArray Yapet10File::readUnencryptedMetaData() { return SecureArray{}; }
+SecureArray Yapet10File::readUnencryptedMetaData() {
+    RawFile& rawFile{getRawFile()};
+    // Skip the recognition string.
+    rawFile.seekAbsolute(recognitionStringSize());
+    return SecureArray{};
+}
 
 SecureArray Yapet10File::readHeader() {
     RawFile& rawFile{getRawFile()};
 
-    // Skip the recognition string.
-    rawFile.seekAbsolute(recognitionStringSize());
+    readUnencryptedMetaData();
+
     auto resultPair{rawFile.read()};
     if (resultPair.second == false) {
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
@@ -170,13 +175,15 @@ void Yapet10File::writeIdentifier() {
 }
 
 void Yapet10File::writeUnencryptedMetaData(const SecureArray&) {
-    // Intentionally empty
+    RawFile& rawFile{getRawFile()};
+
+    rawFile.seekAbsolute(recognitionStringSize());
 }
 
 void Yapet10File::writeHeader(const SecureArray& header) {
     RawFile& rawFile{getRawFile()};
 
-    rawFile.seekAbsolute(recognitionStringSize());
+    readUnencryptedMetaData();
 
     rawFile.write(header);
     rawFile.flush();

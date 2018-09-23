@@ -158,6 +158,9 @@ class Yapet20File : public Yapet10File {
 
     virtual ~Yapet20File();
 
+    virtual SecureArray readUnencryptedMetaData();
+    virtual void writeUnencryptedMetaData(const SecureArray& metaData);
+
     virtual int recognitionStringSize() const;
     virtual const uint8_t* recognitionString() const;
 };

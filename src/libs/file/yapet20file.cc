@@ -30,6 +30,8 @@
 #include <unistd.h>
 #include <exception>
 
+#include "consts.h"
+#include "fileerror.hh"
 #include "yapet20file.hh"
 
 using namespace yapet;
@@ -52,6 +54,32 @@ Yapet20File& Yapet20File::operator=(Yapet20File&& other) {
 }
 
 Yapet20File::~Yapet20File() {}
+
+SecureArray Yapet20File::readUnencryptedMetaData() {
+    RawFile& rawFile{getRawFile()};
+    // Skip the recognition string.
+    rawFile.seekAbsolute(recognitionStringSize());
+
+    auto resultPair{rawFile.read()};
+    if (resultPair.second == false) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot read unencrypted meta data from file '%s'"),
+                      rawFile.filename().c_str());
+        throw FileFormatError{msg};
+    }
+
+    return resultPair.first;
+}
+
+void Yapet20File::writeUnencryptedMetaData(const SecureArray& metaData) {
+    RawFile& rawFile{getRawFile()};
+
+    rawFile.seekAbsolute(recognitionStringSize());
+
+    rawFile.write(metaData);
+    rawFile.flush();
+}
 
 const std::uint8_t* Yapet20File::recognitionString() const {
     return Yapet20File::RECOGNITION_STRING;

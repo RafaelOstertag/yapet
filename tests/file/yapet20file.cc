@@ -35,11 +35,19 @@ class Yapet20FileTest : public CppUnit::TestFixture {
             &Yapet20FileTest::failOpeningFileWithWrongIdentifier});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
             "should read identifier", &Yapet20FileTest::readIdentifier});
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
+            "should fail reading empty meta data",
+            &Yapet20FileTest::failReadingEmptyMetaData});
+        suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
+            "should read meta data", &Yapet20FileTest::readMetaData});
+
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
             "should fail reading empty header",
             &Yapet20FileTest::failReadingEmptyHeader});
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
             "should read header", &Yapet20FileTest::readHeader});
+
         suiteOfTests->addTest(new CppUnit::TestCaller<Yapet20FileTest>{
             "should return empty password list",
             &Yapet20FileTest::readNoPasswords});
@@ -94,25 +102,56 @@ class Yapet20FileTest : public CppUnit::TestFixture {
             std::memcmp(*yapet20File2.readIdentifier(), "YAPET2.0", 8) == 0);
     }
 
-    void failReadingEmptyHeader() {
+    void failReadingEmptyMetaData() {
         yapet::Yapet20File yapet20File{TEST_FILE, true, false};
         yapet20File.open();
         yapet20File.writeIdentifier();
 
-        CPPUNIT_ASSERT_THROW(yapet20File.readHeader(),
-                             yapet::FileFormatError);
+        CPPUNIT_ASSERT_THROW(yapet20File.readHeader(), yapet::FileFormatError);
     }
 
-    void readHeader() {
-        // try/catch block to close file when yapet20File goes out of scope
+    void readMetaData() {
+        yapet::SecureArray metaData{yapet::toSecureArray("metadata")};
         try {
             yapet::Yapet20File yapet20File{TEST_FILE, true, false};
             yapet20File.open();
             yapet20File.writeIdentifier();
 
-            yapet::SecureArray headerData(2);
-            (*headerData)[0] = 'A';
-            (*headerData)[1] = 'B';
+            yapet20File.writeUnencryptedMetaData(metaData);
+        } catch (...) {
+            CPPUNIT_FAIL("No exception expected");
+        }
+
+        yapet::Yapet20File yapet20File{TEST_FILE, false, false};
+        yapet20File.open();
+        auto actual = yapet20File.readUnencryptedMetaData();
+
+        CPPUNIT_ASSERT(metaData == actual);
+    }
+
+    void failReadingEmptyHeader() {
+        yapet::Yapet20File yapet20File{TEST_FILE, true, false};
+        yapet20File.open();
+        yapet20File.writeIdentifier();
+        CPPUNIT_ASSERT_THROW(yapet20File.readHeader(), yapet::FileFormatError);
+
+        yapet::SecureArray metaData{yapet::toSecureArray("metadata")};
+        yapet20File.writeUnencryptedMetaData(metaData);
+        CPPUNIT_ASSERT_THROW(yapet20File.readHeader(), yapet::FileFormatError);
+    }
+
+    void readHeader() {
+        yapet::SecureArray headerData(2);
+        (*headerData)[0] = 'A';
+        (*headerData)[1] = 'B';
+        // try/catch block to close file when yapet20File goes out of scope
+        try {
+            yapet::Yapet20File yapet20File{TEST_FILE, true, false};
+            yapet20File.open();
+            yapet20File.writeIdentifier();
+            yapet::SecureArray metaData{yapet::toSecureArray("metadata")};
+            yapet20File.writeUnencryptedMetaData(metaData);
+
             yapet20File.writeHeader(headerData);
         } catch (...) {
             CPPUNIT_FAIL("No exception expected");
@@ -120,9 +159,9 @@ class Yapet20FileTest : public CppUnit::TestFixture {
 
         yapet::Yapet20File yapet20File{TEST_FILE, false, false};
         yapet20File.open();
-        auto headerData = yapet20File.readHeader();
+        auto actual = yapet20File.readHeader();
 
-        CPPUNIT_ASSERT((*headerData)[0] == 'A' && (*headerData)[1] == 'B');
+        CPPUNIT_ASSERT(actual == headerData);
     }
 
     void readNoPasswords() {
@@ -131,6 +170,8 @@ class Yapet20FileTest : public CppUnit::TestFixture {
             yapet::Yapet20File yapet20File{TEST_FILE, true, false};
             yapet20File.open();
             yapet20File.writeIdentifier();
+            yapet::SecureArray metaData{yapet::toSecureArray("metadata")};
+            yapet20File.writeUnencryptedMetaData(metaData);
 
             yapet::SecureArray headerData(1);
             (*headerData)[0] = 'M';
@@ -150,6 +191,8 @@ class Yapet20FileTest : public CppUnit::TestFixture {
         yapet::Yapet20File yapet20File{TEST_FILE, true, false};
         yapet20File.open();
         yapet20File.writeIdentifier();
+        yapet::SecureArray metaData{yapet::toSecureArray("metadata")};
+        yapet20File.writeUnencryptedMetaData(metaData);
 
         yapet::SecureArray headerData(1);
         (*headerData)[0] = 'M';
