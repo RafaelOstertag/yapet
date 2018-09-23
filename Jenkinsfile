@@ -19,12 +19,12 @@ pipeline {
     stages {
         stage("OS Build") {
             parallel {
-                stage("FreeBSD") {
+                stage("FreeBSD amd64") {
                     agent {
-                        label "freebsd"
+                        label "freebsd&&amd64"
                     }
                     stages {
-                        stage("(FB) Bootstrap Build") {
+                        stage("(FB64) Bootstrap Build") {
                              steps {
                                 sh "git log --stat > ChangeLog"
                                 dir("libyacurs") {
@@ -35,7 +35,7 @@ pipeline {
                             }
                         }
 
-                        stage("(FB) Configure") {
+                        stage("(FB64) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug"
@@ -43,7 +43,7 @@ pipeline {
                             }
                         }
 
-                        stage("(FB) Build Docs") {
+                        stage("(FB64) Build Docs") {
                             steps {
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
@@ -51,7 +51,7 @@ pipeline {
                             }
                         }
 
-						stage("(FB) Build") {
+						stage("(FB64) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
@@ -59,7 +59,7 @@ pipeline {
                             }
                         }
 
-                        stage("(FB) Test") {
+                        stage("(FB64) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
@@ -91,7 +91,58 @@ pipeline {
                             }
                         }
                     }
-                } // stage("FreeBSD")
+                } // stage("FreeBSD amd64")
+
+                stage("FreeBSD i386") {
+                    agent {
+                        label "freebsd&&i386"
+                    }
+                    stages {
+                        stage("(FB32) Bootstrap Build") {
+                             steps {
+                                sh "git log --stat > ChangeLog"
+                                dir("libyacurs") {
+                                    sh "git log --stat > ChangeLog"
+                                }
+                                sh "touch README"
+                                sh "autoreconf -I m4 -i"
+                            }
+                        }
+
+                        stage("(FB32) Configure") {
+                            steps {
+                                dir("obj") {
+                                    sh "../configure --enable-debug"
+                                }
+                            }
+                        }
+
+                        stage("(FB32) Stub Docs") {
+                            steps {
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                }
+                                sh 'touch DESIGN README.Cygwin'
+                            }
+                        }
+
+						stage("(FB32) Build") {
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                }
+                            }
+                        }
+
+                        stage("(FB32) Test") {
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                }
+                            }
+                        }
+                    }
+                } // stage("FreeBSD i386")
 
 				stage("Linux") {
 					agent {
@@ -143,12 +194,12 @@ pipeline {
 					}
 				} // stage("Linux")
 
-				stage("OpenBSD") {
+				stage("OpenBSD amd64") {
 					agent {
-						label "openbsd"
+						label "openbsd&&amd64"
 					}
 					stages {
-						stage("(OB) Bootstrap Build") {
+						stage("(OB64) Bootstrap Build") {
                              steps {
                                 sh "touch ChangeLog"
                                 dir("libyacurs") {
@@ -159,7 +210,7 @@ pipeline {
                             }
                         }
 
-                        stage("(OB) Configure") {
+                        stage("(OB64) Configure") {
                             steps {
                                 dir("obj") {
                                     sh "../configure --enable-debug CC=cc CXX=c++"
@@ -167,7 +218,7 @@ pipeline {
                             }
                         }
 
-                        stage("(OB) Stub Docs") {
+                        stage("(OB64) Stub Docs") {
                             steps {
                                 dir("doc") {
                                     sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
@@ -175,15 +226,16 @@ pipeline {
                                 sh 'touch DESIGN README.Cygwin'
                             }
                         }
-						 stage("(OB) Build") {
+
+						stage("(OB64) Build") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
-                         }
-
-                        stage("(OB) Test") {
+                        }
+                        
+                        stage("(OB64) Test") {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
@@ -191,7 +243,58 @@ pipeline {
                             }
                         }
 					}
-				} // stage("OpenBSD")
+				} // stage("OpenBSD amd64")
+
+                stage("OpenBSD i386") {
+					agent {
+						label "openbsd&&i386"
+					}
+					stages {
+						stage("(OB32) Bootstrap Build") {
+                             steps {
+                                sh "touch ChangeLog"
+                                dir("libyacurs") {
+                                    sh "touch ChangeLog"
+                                }
+                                sh "touch README"
+                                sh "autoreconf -I m4 -i"
+                            }
+                        }
+
+                        stage("(OB32) Configure") {
+                            steps {
+                                dir("obj") {
+                                    sh "../configure --enable-debug CC=cc CXX=c++"
+                                }
+                            }
+                        }
+
+                        stage("(OB32) Stub Docs") {
+                            steps {
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                }
+                                sh 'touch DESIGN README.Cygwin'
+                            }
+                        }
+
+						stage("(OB32) Build") {
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                }
+                             }
+                        }
+                        
+                        stage("(OB32) Test") {
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                }
+                            }
+                        }
+					}
+				} // stage("OpenBSD i386")
 
 				stage("NetBSD") {
 					agent {
