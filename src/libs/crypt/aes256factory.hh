@@ -12,7 +12,8 @@ class Aes256Factory : public AbstractCryptoFactory {
     std::shared_ptr<Key> _key256;
 
    public:
-    Aes256Factory(const SecureArray& password);
+    Aes256Factory(const SecureArray& password,
+                  const MetaData& keyingParameters);
     Aes256Factory(const Aes256Factory&) = delete;
     Aes256Factory(Aes256Factory&&) = delete;
     Aes256Factory& operator=(const Aes256Factory&) = delete;
@@ -20,7 +21,7 @@ class Aes256Factory : public AbstractCryptoFactory {
     ~Aes256Factory(){};
 
     virtual std::shared_ptr<AbstractCryptoFactory> newFactory(
-        const SecureArray& password) const;
+        const SecureArray& password, const MetaData& keyingParameters) const;
 
     virtual std::unique_ptr<Crypto> crypto() const;
 

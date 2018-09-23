@@ -70,6 +70,8 @@ class Key256 : public Key {
     MetaData _keyingParameters;
 
    public:
+    static MetaData newDefaultKeyingParameters();
+
     Key256();
 
     Key256(const Key256& k);

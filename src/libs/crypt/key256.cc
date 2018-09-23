@@ -31,6 +31,7 @@
 #endif
 
 #include <argon2.h>
+#include <openssl/rand.h>
 #include <cstdio>
 #include <cstring>
 #include <typeinfo>
@@ -48,6 +49,7 @@ namespace {
  * The max length of key in bytes (256 bits)
  */
 constexpr auto KEY_LENGTH{32};
+constexpr auto SSL_SUCCESS{1};
 
 // in bytes
 constexpr auto SALT_NIBBLE_SIZE{sizeof(int)};
@@ -96,7 +98,30 @@ inline SecureArray hash(const SecureArray& password,
     }
     return hash;
 }
+
+int randomInt() {
+    int i;
+    auto result = RAND_bytes(reinterpret_cast<unsigned char*>(&i), sizeof(int));
+    if (result != SSL_SUCCESS) {
+        throw HashError{_("Cannot generate random salt")};
+    }
+    return i;
+}
+
 }  // namespace
+
+MetaData Key256::newDefaultKeyingParameters() {
+    MetaData metaData{};
+    metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, 262144);
+    metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, 16);
+    metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, 5);
+    metaData.setValue(YAPET::Consts::ARGON2_SALT1_KEY, randomInt());
+    metaData.setValue(YAPET::Consts::ARGON2_SALT2_KEY, randomInt());
+    metaData.setValue(YAPET::Consts::ARGON2_SALT3_KEY, randomInt());
+    metaData.setValue(YAPET::Consts::ARGON2_SALT4_KEY, randomInt());
+
+    return metaData;
+}
 
 /**
  * Initializes the key and the initialization vector. Make sure you

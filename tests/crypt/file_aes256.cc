@@ -15,6 +15,7 @@
 #include "aes256factory.hh"
 #include "cryptoerror.hh"
 #include "file.h"
+#include "filehelper.hh"
 #include "securearray.hh"
 #include "testpaths.h"
 #include "yapeterror.hh"
@@ -150,8 +151,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
     void createNewFile() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password}};
+        std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+            password, yapet::Key256::newDefaultKeyingParameters()}};
 
         YAPET::File file{factory, FN, true};
         auto expectedFileVersion{yapet::toSecureArray("YAPET2.0")};
@@ -166,7 +167,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{
+                    password, yapet::Key256::newDefaultKeyingParameters()}};
 
             YAPET::File file{factory, FN, true};
         } catch (...) {
@@ -176,7 +178,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{password,
+                                         yapet::readMetaData(FN, false)}};
 
             YAPET::File file{factory, FN, false};
             auto expectedFileVersion{yapet::toSecureArray("YAPET2.0")};
@@ -195,7 +198,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{
+                    password, yapet::Key256::newDefaultKeyingParameters()}};
 
             YAPET::File file{factory, FN, true};
         } catch (...) {
@@ -205,7 +209,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray("InvalidPassword")};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{password,
+                                         yapet::readMetaData(FN, false)}};
 
             CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, false}),
                                  yapet::InvalidPasswordError);
@@ -218,7 +223,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{
+                    password, yapet::Key256::newDefaultKeyingParameters()}};
 
             auto aes256{factory->crypto()};
 
@@ -237,7 +243,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{password,
+                                         yapet::readMetaData(FN, false)}};
 
             auto aes256{factory->crypto()};
 
@@ -270,8 +277,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
     void detectModificationOnSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password}};
+        std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+            password, yapet::Key256::newDefaultKeyingParameters()}};
 
         YAPET::File file1{factory, FN, true};
         YAPET::File file2{factory, FN, false};
@@ -307,8 +314,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
     void forceSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password}};
+        std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+            password, yapet::Key256::newDefaultKeyingParameters()}};
 
         YAPET::File file1{factory, FN, true};
         YAPET::File file2{factory, FN, false};
@@ -363,7 +370,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{
+                    password, yapet::Key256::newDefaultKeyingParameters()}};
 
             approxTimePasswordSet = std::time(0);
             YAPET::File file{factory, FN, true};
@@ -374,7 +382,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{password,
+                                         yapet::readMetaData(FN, false)}};
 
             YAPET::File file{factory, FN, false};
             int64_t passwordSet{file.getMasterPWSet()};
@@ -390,7 +399,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{
+                    password, yapet::Key256::newDefaultKeyingParameters()}};
 
             auto aes256{factory->crypto()};
 
@@ -402,7 +412,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
             auto newPassword{yapet::toSecureArray("NewSecret")};
             std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
-                new yapet::Aes256Factory{newPassword}};
+                new yapet::Aes256Factory{
+                    newPassword, yapet::Key256::newDefaultKeyingParameters()}};
             file.setNewKey(newCrypto);
         } catch (std::exception &ex) {
             std::cout << std::endl;
@@ -414,7 +425,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
         try {
             auto password{yapet::toSecureArray("NewSecret")};
             std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password}};
+                new yapet::Aes256Factory{password,
+                                         yapet::readMetaData(FN, false)}};
 
             auto aes256{factory->crypto()};
 
@@ -447,8 +459,8 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
     void allowSaveAfterPasswordSave() {
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password}};
+        std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+            password, yapet::Key256::newDefaultKeyingParameters()}};
 
         auto aes256{factory->crypto()};
 
@@ -462,18 +474,21 @@ class Aes256FileTest : public CppUnit::TestFixture {
         ::sleep(1);
         auto newPassword{yapet::toSecureArray("NewSecret")};
         std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
-            new yapet::Aes256Factory{newPassword}};
+            new yapet::Aes256Factory{
+                newPassword, yapet::Key256::newDefaultKeyingParameters()}};
         file.setNewKey(newCrypto);
 
         file.save(passwordList);
     }
 
     void corruptFile() {
-        // The file has the byte at offset 0x3F changed from 0xA0 to 0xA1,
+        // The file has the byte at offset 0x89 changed from 0xA0 to 0xA1,
         // messing up the length indicator for the first record
         auto password{yapet::toSecureArray(TEST_PASSWORD)};
+        auto keyingParameters{
+            yapet::readMetaData(BUILDDIR "/corrupt_aes256.pet", false)};
         std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password, keyingParameters}};
 
         YAPET::File file{factory, BUILDDIR "/corrupt_aes256.pet", false, false};
 

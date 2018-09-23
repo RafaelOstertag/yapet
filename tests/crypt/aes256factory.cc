@@ -35,8 +35,9 @@ class Aes256FactoryTest : public CppUnit::TestFixture {
 
     void setUp() {
         auto password{yapet::toSecureArray("test")};
-        aes256Factory = std::unique_ptr<yapet::Aes256Factory>{
-            new yapet::Aes256Factory{password}};
+        aes256Factory =
+            std::unique_ptr<yapet::Aes256Factory>{new yapet::Aes256Factory{
+                password, yapet::Key256::newDefaultKeyingParameters()}};
     }
 
     void crypto() {
@@ -54,6 +55,7 @@ class Aes256FactoryTest : public CppUnit::TestFixture {
 #pragma clang diagnostic pop
 
         yapet::Key256 key{};
+        key.keyingParameters(aes256Factory->key()->keyingParameters());
 
         auto password{yapet::toSecureArray("test")};
         key.password(password);
@@ -72,13 +74,15 @@ class Aes256FactoryTest : public CppUnit::TestFixture {
 
     void newFactory() {
         auto password{yapet::toSecureArray("test2")};
-        auto factory{aes256Factory->newFactory(password)};
+        auto factory{aes256Factory->newFactory(
+            password, aes256Factory->key()->keyingParameters())};
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
         CPPUNIT_ASSERT(typeid(*factory) == typeid(yapet::Aes256Factory));
 #pragma clang diagnostic pop
         yapet::Key256 key{};
+        key.keyingParameters(aes256Factory->key()->keyingParameters());
 
         auto newPassword{yapet::toSecureArray("test2")};
         key.password(newPassword);

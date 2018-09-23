@@ -2,14 +2,17 @@
 
 using namespace yapet;
 
-Aes256Factory::Aes256Factory(const SecureArray& password)
+Aes256Factory::Aes256Factory(const SecureArray& password,
+                             const MetaData& keyingParameters)
     : _key256{new Key256{}} {
+    _key256->keyingParameters(keyingParameters);
     _key256->password(password);
 }
 
 std::shared_ptr<AbstractCryptoFactory> Aes256Factory::newFactory(
-    const SecureArray& password) const {
-    return std::shared_ptr<AbstractCryptoFactory>{new Aes256Factory(password)};
+    const SecureArray& password, const MetaData& keyingParameters) const {
+    return std::shared_ptr<AbstractCryptoFactory>{
+        new Aes256Factory(password, keyingParameters)};
 }
 
 std::unique_ptr<Crypto> Aes256Factory::crypto() const {

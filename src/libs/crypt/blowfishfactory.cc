@@ -2,15 +2,17 @@
 
 using namespace yapet;
 
-BlowfishFactory::BlowfishFactory(const SecureArray& password)
+BlowfishFactory::BlowfishFactory(const SecureArray& password,
+                                 const MetaData& keyingParameters)
     : _key448{new Key448{}} {
+    _key448->keyingParameters(keyingParameters);
     _key448->password(password);
 }
 
 std::shared_ptr<AbstractCryptoFactory> BlowfishFactory::newFactory(
-    const SecureArray& password) const {
+    const SecureArray& password, const MetaData& keyingParameters) const {
     return std::shared_ptr<AbstractCryptoFactory>{
-        new BlowfishFactory(password)};
+        new BlowfishFactory(password, keyingParameters)};
 }
 
 std::unique_ptr<Crypto> BlowfishFactory::crypto() const {

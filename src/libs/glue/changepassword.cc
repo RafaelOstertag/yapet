@@ -28,6 +28,7 @@
 #include "changepassword.h"
 #include "cryptofactoryhelper.hh"
 #include "fileerror.hh"
+#include "filehelper.hh"
 #include "globals.h"
 #include "intl.h"
 #include "utils.hh"
@@ -76,6 +77,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                         _("Error"), _("Password does not match old password"),
                         _("Retry?"), YACURS::YESNO);
                     nonmatch->show();
+                    _oldCryptoFactory.reset();
                 }
             } catch (std::exception& ex) {
                 assert(generror == nullptr);
@@ -118,15 +120,20 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 auto newPassword{
                     yapet::toSecureArray(promptpassword->password())};
 
+                auto newKeyingParameters{
+                    yapet::Key256::newDefaultKeyingParameters()};
                 std::shared_ptr<yapet::AbstractCryptoFactory> newCryptoFactory{
-                    new yapet::Aes256Factory{newPassword}};
+                    new yapet::Aes256Factory{newPassword, newKeyingParameters}};
 
                 // Try to open the current file with new password, if that
                 // succeeds, the new and old password are the same and we do
                 // nothing
                 try {
+                    auto _existingKeyingParameters{yapet::readMetaData(
+                        _currentFilename, YAPET::Globals::config.filesecurity)};
                     auto _oldCryptoFactoryWithNewPassword{
-                        _oldCryptoFactory->newFactory(newPassword)};
+                        _oldCryptoFactory->newFactory(
+                            newPassword, _existingKeyingParameters)};
                     YAPET::File{_oldCryptoFactoryWithNewPassword,
                                 _currentFilename, false,
                                 YAPET::Globals::config.filesecurity};

@@ -49,6 +49,7 @@ void File::initializeEmptyFile() {
     Header10 header{time(0)};
 
     _yapetFile->writeIdentifier();
+    _yapetFile->writeUnencryptedMetaData(_crypto->getKey()->keyingParameters().serialize());
 
     auto encryptedSerializedHeader = _crypto->encrypt(header.serialize());
 

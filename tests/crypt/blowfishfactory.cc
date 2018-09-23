@@ -36,7 +36,7 @@ class BlowfishFactoryTest : public CppUnit::TestFixture {
     void setUp() {
         auto password{yapet::toSecureArray("test")};
         blowfishFactory = std::unique_ptr<yapet::BlowfishFactory>{
-            new yapet::BlowfishFactory{password}};
+            new yapet::BlowfishFactory{password, yapet::MetaData{}}};
     }
 
     void crypto() {
@@ -72,7 +72,7 @@ class BlowfishFactoryTest : public CppUnit::TestFixture {
 
     void newFactory() {
         auto password{yapet::toSecureArray("test2")};
-        auto factory{blowfishFactory->newFactory(password)};
+        auto factory{blowfishFactory->newFactory(password, yapet::MetaData{})};
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"

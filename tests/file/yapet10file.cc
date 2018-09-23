@@ -100,6 +100,7 @@ class Yapet10FileTest : public CppUnit::TestFixture {
 
     void readUnencryptedMetaData() {
         yapet::Yapet10File yapet10File{TEST_FILE, true, false};
+        yapet10File.open();
         auto emptyMetaData{yapet10File.readUnencryptedMetaData()};
 
         CPPUNIT_ASSERT(emptyMetaData == yapet::SecureArray{});

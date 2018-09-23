@@ -36,6 +36,7 @@ class Aes256Test : public CppUnit::TestFixture {
 
     void setUp() {
         std::shared_ptr<yapet::Key> key{new yapet::Key256{}};
+        key->keyingParameters(yapet::Key256::newDefaultKeyingParameters());
         key->password(yapet::toSecureArray("test"));
 
         aes256 = std::unique_ptr<yapet::Aes256>{new yapet::Aes256{key}};
@@ -64,6 +65,7 @@ class Aes256Test : public CppUnit::TestFixture {
         auto cipherText = aes256->encrypt(plainText);
 
         std::shared_ptr<yapet::Key> otherKey{new yapet::Key256{}};
+        otherKey->keyingParameters(yapet::Key256::newDefaultKeyingParameters());
         otherKey->password(yapet::toSecureArray("invalid"));
 
         auto otherBlowfish{

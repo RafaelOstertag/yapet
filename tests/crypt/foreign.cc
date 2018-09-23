@@ -87,7 +87,7 @@ inline void comparePasswordRecords(const yapet::PasswordRecord &actual,
 inline void testFile(const char *filename) {
     auto password{yapet::toSecureArray(TEST_PASSWORD)};
     std::shared_ptr<yapet::AbstractCryptoFactory> factory{
-        new yapet::BlowfishFactory{password}};
+        new yapet::BlowfishFactory{password, yapet::MetaData{}}};
 
     auto crypto{factory->crypto()};
 

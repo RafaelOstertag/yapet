@@ -28,7 +28,7 @@ std::shared_ptr<AbstractCryptoFactory> yapet::getCryptoFactoryForFile(
     try {
         if (isYapet10File(filename)) {
             return std::shared_ptr<AbstractCryptoFactory>{
-                new BlowfishFactory{password}};
+                new BlowfishFactory{password, MetaData{}}};
         }
     } catch (std::exception&) {
         // Ok, not a Yapet file
@@ -36,8 +36,9 @@ std::shared_ptr<AbstractCryptoFactory> yapet::getCryptoFactoryForFile(
 
     try {
         if (isYapet20File(filename)) {
+            auto metaData{readMetaData(filename, false)};
             return std::shared_ptr<AbstractCryptoFactory>{
-                new Aes256Factory{password}};
+                new Aes256Factory{password, metaData}};
         }
     } catch (std::exception&) {
         // Ok, not a Yapet file

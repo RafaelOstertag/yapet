@@ -7,6 +7,7 @@
 #include "aes256factory.hh"
 #include "csvimport.h"
 #include "file.h"
+#include "filehelper.hh"
 #include "testpaths.h"
 
 constexpr auto ROUNDS{10};
@@ -68,7 +69,8 @@ class ImportTest : public CppUnit::TestFixture {
 
         auto password{yapet::toSecureArray("test1")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password,
+                                     yapet::readMetaData("test1.pet", false)}};
 
         auto crypto{cryptoFactory->crypto()};
 
@@ -120,7 +122,8 @@ class ImportTest : public CppUnit::TestFixture {
 
         auto password{yapet::toSecureArray("test4")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password,
+                                     yapet::readMetaData("test4.pet", false)}};
 
         YAPET::File file{cryptoFactory, "test4.pet", false};
         std::list<yapet::PasswordListItem> list = file.read();
@@ -144,7 +147,8 @@ class ImportTest : public CppUnit::TestFixture {
 
         auto password{yapet::toSecureArray("test5")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password,
+                                     yapet::readMetaData("test5.pet", false)}};
 
         YAPET::File file{cryptoFactory, "test5.pet", false};
 
@@ -169,7 +173,8 @@ class ImportTest : public CppUnit::TestFixture {
 
         auto password{yapet::toSecureArray("test6")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password,
+                                     yapet::readMetaData("test6.pet", false)}};
 
         YAPET::File file{cryptoFactory, "test6.pet", false};
 
@@ -195,7 +200,8 @@ class ImportTest : public CppUnit::TestFixture {
 
         auto password{yapet::toSecureArray("test7")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{password,
+                                     yapet::readMetaData("test7.pet", false)}};
 
         YAPET::File file{cryptoFactory, "test7.pet", false};
 

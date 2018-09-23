@@ -26,13 +26,7 @@ std::string comm("Test Comment ");
 std::list<control_struct> control_data;
 
 constexpr auto TEST_FILE{"/tmp/testpwrecord.pet"};
-
-auto password{yapet::toSecureArray("pleasechange")};
-std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-    yapet::getCryptoFactoryForFile(TEST_FILE, password)};
-auto crypto{cryptoFactory->crypto()};
-
-YAPET::File testfile(cryptoFactory, TEST_FILE, false, false);
+std::unique_ptr<yapet::Crypto> crypto;
 
 bool operator==(const yapet::PasswordListItem& a, const control_struct& b) {
     std::string name{reinterpret_cast<const char*>(a.name())};
@@ -86,6 +80,13 @@ void init_control_data() {
 
 int main() {
     init_control_data();
+
+    auto password{yapet::toSecureArray("pleasechange")};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+        yapet::getCryptoFactoryForFile(TEST_FILE, password)};
+    crypto = cryptoFactory->crypto();
+
+    YAPET::File testfile(cryptoFactory, TEST_FILE, false, false);
 
     std::list<yapet::PasswordListItem> lst = testfile.read();
 

@@ -86,9 +86,11 @@ void LoadFileCmdLine::window_close_handler(YACURS::Event& e) {
 
             try {
                 auto password{yapet::toSecureArray(newpassworddia->password())};
+                auto newKeyingParameters{
+                    yapet::Key256::newDefaultKeyingParameters()};
 
                 std::shared_ptr<yapet::AbstractCryptoFactory> factory{
-                    new yapet::Aes256Factory{password}};
+                    new yapet::Aes256Factory{password, newKeyingParameters}};
                 mainwindow.load_password_file(YAPET::Globals::config.petfile,
                                               factory, _createNewFile);
 

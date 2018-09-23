@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "crypto.hh"
+#include "metadata.hh"
 #include "yapetfile.hh"
 
 namespace yapet {
@@ -18,7 +19,8 @@ class AbstractCryptoFactory {
     virtual ~AbstractCryptoFactory() {}
 
     virtual std::shared_ptr<AbstractCryptoFactory> newFactory(
-        const SecureArray& password) const = 0;
+        const SecureArray& password,
+        const MetaData& keyingParameters) const = 0;
     virtual std::unique_ptr<Crypto> crypto() const = 0;
     virtual std::shared_ptr<Key> key() const = 0;
     virtual std::unique_ptr<YapetFile> file(const std::string& filename,

@@ -12,7 +12,8 @@ class BlowfishFactory : public AbstractCryptoFactory {
     std::shared_ptr<Key> _key448;
 
    public:
-    BlowfishFactory(const SecureArray& password);
+    BlowfishFactory(const SecureArray& password,
+                    const MetaData& keyingParameters);
     BlowfishFactory(const BlowfishFactory&) = delete;
     BlowfishFactory(BlowfishFactory&&) = delete;
     BlowfishFactory& operator=(const BlowfishFactory&) = delete;
@@ -20,7 +21,7 @@ class BlowfishFactory : public AbstractCryptoFactory {
     ~BlowfishFactory(){};
 
     virtual std::shared_ptr<AbstractCryptoFactory> newFactory(
-        const SecureArray& password) const;
+        const SecureArray& password, const MetaData& keyingParameters) const;
 
     virtual std::unique_ptr<Crypto> crypto() const;
 

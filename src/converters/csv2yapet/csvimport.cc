@@ -221,8 +221,9 @@ void CSVImport::import(const char* pw) {
     auto csvFile{::openCsvFile(srcfile)};
 
     auto password{yapet::toSecureArray(pw)};
+    auto keyingParameters{yapet::Key256::newDefaultKeyingParameters()};
     std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-        new yapet::Aes256Factory(password)};
+        new yapet::Aes256Factory{password, keyingParameters}};
     auto crypto{cryptoFactory->crypto()};
     std::unique_ptr<YAPET::File> yapetFile{
         new YAPET::File{cryptoFactory, dstfile, true}};

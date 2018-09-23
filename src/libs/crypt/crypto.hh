@@ -29,8 +29,6 @@ class Crypto {
     int cipherIvecSize() const;
     int cipherBlockSize() const;
 
-    std::shared_ptr<Key> getKey() const { return _key; }
-
     virtual const EVP_CIPHER* getCipher() const = 0;
 
    public:
@@ -71,6 +69,8 @@ class Crypto {
      * @throw YAPETEncryptionException in case of cipher errors.
      */
     virtual SecureArray decrypt(const SecureArray& cipherText);
+
+    std::shared_ptr<Key> getKey() const { return _key; }
 };
 }  // namespace yapet
 

@@ -8,6 +8,7 @@
 #include "aes256factory.hh"
 #include "csvimport.h"
 #include "file.h"
+#include "filehelper.hh"
 #include "testpaths.h"
 
 const char* VAL128 =
@@ -55,7 +56,8 @@ int main(int, char**) {
     try {
         auto password{yapet::toSecureArray("test10")};
         std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
-            new yapet::Aes256Factory{password}};
+            new yapet::Aes256Factory{
+                password, yapet::readMetaData(BUILDDIR "/test10.pet", false)}};
         auto crypto{cryptoFactory->crypto()};
 
         YAPET::File file{cryptoFactory, BUILDDIR "/test10.pet", false};

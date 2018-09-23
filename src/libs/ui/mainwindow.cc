@@ -30,6 +30,7 @@
 #include <cstring>
 
 #include "cfg.h"
+#include "filehelper.hh"
 #include "globals.h"
 #include "mainwindow.h"
 #include "mainwindowhotkeys.h"
@@ -695,7 +696,10 @@ bool MainWindow::matchPasswordWithCurrent(
         return false;
     }
 
-    auto temporayCryptoFactory{_cryptoFactory->newFactory(password)};
+    auto keyingParameters{yapet::readMetaData(
+        _yapetFile->getFilename(), _yapetFile->filesecurityEnabled())};
+    auto temporayCryptoFactory{
+        _cryptoFactory->newFactory(password, keyingParameters)};
 
     auto currentKey{_cryptoFactory->key()};
     auto keyFromPassword{temporayCryptoFactory->key()};
