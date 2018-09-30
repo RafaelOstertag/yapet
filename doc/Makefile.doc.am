@@ -1,5 +1,3 @@
-# $Id$
-
 ##
 ## This makefile is not used during regular build. It has to be called
 ## separately
@@ -32,21 +30,18 @@ $(srcdir)/copyright.sgml $(srcdir)/license.sgml			\
 $(srcdir)/pwrecord.sgml $(srcdir)/supportedplatforms.sgml
 
 GENERATED_FILES = $(srcdir)/csv2yapet.sgml $(srcdir)/yapet2csv.sgml	\
-$(srcdir)/DESIGN.sgml $(srcdir)/Doxyfile $(srcdir)/INSTALL.sgml		\
-$(srcdir)/README.Cygwin.sgml $(srcdir)/README.sgml			\
-$(srcdir)/yapet.sgml $(srcdir)/yapet_colors.sgml			\
-$(srcdir)/yapet_config.sgml
+$(srcdir)/DESIGN.sgml $(srcdir)/yapet.adoc				\
+$(srcdir)/yapet_colors.sgml $(srcdir)/yapet_config.sgml			\
+$(srcdir)/README.adoc $(srcdir)/INSTALL.adoc $(srcdir)/NEWS.adoc
 
-TARGETS_TEXT = INSTALL README	\
-DESIGN README.Cygwin
+TARGETS_TEXT = INSTALL README NEWS
 
 TARGETS = $(srcdir)/Doxyfile $(srcdir)/INSTALL.html			\
-$(srcdir)/README.html $(srcdir)/DESIGN.html $(srcdir)/yapet.html	\
-$(srcdir)/yapet.1 $(srcdir)/csv2yapet.html $(srcdir)/csv2yapet.1	\
-$(srcdir)/yapet2csv.html $(srcdir)/yapet2csv.1				\
+$(srcdir)/NEWS.html $(srcdir)/README.html $(srcdir)/DESIGN.html		\
+$(srcdir)/yapet.html $(srcdir)/yapet.1 $(srcdir)/csv2yapet.html		\
+$(srcdir)/csv2yapet.1 $(srcdir)/yapet2csv.html $(srcdir)/yapet2csv.1	\
 $(srcdir)/yapet_colors.5 $(srcdir)/yapet_colors.html			\
-$(srcdir)/yapet_config.5 $(srcdir)/yapet_config.html			\
-$(srcdir)/README.Cygwin.html $(TARGETS_TEXT)
+$(srcdir)/yapet_config.5 $(srcdir)/yapet_config.html $(TARGETS_TEXT)
 
 editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 	-e 's|@PACKAGE_VERSION[@]|$(PACKAGE_VERSION)|g' \
@@ -60,6 +55,12 @@ editfile = $(SED) -e 's|@PACKAGE_STRING[@]|$(PACKAGE_STRING)|g' \
 
 all: $(TARGETS)
 
+.adoc.in.adoc: Makefile.doc
+	$(editfile) $< > $@
+
+.adoc.html: $(GENERATED_FILES) $(STATIC_FILES)
+	asciidoctor -b html5 -o $@ $<
+
 .sgml.in.sgml: Makefile.doc
 	$(editfile) $< > $@
 
@@ -71,18 +72,17 @@ all: $(TARGETS)
 
 # Debian's w3m uses -s instead -S. Instead of checking what is
 # supported, we simply call it again with -s upon error using -S
-$(TARGETS_TEXT): $(GENERATED_FILES) $(STATIC_FILES)
-	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.tmp.html.profile $(docbook_profile_xsl) $(srcdir)/$@.sgml
-	$(XSLTPROC) $(XSL_PARAMS) --stringparam section.autolabel 1 -o $@.tmp.html $(docbook_html_xsl) $@.tmp.html.profile
-	$(W3M) -S -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null || $(W3M) -s -no-graph -dump $@.tmp.html > $(top_srcdir)/$@ 2>/dev/null
-	rm $@.tmp.html.profile
-	rm $@.tmp.html
+$(TARGETS_TEXT): $(GENERATED_FILES)
+	cp $(srcdir)/$@.adoc $(top_srcdir)/$@
 
 .sgml.1: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
 	$(XSLTPROC) --stringparam profile.condition "$(XSLPROFILE_KEYWORDS)" -o $@.profile $(docbook_profile_xsl) $<
 	$(XSLTPROC) --param man.justify 1 --param man.output.encoding ASCII -o $@ $(docbook_man_xsl) $@.profile
 	rm $@.profile
+
+.adoc.1: $(GENERATED_FILES) $(STATIC_FILES)
+	asciidoctor -b manpage -o $@ $<
 
 .sgml.5: $(GENERATED_FILES) $(STATIC_FILES)
 	rm -f $(srcdir)/$@
@@ -98,4 +98,4 @@ clean:
 	rm -rf source-doc
 	rm -f  $(GENERATED_FILES) $(TARGETS)
 
-SUFFIXES = .sgml .sgml.in .html .1
+SUFFIXES = .sgml .sgml.in .html .1 .5 .adoc .adoc.in

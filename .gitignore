@@ -145,3 +145,9 @@ tests/pwgen/pwgen1
 tests/pwgen/rng1
 tests/utils/securearray
 tests/utils/utils
+NEWS
+doc/INSTALL.adoc
+doc/NEWS.adoc
+doc/NEWS.html
+doc/README.adoc
+doc/yapet.adoc

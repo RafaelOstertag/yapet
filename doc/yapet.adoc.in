@@ -1,0 +1,178 @@
+= yapet(1)
+:doctype: manpage
+:man manual: YAPET
+:man source: YAPET @PACKAGE_VERSION@
+:manvolnum: 1
+:page-layout: base
+
+== NAME
+yapet - text based password manager
+
+== SYNOPSIS
+
+*yapet* [[-c] | [-h] | [-V] [[-i] | [-r _rcfile_]] [[-s] | [-S]] [-t _sec_]] [_filename_]
+
+== DESCRIPTION
+
+*yapet* provides a text user interface for storing passwords and
+associated information (referred to as password records) in files
+encrypted on disk. A password record is comprised of a record name,
+host name, user name, password, and comment. A master password is
+required to encrypt/decrypt the password records in a given
+file. *yapet* does not impose a limit of password records per file.
+
+Files created by *yapet* always have the suffix `.pet`. Also, if a
+file is loaded using the command line, *yapet* appends the suffix
+`.pet` to the filename unless the filename includes this suffix
+already. By default, *yapet* refuses to load files not having a file
+mode of 0600. This behavior can be changed by providing the *-s*
+option when starting *yapet* or using a configuration file (see
+`yapet_config(5)`, and <<options>>).
+
+After loading a file, the record name of each password record is
+displayed in a list. Existing password records can be opened by
+selecting them and pressing *Enter*. By default, existing password
+records are opened in read-only mode to avoid accidental
+changes. Pressing *Ctrl+r* toggles between read-only and edit
+mode.
+
+On terminals supporting colors, the password is hidden if the password
+record dialog is in read-only mode. The password can be made visible,
+by either going to edit mode (*Ctrl+r*), or by pressing
+*Ctrl+t*.
+
+*yapet* relies on OpenSSL for encryption and decryption of password
+records. Starting with YAPET 2.0 the cipher used is AES-256. YAPET 2.0
+will read and write pre YAPET 2.0 files. Pre YAPET 2.0 files are
+converted to YAPET 2.0 files when changing the master password. Once
+converted, the files can no longer be read by pre YAPET 2.0 versions.
+
+Other features of *yapet* are:
+
+* Screen lock after a certain amount of inactivity when password file
+  is loaded (see also `yapet_config(5)` and <<options>>).
+* Password records opened in read-only mode (default) hide the
+  password. Toggling into edit mode reveals the password (see
+  <<passwordrecorddialogkeys>>).
+* Import of CSV files (see `csv2yapet(1)`).
+* Export of *YAPET* files to CSV files (see `yapet2csv(1)`).
+* Integrated password generator.
+
+=== Main Window Function Keys
+
+Following function keys are recognized in the main window:
+
+*h*:: Show an overview of the function keys.
+*Enter*:: Open the currently selected password record.
+*s*:: Save changes to currently loaded file.
+*r*:: Open a file.
+*e*:: Create a new, empty file.
+*l*:: Lock the screen immediately. Takes only effect if a file is loaded.
+*a*:: Add a new password record.
+*d*:: Delete the currently selected password record.
+*o*:: Change the sort order of the password record list.
+*/*:: Search for a password record. The search is only performed
+  on the Name of the password record. Other password record fields
+  won't be searched.
+*n*:: Search for the next occurrence of a previous search
+  initiated by */*.
+*c*:: Change the master password of the currently loaded *YAPET*
+ file.
+*i*:: Show various information about *YAPET* and the loaded file,
+  if any.
+*Ctrl+l*:: Redraw the entire screen.
+*g*:: Open the password generator.
+*q*:: Quit *YAPET*.
+
+[#cursor-movement]
+=== Cursor Movement Keys
+
+Cursor movement, whether in clear text or password fields, is
+accomplished by using the following keys:
+
+
+*Left*,*Ctrl+b*:: Moves the cursor one character to the left.
+*Right*, *Ctrl+f*:: Moves the cursor one character to the right.
+*Home*, *Ctrl+a*:: Moves the cursor to the beginning of the input field.
+*End*, *Ctrl+e*:: Moves the cursor to the end of the input field.
+*Backspace*:: Delete the character left of the cursor.
+*Delete*, *Ctrl+d*:: Delete the character under the cursor.
+*Ctrl+k*:: Delete all characters under and right of the cursor.
+*Ctrl+u*:: Delete all characters left of the cursor.
+*Enter*, *Tab*:: Focus the next widget.
+*Shift+Tab*:: Focus the previous widget.
+
+[#passwordrecorddialogkeys]
+=== Password Record Dialog Keys
+
+Following function keys are recognized in the password record dialog,
+besides cursor movement keys (see <<cursor-movement>>):
+
+*Ctrl+r*:: Toggle the password record dialog between read-only and
+ edit mode. In read-only mode, *yapet* hides the password (only
+ supported on color terminals).
+*Ctrl+t*:: Toggle between hiding and showing the password, without setting the password record dialog to edit mode (only supported on color terminals). Has no effect if the password record dialog is in edit mode.
+
+[#options]
+== OPTIONS
+The following options are supported:
+
+*-c*:: Show copyright information.
+*-h*:: Print help text.
+*-i*:: Do not read the configuration file.
+*-r* _rcfile_:: Read the configuration file specified by _rcfile_. If
+      this option is not given, the default configuration file read is
+      `$HOME/.yapet` unless *-i* is specified.
+ *-s*:: Disable the check for the owner and file mode when loading
+ 	files. Without this option, *yapet* checks password files for
+ 	having the same owner as the user running *yapet* and verifies
+ 	that the file mode is strictly 0600. If one of these
+ 	conditions are not met, *yapet* refuses to load the
+ 	file. Providing this options disables those checks and *yapet*
+ 	will load files with owners other than the process owner of
+ 	*yapet* and file modes different from 0600. New files saved
+ 	while this option is active will have the file mode set
+ 	according to `umask(2)`
+*-S*:: Enable the check for the owner and file mode when loading
+       files. This option makes *yapet* to load password files having
+       the owner set to the process owner of *yapet* and the file mode
+       strictly set to 0600 only. If one of these conditions are not
+       met, *yapet* refuses to load the file. New files saved while
+       this option is active will have the file mode set to 0600. This
+       is the default mode.
+*-t* _sec_:: Set the timeout until the screen is locked to _sec_
+	    seconds. The minimum time allowed is 10 seconds. If a
+	    smaller value is provided, the timeout will be set to 10
+	    seconds. Default: 10 min.
+*-V*:: Show version of *yapet*.
+_filename_:: The file to open upon invocation of *yapet*. If the file
+  does not exist, *yapet* asks whether it should be created. Files
+  created by *yapet* always have the suffix `.pet`.
+
+
+== FILES
+
+`$HOME/.yapet`:: The per-user configuration file. If existing, options are
+	    read from this file but can be overridden by the command
+	    line options. Processing of this file can be disabled by
+	    invoking *yapet* with the *-i* option. Refer to the
+	    `yapet_config(5)` for an explanation of the per-user
+	    configuration file.
+
+
+== ENVIRONMENT
+
+*LC_MESSAGES*:: Displaying messages in the specified language. Currently
+	    only German is supported besides English.
+
+== BUGS
+
+Please report bugs to https://bugs.guengel.ch/.
+
+== AUTHORS
+
+Rafael Ostertag rafi@guengel.ch.
+
+== SEE ALSO
+
+`yapet_config(5)`, `yapet_colors(5)`, `csv2yapet(1)`, `yapet2csv(1)`
