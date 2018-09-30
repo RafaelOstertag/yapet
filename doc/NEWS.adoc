@@ -2,7 +2,6 @@
 
 == YAPET 2.0-dev
 
-
 * Use AES-256 to encrypt files by default
 * Use libyacurs 1.0.0
 
@@ -14,7 +13,7 @@
 * Supports OpenSSL 1.1.
 
 
-== Version 1.0
+== YAPET 1.0
 
 * New user interface.
 * Colors can be customized in the configuration file.
