@@ -23,6 +23,15 @@ inline SecureArray::size_type castToSizeTypeOrThrow(size_t otherSize) {
 }
 }  // namespace
 
+void SecureArray::indexInRangeOrThrow(size_type index) const {
+    if (index >= _size || index < 0) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Index out of range: %d"), index);
+        throw std::out_of_range{msg};
+    }
+}
+
 SecureArray::SecureArray(size_type size) : _size{size}, _array{nullptr} {
     if (_size < 0) {
         throw std::invalid_argument{_("Size must not be negative")};
@@ -103,24 +112,12 @@ const std::uint8_t* SecureArray::operator*() const { return _array; }
 std::uint8_t* SecureArray::operator*() { return _array; }
 
 std::uint8_t SecureArray::operator[](size_type index) const {
-    if (index >= _size || index < 0) {
-        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Index out of range: %d"), index);
-        throw std::out_of_range{msg};
-    }
-
+    indexInRangeOrThrow(index);
     return _array[index];
 }
 
 std::uint8_t& SecureArray::operator[](size_type index) {
-    if (index >= _size || index < 0) {
-        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Index out of range: %d"), index);
-        throw std::out_of_range{msg};
-    }
-
+    indexInRangeOrThrow(index);
     return _array[index];
 }
 

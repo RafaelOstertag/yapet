@@ -25,6 +25,7 @@ class SecureArray {
 
     void clearMemory();
     void freeMemory();
+    void indexInRangeOrThrow(size_type index) const;
 
    public:
     SecureArray(size_type size = 0);
