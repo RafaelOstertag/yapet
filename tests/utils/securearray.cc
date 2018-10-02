@@ -184,8 +184,11 @@ class SecureArrayTest : public CppUnit::TestFixture {
         CPPUNIT_ASSERT_THROW(secureArray[-1], std::out_of_range);
         CPPUNIT_ASSERT_THROW(secureArray[4], std::out_of_range);
 
+        CPPUNIT_ASSERT_THROW(secureArray[-1] = 2, std::out_of_range);
+        CPPUNIT_ASSERT_THROW(secureArray[4] = 3, std::out_of_range);
+
         for (auto i = 0; i < 3; i++) {
-            (*secureArray)[i] = i;
+            secureArray[i] = i;
             CPPUNIT_ASSERT(secureArray[i] == i);
         }
     }

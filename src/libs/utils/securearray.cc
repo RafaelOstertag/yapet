@@ -113,6 +113,17 @@ std::uint8_t SecureArray::operator[](size_type index) const {
     return _array[index];
 }
 
+std::uint8_t& SecureArray::operator[](size_type index) {
+    if (index >= _size || index < 0) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Index out of range: %d"), index);
+        throw std::out_of_range{msg};
+    }
+
+    return _array[index];
+}
+
 bool SecureArray::operator==(const SecureArray& other) const {
     if (other._size != _size) return false;
 

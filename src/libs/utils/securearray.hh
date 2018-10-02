@@ -39,6 +39,7 @@ class SecureArray {
     const std::uint8_t* operator*() const;
     std::uint8_t* operator*();
     std::uint8_t operator[](size_type index) const;
+    std::uint8_t& operator[](size_type index);
 
     bool operator==(const SecureArray& other) const;
 
