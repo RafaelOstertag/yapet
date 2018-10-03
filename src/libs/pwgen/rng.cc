@@ -105,8 +105,9 @@ std::uint8_t RngFile::getNextByte() {
     return c;
 }
 
+RngRand::RngRand() { srand(time(nullptr)); }
+
 std::uint8_t RngRand::getNextByte() {
-    srand(time(nullptr));
     return std::uint8_t((double(rand()) / RAND_MAX) * 256);
 }
 

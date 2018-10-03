@@ -55,6 +55,12 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
         SecureArray password2 = passwordGenerator.generatePassword(3);
 
         CPPUNIT_ASSERT(password1 != password2);
+
+        passwordGenerator.rngEngine(RAND);
+        password1 = passwordGenerator.generatePassword(3);
+        password2 = passwordGenerator.generatePassword(3);
+
+        CPPUNIT_ASSERT(password1 != password2);
     }
 
     void generatePasswordSizeOne() {

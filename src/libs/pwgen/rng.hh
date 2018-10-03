@@ -34,14 +34,11 @@ class RngFile : public RngInterface {
 
 class RngRand : public RngInterface {
    public:
+    RngRand();
     virtual std::uint8_t getNextByte();
 };
 
-enum RNGENGINE {
-    DEVRANDOM = (1 << 0),
-    DEVURANDOM = (1 << 1),
-    RAND = (1 << 2)
-};
+enum RNGENGINE { DEVRANDOM = (1 << 0), DEVURANDOM = (1 << 1), RAND = (1 << 2) };
 
 std::unique_ptr<RngInterface> getRng(RNGENGINE rngEngine);
 
