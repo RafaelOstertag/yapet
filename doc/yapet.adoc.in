@@ -1,9 +1,11 @@
+// -*- adoc -*-
 = yapet(1)
 :doctype: manpage
 :man manual: YAPET
 :man source: YAPET @PACKAGE_VERSION@
 :manvolnum: 1
 :page-layout: base
+include::attributes.adoc[]
 
 == NAME
 yapet - text based password manager
@@ -27,7 +29,7 @@ file is loaded using the command line, *yapet* appends the suffix
 already. By default, *yapet* refuses to load files not having a file
 mode of 0600. This behavior can be changed by providing the *-s*
 option when starting *yapet* or using a configuration file (see
-`yapet_config(5)`, and <<options>>).
+`{yp-config-mp}`, and <<options>>).
 
 After loading a file, the record name of each password record is
 displayed in a list. Existing password records can be opened by
@@ -90,7 +92,6 @@ Following function keys are recognized in the main window:
 Cursor movement, whether in clear text or password fields, is
 accomplished by using the following keys:
 
-
 *Left*,*Ctrl+b*:: Moves the cursor one character to the left.
 *Right*, *Ctrl+f*:: Moves the cursor one character to the right.
 *Home*, *Ctrl+a*:: Moves the cursor to the beginning of the input field.
@@ -128,7 +129,8 @@ The following options are supported:
  	having the same owner as the user running *yapet* and verifies
  	that the file mode is strictly 0600. If one of these
  	conditions are not met, *yapet* refuses to load the
- 	file. Providing this options disables those checks and *yapet*
+ 	file. +
+	Providing this options disables those checks and *yapet*
  	will load files with owners other than the process owner of
  	*yapet* and file modes different from 0600. New files saved
  	while this option is active will have the file mode set
@@ -137,13 +139,15 @@ The following options are supported:
        files. This option makes *yapet* to load password files having
        the owner set to the process owner of *yapet* and the file mode
        strictly set to 0600 only. If one of these conditions are not
-       met, *yapet* refuses to load the file. New files saved while
+       met, *yapet* refuses to load the file. +
+       New files saved while
        this option is active will have the file mode set to 0600. This
        is the default mode.
 *-t* _sec_:: Set the timeout until the screen is locked to _sec_
 	    seconds. The minimum time allowed is 10 seconds. If a
 	    smaller value is provided, the timeout will be set to 10
-	    seconds. Default: 10 min.
+	    seconds. +
+	    Default: 10 min.
 *-V*:: Show version of *yapet*.
 _filename_:: The file to open upon invocation of *yapet*. If the file
   does not exist, *yapet* asks whether it should be created. Files
@@ -156,23 +160,18 @@ _filename_:: The file to open upon invocation of *yapet*. If the file
 	    read from this file but can be overridden by the command
 	    line options. Processing of this file can be disabled by
 	    invoking *yapet* with the *-i* option. Refer to the
-	    `yapet_config(5)` for an explanation of the per-user
+	    `{yp-config-mp}` for an explanation of the per-user
 	    configuration file.
-
 
 == ENVIRONMENT
 
 *LC_MESSAGES*:: Displaying messages in the specified language. Currently
 	    only German is supported besides English.
 
-== BUGS
+include::man-bugs.adoc[]
 
-Please report bugs to https://bugs.guengel.ch/.
-
-== AUTHORS
-
-Rafael Ostertag rafi@guengel.ch.
+include::man-authors.adoc[]
 
 == SEE ALSO
 
-`yapet_config(5)`, `yapet_colors(5)`, `csv2yapet(1)`, `yapet2csv(1)`
+{yp-config-mp}, {yp-colors-mp}, `csv2yapet(1)`, `yapet2csv(1)`

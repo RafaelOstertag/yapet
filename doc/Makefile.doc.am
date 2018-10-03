@@ -31,7 +31,7 @@ $(srcdir)/pwrecord.sgml $(srcdir)/supportedplatforms.sgml
 
 GENERATED_FILES = $(srcdir)/csv2yapet.sgml $(srcdir)/yapet2csv.sgml	\
 $(srcdir)/DESIGN.sgml $(srcdir)/yapet.adoc				\
-$(srcdir)/yapet_colors.sgml $(srcdir)/yapet_config.sgml			\
+$(srcdir)/yapet_colors.sgml $(srcdir)/yapet_config.adoc			\
 $(srcdir)/README.adoc $(srcdir)/INSTALL.adoc $(srcdir)/NEWS.adoc
 
 TARGETS_TEXT = INSTALL README NEWS
@@ -82,6 +82,9 @@ $(TARGETS_TEXT): $(GENERATED_FILES)
 	rm $@.profile
 
 .adoc.1: $(GENERATED_FILES) $(STATIC_FILES)
+	asciidoctor -b manpage -o $@ $<
+
+.adoc.5: $(GENERATED_FILES) $(STATIC_FILES)
 	asciidoctor -b manpage -o $@ $<
 
 .sgml.5: $(GENERATED_FILES) $(STATIC_FILES)

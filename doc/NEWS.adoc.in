@@ -1,8 +1,12 @@
+// -*- adoc -*-
 = News
 
 == YAPET 2.0-dev
 
 * Use AES-256 to encrypt files by default
+* Use Argon2 to hash passwords
+* Remove lrand48 random number generator for generating random
+  passwords
 * Use libyacurs 1.0.0
 
 

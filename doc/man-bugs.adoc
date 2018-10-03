@@ -1,0 +1,3 @@
+== BUGS
+
+Please report bugs to https://bugs.guengel.ch/.
