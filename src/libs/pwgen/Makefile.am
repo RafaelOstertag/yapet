@@ -3,7 +3,8 @@ yapet_src_libdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libdir)/consts \
+AM_CPPFLAGS = -I$(yapet_src_libdir)/utils \ 
+    -I$(yapet_src_libdir)/consts \
     -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)
 
 if DISABLE_DEBUG
@@ -15,4 +16,4 @@ endif
 noinst_LTLIBRARIES = libyapet-pwgen.la
 
 libyapet_pwgen_la_SOURCES = pwgenexception.h charpool.cc charpool.h rng.cc rng.h	\
-pwgen.cc pwgen.h
+pwgen.cc pwgen.h characterpool.hh characterpool.cc rng.hh pwgen.hh

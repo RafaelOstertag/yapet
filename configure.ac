@@ -58,7 +58,7 @@ AC_TYPE_UID_T
 # library functions
 AC_MSG_NOTICE([Checking functions])
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS([basename isblank isspace lrand48 rand setlocale srand srand48 strcasestr tcgetattr tcsetattr tolower towlower])
+AC_CHECK_FUNCS([basename isblank isspace setlocale strcasestr tcgetattr tcsetattr tolower towlower])
 
 AC_CHECK_FUNCS([getopt strchr strdup strerror strstr],,[AC_MSG_ERROR([required function not found])])
 
