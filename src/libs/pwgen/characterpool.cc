@@ -39,5 +39,5 @@ std::vector<CharacterPool> yapet::pwgen::getPools(int pools) {
         throw std::out_of_range{_("No character pools selected")};
     }
 
-    return std::move(list);
+    return list;
 }

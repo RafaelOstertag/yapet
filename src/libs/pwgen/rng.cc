@@ -29,8 +29,10 @@
 #include <fcntl.h>
 #endif
 
-#include "intl.h"
+#include <cstdlib>
+
 #include "consts.h"
+#include "intl.h"
 #include "rng.hh"
 
 using namespace yapet::pwgen;
@@ -105,10 +107,10 @@ std::uint8_t RngFile::getNextByte() {
     return c;
 }
 
-RngRand::RngRand() { srand(time(nullptr)); }
+RngRand::RngRand() { std::srand(time(nullptr)); }
 
 std::uint8_t RngRand::getNextByte() {
-    return std::uint8_t((double(rand()) / RAND_MAX) * 256);
+    return std::uint8_t((double(std::rand()) / RAND_MAX) * 256);
 }
 
 std::unique_ptr<RngInterface> yapet::pwgen::getRng(RNGENGINE rngEngine) {
