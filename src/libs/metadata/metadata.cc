@@ -1,8 +1,13 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
 
 #include "consts.h"
+#include "intl.h"
 #include "metadata.hh"
 #include "ods.hh"
 

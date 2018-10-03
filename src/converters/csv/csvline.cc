@@ -1,8 +1,13 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <cstdio>
 #include <stdexcept>
 
 #include "consts.h"
 #include "csvline.hh"
+#include "intl.h"
 
 using namespace yapet;
 
@@ -90,7 +95,8 @@ void CSVLine::parseLine(const std::string& line) {
     std::string fieldBuffer;
     for (std::string::size_type column = 0; column < line.size(); column++) {
         char currentChar{line[column]};
-        char lookAhead{column + 1 < line.size() ? line[column + 1] : _separator};
+        char lookAhead{column + 1 < line.size() ? line[column + 1]
+                                                : _separator};
 
         if (currentChar == CSVLine::ESCAPE_CHAR && column == START_OF_LINE) {
             fieldBuffer = CSVLine::ESCAPE_CHAR;

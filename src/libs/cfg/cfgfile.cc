@@ -27,12 +27,14 @@
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
 #include "cfgfile.h"
 #include "consts.h"
+#include "intl.h"
 
 using namespace YAPET::CONFIG;
 

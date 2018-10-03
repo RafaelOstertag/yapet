@@ -27,7 +27,7 @@
 #include "config.h"
 #endif
 
-#include "pwgen.h"
+#include "pwgen.hh"
 
 #include <yacurs.h>
 
@@ -35,7 +35,7 @@
  */
 class PwGenDialog : public YACURS::Dialog {
    private:
-    YAPET::PWGEN::PWGen pwgen;
+    yapet::pwgen::PasswordGenerator passwordGenerator;
     YACURS::VPack mainpack;
     YACURS::HPack boxespack;
 

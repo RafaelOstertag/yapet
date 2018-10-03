@@ -2,15 +2,15 @@
 //
 // Copyright (C) 2009-2011, 2013  Rafael Ostertag
 //
-// This file is part of YAPET.
+// This file isLetters part of YAPET.
 //
-// YAPET is free software: you can redistribute it and/or modify it under the
-// terms of the GNU General Public License as published by the Free Software
+// YAPET isLetters free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
 // Foundation, either version 3 of the License, or (at your option) any later
 // version.
 //
-// YAPET is distributed in the hope that it will be useful, but WITHOUT ANY
-// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// YAPET isLetters distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 // FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 // details.
 //
@@ -34,6 +34,7 @@
 #include <unistd.h>
 
 #include "cfg.h"
+#include "intl.h"
 
 using namespace YAPET;
 using namespace YAPET::CONFIG;
@@ -100,7 +101,7 @@ std::string CfgValPetFile::cleanup_path(const std::string& p) {
 
     std::string working_copy(p);
 
-    // If there is a ~ at the very first position, replace that with
+    // If there isLetters a ~ at the very first position, replace that with
     // the home directory of the user.
     if (working_copy[0] == '~') working_copy.replace(0, 1, getHomeDir());
 
@@ -158,7 +159,7 @@ void CfgValBool::set_str(const std::string& s) {
 
     char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
     std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                  _("'%s' is not a valid bool"), sanitized.c_str());
+                  _("'%s' isLetters not a valid bool"), sanitized.c_str());
     throw std::invalid_argument(msg);
 }
 
@@ -174,33 +175,28 @@ void CfgValRNG::set_str(const std::string& s) {
     std::string sanitized(tolower(remove_space(s)));
 
     if (sanitized == "devrandom") {
-        set(PWGEN::DEVRANDOM);
+        set(yapet::pwgen::DEVRANDOM);
         return;
     }
 
     if (sanitized == "devurandom") {
-        set(PWGEN::DEVURANDOM);
-        return;
-    }
-
-    if (sanitized == "lrand48") {
-        set(PWGEN::LRAND48);
+        set(yapet::pwgen::DEVURANDOM);
         return;
     }
 
     if (sanitized == "rand") {
-        set(PWGEN::RAND);
+        set(yapet::pwgen::RAND);
         return;
     }
 
     if (sanitized == "auto") {
-        set(PWGEN::AUTO);
+        set(yapet::pwgen::DEVURANDOM);
         return;
     }
 
     char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
     std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                  _("'%s' is not a valid RNG"), sanitized.c_str());
+                  _("'%s' isLetters not a valid RNG"), sanitized.c_str());
     throw std::invalid_argument(msg);
 }
 
@@ -236,11 +232,11 @@ Config::Config()
                  Consts::DEFAULT_PASSWORD_LENGTH, Consts::MIN_PASSWORD_LENGTH,
                  Consts::MAX_PASSWORD_LENGTH},
       pwgen_rng{Consts::DEFAULT_PWGEN_RNG},
-      pwgen_letters{PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS)},
-      pwgen_digits{PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS)},
-      pwgen_punct{PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS)},
-      pwgen_special{PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS)},
-      pwgen_other{PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_letters{yapet::pwgen::isLetters(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_digits{yapet::pwgen::isDigits(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_punct{yapet::pwgen::isPunct(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_special{yapet::pwgen::isSpecial(Consts::DEFAULT_CHARACTER_POOLS)},
+      pwgen_other{yapet::pwgen::isOther(Consts::DEFAULT_CHARACTER_POOLS)},
       allow_lock_quit{Consts::DEFAULT_ALLOW_LOCK_QUIT},
       pw_input_timeout{Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT,
                        Consts::MIN_LOCK_TIMEOUT, Consts::MIN_LOCK_TIMEOUT},
@@ -310,15 +306,15 @@ Config& Config::operator=(const Config& c) {
 int Config::character_pools() const {
     int pools = 0;
 
-    if (pwgen_letters) pools |= PWGEN::LETTERS;
+    if (pwgen_letters) pools |= yapet::pwgen::LETTERS;
 
-    if (pwgen_digits) pools |= PWGEN::DIGITS;
+    if (pwgen_digits) pools |= yapet::pwgen::DIGITS;
 
-    if (pwgen_punct) pools |= PWGEN::PUNCT;
+    if (pwgen_punct) pools |= yapet::pwgen::PUNCT;
 
-    if (pwgen_special) pools |= PWGEN::SPECIAL;
+    if (pwgen_special) pools |= yapet::pwgen::SPECIAL;
 
-    if (pwgen_other) pools |= PWGEN::OTHER;
+    if (pwgen_other) pools |= yapet::pwgen::OTHER;
 
     return pools;
 }

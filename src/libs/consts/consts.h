@@ -31,7 +31,8 @@
 
 #include <string>
 // Used for the character pools
-#include "pwgen.h"
+#include "characterpool.hh"
+#include "rng.hh"
 
 namespace YAPET {
 class Consts {
@@ -50,8 +51,8 @@ class Consts {
     //! Default for checking file security
     static constexpr bool DEFAULT_FILE_SECURITY{true};
     static constexpr bool DEFAULT_ALLOW_LOCK_QUIT{true};
-    static constexpr YAPET::PWGEN::RNGENGINE DEFAULT_PWGEN_RNG{
-        YAPET::PWGEN::AUTO};
+    static constexpr yapet::pwgen::RNGENGINE DEFAULT_PWGEN_RNG{
+        yapet::pwgen::DEVURANDOM};
 
     //! Maximum password length
     static constexpr auto MAX_PASSWORD_LENGTH{256};
@@ -66,8 +67,8 @@ class Consts {
     static constexpr auto DEFAULT_PASSWORD_LENGTH{15};
     static constexpr auto DEFAULT_PASSWORD_INPUT_TIMEOUT{60};
     static constexpr auto DEFAULT_CHARACTER_POOLS{
-        YAPET::PWGEN::LETTERS | YAPET::PWGEN::DIGITS | YAPET::PWGEN::PUNCT |
-        YAPET::PWGEN::SPECIAL};
+        yapet::pwgen::LETTERS | yapet::pwgen::DIGITS | yapet::pwgen::PUNCT |
+        yapet::pwgen::SPECIAL};
 
     // Argon2 options
 

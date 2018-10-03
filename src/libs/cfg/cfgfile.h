@@ -32,7 +32,7 @@
 #include <string>
 
 // Used for the YAPET::PWGEN::RNGENGINE type
-#include "rng.h"
+#include "rng.hh"
 
 #include "cfg.h"
 

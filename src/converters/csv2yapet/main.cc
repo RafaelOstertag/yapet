@@ -52,6 +52,7 @@
 
 #include "consts.h"
 #include "csvimport.h"
+#include "intl.h"
 
 #if defined(HAVE_TERMIOS_H) && defined(HAVE_TCSETATTR) && \
     defined(HAVE_TCGETATTR)

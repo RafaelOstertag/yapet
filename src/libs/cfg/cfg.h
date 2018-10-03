@@ -39,7 +39,7 @@
 
 #include "cfgfile.h"
 #include "consts.h"
-#include "rng.h"
+#include "rng.hh"
 
 namespace YAPET {
 namespace CONFIG {
@@ -231,17 +231,17 @@ class CfgValInt : public CfgVal<int> {
     }
 };
 
-class CfgValRNG : public CfgVal<YAPET::PWGEN::RNGENGINE> {
+class CfgValRNG : public CfgVal<yapet::pwgen::RNGENGINE> {
    public:
-    CfgValRNG(YAPET::PWGEN::RNGENGINE v = YAPET::PWGEN::AUTO)
-        : CfgVal<YAPET::PWGEN::RNGENGINE>(v) {}
-    CfgValRNG(const CfgValRNG& cv) : CfgVal<YAPET::PWGEN::RNGENGINE>(cv) {}
+    CfgValRNG(yapet::pwgen::RNGENGINE v = yapet::pwgen::DEVURANDOM)
+        : CfgVal<yapet::pwgen::RNGENGINE>(v) {}
+    CfgValRNG(const CfgValRNG& cv) : CfgVal<yapet::pwgen::RNGENGINE>(cv) {}
     CfgValRNG& operator=(const CfgValRNG& cv) {
-        CfgVal<YAPET::PWGEN::RNGENGINE>::operator=(cv);
+        CfgVal<yapet::pwgen::RNGENGINE>::operator=(cv);
         return *this;
     }
-    CfgValRNG& operator=(const YAPET::PWGEN::RNGENGINE b) {
-        CfgVal<YAPET::PWGEN::RNGENGINE>::operator=(b);
+    CfgValRNG& operator=(const yapet::pwgen::RNGENGINE b) {
+        CfgVal<yapet::pwgen::RNGENGINE>::operator=(b);
         return *this;
     }
 

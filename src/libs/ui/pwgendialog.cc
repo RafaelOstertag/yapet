@@ -30,19 +30,13 @@
 // Private
 //
 std::string PwGenDialog::get_name_of_rng() const {
-    switch (pwgen.getRNGUsed()) {
-        case YAPET::PWGEN::DEVRANDOM:
+    switch (passwordGenerator.rngEngine()) {
+        case yapet::pwgen::DEVRANDOM:
             return "/dev/random";
-        case YAPET::PWGEN::DEVURANDOM:
+        case yapet::pwgen::DEVURANDOM:
             return "/dev/urandom";
-        case YAPET::PWGEN::LRAND48:
-            return "lrand48()";
-        case YAPET::PWGEN::RAND:
+        case yapet::pwgen::RAND:
             return "rand()";
-        case YAPET::PWGEN::NONE:
-            return "none!";
-        case YAPET::PWGEN::AUTO:
-            return "auto";
     }
 
     assert(0);
@@ -77,32 +71,22 @@ void PwGenDialog::checkbox_selection_handler(YACURS::Event& _e) {
             charpools->set_selection(0);
         }
 
-        pwgen.setNewPool(YAPET::Globals::config.character_pools());
+        passwordGenerator.characterPools(
+            YAPET::Globals::config.character_pools());
         return;
     }
 
     if (evt.data() == sources) {
-        int available_rngs = YAPET::PWGEN::RNG::getAvailableRNGs();
-        YAPET::PWGEN::RNGENGINE rng;
+        yapet::pwgen::RNGENGINE rng;
 
-        if ((available_rngs & YAPET::PWGEN::DEVRANDOM) &&
-            sources->selected("/dev/random"))
-            rng = YAPET::PWGEN::DEVRANDOM;
+        if (sources->selected("/dev/random")) rng = yapet::pwgen::DEVRANDOM;
 
-        if ((available_rngs & YAPET::PWGEN::DEVURANDOM) &&
-            sources->selected("/dev/urandom"))
-            rng = YAPET::PWGEN::DEVURANDOM;
+        if (sources->selected("/dev/urandom")) rng = yapet::pwgen::DEVURANDOM;
 
-        if ((available_rngs & YAPET::PWGEN::LRAND48) &&
-            sources->selected("lrand48()"))
-            rng = YAPET::PWGEN::LRAND48;
-
-        if ((available_rngs & YAPET::PWGEN::RAND) &&
-            sources->selected("rand()"))
-            rng = YAPET::PWGEN::RAND;
+        if (sources->selected("rand()")) rng = yapet::pwgen::RAND;
 
         YAPET::Globals::config.pwgen_rng.set(rng);
-        pwgen.setNewRNG(rng);
+        passwordGenerator.rngEngine(rng);
     }
 }
 
@@ -122,8 +106,9 @@ void PwGenDialog::button_press_handler(YACURS::Event& _e) {
         // place and changed the value
         pwlen.input(YAPET::Globals::config.pwgenpwlen);
 
-        pwgen.generatePassword(YAPET::Globals::config.pwgenpwlen);
-        genpw.input(pwgen.getPassword());
+        auto password{passwordGenerator.generatePassword(
+            YAPET::Globals::config.pwgenpwlen)};
+        genpw.input(reinterpret_cast<const char*>(*password));
     }
 }
 
@@ -133,7 +118,8 @@ void PwGenDialog::button_press_handler(YACURS::Event& _e) {
 PwGenDialog::PwGenDialog()
     : YACURS::Dialog{_("Password Generator"), YACURS::OKCANCEL,
                      YACURS::AUTOMATIC},
-      pwgen{YAPET::Globals::config.character_pools()},
+      passwordGenerator{YAPET::Globals::config.pwgen_rng,
+                        YAPET::Globals::config.character_pools()},
       mainpack{},
       boxespack{},
       genpwlabel{_("Generated password")},
@@ -142,14 +128,6 @@ PwGenDialog::PwGenDialog()
       pwlen{},
       regenbutton_spacer{},
       regenbutton{_("Regenerate")} {
-    // Make sure configuration does meet available rngs
-    YAPET::PWGEN::RNGENGINE requested_rng =
-        YAPET::Globals::config.pwgen_rng.get();
-    int available_rngs = YAPET::PWGEN::RNG::getAvailableRNGs();
-    if (available_rngs & requested_rng) {
-        pwgen.setNewRNG(requested_rng);
-    }
-
     // coloring
     genpwlabel.color(YACURS::DIALOG);
     pwlenlabel.color(YACURS::DIALOG);
@@ -170,26 +148,23 @@ PwGenDialog::PwGenDialog()
     labels.push_back(_("Other"));
     charpools = new YACURS::CheckBox(_("Character Pools"), labels);
 
-    if (YAPET::PWGEN::HAS_LETTERS(YAPET::Globals::config.character_pools()))
+    if (yapet::pwgen::isLetters(YAPET::Globals::config.character_pools()))
         charpools->set_selection(_("Letters"));
-    if (YAPET::PWGEN::HAS_DIGITS(YAPET::Globals::config.character_pools()))
+    if (yapet::pwgen::isDigits(YAPET::Globals::config.character_pools()))
         charpools->set_selection(_("Digits"));
-    if (YAPET::PWGEN::HAS_PUNCT((YAPET::Globals::config.character_pools())))
+    if (yapet::pwgen::isPunct((YAPET::Globals::config.character_pools())))
         charpools->set_selection(_("Punctuation"));
-    if (YAPET::PWGEN::HAS_SPECIAL(YAPET::Globals::config.character_pools()))
+    if (yapet::pwgen::isSpecial(YAPET::Globals::config.character_pools()))
         charpools->set_selection(_("Special"));
-    if (YAPET::PWGEN::HAS_OTHER(YAPET::Globals::config.character_pools()))
+    if (yapet::pwgen::isOther(YAPET::Globals::config.character_pools()))
         charpools->set_selection(_("Other"));
 
     // Those labels must match what is returned by get_name_of_rng()
     // Set only those rngs that are available
     labels.clear();
-    if (available_rngs & YAPET::PWGEN::DEVRANDOM)
-        labels.push_back("/dev/random");
-    if (available_rngs & YAPET::PWGEN::DEVURANDOM)
-        labels.push_back("/dev/urandom");
-    if (available_rngs & YAPET::PWGEN::LRAND48) labels.push_back("lrand48()");
-    if (available_rngs & YAPET::PWGEN::RAND) labels.push_back("rand()");
+    labels.push_back("/dev/random");
+    labels.push_back("/dev/urandom");
+    labels.push_back("rand()");
 
     sources = new YACURS::RadioBox(_("Sources"), labels);
     sources->set_selection(get_name_of_rng());
@@ -217,8 +192,9 @@ PwGenDialog::PwGenDialog()
     conv << YAPET::Globals::config.pwgenpwlen.get();
     pwlen.input(conv.str());
 
-    pwgen.generatePassword(YAPET::Globals::config.pwgenpwlen.get());
-    genpw.input(pwgen.getPassword());
+    auto password{passwordGenerator.generatePassword(
+        YAPET::Globals::config.pwgenpwlen.get())};
+    genpw.input(reinterpret_cast<const char*>(*password));
 
     YACURS::EventQueue::connect_event(
         YACURS::EventConnectorMethod1<PwGenDialog>(
