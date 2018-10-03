@@ -40,8 +40,7 @@ class RngRand : public RngInterface {
 enum RNGENGINE {
     DEVRANDOM = (1 << 0),
     DEVURANDOM = (1 << 1),
-    RAND = (1 << 2),
-    AUTO = (1 << 3)
+    RAND = (1 << 2)
 };
 
 std::unique_ptr<RngInterface> getRng(RNGENGINE rngEngine);

@@ -15,5 +15,5 @@ endif
 
 noinst_LTLIBRARIES = libyapet-pwgen.la
 
-libyapet_pwgen_la_SOURCES = pwgenexception.h charpool.cc charpool.h rng.cc rng.h	\
-pwgen.cc pwgen.h characterpool.hh characterpool.cc rng.hh pwgen.hh
+libyapet_pwgen_la_SOURCES = rng.cc rng.hh	\
+pwgen.cc pwgen.hh characterpool.hh characterpool.cc
