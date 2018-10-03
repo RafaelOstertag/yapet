@@ -17,7 +17,8 @@
         abort();                     \
     }
 
-using namespace YAPET;
+using namespace yapet;
+using namespace yapet::pwgen;
 using namespace YAPET::CONFIG;
 
 template <class T>
@@ -156,12 +157,12 @@ void test_petfile_val() {
 void test_rng_val() {
     CfgValRNG val1;
 
-    if (val1.get() != YAPET::PWGEN::AUTO)
+    if (val1.get() != DEVURANDOM)
         MYEXIT("CfgValRNG: not properly initialized");
 
     try {
-        val1.set_str("dev urandom");
-        if (val1.get() != YAPET::PWGEN::DEVURANDOM)
+        val1.set_str("dev random");
+        if (val1.get() != DEVRANDOM)
             MYEXIT("CfgValRNG: value not properly set");
     } catch (std::exception& e) {
         MYEXIT(e.what());
@@ -179,7 +180,7 @@ void test_rng_val() {
 
     try {
         val1.set_str("devrandom");
-        if (val1 != YAPET::PWGEN::DEVRANDOM)
+        if (val1 != DEVRANDOM)
             MYEXIT("CfgValRNG: value not properly set (#1)");
     } catch (std::exception& e) {
         MYEXIT(e.what());
@@ -187,23 +188,15 @@ void test_rng_val() {
 
     try {
         val1.set_str("devurandom");
-        if (val1 != YAPET::PWGEN::DEVURANDOM)
+        if (val1 != DEVURANDOM)
             MYEXIT("CfgValRNG: value not properly set (#2)");
     } catch (std::exception& e) {
         MYEXIT(e.what());
     }
 
     try {
-        val1.set_str("lrand48");
-        if (val1 != YAPET::PWGEN::LRAND48)
-            MYEXIT("CfgValRNG: value not properly set (#3)");
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-    }
-
-    try {
         val1.set_str("rand");
-        if (val1 != YAPET::PWGEN::RAND)
+        if (val1 != RAND)
             MYEXIT("CfgValRNG: value not properly set (#4)");
     } catch (std::exception& e) {
         MYEXIT(e.what());
@@ -255,42 +248,42 @@ void test_initvalues() {
 
     if (!cfg.petfile.get().empty()) MYEXIT("cfg.petfile not empty");
 
-    if (cfg.timeout != Consts::DEFAULT_LOCK_TIMEOUT)
+    if (cfg.timeout != YAPET::Consts::DEFAULT_LOCK_TIMEOUT)
         MYEXIT("locktimeout mismatch");
 
-    if (cfg.filesecurity != Consts::DEFAULT_FILE_SECURITY)
+    if (cfg.filesecurity != YAPET::Consts::DEFAULT_FILE_SECURITY)
         MYEXIT("filesecurity mismatch");
 
-    if (cfg.pwgenpwlen != Consts::DEFAULT_PASSWORD_LENGTH)
+    if (cfg.pwgenpwlen != YAPET::Consts::DEFAULT_PASSWORD_LENGTH)
         MYEXIT("pwgenpwlen mismatch");
 
-    if (cfg.pwgen_rng != Consts::DEFAULT_PWGEN_RNG)
+    if (cfg.pwgen_rng != YAPET::Consts::DEFAULT_PWGEN_RNG)
         MYEXIT("pwgen_rng mismatch");
 
     if (cfg.pwgen_letters !=
-        PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS))
+        isLetters(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_letters mismatch");
 
-    if (cfg.pwgen_digits != PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS))
+    if (cfg.pwgen_digits != isDigits(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_digits mismatch");
 
-    if (cfg.pwgen_punct != PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS))
+    if (cfg.pwgen_punct != isPunct(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_punct mismatch");
 
     if (cfg.pwgen_special !=
-        PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS))
+        isSpecial(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_special mismatch");
 
-    if (cfg.pwgen_other != PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS))
+    if (cfg.pwgen_other != isOther(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_other mismatch");
 
-    if (cfg.character_pools() != Consts::DEFAULT_CHARACTER_POOLS)
+    if (cfg.character_pools() != YAPET::Consts::DEFAULT_CHARACTER_POOLS)
         MYEXIT("character_pools() mismatch");
 
-    if (cfg.allow_lock_quit != Consts::DEFAULT_ALLOW_LOCK_QUIT)
+    if (cfg.allow_lock_quit != YAPET::Consts::DEFAULT_ALLOW_LOCK_QUIT)
         MYEXIT("allow_lock_quit mismatch");
 
-    if (cfg.pw_input_timeout != Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT)
+    if (cfg.pw_input_timeout != YAPET::Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT)
         MYEXIT("pw_input_timeout mismatch");
 
     if (cfg.ignorerc != false) MYEXIT("ignorerc must be false");
@@ -304,47 +297,47 @@ void test_index_operator() {
             MYEXIT("cfg.petfile not empty");
 
         if (dynamic_cast<CfgValInt&>(cfg["locktimeout"]) !=
-            Consts::DEFAULT_LOCK_TIMEOUT)
+            YAPET::Consts::DEFAULT_LOCK_TIMEOUT)
             MYEXIT("locktimeout mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["checkfsecurity"]) !=
-            Consts::DEFAULT_FILE_SECURITY)
+            YAPET::Consts::DEFAULT_FILE_SECURITY)
             MYEXIT("filesecurity mismatch");
 
         if (dynamic_cast<CfgValInt&>(cfg["pwgen_pwlen"]) !=
-            Consts::DEFAULT_PASSWORD_LENGTH)
+            YAPET::Consts::DEFAULT_PASSWORD_LENGTH)
             MYEXIT("pwgenpwlen mismatch");
 
         if (dynamic_cast<CfgValRNG&>(cfg["pwgen_rng"]) !=
-            Consts::DEFAULT_PWGEN_RNG)
+            YAPET::Consts::DEFAULT_PWGEN_RNG)
             MYEXIT("pwgen_rng mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_letters"]) !=
-            PWGEN::HAS_LETTERS(Consts::DEFAULT_CHARACTER_POOLS))
+            isLetters(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
             MYEXIT("pwgen_letters mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_digits"]) !=
-            PWGEN::HAS_DIGITS(Consts::DEFAULT_CHARACTER_POOLS))
+            isDigits(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
             MYEXIT("pwgen_digits mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_punct"]) !=
-            PWGEN::HAS_PUNCT(Consts::DEFAULT_CHARACTER_POOLS))
+            isPunct(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
             MYEXIT("pwgen_punct mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_special"]) !=
-            PWGEN::HAS_SPECIAL(Consts::DEFAULT_CHARACTER_POOLS))
+            isSpecial(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
             MYEXIT("pwgen_special mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_other"]) !=
-            PWGEN::HAS_OTHER(Consts::DEFAULT_CHARACTER_POOLS))
+            isOther(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
             MYEXIT("pwgen_other mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["allowlockquit"]) !=
-            Consts::DEFAULT_ALLOW_LOCK_QUIT)
+            YAPET::Consts::DEFAULT_ALLOW_LOCK_QUIT)
             MYEXIT("allow_lock_quit mismatch");
 
         if (dynamic_cast<CfgValInt&>(cfg["pwinputtimeout"]) !=
-            Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT)
+            YAPET::Consts::DEFAULT_PASSWORD_INPUT_TIMEOUT)
             MYEXIT("pw_input_timeout mismatch");
     } catch (std::exception& e) {
         MYEXIT(e.what());

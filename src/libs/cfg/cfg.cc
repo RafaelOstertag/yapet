@@ -2,14 +2,14 @@
 //
 // Copyright (C) 2009-2011, 2013  Rafael Ostertag
 //
-// This file isLetters part of YAPET.
+// This file is part of YAPET.
 //
-// YAPET isLetters free software: you can redistribute it and/or modify it under
+// YAPET is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
 // Foundation, either version 3 of the License, or (at your option) any later
 // version.
 //
-// YAPET isLetters distributed in the hope that it will be useful, but WITHOUT
+// YAPET is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 // FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 // details.
@@ -101,7 +101,7 @@ std::string CfgValPetFile::cleanup_path(const std::string& p) {
 
     std::string working_copy(p);
 
-    // If there isLetters a ~ at the very first position, replace that with
+    // If there is a ~ at the very first position, replace that with
     // the home directory of the user.
     if (working_copy[0] == '~') working_copy.replace(0, 1, getHomeDir());
 
@@ -159,7 +159,7 @@ void CfgValBool::set_str(const std::string& s) {
 
     char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
     std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                  _("'%s' isLetters not a valid bool"), sanitized.c_str());
+                  _("'%s' is not a valid bool"), sanitized.c_str());
     throw std::invalid_argument(msg);
 }
 
@@ -196,7 +196,7 @@ void CfgValRNG::set_str(const std::string& s) {
 
     char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
     std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                  _("'%s' isLetters not a valid RNG"), sanitized.c_str());
+                  _("'%s' is not a valid RNG"), sanitized.c_str());
     throw std::invalid_argument(msg);
 }
 

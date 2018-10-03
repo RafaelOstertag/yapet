@@ -87,7 +87,7 @@ int main(int, char**) {
             abort();
         }
 
-        if (cfg.pwgen_rng != YAPET::PWGEN::AUTO) {
+        if (cfg.pwgen_rng != yapet::pwgen::DEVURANDOM) {
             std::cerr << "pwgen_rng does not match (#1)" << std::endl;
             abort();
         }
@@ -168,7 +168,7 @@ int main(int, char**) {
             abort();
         }
 
-        if (cfg.pwgen_rng != YAPET::PWGEN::RAND) {
+        if (cfg.pwgen_rng != yapet::pwgen::RAND) {
             std::cerr << "pwgen_rng does not match (#2)" << std::endl;
             abort();
         }
@@ -234,7 +234,7 @@ int main(int, char**) {
             abort();
         }
 
-        if (cfg.pwgen_rng != YAPET::PWGEN::RAND) {
+        if (cfg.pwgen_rng != yapet::pwgen::RAND) {
             std::cerr << "pwgen_rng does not match (#3)" << std::endl;
             abort();
         }
