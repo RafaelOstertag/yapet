@@ -27,6 +27,13 @@ class CharacterPoolTest : public CppUnit::TestFixture {
             "should properly return requested pools",
             &CharacterPoolTest::getCharacterPools});
 
+        suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
+            "should properly add pools", &CharacterPoolTest::addPools});
+
+        suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
+            "should properly add and assign pools",
+            &CharacterPoolTest::addAndAssignPools});
+
         return suiteOfTests;
     }
 
@@ -60,46 +67,36 @@ class CharacterPoolTest : public CppUnit::TestFixture {
     }
 
     void getCharacterPools() {
-        std::vector<CharacterPool> pools{getPools(ALL)};
+        CPPUNIT_ASSERT(letters == getPools(LETTERS));
+        CPPUNIT_ASSERT(digits == getPools(DIGITS));
+        CPPUNIT_ASSERT(punctuation == getPools(PUNCT));
+        CPPUNIT_ASSERT(special == getPools(SPECIAL));
+        CPPUNIT_ASSERT(other == getPools(OTHER));
 
-        CPPUNIT_ASSERT(pools.size() == 5);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), letters) !=
-                       pools.end());
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), digits) !=
-                       pools.end());
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), punctuation) !=
-                       pools.end());
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), special) !=
-                       pools.end());
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), other) !=
-                       pools.end());
-
-        pools = getPools(LETTERS);
-        CPPUNIT_ASSERT(pools.size() == 1);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), letters) !=
-                       pools.end());
-
-        pools = getPools(DIGITS);
-        CPPUNIT_ASSERT(pools.size() == 1);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), digits) !=
-                       pools.end());
-
-        pools = getPools(PUNCT);
-        CPPUNIT_ASSERT(pools.size() == 1);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), punctuation) !=
-                       pools.end());
-
-        pools = getPools(SPECIAL);
-        CPPUNIT_ASSERT(pools.size() == 1);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), special) !=
-                       pools.end());
-
-        pools = getPools(OTHER);
-        CPPUNIT_ASSERT(pools.size() == 1);
-        CPPUNIT_ASSERT(std::find(pools.begin(), pools.end(), other) !=
-                       pools.end());
+        CPPUNIT_ASSERT((letters + digits + punctuation + special + other) ==
+                       getPools(ALL));
 
         CPPUNIT_ASSERT_THROW(getPools(1 << 8), std::out_of_range);
+    }
+
+    void addPools() {
+        yapet::pwgen::CharacterPool a{"a"};
+        yapet::pwgen::CharacterPool b{"b"};
+        yapet::pwgen::CharacterPool c = a + b;
+
+        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, a.characters());
+        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, b.characters());
+        CPPUNIT_ASSERT_EQUAL(std::string{"ab"}, c.characters());
+    }
+
+    void addAndAssignPools() {
+        yapet::pwgen::CharacterPool a{"a"};
+        yapet::pwgen::CharacterPool b{"b"};
+
+        a += b;
+
+        CPPUNIT_ASSERT_EQUAL(std::string{"ab"}, a.characters());
+        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, b.characters());
     }
 };
 

@@ -70,10 +70,19 @@ class CharacterPool {
         return *this;
     }
 
-    bool operator==(const CharacterPool& other) {
+    bool operator==(const CharacterPool& other) const {
         if (this == &other) return true;
 
         return _characters == other._characters;
+    }
+
+    CharacterPool operator+(const CharacterPool& other) const {
+        return CharacterPool{_characters + other._characters};
+    }
+
+    CharacterPool& operator+=(const CharacterPool& other) {
+        _characters += other._characters;
+        return *this;
     }
 
     /**
@@ -82,6 +91,8 @@ class CharacterPool {
     char operator[](std::string::size_type num) const {
         return _characters[num % _characters.size()];
     }
+
+    std::string characters() const { return _characters; }
 };
 
 extern const CharacterPool letters;
@@ -90,7 +101,7 @@ extern const CharacterPool punctuation;
 extern const CharacterPool special;
 extern const CharacterPool other;
 
-std::vector<CharacterPool> getPools(int pools);
+CharacterPool getPools(int pools);
 
 }  // namespace pwgen
 }  // namespace yapet

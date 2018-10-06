@@ -30,32 +30,16 @@
 
 using namespace yapet::pwgen;
 
-yapet::pwgen::CharacterPool& PasswordGenerator::getRandomCharacterPool() {
-    auto randomByte = _rng->getNextByte();
-    auto listIndex = randomByte % _concretePools.size();
-    return _concretePools[listIndex];
-}
-
-std::uint8_t PasswordGenerator::getRandomCharacterFromPool(
-    const yapet::pwgen::CharacterPool& pool) {
-    auto randomByte = _rng->getNextByte();
-    return pool[randomByte];
-}
-
 PasswordGenerator::PasswordGenerator(RNGENGINE rngEngine, POOLS pool)
     : PasswordGenerator{rngEngine, static_cast<int>(pool)} {}
 
 PasswordGenerator::PasswordGenerator(RNGENGINE rngEngine, int pools)
-    : _rng{getRng(rngEngine)},
-      _rngEngine{rngEngine},
-      _characterPools{pools},
-      _concretePools{getPools(_characterPools)} {}
+    : _rng{getRng(rngEngine)}, _rngEngine{rngEngine}, _characterPools{pools} {}
 
 PasswordGenerator::PasswordGenerator(PasswordGenerator&& other)
     : _rng{std::move(other._rng)},
       _rngEngine{other._rngEngine},
-      _characterPools{other._characterPools},
-      _concretePools{std::move(other._concretePools)} {}
+      _characterPools{other._characterPools} {}
 
 PasswordGenerator& PasswordGenerator::operator=(PasswordGenerator&& other) {
     if (this == &other) {
@@ -65,15 +49,11 @@ PasswordGenerator& PasswordGenerator::operator=(PasswordGenerator&& other) {
     _rng = std::move(other._rng);
     _rngEngine = other._rngEngine;
     _characterPools = other._characterPools;
-    _concretePools = std::move(other._concretePools);
 
     return *this;
 }
 
-void PasswordGenerator::characterPools(int pools) {
-    _characterPools = pools;
-    _concretePools = getPools(pools);
-}
+void PasswordGenerator::characterPools(int pools) { _characterPools = pools; }
 
 void PasswordGenerator::rngEngine(RNGENGINE rngEngine) {
     _rng = getRng(rngEngine);
@@ -88,12 +68,11 @@ yapet::SecureArray PasswordGenerator::generatePassword(int size) {
         throw std::invalid_argument(msg);
     }
 
+    CharacterPool pools{getPools(_characterPools)};
+
     SecureArray password{size + 1};
     for (int i = 0; i < size; i++) {
-        auto characterPool = getRandomCharacterPool();
-        auto character = getRandomCharacterFromPool(characterPool);
-
-        password[i] = character;
+        password[i] = pools[_rng->getNextByte()];
     }
     password[size] = '\0';
     return password;

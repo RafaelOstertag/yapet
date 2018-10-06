@@ -14,10 +14,6 @@ class PasswordGenerator {
     std::unique_ptr<RngInterface> _rng;
     RNGENGINE _rngEngine;
     int _characterPools;
-    std::vector<CharacterPool> _concretePools;
-
-    CharacterPool& getRandomCharacterPool();
-    std::uint8_t getRandomCharacterFromPool(const CharacterPool& pool);
 
    public:
     PasswordGenerator(RNGENGINE rngEngine, POOLS pool);

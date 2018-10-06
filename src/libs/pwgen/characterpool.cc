@@ -16,28 +16,27 @@ const CharacterPool yapet::pwgen::punctuation{".,;:-!?'"};
 const CharacterPool yapet::pwgen::special{"_+\"*%&/()[]={}<>"};
 const CharacterPool yapet::pwgen::other{"@#\\|$~`^"};
 
-std::vector<CharacterPool> yapet::pwgen::getPools(int pools) {
-    std::vector<CharacterPool> list{};
-
+CharacterPool yapet::pwgen::getPools(int pools) {
+    CharacterPool characterPools;
     if (isLetters(pools)) {
-        list.push_back(letters);
+        characterPools += letters;
     }
     if (isDigits(pools)) {
-        list.push_back(digits);
+        characterPools += digits;
     }
     if (isPunct(pools)) {
-        list.push_back(punctuation);
+        characterPools += punctuation;
     }
     if (isSpecial(pools)) {
-        list.push_back(special);
+        characterPools += special;
     }
     if (isOther(pools)) {
-        list.push_back(other);
+        characterPools += other;
     }
 
-    if (list.size() == 0) {
+    if (characterPools.characters().size() == 0) {
         throw std::out_of_range{_("No character pools selected")};
     }
 
-    return list;
+    return characterPools;
 }
