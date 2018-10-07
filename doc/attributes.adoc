@@ -1,4 +1,9 @@
-:yp-mp: yapet(1)
-:yp-config-mp: yapet_config(5)
-:yp-colors-mp: yapet_colors(5)
-:rcfile: $HOME/.yapet
+:yp-mp: pass:quotes[*yapet*(1)]
+:yp-config-mp: pass:quotes[*yapet_config*(5)]
+:yp-colors-mp: pass:quotes[*yapet_colors*(5)]
+:rcfile: pass:quotes[_$HOME/.yapet_]
+:yapet: pass:quotes[*yapet*]
+:csv2yapet: pass:quotes[*csv2yapet*]
+:yapet2csv: pass:quotes[*yapet2csv*]
+:crypto-mp: pass:quotes[*crypto*(7)]
+:ssl-mp: pass:quotes[*ssl*(7)]

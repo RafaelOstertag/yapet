@@ -13,9 +13,9 @@ yapet_config - format of a YAPET configuration file
 
 == DESCRIPTION
 
-*{yp-mp}* reads the configuration file *{rcfile}* if it exists
+{yp-mp} reads the configuration file {rcfile} if it exists
 unless a different file is specified by using the *-r* option, see
-*{yp-mp}*. Options given on the command line override options given in
+{yp-mp}. Options given on the command line override options given in
 a configuration file.
 
 The configuration file has the following syntax:
@@ -24,17 +24,17 @@ The configuration file has the following syntax:
 
 where _option_ can be any of the following:
 
-*colors*:: (String) Set custom colors. See *{yp-colors-mp}* for more information.
-*load*:: (String) The file to load upon start of *yapet*. Equivalent
-	 to providing a _filename_ when invoking *yapet*. A `~`
+*colors*:: (String) Set custom colors. See {yp-colors-mp} for more information.
+*load*:: (String) The file to load upon start of {yapet}. Equivalent
+	 to providing a _filename_ when invoking {yapet}. A _~_
 	 (tilde) sign as the first character of the pathname will be
-	 replaced by the home directory of the user running *yapet*.
+	 replaced by the home directory of the user running {yapet}.
 +
 Default: not set
 *locktimeout*:: (Integer) A positive integer specifying the time of
 	    inactivity in seconds until the screen is
 	    locked. Equivalent to providing the *-t* option when
-	    invoking *yapet*.
+	    invoking {yapet}.
 +
 Default: 600
 *pwinputtimeout*:: (Integer) A positive integer specifying the time of
@@ -43,10 +43,10 @@ Default: 600
 +
 Default: 60
 *allowlockquit*:: (Boolean) A value of _true_ allows the user to quit
-	    *yapet* from the locked screen (if no changes are
+	    {yapet} from the locked screen (if no changes are
 	    pending). +
 	    A value of _false_ prevents the user from
-	    quitting *yapet* when the screen is locked.
+	    quitting {yapet} when the screen is locked.
 +
 Default: _true_
 *checkfsecurity*:: (Boolean) A value of _true_ enables the
@@ -55,7 +55,7 @@ Default: _true_
 	    A value of _false_ disables the verification of the file
 	    owner and permissions when loading a file. Equivalent to
 	    providing the *-S* (same as _true_) or *-s* (same as
-	    _false_) options when invoking *yapet*.
+	    _false_) options when invoking {yapet}.
 +
 Default: _true_
 *pwgen_rng*:: (String) The random number generator used to generate
@@ -63,7 +63,7 @@ Default: _true_
  	      * _devrandom_: Request using _/dev/random_. This is a
 		    high-quality random number generator. However, if
 		    the system lacks entropy, reading from this device
-		    may block, thus making *yapet* unresponsive.
+		    may block, thus making {yapet} unresponsive.
 	      * _devurandom_: Request using _/dev/urandom_. This is a
 		    quality random number generator similar to
 		    _/dev/random_ but not of the same quality. Using
@@ -98,10 +98,12 @@ Default: _true_
 	     check box of the Password Generator Dialog.
 +
 Default: _false_
-*argon2_memory*:: (Integer) Memory used by the Argon2 hash algorithm in KB.
+*argon2_memory*:: (Integer) Memory used by the Argon2 hash algorithm
+ in KB.
 +
 Default: 262144
-*argon2_parallelism*:: (Integer) Number of threads used by the Argon2 hash algorithm.
+*argon2_parallelism*:: (Integer) Number of threads used by the Argon2
+ hash algorithm.
 +
 Default: 16
 *argon2_iterations*:: (Integer) Number of iterations performed by the Argon2 hash algorithm.
@@ -128,13 +130,13 @@ pwgen_pwlen=8
 ```
 
 In this example, the file _/home/joe/passwords_ will be loaded upon
-invocation of *yapet*. The timeout until the screen is locked is set
+invocation of {yapet}. The timeout until the screen is locked is set
 to 300 seconds. File permissions will not be verified.
 
 The Password Generator Dialog will have preset the *Password Length*
 to 8 characters.
 
-=== Example of an *yapet* configuration file
+=== Example of an {yapet} configuration file
 ```
 locktimeout=150
 checkfsecurity=yes
@@ -142,7 +144,7 @@ pwgen_other=enable
 ```
 
 In this example, no file will be automatically loaded upon invocation
-of *yapet*. The timeout until the screen is locked is set to 150
+of {yapet}. The timeout until the screen is locked is set to 150
 seconds. File permissions and owner will be verified.
 
 The Password Generator Dialog will have preset the *Other* check box
@@ -159,8 +161,8 @@ pwgen_pwlen=8
 ```
 
 This example has the same effect as <<example1>>. But instead of
-specifying the full path to the home directory, the ~ (tilde) sign is
-used, which is expanded to the home directory automatically. The
+specifying the full path to the home directory, the _~_ (tilde) sign
+is used, which is expanded to the home directory automatically. The
 _.pet_ suffix can be specified, but if omitted it will be appended
 automatically.
 
@@ -170,7 +172,7 @@ automatically.
 	    options are read from this file but can be overridden by
 	    the command line options. +
 	    Processing of this file can be
-	    disabled by invoking *yapet* with the *-i* option.
+	    disabled by invoking {yapet} with the *-i* option.
 
 include::man-authors.adoc[]
 

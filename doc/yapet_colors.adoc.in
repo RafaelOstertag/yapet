@@ -17,190 +17,85 @@ yapet_colors - format of YAPET color configuration
 The color scheme of YAPET can be customized by setting the _colors_
 option in {rcfile}. It has the following syntax:
 
+_colors_=_OBJ1_:__<fg1>____<bg1>____<attr1>__;...;__OBJN__:__<fgN>____<bgN>____<attrN>__
+
+_OBJN_:: The UI object for which the color is set. See <<uiobjects>> for possible values.
+_<fgN>_:: The foreground color of the UI object. See <<colors>> for possible values.
+_<bgN>_:: The background color of the UI object. See <<colors>> for possible values.
+_<attrN>_:: The attribute of the UI object. Attributes are used if the
+	    terminal does not support colors. See <<attributes>> for possible values.
+
+[#uiobjects]
+.UI Objects
+|===
+|UI Object|Abbreviation
+|Default Color|DEF
+|Dialog|DIA
+|Dialog Title|DIT
+|Input Widget w/o focus|IWN
+|Input Widget w/ focus|IWF
+|Hidden text in Input Widget|IWH
+|Button w/o focus|BTN
+|Button w/ focus|BTF
+|List Box|LBX
+|Highlighted line in List Box|LBH
+|Check box group|CBG
+|Title Bar|TLB
+|Status Bar|STB
+|===
+
+[#colors]
+.Colors
+|===
+|Color|Abbreviation
+|Black|k
+|Red|r
+|Green|g
+|Yellow|y
+|Blue|b
+|Magenta|m
+|Cyan|c
+|White|w
+|===
+
+[#attributes]
+.Attributes
+|===
+|Attribute|Abbreviation
+|Normal|0
+|Standout|1
+|Underline|2
+|Reverse|3
+|Blink|4
+|Dim|5
+|Protected|6
+|Invisible|7
+|===
+
+== EXAMPLES
+
+=== Default YAPET Colors
+
+Please note, the line has been wrapped for better readability. Line
+breaks are not allowed in _colors_.
+
 ```
-_colors_=_OBJ1_:_<fg1>__<bg1>__<attr1>_;...;_OBJN_:_<fgN>__<bgN>__<attrN>_
+colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;
+       BTN:wk0;BTF:kg3;LBX:wk0;LBH:kg3;CBG:yc0;TLB:bw0;STB:bw0
 ```
 
-_OBJN_:: The UI object for which the color is set. See <xref linkend="tab.uiobjects" /> for possible values.
-_<fgN>_:: The foreground color of the UI object. See <xref linkend="tab.colors"/> for possible values.
+== FILES
 
-      <varlistentry>
-	<term>_<bgN>_</term>
-	<listitem>
-	  <para>
-	    The background color of the UI object. See <xref
-	    linkend="tab.colors"/> for possible values.
-	  </para>
-	</listitem>
-      </varlistentry>
+{rcfile}::The per-user configuration file. If existing, options are
+	  read from this file but can be overridden by the command
+	  line options. Processing of this file can be disabled by
+	  invoking {yapet} with the *-i* option. Refer to the
+	  {yp-config-mp} for an explanation of the per-user
+	  configuration file.
 
-      <varlistentry>
-	<term>_<attrN>_</term>
-	<listitem>
-	  <para>
-	    The attribute of the UI object. Attributes are used if the
-	    terminal does not support colors. See <xref
-	    linkend="tab.attributes"/> for possible values.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
+include::man-authors.adoc[]
 
-    <table pgwide="1" id="tab.uiobjects">
-      <title>UI Objects</title>
+== SEE ALSO
 
-      <tgroup cols="2" align="left">
-	<colspec colname="uiobject" align="left" />
-	<colspec colname="abbrev" align="left" />
-	<thead>
-	  <row>
-	    <entry>UI Object</entry>
-	    <entry>Abbreviation</entry>
-	  </row>
-	</thead>
+{yp-mp}, {yp-config-mp}
 
-	<tbody>
-         <row><entry>Default Color</entry><entry>DEF</entry></row>
-         <row><entry>Dialog</entry><entry>DIA</entry></row>
-         <row><entry>Dialog Title</entry><entry>DIT</entry></row>
-         <row><entry>Input Widget w/o focus</entry><entry>IWN</entry></row>
-         <row><entry>Input Widget w/ focus</entry><entry>IWF</entry></row>
-         <row><entry>Hidden text in Input Widget</entry><entry>IWH</entry></row>
-         <row><entry>Button w/o focus</entry><entry>BTN</entry></row>
-         <row><entry>Button w/ focus</entry><entry>BTF</entry></row>
-         <row><entry>List Box</entry><entry>LBX</entry></row>
-         <row><entry>Highlighted line in List Box</entry><entry>LBH</entry></row>
-         <row><entry>Check box group</entry><entry>CBG</entry></row>
-         <row><entry>Title Bar</entry><entry>TLB</entry></row>
-         <row><entry>Status Bar</entry><entry>STB</entry></row>
-	</tbody>
-
-      </tgroup>
-    </table>
-
-    <table pgwide="1" id="tab.colors">
-      <title>Colors</title>
-
-      <tgroup cols="2" align="left">
-	<colspec colname="color" align="left" />
-	<colspec colname="abbrev" align="left" />
-	<thead>
-	  <row>
-	    <entry>Color</entry>
-	    <entry>Abbreviation</entry>
-	  </row>
-	</thead>
-
-	<tbody>
-         <row><entry>Black</entry><entry>k</entry></row>
-         <row><entry>Red</entry><entry>r</entry></row>
-         <row><entry>Green</entry><entry>g</entry></row>
-         <row><entry>Yellow</entry><entry>y</entry></row>
-         <row><entry>Blue</entry><entry>b</entry></row>
-         <row><entry>Magenta</entry><entry>m</entry></row>
-         <row><entry>Cyan</entry><entry>c</entry></row>
-         <row><entry>White</entry><entry>w</entry></row>
-	</tbody>
-
-      </tgroup>
-    </table>
-
-    <table pgwide="1" id="tab.attributes">
-      <title>Attributes</title>
-
-      <tgroup cols="2" align="left">
-	<colspec colname="attribute" align="left" />
-	<colspec colname="abbrev" align="left" />
-	<thead>
-	  <row>
-	    <entry>Attribute</entry>
-	    <entry>Abbreviation</entry>
-	  </row>
-	</thead>
-
-	<tbody>
-         <row><entry>Normal</entry><entry>0</entry></row>
-         <row><entry>Standout</entry><entry>1</entry></row>
-         <row><entry>Underline</entry><entry>2</entry></row>
-         <row><entry>Reverse</entry><entry>3</entry></row>
-         <row><entry>Blink</entry><entry>4</entry></row>
-         <row><entry>Dim</entry><entry>5</entry></row>
-         <row><entry>Protected</entry><entry>6</entry></row>
-         <row><entry>Invisible</entry><entry>7</entry></row>
-	</tbody>
-
-      </tgroup>
-    </table>
-  </refsect1>
-
-  <!--
-  -
-  - EXAMPLES
-  -
-  -->
-  <refsect1 id="examples">
-    <title>EXAMPLES</title>
-
-    <example id="ex.defaultcolors">
-      <title>Default YAPET Colors</title>
-
-      <para>
-	Please note, the line has been wrapped for better
-	readability. Line breaks are not allowed in
-	_colors_.
-      </para>
-      
-      <literallayout>colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;
-       BTN:wk0;BTF:kg3;LBX:wk0;LBH:kg3;CBG:yc0;TLB:bw0;STB:bw0</literallayout>
-    </example>
-  </refsect1>
-
-  <!--
-      -
-      - FILES
-      -
-  -->
-  <refsect1 id="files">
-    <title>FILES</title>
-
-    <variablelist>
-      <varlistentry>
-	<term>{rcfile}</term>
-
-	<listitem>
-	  <para>The per-user configuration file. If existing, options
-	  are read from this file but can be overridden by the command
-	  line options.</para>
-
-	  <para>Processing of this file can be disabled by invoking
-	  &yp; with the *-i* option.</para>
-
-	  <para>Refer to the &yapet_config; for
-	  an explanation of the per-user configuration file.</para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </refsect1>
-
-  <!--
-  -
-  -  AUTHOR
-  -
-  -->
-  <refsect1 id="author">
-    <title>AUTHOR</title>
-    <simpara>Rafael Ostertag <email>rafi@guengel.ch</email></simpara>
-  </refsect1>
-
-  <!--
-  -
-  -  SEE ALSO
-  -
-  -->
-  <refsect1 id="seealso">
-    <title>SEE ALSO</title>
-
-    <simpara>&ypman;, &yapet_config;</simpara>
-  </refsect1>
-
-</refentry>
