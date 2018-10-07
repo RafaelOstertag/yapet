@@ -49,7 +49,6 @@ pipeline {
                             }
                             steps {
                                 sh 'gem install --user-install asciidoctor'
-                                env
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
