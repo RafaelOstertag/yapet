@@ -1,0 +1,181 @@
+// -*- adoc -*-
+= yapet_config(5)
+:doctype: manpage
+:man manual: YAPET_CONFIG
+:man source: YAPET @PACKAGE_VERSION@
+:manvolnum: 5
+:page-layout: base
+include::attributes.adoc[]
+
+== NAME
+
+yapet_config - format of a YAPET configuration file
+
+== DESCRIPTION
+
+{yp-mp} reads the configuration file {rcfile} if it exists
+unless a different file is specified by using the *-r* option, see
+{yp-mp}. Options given on the command line override options given in
+a configuration file.
+
+The configuration file has the following syntax:
+
+ option=value
+
+where _option_ can be any of the following:
+
+*colors*:: (String) Set custom colors. See {yp-colors-mp} for more information.
+*load*:: (String) The file to load upon start of {yapet}. Equivalent
+	 to providing a _filename_ when invoking {yapet}. A _~_
+	 (tilde) sign as the first character of the pathname will be
+	 replaced by the home directory of the user running {yapet}.
++
+Default: not set
+*locktimeout*:: (Integer) A positive integer specifying the time of
+	    inactivity in seconds until the screen is
+	    locked. Equivalent to providing the *-t* option when
+	    invoking {yapet}.
++
+Default: 600
+*pwinputtimeout*:: (Integer) A positive integer specifying the time of
+	    inactivity in seconds until the password prompt for
+	    unlocking the screen will disappear.
++
+Default: 60
+*allowlockquit*:: (Boolean) A value of _true_ allows the user to quit
+	    {yapet} from the locked screen (if no changes are
+	    pending). +
+	    A value of _false_ prevents the user from
+	    quitting {yapet} when the screen is locked.
++
+Default: _true_
+*checkfsecurity*:: (Boolean) A value of _true_ enables the
+	    verification of the file owner and permissions when
+	    loading a file. +
+	    A value of _false_ disables the verification of the file
+	    owner and permissions when loading a file. Equivalent to
+	    providing the *-S* (same as _true_) or *-s* (same as
+	    _false_) options when invoking {yapet}.
++
+Default: _true_
+*pwgen_rng*:: (String) The random number generator used to generate
+	      passwords. Possible values are
+ 	      * _devrandom_: Request using _/dev/random_. This is a
+		    high-quality random number generator. However, if
+		    the system lacks entropy, reading from this device
+		    may block, thus making {yapet} unresponsive.
+	      * _devurandom_: Request using _/dev/urandom_. This is a
+		    quality random number generator similar to
+		    _/dev/random_ but not of the same quality. Using
+		    this random number generator will not block as
+		    opposite to _/dev/random_.
+	      * _rand_: Request using *rand(3)*. This is a last resort
+		    random number generator and should not be used.
++
+Default: devurandom
+*pwgen_pwlen*:: (Integer) A positive integer greater than zero
+	    specifying the default password length used by the
+	    Password Generator Dialog.
++
+Default: 15
+*pwgen_letters*:: (Boolean) A value of _true_ will preselect the
+	    *Letters* check box of the Password Generator Dialog.
++
+Default: _true_
+*pwgen_digits*:: (Boolean) A value of _true_ will preselect the
+	    *Digits* check box of the Password Generator Dialog.
++
+Default: _true_
+*pwgen_punct*:: (Boolean) A value of _true_ will preselect the
+	     *Punctuation* check box of the Password Generator Dialog.
++
+Default: _true_
+*pwgen_special*:: (Boolean) A value of _true_ will preselect the
+	     *Special* check box of the Password Generator Dialog.
++
+Default: _true_
+*pwgen_other*:: (Boolean) A value of _true_ will preselect *Other*
+	     check box of the Password Generator Dialog.
++
+Default: _false_
+*argon2_memory*:: (Integer) Memory used by the Argon2 hash algorithm
+ in KB.
++
+Default: 262144
+*argon2_parallelism*:: (Integer) Number of threads used by the Argon2
+ hash algorithm.
++
+Default: 16
+*argon2_iterations*:: (Integer) Number of iterations performed by the Argon2 hash algorithm.
++
+Default: 5
+
+For Boolean values, _1_, _yes_, _true_, _enable_, and _enabled_ denote
+true. _0_, _false_, _no_, _disable_, _disabled_ denote false. Please
+note, Boolean values are case-sensitive.
+
+The **argon2_*** options only take effect when creating a new file or
+changing the master password of an existing file.
+
+[#examples]
+== EXAMPLES
+
+[#example1]
+=== Example of an yapet configuration file
+```
+load=/home/joe/passwords
+locktimeout=300
+checkfsecurity=0
+pwgen_pwlen=8
+```
+
+In this example, the file _/home/joe/passwords_ will be loaded upon
+invocation of {yapet}. The timeout until the screen is locked is set
+to 300 seconds. File permissions will not be verified.
+
+The Password Generator Dialog will have preset the *Password Length*
+to 8 characters.
+
+=== Example of an {yapet} configuration file
+```
+locktimeout=150
+checkfsecurity=yes
+pwgen_other=enable
+```
+
+In this example, no file will be automatically loaded upon invocation
+of {yapet}. The timeout until the screen is locked is set to 150
+seconds. File permissions and owner will be verified.
+
+The Password Generator Dialog will have preset the *Other* check box
+checked.
+
+
+=== Example 1 revisited
+
+```
+load=~/passwords.pet
+locktimeout=300
+checkfsecurity=false
+pwgen_pwlen=8
+```
+
+This example has the same effect as <<example1>>. But instead of
+specifying the full path to the home directory, the _~_ (tilde) sign
+is used, which is expanded to the home directory automatically. The
+_.pet_ suffix can be specified, but if omitted it will be appended
+automatically.
+
+== FILES
+
+*{rcfile}*:: The per-user configuration file. If existing,
+	    options are read from this file but can be overridden by
+	    the command line options. +
+	    Processing of this file can be
+	    disabled by invoking {yapet} with the *-i* option.
+
+include::man-authors.adoc[]
+
+== SEE ALSO
+
+`yapet(1)`, `yapet_colors(5)`

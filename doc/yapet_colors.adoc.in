@@ -1,0 +1,101 @@
+// -*- adoc -*-
+= yapet_colors(5)
+:doctype: manpage
+:man manual: YAPET_CONFIG
+:man source: YAPET @PACKAGE_VERSION@
+:manvolnum: 5
+:page-layout: base
+include::attributes.adoc[]
+
+== NAME
+
+yapet_colors - format of YAPET color configuration
+
+
+== DESCRIPTION
+
+The color scheme of YAPET can be customized by setting the _colors_
+option in {rcfile}. It has the following syntax:
+
+_colors_=_OBJ1_:__<fg1>____<bg1>____<attr1>__;...;__OBJN__:__<fgN>____<bgN>____<attrN>__
+
+_OBJN_:: The UI object for which the color is set. See <<uiobjects>> for possible values.
+_<fgN>_:: The foreground color of the UI object. See <<colors>> for possible values.
+_<bgN>_:: The background color of the UI object. See <<colors>> for possible values.
+_<attrN>_:: The attribute of the UI object. Attributes are used if the
+	    terminal does not support colors. See <<attributes>> for possible values.
+
+[#uiobjects]
+.UI Objects
+|===
+|UI Object|Abbreviation
+|Default Color|DEF
+|Dialog|DIA
+|Dialog Title|DIT
+|Input Widget w/o focus|IWN
+|Input Widget w/ focus|IWF
+|Hidden text in Input Widget|IWH
+|Button w/o focus|BTN
+|Button w/ focus|BTF
+|List Box|LBX
+|Highlighted line in List Box|LBH
+|Check box group|CBG
+|Title Bar|TLB
+|Status Bar|STB
+|===
+
+[#colors]
+.Colors
+|===
+|Color|Abbreviation
+|Black|k
+|Red|r
+|Green|g
+|Yellow|y
+|Blue|b
+|Magenta|m
+|Cyan|c
+|White|w
+|===
+
+[#attributes]
+.Attributes
+|===
+|Attribute|Abbreviation
+|Normal|0
+|Standout|1
+|Underline|2
+|Reverse|3
+|Blink|4
+|Dim|5
+|Protected|6
+|Invisible|7
+|===
+
+== EXAMPLES
+
+=== Default YAPET Colors
+
+Please note, the line has been wrapped for better readability. Line
+breaks are not allowed in _colors_.
+
+```
+colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;
+       BTN:wk0;BTF:kg3;LBX:wk0;LBH:kg3;CBG:yc0;TLB:bw0;STB:bw0
+```
+
+== FILES
+
+{rcfile}::The per-user configuration file. If existing, options are
+	  read from this file but can be overridden by the command
+	  line options. Processing of this file can be disabled by
+	  invoking {yapet} with the *-i* option. Refer to the
+	  {yp-config-mp} for an explanation of the per-user
+	  configuration file.
+
+include::man-authors.adoc[]
+
+== SEE ALSO
+
+{yp-mp}, {yp-config-mp}
+

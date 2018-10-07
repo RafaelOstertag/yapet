@@ -30,7 +30,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "git log --stat > ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -44,7 +44,11 @@ pipeline {
                         }
 
                         stage("(FB64) Build Docs") {
+                            environment {
+                                PATH = '$PATH:$HOME/.gem/ruby/2.5/bin'
+                            }
                             steps {
+                                sh 'gem install --user-install asciidoctor'
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
@@ -104,7 +108,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "git log --stat > ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -120,9 +124,9 @@ pipeline {
                         stage("(FB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
+                                sh 'touch NEWS'
                             }
                         }
 
@@ -155,7 +159,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "touch ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -171,9 +175,9 @@ pipeline {
                         stage("(LX) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
+                                sh 'touch NEWS'
                             }
                         }
 						 stage("(LX) Build") {
@@ -205,7 +209,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "touch ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -221,9 +225,8 @@ pipeline {
                         stage("(OB64) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 
@@ -256,7 +259,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "touch ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -272,9 +275,8 @@ pipeline {
                         stage("(OB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 
@@ -307,7 +309,7 @@ pipeline {
                                 dir("libyacurs") {
                                     sh "touch ChangeLog"
                                 }
-                                sh "touch README"
+                                sh "touch README NEWS"
                                 sh "autoreconf -I m4 -i"
                             }
                         }
@@ -323,9 +325,8 @@ pipeline {
                         stage("(NB) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(NB) Build") {

@@ -1,0 +1,47 @@
+// -*- adoc -*-
+= YAPET - Yet Another Password Encryption Tool @PACKAGE_VERSION@
+Rafael Ostertag <rafi@guengel.ch>
+
+== Introduction
+
+YAPET is a text based password manager using the AES-256 encryption
+algorithm to store passwords and associated information encrypted on
+disk. Its primary aim is to provide a safe way to store passwords in a
+file on disk while having a small footprint, and compiling and running
+under today's most popular Unix Systems.
+
+The password records are protected by a master password which is used
+to encrypt and decrypt the password records.
+
+== Supported Platforms
+    
+YAPET has been tested on following platforms:
+
+* FreeBSD
+* OpenBSD
+* NetBSD
+* Linux
+
+== Features
+
+YAPET features:
+
+* AES-256 encryption.
+* Passwords are not kept clear text in memory.
+* Locks the terminal on inactivity.
+* Utilities to convert to and from CSV format.
+* Built-in password generator.
+
+Depends only on three libraries:
+
+* http://www.openssl.org/[OpenSSL]
+* Curses or http://www.gnu.org/software/ncurses/[Ncurses]
+* https://github.com/P-H-C/phc-winner-argon2[Argon2]
+
+
+CAUTION: Although several precautions were taken to avoid having any
+  passwords stored clear text in memory, there were occasions when
+  core files contained the master password. This means that it is
+  possible, though not likely, for a malicious user to get hold of one
+  or more passwords *while* YAPET is running.
+

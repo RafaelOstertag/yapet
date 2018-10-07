@@ -1,7 +1,7 @@
 DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
-EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER DESIGN	\
+EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER	\
 LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
 
 DIST_SUBDIRS = libyacurs src po tests doc
@@ -12,7 +12,7 @@ desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
 if !DISABLEINSTALLDOC
-textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE
+textdoc_DATA = README COPYING AUTHORS LICENSE
 textdocdir = $(docdir)
 endif # !DISABLEINSTALLDOC
 
