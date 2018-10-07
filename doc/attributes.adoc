@@ -1,3 +1,4 @@
 :yp-mp: yapet(1)
 :yp-config-mp: yapet_config(5)
 :yp-colors-mp: yapet_colors(5)
+:rcfile: $HOME/.yapet

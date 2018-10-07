@@ -1,100 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
-[
-<!ENTITY cpr SYSTEM "copyright.sgml">
-<!ENTITY supplatforms SYSTEM "supportedplatforms.sgml">
-<!ENTITY pwrecord SYSTEM "pwrecord.sgml">
-<!ENTITY caution SYSTEM "caution.sgml">
-<!ENTITY license SYSTEM "license.sgml">
-<!ENTITY bugreport SYSTEM "bugreport.sgml">
-<!ENTITY OPENSSL "<citerefentry><refentrytitle>ssl</refentrytitle>
-<manvolnum>3</manvolnum></citerefentry>">
-<!ENTITY CRYPTO "<citerefentry><refentrytitle>crypto</refentrytitle>
-<manvolnum>3</manvolnum></citerefentry>">
-<!ENTITY CURSES "<citerefentry><refentrytitle>curses</refentrytitle>
-<manvolnum>3X</manvolnum></citerefentry>">
-<!ENTITY YP "@PACKAGE_NAME@">
-<!ENTITY yp "<command>@PACKAGE@</command>">
-<!ENTITY ypman "<citerefentry><refentrytitle>yapet</refentrytitle>
-<manvolnum>1</manvolnum></citerefentry>">
-<!ENTITY CSV2YAPET "csv2yapet">
-<!ENTITY csv2yapet "<command>csv2yapet</command>">
-<!ENTITY csv2yapetman "<citerefentry><refentrytitle>csv2yapet</refentrytitle>
-<manvolnum>1</manvolnum></citerefentry>">
-<!ENTITY YAPET2CSV "yapet2csv">
-<!ENTITY yapet2csv "<command>yapet2csv</command>">
-<!ENTITY yapet2csvman ", <citerefentry><refentrytitle>yapet2csv</refentrytitle>
-<manvolnum>1</manvolnum></citerefentry>">
-<!ENTITY yapet_config "<citerefentry><refentrytitle>yapet_config</refentrytitle>
-<manvolnum>5</manvolnum></citerefentry>">
-<!ENTITY yapet_colors "<citerefentry><refentrytitle>yapet_colors</refentrytitle>
-<manvolnum>5</manvolnum></citerefentry>">
-<!ENTITY FREEBSD "FreeBSD">
-<!ENTITY SOLARIS "Oracle Solaris">
-<!ENTITY YPPKG "@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz">
-<!ENTITY YPVER "@PACKAGE_VERSION@">
-<!ENTITY DEFRCFILE "<envar>$HOME</envar><filename>/.yapet</filename>">
-]>
-<refentry id="yapet_colors">
-  <!-- $Id$ -->
+// -*- adoc -*-
+= yapet_colors(5)
+:doctype: manpage
+:man manual: YAPET_CONFIG
+:man source: YAPET @PACKAGE_VERSION@
+:manvolnum: 5
+:page-layout: base
+include::attributes.adoc[]
 
-  <refentryinfo>
-     <productname>yapet</productname>
-     &cpr;
-  </refentryinfo>
+== NAME
 
-  <refmeta>
-    <refentrytitle>yapet_colors</refentrytitle>
-    <manvolnum>5</manvolnum>
-    <refmiscinfo class="version">@PACKAGE_VERSION@</refmiscinfo>
-    <refmiscinfo class="manual">File Formats</refmiscinfo>
-  </refmeta>
+yapet_colors - format of YAPET color configuration
 
-  <refnamediv>
-    <refname>yapet_colors</refname>
-    <refpurpose>format of &YP; color configuration</refpurpose>
-  </refnamediv>
 
-  <!--
-  -
-  -  DESCRIPTION
-  -
-  -->
-  <refsect1 id="description">
-    <title>DESCRIPTION</title>
+== DESCRIPTION
 
-    <para>
-      The color scheme of &YP; can be customized by setting the
-      <option>colors</option> option in &DEFRCFILE; (see <xref
-      linkend="examples"/> for examples). It has the following syntax:
-    </para>
+The color scheme of YAPET can be customized by setting the _colors_
+option in {rcfile}. It has the following syntax:
 
-    <literallayout><option>colors</option>=<replaceable>OBJ1</replaceable>:<replaceable>&lt;fg1&gt;</replaceable><replaceable>&lt;bg1&gt;</replaceable><replaceable>&lt;attr1&gt;</replaceable>;...;<replaceable>OBJN</replaceable>:<replaceable>&lt;fgN&gt;</replaceable><replaceable>&lt;bgN&gt;</replaceable><replaceable>&lt;attrN&gt;</replaceable></literallayout>
+```
+_colors_=_OBJ1_:_<fg1>__<bg1>__<attr1>_;...;_OBJN_:_<fgN>__<bgN>__<attrN>_
+```
 
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>OBJN</replaceable></term>
-	<listitem>
-	  <para>
-	    The UI object for which the color is set. See <xref
-	    linkend="tab.uiobjects" /> for possible values.
-	  </para>
-	</listitem>
-      </varlistentry>
+_OBJN_:: The UI object for which the color is set. See <xref linkend="tab.uiobjects" /> for possible values.
+_<fgN>_:: The foreground color of the UI object. See <xref linkend="tab.colors"/> for possible values.
 
       <varlistentry>
-	<term><replaceable>&lt;fgN&gt;</replaceable></term>
-	<listitem>
-	  <para>
-	    The foreground color of the UI object. See <xref
-	    linkend="tab.colors"/> for possible values.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><replaceable>&lt;bgN&gt;</replaceable></term>
+	<term>_<bgN>_</term>
 	<listitem>
 	  <para>
 	    The background color of the UI object. See <xref
@@ -104,7 +35,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><replaceable>&lt;attrN&gt;</replaceable></term>
+	<term>_<attrN>_</term>
 	<listitem>
 	  <para>
 	    The attribute of the UI object. Attributes are used if the
@@ -216,7 +147,7 @@
       <para>
 	Please note, the line has been wrapped for better
 	readability. Line breaks are not allowed in
-	<option>colors</option>.
+	_colors_.
       </para>
       
       <literallayout>colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;
@@ -234,7 +165,7 @@
 
     <variablelist>
       <varlistentry>
-	<term>&DEFRCFILE;</term>
+	<term>{rcfile}</term>
 
 	<listitem>
 	  <para>The per-user configuration file. If existing, options
@@ -242,7 +173,7 @@
 	  line options.</para>
 
 	  <para>Processing of this file can be disabled by invoking
-	  &yp; with the <option>-i</option> option.</para>
+	  &yp; with the *-i* option.</para>
 
 	  <para>Refer to the &yapet_config; for
 	  an explanation of the per-user configuration file.</para>

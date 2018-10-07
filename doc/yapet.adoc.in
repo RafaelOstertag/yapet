@@ -52,7 +52,7 @@ converted, the files can no longer be read by pre YAPET 2.0 versions.
 Other features of *yapet* are:
 
 * Screen lock after a certain amount of inactivity when password file
-  is loaded (see also `yapet_config(5)` and <<options>>).
+  is loaded (see also `{yp-config-mp}` and <<options>>).
 * Password records opened in read-only mode (default) hide the
   password. Toggling into edit mode reveals the password (see
   <<passwordrecorddialogkeys>>).
@@ -123,7 +123,7 @@ The following options are supported:
 *-i*:: Do not read the configuration file.
 *-r* _rcfile_:: Read the configuration file specified by _rcfile_. If
       this option is not given, the default configuration file read is
-      `$HOME/.yapet` unless *-i* is specified.
+      *{rcfile}* unless *-i* is specified.
  *-s*:: Disable the check for the owner and file mode when loading
  	files. Without this option, *yapet* checks password files for
  	having the same owner as the user running *yapet* and verifies
@@ -156,7 +156,7 @@ _filename_:: The file to open upon invocation of *yapet*. If the file
 
 == FILES
 
-`$HOME/.yapet`:: The per-user configuration file. If existing, options are
+*{rcfile}*:: The per-user configuration file. If existing, options are
 	    read from this file but can be overridden by the command
 	    line options. Processing of this file can be disabled by
 	    invoking *yapet* with the *-i* option. Refer to the
