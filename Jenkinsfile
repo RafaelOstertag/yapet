@@ -44,7 +44,12 @@ pipeline {
                         }
 
                         stage("(FB64) Build Docs") {
+                            environment {
+                                PATH = "$PATH:$HOME/.gem/ruby/2.5/bin"
+                            }
                             steps {
+                                sh 'gem install --user-install asciidoctor'
+                                env
                                 dir("obj/doc") {
                                     sh '$MAKE -f Makefile.doc'
                                 }
