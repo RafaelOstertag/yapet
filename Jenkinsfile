@@ -124,9 +124,9 @@ pipeline {
                         stage("(FB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin NEWS'
+                                sh 'touch NEWS'
                             }
                         }
 
@@ -175,9 +175,9 @@ pipeline {
                         stage("(LX) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
+                                sh 'touch NEWS'
                             }
                         }
 						 stage("(LX) Build") {
@@ -225,9 +225,8 @@ pipeline {
                         stage("(OB64) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 
@@ -276,9 +275,8 @@ pipeline {
                         stage("(OB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 
@@ -327,9 +325,8 @@ pipeline {
                         stage("(NB) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html DESIGN.html INSTALL.html README.Cygwin.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
-                                sh 'touch DESIGN README.Cygwin'
                             }
                         }
 						 stage("(NB) Build") {
