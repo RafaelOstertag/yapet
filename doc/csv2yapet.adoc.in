@@ -13,7 +13,7 @@ csv2yapet - convert CSV file to YAPET file
 
 == SYNOPSIS
 
-v{csv2yapet} [[-c] | [-h] | [-V]] | [[-p _password_] [-q] [-s
+{csv2yapet} [[-c] | [-h] | [-V]] | [[-p _password_] [-q] [-s
 _separator_]] _src_ _dst_
 
 == DESCRIPTION
