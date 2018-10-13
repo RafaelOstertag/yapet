@@ -8,7 +8,6 @@ allowlockquit=disabled
 pwgen_pwlen = 19
 pwgen_letters = no
 pwgen_digits = yes 
-pwgen_rng= rand 
 pwgen_punct = disable
 pwgen_special = enable  
 pwgen_other = false

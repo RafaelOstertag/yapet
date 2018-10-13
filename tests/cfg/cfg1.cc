@@ -154,55 +154,6 @@ void test_petfile_val() {
         MYEXIT("CfgValPetFile: value not set properly (#5)");
 }
 
-void test_rng_val() {
-    CfgValRNG val1;
-
-    if (val1.get() != DEVURANDOM)
-        MYEXIT("CfgValRNG: not properly initialized");
-
-    try {
-        val1.set_str("dev random");
-        if (val1.get() != DEVRANDOM)
-            MYEXIT("CfgValRNG: value not properly set");
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-        abort();
-    }
-
-    try {
-        val1.set_str("evurandom");
-        MYEXIT("CfgValRNG: allowed invalid argument");
-    } catch (std::invalid_argument&) {
-        // OK
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-    }
-
-    try {
-        val1.set_str("devrandom");
-        if (val1 != DEVRANDOM)
-            MYEXIT("CfgValRNG: value not properly set (#1)");
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-    }
-
-    try {
-        val1.set_str("devurandom");
-        if (val1 != DEVURANDOM)
-            MYEXIT("CfgValRNG: value not properly set (#2)");
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-    }
-
-    try {
-        val1.set_str("rand");
-        if (val1 != RAND)
-            MYEXIT("CfgValRNG: value not properly set (#4)");
-    } catch (std::exception& e) {
-        MYEXIT(e.what());
-    }
-}
-
 void test_int_val() {
     CfgValInt val1;
 
@@ -257,11 +208,7 @@ void test_initvalues() {
     if (cfg.pwgenpwlen != YAPET::Consts::DEFAULT_PASSWORD_LENGTH)
         MYEXIT("pwgenpwlen mismatch");
 
-    if (cfg.pwgen_rng != YAPET::Consts::DEFAULT_PWGEN_RNG)
-        MYEXIT("pwgen_rng mismatch");
-
-    if (cfg.pwgen_letters !=
-        isLetters(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
+    if (cfg.pwgen_letters != isLetters(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_letters mismatch");
 
     if (cfg.pwgen_digits != isDigits(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
@@ -270,8 +217,7 @@ void test_initvalues() {
     if (cfg.pwgen_punct != isPunct(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_punct mismatch");
 
-    if (cfg.pwgen_special !=
-        isSpecial(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
+    if (cfg.pwgen_special != isSpecial(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
         MYEXIT("pwgen_special mismatch");
 
     if (cfg.pwgen_other != isOther(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
@@ -307,10 +253,6 @@ void test_index_operator() {
         if (dynamic_cast<CfgValInt&>(cfg["pwgen_pwlen"]) !=
             YAPET::Consts::DEFAULT_PASSWORD_LENGTH)
             MYEXIT("pwgenpwlen mismatch");
-
-        if (dynamic_cast<CfgValRNG&>(cfg["pwgen_rng"]) !=
-            YAPET::Consts::DEFAULT_PWGEN_RNG)
-            MYEXIT("pwgen_rng mismatch");
 
         if (dynamic_cast<CfgValBool&>(cfg["pwgen_letters"]) !=
             isLetters(YAPET::Consts::DEFAULT_CHARACTER_POOLS))
@@ -395,8 +337,6 @@ int main(int, char**) {
     test_bool_val();
 
     test_petfile_val();
-
-    test_rng_val();
 
     test_int_val();
 

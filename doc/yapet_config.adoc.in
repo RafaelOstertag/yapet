@@ -58,21 +58,6 @@ Default: _true_
 	    _false_) options when invoking {yapet}.
 +
 Default: _true_
-*pwgen_rng*:: (String) The random number generator used to generate
-	      passwords. Possible values are
- 	      * _devrandom_: Request using _/dev/random_. This is a
-		    high-quality random number generator. However, if
-		    the system lacks entropy, reading from this device
-		    may block, thus making {yapet} unresponsive.
-	      * _devurandom_: Request using _/dev/urandom_. This is a
-		    quality random number generator similar to
-		    _/dev/random_ but not of the same quality. Using
-		    this random number generator will not block as
-		    opposite to _/dev/random_.
-	      * _rand_: Request using *rand(3)*. This is a last resort
-		    random number generator and should not be used.
-+
-Default: devurandom
 *pwgen_pwlen*:: (Integer) A positive integer greater than zero
 	    specifying the default password length used by the
 	    Password Generator Dialog.

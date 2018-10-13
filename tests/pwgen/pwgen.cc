@@ -42,7 +42,7 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
     }
 
     void generatePassword() {
-        PasswordGenerator passwordGenerator{RAND, ALL};
+        PasswordGenerator passwordGenerator{ALL};
         SecureArray password = passwordGenerator.generatePassword(3);
 
         CPPUNIT_ASSERT(password.size() == 4);
@@ -50,21 +50,15 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
     }
 
     void generateRandomPassword() {
-        PasswordGenerator passwordGenerator{DEVURANDOM, ALL};
+        PasswordGenerator passwordGenerator{ALL};
         SecureArray password1 = passwordGenerator.generatePassword(3);
         SecureArray password2 = passwordGenerator.generatePassword(3);
-
-        CPPUNIT_ASSERT(password1 != password2);
-
-        passwordGenerator.rngEngine(RAND);
-        password1 = passwordGenerator.generatePassword(3);
-        password2 = passwordGenerator.generatePassword(3);
 
         CPPUNIT_ASSERT(password1 != password2);
     }
 
     void generatePasswordSizeOne() {
-        PasswordGenerator passwordGenerator{RAND, ALL};
+        PasswordGenerator passwordGenerator{ALL};
         SecureArray password = passwordGenerator.generatePassword(1);
 
         CPPUNIT_ASSERT(password.size() == 2);
@@ -72,7 +66,7 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
     }
 
     void invalidPasswordSize() {
-        PasswordGenerator passwordGenerator{RAND, ALL};
+        PasswordGenerator passwordGenerator{ALL};
         CPPUNIT_ASSERT_THROW(passwordGenerator.generatePassword(0),
                              std::invalid_argument);
         CPPUNIT_ASSERT_THROW(passwordGenerator.generatePassword(-1),
@@ -80,7 +74,7 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
     }
 
     void usePoolsProperly() {
-        PasswordGenerator passwordGenerator{RAND, LETTERS};
+        PasswordGenerator passwordGenerator{LETTERS};
         SecureArray password{passwordGenerator.generatePassword(5)};
 
         for (SecureArray::size_type i = 0; i < password.size() - 1; i++) {

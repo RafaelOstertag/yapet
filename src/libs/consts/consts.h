@@ -51,8 +51,6 @@ class Consts {
     //! Default for checking file security
     static constexpr bool DEFAULT_FILE_SECURITY{true};
     static constexpr bool DEFAULT_ALLOW_LOCK_QUIT{true};
-    static constexpr yapet::pwgen::RNGENGINE DEFAULT_PWGEN_RNG{
-        yapet::pwgen::DEVURANDOM};
 
     //! Maximum password length
     static constexpr auto MAX_PASSWORD_LENGTH{256};

@@ -9,15 +9,15 @@
 
 using namespace yapet::pwgen;
 
-const CharacterPool yapet::pwgen::letters{
+const std::string yapet::pwgen::letters{
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-const CharacterPool yapet::pwgen::digits{"0123456789"};
-const CharacterPool yapet::pwgen::punctuation{".,;:-!?'"};
-const CharacterPool yapet::pwgen::special{"_+\"*%&/()[]={}<>"};
-const CharacterPool yapet::pwgen::other{"@#\\|$~`^"};
+const std::string yapet::pwgen::digits{"0123456789"};
+const std::string yapet::pwgen::punctuation{".,;:-!?'"};
+const std::string yapet::pwgen::special{"_+\"*%&/()[]={}<>"};
+const std::string yapet::pwgen::other{"@#\\|$~`^"};
 
-CharacterPool yapet::pwgen::getPools(int pools) {
-    CharacterPool characterPools;
+std::string yapet::pwgen::getPools(int pools) {
+    std::string characterPools;
     if (isLetters(pools)) {
         characterPools += letters;
     }
@@ -34,7 +34,7 @@ CharacterPool yapet::pwgen::getPools(int pools) {
         characterPools += other;
     }
 
-    if (characterPools.characters().size() == 0) {
+    if (characterPools.size() == 0) {
         throw std::out_of_range{_("No character pools selected")};
     }
 

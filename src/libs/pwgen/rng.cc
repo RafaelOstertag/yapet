@@ -30,6 +30,9 @@
 #endif
 
 #include <cstdlib>
+#include <functional>
+#include <limits>
+#include <stdexcept>
 
 #include "consts.h"
 #include "intl.h"
@@ -38,90 +41,76 @@
 using namespace yapet::pwgen;
 
 namespace {
-constexpr char DEV_RANDOM[]{"/dev/random"};
 constexpr char DEV_URANDOM[]{"/dev/urandom"};
 constexpr int BAD_FD{-1};
-}  // namespace
 
-void RngFile::closeFd() {
+int openDevUrandom() {
+    auto fd{::open(DEV_URANDOM, O_RDONLY)};
+    if (fd == BAD_FD) {
+        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
+        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
+                      _("Cannot open '%s'"), DEV_URANDOM);
+        throw std::runtime_error(msg);
+    }
+    return fd;
+}
+
+void closeFd(int fd) {
     if (fd != BAD_FD) {
         ::close(fd);
     }
 }
+}  // namespace
 
-RngFile::RngFile(const std::string& filename) : _filename{filename}, fd{-1} {
-    fd = ::open(filename.c_str(), O_RDONLY);
-    if (fd == BAD_FD) {
-        char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-        std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                      _("Cannot open '%s'"), filename.c_str());
-        throw std::runtime_error(msg);
-    }
-}
+Rng::Rng(std::uint8_t lo, std::uint8_t hi)
+    : fd{openDevUrandom()}, intUniformDistribution{lo, hi}, rngFunctor{*this} {}
 
-RngFile::~RngFile() { closeFd(); }
+Rng::~Rng() { closeFd(fd); }
 
-RngFile::RngFile(const RngFile& rng) : _filename{rng._filename} {
-    closeFd();
-
+Rng::Rng(const Rng& rng)
+    : intUniformDistribution{rng.intUniformDistribution}, rngFunctor{*this} {
     fd = ::dup(rng.fd);
-    if (fd == BAD_FD) {
-        throw std::runtime_error(_("Error creating object copy"));
-    }
 }
 
-RngFile::RngFile(RngFile&& rng)
-    : _filename{std::move(rng._filename)}, fd{rng.fd} {
+Rng::Rng(Rng&& rng)
+    : fd{rng.fd},
+      intUniformDistribution{std::move(rng.intUniformDistribution)},
+      rngFunctor{*this} {
     rng.fd = BAD_FD;
 }
 
-RngFile& RngFile::operator=(const RngFile& rng) {
+Rng& Rng::operator=(const Rng& rng) {
     if (this == &rng) return *this;
 
-    closeFd();
+    closeFd(fd);
 
-    _filename = rng._filename;
-    fd = ::dup(rng.fd);
-    if (fd == BAD_FD) {
-        throw std::runtime_error(_("Error creating object copy"));
-    }
+    fd = ::dup(fd);
+
+    intUniformDistribution = rng.intUniformDistribution;
 
     return *this;
 }
-RngFile& RngFile::operator=(RngFile&& rng) {
+
+Rng& Rng::operator=(Rng&& rng) {
     if (this == &rng) return *this;
 
-    _filename = std::move(rng._filename);
+    closeFd(fd);
+
     fd = rng.fd;
     rng.fd = BAD_FD;
 
+    intUniformDistribution = std::move(rng.intUniformDistribution);
+
     return *this;
 }
 
-std::uint8_t RngFile::getNextByte() {
-    std::uint8_t c;
-    int retval = ::read(fd, &c, sizeof(std::uint8_t));
-    if (retval != sizeof(std::uint8_t)) {
-        throw std::runtime_error(_("Error reading random byte from file"));
+std::uint8_t Rng::readRandomInt() {
+    std::uint8_t i;
+    std::uint8_t retval = ::read(fd, &i, sizeof(i));
+    if (retval != sizeof(i)) {
+        throw std::runtime_error(_("Error reading random bytes from file"));
     }
-    return c;
+    return i;
 }
 
-RngRand::RngRand() { std::srand(time(nullptr)); }
-
-std::uint8_t RngRand::getNextByte() {
-    return std::uint8_t((double(std::rand()) / RAND_MAX) * 256);
-}
-
-std::unique_ptr<RngInterface> yapet::pwgen::getRng(RNGENGINE rngEngine) {
-    switch (rngEngine) {
-        case DEVRANDOM:
-            return std::unique_ptr<RngInterface>{new RngFile{DEV_RANDOM}};
-        case DEVURANDOM:
-            return std::unique_ptr<RngInterface>{new RngFile{DEV_URANDOM}};
-        case RAND:
-            return std::unique_ptr<RngInterface>{new RngRand};
-    }
-
-    throw std::invalid_argument(_("Invalid RNGENGINE"));
-}
+std::uint8_t Rng::getNextInt() { return intUniformDistribution(rngFunctor); }

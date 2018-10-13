@@ -29,19 +29,6 @@
 //
 // Private
 //
-std::string PwGenDialog::get_name_of_rng() const {
-    switch (passwordGenerator.rngEngine()) {
-        case yapet::pwgen::DEVRANDOM:
-            return "/dev/random";
-        case yapet::pwgen::DEVURANDOM:
-            return "/dev/urandom";
-        case yapet::pwgen::RAND:
-            return "rand()";
-    }
-
-    assert(0);
-    return "oops!";
-}
 
 //
 // Protected
@@ -75,19 +62,6 @@ void PwGenDialog::checkbox_selection_handler(YACURS::Event& _e) {
             YAPET::Globals::config.character_pools());
         return;
     }
-
-    if (evt.data() == sources) {
-        yapet::pwgen::RNGENGINE rng;
-
-        if (sources->selected("/dev/random")) rng = yapet::pwgen::DEVRANDOM;
-
-        if (sources->selected("/dev/urandom")) rng = yapet::pwgen::DEVURANDOM;
-
-        if (sources->selected("rand()")) rng = yapet::pwgen::RAND;
-
-        YAPET::Globals::config.pwgen_rng.set(rng);
-        passwordGenerator.rngEngine(rng);
-    }
 }
 
 void PwGenDialog::button_press_handler(YACURS::Event& _e) {
@@ -118,10 +92,8 @@ void PwGenDialog::button_press_handler(YACURS::Event& _e) {
 PwGenDialog::PwGenDialog()
     : YACURS::Dialog{_("Password Generator"), YACURS::OKCANCEL,
                      YACURS::AUTOMATIC},
-      passwordGenerator{YAPET::Globals::config.pwgen_rng,
-                        YAPET::Globals::config.character_pools()},
+      passwordGenerator{YAPET::Globals::config.character_pools()},
       mainpack{},
-      boxespack{},
       genpwlabel{_("Generated password")},
       genpw{},
       pwlenlabel{_("Password length")},
@@ -159,27 +131,13 @@ PwGenDialog::PwGenDialog()
     if (yapet::pwgen::isOther(YAPET::Globals::config.character_pools()))
         charpools->set_selection(_("Other"));
 
-    // Those labels must match what is returned by get_name_of_rng()
-    // Set only those rngs that are available
-    labels.clear();
-    labels.push_back("/dev/random");
-    labels.push_back("/dev/urandom");
-    labels.push_back("rand()");
-
-    sources = new YACURS::RadioBox(_("Sources"), labels);
-    sources->set_selection(get_name_of_rng());
-
     mainpack.add_back(&genpwlabel);
     mainpack.add_back(&genpw);
 
     mainpack.add_back(&pwlenlabel);
     mainpack.add_back(&pwlen);
 
-    mainpack.add_back(&boxespack);
-
-    boxespack.always_dynamic(true);
-    boxespack.add_back(charpools);
-    boxespack.add_back(sources);
+    mainpack.add_back(charpools);
 
     widget(&mainpack);
 
@@ -209,5 +167,4 @@ PwGenDialog::~PwGenDialog() {
             &PwGenDialog::checkbox_selection_handler));
 
     delete charpools;
-    delete sources;
 }

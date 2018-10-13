@@ -231,23 +231,6 @@ class CfgValInt : public CfgVal<int> {
     }
 };
 
-class CfgValRNG : public CfgVal<yapet::pwgen::RNGENGINE> {
-   public:
-    CfgValRNG(yapet::pwgen::RNGENGINE v = yapet::pwgen::DEVURANDOM)
-        : CfgVal<yapet::pwgen::RNGENGINE>(v) {}
-    CfgValRNG(const CfgValRNG& cv) : CfgVal<yapet::pwgen::RNGENGINE>(cv) {}
-    CfgValRNG& operator=(const CfgValRNG& cv) {
-        CfgVal<yapet::pwgen::RNGENGINE>::operator=(cv);
-        return *this;
-    }
-    CfgValRNG& operator=(const yapet::pwgen::RNGENGINE b) {
-        CfgVal<yapet::pwgen::RNGENGINE>::operator=(b);
-        return *this;
-    }
-
-    void set_str(const std::string& s);
-};
-
 class CfgValColor : public CfgValStr {
    public:
     void set_str(const std::string& s) { set(s); }
@@ -273,7 +256,6 @@ class Config {
     CfgValInt timeout;
     CfgValBool filesecurity;
     CfgValInt pwgenpwlen;
-    CfgValRNG pwgen_rng;
     CfgValBool pwgen_letters;
     CfgValBool pwgen_digits;
     CfgValBool pwgen_punct;

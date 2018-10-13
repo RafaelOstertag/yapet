@@ -87,11 +87,6 @@ int main(int, char**) {
             abort();
         }
 
-        if (cfg.pwgen_rng != yapet::pwgen::DEVURANDOM) {
-            std::cerr << "pwgen_rng does not match (#1)" << std::endl;
-            abort();
-        }
-
         if (cfg.argon2_iterations != 84) {
             std::cerr << "argon2_iterations does not match (#1)" << std::endl;
             abort();
@@ -168,11 +163,6 @@ int main(int, char**) {
             abort();
         }
 
-        if (cfg.pwgen_rng != yapet::pwgen::RAND) {
-            std::cerr << "pwgen_rng does not match (#2)" << std::endl;
-            abort();
-        }
-
         //
         // test 3
         //
@@ -231,11 +221,6 @@ int main(int, char**) {
 
         if (cfg.pwgen_other) {
             std::cerr << "pwgen_other does not match (#3)" << std::endl;
-            abort();
-        }
-
-        if (cfg.pwgen_rng != yapet::pwgen::RAND) {
-            std::cerr << "pwgen_rng does not match (#3)" << std::endl;
             abort();
         }
 

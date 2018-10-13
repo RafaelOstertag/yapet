@@ -10,6 +10,9 @@
 
 using namespace yapet::pwgen;
 
+constexpr std::uint8_t LO{1};
+constexpr std::uint8_t HI{5};
+
 class RngTest : public CppUnit::TestFixture {
    public:
     static CppUnit::TestSuite *suite() {
@@ -17,85 +20,49 @@ class RngTest : public CppUnit::TestFixture {
             new CppUnit::TestSuite("Random Number Generator Test");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "RngFile should return random byte", &RngTest::rngFile});
+            "Rng should return random byte", &RngTest::rng});
 
         suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "RngFile should copy properly", &RngTest::rngFileCopy});
+            "Rng should copy properly", &RngTest::rngCopy});
 
         suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "RngFile should copy properly", &RngTest::rngFileMove});
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "RngRand should return random byte", &RngTest::rngRand});
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "getRng should return proper RNG", &RngTest::getRng});
+            "Rng should copy properly", &RngTest::rngMove});
 
         return suiteOfTests;
     }
 
-    void rngFile() {
-        yapet::pwgen::RngFile rngFile{"/dev/urandom"};
-        rngFile.getNextByte();
+    void rng() {
+        yapet::pwgen::Rng rng{LO, HI};
+        for (int i = 0; i < 100; i++) {
+            CPPUNIT_ASSERT((rng.getNextInt() >= LO) &&
+                           (rng.getNextInt() <= HI));
+        }
     }
 
-    void rngFileCopy() {
-        yapet::pwgen::RngFile rngFile1{"/dev/urandom"};
+    void rngCopy() {
+        yapet::pwgen::Rng rng1{LO, HI};
 
-        yapet::pwgen::RngFile copy{rngFile1};
+        yapet::pwgen::Rng copy{rng1};
 
-        copy.getNextByte();
+        copy.getNextInt();
 
-        yapet::pwgen::RngFile copy2 = rngFile1;
-        copy2.getNextByte();
+        yapet::pwgen::Rng copy2 = rng1;
+        copy2.getNextInt();
 
-        rngFile1.getNextByte();
+        rng1.getNextInt();
     }
 
-    void rngFileMove() {
-        yapet::pwgen::RngFile rngFile1{"/dev/urandom"};
+    void rngMove() {
+        yapet::pwgen::Rng rng1{LO, HI};
 
-        yapet::pwgen::RngFile moved{std::move(rngFile1)};
+        yapet::pwgen::Rng moved{std::move(rng1)};
 
-        moved.getNextByte();
-        CPPUNIT_ASSERT_THROW(rngFile1.getNextByte(), std::runtime_error);
+        moved.getNextInt();
+        CPPUNIT_ASSERT_THROW(rng1.getNextInt(), std::runtime_error);
 
-        yapet::pwgen::RngFile moved2 = std::move(moved);
-        moved2.getNextByte();
-        CPPUNIT_ASSERT_THROW(moved.getNextByte(), std::runtime_error);
-    }
-
-    void rngRand() {
-        yapet::pwgen::RngRand rngRand{};
-
-        rngRand.getNextByte();
-    }
-
-    void getRng() {
-        std::unique_ptr<RngInterface> rng{yapet::pwgen::getRng(RAND)};
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
-        CPPUNIT_ASSERT(typeid(*rng) == typeid(yapet::pwgen::RngRand));
-#pragma clang diagnostic pop
-
-        rng = yapet::pwgen::getRng(DEVRANDOM);
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
-        CPPUNIT_ASSERT(typeid(*rng) == typeid(yapet::pwgen::RngFile));
-#pragma clang diagnostic pop
-
-        const yapet::pwgen::RngFile *ptr =
-            dynamic_cast<const yapet::pwgen::RngFile *>(rng.get());
-        CPPUNIT_ASSERT_EQUAL(std::string{"/dev/random"}, ptr->filename());
-
-        rng = yapet::pwgen::getRng(DEVURANDOM);
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
-        CPPUNIT_ASSERT(typeid(*rng) == typeid(yapet::pwgen::RngFile));
-#pragma clang diagnostic pop
-        ptr = dynamic_cast<const yapet::pwgen::RngFile *>(rng.get());
-        CPPUNIT_ASSERT_EQUAL(std::string{"/dev/urandom"}, ptr->filename());
+        yapet::pwgen::Rng moved2 = std::move(moved);
+        moved2.getNextInt();
+        CPPUNIT_ASSERT_THROW(moved.getNextInt(), std::runtime_error);
     }
 };
 

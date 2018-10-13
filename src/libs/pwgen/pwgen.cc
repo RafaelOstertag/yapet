@@ -23,6 +23,7 @@
 #endif
 
 #include <cassert>
+#include <limits>
 
 #include "consts.h"
 #include "intl.h"
@@ -30,35 +31,25 @@
 
 using namespace yapet::pwgen;
 
-PasswordGenerator::PasswordGenerator(RNGENGINE rngEngine, POOLS pool)
-    : PasswordGenerator{rngEngine, static_cast<int>(pool)} {}
+PasswordGenerator::PasswordGenerator(POOLS pool)
+    : PasswordGenerator{static_cast<int>(pool)} {}
 
-PasswordGenerator::PasswordGenerator(RNGENGINE rngEngine, int pools)
-    : _rng{getRng(rngEngine)}, _rngEngine{rngEngine}, _characterPools{pools} {}
+PasswordGenerator::PasswordGenerator(int pools) : _characterPools{pools} {}
 
 PasswordGenerator::PasswordGenerator(PasswordGenerator&& other)
-    : _rng{std::move(other._rng)},
-      _rngEngine{other._rngEngine},
-      _characterPools{other._characterPools} {}
+    : _characterPools{other._characterPools} {}
 
 PasswordGenerator& PasswordGenerator::operator=(PasswordGenerator&& other) {
     if (this == &other) {
         return *this;
     }
 
-    _rng = std::move(other._rng);
-    _rngEngine = other._rngEngine;
     _characterPools = other._characterPools;
 
     return *this;
 }
 
 void PasswordGenerator::characterPools(int pools) { _characterPools = pools; }
-
-void PasswordGenerator::rngEngine(RNGENGINE rngEngine) {
-    _rng = getRng(rngEngine);
-    _rngEngine = rngEngine;
-}
 
 yapet::SecureArray PasswordGenerator::generatePassword(int size) {
     if (size < 1) {
@@ -68,11 +59,17 @@ yapet::SecureArray PasswordGenerator::generatePassword(int size) {
         throw std::invalid_argument(msg);
     }
 
-    CharacterPool pools{getPools(_characterPools)};
+    std::string pools{getPools(_characterPools)};
+    auto poolSize{pools.size()};
+
+    assert(poolSize < std::numeric_limits<std::uint8_t>::max());
+    std::uint8_t poolSizeUint8{static_cast<std::uint8_t>(poolSize)};
+
+    Rng rng(0, std::uint8_t(poolSizeUint8) - 1);
 
     SecureArray password{size + 1};
     for (int i = 0; i < size; i++) {
-        password[i] = pools[_rng->getNextByte()];
+        password[i] = pools[rng.getNextInt()];
     }
     password[size] = '\0';
     return password;

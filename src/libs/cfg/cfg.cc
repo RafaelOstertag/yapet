@@ -168,38 +168,6 @@ void CfgValBool::set_str(const std::string& s) {
 //
 void CfgValInt::set_str(const std::string& s) { set(std::atoi(s.c_str())); }
 
-//
-// Class CfgValRNG
-//
-void CfgValRNG::set_str(const std::string& s) {
-    std::string sanitized(tolower(remove_space(s)));
-
-    if (sanitized == "devrandom") {
-        set(yapet::pwgen::DEVRANDOM);
-        return;
-    }
-
-    if (sanitized == "devurandom") {
-        set(yapet::pwgen::DEVURANDOM);
-        return;
-    }
-
-    if (sanitized == "rand") {
-        set(yapet::pwgen::RAND);
-        return;
-    }
-
-    if (sanitized == "auto") {
-        set(yapet::pwgen::DEVURANDOM);
-        return;
-    }
-
-    char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
-    std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
-                  _("'%s' is not a valid RNG"), sanitized.c_str());
-    throw std::invalid_argument(msg);
-}
-
 void Config::setup_map() {
     _options.clear();
 
@@ -208,7 +176,6 @@ void Config::setup_map() {
     _options["checkfsecurity"] = &filesecurity;
     _options["allowlockquit"] = &allow_lock_quit;
     _options["pwinputtimeout"] = &pw_input_timeout;
-    _options["pwgen_rng"] = &pwgen_rng;
     _options["pwgen_pwlen"] = &pwgenpwlen;
     _options["pwgen_letters"] = &pwgen_letters;
     _options["pwgen_digits"] = &pwgen_digits;
@@ -231,7 +198,6 @@ Config::Config()
       pwgenpwlen{Consts::DEFAULT_PASSWORD_LENGTH,
                  Consts::DEFAULT_PASSWORD_LENGTH, Consts::MIN_PASSWORD_LENGTH,
                  Consts::MAX_PASSWORD_LENGTH},
-      pwgen_rng{Consts::DEFAULT_PWGEN_RNG},
       pwgen_letters{yapet::pwgen::isLetters(Consts::DEFAULT_CHARACTER_POOLS)},
       pwgen_digits{yapet::pwgen::isDigits(Consts::DEFAULT_CHARACTER_POOLS)},
       pwgen_punct{yapet::pwgen::isPunct(Consts::DEFAULT_CHARACTER_POOLS)},
@@ -259,7 +225,6 @@ Config::Config(const Config& c)
       timeout{c.timeout},
       filesecurity{c.filesecurity},
       pwgenpwlen{c.pwgenpwlen},
-      pwgen_rng{c.pwgen_rng},
       pwgen_letters{c.pwgen_letters},
       pwgen_digits{c.pwgen_digits},
       pwgen_punct{c.pwgen_punct},
@@ -284,7 +249,6 @@ Config& Config::operator=(const Config& c) {
     timeout = c.timeout;
     filesecurity = c.filesecurity;
     pwgenpwlen = c.pwgenpwlen;
-    pwgen_rng = c.pwgen_rng;
     pwgen_letters = c.pwgen_letters;
     pwgen_digits = c.pwgen_digits;
     pwgen_punct = c.pwgen_punct;
@@ -324,7 +288,6 @@ void Config::lock() {
     timeout.lock();
     filesecurity.lock();
     pwgenpwlen.lock();
-    pwgen_rng.lock();
     pwgen_letters.lock();
     pwgen_digits.lock();
     pwgen_punct.lock();
@@ -344,7 +307,6 @@ void Config::unlock() {
     timeout.unlock();
     filesecurity.unlock();
     pwgenpwlen.unlock();
-    pwgen_rng.unlock();
     pwgen_letters.unlock();
     pwgen_digits.unlock();
     pwgen_punct.unlock();

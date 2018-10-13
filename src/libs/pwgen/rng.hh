@@ -2,45 +2,42 @@
 #define _RNG_HH
 
 #include <cstdint>
-#include <memory>
-#include <string>
+#include <limits>
+#include <random>
 
 namespace yapet {
 namespace pwgen {
-class RngInterface {
-   public:
-    virtual ~RngInterface() {}
-    virtual std::uint8_t getNextByte() = 0;
-};
 
-class RngFile : public RngInterface {
+class Rng {
    private:
-    std::string _filename;
+    class RngFunctor {
+       private:
+        Rng& _rng;
+
+       public:
+        using result_type = std::uint8_t;
+        std::uint8_t min() { return std::numeric_limits<std::uint8_t>::min(); }
+        std::uint8_t max() { return std::numeric_limits<std::uint8_t>::max(); }
+
+        RngFunctor(Rng& rng) : _rng{rng} {}
+        std::uint8_t operator()() { return _rng.readRandomInt(); }
+    };
     int fd;
-    void closeFd();
+    std::uniform_int_distribution<std::uint8_t> intUniformDistribution;
+    RngFunctor rngFunctor;
+
+    std::uint8_t readRandomInt();
 
    public:
-    RngFile(const std::string& filename);
-    ~RngFile();
-    RngFile(const RngFile& rng);
-    RngFile(RngFile&& rng);
-    RngFile& operator=(const RngFile& rng);
-    RngFile& operator=(RngFile&& rng);
+    Rng(std::uint8_t lo, std::uint8_t hi);
+    ~Rng();
+    Rng(const Rng& rng);
+    Rng(Rng&& rng);
+    Rng& operator=(const Rng& rng);
+    Rng& operator=(Rng&& rng);
 
-    const std::string& filename() const { return _filename; }
-
-    virtual std::uint8_t getNextByte();
+    std::uint8_t getNextInt();
 };
-
-class RngRand : public RngInterface {
-   public:
-    RngRand();
-    virtual std::uint8_t getNextByte();
-};
-
-enum RNGENGINE { DEVRANDOM = (1 << 0), DEVURANDOM = (1 << 1), RAND = (1 << 2) };
-
-std::unique_ptr<RngInterface> getRng(RNGENGINE rngEngine);
 
 }  // namespace pwgen
 }  // namespace yapet

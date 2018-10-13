@@ -5,8 +5,7 @@
 
 * Use AES-256 to encrypt files by default
 * Use Argon2 to hash passwords
-* Remove lrand48 random number generator for generating random
-  passwords
+* Password generator uses `/dev/urandom` only. Removed `pwgen_rng` configuration option from `.yapetrc`.
 * Use libyacurs 1.0.0
 
 

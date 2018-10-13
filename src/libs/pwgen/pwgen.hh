@@ -11,13 +11,11 @@ namespace yapet {
 namespace pwgen {
 class PasswordGenerator {
    private:
-    std::unique_ptr<RngInterface> _rng;
-    RNGENGINE _rngEngine;
     int _characterPools;
 
    public:
-    PasswordGenerator(RNGENGINE rngEngine, POOLS pool);
-    PasswordGenerator(RNGENGINE rngEngine, int pools);
+    PasswordGenerator(POOLS pool);
+    PasswordGenerator(int pools);
     PasswordGenerator(const PasswordGenerator&) = delete;
     PasswordGenerator(PasswordGenerator&& other);
 
@@ -27,9 +25,6 @@ class PasswordGenerator {
     void characterPools(int pools);
     void characterPools(POOLS pool) { characterPools(static_cast<int>(pool)); }
     int characterPools() const { return _characterPools; }
-
-    RNGENGINE rngEngine() const { return _rngEngine; }
-    void rngEngine(RNGENGINE rngEngine);
 
     /**
      * Return a zero terminated random password.

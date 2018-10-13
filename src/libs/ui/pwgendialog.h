@@ -37,7 +37,6 @@ class PwGenDialog : public YACURS::Dialog {
    private:
     yapet::pwgen::PasswordGenerator passwordGenerator;
     YACURS::VPack mainpack;
-    YACURS::HPack boxespack;
 
     YACURS::Label genpwlabel;
     YACURS::Input<> genpw;
@@ -49,9 +48,6 @@ class PwGenDialog : public YACURS::Dialog {
     YACURS::Button regenbutton;
 
     YACURS::CheckBox* charpools;
-    YACURS::RadioBox* sources;
-
-    std::string get_name_of_rng() const;
 
    protected:
     virtual void checkbox_selection_handler(YACURS::Event& _e);

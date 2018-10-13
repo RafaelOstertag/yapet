@@ -17,33 +17,13 @@ class CharacterPoolTest : public CppUnit::TestFixture {
             new CppUnit::TestSuite("Character Pool Test");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
-            "should handle retrieval of character from pool",
-            &CharacterPoolTest::getCharacter});
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
             "should properly identify pools", &CharacterPoolTest::arePools});
 
         suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
             "should properly return requested pools",
             &CharacterPoolTest::getCharacterPools});
 
-        suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
-            "should properly add pools", &CharacterPoolTest::addPools});
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<CharacterPoolTest>{
-            "should properly add and assign pools",
-            &CharacterPoolTest::addAndAssignPools});
-
         return suiteOfTests;
-    }
-
-    void getCharacter() {
-        CharacterPool characterPool{"abc"};
-
-        CPPUNIT_ASSERT(characterPool[0] == 'a');
-        CPPUNIT_ASSERT(characterPool[1] == 'b');
-        CPPUNIT_ASSERT(characterPool[2] == 'c');
-        CPPUNIT_ASSERT(characterPool[3] == 'a');
     }
 
     void arePools() {
@@ -77,26 +57,6 @@ class CharacterPoolTest : public CppUnit::TestFixture {
                        getPools(ALL));
 
         CPPUNIT_ASSERT_THROW(getPools(1 << 8), std::out_of_range);
-    }
-
-    void addPools() {
-        yapet::pwgen::CharacterPool a{"a"};
-        yapet::pwgen::CharacterPool b{"b"};
-        yapet::pwgen::CharacterPool c = a + b;
-
-        CPPUNIT_ASSERT_EQUAL(std::string{"a"}, a.characters());
-        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, b.characters());
-        CPPUNIT_ASSERT_EQUAL(std::string{"ab"}, c.characters());
-    }
-
-    void addAndAssignPools() {
-        yapet::pwgen::CharacterPool a{"a"};
-        yapet::pwgen::CharacterPool b{"b"};
-
-        a += b;
-
-        CPPUNIT_ASSERT_EQUAL(std::string{"ab"}, a.characters());
-        CPPUNIT_ASSERT_EQUAL(std::string{"b"}, b.characters());
     }
 };
 

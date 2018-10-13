@@ -43,65 +43,13 @@ constexpr bool isSpecial(int v) { return (v & SPECIAL); }
 constexpr bool isOther(int v) { return (v & OTHER); }
 constexpr bool isAll(int v) { return (v & ALL); }
 
-class CharacterPool {
-   private:
-    std::string _characters;
+extern const std::string letters;
+extern const std::string digits;
+extern const std::string punctuation;
+extern const std::string special;
+extern const std::string other;
 
-   public:
-    CharacterPool() : _characters{} {}
-    CharacterPool(const std::string& pool) : _characters{pool} {}
-    CharacterPool(const CharacterPool& cp) : _characters{cp._characters} {}
-    CharacterPool(CharacterPool&& cp)
-        : _characters{std::move(cp._characters)} {}
-
-    CharacterPool& operator=(const CharacterPool& cp) {
-        if (this == &cp) return *this;
-
-        _characters = cp._characters;
-
-        return *this;
-    }
-
-    CharacterPool& operator=(CharacterPool&& cp) {
-        if (this == &cp) return *this;
-
-        _characters = std::move(cp._characters);
-
-        return *this;
-    }
-
-    bool operator==(const CharacterPool& other) const {
-        if (this == &other) return true;
-
-        return _characters == other._characters;
-    }
-
-    CharacterPool operator+(const CharacterPool& other) const {
-        return CharacterPool{_characters + other._characters};
-    }
-
-    CharacterPool& operator+=(const CharacterPool& other) {
-        _characters += other._characters;
-        return *this;
-    }
-
-    /**
-     * Return the character at position num % number_of_chars_in_pool.
-     */
-    char operator[](std::string::size_type num) const {
-        return _characters[num % _characters.size()];
-    }
-
-    std::string characters() const { return _characters; }
-};
-
-extern const CharacterPool letters;
-extern const CharacterPool digits;
-extern const CharacterPool punctuation;
-extern const CharacterPool special;
-extern const CharacterPool other;
-
-CharacterPool getPools(int pools);
+std::string getPools(int pools);
 
 }  // namespace pwgen
 }  // namespace yapet
