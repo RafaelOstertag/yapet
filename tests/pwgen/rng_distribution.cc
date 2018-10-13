@@ -8,7 +8,7 @@ constexpr auto ROUNDS{1000000};
 
 int main() {
     std::map<int, int> distribution;
-    yapet::pwgen::Rng rng{1, 100};
+    yapet::pwgen::Rng rng{255};
 
     for (int i = 0; i < ROUNDS; i++) {
         distribution[rng.getNextInt()]++;

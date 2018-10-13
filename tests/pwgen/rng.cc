@@ -10,7 +10,6 @@
 
 using namespace yapet::pwgen;
 
-constexpr std::uint8_t LO{1};
 constexpr std::uint8_t HI{5};
 
 class RngTest : public CppUnit::TestFixture {
@@ -32,15 +31,14 @@ class RngTest : public CppUnit::TestFixture {
     }
 
     void rng() {
-        yapet::pwgen::Rng rng{LO, HI};
+        yapet::pwgen::Rng rng{ HI};
         for (int i = 0; i < 100; i++) {
-            CPPUNIT_ASSERT((rng.getNextInt() >= LO) &&
-                           (rng.getNextInt() <= HI));
+            CPPUNIT_ASSERT(rng.getNextInt() <= HI);
         }
     }
 
     void rngCopy() {
-        yapet::pwgen::Rng rng1{LO, HI};
+        yapet::pwgen::Rng rng1{ HI};
 
         yapet::pwgen::Rng copy{rng1};
 
@@ -53,7 +51,7 @@ class RngTest : public CppUnit::TestFixture {
     }
 
     void rngMove() {
-        yapet::pwgen::Rng rng1{LO, HI};
+        yapet::pwgen::Rng rng1{ HI};
 
         yapet::pwgen::Rng moved{std::move(rng1)};
 

@@ -55,6 +55,15 @@ int openDevUrandom() {
     return fd;
 }
 
+std::uint8_t readRandomInt(int fd) {
+    std::uint8_t i;
+    std::uint8_t retval = ::read(fd, &i, sizeof(i));
+    if (retval != sizeof(i)) {
+        throw std::runtime_error(_("Error reading random bytes from file"));
+    }
+    return i;
+}
+
 void closeFd(int fd) {
     if (fd != BAD_FD) {
         ::close(fd);
@@ -62,22 +71,13 @@ void closeFd(int fd) {
 }
 }  // namespace
 
-Rng::Rng(std::uint8_t lo, std::uint8_t hi)
-    : fd{openDevUrandom()}, intUniformDistribution{lo, hi}, rngFunctor{*this} {}
+Rng::Rng(std::uint8_t hi) : fd{openDevUrandom()}, max{hi} {}
 
 Rng::~Rng() { closeFd(fd); }
 
-Rng::Rng(const Rng& rng)
-    : intUniformDistribution{rng.intUniformDistribution}, rngFunctor{*this} {
-    fd = ::dup(rng.fd);
-}
+Rng::Rng(const Rng& rng) : max{rng.max} { fd = ::dup(rng.fd); }
 
-Rng::Rng(Rng&& rng)
-    : fd{rng.fd},
-      intUniformDistribution{std::move(rng.intUniformDistribution)},
-      rngFunctor{*this} {
-    rng.fd = BAD_FD;
-}
+Rng::Rng(Rng&& rng) : fd{rng.fd}, max{rng.max} { rng.fd = BAD_FD; }
 
 Rng& Rng::operator=(const Rng& rng) {
     if (this == &rng) return *this;
@@ -85,8 +85,7 @@ Rng& Rng::operator=(const Rng& rng) {
     closeFd(fd);
 
     fd = ::dup(fd);
-
-    intUniformDistribution = rng.intUniformDistribution;
+    max = rng.max;
 
     return *this;
 }
@@ -99,18 +98,15 @@ Rng& Rng::operator=(Rng&& rng) {
     fd = rng.fd;
     rng.fd = BAD_FD;
 
-    intUniformDistribution = std::move(rng.intUniformDistribution);
+    max = rng.max;
 
     return *this;
 }
 
-std::uint8_t Rng::readRandomInt() {
-    std::uint8_t i;
-    std::uint8_t retval = ::read(fd, &i, sizeof(i));
-    if (retval != sizeof(i)) {
-        throw std::runtime_error(_("Error reading random bytes from file"));
+std::uint8_t Rng::getNextInt() {
+    std::uint8_t randomNumber = readRandomInt(fd);
+    while (randomNumber > max) {
+        randomNumber = readRandomInt(fd);
     }
-    return i;
+    return randomNumber;
 }
-
-std::uint8_t Rng::getNextInt() { return intUniformDistribution(rngFunctor); }

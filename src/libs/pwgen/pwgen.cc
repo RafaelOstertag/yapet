@@ -65,7 +65,7 @@ yapet::SecureArray PasswordGenerator::generatePassword(int size) {
     assert(poolSize < std::numeric_limits<std::uint8_t>::max());
     std::uint8_t poolSizeUint8{static_cast<std::uint8_t>(poolSize)};
 
-    Rng rng(0, std::uint8_t(poolSizeUint8) - 1);
+    Rng rng(std::uint8_t(poolSizeUint8) - 1);
 
     SecureArray password{size + 1};
     for (int i = 0; i < size; i++) {
