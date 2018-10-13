@@ -31,6 +31,81 @@
 
 using namespace yapet::pwgen;
 
+namespace {
+int countPools(int pools) {
+    int numberOfPools = 0;
+    if (isLetters(pools)) {
+        numberOfPools++;
+    }
+    if (isDigits(pools)) {
+        numberOfPools++;
+    }
+    if (isPunct(pools)) {
+        numberOfPools++;
+    }
+    if (isSpecial(pools)) {
+        numberOfPools++;
+    }
+    if (isOther(pools)) {
+        numberOfPools++;
+    }
+    return numberOfPools;
+}
+
+bool canContainCharactersFromSelectedPools(int pools,
+                                           const yapet::SecureArray& password) {
+    int numberOfPools{countPools(pools)};
+    int sizeOfPassword{password.size() - 1};
+
+    return numberOfPools <= sizeOfPassword;
+}
+
+bool containsCharactersFromPool(const std::string& pool,
+                                const yapet::SecureArray& password) {
+    for (yapet::SecureArray::size_type i = 0; i < password.size() - 1; i++) {
+        char passwordCharacter = static_cast<char>(password[i]);
+        if (pool.find(passwordCharacter, 0) != std::string::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+bool containsSelectedPools(int pools, const yapet::SecureArray& password) {
+    if (!canContainCharactersFromSelectedPools(pools, password)) {
+        return true;
+    }
+
+    bool satisfied = true;
+
+    if (isLetters(pools)) {
+        satisfied = satisfied &&
+                    containsCharactersFromPool(yapet::pwgen::letters, password);
+    }
+
+    if (isDigits(pools)) {
+        satisfied = satisfied &&
+                    containsCharactersFromPool(yapet::pwgen::digits, password);
+    }
+
+    if (isPunct(pools)) {
+        satisfied = satisfied && containsCharactersFromPool(
+                                     yapet::pwgen::punctuation, password);
+    }
+
+    if (isSpecial(pools)) {
+        satisfied = satisfied &&
+                    containsCharactersFromPool(yapet::pwgen::special, password);
+    }
+
+    if (isOther(pools)) {
+        satisfied = satisfied &&
+                    containsCharactersFromPool(yapet::pwgen::other, password);
+    }
+
+    return satisfied;
+}
+}  // namespace
+
 PasswordGenerator::PasswordGenerator(POOLS pool)
     : PasswordGenerator{static_cast<int>(pool)} {}
 
@@ -68,9 +143,11 @@ yapet::SecureArray PasswordGenerator::generatePassword(int size) {
     Rng rng(std::uint8_t(poolSizeUint8) - 1);
 
     SecureArray password{size + 1};
-    for (int i = 0; i < size; i++) {
-        password[i] = pools[rng.getNextInt()];
-    }
-    password[size] = '\0';
+    do {
+        for (int i = 0; i < size; i++) {
+            password[i] = pools[rng.getNextInt()];
+        }
+        password[size] = '\0';
+    } while (!containsSelectedPools(_characterPools, password));
     return password;
 }

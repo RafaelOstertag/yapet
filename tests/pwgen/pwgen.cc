@@ -12,10 +12,21 @@
 using namespace yapet;
 using namespace yapet::pwgen;
 
+bool containsCharactersFromPool(const std::string& pool,
+                                const yapet::SecureArray& password) {
+    for (yapet::SecureArray::size_type i = 0; i < password.size() - 1; i++) {
+        char passwordCharacter = static_cast<char>(password[i]);
+        if (pool.find(passwordCharacter, 0) != std::string::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+
 class PasswordGeneratorTest : public CppUnit::TestFixture {
    public:
-    static CppUnit::TestSuite *suite() {
-        CppUnit::TestSuite *suiteOfTests =
+    static CppUnit::TestSuite* suite() {
+        CppUnit::TestSuite* suiteOfTests =
             new CppUnit::TestSuite("Random Number Generator Test");
 
         suiteOfTests->addTest(new CppUnit::TestCaller<PasswordGeneratorTest>{
@@ -43,10 +54,17 @@ class PasswordGeneratorTest : public CppUnit::TestFixture {
 
     void generatePassword() {
         PasswordGenerator passwordGenerator{ALL};
-        SecureArray password = passwordGenerator.generatePassword(3);
 
-        CPPUNIT_ASSERT(password.size() == 4);
-        CPPUNIT_ASSERT(password[3] == '\0');
+        SecureArray password = passwordGenerator.generatePassword(5);
+
+        CPPUNIT_ASSERT(containsCharactersFromPool(letters, password));
+        CPPUNIT_ASSERT(containsCharactersFromPool(digits, password));
+        CPPUNIT_ASSERT(containsCharactersFromPool(punctuation, password));
+        CPPUNIT_ASSERT(containsCharactersFromPool(special, password));
+        CPPUNIT_ASSERT(containsCharactersFromPool(other, password));
+
+        CPPUNIT_ASSERT(password.size() == 6);
+        CPPUNIT_ASSERT(password[5] == '\0');
     }
 
     void generateRandomPassword() {
