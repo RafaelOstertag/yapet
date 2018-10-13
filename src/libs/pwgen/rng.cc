@@ -29,9 +29,10 @@
 #include <fcntl.h>
 #endif
 
+#include <cassert>
 #include <cstdlib>
-#include <functional>
 #include <limits>
+#include <memory>
 #include <stdexcept>
 
 #include "consts.h"
@@ -55,15 +56,6 @@ int openDevUrandom() {
     return fd;
 }
 
-std::uint8_t readRandomInt(int fd) {
-    std::uint8_t i;
-    std::uint8_t retval = ::read(fd, &i, sizeof(i));
-    if (retval != sizeof(i)) {
-        throw std::runtime_error(_("Error reading random bytes from file"));
-    }
-    return i;
-}
-
 void closeFd(int fd) {
     if (fd != BAD_FD) {
         ::close(fd);
@@ -71,13 +63,42 @@ void closeFd(int fd) {
 }
 }  // namespace
 
-Rng::Rng(std::uint8_t hi) : fd{openDevUrandom()}, max{hi} {}
+void Rng::fillCache() {
+    int retval = ::read(fd, &byteCache, BYTE_CACHE_SIZE);
+    if (retval != BYTE_CACHE_SIZE) {
+        throw std::runtime_error(_("Error reading random bytes from file"));
+    }
+    positionInCache = 0;
+}
+
+std::uint8_t Rng::readRandomByte() {
+    if (positionInCache == EMPTY_CACHE || positionInCache >= BYTE_CACHE_SIZE) {
+        fillCache();
+    }
+    assert(positionInCache >= 0 && positionInCache < BYTE_CACHE_SIZE);
+
+    return byteCache[positionInCache++];
+}
+
+Rng::Rng(std::uint8_t hi)
+    : fd{openDevUrandom()}, positionInCache{EMPTY_CACHE}, max{hi} {}
 
 Rng::~Rng() { closeFd(fd); }
 
-Rng::Rng(const Rng& rng) : max{rng.max} { fd = ::dup(rng.fd); }
+Rng::Rng(const Rng& rng)
+    : byteCache{rng.byteCache},
+      positionInCache{rng.positionInCache},
+      max{rng.max} {
+    fd = ::dup(rng.fd);
+}
 
-Rng::Rng(Rng&& rng) : fd{rng.fd}, max{rng.max} { rng.fd = BAD_FD; }
+Rng::Rng(Rng&& rng)
+    : fd{rng.fd},
+      byteCache{rng.byteCache},
+      positionInCache{rng.positionInCache},
+      max{rng.max} {
+    rng.fd = BAD_FD;
+}
 
 Rng& Rng::operator=(const Rng& rng) {
     if (this == &rng) return *this;
@@ -85,6 +106,8 @@ Rng& Rng::operator=(const Rng& rng) {
     closeFd(fd);
 
     fd = ::dup(fd);
+    byteCache = rng.byteCache;
+    positionInCache = rng.positionInCache;
     max = rng.max;
 
     return *this;
@@ -98,15 +121,17 @@ Rng& Rng::operator=(Rng&& rng) {
     fd = rng.fd;
     rng.fd = BAD_FD;
 
+    byteCache = std::move(rng.byteCache);
+    positionInCache = rng.positionInCache;
     max = rng.max;
 
     return *this;
 }
 
 std::uint8_t Rng::getNextInt() {
-    std::uint8_t randomNumber = readRandomInt(fd);
+    std::uint8_t randomNumber = readRandomByte();
     while (randomNumber > max) {
-        randomNumber = readRandomInt(fd);
+        randomNumber = readRandomByte();
     }
     return randomNumber;
 }

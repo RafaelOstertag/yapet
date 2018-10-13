@@ -31,35 +31,35 @@ class RngTest : public CppUnit::TestFixture {
     }
 
     void rng() {
-        yapet::pwgen::Rng rng{ HI};
+        yapet::pwgen::Rng rng{HI};
         for (int i = 0; i < 100; i++) {
             CPPUNIT_ASSERT(rng.getNextInt() <= HI);
         }
     }
 
     void rngCopy() {
-        yapet::pwgen::Rng rng1{ HI};
+        yapet::pwgen::Rng rng1{HI};
 
         yapet::pwgen::Rng copy{rng1};
 
-        copy.getNextInt();
+        for (int i = 0; i < 10; i++) copy.getNextInt();
 
         yapet::pwgen::Rng copy2 = rng1;
         copy2.getNextInt();
 
-        rng1.getNextInt();
+        for (int i = 0; i < 10; i++) rng1.getNextInt();
     }
 
     void rngMove() {
-        yapet::pwgen::Rng rng1{ HI};
+        yapet::pwgen::Rng rng1{HI};
 
         yapet::pwgen::Rng moved{std::move(rng1)};
 
-        moved.getNextInt();
+        for (int i = 0; i < 10; i++) moved.getNextInt();
         CPPUNIT_ASSERT_THROW(rng1.getNextInt(), std::runtime_error);
 
         yapet::pwgen::Rng moved2 = std::move(moved);
-        moved2.getNextInt();
+        for (int i = 0; i < 10; i++) moved2.getNextInt();
         CPPUNIT_ASSERT_THROW(moved.getNextInt(), std::runtime_error);
     }
 };
