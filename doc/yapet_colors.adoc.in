@@ -17,7 +17,7 @@ yapet_colors - format of YAPET color configuration
 The color scheme of YAPET can be customized by setting the _colors_
 option in {rcfile}. It has the following syntax:
 
-_colors_=_OBJ1_:__<fg1>____<bg1>____<attr1>__;...;__OBJN__:__<fgN>____<bgN>____<attrN>__
+ colors=OBJ1:<fg1><bg1><attr1>;...;OBJN:<fgN><bgN><attrN>
 
 _OBJN_:: The UI object for which the color is set. See <<uiobjects>> for possible values.
 _<fgN>_:: The foreground color of the UI object. See <<colors>> for possible values.
@@ -86,7 +86,7 @@ colors=DEF:wk0;DIA:wb0;DIT:bw3;IWN:kw3;IWF:kg3;IWH:yy7;
 
 == FILES
 
-{rcfile}::The per-user configuration file. If existing, options are
+{rcfile}:: The per-user configuration file. If existing, options are
 	  read from this file but can be overridden by the command
 	  line options. Processing of this file can be disabled by
 	  invoking {yapet} with the *-i* option. Refer to the

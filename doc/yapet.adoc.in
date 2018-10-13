@@ -175,4 +175,4 @@ include::man-authors.adoc[]
 
 == SEE ALSO
 
-{yp-config-mp}, {yp-colors-mp}, *csv2yapet*(1), *yapet2csv*(1)
+{yp-config-mp}, {yp-colors-mp}, {yp-to-csv-mp}, {csv-to-yp-mp}

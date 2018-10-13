@@ -163,4 +163,4 @@ include::man-authors.adoc[]
 
 == SEE ALSO
 
-`yapet(1)`, `yapet_colors(5)`
+{yp-mp}, {yp-colors-mp}

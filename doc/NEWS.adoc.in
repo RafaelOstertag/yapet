@@ -5,7 +5,7 @@
 
 * Use AES-256 to encrypt files by default
 * Use Argon2 to hash passwords
-* Password generator uses `/dev/urandom` only. Removed `pwgen_rng` configuration option from `.yapetrc`.
+* Password generator uses `/dev/urandom` only. Removed `pwgen_rng` configuration option from `.yapet`.
 * Use libyacurs 1.0.0
 
 

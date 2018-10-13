@@ -65,4 +65,4 @@ include::man-authors.adoc[]
 
 == SEE ALSO
 
-{yp-mp}, *csv2yapet*(1)
+{yp-mp}, {csv-to-yp-mp}

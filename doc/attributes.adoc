@@ -1,6 +1,8 @@
 :yp-mp: pass:quotes[*yapet*(1)]
 :yp-config-mp: pass:quotes[*yapet_config*(5)]
 :yp-colors-mp: pass:quotes[*yapet_colors*(5)]
+:yp-to-csv-mp: pass:quotes[*yapet2csv*(1)]
+:csv-to-yp-mp: pass:quotes[*csv2yapet*(1)]
 :rcfile: pass:quotes[_$HOME/.yapet_]
 :yapet: pass:quotes[*yapet*]
 :csv2yapet: pass:quotes[*csv2yapet*]

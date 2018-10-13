@@ -33,7 +33,7 @@ mkdir obj && cd obj
 ```
 ../configure
 ```
-8. Create the man pages and `README` file
+8. Create the man pages, `README`, `INSTALL`, and `NEWS` files
 ```
 cd doc && gmake -f Makefile.doc
 ```
