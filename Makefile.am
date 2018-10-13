@@ -1,8 +1,8 @@
 DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
-EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER	\
-LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
+EXTRA_DIST = build-aux/config.rpath README.Cygwin 	\
+LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS
 
 DIST_SUBDIRS = libyacurs src po tests doc
 
