@@ -124,7 +124,7 @@ pipeline {
                         stage("(FB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                                 sh 'touch NEWS'
                             }
@@ -175,7 +175,7 @@ pipeline {
                         stage("(LX) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                                 sh 'touch NEWS'
                             }
@@ -225,7 +225,7 @@ pipeline {
                         stage("(OB64) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
@@ -275,7 +275,7 @@ pipeline {
                         stage("(OB32) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
@@ -325,7 +325,7 @@ pipeline {
                         stage("(NB) Stub Docs") {
                             steps {
                                 dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
                                 }
                             }
                         }
