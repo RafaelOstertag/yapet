@@ -5,15 +5,16 @@
 
 #include <cstdlib>
 #include <sstream>
-#include "crypt.h"
+
+#include "cryptofactoryhelper.hh"
 #include "file.h"
 
 struct control_struct {
-	std::string name;
-	std::string host;
-	std::string user;
-	std::string pass;
-	std::string comm;
+    std::string name;
+    std::string host;
+    std::string user;
+    std::string pass;
+    std::string comm;
 };
 
 std::string name("Test Name ");
@@ -23,32 +24,32 @@ std::string pass("Test Password ");
 std::string comm("Test Comment ");
 
 std::list<control_struct> control_data;
-YAPET::Key key("pleasechange");
-YAPET::Crypt yacrypt(key);
-YAPET::File testfile("/tmp/testpwrecord.pet", key, false, false);
 
-bool operator==(const YAPET::PartDec& a, const control_struct& b) {
-    YAPET::Record<YAPET::PasswordRecord>* dec_rec = 
-	yacrypt.decrypt<YAPET::PasswordRecord>(a.getEncRecord() );
-    YAPET::PasswordRecord* ptr_rec = *dec_rec;
-    
-    if (reinterpret_cast<const char*>(ptr_rec->name) != b.name)
-	goto OUTNE;
-    if (reinterpret_cast<const char*>(ptr_rec->host) != b.host)
-	goto OUTNE;
-    if (reinterpret_cast<const char*>(ptr_rec->username) != b.user)
-	goto OUTNE;
-    if (reinterpret_cast<const char*>(ptr_rec->password) != b.pass)
-	goto OUTNE;
-    if (reinterpret_cast<const char*>(ptr_rec->comment) != b.comm)
-	goto OUTNE;
-	    
+constexpr auto TEST_FILE{"/tmp/testpwrecord.pet"};
+std::unique_ptr<yapet::Crypto> crypto;
 
-    delete dec_rec;
+bool operator==(const yapet::PasswordListItem& a, const control_struct& b) {
+    std::string name{reinterpret_cast<const char*>(a.name())};
+
+    auto serializedPasswordRecord{crypto->decrypt(a.encryptedRecord())};
+    yapet::PasswordRecord passwordRecord{serializedPasswordRecord};
+
+    if (name != b.name) goto OUTNE;
+
+    if (reinterpret_cast<const char*>(passwordRecord.name()) != b.name)
+        goto OUTNE;
+    if (reinterpret_cast<const char*>(passwordRecord.host()) != b.host)
+        goto OUTNE;
+    if (reinterpret_cast<const char*>(passwordRecord.username()) != b.user)
+        goto OUTNE;
+    if (reinterpret_cast<const char*>(passwordRecord.password()) != b.pass)
+        goto OUTNE;
+    if (reinterpret_cast<const char*>(passwordRecord.comment()) != b.comm)
+        goto OUTNE;
+
     return true;
-    
- OUTNE:
-    delete dec_rec;
+
+OUTNE:
     return false;
 }
 
@@ -56,23 +57,22 @@ bool operator<(const control_struct& a, const control_struct& b) {
     return a.name < b.name;
 }
 
-void 
-init_control_data() {
+void init_control_data() {
     std::ostringstream no;
 
-    for (int i=0; i<100; i++) {
-	no.str("");
-	no.clear();
-	no << i;
+    for (int i = 0; i < 100; i++) {
+        no.str("");
+        no.clear();
+        no << i;
 
-	control_struct tmp;
-	tmp.name = name + no.str();
-	tmp.host = host + no.str();
-	tmp.user = user + no.str();
-	tmp.pass = pass + no.str();
-	tmp.comm = comm + no.str();
+        control_struct tmp;
+        tmp.name = name + no.str();
+        tmp.host = host + no.str();
+        tmp.user = user + no.str();
+        tmp.pass = pass + no.str();
+        tmp.comm = comm + no.str();
 
-	control_data.push_back(tmp);
+        control_data.push_back(tmp);
     }
 
     control_data.sort();
@@ -81,14 +81,18 @@ init_control_data() {
 int main() {
     init_control_data();
 
-    std::list<YAPET::PartDec> lst = testfile.read(key);
-    
-    if (control_data.size() != lst.size())
-	abort();
+    auto password{yapet::toSecureArray("pleasechange")};
+    std::shared_ptr<yapet::AbstractCryptoFactory> cryptoFactory{
+        yapet::getCryptoFactoryForFile(TEST_FILE, password)};
+    crypto = cryptoFactory->crypto();
 
-    if (!std::equal(lst.begin(), lst.end(),
-		    control_data.begin()))
-	abort();
+    YAPET::File testfile(cryptoFactory, TEST_FILE, false, false);
+
+    std::list<yapet::PasswordListItem> lst = testfile.read();
+
+    if (control_data.size() != lst.size()) abort();
+
+    if (!std::equal(lst.begin(), lst.end(), control_data.begin())) abort();
 
     std::exit(0);
 }

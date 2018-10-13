@@ -1,0 +1,130 @@
+// -*- adoc -*-
+= News
+
+== YAPET 2.0
+
+* Use AES-256 to encrypt files by default
+* Use Argon2 to hash passwords
+* Password generator uses `/dev/urandom` only. Removed `pwgen_rng` configuration option from `.yapet`.
+* Use libyacurs 1.0.0
+
+
+== YAPET 1.1
+
+* Compiles with GCC 6+ and Clang.
+* Use libyacurs 0.4.
+* Supports OpenSSL 1.1.
+
+
+== YAPET 1.0
+
+* New user interface.
+* Colors can be customized in the configuration file.
+* Can be suspended by pressing btn:[Control+Z].
+* PET files can be exported to CSV using `yapet2csv`.
+* Dropped support of long command line options.
+* New files are created by pressing `E`.
+* Experimental support for multi-byte characters.
+      
+== YAPET 0.8pre2
+
+* Fixed bug https://bugs.guengel.ch/show_bug.cgi?id=46[#46].
+* No flicker when resizing the terminal window while the screen lock is
+  active.
+* Screen lock also activates when password record is open.
+* Builds on NetBSD.
+* On terminals supporting colors, passwords are hidden when viewing
+  password records in read-only mode. Switching to edit mode will
+  display the password clear text. Selection of hidden passwords still
+  possible.
+* The screen is now also locked when a password record is open for
+  reading or editing.
+
+== YAPET 0.7
+
+* Password records are opened in read-only mode by default for viewing
+  in order to prevent accidental changes. Pressing btn:[Ctrl+e] in any
+  text field will switch to read-write mode allowing editing password
+  records.
+* The password prompt of the lock screen will now time-out. The
+  time-out can be specified in the configuration file.
+* Quitting YAPET is now possible even if the screen is locked, unless
+  no unsaved changes are pending. This feature can be disabled in the
+  configuration file.
+* The password prompt for unlocking the screen disappears after 60
+  seconds of inactivity. The time-out can be changed in the
+  configuration file.
+* Compiles with GCC 4.4 or later.
+
+== Version 0.6
+
+CAUTION: The file structure of YAPET files has changed in version
+	  0.6. You are strongly advised to make backup copies of your
+	  files before using YAPET 0.6.
+
+* Fixed bug https://bugs.guengel.ch/show_bug.cgi?id=18[#18] preventing
+  exchange of YAPET files between 32/64 bit architectures.
+* `/dev/urandom` is the default random number generator used for
+  generating passwords (fix for bug
+  https://bugs.guengel.ch/show_bug.cgi?id=19[#19]).
+* The random number generator used for generating passwords can be
+  selected in the `~/.yapet` configuration file.
+
+== YAPET 0.5
+
+* Built-in password generator
+* VI keys btn:[k] (scroll up) and btn:[j] (scroll down) can be used
+  for navigating the password record list.
+* Added command line option for disabling the processing of the
+  per-user configuration file.
+* Added command line option for specifying different configuration
+  files to be loaded.
+* A `~` (tilde) sign in the load option of configuration files is
+  expanded to the home directory of the user.
+* A visual mark next to the number of password records indicates
+  whether or not unsaved records exist.
+* `csv2yapet` can handle field delimiters in field values.
+* File suffix can be omitted in `~/.yapet` per-user configuration
+  file.
+* Case-insensitive search available even when `strcasestr()` is not
+  supported on the build platform.
+* Canceling the Password Record Dialog having changes will display a
+  confirmation dialog.
+* Loading a file while the current file having unsaved changes will
+  display a confirmation dialog.
+
+== YAPET 0.4
+
+* Dialogs and message boxes can be closed by pressing the escape key.
+* Bug allowing to create files named only `.pet` fixed.
+* File owner and permissions will be checked as an additional security
+  measure.
+* Time-out until screen is locked can be configured.
+* Can read start-up options from configuration file.
+* New utility `csv2yapet` to convert CSV file to YAPET files.
+
+
+== YAPET 0.3a
+
+* Added waiver on GPL for the OpenSSL library.
+* Syntax of `yapet.desktop` is now conforming to the specification of
+  freedesktop.org.
+
+
+== YAPET 0.3
+
+* Patch for building with GCC 4.3 or later applied.
+* Patch for displaying cursor and backspace behavior applied.
+* Internationalization enabled. Translation for `de_CH`, `de_DE` (partially),
+  and `de_AT` (partially) added.
+* Terminal title in XTerm and friends is updated by YAPET.
+
+
+== YAPET 0.2:
+
+* Password entries are now sorted and can be searched.
+
+
+== YAPET 0.1:
+
+* Version 0.1 released.

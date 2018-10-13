@@ -1,26 +1,18 @@
-# $Id$
-
 DISTCHECK_CONFIGURE_FLAGS = --enable-install-doc	\
 --enable-silent-rules
 
-EXTRA_DIST = build-aux/config.rpath README.Cygwin MAINTAINER DESIGN	\
-LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS THANKS
+EXTRA_DIST = build-aux/config.rpath \
+LICENSE INSTALL.generic yapet.desktop.in intl.h gettext.h BUGS
 
-DIST_SUBDIRS = libyacurs po crypt ui glue pwgen csv2yapet yapet2csv	\
-yapet tests doc
+DIST_SUBDIRS = libyacurs src po tests doc
 
-SUBDIRS = libyacurs po crypt ui glue pwgen
-
-if BUILDCONVERTS
-SUBDIRS += csv2yapet yapet2csv
-endif
-SUBDIRS +=  yapet tests doc
+SUBDIRS = libyacurs src po tests doc
 
 desktopfile_DATA = yapet.desktop
 desktopfiledir = $(datadir)/applications
 
 if !DISABLEINSTALLDOC
-textdoc_DATA = README COPYING AUTHORS DESIGN LICENSE
+textdoc_DATA = README COPYING AUTHORS LICENSE
 textdocdir = $(docdir)
 endif # !DISABLEINSTALLDOC
 
@@ -40,9 +32,6 @@ yapet.desktop: Makefile $(srcdir)/yapet.desktop.in
 DISTCLEANFILES = yapet.desktop
 
 ACLOCAL_AMFLAGS = -I m4
-
-clean-local:
-	rm -rf SunWS_cache
 
 maintainer-clean-local:
 	rm -f README.Cygwin

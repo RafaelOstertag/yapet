@@ -1,0 +1,1 @@
+EXTRA_DIST = baseerror.hh yapeterror.hh headererror.hh fileerror.hh cryptoerror.hh

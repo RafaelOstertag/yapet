@@ -1,0 +1,108 @@
+// -*- adoc -*-
+= csv2yapet(1)
+:doctype: manpage
+:man manual: CSV2YAPET
+:man source: YAPET @PACKAGE_VERSION@
+:manvolnum: 1
+:page-layout: base
+include::attributes.adoc[]
+
+== NAME
+
+csv2yapet - convert CSV file to YAPET file
+
+== SYNOPSIS
+
+{csv2yapet} [[-c] | [-h] | [-V]] | [[-p _password_] [-q] [-s
+_separator_]] _src_ _dst_
+
+== DESCRIPTION
+
+Convert a CSV file _src_ to an YAPET file
+_dst_. The default character for delimiting
+the fields is '_,_' (comma) unless specified otherwise on the command
+line by providing the *-s*.
+
+Fields containing the field separator character have to be
+enclosed in double quotes (_"_).
+
+In order to convert a double quote character it has to be preceded by
+another double quote character.
+
+The following table describes the fields of the source CSV file
+as expected by {csv2yapet}:
+
+.Source File Format
+|===
+|Column #|YAPET Record Field|Maximum size in bytes
+|1|Record Name|127
+|2|Host Name|255
+|3|User Name|255
+|4|Password|255
+|5|Comment|511
+|===
+
+== OPTIONS
+
+The following options are supported:
+
+
+*-c*:: Show copyright.
+*-h*:: Show help.
+*-V*:: Show version.
+*-p* _password_:: The password to be used to encrypt the YAPET file. If
+	    {csv2yapet}is invoked without this option, it will prompt
+	    for the password on the standard input.
+*-q*:: Enable the quiet mode. No details about errors are reported.
+*-s* _separator_:: Change the default field separator '_,_' (comma) to the
+	    single character _separator_.
+_src_:: The source CSV file to be converted.
+_dst_:: The resulting YAPET file holding the content of  _src_
+	    encrypted. This file must not exist prior to the
+	    conversion process, else {csv2yapet} will not start the
+	    conversion and abort.
+
+== EXAMPLES
+
+== An example of a CSV file accepted by {csv2yapet}.
+
+The following example shows an excerpt of a CSV file as accepted for
+conversion by {csv2yapet}.
+
+As the second line shows, fields can be blank but the separator may
+not be omitted.
+
+```
+ssh host,host.example.org,johndoe,secret,Linux machine
+mail account,imap.email.org,john_doe,secret,
+```
+
+=== An example of a CSV file accepted by {csv2yapet} using double quotes.
+
+The following example shows an excerpt of a CSV file as accepted for
+conversion by {csv2yapet}.
+
+The first line demonstrates how to double quote fields containing the
+separator character. The second line shows how to literally convert
+double quote characters.
+
+```
+"ssh, ftp, and http server",server.example.org,johndoe,secret,Linux machine
+mail account,imap.email.org,john_doe,secret,"John ""the Unknown"" Doe"
+```
+
+== EXIT STATUS
+
+*0*:: No error.
+*1*:: Error while parsing command line argument.
+*2*:: The passwords provided on the standard input do not match.
+*3*:: The destination file _dst_ already exists.
+*4*:: An unexpected error occurred.
+
+include::man-bugs.adoc[]
+
+include::man-authors.adoc[]
+
+== SEE ALSO
+
+{yp-mp}, {yp-to-csv-mp}

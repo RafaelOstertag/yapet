@@ -11,6 +11,3 @@ libyapet_iconv_la_CPPFLAGS += -DNDEBUG
 else
 libyapet_iconv_la_CPPFLAGS += -DDEBUG
 endif
-
-clean-local:
-	rm -rf SunWS_cache

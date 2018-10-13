@@ -1,4 +1,4 @@
-YAPET is a text based password manager using the Blowfish encryption
+YAPET is a text based password manager using the AES-256 encryption
 algorithm to store passwords and associated information encrypted on
 disk. Its primary aim is to provide a safe way to store passwords in a
 file on disk while having a small footprint, and compiling and running
@@ -17,9 +17,9 @@ git checkout development
 git submodule init
 git submodule update
 ```
-4. Create stub `README` and `ChangeLog` files
+4. Create stub `README`, `NEWS` and `ChangeLog` files
 ```
-touch README ChangeLog libyacurs/ChangeLog
+touch README NEWS ChangeLog libyacurs/ChangeLog
 ```
 5. Run `autoreconf`
 ```
@@ -33,15 +33,11 @@ mkdir obj && cd obj
 ```
 ../configure
 ```
-8. Create the man pages and `README` file
+8. Create the man pages, `README`, `INSTALL`, and `NEWS` files
 ```
 cd doc && gmake -f Makefile.doc
 ```
 9. Build YAPET
 ```
 cd .. && gmake
-```	
-Bootstrapping the project is cumbersome because I don't keep the
-`README` and man pages in the repository. They are built
-from Docbook sources in the `doc/` directory. The `ChangeLog` is
-pulled from the VCS.
+```
