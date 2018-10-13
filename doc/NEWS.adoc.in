@@ -1,7 +1,7 @@
 // -*- adoc -*-
 = News
 
-== YAPET 2.0-dev
+== YAPET 2.0
 
 * Use AES-256 to encrypt files by default
 * Use Argon2 to hash passwords
