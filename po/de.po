@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAPET 1.0\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2018-10-13 09:07+0200\n"
+"POT-Creation-Date: 2018-10-13 20:47+0200\n"
 "PO-Revision-Date: 2018-10-13 09:10+0200\n"
 "Last-Translator: Rafael Ostertag <rafi@guengel.ch>\n"
 "Language-Team: German\n"
@@ -19,453 +19,453 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/converters/csv2yapet/csvimport.cc:119
-#: src/converters/yapet2csv/csvexport.cc:72
+#: src/converters/csv2yapet/csvimport.cc:118
+#: src/converters/yapet2csv/csvexport.cc:71
 #, c-format
 msgid "Cannot access '%s'"
 msgstr "Kann auf '%s' nicht zugreifen"
 
-#: src/converters/csv2yapet/csvimport.cc:131
-#: src/converters/yapet2csv/csvexport.cc:84 src/libs/cfg/cfgfile.cc:49
-#: src/libs/pwgen/rng.cc:52
+#: src/converters/csv2yapet/csvimport.cc:130
+#: src/converters/yapet2csv/csvexport.cc:83 src/libs/cfg/cfgfile.cc:58
+#: src/libs/pwgen/rng.cc:62
 #, c-format
 msgid "Cannot open '%s'"
 msgstr "Kann Datei '%s' nicht öffnen"
 
-#: src/converters/csv2yapet/csvimport.cc:207 src/converters/csv/csvline.cc:139
+#: src/converters/csv2yapet/csvimport.cc:206 src/converters/csv/csvline.cc:168
 msgid "'\"' mismatch"
 msgstr "keine Übereinstimmung für '\\\"'"
 
-#: src/converters/csv2yapet/csvimport.cc:240
+#: src/converters/csv2yapet/csvimport.cc:239
 msgid "Line too long"
 msgstr "Zeile zu lang"
 
-#: src/converters/csv2yapet/csvimport.cc:275
+#: src/converters/csv2yapet/csvimport.cc:274
 msgid "Line "
 msgstr "Zeile "
 
-#: src/converters/csv2yapet/main.cc:146
+#: src/converters/csv2yapet/main.cc:145
 msgid "csv2yapet is part of "
 msgstr "csv2yapet ist Teil von "
 
-#: src/converters/csv2yapet/main.cc:158 src/converters/yapet2csv/main.cc:154
-#: src/yapet/main.cc:136
+#: src/converters/csv2yapet/main.cc:157 src/converters/yapet2csv/main.cc:153
+#: src/yapet/main.cc:148
 msgid "show copyright information"
 msgstr "zeige Urheberechtsinformationen"
 
-#: src/converters/csv2yapet/main.cc:160 src/converters/yapet2csv/main.cc:156
-#: src/yapet/main.cc:138
+#: src/converters/csv2yapet/main.cc:159 src/converters/yapet2csv/main.cc:155
+#: src/yapet/main.cc:150
 msgid "show this help text"
 msgstr "zeige diesen Hilfetext"
 
-#: src/converters/csv2yapet/main.cc:162
+#: src/converters/csv2yapet/main.cc:161
 msgid "use <password> as the master password for the YAPET file."
 msgstr "benutze <password> als das Master-Passwort für die YAPET-Datei."
 
-#: src/converters/csv2yapet/main.cc:164 src/converters/yapet2csv/main.cc:159
+#: src/converters/csv2yapet/main.cc:163 src/converters/yapet2csv/main.cc:158
 msgid "The use of this option is discouraged."
 msgstr "Die Benutztung dieser Option ist nicht empfohlen."
 
-#: src/converters/csv2yapet/main.cc:167 src/converters/yapet2csv/main.cc:162
+#: src/converters/csv2yapet/main.cc:166 src/converters/yapet2csv/main.cc:161
 msgid "operate quietly"
 msgstr "keine Ausgaben"
 
-#: src/converters/csv2yapet/main.cc:168 src/converters/yapet2csv/main.cc:163
+#: src/converters/csv2yapet/main.cc:167 src/converters/yapet2csv/main.cc:162
 msgid "use <char> as field separator."
 msgstr "benutze <char> als Separator."
 
-#: src/converters/csv2yapet/main.cc:169 src/converters/yapet2csv/main.cc:164
+#: src/converters/csv2yapet/main.cc:168 src/converters/yapet2csv/main.cc:163
 msgid "Default: ,"
 msgstr "Default: ,"
 
-#: src/converters/csv2yapet/main.cc:171
+#: src/converters/csv2yapet/main.cc:170
 msgid "show the version of csv2yapet"
 msgstr "zeige die Version von csv2yapet"
 
-#: src/converters/csv2yapet/main.cc:173
+#: src/converters/csv2yapet/main.cc:172
 msgid "the source csv file"
 msgstr "die quell CSV-Datei"
 
-#: src/converters/csv2yapet/main.cc:175
+#: src/converters/csv2yapet/main.cc:174
 msgid "the output file"
 msgstr "die Ausgabe-Datei"
 
-#: src/converters/csv2yapet/main.cc:176
+#: src/converters/csv2yapet/main.cc:175
 msgid "csv2yapet converts CSV text files to YAPET files."
 msgstr "csv2yapet konvertiert CSV- zu YAPET-Dateien"
 
-#: src/converters/csv2yapet/main.cc:216 src/converters/yapet2csv/main.cc:216
-#: src/yapet/main.cc:240
+#: src/converters/csv2yapet/main.cc:215 src/converters/yapet2csv/main.cc:215
+#: src/yapet/main.cc:252
 msgid " without argument"
 msgstr " ohne Argument"
 
-#: src/converters/csv2yapet/main.cc:220 src/converters/yapet2csv/main.cc:220
-#: src/yapet/main.cc:246
+#: src/converters/csv2yapet/main.cc:219 src/converters/yapet2csv/main.cc:219
+#: src/yapet/main.cc:258
 msgid "unknown argument"
 msgstr "unbekanntes Argument"
 
-#: src/converters/csv2yapet/main.cc:230 src/converters/yapet2csv/main.cc:230
+#: src/converters/csv2yapet/main.cc:229 src/converters/yapet2csv/main.cc:229
 msgid "Missing argument."
 msgstr "unbekanntes Argument"
 
-#: src/converters/csv2yapet/main.cc:244 src/converters/yapet2csv/main.cc:244
+#: src/converters/csv2yapet/main.cc:243 src/converters/yapet2csv/main.cc:243
 msgid " already exists. Aborting."
 msgstr " existiert bereits. Breche ab."
 
-#: src/converters/csv2yapet/main.cc:252 src/converters/yapet2csv/main.cc:252
+#: src/converters/csv2yapet/main.cc:251 src/converters/yapet2csv/main.cc:251
 msgid "Please enter the password for "
 msgstr "Passwort eingeben für"
 
-#: src/converters/csv2yapet/main.cc:259
+#: src/converters/csv2yapet/main.cc:258
 msgid "Please re-type the password: "
 msgstr "Passwort erneut eingeben für"
 
-#: src/converters/csv2yapet/main.cc:269 src/libs/ui/newpassworddialog.cc:34
+#: src/converters/csv2yapet/main.cc:268 src/libs/ui/newpassworddialog.cc:43
 msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
-#: src/converters/csv2yapet/main.cc:280
+#: src/converters/csv2yapet/main.cc:279
 msgid "Had "
 msgstr "Hatte "
 
-#: src/converters/csv2yapet/main.cc:280
+#: src/converters/csv2yapet/main.cc:279
 msgid " errors:"
 msgstr " Fehler:"
 
-#: src/converters/csv2yapet/main.cc:284
+#: src/converters/csv2yapet/main.cc:283
 msgid " created with errors."
 msgstr " erstellt mit Fehlern."
 
-#: src/converters/csv2yapet/main.cc:287 src/converters/yapet2csv/main.cc:268
+#: src/converters/csv2yapet/main.cc:286 src/converters/yapet2csv/main.cc:267
 msgid " successfully created."
 msgstr " erfolgreich erstellt."
 
-#: src/converters/csv/csvline.cc:20
+#: src/converters/csv/csvline.cc:49
 #, c-format
 msgid "Cannot access field %d. Maximum field index %d"
 msgstr "Kann auf %d. Feld nicht zugreifen. Feldanzahl %d"
 
-#: src/converters/csv/csvline.cc:82
+#: src/converters/csv/csvline.cc:111
 #, c-format
 msgid "Expected %d fields in line, read %d"
 msgstr "Erwarte %d Feld(er). %d gelesen"
 
-#: src/converters/csv/csvline.cc:145
+#: src/converters/csv/csvline.cc:174
 #, c-format
 msgid "Expected %d fields in line, read only %d"
 msgstr "Erwarte %d Feld(er) in Zeile. Nur %d gelesen"
 
-#: src/converters/csv/csvstringfield.cc:64
+#: src/converters/csv/csvstringfield.cc:93
 #, c-format
 msgid "Expected '%c' but got %c"
 msgstr "Erwartete '%c'. '%c' erhalten"
 
-#: src/converters/yapet2csv/main.cc:141
+#: src/converters/yapet2csv/main.cc:140
 msgid "yapet2csv is part of "
 msgstr "yapet2csv ist Teil von "
 
-#: src/converters/yapet2csv/main.cc:157
+#: src/converters/yapet2csv/main.cc:156
 msgid "add header to file"
 msgstr "füge Header an Datei"
 
-#: src/converters/yapet2csv/main.cc:158
+#: src/converters/yapet2csv/main.cc:157
 msgid "use <password> to open yapet file."
 msgstr "benutze <password> um Datei zu öffnen."
 
-#: src/converters/yapet2csv/main.cc:166
+#: src/converters/yapet2csv/main.cc:165
 msgid "show the version of yapet2csv"
 msgstr "zeige die Version von yapet2csv"
 
-#: src/converters/yapet2csv/main.cc:168
+#: src/converters/yapet2csv/main.cc:167
 msgid "the source YAPET file"
 msgstr "die Quell-YAPET-Datei"
 
-#: src/converters/yapet2csv/main.cc:170
+#: src/converters/yapet2csv/main.cc:169
 msgid "the CSV output file"
 msgstr "die Ausgabe-CSV-Datei"
 
-#: src/converters/yapet2csv/main.cc:172
+#: src/converters/yapet2csv/main.cc:171
 msgid "yapet2csv converts YAPET files to CSV text files."
 msgstr "yapet2csv konvertiert YAPET- zu CSV-Dateien."
 
-#: src/libs/cfg/cfg.cc:162
+#: src/libs/cfg/cfg.cc:171
 #, c-format
 msgid "'%s' is not a valid bool"
 msgstr "'%s' ist kein gültiger «bool»"
 
-#: src/libs/cfg/cfg.cc:326
+#: src/libs/cfg/cfg.cc:335
 msgid "Configuration key must not be empty"
 msgstr "Konfigurationsschlüssel darf nicht leer sein"
 
-#: src/libs/cfg/cfg.cc:333
+#: src/libs/cfg/cfg.cc:342
 #, c-format
 msgid "Configuration key '%s' not found"
 msgstr "Konfigurationsschlüssel '%s' nicht gefunden"
 
-#: src/libs/cfg/cfgfile.cc:86
+#: src/libs/cfg/cfgfile.cc:95
 #, c-format
 msgid "'%s' is not a invalid configuration option (missing '=')"
 msgstr "'%s' ist keine gültige Konfigurationsoption ('=' fehlt)"
 
-#: src/libs/cfg/cfgfile.cc:99
+#: src/libs/cfg/cfgfile.cc:108
 #, c-format
 msgid "'%s' has no value"
 msgstr "'%s' hat keinen Wert"
 
-#: src/libs/crypt/aes256.cc:47
+#: src/libs/crypt/aes256.cc:46
 msgid "Cannot generate random initialization vector"
 msgstr "Kann zufälligen IV nicht generieren"
 
-#: src/libs/crypt/aes256.cc:55
+#: src/libs/crypt/aes256.cc:54
 msgid "Record does not contain initialization vector"
 msgstr "Datensatz enthält keinen IV"
 
-#: src/libs/crypt/aes256.cc:67
+#: src/libs/crypt/aes256.cc:66
 msgid "Record does not contain encrypted data"
 msgstr "Datensatz enthält keine verschlüsselten Daten"
 
-#: src/libs/crypt/aes256.cc:84 src/libs/crypt/crypto.cc:25
+#: src/libs/crypt/aes256.cc:83 src/libs/crypt/crypto.cc:54
 #, c-format
 msgid "Expect cipher to support IV size %d but cipher supports only IV size %d"
 msgstr ""
 "Erwarte Unterstützung für IV der Grösse %d. Schiffre unterstützt nur die "
 "Grösse %d"
 
-#: src/libs/crypt/aes256.cc:93 src/libs/crypt/crypto.cc:57
+#: src/libs/crypt/aes256.cc:92 src/libs/crypt/crypto.cc:86
 msgid "Unable to get cipher"
 msgstr "Kann die Schiffre nicht ermitteln"
 
-#: src/libs/crypt/aes256.cc:105 src/libs/crypt/crypto.cc:69
+#: src/libs/crypt/aes256.cc:104 src/libs/crypt/crypto.cc:98
 msgid "Error initializing cipher"
 msgstr "Fehler beim Initialisieren der Verschlüsselung"
 
-#: src/libs/crypt/aes256.cc:113 src/libs/crypt/crypto.cc:77
+#: src/libs/crypt/aes256.cc:112 src/libs/crypt/crypto.cc:106
 #, c-format
 msgid "Cannot set key length on context to %d"
 msgstr "Kann die Schlüssellänge des Kontexts nicht auf %d setzen"
 
-#: src/libs/crypt/aes256.cc:145 src/libs/crypt/crypto.cc:113
+#: src/libs/crypt/aes256.cc:144 src/libs/crypt/crypto.cc:142
 msgid "Cannot encrypt empty plain text"
 msgstr "Kann keine leeren Klartexte verschlüsseln"
 
-#: src/libs/crypt/aes256.cc:163 src/libs/crypt/crypto.cc:129
+#: src/libs/crypt/aes256.cc:162 src/libs/crypt/crypto.cc:158
 msgid "Error encrypting data"
 msgstr "Fehler beim Verschlüsseln der Daten"
 
-#: src/libs/crypt/aes256.cc:172 src/libs/crypt/crypto.cc:138
+#: src/libs/crypt/aes256.cc:171 src/libs/crypt/crypto.cc:167
 msgid "Error finalizing encryption"
 msgstr "Fehler beim Abschliessen der Verschlüsselung"
 
-#: src/libs/crypt/aes256.cc:187 src/libs/crypt/crypto.cc:153
+#: src/libs/crypt/aes256.cc:186 src/libs/crypt/crypto.cc:182
 msgid "Cannot decrypt empty cipher text"
 msgstr "Kann keine leeren Schiffretexte entschlüsseln"
 
-#: src/libs/crypt/aes256.cc:208 src/libs/crypt/crypto.cc:170
+#: src/libs/crypt/aes256.cc:207 src/libs/crypt/crypto.cc:199
 msgid "Error decrypting data"
 msgstr "Fehler beim Entschlüsseln der Daten"
 
-#: src/libs/crypt/aes256.cc:217 src/libs/crypt/crypto.cc:179
+#: src/libs/crypt/aes256.cc:216 src/libs/crypt/crypto.cc:208
 msgid "Error finalizing decrypting data"
 msgstr "Fehler beim Abschliessen der Entschlüsselung"
 
-#: src/libs/crypt/file.cc:66 src/libs/exceptions/yapeterror.hh:32
+#: src/libs/crypt/file.cc:65 src/libs/exceptions/yapeterror.hh:61
 msgid "Invalid password"
 msgstr "Falsches Passwort"
 
-#: src/libs/crypt/file.cc:79
+#: src/libs/crypt/file.cc:78
 msgid "File has been externally modified"
 msgstr "Datei wurde von ausserhalb verändert"
 
-#: src/libs/crypt/key256.cc:98
+#: src/libs/crypt/key256.cc:99
 msgid "Error hashing password using Argon2"
 msgstr "Fehler beim Hashen des Passwortes mit Argon2"
 
-#: src/libs/crypt/key256.cc:107
+#: src/libs/crypt/key256.cc:108
 msgid "Cannot generate random salt"
 msgstr "Kann zufälliges Salz nicht generieren"
 
-#: src/libs/crypt/key256.cc:152 src/libs/crypt/key448.cc:138
+#: src/libs/crypt/key256.cc:153 src/libs/crypt/key448.cc:137
 #, c-format
 msgid "Effective key length of %d does not match expected key length %d"
 msgstr ""
 "Die effektive Schlüssellänge %d passt nicht auf die erwartete Schlüssellänge "
 "%d"
 
-#: src/libs/crypt/key448.cc:78
+#: src/libs/crypt/key448.cc:77
 msgid "Empty EVP_MD structure"
 msgstr "Leere EVP_MD-Struktur"
 
-#: src/libs/crypt/key448.cc:82
+#: src/libs/crypt/key448.cc:81
 msgid "Error initializing MD context"
 msgstr "Fehler beim Initialisieren des MD-Kontexts"
 
-#: src/libs/crypt/key448.cc:88
+#: src/libs/crypt/key448.cc:87
 msgid "Unable to initialize the digest"
 msgstr "Kann Digest nicht initialisieren"
 
-#: src/libs/crypt/key448.cc:94
+#: src/libs/crypt/key448.cc:93
 msgid "Unable to update the digest"
 msgstr "Kann Digest nicht anpassen"
 
-#: src/libs/crypt/key448.cc:103
+#: src/libs/crypt/key448.cc:102
 msgid "Unable to finalize the digest"
 msgstr "Kann Digest nicht abschliessen"
 
-#: src/libs/exceptions/baseerror.hh:53
+#: src/libs/exceptions/baseerror.hh:50
 msgid "Generic exception message"
 msgstr "Generische Ausnahmenachricht"
 
-#: src/libs/exceptions/cryptoerror.hh:10
+#: src/libs/exceptions/cryptoerror.hh:39
 msgid "Cipher error"
 msgstr "Schiffre-Fehler"
 
-#: src/libs/exceptions/cryptoerror.hh:16
+#: src/libs/exceptions/cryptoerror.hh:45
 msgid "Hash error"
 msgstr "Hash-Fehler"
 
-#: src/libs/exceptions/cryptoerror.hh:28
+#: src/libs/exceptions/cryptoerror.hh:57
 msgid "Encryption error"
 msgstr "Verschlüsselungsfehler"
 
-#: src/libs/exceptions/yapeterror.hh:18
+#: src/libs/exceptions/yapeterror.hh:47
 msgid "Retry"
 msgstr "Wiederholen"
 
-#: src/libs/file/filehelper.cc:30 src/libs/file/filehelper.cc:58
+#: src/libs/file/filehelper.cc:59 src/libs/file/filehelper.cc:87
 #, c-format
 msgid "'%s' is not a known file type"
 msgstr "'%s' ist keine bekannter Dateityp"
 
-#: src/libs/file/fileutils.cc:29
+#: src/libs/file/fileutils.cc:58
 #, c-format
 msgid "Unable to get stat for file '%s'"
 msgstr "Kann die Datein-Informationen von '%s' nicht ermitteln"
 
-#: src/libs/file/fileutils.cc:42
+#: src/libs/file/fileutils.cc:71
 #, c-format
 msgid "Error setting owner of file '%s'"
 msgstr "Fehler beim Setzen des Eigentümers von '%s'"
 
-#: src/libs/file/fileutils.cc:50
+#: src/libs/file/fileutils.cc:79
 #, c-format
 msgid "Error setting file mode of file '%s'"
 msgstr "Fehler beim Setzen des Datei-Modus von '%s'"
 
-#: src/libs/file/fileutils.cc:89
+#: src/libs/file/fileutils.cc:118
 msgid "Old and new name cannot be the same"
 msgstr "Alter und neuer Name dürfen nicht identisch sein"
 
-#: src/libs/file/fileutils.cc:95
+#: src/libs/file/fileutils.cc:124
 #, c-format
 msgid "Cannot rename file '%s'"
 msgstr "Kann Datei '%s' nicht umbenennen"
 
-#: src/libs/file/header10.cc:19
+#: src/libs/file/header10.cc:48
 msgid "Control string does not match"
 msgstr "Prüf-String ist nicht identisch"
 
-#: src/libs/file/header10.cc:34
+#: src/libs/file/header10.cc:63
 #, c-format
 msgid "Expected header version 1 got %d"
 msgstr "Erwarte Kopf-Version 1, erhielt %d"
 
-#: src/libs/file/header10.cc:57
+#: src/libs/file/header10.cc:86
 #, c-format
 msgid "Expected header version 1 or 2, got %d"
 msgstr "Erwarte Kop-Version 1 oder 2, erhielt %d"
 
-#: src/libs/file/header10.cc:79
+#: src/libs/file/header10.cc:108
 #, c-format
 msgid "Invalid header size %d"
 msgstr "Ungültige Kpf grösse %d"
 
-#: src/libs/file/headerversion.hh:36
+#: src/libs/file/headerversion.hh:65
 #, c-format
 msgid "%d is not a known header version"
 msgstr "%d ist keine bekannte Kopf-Version"
 
-#: src/libs/file/rawfile.cc:13
+#: src/libs/file/rawfile.cc:42
 msgid "File not open"
 msgstr "Datei nicht offen"
 
-#: src/libs/file/rawfile.cc:14
+#: src/libs/file/rawfile.cc:43
 msgid "File already open"
 msgstr "Datei bereits offen"
 
-#: src/libs/file/rawfile.cc:69
+#: src/libs/file/rawfile.cc:98
 #, c-format
 msgid "Cannot open existing file '%s'"
 msgstr "Kann existierende Datei '%s' nicht öffnen"
 
-#: src/libs/file/rawfile.cc:82
+#: src/libs/file/rawfile.cc:111
 #, c-format
 msgid "Cannot create new file '%s'"
 msgstr "Kann neue Datei '%s' nicht erstellen"
 
-#: src/libs/file/rawfile.cc:92
+#: src/libs/file/rawfile.cc:121
 msgid "Read size must not be less than 1"
 msgstr "Lese-Grösse darf nicht kleiner als 1 sein"
 
-#: src/libs/file/rawfile.cc:104
+#: src/libs/file/rawfile.cc:133
 #, c-format
 msgid "Error reading file '%s'"
 msgstr "Fehler beim Lesen der Datei '%s'"
 
-#: src/libs/file/rawfile.cc:125
+#: src/libs/file/rawfile.cc:154
 #, c-format
 msgid "Error reading record length from file '%s'"
 msgstr "Fehler beim Lesen des Datensatzes von der Datei '%s'"
 
-#: src/libs/file/rawfile.cc:146
+#: src/libs/file/rawfile.cc:175
 #, c-format
 msgid "Cannot write record size to file '%s'"
 msgstr "Kann Datensatzgrösse nicht in Datei '%s' schreiben"
 
-#: src/libs/file/rawfile.cc:161
+#: src/libs/file/rawfile.cc:190
 #, c-format
 msgid "Cannot write buffer to file '%s'"
 msgstr "Kann Puffer nicht in Datei '%s' schreiben"
 
-#: src/libs/file/rawfile.cc:172
+#: src/libs/file/rawfile.cc:201
 msgid "Position must be positive"
 msgstr "Position muss positiv sein"
 
-#: src/libs/file/rawfile.cc:179
+#: src/libs/file/rawfile.cc:208
 #, c-format
 msgid "Error seeking in file '%s'"
 msgstr "Fehler beim Positionieren innerhalb von '%s'"
 
-#: src/libs/file/rawfile.cc:199
+#: src/libs/file/rawfile.cc:228
 #, c-format
 msgid "Error re-opening file '%s'"
 msgstr "Fehler beim Wiederöffnen der Datei '%s'"
 
-#: src/libs/file/rawfile.cc:209
+#: src/libs/file/rawfile.cc:238
 #, c-format
 msgid "Unable to get current position in file '%s'"
 msgstr "Kann die Position innerhalb von '%s' nicht ermitteln"
 
-#: src/libs/file/rawfile.cc:222
+#: src/libs/file/rawfile.cc:251
 #, c-format
 msgid "Unable to flush data to file '%s'"
 msgstr "Kann Daten nicht in '%s' schreiben"
 
-#: src/libs/file/yapet10file.cc:87
+#: src/libs/file/yapet10file.cc:80
 #, c-format
 msgid "File '%s' is not a '%s' file"
 msgstr "Datei '%s' ist keine '%s' Datei"
 
-#: src/libs/file/yapet10file.cc:124
+#: src/libs/file/yapet10file.cc:117
 #, c-format
 msgid "Cannot read recognition string from file '%s'"
 msgstr "Kann den Erkennungs-String der Datei '%s' nicht lesen"
 
-#: src/libs/file/yapet10file.cc:148
+#: src/libs/file/yapet10file.cc:141
 #, c-format
 msgid "Cannot read header data from file '%s'"
 msgstr "Kann Kopf-Information von '%s' nicht lesen"
 
-#: src/libs/file/yapet10file.cc:206
+#: src/libs/file/yapet10file.cc:199
 #, c-format
 msgid "Error truncating file '%s'"
 msgstr "Kann Datei '%s' nicht kürzen"
@@ -475,412 +475,412 @@ msgstr "Kann Datei '%s' nicht kürzen"
 msgid "Cannot read unencrypted meta data from file '%s'"
 msgstr "Kann unverschlüsselte Meta-Information von '%s' nicht lesen"
 
-#: src/libs/file/yapetfile.cc:75
+#: src/libs/file/yapetfile.cc:70
 #, c-format
 msgid "'%s' has insecure permissions"
 msgstr "'%s' hat unsichere Berechtigung"
 
-#: src/libs/glue/changepassword.cc:61 src/libs/glue/promptpassword.cc:56
+#: src/libs/glue/changepassword.cc:70 src/libs/glue/promptpassword.cc:65
 #, c-format
 msgid "File '%s' not recognized"
 msgstr "Datei '%s' nicht erkannt"
 
-#: src/libs/glue/changepassword.cc:77 src/libs/glue/changepassword.cc:84
-#: src/libs/glue/changepassword.cc:151 src/libs/glue/createfile.cc:79
-#: src/libs/glue/opencmdlinefile.cc:101 src/libs/glue/promptpassword.cc:78
-#: src/libs/ui/mainwindow.cc:480 src/libs/ui/mainwindow.cc:526
-#: src/libs/ui/mainwindow.cc:552 src/libs/ui/passwordrecord.cc:75
-#: src/libs/ui/passwordrecord.cc:167
+#: src/libs/glue/changepassword.cc:86 src/libs/glue/changepassword.cc:93
+#: src/libs/glue/changepassword.cc:160 src/libs/glue/createfile.cc:88
+#: src/libs/glue/opencmdlinefile.cc:110 src/libs/glue/promptpassword.cc:87
+#: src/libs/ui/mainwindow.cc:489 src/libs/ui/mainwindow.cc:535
+#: src/libs/ui/mainwindow.cc:561 src/libs/ui/passwordrecord.cc:84
+#: src/libs/ui/passwordrecord.cc:176
 msgid "Error"
 msgstr "Fehler"
 
-#: src/libs/glue/changepassword.cc:77
+#: src/libs/glue/changepassword.cc:86
 msgid "Password does not match old password"
 msgstr "Passwort stimmt nich mit altem Passwort überein"
 
-#: src/libs/glue/changepassword.cc:78
+#: src/libs/glue/changepassword.cc:87
 msgid "Retry?"
 msgstr "Nochmals versuchen?"
 
-#: src/libs/glue/changepassword.cc:85 src/libs/glue/changepassword.cc:152
-#: src/libs/glue/createfile.cc:80 src/libs/glue/opencmdlinefile.cc:102
-#: src/libs/glue/promptpassword.cc:79
+#: src/libs/glue/changepassword.cc:94 src/libs/glue/changepassword.cc:161
+#: src/libs/glue/createfile.cc:89 src/libs/glue/opencmdlinefile.cc:111
+#: src/libs/glue/promptpassword.cc:88
 msgid "Got following error"
 msgstr "Folgenden Fehler erhalten"
 
-#: src/libs/glue/changepassword.cc:141
+#: src/libs/glue/changepassword.cc:150
 msgid "Password not changed. Old and new password identical."
 msgstr "Passwort nich geändert. Neues und altes sind identisch."
 
-#: src/libs/glue/changepassword.cc:180 src/libs/glue/createfile.cc:119
-#: src/libs/glue/loadfile.cc:98 src/libs/ui/mainwindow.cc:280
+#: src/libs/glue/changepassword.cc:189 src/libs/glue/createfile.cc:128
+#: src/libs/glue/loadfile.cc:107 src/libs/ui/mainwindow.cc:289
 msgid "Unexpected dialog state for confirmsave dialog"
 msgstr "Unerwarteter Dialog-Status für Bestätigungsdialog"
 
-#: src/libs/glue/changepassword.cc:230 src/libs/glue/createfile.cc:166
-#: src/libs/glue/loadfile.cc:143
+#: src/libs/glue/changepassword.cc:239 src/libs/glue/createfile.cc:175
+#: src/libs/glue/loadfile.cc:152
 msgid "Unsaved Changes"
 msgstr "Ungespeicherte Änderungen"
 
-#: src/libs/glue/changepassword.cc:230
+#: src/libs/glue/changepassword.cc:239
 msgid "Changes in"
 msgstr "Änderungen in"
 
-#: src/libs/glue/changepassword.cc:231
+#: src/libs/glue/changepassword.cc:240
 msgid "will be saved. Do you want to continue?"
 msgstr "wird gespeichert. Fortfahren?"
 
-#: src/libs/glue/createfile.cc:167 src/libs/glue/loadfile.cc:144
+#: src/libs/glue/createfile.cc:176 src/libs/glue/loadfile.cc:153
 msgid "has unsaved changes. Do you want to save?"
 msgstr "hat nicht gespeicherte Änderungen. Speichern?"
 
-#: src/libs/glue/opencmdlinefile.cc:174
+#: src/libs/glue/opencmdlinefile.cc:183
 msgid "Create new File?"
 msgstr "Neue Datei erstellen?"
 
-#: src/libs/glue/opencmdlinefile.cc:174
+#: src/libs/glue/opencmdlinefile.cc:183
 msgid "The file"
 msgstr "Die Datei"
 
-#: src/libs/glue/opencmdlinefile.cc:175
+#: src/libs/glue/opencmdlinefile.cc:184
 msgid "does not exist. Create?"
 msgstr "existiert nicht. Erstellen?"
 
-#: src/libs/glue/promptpassword.cc:72
+#: src/libs/glue/promptpassword.cc:81
 msgid "Invalid Password"
 msgstr "Falsches Passwort"
 
-#: src/libs/glue/promptpassword.cc:72
+#: src/libs/glue/promptpassword.cc:81
 msgid "Password for file"
 msgstr "Passwort für Datei"
 
-#: src/libs/glue/promptpassword.cc:73
+#: src/libs/glue/promptpassword.cc:82
 msgid "is not correct. Do you want to try again?"
 msgstr "ist nicht korrekt. Nochmals versuchen?"
 
-#: src/libs/metadata/metadata.cc:59
+#: src/libs/metadata/metadata.cc:88
 msgid "Error deserializing meta data"
 msgstr "Fehler beim Deserialisieren der Meta-Daten"
 
-#: src/libs/passwordrecord/passwordrecord.cc:53
+#: src/libs/passwordrecord/passwordrecord.cc:82
 #, c-format
 msgid "Password record is expected to be of size %d bytes but got %d bytes"
 msgstr ""
 "Passwort-Datensatz muss die Grösse %d bytes haben, hat aber nur %d bytes"
 
-#: src/libs/pwgen/characterpool.cc:38
+#: src/libs/pwgen/characterpool.cc:67
 msgid "No character pools selected"
 msgstr "Kein Zeichenvorrat gewählt"
 
-#: src/libs/pwgen/pwgen.cc:58
+#: src/libs/pwgen/pwgen.cc:142
 #, c-format
 msgid "%d is not a valid password size"
 msgstr "%d ist keine gültige Passwortgrösse"
 
-#: src/libs/pwgen/rng.cc:111
+#: src/libs/pwgen/rng.cc:78
 msgid "Error reading random bytes from file"
 msgstr "Fehler beim Lesen eines zufälligen Bytes aus der Datei"
 
-#: src/libs/ui/help.cc:40
+#: src/libs/ui/help.cc:49
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/libs/ui/help.cc:51
+#: src/libs/ui/help.cc:60
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/libs/ui/help.cc:56
+#: src/libs/ui/help.cc:65
 msgid "Load File"
 msgstr "Datei laden"
 
-#: src/libs/ui/help.cc:61
+#: src/libs/ui/help.cc:70
 msgid "Create File"
 msgstr "Datei erstellen"
 
-#: src/libs/ui/help.cc:66
+#: src/libs/ui/help.cc:75
 msgid "Lock Screen"
 msgstr "Bildschirm sperren"
 
-#: src/libs/ui/help.cc:71
+#: src/libs/ui/help.cc:80
 msgid "Add Entry"
 msgstr "Eintrag hinzufügen"
 
-#: src/libs/ui/help.cc:76
+#: src/libs/ui/help.cc:85
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
 
-#: src/libs/ui/help.cc:81
+#: src/libs/ui/help.cc:90
 msgid "Sort Order"
 msgstr "Sortierreihenfolge"
 
-#: src/libs/ui/help.cc:86 src/libs/ui/mainwindow.cc:626
-#: src/libs/ui/mainwindow.cc:629
+#: src/libs/ui/help.cc:95 src/libs/ui/mainwindow.cc:635
+#: src/libs/ui/mainwindow.cc:638
 msgid "Search"
 msgstr "Suchen"
 
-#: src/libs/ui/help.cc:91
+#: src/libs/ui/help.cc:100
 msgid "Search Next"
 msgstr "Weiter suchen"
 
-#: src/libs/ui/help.cc:96
+#: src/libs/ui/help.cc:105
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: src/libs/ui/help.cc:101 src/libs/ui/info.cc:51
+#: src/libs/ui/help.cc:110 src/libs/ui/info.cc:60
 msgid "Information"
 msgstr "Informationen"
 
-#: src/libs/ui/help.cc:106
+#: src/libs/ui/help.cc:115
 msgid "Redraw Screen"
 msgstr "Bildschirm neu zeichnen"
 
-#: src/libs/ui/help.cc:111 src/libs/ui/passwordrecord.cc:191
-#: src/libs/ui/pwgendialog.cc:93
+#: src/libs/ui/help.cc:120 src/libs/ui/passwordrecord.cc:200
+#: src/libs/ui/pwgendialog.cc:102
 msgid "Password Generator"
 msgstr "Passwortgenerator"
 
-#: src/libs/ui/help.cc:116 src/libs/ui/yapetunlockdialog.cc:88
+#: src/libs/ui/help.cc:125 src/libs/ui/yapetunlockdialog.cc:97
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/libs/ui/info.cc:55
+#: src/libs/ui/info.cc:64
 msgid "File: "
 msgstr "Datei: "
 
-#: src/libs/ui/info.cc:57
+#: src/libs/ui/info.cc:66
 msgid "File permission check: "
 msgstr "Dateisicherheit: "
 
-#: src/libs/ui/info.cc:58
+#: src/libs/ui/info.cc:67
 msgid "Screen lock time-out: "
 msgstr "Zeit bis Bildschirmsperrung: "
 
-#: src/libs/ui/info.cc:60
+#: src/libs/ui/info.cc:69
 msgid "Unlock Dialog time-out: "
 msgstr "Entsperr Dialog Unterbrechung: "
 
-#: src/libs/ui/info.cc:62
+#: src/libs/ui/info.cc:71
 msgid "Password records: "
 msgstr "Passwort Einträge: "
 
-#: src/libs/ui/info.cc:64
+#: src/libs/ui/info.cc:73
 msgid "Records modified: "
 msgstr "Eintrag bearbeitet: "
 
-#: src/libs/ui/info.cc:66
+#: src/libs/ui/info.cc:75
 msgid "PET file version: "
 msgstr "PET Datei Version: "
 
-#: src/libs/ui/info.cc:68
+#: src/libs/ui/info.cc:77
 msgid "Password set: "
 msgstr "Passwort gesetzt am: "
 
-#: src/libs/ui/info.cc:70
+#: src/libs/ui/info.cc:79
 msgid "Architecture: "
 msgstr "Architektur: "
 
-#: src/libs/ui/info.cc:78 src/libs/ui/info.cc:88 src/libs/ui/info.cc:90
-#: src/libs/ui/info.cc:92 src/libs/ui/info.cc:151 src/libs/ui/info.cc:160
+#: src/libs/ui/info.cc:87 src/libs/ui/info.cc:97 src/libs/ui/info.cc:99
+#: src/libs/ui/info.cc:101 src/libs/ui/info.cc:160 src/libs/ui/info.cc:169
 msgid "n/a"
 msgstr "keine Angaben"
 
-#: src/libs/ui/info.cc:81
+#: src/libs/ui/info.cc:90
 msgid "Core File:"
 msgstr "Core Datei: "
 
-#: src/libs/ui/info.cc:83
+#: src/libs/ui/info.cc:92
 msgid "suppressed"
 msgstr "unterdrückt"
 
-#: src/libs/ui/info.cc:85
+#: src/libs/ui/info.cc:94
 msgid "not suppressed"
 msgstr "nicht unterdrückt"
 
-#: src/libs/ui/info.cc:87
+#: src/libs/ui/info.cc:96
 msgid "Argon2 Memory"
 msgstr "Argon2 Speicher"
 
-#: src/libs/ui/info.cc:89
+#: src/libs/ui/info.cc:98
 msgid "Argon2 Parallelism"
 msgstr "Argon2 Parallelität"
 
-#: src/libs/ui/info.cc:91
+#: src/libs/ui/info.cc:100
 msgid "Argon2 Iterations"
 msgstr "Argon2 Iterationen"
 
-#: src/libs/ui/info.cc:106
+#: src/libs/ui/info.cc:115
 msgid "none loaded"
 msgstr "keine geladen"
 
-#: src/libs/ui/info.cc:111
+#: src/libs/ui/info.cc:120
 msgid "enabled"
 msgstr "aktiviert"
 
-#: src/libs/ui/info.cc:113
+#: src/libs/ui/info.cc:122
 msgid "disabled"
 msgstr "deaktiviert"
 
-#: src/libs/ui/info.cc:138
+#: src/libs/ui/info.cc:147
 msgid "yes"
 msgstr "ja"
 
-#: src/libs/ui/info.cc:140
+#: src/libs/ui/info.cc:149
 msgid "no"
 msgstr "nein"
 
-#: src/libs/ui/info.cc:174
+#: src/libs/ui/info.cc:183
 msgid "big endian"
 msgstr "big endian"
 
-#: src/libs/ui/info.cc:176
+#: src/libs/ui/info.cc:185
 msgid "little endian"
 msgstr "little endian"
 
-#: src/libs/ui/mainwindow.cc:50 src/libs/ui/mainwindow.cc:58
+#: src/libs/ui/mainwindow.cc:59 src/libs/ui/mainwindow.cc:67
 msgid "Finder(): Unable to convert to wide character string"
 msgstr "Finder(): kann nicht zu wide character Zeichenkette konvertieren"
 
-#: src/libs/ui/mainwindow.cc:54 src/libs/ui/mainwindow.cc:73
+#: src/libs/ui/mainwindow.cc:63 src/libs/ui/mainwindow.cc:82
 msgid "Finder(): out of memory"
 msgstr "Finder(): kein Speicher mehr"
 
-#: src/libs/ui/mainwindow.cc:67 src/libs/ui/mainwindow.cc:80
+#: src/libs/ui/mainwindow.cc:76 src/libs/ui/mainwindow.cc:89
 msgid "Finder(): Unable to convert to multibyte string"
 msgstr "Finder(): kann nicht zu multibyte Zeichenkette konvertieren"
 
-#: src/libs/ui/mainwindow.cc:219
+#: src/libs/ui/mainwindow.cc:228
 msgid "Added new Record"
 msgstr "Neuen Eintrag hinzugefügt"
 
-#: src/libs/ui/mainwindow.cc:231
+#: src/libs/ui/mainwindow.cc:240
 msgid "Updated Record"
 msgstr "Eintrag aktualisiert"
 
-#: src/libs/ui/mainwindow.cc:255
+#: src/libs/ui/mainwindow.cc:264
 msgid "Delete selected Record"
 msgstr "Ausgewählten Eintrag löschen?"
 
-#: src/libs/ui/mainwindow.cc:276
+#: src/libs/ui/mainwindow.cc:285
 msgid "Quit aborted"
 msgstr "Beenden abgebrochen"
 
-#: src/libs/ui/mainwindow.cc:292
+#: src/libs/ui/mainwindow.cc:301
 msgid "Empty search string"
 msgstr "Leerer Suchbegriff"
 
-#: src/libs/ui/mainwindow.cc:300
+#: src/libs/ui/mainwindow.cc:309
 msgid "No match for "
 msgstr "Keine Treffer für "
 
-#: src/libs/ui/mainwindow.cc:460
+#: src/libs/ui/mainwindow.cc:469
 msgid "Opened file: "
 msgstr "Geöffnete Datei: "
 
-#: src/libs/ui/mainwindow.cc:480
+#: src/libs/ui/mainwindow.cc:489
 msgid "Error while reading file:"
 msgstr "Fehler beim Lesen der Datei:"
 
-#: src/libs/ui/mainwindow.cc:515
+#: src/libs/ui/mainwindow.cc:524
 msgid "Saved file: "
 msgstr "Gespeicherte Datei: "
 
-#: src/libs/ui/mainwindow.cc:519
+#: src/libs/ui/mainwindow.cc:528
 msgid "No changes need to be saved"
 msgstr "Keine Änderungen zum Speichern"
 
-#: src/libs/ui/mainwindow.cc:526
+#: src/libs/ui/mainwindow.cc:535
 msgid "Error while saving file:"
 msgstr "Fehler beim Öffnen der Datei:"
 
-#: src/libs/ui/mainwindow.cc:538
+#: src/libs/ui/mainwindow.cc:547
 msgid "New key must not be nullptr"
 msgstr "Neuer Schlüssel darf nicht 0 sein"
 
-#: src/libs/ui/mainwindow.cc:547
+#: src/libs/ui/mainwindow.cc:556
 msgid "Changed password on "
 msgstr "Passwort geändert am"
 
-#: src/libs/ui/mainwindow.cc:552
+#: src/libs/ui/mainwindow.cc:561
 msgid "Error while changing password:"
 msgstr "Fehler beim Ändern des Passworts:"
 
-#: src/libs/ui/mainwindow.cc:566
+#: src/libs/ui/mainwindow.cc:575
 msgid "Confirm Deletion"
 msgstr "Löschen bestätigen"
 
-#: src/libs/ui/mainwindow.cc:566
+#: src/libs/ui/mainwindow.cc:575
 msgid "Do you want to delete the selected record?"
 msgstr "Ausgewählter Eintrag löschen?"
 
-#: src/libs/ui/mainwindow.cc:597
+#: src/libs/ui/mainwindow.cc:606
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: src/libs/ui/mainwindow.cc:597
+#: src/libs/ui/mainwindow.cc:606
 msgid "There are unsaved changes."
 msgstr "Ungespeicherte Änderungen vorhanden."
 
-#: src/libs/ui/mainwindow.cc:598
+#: src/libs/ui/mainwindow.cc:607
 msgid "Do you want to save changes, before leaving?"
 msgstr "Änderungen vor Beenden speichern?"
 
-#: src/libs/ui/mainwindow.cc:609
+#: src/libs/ui/mainwindow.cc:618
 msgid "Sort Order Ascending"
 msgstr "Sortierreihenfolge aufsteigend"
 
-#: src/libs/ui/mainwindow.cc:612
+#: src/libs/ui/mainwindow.cc:621
 msgid "Sort Order Descending"
 msgstr "Sortierreihenfolge absteigend"
 
-#: src/libs/ui/mainwindow.cc:626
+#: src/libs/ui/mainwindow.cc:635
 msgid "Enter search term"
 msgstr "Suchbegriff eingeben"
 
-#: src/libs/ui/mainwindow.cc:629
+#: src/libs/ui/mainwindow.cc:638
 msgid "Enter search term (case-sensitive)"
 msgstr "Suchbegriff eingeben (Gross- und Kleinschreibung werden beachtet)"
 
-#: src/libs/ui/mainwindow.cc:639
+#: src/libs/ui/mainwindow.cc:648
 msgid "No previous search. Press '/' to search."
 msgstr "Keine vorhergehende Suche. '/' drücken um zu suchen."
 
-#: src/libs/ui/mainwindow.cc:646
+#: src/libs/ui/mainwindow.cc:655
 msgid "No more matches for "
 msgstr "Keine Treffer für "
 
-#: src/libs/ui/mainwindow.cc:648
+#: src/libs/ui/mainwindow.cc:657
 msgid " found"
 msgstr " gefunden"
 
-#: src/libs/ui/mainwindow.cc:654
+#: src/libs/ui/mainwindow.cc:663
 msgid "Next match for "
 msgstr "Nächster Treffer für "
 
-#: src/libs/ui/newpassworddialog.cc:34 src/libs/ui/newpassworddialog.cc:43
+#: src/libs/ui/newpassworddialog.cc:43 src/libs/ui/newpassworddialog.cc:52
 msgid "Password Missmatch"
 msgstr "Passwörter stimmen nicht überein"
 
-#: src/libs/ui/newpassworddialog.cc:35 src/libs/ui/newpassworddialog.cc:44
+#: src/libs/ui/newpassworddialog.cc:44 src/libs/ui/newpassworddialog.cc:53
 msgid "Do you want to retry?"
 msgstr "Nochmals versuchen?"
 
-#: src/libs/ui/newpassworddialog.cc:43
+#: src/libs/ui/newpassworddialog.cc:52
 msgid "Password must not be empty."
 msgstr "Passwort darf nicht leer sein."
 
-#: src/libs/ui/newpassworddialog.cc:75
+#: src/libs/ui/newpassworddialog.cc:84
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: src/libs/ui/newpassworddialog.cc:79 src/libs/ui/passworddialog.cc:29
+#: src/libs/ui/newpassworddialog.cc:88 src/libs/ui/passworddialog.cc:38
 msgid "Enter password for "
 msgstr "Passwort eingeben für "
 
-#: src/libs/ui/newpassworddialog.cc:80
+#: src/libs/ui/newpassworddialog.cc:89
 msgid "Confirm password"
 msgstr "Passwort bestätigen"
 
-#: src/libs/ui/newpassworddialog.h:70
+#: src/libs/ui/newpassworddialog.h:77
 msgid ""
 "Calling NewPasswordDialog::password() while dialog_state()!=DIALOG_OK or !"
 "match()"
@@ -888,150 +888,150 @@ msgstr ""
 "Aufruf von NewPasswordDialog::password() während dialog_state()!=DIALOG_OK "
 "oder !match() ist"
 
-#: src/libs/ui/passworddialog.cc:27
+#: src/libs/ui/passworddialog.cc:36
 msgid "Enter Password"
 msgstr "Passwort eingeben"
 
-#: src/libs/ui/passwordrecord.cc:134
+#: src/libs/ui/passwordrecord.cc:143
 msgid "Pending Changes"
 msgstr "Anstehende Änderungen"
 
-#: src/libs/ui/passwordrecord.cc:134
+#: src/libs/ui/passwordrecord.cc:143
 msgid "Do you want to discard changes?"
 msgstr "Änderungen verwerfen?"
 
-#: src/libs/ui/passwordrecord.cc:179 src/libs/ui/passwordrecord.cc:282
+#: src/libs/ui/passwordrecord.cc:188 src/libs/ui/passwordrecord.cc:291
 msgid "Password Entry"
 msgstr "Passwort Entrag"
 
-#: src/libs/ui/passwordrecord.cc:181
+#: src/libs/ui/passwordrecord.cc:190
 msgid "Name"
 msgstr "Name"
 
-#: src/libs/ui/passwordrecord.cc:182
+#: src/libs/ui/passwordrecord.cc:191
 msgid "Host"
 msgstr "Host"
 
-#: src/libs/ui/passwordrecord.cc:183
+#: src/libs/ui/passwordrecord.cc:192
 msgid "User Name"
 msgstr "Benutzername"
 
-#: src/libs/ui/passwordrecord.cc:184
+#: src/libs/ui/passwordrecord.cc:193
 msgid "Password"
 msgstr "Passwort"
 
-#: src/libs/ui/passwordrecord.cc:185
+#: src/libs/ui/passwordrecord.cc:194
 msgid "Comment"
 msgstr "Kommentar"
 
-#: src/libs/ui/passwordrecord.cc:280
+#: src/libs/ui/passwordrecord.cc:289
 msgid "Password Entry (Read-Only)"
 msgstr "Passwort Eintrag (Nur-lesen)"
 
-#: src/libs/ui/pwgendialog.cc:44 src/libs/ui/pwgendialog.cc:116
-#: src/libs/ui/pwgendialog.cc:124
+#: src/libs/ui/pwgendialog.cc:53 src/libs/ui/pwgendialog.cc:125
+#: src/libs/ui/pwgendialog.cc:133
 msgid "Letters"
 msgstr "Buchstaben"
 
-#: src/libs/ui/pwgendialog.cc:47 src/libs/ui/pwgendialog.cc:117
-#: src/libs/ui/pwgendialog.cc:126
+#: src/libs/ui/pwgendialog.cc:56 src/libs/ui/pwgendialog.cc:126
+#: src/libs/ui/pwgendialog.cc:135
 msgid "Digits"
 msgstr "Ziffern"
 
-#: src/libs/ui/pwgendialog.cc:49 src/libs/ui/pwgendialog.cc:118
-#: src/libs/ui/pwgendialog.cc:128
+#: src/libs/ui/pwgendialog.cc:58 src/libs/ui/pwgendialog.cc:127
+#: src/libs/ui/pwgendialog.cc:137
 msgid "Punctuation"
 msgstr "Satzzeichen"
 
-#: src/libs/ui/pwgendialog.cc:51 src/libs/ui/pwgendialog.cc:119
-#: src/libs/ui/pwgendialog.cc:130
+#: src/libs/ui/pwgendialog.cc:60 src/libs/ui/pwgendialog.cc:128
+#: src/libs/ui/pwgendialog.cc:139
 msgid "Special"
 msgstr "Spezial"
 
-#: src/libs/ui/pwgendialog.cc:52 src/libs/ui/pwgendialog.cc:120
-#: src/libs/ui/pwgendialog.cc:132
+#: src/libs/ui/pwgendialog.cc:61 src/libs/ui/pwgendialog.cc:129
+#: src/libs/ui/pwgendialog.cc:141
 msgid "Other"
 msgstr "Andere"
 
-#: src/libs/ui/pwgendialog.cc:97
+#: src/libs/ui/pwgendialog.cc:106
 msgid "Generated password"
 msgstr "Generiertes Passwort"
 
-#: src/libs/ui/pwgendialog.cc:99
+#: src/libs/ui/pwgendialog.cc:108
 msgid "Password length"
 msgstr "Passwortlänge"
 
-#: src/libs/ui/pwgendialog.cc:102
+#: src/libs/ui/pwgendialog.cc:111
 msgid "Regenerate"
 msgstr "Regenerieren"
 
-#: src/libs/ui/pwgendialog.cc:121
+#: src/libs/ui/pwgendialog.cc:130
 msgid "Character Pools"
 msgstr "Zeichenvorrat"
 
-#: src/libs/ui/yapetlockscreen.cc:57
+#: src/libs/ui/yapetlockscreen.cc:66
 msgid "YAPET LOCKED"
 msgstr "YAPET GESPERRT"
 
-#: src/libs/ui/yapetunlockdialog.cc:62
+#: src/libs/ui/yapetunlockdialog.cc:71
 msgid "Unlock Screen"
 msgstr "Bildschirm entsperren"
 
-#: src/libs/ui/yapetunlockdialog.cc:65
+#: src/libs/ui/yapetunlockdialog.cc:74
 msgid "Please enter password for"
 msgstr "Passwort eingeben für"
 
-#: src/libs/ui/yapetunlockdialog.cc:66
+#: src/libs/ui/yapetunlockdialog.cc:75
 msgid "<unknown>"
 msgstr "<unbekannt>"
 
-#: src/libs/ui/yapetunlockdialog.cc:67
+#: src/libs/ui/yapetunlockdialog.cc:76
 msgid "in order to unlock screen"
 msgstr "um Bildschirm zu entsperren"
 
-#: src/libs/utils/securearray.cc:19
+#: src/libs/utils/securearray.cc:47
 msgid "Provided size exceeds maximum size of SecureArray"
 msgstr "Übergebene Grösse überschreitet das Maximum von SecureArray"
 
-#: src/libs/utils/securearray.cc:30
+#: src/libs/utils/securearray.cc:58
 #, c-format
 msgid "Index out of range: %d"
 msgstr "Position ausserhalb des Bereiches: %d"
 
-#: src/libs/utils/securearray.cc:37
+#: src/libs/utils/securearray.cc:65
 msgid "Size must not be negative"
 msgstr "Gösse darf nicht negativ sein"
 
-#: src/libs/utils/securearray.cc:175
+#: src/libs/utils/securearray.cc:203
 msgid "Pointer must not be null"
 msgstr "Zeiger darf nicht null sein"
 
-#: src/yapet/main.cc:101
+#: src/yapet/main.cc:113
 msgid "Failed to suppress the creation of core file."
 msgstr "Kann Erstellung der Core-Datei nicht unterdrücken."
 
-#: src/yapet/main.cc:103
+#: src/yapet/main.cc:115
 msgid "The error message is: "
 msgstr "Die Fehlermeldung ist: "
 
-#: src/yapet/main.cc:105 src/yapet/main.cc:116
+#: src/yapet/main.cc:117 src/yapet/main.cc:128
 msgid "In case a core file is created, it may contain clear text passwords."
 msgstr ""
 "Falls eine Core Datei erstellt wird, kann sie Klartextpasswörter enthalten."
 
-#: src/yapet/main.cc:109 src/yapet/main.cc:120
+#: src/yapet/main.cc:121 src/yapet/main.cc:132
 msgid "Press <ENTER> to continue"
 msgstr "Drücke <EINGABE> um weiterzumachen"
 
-#: src/yapet/main.cc:115
+#: src/yapet/main.cc:127
 msgid "Cannot suppress the creation of core file."
 msgstr "Kann Erstellung der Core Datei nicht unterdrücken."
 
-#: src/yapet/main.cc:139
+#: src/yapet/main.cc:151
 msgid "do not read the configuration file."
 msgstr "liest die Konfigurationsdatei nicht."
 
-#: src/yapet/main.cc:144
+#: src/yapet/main.cc:156
 msgid ""
 "read the configuration file specified by <rcfile>. If this\n"
 "\t\toption is not provided, it defaults to $HOME/.yapet unless -i\n"
@@ -1041,7 +1041,7 @@ msgstr ""
 "\t\tnicht angegeben wird, wird $HOME/.yapet gelesen ausser -i\n"
 "\t\tist angegeben."
 
-#: src/yapet/main.cc:152
+#: src/yapet/main.cc:164
 msgid ""
 "disable check of owner and file permissions. When creating new\n"
 "\t\tfiles, the file mode is set to 0644."
@@ -1049,7 +1049,7 @@ msgstr ""
 "Überprüfung von Eigentümer- und Dateiberechtigung deaktivieren. Beim\n"
 "\t\tErstellen von Dateien wird die Dateiberechtigung auf 0644 gesetzt."
 
-#: src/yapet/main.cc:158
+#: src/yapet/main.cc:170
 msgid ""
 "enable check of owner and file permissions. When creating new\n"
 "\t\tfiles, the file mode is set to 0600."
@@ -1057,7 +1057,7 @@ msgstr ""
 "Überprüfung von Eigentümer- und Dateiberechtigung aktivieren. Beim\n"
 "\t\tErstellen von Dateien wird die Dateiberechtigung auf 0600 gesetzt."
 
-#: src/yapet/main.cc:163
+#: src/yapet/main.cc:175
 msgid ""
 "the time-out in seconds until the screen is locked.\n"
 "\t\tDefault: 600 sec."
@@ -1065,42 +1065,22 @@ msgstr ""
 "die Zeit in Sekunden bis der Bildschirm gesperrt wird.\n"
 "\t\tDefault: 600 sek."
 
-#: src/yapet/main.cc:167
+#: src/yapet/main.cc:179
 msgid "show the version of "
 msgstr "zeige die Version von "
 
-#: src/yapet/main.cc:170
+#: src/yapet/main.cc:182
 msgid "open the specified file <filename>"
 msgstr "öffne die angegebene Datei <filename>"
 
-#: src/yapet/main.cc:176
+#: src/yapet/main.cc:188
 #, c-format
 msgid ""
 "%s stores passwords encrypted on disk using the AES-256 encryption\n"
 "algorithm."
 msgstr "%s speichert Passwörter AES-256 verschlüsselt in Dateien."
 
-#: src/yapet/main.cc:296
+#: src/yapet/main.cc:308
 msgid "Press 'H' for help"
 msgstr "Für Hilfe 'H' drücken"
 
-#~ msgid ""
-#~ "%s stores passwords encrypted on disk using the blowfish encryption\n"
-#~ "algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
-#~ "for more information about %s."
-#~ msgstr ""
-#~ "%s speichert Passwörter verschlüsselt auf Disk unter Verwendung des\n"
-#~ "Blowfish Verschlüsselungsalgorithmus. Gehe auf mit dem Browser auf\n"
-#~ "http://www.guengel.ch/myapps/yapet/ um mehr über %s zu erfahren."
-
-#~ msgid "'%s' is not a valid RNG"
-#~ msgstr "'%s' ist kein gültiger RNG"
-
-#~ msgid "Error creating object copy"
-#~ msgstr "Fehler beim Erstellen der Objektkopie"
-
-#~ msgid "Invalid RNGENGINE"
-#~ msgstr "Ungültige RNGENGINE"
-
-#~ msgid "Sources"
-#~ msgstr "Quellen"
