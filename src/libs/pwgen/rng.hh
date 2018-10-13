@@ -16,8 +16,8 @@ class Rng {
 
        public:
         using result_type = std::uint8_t;
-        std::uint8_t min() { return std::numeric_limits<std::uint8_t>::min(); }
-        std::uint8_t max() { return std::numeric_limits<std::uint8_t>::max(); }
+        static std::uint8_t min() { return std::numeric_limits<std::uint8_t>::min(); }
+        static std::uint8_t max() { return std::numeric_limits<std::uint8_t>::max(); }
 
         RngFunctor(Rng& rng) : _rng{rng} {}
         std::uint8_t operator()() { return _rng.readRandomInt(); }
