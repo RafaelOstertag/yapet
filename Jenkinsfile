@@ -79,6 +79,13 @@ pipeline {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE distcheck'
+                                    sshagent(['0b266ecf-fa80-4fe8-bce8-4c723f5ba47a']) {
+                                        // Eventhorizon only allows sftp
+                                        sh """sftp yapet-deploy@eventhorizon.dmz.kruemel.home:/var/www/jails/yapet/usr/local/www/apache24/data/downloads/ <<EOF
+put yapet-*.tar.*
+EOF
+"""
+                                    }
                                 }
                             }
 
