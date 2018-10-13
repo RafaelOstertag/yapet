@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yapet 2.0-dev\n"
 "Report-Msgid-Bugs-To: Rafael Ostertag <rafi@guengel.ch>\n"
-"POT-Creation-Date: 2018-10-03 18:33+0200\n"
+"POT-Creation-Date: 2018-10-13 09:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: src/converters/csv2yapet/csvimport.cc:131
 #: src/converters/yapet2csv/csvexport.cc:84 src/libs/cfg/cfgfile.cc:49
-#: src/libs/pwgen/rng.cc:55
+#: src/libs/pwgen/rng.cc:52
 #, c-format
 msgid "Cannot open '%s'"
 msgstr ""
@@ -93,12 +93,12 @@ msgid "csv2yapet converts CSV text files to YAPET files."
 msgstr ""
 
 #: src/converters/csv2yapet/main.cc:216 src/converters/yapet2csv/main.cc:216
-#: src/yapet/main.cc:242
+#: src/yapet/main.cc:240
 msgid " without argument"
 msgstr ""
 
 #: src/converters/csv2yapet/main.cc:220 src/converters/yapet2csv/main.cc:220
-#: src/yapet/main.cc:248
+#: src/yapet/main.cc:246
 msgid "unknown argument"
 msgstr ""
 
@@ -191,16 +191,11 @@ msgstr ""
 msgid "'%s' is not a valid bool"
 msgstr ""
 
-#: src/libs/cfg/cfg.cc:199
-#, c-format
-msgid "'%s' is not a valid RNG"
-msgstr ""
-
-#: src/libs/cfg/cfg.cc:364
+#: src/libs/cfg/cfg.cc:326
 msgid "Configuration key must not be empty"
 msgstr ""
 
-#: src/libs/cfg/cfg.cc:371
+#: src/libs/cfg/cfg.cc:333
 #, c-format
 msgid "Configuration key '%s' not found"
 msgstr ""
@@ -566,25 +561,17 @@ msgstr ""
 msgid "Password record is expected to be of size %d bytes but got %d bytes"
 msgstr ""
 
-#: src/libs/pwgen/characterpool.cc:39
+#: src/libs/pwgen/characterpool.cc:38
 msgid "No character pools selected"
 msgstr ""
 
-#: src/libs/pwgen/pwgen.cc:87
+#: src/libs/pwgen/pwgen.cc:58
 #, c-format
 msgid "%d is not a valid password size"
 msgstr ""
 
-#: src/libs/pwgen/rng.cc:67 src/libs/pwgen/rng.cc:84
-msgid "Error creating object copy"
-msgstr ""
-
-#: src/libs/pwgen/rng.cc:103
-msgid "Error reading random byte from file"
-msgstr ""
-
-#: src/libs/pwgen/rng.cc:124
-msgid "Invalid RNGENGINE"
+#: src/libs/pwgen/rng.cc:111
+msgid "Error reading random bytes from file"
 msgstr ""
 
 #: src/libs/ui/help.cc:40
@@ -641,7 +628,7 @@ msgid "Redraw Screen"
 msgstr ""
 
 #: src/libs/ui/help.cc:111 src/libs/ui/passwordrecord.cc:191
-#: src/libs/ui/pwgendialog.cc:119
+#: src/libs/ui/pwgendialog.cc:93
 msgid "Password Generator"
 msgstr ""
 
@@ -932,49 +919,45 @@ msgstr ""
 msgid "Password Entry (Read-Only)"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:57 src/libs/ui/pwgendialog.cc:144
-#: src/libs/ui/pwgendialog.cc:152
+#: src/libs/ui/pwgendialog.cc:44 src/libs/ui/pwgendialog.cc:116
+#: src/libs/ui/pwgendialog.cc:124
 msgid "Letters"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:60 src/libs/ui/pwgendialog.cc:145
-#: src/libs/ui/pwgendialog.cc:154
+#: src/libs/ui/pwgendialog.cc:47 src/libs/ui/pwgendialog.cc:117
+#: src/libs/ui/pwgendialog.cc:126
 msgid "Digits"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:62 src/libs/ui/pwgendialog.cc:146
-#: src/libs/ui/pwgendialog.cc:156
+#: src/libs/ui/pwgendialog.cc:49 src/libs/ui/pwgendialog.cc:118
+#: src/libs/ui/pwgendialog.cc:128
 msgid "Punctuation"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:64 src/libs/ui/pwgendialog.cc:147
-#: src/libs/ui/pwgendialog.cc:158
+#: src/libs/ui/pwgendialog.cc:51 src/libs/ui/pwgendialog.cc:119
+#: src/libs/ui/pwgendialog.cc:130
 msgid "Special"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:65 src/libs/ui/pwgendialog.cc:148
-#: src/libs/ui/pwgendialog.cc:160
+#: src/libs/ui/pwgendialog.cc:52 src/libs/ui/pwgendialog.cc:120
+#: src/libs/ui/pwgendialog.cc:132
 msgid "Other"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:125
+#: src/libs/ui/pwgendialog.cc:97
 msgid "Generated password"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:127
+#: src/libs/ui/pwgendialog.cc:99
 msgid "Password length"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:130
+#: src/libs/ui/pwgendialog.cc:102
 msgid "Regenerate"
 msgstr ""
 
-#: src/libs/ui/pwgendialog.cc:149
+#: src/libs/ui/pwgendialog.cc:121
 msgid "Character Pools"
-msgstr ""
-
-#: src/libs/ui/pwgendialog.cc:169
-msgid "Sources"
 msgstr ""
 
 #: src/libs/ui/yapetlockscreen.cc:57
@@ -1074,11 +1057,10 @@ msgstr ""
 #: src/yapet/main.cc:176
 #, c-format
 msgid ""
-"%s stores passwords encrypted on disk using the blowfish encryption\n"
-"algorithm. Point your browser to http://www.guengel.ch/myapps/yapet/\n"
-"for more information about %s."
+"%s stores passwords encrypted on disk using the AES-256 encryption\n"
+"algorithm."
 msgstr ""
 
-#: src/yapet/main.cc:298
+#: src/yapet/main.cc:296
 msgid "Press 'H' for help"
 msgstr ""

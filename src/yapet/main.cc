@@ -173,12 +173,10 @@ void show_help(char* prgname) {
     char buff[512];
 
     snprintf(buff, 512,
-             _("%s stores passwords encrypted on disk using the blowfish "
+             _("%s stores passwords encrypted on disk using the AES-256 "
                "encryption\n"
-               "algorithm. Point your browser to "
-               "http://www.guengel.ch/myapps/yapet/\n"
-               "for more information about %s."),
-             PACKAGE_NAME, PACKAGE_NAME);
+               "algorithm."),
+             PACKAGE_NAME);
     std::cout << buff << std::endl << std::endl;
 }
 
