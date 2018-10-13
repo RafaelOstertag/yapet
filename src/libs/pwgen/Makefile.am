@@ -3,7 +3,7 @@ yapet_src_libdir = $(yapet_srcdir)/libs
 yapet_builddir = $(top_builddir)/src
 yapet_libs_builddir = $(yapet_builddir)/libs
 
-AM_CPPFLAGS = -I$(yapet_src_libdir)/utils \ 
+AM_CPPFLAGS = -I$(yapet_src_libdir)/utils \
     -I$(yapet_src_libdir)/consts \
     -DLOCALEDIR=\"$(localedir)\" -I$(top_srcdir)
 

@@ -5,7 +5,7 @@ yapet_libs_builddir = $(top_builddir)/src/libs
 
 check_PROGRAMS = characterpool rng pwgen rng_distribution pwgen_distribution
 
-TESTS := characterpool rng pwgen
+TESTS = characterpool rng pwgen
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/utils \
 	-I$(yapet_libs_srcdir)/pwgen \
