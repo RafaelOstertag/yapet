@@ -78,7 +78,7 @@ pipeline {
 
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE distcheck'
+                                    sh '$MAKE distcheck DISTCHECK_CONFIGURE_FLAGS="--enable-nls  --with-libiconv-prefix=/usr/local --with-libintl-prefix=/usr/local"'
                                     sshagent(['0b266ecf-fa80-4fe8-bce8-4c723f5ba47a']) {
                                         // Eventhorizon only allows sftp
                                         sh """sftp yapet-deploy@eventhorizon.dmz.kruemel.home:/var/www/jails/yapet/usr/local/www/apache24/data/downloads/ <<EOF
@@ -254,56 +254,6 @@ EOF
                         }
 					}
 				} // stage("OpenBSD amd64")
-
-                stage("OpenBSD i386") {
-					agent {
-						label "openbsd&&i386"
-					}
-					stages {
-						stage("(OB32) Bootstrap Build") {
-                             steps {
-                                sh "touch ChangeLog"
-                                dir("libyacurs") {
-                                    sh "touch ChangeLog"
-                                }
-                                sh "touch README NEWS"
-                                sh "autoreconf -I m4 -i"
-                            }
-                        }
-
-                        stage("(OB32) Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug CC=cc CXX=c++"
-                                }
-                            }
-                        }
-
-                        stage("(OB32) Stub Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                            }
-                        }
-
-						stage("(OB32) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                             }
-                        }
-                        
-                        stage("(OB32) Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-					}
-				} // stage("OpenBSD i386")
 
 				stage("NetBSD") {
 					agent {
