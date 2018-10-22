@@ -9,7 +9,7 @@ pipeline {
     }
 
     environment {
-        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
+        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas -fsanitize=address"
     }
 
     triggers {
