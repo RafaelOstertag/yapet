@@ -107,6 +107,7 @@ Rng::Rng(Rng&& rng)
       positionInCache{rng.positionInCache},
       max{rng.max} {
     rng.fd = BAD_FD;
+    rng.positionInCache = EMPTY_CACHE;
 }
 
 Rng& Rng::operator=(const Rng& rng) {
@@ -132,6 +133,8 @@ Rng& Rng::operator=(Rng&& rng) {
 
     byteCache = std::move(rng.byteCache);
     positionInCache = rng.positionInCache;
+    rng.positionInCache = EMPTY_CACHE;
+
     max = rng.max;
 
     return *this;
