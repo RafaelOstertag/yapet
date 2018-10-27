@@ -25,7 +25,7 @@ class RngTest : public CppUnit::TestFixture {
             "Rng should copy properly", &RngTest::rngCopy});
 
         suiteOfTests->addTest(new CppUnit::TestCaller<RngTest>{
-            "Rng should copy properly", &RngTest::rngMove});
+            "Rng should move properly", &RngTest::rngMove});
 
         return suiteOfTests;
     }

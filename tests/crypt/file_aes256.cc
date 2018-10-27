@@ -164,18 +164,16 @@ class Aes256FileTest : public CppUnit::TestFixture {
     }
 
     void createAndReadEmptyFile() {
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{
                     password, yapet::Key256::newDefaultKeyingParameters()}};
 
             YAPET::File file{factory, FN, true};
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
 
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{password,
@@ -189,24 +187,20 @@ class Aes256FileTest : public CppUnit::TestFixture {
                                        expectedFileVersion.size() - 1) == 0);
             CPPUNIT_ASSERT(file.getHeaderVersion() ==
                            yapet::HEADER_VERSION::VERSION_2);
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
     }
 
     void openEmptyFileWithInvalidPassword() {
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{
                     password, yapet::Key256::newDefaultKeyingParameters()}};
 
             YAPET::File file{factory, FN, true};
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
 
-        try {
+        {
             auto password{yapet::toSecureArray("InvalidPassword")};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{password,
@@ -214,13 +208,11 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
             CPPUNIT_ASSERT_THROW((YAPET::File{factory, FN, false}),
                                  yapet::InvalidPasswordError);
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
     }
 
     void writePasswords() {
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{
@@ -233,14 +225,9 @@ class Aes256FileTest : public CppUnit::TestFixture {
             auto passwordList{createPasswordList(aes256)};
 
             file.save(passwordList);
-        } catch (std::exception &ex) {
-            std::cout << std::endl;
-            std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
-
-            CPPUNIT_FAIL("unexpected exception");
         }
 
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{password,
@@ -268,10 +255,6 @@ class Aes256FileTest : public CppUnit::TestFixture {
                 yapet::PasswordRecord actual{decryptedSerializedPasswordRecord};
                 comparePasswordRecords(actual, expectedPasswordRecord);
             }
-        } catch (std::exception &ex) {
-            std::cout << std::endl;
-            std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
-            CPPUNIT_FAIL("unexpected exception");
         }
     }
 
@@ -367,7 +350,7 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
     void timeMasterPasswordSet() {
         std::time_t approxTimePasswordSet{0};
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{
@@ -375,11 +358,9 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
             approxTimePasswordSet = std::time(0);
             YAPET::File file{factory, FN, true};
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
 
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{password,
@@ -390,13 +371,11 @@ class Aes256FileTest : public CppUnit::TestFixture {
 
             CPPUNIT_ASSERT(((approxTimePasswordSet - 10) < passwordSet) &&
                            ((approxTimePasswordSet + 10) > passwordSet));
-        } catch (...) {
-            CPPUNIT_FAIL("unexpected exception");
         }
     }
 
     void setNewPassword() {
-        try {
+        {
             auto password{yapet::toSecureArray(TEST_PASSWORD)};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{
@@ -415,14 +394,9 @@ class Aes256FileTest : public CppUnit::TestFixture {
                 new yapet::Aes256Factory{
                     newPassword, yapet::Key256::newDefaultKeyingParameters()}};
             file.setNewKey(newCrypto);
-        } catch (std::exception &ex) {
-            std::cout << std::endl;
-            std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
-
-            CPPUNIT_FAIL("unexpected exception");
         }
 
-        try {
+        {
             auto password{yapet::toSecureArray("NewSecret")};
             std::shared_ptr<yapet::Aes256Factory> factory{
                 new yapet::Aes256Factory{password,
@@ -450,10 +424,6 @@ class Aes256FileTest : public CppUnit::TestFixture {
                 yapet::PasswordRecord actual{decryptedSerializedPasswordRecord};
                 comparePasswordRecords(actual, expectedPasswordRecord);
             }
-        } catch (std::exception &ex) {
-            std::cout << std::endl;
-            std::cout << typeid(ex).name() << ": " << ex.what() << std::endl;
-            CPPUNIT_FAIL("unexpected exception");
         }
     };
 
