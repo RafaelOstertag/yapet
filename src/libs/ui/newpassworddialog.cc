@@ -40,7 +40,7 @@ bool NewPasswordDialog::on_close() {
     if (!match() && dialog_state() != YACURS::DIALOG_CANCEL) {
         assert(nomatchdialog == nullptr);
         nomatchdialog = new YACURS::MessageBox2(
-            _("Password Missmatch"), _("Passwords do not match."),
+            _("Password Mismatch"), _("Passwords do not match."),
             _("Do you want to retry?"), YACURS::YESNO);
         nomatchdialog->show();
         return false;
@@ -49,7 +49,7 @@ bool NewPasswordDialog::on_close() {
     if (pwinput1->input().empty() && dialog_state() != YACURS::DIALOG_CANCEL) {
         assert(nomatchdialog == nullptr);
         nomatchdialog = new YACURS::MessageBox2(
-            _("Password Missmatch"), _("Password must not be empty."),
+            _("Password Mismatch"), _("Password must not be empty."),
             _("Do you want to retry?"), YACURS::YESNO);
         nomatchdialog->show();
         return false;

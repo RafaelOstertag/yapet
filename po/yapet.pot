@@ -850,7 +850,7 @@ msgid "Next match for "
 msgstr ""
 
 #: src/libs/ui/newpassworddialog.cc:43 src/libs/ui/newpassworddialog.cc:52
-msgid "Password Missmatch"
+msgid "Password Mismatch"
 msgstr ""
 
 #: src/libs/ui/newpassworddialog.cc:44 src/libs/ui/newpassworddialog.cc:53
