@@ -147,7 +147,7 @@ SecureArray Yapet10File::readHeader() {
 }
 
 std::list<SecureArray> Yapet10File::readPasswordRecords() {
-    // This read is expected to leave the file position indicatory pointing to
+    // This read is expected to leave the file position indicator pointing to
     // the first password record length indicator
     readHeader();
 
