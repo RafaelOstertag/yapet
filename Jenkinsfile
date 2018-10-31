@@ -9,7 +9,8 @@ pipeline {
     }
 
     environment {
-        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas -fstack-protector -fsanitize=address"
+        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
+        CODE_INSTRUMENTATION_FLAGS = "-fstack-protector-strong -fsanitize=address"
     }
 
     triggers {
@@ -58,7 +59,7 @@ pipeline {
 						stage("(FB64) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -66,7 +67,7 @@ pipeline {
                         stage("(FB64) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -140,7 +141,7 @@ EOF
 						stage("(FB32) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -148,7 +149,7 @@ EOF
                         stage("(FB32) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -190,7 +191,7 @@ EOF
 						 stage("(LX) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                              }
                          }
@@ -198,7 +199,7 @@ EOF
                         stage("(LX) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -240,6 +241,7 @@ EOF
 						stage("(OB64) Build") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
@@ -248,6 +250,7 @@ EOF
                         stage("(OB64) Test") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
@@ -289,7 +292,7 @@ EOF
 						 stage("(NB) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                              }
                          }
@@ -297,7 +300,7 @@ EOF
                         stage("(NB) Test") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
