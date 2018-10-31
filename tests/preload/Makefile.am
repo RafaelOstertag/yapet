@@ -98,12 +98,12 @@ libmasterpwchange.la: masterpwchange.lo
 check-local: libpwrecord.la checktestpwrecord libmasterpwchange.la libcheckyapet.la
 	if $(builddir)/istty ; then \
 		rm -f /tmp/emptyfile.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libcheckyapet.so" $(yapet_builddir)/yapet/yapet -i /tmp/emptyfile.pet && echo 'OK' ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}:$(builddir)/.libs/libcheckyapet.so" $(yapet_builddir)/yapet/yapet -i /tmp/emptyfile.pet && echo 'OK' ; \
 		rm -f /tmp/testpwrecord.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libpwrecord.so" $(yapet_builddir)/yapet/yapet -i /tmp/testpwrecord.pet ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}:$(builddir)/.libs/libpwrecord.so" $(yapet_builddir)/yapet/yapet -i /tmp/testpwrecord.pet ; \
 		$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1 ; \
 		rm -f /tmp/masterpwchange.pet ; \
-		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet ; \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}:$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet ; \
 		$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1 ; \
 	fi
 
