@@ -27,11 +27,11 @@
  * well as that of the covered work.
  */
 
-#include "newpassworddialog.h"
-#include "intl.h"
-#include "utils.hh"
-
 #include <cassert>
+
+#include "intl.h"
+#include "logger.hh"
+#include "newpassworddialog.h"
 
 //
 // Private
