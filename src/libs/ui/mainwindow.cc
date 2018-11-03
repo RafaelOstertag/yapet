@@ -41,6 +41,7 @@
 #include "cfg.h"
 #include "filehelper.hh"
 #include "globals.h"
+#include "logger.hh"
 #include "mainwindow.h"
 #include "mainwindowhotkeys.h"
 #include "opencmdlinefile.h"
@@ -548,6 +549,7 @@ void MainWindow::change_password(
 
     try {
         _cryptoFactory = newCryptoFactory;
+        LOG_MESSAGE(std::string{__func__} + ": set new key");
         _yapetFile->setNewKey(_cryptoFactory);
         // Reread the records
         recordlist->set(_yapetFile->read());

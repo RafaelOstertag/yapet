@@ -32,6 +32,7 @@
 
 #include "consts.h"
 #include "fileerror.hh"
+#include "logger.hh"
 #include "yapet20file.hh"
 
 using namespace yapet;
@@ -69,6 +70,7 @@ SecureArray Yapet20File::readUnencryptedMetaData() {
         throw FileFormatError{msg};
     }
 
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
     return resultPair.first;
 }
 
@@ -79,6 +81,7 @@ void Yapet20File::writeUnencryptedMetaData(const SecureArray& metaData) {
 
     rawFile.write(metaData);
     rawFile.flush();
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 const std::uint8_t* Yapet20File::recognitionString() const {

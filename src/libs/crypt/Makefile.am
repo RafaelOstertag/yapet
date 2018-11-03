@@ -16,6 +16,7 @@ AM_CPPFLAGS = -I$(yapet_src_libdir)/pwgen \
     -I$(top_srcdir)/libyacurs/include \
     -I$(top_builddir)/libyacurs/include \
     -I$(top_srcdir) \
+    -I$(yapet_src_libdir) \
     $(OPENSSL_INCLUDES) \
     $(ARGON2_CFLAGS) \
     -DLOCALEDIR=\"$(localedir)\"

@@ -32,6 +32,7 @@
 #include "intl.h"
 #include "logger.hh"
 #include "newpassworddialog.h"
+#include "utils.hh"
 
 //
 // Private
