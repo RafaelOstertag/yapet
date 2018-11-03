@@ -36,7 +36,7 @@
 #include <cstdio>
 #include <cstring>
 #include <typeinfo>
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 #include <iomanip>
 #include <sstream>
 #endif
@@ -52,7 +52,7 @@
 using namespace yapet;
 
 namespace {
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 constexpr char hexPrefix[]{"0x"};
 #endif
 /**
@@ -72,7 +72,7 @@ union architecture_agnostic_salt_type {
     uint8_t bytes[SALT_LENGTH];
 };
 
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 std::string saltNibblesToHexString(const int* salt) {
     std::stringstream hexValue;
     hexValue << hexPrefix << std::hex;

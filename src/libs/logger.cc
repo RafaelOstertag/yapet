@@ -29,6 +29,6 @@
 
 #include "logger.hh"
 
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 yapet::Logger yapet::logger;
 #endif

@@ -34,7 +34,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 #include <iomanip>
 #include <sstream>
 #endif
@@ -48,7 +48,7 @@
 using namespace yapet;
 
 namespace {
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 inline std::string intToHexString(int val) {
     std::stringstream hexString;
     hexString << "0x" << std::hex << val;
@@ -100,7 +100,7 @@ MetaData::MetaData(const SecureArray& serialized) : _dataItems{} {
         throw std::invalid_argument(_("Error deserializing meta data"));
     }
 
-#ifdef DEBUG
+#ifdef DEBUG_LOG
     for (auto item : _dataItems) {
         LOG_MESSAGE("Deserialized " + item.first + ": " + intToHexString(item.second));
     }

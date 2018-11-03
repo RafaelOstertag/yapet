@@ -30,7 +30,7 @@
 #ifndef _LOGGER_H
 #define _LOGGER_H
 
-#ifdef DEBUG
+#ifdef DEBUG_LOG
 #include <chrono>
 #include <ctime>
 #include <fstream>
