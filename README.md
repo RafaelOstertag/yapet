@@ -45,7 +45,8 @@ cd .. && gmake
 Environment Variables
 ===
 
-* `EXTRA_LD_PRELOAD`: Use to add extra preload libraries to preloaded tests when using address sanitizer. 
+* `EXTRA_LD_PRELOAD`: Use to add extra preload libraries to preloaded tests when using address sanitizer.
+  When used, terminate value with colon (`:`).
 
 Preprocessor Macros
 ===
