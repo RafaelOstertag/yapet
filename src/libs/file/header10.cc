@@ -33,6 +33,7 @@
 #include "header10.hh"
 #include "headererror.hh"
 #include "intl.h"
+#include "logger.hh"
 #include "ods.hh"
 
 using namespace yapet;
@@ -44,13 +45,16 @@ void Header10::testIfControlStringMatchesOrThrow(
     auto pointerToControlString = (*serializedHeader) + VERSION_SIZE;
     auto result = std::memcmp(pointerToControlString, CONTROL_STRING,
                               CONTROL_STRING_SIZE);
+    LOG_MESSAGE(std::string{__func__} +
+                ": Header 10 value: " + secureArrayToString(serializedHeader));
     if (result != 0) {
-        throw HeaderError{_("Control string does not match")};
+        LOG_MESSAGE(std::string{__func__} + ": Control string mismatch");
+        throw ControlStringMismatch{_("Control string does not match")};
     }
 }
 
 void Header10::deserializeVersion1Header(const SecureArray& serializedHeader) {
-    // We have to test the controll string before testing the version in order
+    // We have to test the control string before testing the version in order
     // to raise an invalid password error. If we test the version before the
     // control string we don't know whether the password is wrong or the version
     // is wrong.

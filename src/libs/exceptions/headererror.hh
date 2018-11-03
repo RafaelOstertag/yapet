@@ -37,6 +37,11 @@ class HeaderError : public YAPETBaseError {
    public:
     HeaderError(const char* msg) : YAPETBaseError{msg} {}
 };
+
+class ControlStringMismatch : public YAPETBaseError {
+   public:
+    ControlStringMismatch(const char* msg) : YAPETBaseError{msg} {}
+};
 }  // namespace yapet
 
 #endif
