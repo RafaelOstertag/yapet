@@ -41,3 +41,14 @@ cd doc && gmake -f Makefile.doc
 ```
 cd .. && gmake
 ```
+
+Environment Variables
+===
+
+* `EXTRA_LD_PRELOAD`: Use to add extra preload libraries to preloaded tests when using address sanitizer. 
+
+Preprocessor Macros
+===
+
+* `CFGDEBUG`: Enable configuration handling console debug output.
+* `DEBUG_LOG`: Enable debug output to `/tmp/yapet_debug.log`.
