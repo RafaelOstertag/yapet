@@ -65,6 +65,9 @@ pipeline {
                         }
 
                         stage("(FB64) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/clang/6.0.0/lib/freebsd/libclang_rt.asan-x86_64.so:"
+                            }
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
@@ -147,6 +150,9 @@ EOF
                         }
 
                         stage("(FB32) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/clang/6.0.0/lib/freebsd/libclang_rt.asan-i386.so:"
+                            }
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
@@ -197,6 +203,9 @@ EOF
                          }
 
                         stage("(LX) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/6/libasan.so:"
+                            }
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
@@ -298,6 +307,9 @@ EOF
                          }
 
                         stage("(NB) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
+                            }
                             steps {
                                 dir("obj") {
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
