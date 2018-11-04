@@ -99,16 +99,16 @@ class FileUtilsTest : public CppUnit::TestFixture {
     }
 
     void getModificationTime() {
-        auto currentTime = ::time(nullptr);
+        std::int64_t currentTime = ::time(nullptr);
         createFile();
 
         auto modificationTime = yapet::getModificationTime(TEST_FILE);
 #ifdef CPPUNIT_ASSERT_LESSEQUAL
         CPPUNIT_ASSERT_LESSEQUAL(currentTime, modificationTime);
 #else
-        CPPUNIT_ASSERT_MESSAGE(
-            std::to_string(currentTime) + " not <= " + std::to_string(modificationTime),
-            currentTime <= modificationTime);
+        CPPUNIT_ASSERT_MESSAGE(std::to_string(currentTime) + " not <= " +
+                                   std::to_string(modificationTime),
+                               currentTime <= modificationTime);
 #endif
     }
 
