@@ -108,7 +108,7 @@ class FileUtilsTest : public CppUnit::TestFixture {
 #else
         CPPUNIT_ASSERT_MESSAGE(
             std::to_string(currentTime) + " not <= " + std::to_string(modificationTime),
-            currentTime <= modificationTime)
+            currentTime <= modificationTime);
 #endif
     }
 
