@@ -35,6 +35,7 @@
 #include "consts.h"
 #include "fileerror.hh"
 #include "intl.h"
+#include "logger.hh"
 #include "yapet10file.hh"
 
 using namespace yapet;
@@ -81,6 +82,8 @@ void Yapet10File::open() {
                       recognitionStringAsString().c_str());
         throw FileFormatError{msg};
     }
+
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 bool Yapet10File::hasValidFormat() {
@@ -119,6 +122,8 @@ SecureArray Yapet10File::readIdentifier() {
         throw FileFormatError{msg};
     }
 
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
+
     return result.first;
 }
 
@@ -126,6 +131,7 @@ SecureArray Yapet10File::readUnencryptedMetaData() {
     RawFile& rawFile{getRawFile()};
     // Skip the recognition string.
     rawFile.seekAbsolute(recognitionStringSize());
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
     return SecureArray{};
 }
 
@@ -143,11 +149,12 @@ SecureArray Yapet10File::readHeader() {
         throw FileFormatError{msg};
     }
 
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
     return resultPair.first;
 }
 
 std::list<SecureArray> Yapet10File::readPasswordRecords() {
-    // This read is expected to leave the file position indicatory pointing to
+    // This read is expected to leave the file position indicator pointing to
     // the first password record length indicator
     readHeader();
 
@@ -158,6 +165,7 @@ std::list<SecureArray> Yapet10File::readPasswordRecords() {
         passwordRecords.push_back(std::move(resultPair.first));
     }
 
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
     return passwordRecords;
 }
 
@@ -165,12 +173,14 @@ void Yapet10File::writeIdentifier() {
     RawFile& rawFile{getRawFile()};
     rawFile.rewind();
     rawFile.write(recognitionString(), recognitionStringSize());
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 void Yapet10File::writeUnencryptedMetaData(const SecureArray&) {
     RawFile& rawFile{getRawFile()};
 
     rawFile.seekAbsolute(recognitionStringSize());
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 void Yapet10File::writeHeader(const SecureArray& header) {
@@ -180,6 +190,7 @@ void Yapet10File::writeHeader(const SecureArray& header) {
 
     rawFile.write(header);
     rawFile.flush();
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 void Yapet10File::writePasswordRecords(
@@ -209,6 +220,7 @@ void Yapet10File::writePasswordRecords(
     }
 
     rawFile.flush();
+    LOG_MESSAGE(std::string{__func__} + ": " + getRawFile().filename());
 }
 
 const std::uint8_t* Yapet10File::recognitionString() const {

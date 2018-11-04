@@ -44,4 +44,5 @@ csv2yapet_LDADD = $(builddir)/libyapet-import.la \
 	$(yapet_build_libdir)/passwordrecord/libyapet-passwordrecord.la \
 	$(yapet_build_libdir)/globals/libyapet-globals.la \
 	$(yapet_build_libdir)/cfg/libyapet-cfg.la \
+	$(yapet_build_libdir)/libyapet-logger.la \
 	$(top_builddir)/libyacurs/src/libyacurs.la

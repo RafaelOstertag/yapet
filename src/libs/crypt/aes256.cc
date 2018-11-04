@@ -35,6 +35,7 @@
 #include "consts.h"
 #include "cryptoerror.hh"
 #include "intl.h"
+#include "logger.hh"
 
 using namespace yapet;
 
@@ -43,6 +44,8 @@ SecureArray Aes256::randomIV() const {
 
     auto result = RAND_bytes((*ivec), ivec.size());
     if (result != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} +
+                    ": Cannot generate random initialization vector");
         throw CipherError{_("Cannot generate random initialization vector")};
     }
 
@@ -51,6 +54,8 @@ SecureArray Aes256::randomIV() const {
 
 SecureArray Aes256::extractIVFromRecord(const SecureArray& record) const {
     if (record.size() < cipherIvecSize()) {
+        LOG_MESSAGE(std::string{__func__} +
+                    ": Record does not contain initialization vector");
         throw CipherError{_("Record does not contain initialization vector")};
     }
 
@@ -63,6 +68,8 @@ SecureArray Aes256::extractCipherTextFromRecord(
     const SecureArray& record) const {
     auto ivecSize{cipherIvecSize()};
     if (record.size() <= ivecSize) {
+        LOG_MESSAGE(std::string{__func__} +
+                    ": Record does not contain encrypted data");
         throw CipherError{_("Record does not contain encrypted data")};
     }
 
@@ -78,6 +85,7 @@ void Aes256::checkIVSizeOrThrow(const SecureArray& ivec) {
     auto expectedIVSize{ivec.size()};
 
     if (supportedIVSize != expectedIVSize) {
+        LOG_MESSAGE(std::string{__func__} + ": IV size mismatch");
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
                       _("Expect cipher to support IV size %d but cipher "
@@ -100,12 +108,14 @@ EVP_CIPHER_CTX* Aes256::initializeOrThrow(const SecureArray& ivec, MODE mode) {
     auto success = EVP_CipherInit_ex(context, getCipher(), nullptr,
                                      *getKey()->key(), *ivec, mode);
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": Error initializing cipher");
         destroyContext(context);
         throw CipherError{_("Error initializing cipher")};
     }
 
     success = EVP_CIPHER_CTX_set_key_length(context, getKey()->keySize());
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": Error setting key length");
         destroyContext(context);
         char msg[YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE];
         std::snprintf(msg, YAPET::Consts::EXCEPTION_MESSAGE_BUFFER_SIZE,
@@ -141,6 +151,8 @@ Aes256& Aes256::operator=(Aes256&& c) {
 
 SecureArray Aes256::encrypt(const SecureArray& plainText) {
     if (plainText.size() == 0) {
+        LOG_MESSAGE(std::string{__func__} +
+                    ": Cannot encrypt empty plain text");
         throw EncryptionError{_("Cannot encrypt empty plain text")};
     }
 
@@ -158,6 +170,7 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
         EVP_CipherUpdate(context, *temporaryEncryptedData, &writtenDataLength,
                          *plainText, plainText.size());
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": EVP_CipherUpdate failure");
         destroyContext(context);
         throw EncryptionError{_("Error encrypting data")};
     }
@@ -167,11 +180,16 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
                                  (*temporaryEncryptedData) + writtenDataLength,
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": EVP_CipherFinal_ex failure");
         destroyContext(context);
         throw EncryptionError{_("Error finalizing encryption")};
     }
 
     effectiveEncryptedDataLength += writtenDataLength;
+
+    LOG_MESSAGE(std::string{__func__} + ": " +
+                std::to_string(effectiveEncryptedDataLength) +
+                "bytes encrypted");
     assert(effectiveEncryptedDataLength <= temporaryEncryptedData.size());
 
     SecureArray encryptedData{effectiveEncryptedDataLength};
@@ -183,6 +201,8 @@ SecureArray Aes256::encrypt(const SecureArray& plainText) {
 
 SecureArray Aes256::decrypt(const SecureArray& cipherText) {
     if (cipherText.size() == 0) {
+        LOG_MESSAGE(std::string{__func__} +
+                    ": Cannot decrypt empty cipher text");
         throw EncryptionError{_("Cannot decrypt empty cipher text")};
     }
 
@@ -203,6 +223,7 @@ SecureArray Aes256::decrypt(const SecureArray& cipherText) {
         EVP_CipherUpdate(context, *temporaryDecryptedData, &writtenDataLength,
                          *cipherTextOnly, cipherTextOnly.size());
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": EVP_CipherUpdate failure");
         destroyContext(context);
         throw EncryptionError{_("Error decrypting data")};
     }
@@ -212,11 +233,16 @@ SecureArray Aes256::decrypt(const SecureArray& cipherText) {
                                  (*temporaryDecryptedData) + writtenDataLength,
                                  &writtenDataLength);
     if (success != SSL_SUCCESS) {
+        LOG_MESSAGE(std::string{__func__} + ": EVP_CipherFinal_ex failure");
         destroyContext(context);
         throw EncryptionError{_("Error finalizing decrypting data")};
     }
 
     effectiveDecryptedDataLength += writtenDataLength;
+
+    LOG_MESSAGE(std::string{__func__} + ": " +
+                std::to_string(effectiveDecryptedDataLength) +
+                "bytes decrypted");
 
     assert(effectiveDecryptedDataLength <= temporaryDecryptedData.size());
 

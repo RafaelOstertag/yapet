@@ -12,6 +12,7 @@ AM_CPPFLAGS = -I$(yapet_libs_srcdir)/metadata \
     -I$(yapet_libs_srcdir)/interfaces \
     -I$(top_srcdir)
 LDADD = $(yapet_libs_builddir)/metadata/libyapet-metadata.la \
+    $(yapet_libs_builddir)/libyapet-logger.la \
     $(yapet_libs_builddir)/utils/libyapet-utils.la
     
 AM_LDFLAGS =  $(CPPUNIT_LIBS) $(LIBINTL)

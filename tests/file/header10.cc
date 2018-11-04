@@ -64,7 +64,7 @@ class Header10Test : public CppUnit::TestFixture {
         (*serialized)[4] = 'Z';
 
         CPPUNIT_ASSERT_THROW(deserializedHeader = serialized,
-                             yapet::HeaderError);
+                             yapet::ControlStringMismatch);
     }
 };
 

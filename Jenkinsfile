@@ -9,7 +9,8 @@ pipeline {
     }
 
     environment {
-        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas -fstack-protector"
+        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
+        CODE_INSTRUMENTATION_FLAGS = "-fstack-protector-strong -fsanitize=address"
     }
 
     triggers {
@@ -190,15 +191,18 @@ EOF
 						 stage("(LX) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                              }
                          }
 
                         stage("(LX) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/6/libasan.so:"
+                            }
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -240,6 +244,7 @@ EOF
 						stage("(OB64) Build") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
@@ -248,6 +253,7 @@ EOF
                         stage("(OB64) Test") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
@@ -289,15 +295,18 @@ EOF
 						 stage("(NB) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                              }
                          }
 
                         stage("(NB) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
+                            }
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }

@@ -5,6 +5,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "aes256.hh"
+#include "consts.h"
 #include "cryptoerror.hh"
 #include "key256.hh"
 
@@ -34,9 +35,22 @@ class Aes256Test : public CppUnit::TestFixture {
         return suiteOfTests;
     }
 
+    yapet::MetaData keyingParameters1() {
+        yapet::MetaData metaData{};
+        metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, 65000);
+        metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, 1);
+        metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, 1);
+        metaData.setValue(YAPET::Consts::ARGON2_SALT1_KEY, 0x1234);
+        metaData.setValue(YAPET::Consts::ARGON2_SALT2_KEY, 0x5678);
+        metaData.setValue(YAPET::Consts::ARGON2_SALT3_KEY, 0x9ABC);
+        metaData.setValue(YAPET::Consts::ARGON2_SALT4_KEY, 0xDEF0);
+
+        return metaData;
+    }
+
     void setUp() {
         std::shared_ptr<yapet::Key> key{new yapet::Key256{}};
-        key->keyingParameters(yapet::Key256::newDefaultKeyingParameters());
+        key->keyingParameters(keyingParameters1());
         key->password(yapet::toSecureArray("test"));
 
         aes256 = std::unique_ptr<yapet::Aes256>{new yapet::Aes256{key}};
@@ -65,13 +79,13 @@ class Aes256Test : public CppUnit::TestFixture {
         auto cipherText = aes256->encrypt(plainText);
 
         std::shared_ptr<yapet::Key> otherKey{new yapet::Key256{}};
-        otherKey->keyingParameters(yapet::Key256::newDefaultKeyingParameters());
+        otherKey->keyingParameters(keyingParameters1());
         otherKey->password(yapet::toSecureArray("invalid"));
 
-        auto otherBlowfish{
+        auto otherAes256{
             std::unique_ptr<yapet::Aes256>{new yapet::Aes256{otherKey}}};
 
-        CPPUNIT_ASSERT_THROW(otherBlowfish->decrypt(cipherText),
+        CPPUNIT_ASSERT_THROW(otherAes256->decrypt(cipherText),
                              yapet::EncryptionError);
     }
 

@@ -1,6 +1,11 @@
 // -*- adoc -*-
 = News
 
+== YAPET 2.2
+
+* Fix typos in messages
+* Improve detection of wrong master password
+
 == YAPET 2.1
 
 * Maintenance release fixing issue

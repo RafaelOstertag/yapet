@@ -34,17 +34,28 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+#ifdef DEBUG_LOG
+#include <iomanip>
+#include <sstream>
+#endif
 
 #include "consts.h"
 #include "intl.h"
+#include "logger.hh"
 #include "metadata.hh"
 #include "ods.hh"
 
 using namespace yapet;
 
-MetaData::MetaData() : _dataItems{} {}
-
 namespace {
+#ifdef DEBUG_LOG
+inline std::string intToHexString(int val) {
+    std::stringstream hexString;
+    hexString << "0x" << std::hex << val;
+    return hexString.str();
+}
+#endif
+
 std::string readKey(const SecureArray& serialized,
                     SecureArray::size_type& pos) {
     std::string str{};
@@ -70,6 +81,7 @@ int readValue(const SecureArray& serialized, SecureArray::size_type& pos) {
     return toHost(odsInt);
 }
 }  // namespace
+MetaData::MetaData() : _dataItems{} {}
 
 MetaData::MetaData(const SecureArray& serialized) : _dataItems{} {
     if (serialized == SecureArray{}) {
@@ -87,6 +99,12 @@ MetaData::MetaData(const SecureArray& serialized) : _dataItems{} {
     } catch (...) {
         throw std::invalid_argument(_("Error deserializing meta data"));
     }
+
+#ifdef DEBUG_LOG
+    for (auto item : _dataItems) {
+        LOG_MESSAGE("Deserialized " + item.first + ": " + intToHexString(item.second));
+    }
+#endif
 }
 
 MetaData::MetaData(const MetaData& other) : _dataItems{other._dataItems} {}
@@ -149,6 +167,8 @@ SecureArray MetaData::serialize() const {
 
         int value = item.second;
         addIntToBuffer(buffer, value);
+
+        LOG_MESSAGE("Serialized " + item.first + ": " + intToHexString(item.second));
     }
 
     SecureArray::size_type bufferSize{
