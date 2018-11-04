@@ -59,18 +59,15 @@ pipeline {
 						stage("(FB64) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
 
                         stage("(FB64) Test") {
-                            environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/clang/6.0.0/lib/freebsd/libclang_rt.asan-x86_64.so:"
-                            }
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
@@ -144,18 +141,15 @@ EOF
 						stage("(FB32) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
 
                         stage("(FB32) Test") {
-                            environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/clang/6.0.0/lib/freebsd/libclang_rt.asan-i386.so:"
-                            }
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
                         }
