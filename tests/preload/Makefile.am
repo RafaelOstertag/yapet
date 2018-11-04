@@ -106,7 +106,7 @@ check-local: libpwrecord.la checktestpwrecord libmasterpwchange.la libcheckyapet
 		$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1 && \
 		rm -f /tmp/masterpwchange.pet && \
 		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet || exit 1 && \
-		$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1 && \
+		$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1 ; \
 	fi
 
 clean-local:
