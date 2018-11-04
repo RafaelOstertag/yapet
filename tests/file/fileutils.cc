@@ -103,7 +103,13 @@ class FileUtilsTest : public CppUnit::TestFixture {
         createFile();
 
         auto modificationTime = yapet::getModificationTime(TEST_FILE);
+#ifdef CPPUNIT_ASSERT_LESSEQUAL
         CPPUNIT_ASSERT_LESSEQUAL(currentTime, modificationTime);
+#else
+        CPPUNIT_ASSERT_MESSAGE(
+            to_string(currentTime) + " not <= " + to_string(modificationTime),
+            currentTime <= modificationTime, )
+#endif
     }
 
     void getModificationTimeNonExisting() {
