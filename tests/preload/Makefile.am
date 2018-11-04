@@ -98,16 +98,16 @@ libmasterpwchange.la: masterpwchange.lo
 	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXX) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -rpath $(libdir) -version-info 0 -o $@ $<
 
 check-local: libpwrecord.la checktestpwrecord libmasterpwchange.la libcheckyapet.la
-	if \! $(builddir)/istty ; then exit 0 ; fi
-	rm -f /tmp/emptyfile.pet
-	$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libcheckyapet.so" $(yapet_builddir)/yapet/yapet -i /tmp/emptyfile.pet || exit 1
-	rm -f /tmp/testpwrecord.pet
-	$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libpwrecord.so" $(yapet_builddir)/yapet/yapet -i /tmp/testpwrecord.pet || exit 1
-	$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1
-	rm -f /tmp/masterpwchange.pet
-	$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet || exit 1
-	$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1
-	
+	if $(builddir)/istty ; then \
+		rm -f /tmp/emptyfile.pet && \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libcheckyapet.so" $(yapet_builddir)/yapet/yapet -i /tmp/emptyfile.pet || exit 1 && \
+		rm -f /tmp/testpwrecord.pet && \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libpwrecord.so" $(yapet_builddir)/yapet/yapet -i /tmp/testpwrecord.pet || exit 1 && \
+		$(top_builddir)/libtool --mode=execute $(builddir)/checktestpwrecord || exit 1 && \
+		rm -f /tmp/masterpwchange.pet && \
+		$(top_builddir)/libtool --mode=execute /usr/bin/env LD_PRELOAD="$${EXTRA_LD_PRELOAD}$(builddir)/.libs/libmasterpwchange.so" $(yapet_builddir)/yapet/yapet -i /tmp/masterpwchange.pet || exit 1 && \
+		$(top_builddir)/libtool --mode=execute $(builddir)/checkmasterpwchange || exit 1 && \
+	fi
 
 clean-local:
 	rm -f *.la
