@@ -3,7 +3,8 @@
 
 == YAPET 2.2
 
-* Fix typos
+* Fix typos in messages
+* Improve detection of wrong master password
 
 == YAPET 2.1
 
