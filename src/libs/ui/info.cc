@@ -44,6 +44,25 @@
 #include "info.h"
 #include "intl.h"
 
+namespace {
+constexpr auto NO_MODIFICATION_DATE_AVAILABLE{"n/a"};
+
+inline std::string getLastModificationDateAsString(std::int64_t timestamp) {
+    if (timestamp == -1) {
+        return _(NO_MODIFICATION_DATE_AVAILABLE);
+    }
+
+    auto t{static_cast<time_t>(timestamp)};
+    auto tAsLocalTime{localtime(&t)};
+    if (tAsLocalTime == nullptr) {
+        return _(NO_MODIFICATION_DATE_AVAILABLE);
+    }
+
+    return asctime(tAsLocalTime);
+}
+
+}  // namespace
+
 //
 // Private
 //
@@ -162,12 +181,8 @@ InfoDialog::InfoDialog(const MainWindow& mainWindow,
     rightpack.add_back(&ver_status);
 
     leftpack.add_back(&pwset);
-    if (mainWindow.passwordLastChanged() != -1) {
-        time_t t = static_cast<time_t>(mainWindow.passwordLastChanged());
-        pwset_status.label(asctime(localtime(&t)));
-    } else {
-        pwset_status.label(_("n/a"));
-    }
+    pwset_status.label(
+        getLastModificationDateAsString(mainWindow.passwordLastChanged()));
     rightpack.add_back(&pwset_status);
 
     leftpack.add_back(&arch);
