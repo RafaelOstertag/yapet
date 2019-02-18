@@ -61,7 +61,7 @@
 * The password prompt of the lock screen will now time-out. The
   time-out can be specified in the configuration file
 * Quitting YAPET is now possible even if the screen is locked, unless
-  no unsaved changes are pending. This feature can be disabled in the
+  unsaved changes are pending. This feature can be disabled in the
   configuration file
 * The password prompt for unlocking the screen disappears after 60
   seconds of inactivity. The time-out can be changed in the
