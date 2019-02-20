@@ -857,7 +857,7 @@ msgid "Next match for "
 msgstr "Nächster Treffer für "
 
 #: src/libs/ui/newpassworddialog.cc:43 src/libs/ui/newpassworddialog.cc:52
-msgid "Password Missmatch"
+msgid "Password Mismatch"
 msgstr "Passwörter stimmen nicht überein"
 
 #: src/libs/ui/newpassworddialog.cc:44 src/libs/ui/newpassworddialog.cc:53

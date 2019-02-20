@@ -27,12 +27,17 @@
  * well as that of the covered work.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <algorithm>
 
 #include "cryptoerror.hh"
 #include "file.h"
 #include "fileutils.hh"
 #include "intl.h"
+#include "logger.hh"
 #include "yapeterror.hh"
 
 using namespace YAPET;
@@ -48,7 +53,8 @@ void File::initializeEmptyFile() {
     Header10 header{time(0)};
 
     _yapetFile->writeIdentifier();
-    _yapetFile->writeUnencryptedMetaData(_crypto->getKey()->keyingParameters().serialize());
+    _yapetFile->writeUnencryptedMetaData(
+        _crypto->getKey()->keyingParameters().serialize());
 
     auto encryptedSerializedHeader = _crypto->encrypt(header.serialize());
 
@@ -61,11 +67,18 @@ void File::validateExistingFile() {
     try {
         serializedHeader = _crypto->decrypt(encryptedSerializedHeader);
     } catch (EncryptionError& e) {
+        LOG_MESSAGE(std::string{__func__} + ": invalid password");
         // most likely caused by invalid password
         throw InvalidPasswordError{_("Invalid password")};
     }
 
-    Header10 header{serializedHeader};
+    Header10 header;
+    try {
+        header = Header10{serializedHeader};
+    } catch (ControlStringMismatch& e) {
+        LOG_MESSAGE(std::string{__func__} + ": invalid password");
+    }
+
     // If we read an invalid header version, intToHeaderVersion() will throw an
     // exception
     intToHeaderVersion(header.version());
@@ -110,6 +123,7 @@ void File::save(const std::list<PasswordListItem>& records, bool forcewrite) {
 
     _yapetFile->writePasswordRecords(encryptedPasswordRecords);
     _fileModificationTime = yapet::getModificationTime(_yapetFile->filename());
+    LOG_MESSAGE("Save yapet file");
 }
 
 std::list<PasswordListItem> File::read() {
@@ -126,6 +140,7 @@ std::list<PasswordListItem> File::read() {
         it++;
     }
 
+    LOG_MESSAGE("Read yapet file");
     return result;
 }
 
@@ -140,32 +155,39 @@ void File::setNewKey(
     std::string filename{_yapetFile->filename()};
 
     // close and destroy old file
+    LOG_MESSAGE("File::setNewKey(): close currently open file");
     _yapetFile.reset();
 
+    LOG_MESSAGE("File::setNewKey(): rename file");
     std::string backupfilename(filename + ".bak");
     yapet::renameFile(filename, backupfilename);
 
+    LOG_MESSAGE("File::setNewKey(): open renamed file");
     std::unique_ptr<yapet::YapetFile> oldFile{
         _abstractCryptoFactory->file(backupfilename, false, false)};
     oldFile->open();
 
+    LOG_MESSAGE("File::setNewKey(): swap crypto factories");
     auto cryptoFactory{newCryptoFactory};
     auto otherCrypto{cryptoFactory->crypto()};
     _abstractCryptoFactory.swap(cryptoFactory);
 
     _crypto.swap(otherCrypto);
 
+    LOG_MESSAGE("File::setNewKey(): create new file");
     _yapetFile = _abstractCryptoFactory->file(filename, true, isSecure);
     _yapetFile->open();
 
+    LOG_MESSAGE("File::setNewKey(): initialize new file");
     initializeEmptyFile();
     std::list<yapet::SecureArray> newlyEncryptedRecords{};
+    LOG_MESSAGE("File::setNewKey(): read password records from renamed file");
     for (auto encryptedSerializedRecord : oldFile->readPasswordRecords()) {
         auto serializedRecord{otherCrypto->decrypt(encryptedSerializedRecord)};
         auto newlyEncryptedSerializedRecord{_crypto->encrypt(serializedRecord)};
         newlyEncryptedRecords.push_back(newlyEncryptedSerializedRecord);
     }
-
+    LOG_MESSAGE("File::setNewKey(): write password records to new file");
     _yapetFile->writePasswordRecords(newlyEncryptedRecords);
     _fileModificationTime = yapet::getModificationTime(_yapetFile->filename());
 }

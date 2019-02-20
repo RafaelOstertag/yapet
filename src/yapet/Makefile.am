@@ -39,6 +39,7 @@ LDADD = $(yapet_build_libsdir)/ui/libyapet-ui.la				\
 	$(yapet_build_libsdir)/metadata/libyapet-metadata.la				\
 	$(yapet_build_libsdir)/passwordrecord/libyapet-passwordrecord.la	\
 	$(yapet_build_libsdir)/globals/libyapet-globals.la \
+	$(yapet_build_libsdir)/libyapet-logger.la \
 	$(top_builddir)/libyacurs/src/libyacurs.la
 
 AM_LDFLAGS = $(LIBINTL)

@@ -40,6 +40,7 @@
 #include "filehelper.hh"
 #include "globals.h"
 #include "intl.h"
+#include "logger.hh"
 #include "utils.hh"
 #include "yapeterror.hh"
 
@@ -73,6 +74,7 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 }
 
                 try {
+                    LOG_MESSAGE(std::string{__func__} + ": test old password");
                     // Test if we can read the file with the old password
                     YAPET::File{_oldCryptoFactory, _currentFilename, false,
                                 YAPET::Globals::config.filesecurity};
@@ -81,6 +83,8 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                     promptpassword = new NewPasswordDialog(_currentFilename);
                     promptpassword->show();
                 } catch (yapet::InvalidPasswordError& e) {
+                    LOG_MESSAGE(std::string{__func__} +
+                                ": old password does not match");
                     assert(nonmatch == nullptr);
                     nonmatch = new YACURS::MessageBox2(
                         _("Error"), _("Password does not match old password"),
@@ -138,6 +142,8 @@ void ChangePassword::window_close_handler(YACURS::Event& e) {
                 // succeeds, the new and old password are the same and we do
                 // nothing
                 try {
+                    LOG_MESSAGE(std::string{__func__} +
+                                ": test if new password is same as old");
                     auto _existingKeyingParameters{yapet::readMetaData(
                         _currentFilename, YAPET::Globals::config.filesecurity)};
                     auto _oldCryptoFactoryWithNewPassword{

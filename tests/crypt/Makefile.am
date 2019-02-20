@@ -18,7 +18,7 @@ test8.pet test9.pet test10.pet corrupt_blowfish.pet corrupt_aes256.pet f32le0.5.
 f32be0.5.pet f64le0.5.pet f64be0.5.pet f32le0.6.pet f32be0.6.pet	\
 f64le0.6.pet f64be0.6.pet cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet \
 cryptofactoryhelper-tooshort.pet cryptofactoryhelper-unknown.pet \
-testfile_aes256.gps.bak testfile_aes256.gps
+testfile_aes256.gps.bak testfile_aes256.gps passwordchange_exerciser.pet
 
 # We have to copy the files under test to the build dir and adjust the permission
 # to read/write. This is necessary when running distcheck, which makes the source
@@ -47,9 +47,10 @@ cryptofactoryhelper-unknown.pet.in cryptofactoryhelper-tooshort.pet.in
 	$(cpy_verbose)cp $< $(builddir)/$@
 	$(chmod_verbose)chmod u=rw $(builddir)/$@
 
-check_PROGRAMS = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign cryptofactoryhelper
+check_PROGRAMS  = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign cryptofactoryhelper
+check_PROGRAMS += passwordchange_exerciser
 
-TESTS = $(check_PROGRAMS)
+TESTS = key448 key256 blowfish aes256 blowfishfactory aes256factory file_blowfish file_aes256 foreign cryptofactoryhelper
 
 AM_CPPFLAGS = -I$(yapet_libs_srcdir)/consts \
 	-I$(yapet_libs_srcdir)/exceptions \
@@ -73,6 +74,7 @@ AM_LDFLAGS = $(yapet_libs_builddir)/crypt/libyapet-crypt.la  \
 	$(yapet_libs_builddir)/consts/libyapet-consts.la \
 	$(yapet_libs_builddir)/globals/libyapet-globals.la \
 	$(yapet_libs_builddir)/cfg/libyapet-cfg.la \
+	$(yapet_libs_builddir)/libyapet-logger.la \
 	$(top_builddir)/libyacurs/src/libyacurs.la \
 	$(CPPUNIT_LIBS)
 
@@ -96,5 +98,7 @@ file_aes256_DEPENDENCIES = corrupt_aes256.pet
 cryptofactoryhelper_SOURCES = cryptofactoryhelper.cc
 cryptofactoryhelper_DEPENDENCIES = cryptofactoryhelper-1.0.pet cryptofactoryhelper-2.0.pet \
 cryptofactoryhelper-unknown.pet cryptofactoryhelper-tooshort.pet
+
+passwordchange_exerciser_SOURCES = passwordchange_exerciser.cc
 
 SUFFIXES = .pet .pet.in

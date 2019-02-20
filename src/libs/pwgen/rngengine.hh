@@ -27,34 +27,44 @@
  * well as that of the covered work.
  */
 
-#include "rng.hh"
+#ifndef _RNGENGINE_HH
+#define _RNGENGINE_HH
 
-using namespace yapet::pwgen;
+#include <array>
+#include <cstdint>
+#include <limits>
 
-Rng::Rng(std::uint8_t hi) : _rngEngine{}, _distribution{0, hi} {}
+namespace yapet {
+namespace pwgen {
+class RngEngine {
+   public:
+    using result_type = std::uint8_t;
+    static constexpr std::uint8_t max() {
+        return std::numeric_limits<std::uint8_t>::max();
+    }
+    static constexpr std::uint8_t min() {
+        return std::numeric_limits<std::uint8_t>::min();
+    }
 
-Rng::Rng(const Rng& rng) : _rngEngine{}, _distribution{rng._distribution} {}
+    RngEngine();
+    ~RngEngine();
+    RngEngine(const RngEngine& other);
+    RngEngine(RngEngine&& other);
+    RngEngine& operator=(const RngEngine& other);
+    RngEngine& operator=(RngEngine&& other);
 
-Rng::Rng(Rng&& rng)
-    : _rngEngine{std::move(rng._rngEngine)},
-      _distribution{std::move(rng._distribution)} {}
+    std::uint8_t operator()();
 
-Rng& Rng::operator=(const Rng& rng) {
-    if (this == &rng) return *this;
+   private:
+    static constexpr int BYTE_CACHE_SIZE{8};
+    static constexpr int EMPTY_CACHE{-1};
+    int fd;
+    std::array<std::uint8_t, BYTE_CACHE_SIZE> byteCache;
+    int positionInCache;
 
-    _rngEngine = rng._rngEngine;
-    _distribution = rng._distribution;
-
-    return *this;
-}
-
-Rng& Rng::operator=(Rng&& rng) {
-    if (this == &rng) return *this;
-
-    _rngEngine = std::move(rng._rngEngine);
-    _distribution = std::move(rng._distribution);
-
-    return *this;
-}
-
-std::uint8_t Rng::getNextInt() { return _distribution(_rngEngine); }
+    void fillCache();
+    std::uint8_t readRandomByte();
+};
+}  // namespace pwgen
+}  // namespace yapet
+#endif

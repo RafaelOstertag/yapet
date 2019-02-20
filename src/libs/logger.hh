@@ -27,34 +27,53 @@
  * well as that of the covered work.
  */
 
-#include "rng.hh"
+#ifndef _LOGGER_H
+#define _LOGGER_H
 
-using namespace yapet::pwgen;
+#ifdef DEBUG_LOG
+#include <chrono>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <string>
 
-Rng::Rng(std::uint8_t hi) : _rngEngine{}, _distribution{0, hi} {}
+#include "securearray.hh"
 
-Rng::Rng(const Rng& rng) : _rngEngine{}, _distribution{rng._distribution} {}
+namespace yapet {
+class Logger {
+   public:
+    Logger(const std::string& filename = "/tmp/yapet_debug.log")
+        : _file{filename, _file.out | _file.app} {}
 
-Rng::Rng(Rng&& rng)
-    : _rngEngine{std::move(rng._rngEngine)},
-      _distribution{std::move(rng._distribution)} {}
+    Logger(const Logger&) = delete;
+    Logger(Logger&&) = delete;
 
-Rng& Rng::operator=(const Rng& rng) {
-    if (this == &rng) return *this;
+    void log(const std::string& message) {
+        auto t{std::chrono::system_clock::to_time_t(
+            std::chrono::system_clock::now())};
 
-    _rngEngine = rng._rngEngine;
-    _distribution = rng._distribution;
+        _file << "[" << std::put_time(std::localtime(&t), "%FT%T") << "] "
+              << message << std::endl;
+    }
 
-    return *this;
+   private:
+    std::fstream _file;
+};
+
+inline std::string secureArrayToString(const SecureArray& secureArray) {
+    std::string str;
+    for (SecureArray::size_type i = 0; i < secureArray.size(); i++) {
+        str += static_cast<const char>(secureArray[i]);
+    }
+
+    return str;
 }
 
-Rng& Rng::operator=(Rng&& rng) {
-    if (this == &rng) return *this;
+extern Logger logger;
+}  // namespace yapet
+#define LOG_MESSAGE(x) (yapet::logger.log(x))
+#else
+#define LOG_MESSAGE(x)
+#endif
 
-    _rngEngine = std::move(rng._rngEngine);
-    _distribution = std::move(rng._distribution);
-
-    return *this;
-}
-
-std::uint8_t Rng::getNextInt() { return _distribution(_rngEngine); }
+#endif

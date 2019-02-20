@@ -101,7 +101,7 @@ void CSVExport::doexport(const char* pw) {
         yapet::getCryptoFactoryForFile(srcfile, password)};
 
     auto crypto{cryptoFactory->crypto()};
-    auto yapetFile{new YAPET::File{cryptoFactory, srcfile, false, false}};
+    std::unique_ptr<YAPET::File> yapetFile{new YAPET::File{cryptoFactory, srcfile, false, false}};
 
     std::list<yapet::PasswordListItem> list = yapetFile->read();
 

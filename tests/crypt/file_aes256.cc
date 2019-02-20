@@ -374,97 +374,94 @@ class Aes256FileTest : public CppUnit::TestFixture {
         }
     }
 
-    void setNewPassword() {
-        {
-            auto password{yapet::toSecureArray(TEST_PASSWORD)};
-            std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{
-                    password, yapet::Key256::newDefaultKeyingParameters()}};
+    void setNewPassword(){{auto password{yapet::toSecureArray(TEST_PASSWORD)};
+    std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+        password, yapet::Key256::newDefaultKeyingParameters()}};
 
-            auto aes256{factory->crypto()};
+    auto aes256{factory->crypto()};
 
-            YAPET::File file{factory, FN, true};
+    YAPET::File file{factory, FN, true};
 
-            auto passwordList{createPasswordList(aes256)};
+    auto passwordList{createPasswordList(aes256)};
 
-            file.save(passwordList);
+    file.save(passwordList);
 
-            auto newPassword{yapet::toSecureArray("NewSecret")};
-            std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
-                new yapet::Aes256Factory{
-                    newPassword, yapet::Key256::newDefaultKeyingParameters()}};
-            file.setNewKey(newCrypto);
-        }
+    auto newPassword{yapet::toSecureArray("NewSecret")};
+    std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
+        new yapet::Aes256Factory{newPassword,
+                                 yapet::Key256::newDefaultKeyingParameters()}};
+    file.setNewKey(newCrypto);
+}
 
-        {
-            auto password{yapet::toSecureArray("NewSecret")};
-            std::shared_ptr<yapet::Aes256Factory> factory{
-                new yapet::Aes256Factory{password,
-                                         yapet::readMetaData(FN, false)}};
+{
+    auto password{yapet::toSecureArray("NewSecret")};
+    std::shared_ptr<yapet::Aes256Factory> factory{
+        new yapet::Aes256Factory{password, yapet::readMetaData(FN, false)}};
 
-            auto aes256{factory->crypto()};
+    auto aes256{factory->crypto()};
 
-            YAPET::File file{factory, FN, false};
+    YAPET::File file{factory, FN, false};
 
-            std::list<yapet::PasswordListItem> list = file.read();
-            CPPUNIT_ASSERT(list.size() == ROUNDS);
+    std::list<yapet::PasswordListItem> list = file.read();
+    CPPUNIT_ASSERT(list.size() == ROUNDS);
 
-            std::list<yapet::PasswordListItem>::iterator it = list.begin();
+    std::list<yapet::PasswordListItem>::iterator it = list.begin();
 
-            for (int i = 0; it != list.end(); i++, it++) {
-                auto expectedPasswordRecord{makePasswordRecord(i)};
-                CPPUNIT_ASSERT(
-                    std::strcmp(reinterpret_cast<const char *>(it->name()),
-                                reinterpret_cast<const char *>(
-                                    expectedPasswordRecord.name())) == 0);
+    for (int i = 0; it != list.end(); i++, it++) {
+        auto expectedPasswordRecord{makePasswordRecord(i)};
+        CPPUNIT_ASSERT(std::strcmp(reinterpret_cast<const char *>(it->name()),
+                                   reinterpret_cast<const char *>(
+                                       expectedPasswordRecord.name())) == 0);
 
-                auto decryptedSerializedPasswordRecord{
-                    aes256->decrypt(it->encryptedRecord())};
+        auto decryptedSerializedPasswordRecord{
+            aes256->decrypt(it->encryptedRecord())};
 
-                yapet::PasswordRecord actual{decryptedSerializedPasswordRecord};
-                comparePasswordRecords(actual, expectedPasswordRecord);
-            }
-        }
-    };
-
-    void allowSaveAfterPasswordSave() {
-        auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
-            password, yapet::Key256::newDefaultKeyingParameters()}};
-
-        auto aes256{factory->crypto()};
-
-        YAPET::File file{factory, FN, true};
-
-        auto passwordList{createPasswordList(aes256)};
-
-        file.save(passwordList);
-
-        // Make sure mtime change may be picked up
-        ::sleep(1);
-        auto newPassword{yapet::toSecureArray("NewSecret")};
-        std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
-            new yapet::Aes256Factory{
-                newPassword, yapet::Key256::newDefaultKeyingParameters()}};
-        file.setNewKey(newCrypto);
-
-        file.save(passwordList);
+        yapet::PasswordRecord actual{decryptedSerializedPasswordRecord};
+        comparePasswordRecords(actual, expectedPasswordRecord);
     }
+}
+}
+;
 
-    void corruptFile() {
-        // The file has the byte at offset 0x89 changed from 0xA0 to 0xA1,
-        // messing up the length indicator for the first record
-        auto password{yapet::toSecureArray(TEST_PASSWORD)};
-        auto keyingParameters{
-            yapet::readMetaData(BUILDDIR "/corrupt_aes256.pet", false)};
-        std::shared_ptr<yapet::Aes256Factory> factory{
-            new yapet::Aes256Factory{password, keyingParameters}};
+void allowSaveAfterPasswordSave() {
+    auto password{yapet::toSecureArray(TEST_PASSWORD)};
+    std::shared_ptr<yapet::Aes256Factory> factory{new yapet::Aes256Factory{
+        password, yapet::Key256::newDefaultKeyingParameters()}};
 
-        YAPET::File file{factory, BUILDDIR "/corrupt_aes256.pet", false, false};
+    auto aes256{factory->crypto()};
 
-        CPPUNIT_ASSERT_THROW(file.read(), yapet::EncryptionError);
-    }
-};
+    YAPET::File file{factory, FN, true};
+
+    auto passwordList{createPasswordList(aes256)};
+
+    file.save(passwordList);
+
+    // Make sure mtime change may be picked up
+    ::sleep(1);
+    auto newPassword{yapet::toSecureArray("NewSecret")};
+    std::shared_ptr<yapet::AbstractCryptoFactory> newCrypto{
+        new yapet::Aes256Factory{newPassword,
+                                 yapet::Key256::newDefaultKeyingParameters()}};
+    file.setNewKey(newCrypto);
+
+    file.save(passwordList);
+}
+
+void corruptFile() {
+    // The file has the byte at offset 0x89 changed from 0xA0 to 0xA1,
+    // messing up the length indicator for the first record
+    auto password{yapet::toSecureArray(TEST_PASSWORD)};
+    auto keyingParameters{
+        yapet::readMetaData(BUILDDIR "/corrupt_aes256.pet", false)};
+    std::shared_ptr<yapet::Aes256Factory> factory{
+        new yapet::Aes256Factory{password, keyingParameters}};
+
+    YAPET::File file{factory, BUILDDIR "/corrupt_aes256.pet", false, false};
+
+    CPPUNIT_ASSERT_THROW(file.read(), yapet::EncryptionError);
+}
+}
+;
 
 int main() {
     CppUnit::TextUi::TestRunner runner;

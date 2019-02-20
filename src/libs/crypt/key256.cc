@@ -36,33 +36,81 @@
 #include <cstdio>
 #include <cstring>
 #include <typeinfo>
+#ifdef DEBUG_LOG
+#include <iomanip>
+#include <sstream>
+#endif
 
 #include "consts.h"
 #include "cryptoerror.hh"
+#include "globals.h"
 #include "intl.h"
 #include "key256.hh"
+#include "logger.hh"
 #include "ods.hh"
-#include "globals.h"
 
 using namespace yapet;
 
 namespace {
+#ifdef DEBUG_LOG
+constexpr char hexPrefix[]{"0x"};
+#endif
 /**
  * The max length of key in bytes (256 bits)
  */
-constexpr auto KEY_LENGTH{32};
-constexpr auto SSL_SUCCESS{1};
+constexpr int KEY_LENGTH{32};
+constexpr int SSL_SUCCESS{1};
 
 // in bytes
-constexpr auto SALT_NIBBLE_SIZE{sizeof(int)};
-constexpr auto NUMBER_OF_SALT_NIBBLES{4};
+constexpr int SALT_NIBBLE_SIZE{sizeof(int)};
+constexpr int NUMBER_OF_SALT_NIBBLES{4};
 // In bytes
-constexpr auto SALT_LENGTH = SALT_NIBBLE_SIZE * NUMBER_OF_SALT_NIBBLES;
+constexpr int SALT_LENGTH = SALT_NIBBLE_SIZE * NUMBER_OF_SALT_NIBBLES;
 
 union architecture_agnostic_salt_type {
     int nibbles[NUMBER_OF_SALT_NIBBLES];
     uint8_t bytes[SALT_LENGTH];
 };
+
+#ifdef DEBUG_LOG
+std::string saltNibblesToHexString(const int* salt) {
+    std::stringstream hexValue;
+    hexValue << hexPrefix << std::hex;
+    for (int i = 0; i < NUMBER_OF_SALT_NIBBLES; i++) {
+        hexValue << salt[i];
+    }
+    return hexValue.str();
+}
+
+std::string saltBytesToHexString(const std::uint8_t* salt) {
+    std::stringstream hexValue;
+    hexValue << hexPrefix << std::hex;
+    for (int i = 0; i < SALT_LENGTH; i++) {
+        hexValue << static_cast<int>(salt[i]);
+    }
+    return hexValue.str();
+}
+
+std::string metaDataSaltToHexString(const MetaData& metaData) {
+    std::stringstream hexValue;
+    hexValue << hexPrefix << std::hex
+             << metaData.getValue(YAPET::Consts::ARGON2_SALT1_KEY)
+             << metaData.getValue(YAPET::Consts::ARGON2_SALT2_KEY)
+             << metaData.getValue(YAPET::Consts::ARGON2_SALT3_KEY)
+             << metaData.getValue(YAPET::Consts::ARGON2_SALT4_KEY);
+    return hexValue.str();
+}
+
+std::string secureArrayToHexString(const SecureArray& secureArray) {
+    std::stringstream hexValue;
+    hexValue << hexPrefix << std::hex;
+    for (SecureArray::size_type i = 0; i < secureArray.size(); i++) {
+        hexValue << static_cast<int>(secureArray[i]);
+    }
+
+    return hexValue.str();
+}
+#endif
 
 inline void composeSaltFromIntegers(const int* nibbles, uint8_t* saltBuffer) {
     architecture_agnostic_salt_type archAgnosticSalt;
@@ -95,6 +143,18 @@ inline SecureArray hash(const SecureArray& password,
                                   password.size(), saltBuffer, SALT_LENGTH,
                                   *hash, hash.size());
 
+    LOG_MESSAGE(std::string{__func__} + " ## Hash Password Begin");
+    LOG_MESSAGE(std::string{__func__} +
+                " Salt from Meta data: " + metaDataSaltToHexString(parameters));
+    LOG_MESSAGE(std::string{__func__} +
+                " Salt as nibbles: " + saltNibblesToHexString(saltNibbles));
+    LOG_MESSAGE(std::string{__func__} +
+                " Salt as bytes: " + saltBytesToHexString(saltBuffer));
+    LOG_MESSAGE(std::string{__func__} + " Password '" +
+                secureArrayToString(password) + "' is hashed as " +
+                secureArrayToHexString(hash));
+    LOG_MESSAGE(std::string{__func__} + " ## Hash Password End");
+
     if (status != ARGON2_OK) {
         throw HashError(_("Error hashing password using Argon2"));
     }
@@ -114,14 +174,19 @@ int randomInt() {
 
 MetaData Key256::newDefaultKeyingParameters() {
     MetaData metaData{};
-    metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY, YAPET::Globals::config.argon2_memory.get());
-    metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY, YAPET::Globals::config.argon2_parallelism.get());
-    metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY, YAPET::Globals::config.argon2_iterations.get());
+    metaData.setValue(YAPET::Consts::ARGON2_MEMORY_COST_KEY,
+                      YAPET::Globals::config.argon2_memory.get());
+    metaData.setValue(YAPET::Consts::ARGON2_PARALLELISM_KEY,
+                      YAPET::Globals::config.argon2_parallelism.get());
+    metaData.setValue(YAPET::Consts::ARGON2_TIME_COST_KEY,
+                      YAPET::Globals::config.argon2_iterations.get());
     metaData.setValue(YAPET::Consts::ARGON2_SALT1_KEY, randomInt());
     metaData.setValue(YAPET::Consts::ARGON2_SALT2_KEY, randomInt());
     metaData.setValue(YAPET::Consts::ARGON2_SALT3_KEY, randomInt());
     metaData.setValue(YAPET::Consts::ARGON2_SALT4_KEY, randomInt());
 
+    LOG_MESSAGE(std::string{__func__} + ": Created random salt " +
+                metaDataSaltToHexString(metaData));
     return metaData;
 }
 

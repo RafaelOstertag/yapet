@@ -1,15 +1,17 @@
 pipeline {
-    agent any
+    agent none
 
     options {
         ansiColor('xterm')
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
         timeout(time: 1, unit: 'HOURS')
         timestamps()
+        disableConcurrentBuilds()
     }
 
     environment {
-        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas -fstack-protector"
+        PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
+        CODE_INSTRUMENTATION_FLAGS = "-fstack-protector-strong -fsanitize=address"
     }
 
     triggers {
@@ -190,15 +192,18 @@ EOF
 						 stage("(LX) Build") {
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                              }
                          }
 
                         stage("(LX) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/6/libasan.so:"
+                            }
                             steps {
                                 dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
                                 }
                             }
                         }
@@ -240,6 +245,7 @@ EOF
 						stage("(OB64) Build") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                              }
@@ -248,6 +254,7 @@ EOF
                         stage("(OB64) Test") {
                             steps {
                                 dir("obj") {
+                                    // OpenBSD 6.4 does not support -fsanitize=address, so no code instrumentation
                                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
                                 }
                             }
@@ -255,54 +262,54 @@ EOF
 					}
 				} // stage("OpenBSD amd64")
 
-				stage("NetBSD") {
-					agent {
-						label "netbsd"
-					}
-					stages {
-						stage("(NB) Bootstrap Build") {
-                             steps {
-                                sh "touch ChangeLog"
-                                dir("libyacurs") {
-                                    sh "touch ChangeLog"
-                                }
-                                sh "touch README NEWS"
-                                sh "autoreconf -I m4 -i"
-                            }
-                        }
+				// stage("NetBSD") {
+    			// 	stages {
+				// 		stage("(NB) Bootstrap Build") {
+                //              steps {
+                //                 sh "touch ChangeLog"
+                //                 dir("libyacurs") {
+                //                     sh "touch ChangeLog"
+                //                 }
+                //                 sh "touch README NEWS"
+                //                 sh "autoreconf -I m4 -i"
+                //             }
+                //         }
 
-                        stage("(NB) Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
-                                }
-                            }
-                        }
+                //         stage("(NB) Configure") {
+                //             steps {
+                //                 dir("obj") {
+                //                     sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
+                //                 }
+                //             }
+                //         }
 
-                        stage("(NB) Stub Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                            }
-                        }
-						 stage("(NB) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                             }
-                         }
+                //         stage("(NB) Stub Docs") {
+                //             steps {
+                //                 dir("doc") {
+                //                     sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                //                 }
+                //             }
+                //         }
+				// 		 stage("(NB) Build") {
+                //             steps {
+                //                 dir("obj") {
+                //                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                //                 }
+                //              }
+                //          }
 
-                        stage("(NB) Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-					}
-				} // stage("NetBSD")
+                //         stage("(NB) Test") {
+                //             environment {
+                //                 EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
+                //             }
+                //             steps {
+                //                 dir("obj") {
+                //                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                //                 }
+                //             }
+                //         }
+				// 	}
+				// } // stage("NetBSD")
     		} // parallel
         } // stage("OS Build")
     } // stages

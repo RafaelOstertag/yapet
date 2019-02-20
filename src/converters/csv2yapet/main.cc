@@ -270,6 +270,7 @@ int main(int argc, char** argv) {
             }
 
             strncpy(passwd, pw1.c_str(), MAX_PASSWD);
+            passwd[MAX_PASSWD - 1] = '\0';
         }
 
         CSVImport imp(srcfile, dstfile, separator, !quiet);

@@ -10,6 +10,7 @@ AM_CPPFLAGS = -I$(yapet_src_libdir)/pwgen \
     -I$(yapet_src_libdir)/utils \
     -I$(yapet_src_libdir)/interfaces \
     -I$(top_srcdir) \
+    -I$(yapet_src_libdir) \
     -DLOCALEDIR=\"$(localedir)\"
 
 if DISABLE_DEBUG

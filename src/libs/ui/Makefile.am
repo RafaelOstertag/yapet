@@ -17,6 +17,7 @@ AM_CPPFLAGS = -I$(yapet_src_libdir)/globals	\
     -I$(yapet_src_libdir)/passwordrecord \
     -I$(top_srcdir)/libyacurs/include		\
 	-I$(top_builddir)/libyacurs/include	\
+    -I$(yapet_src_libdir) \
     -I$(top_srcdir) \
     -DLOCALEDIR=\"$(localedir)\"
 

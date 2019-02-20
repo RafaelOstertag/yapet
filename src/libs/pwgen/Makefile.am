@@ -15,5 +15,5 @@ endif
 
 noinst_LTLIBRARIES = libyapet-pwgen.la
 
-libyapet_pwgen_la_SOURCES = rng.cc rng.hh	\
+libyapet_pwgen_la_SOURCES = rngengine.hh rngengine.cc rng.cc rng.hh	\
 pwgen.cc pwgen.hh characterpool.hh characterpool.cc

@@ -78,6 +78,19 @@ class SecureArrayTest : public CppUnit::TestFixture {
         delete ptr;
     }
 
+#if defined(__SANITIZE_ADDRESS__)
+#define USES_ADDRESS_SANITIZER 1
+#elif defined(__has_feature)
+#if __has_feature(address_sanitizer)
+#define USES_ADDRESS_SANITIZER 1
+#endif
+#endif
+
+#ifdef USES_ADDRESS_SANITIZER
+    // We cannot run the test when the address sanitizer is used, since we're
+    // accessing memory after free.
+    void testZeroOutBuffer() {}
+#else
     void testZeroOutBuffer() {
         auto subject = new yapet::SecureArray{3};
 
@@ -93,7 +106,7 @@ class SecureArrayTest : public CppUnit::TestFixture {
             CPPUNIT_ASSERT(array[i] != 42);
         }
     }
-
+#endif
     void testCopy() {
         yapet::SecureArray a = yapet::SecureArray(1);
         **a = 42;

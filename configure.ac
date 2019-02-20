@@ -1,7 +1,6 @@
-# $Id$
 AC_PREREQ([2.61])
-AC_REVISION([$Revision$])
-AC_INIT([YAPET],[2.1],[https://github.com/RafaelOstertag/yapet/issues])
+AC_REVISION([1])
+AC_INIT([YAPET],[2.3],[https://github.com/RafaelOstertag/yapet/issues])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])

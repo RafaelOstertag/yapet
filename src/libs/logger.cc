@@ -27,34 +27,8 @@
  * well as that of the covered work.
  */
 
-#include "rng.hh"
+#include "logger.hh"
 
-using namespace yapet::pwgen;
-
-Rng::Rng(std::uint8_t hi) : _rngEngine{}, _distribution{0, hi} {}
-
-Rng::Rng(const Rng& rng) : _rngEngine{}, _distribution{rng._distribution} {}
-
-Rng::Rng(Rng&& rng)
-    : _rngEngine{std::move(rng._rngEngine)},
-      _distribution{std::move(rng._distribution)} {}
-
-Rng& Rng::operator=(const Rng& rng) {
-    if (this == &rng) return *this;
-
-    _rngEngine = rng._rngEngine;
-    _distribution = rng._distribution;
-
-    return *this;
-}
-
-Rng& Rng::operator=(Rng&& rng) {
-    if (this == &rng) return *this;
-
-    _rngEngine = std::move(rng._rngEngine);
-    _distribution = std::move(rng._distribution);
-
-    return *this;
-}
-
-std::uint8_t Rng::getNextInt() { return _distribution(_rngEngine); }
+#ifdef DEBUG_LOG
+yapet::Logger yapet::logger;
+#endif

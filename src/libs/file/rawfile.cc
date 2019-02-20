@@ -27,6 +27,10 @@
  * well as that of the covered work.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <cerrno>
 #include <cstdio>
 #include <stdexcept>
@@ -34,6 +38,7 @@
 #include "consts.h"
 #include "fileerror.hh"
 #include "intl.h"
+#include "logger.hh"
 #include "ods.hh"
 #include "rawfile.hh"
 
@@ -44,6 +49,8 @@ const auto FILE_ALREADY_OPEN{_("File already open")};
 constexpr auto READ_WRITE_EXISTING_MODE{"r+"};
 constexpr auto CREATE_NEW_MODE{"w+"};
 constexpr auto ONE_ITEM{1};
+
+namespace {
 
 inline void throwIfFileAlreadyOpen(bool alreadyOpen) {
     if (alreadyOpen) {
@@ -56,6 +63,7 @@ inline void throwIfFileNotOpen(bool fileOpen) {
         throw FileError{FILE_NOT_OPEN};
     }
 }
+}  // namespace
 
 RawFile::RawFile(const std::string& filename) noexcept
     : _filename{filename}, _file{nullptr}, _openFlag{false} {}
@@ -212,6 +220,7 @@ void RawFile::seekAbsolute(seek_type position) {
 
 void RawFile::close() {
     if (_file) {
+        LOG_MESSAGE(std::string{__func__} + ": " + _filename);
         std::fclose(_file);
         _file = nullptr;
     }
