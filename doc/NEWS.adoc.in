@@ -3,6 +3,8 @@
 
 == YAPET 2.3
 
+* Fix issue https://github.com/RafaelOstertag/yapet/issues/17[#17]
+
 == YAPET 2.2
 
 * Fix typos in messages
@@ -20,13 +22,11 @@
 * Password generator uses `/dev/urandom` only. Removed `pwgen_rng` configuration option from `.yapet`
 * Use libyacurs 1.0.0
 
-
 == YAPET 1.1
 
 * Compiles with GCC 6+ and Clang
 * Use libyacurs 0.4
 * Supports OpenSSL 1.1
-
 
 == YAPET 1.0
 
