@@ -81,9 +81,8 @@ pipeline {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE distcheck DISTCHECK_CONFIGURE_FLAGS="--enable-nls  --with-libiconv-prefix=/usr/local --with-libintl-prefix=/usr/local"'
-                                    sshagent(['0b266ecf-fa80-4fe8-bce8-4c723f5ba47a']) {
-                                        // Eventhorizon only allows sftp
-                                        sh """sftp yapet-deploy@eventhorizon.dmz.kruemel.home:/var/www/jails/yapet/usr/local/www/apache24/data/downloads/ <<EOF
+                                    sshagent(['897482ed-9233-4d56-88c3-254b909b6316']) {
+                                        sh """sftp ec2-deploy@ec2-52-29-59-221.eu-central-1.compute.amazonaws.com:/data/www/yapet.guengel.ch/downloads <<EOF
 put yapet-*.tar.*
 EOF
 """
