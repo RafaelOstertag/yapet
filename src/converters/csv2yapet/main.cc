@@ -269,7 +269,7 @@ int main(int argc, char** argv) {
                 return ERR_PASSWDMISMATCH;
             }
 
-            strncpy(passwd, pw1.c_str(), MAX_PASSWD);
+            strncpy(passwd, pw1.c_str(), MAX_PASSWD - 1);
             passwd[MAX_PASSWD - 1] = '\0';
         }
 
