@@ -105,12 +105,6 @@ EOF
                     }
                 } // stage("FreeBSD amd64")
 
-                             steps {
-
-
-                            }
-                        }
-
 				stage("Linux") {
 					agent {
 						label "linux"
