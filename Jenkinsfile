@@ -105,56 +105,11 @@ EOF
                     }
                 } // stage("FreeBSD amd64")
 
-                stage("FreeBSD i386") {
-                    agent {
-                        label "freebsd&&i386"
-                    }
-                    stages {
-                        stage("(FB32) Bootstrap Build") {
                              steps {
-                                sh "git log --stat > ChangeLog"
-                                dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
-                                }
-                                sh "touch README NEWS"
-                                sh "autoreconf -I m4 -i"
-                            }
-                        }
 
-                        stage("(FB32) Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug"
-                                }
-                            }
-                        }
 
-                        stage("(FB32) Stub Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                                sh 'touch NEWS'
                             }
                         }
-
-						stage("(FB32) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-
-                        stage("(FB32) Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-                    }
-                } // stage("FreeBSD i386")
 
 				stage("Linux") {
 					agent {
