@@ -211,6 +211,9 @@ EOF
 				} // stage("OpenBSD amd64")
 
 			    stage("NetBSD") {
+                    agent {
+						label "netbsd&&amd64"
+					}
     			    stages {
 						stage("(NB) Bootstrap Build") {
                              steps {
