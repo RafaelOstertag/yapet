@@ -42,6 +42,7 @@
 #endif
 
 #include <libgen.h>
+
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
@@ -256,7 +257,7 @@ int main(int argc, char** argv) {
             std::cout << std::endl;
             enable_echo();
 
-            strncpy(passwd, pw1.c_str(), MAX_PASSWD);
+            strncpy(passwd, pw1.c_str(), MAX_PASSWD - 1);
             passwd[MAX_PASSWD - 1] = 0;
         }
 
