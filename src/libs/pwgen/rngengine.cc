@@ -31,6 +31,7 @@
 #include "config.h"
 #endif
 
+#include <assert.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -38,7 +39,7 @@
 #include <fcntl.h>
 #endif
 
-#include <assert.h>
+#include <stdexcept>
 
 #include "consts.h"
 #include "intl.h"
@@ -81,8 +82,7 @@ RngEngine::RngEngine() : fd{openDevUrandom()}, positionInCache{EMPTY_CACHE} {}
 RngEngine::~RngEngine() { closeFd(fd); }
 
 RngEngine::RngEngine(const RngEngine& other)
-    : byteCache{other.byteCache},
-      positionInCache{other.positionInCache} {
+    : byteCache{other.byteCache}, positionInCache{other.positionInCache} {
     fd = ::dup(other.fd);
 }
 
@@ -102,7 +102,7 @@ RngEngine& RngEngine::operator=(const RngEngine& other) {
     fd = ::dup(fd);
     byteCache = other.byteCache;
     positionInCache = other.positionInCache;
- 
+
     return *this;
 }
 
