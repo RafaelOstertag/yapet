@@ -47,7 +47,7 @@ pipeline {
 
                         stage("(FB64) Build Docs") {
                             environment {
-                                PATH = "$PATH:$HOME/.gem/ruby/2.5/bin"
+                                PATH = "$PATH:$HOME/.gem/ruby/2.6/bin"
                             }
                             steps {
                                 sh 'gem install --user-install asciidoctor'
