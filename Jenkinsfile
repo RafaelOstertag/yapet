@@ -16,6 +16,7 @@ pipeline {
 
     triggers {
         pollSCM '@hourly'
+        cron '@daily'
     }
 
     stages {
@@ -47,7 +48,7 @@ pipeline {
 
                         stage("(FB64) Build Docs") {
                             environment {
-                                PATH = "$PATH:$HOME/.gem/ruby/2.5/bin"
+                                PATH = "$PATH:$HOME/.gem/ruby/2.6/bin"
                             }
                             steps {
                                 sh 'gem install --user-install asciidoctor'
@@ -147,7 +148,7 @@ EOF
 
                         stage("(LX) Test") {
                             environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/6/libasan.so:"
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/8/libasan.so:"
                             }
                             steps {
                                 dir("obj") {

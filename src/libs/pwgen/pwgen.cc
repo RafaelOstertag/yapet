@@ -33,6 +33,7 @@
 
 #include <cassert>
 #include <limits>
+#include <stdexcept>
 
 #include "consts.h"
 #include "intl.h"
