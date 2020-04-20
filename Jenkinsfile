@@ -16,6 +16,7 @@ pipeline {
 
     triggers {
         pollSCM '@hourly'
+        cron '@daily'
     }
 
     stages {
