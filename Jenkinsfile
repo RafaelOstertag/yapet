@@ -16,6 +16,7 @@ pipeline {
 
     triggers {
         pollSCM '@hourly'
+        cron '@daily'
     }
 
     stages {
@@ -47,7 +48,7 @@ pipeline {
 
                         stage("(FB64) Build Docs") {
                             environment {
-                                PATH = "$PATH:$HOME/.gem/ruby/2.5/bin"
+                                PATH = "$PATH:$HOME/.gem/ruby/2.6/bin"
                             }
                             steps {
                                 sh 'gem install --user-install asciidoctor'
@@ -81,9 +82,8 @@ pipeline {
                             steps {
                                 dir("obj") {
                                     sh '$MAKE distcheck DISTCHECK_CONFIGURE_FLAGS="--enable-nls  --with-libiconv-prefix=/usr/local --with-libintl-prefix=/usr/local"'
-                                    sshagent(['0b266ecf-fa80-4fe8-bce8-4c723f5ba47a']) {
-                                        // Eventhorizon only allows sftp
-                                        sh """sftp yapet-deploy@eventhorizon.dmz.kruemel.home:/var/www/jails/yapet/usr/local/www/apache24/data/downloads/ <<EOF
+                                    sshagent(['897482ed-9233-4d56-88c3-254b909b6316']) {
+                                        sh """sftp ec2-deploy@ec2-52-29-59-221.eu-central-1.compute.amazonaws.com:/data/www/yapet.guengel.ch/downloads <<EOF
 put yapet-*.tar.*
 EOF
 """
@@ -105,57 +105,6 @@ EOF
                         }
                     }
                 } // stage("FreeBSD amd64")
-
-                stage("FreeBSD i386") {
-                    agent {
-                        label "freebsd&&i386"
-                    }
-                    stages {
-                        stage("(FB32) Bootstrap Build") {
-                             steps {
-                                sh "git log --stat > ChangeLog"
-                                dir("libyacurs") {
-                                    sh "git log --stat > ChangeLog"
-                                }
-                                sh "touch README NEWS"
-                                sh "autoreconf -I m4 -i"
-                            }
-                        }
-
-                        stage("(FB32) Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug"
-                                }
-                            }
-                        }
-
-                        stage("(FB32) Stub Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                                sh 'touch NEWS'
-                            }
-                        }
-
-						stage("(FB32) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-
-                        stage("(FB32) Test") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS}"'
-                                }
-                            }
-                        }
-                    }
-                } // stage("FreeBSD i386")
 
 				stage("Linux") {
 					agent {
@@ -199,7 +148,7 @@ EOF
 
                         stage("(LX) Test") {
                             environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/6/libasan.so:"
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/8/libasan.so:"
                             }
                             steps {
                                 dir("obj") {
@@ -262,55 +211,66 @@ EOF
 					}
 				} // stage("OpenBSD amd64")
 
-				// stage("NetBSD") {
-    			// 	stages {
-				// 		stage("(NB) Bootstrap Build") {
-                //              steps {
-                //                 sh "touch ChangeLog"
-                //                 dir("libyacurs") {
-                //                     sh "touch ChangeLog"
-                //                 }
-                //                 sh "touch README NEWS"
-                //                 sh "autoreconf -I m4 -i"
-                //             }
-                //         }
+			    stage("NetBSD") {
+                    agent {
+						label "netbsd&&amd64"
+					}
+    			    stages {
+						stage("(NB) Bootstrap Build") {
+                             steps {
+                                sh "touch ChangeLog"
+                                dir("libyacurs") {
+                                    sh "touch ChangeLog"
+                                }
+                                sh "touch README NEWS"
+                                sh "autoreconf -I m4 -i"
+                            }
+                        }
 
-                //         stage("(NB) Configure") {
-                //             steps {
-                //                 dir("obj") {
-                //                     sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
-                //                 }
-                //             }
-                //         }
+                        stage("(NB) Configure") {
+                            steps {
+                                dir("obj") {
+                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
+                                }
+                            }
+                        }
 
-                //         stage("(NB) Stub Docs") {
-                //             steps {
-                //                 dir("doc") {
-                //                     sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                //                 }
-                //             }
-                //         }
-				// 		 stage("(NB) Build") {
-                //             steps {
-                //                 dir("obj") {
-                //                     sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
-                //                 }
-                //              }
-                //          }
+                        stage("(NB) Stub Docs") {
+                            steps {
+                                dir("doc") {
+                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
+                                }
+                            }
+                        }
+						 stage("(NB) Build") {
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                }
+                             }
+                         }
 
-                //         stage("(NB) Test") {
-                //             environment {
-                //                 EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
-                //             }
-                //             steps {
-                //                 dir("obj") {
-                //                     sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
-                //                 }
-                //             }
-                //         }
-				// 	}
-				// } // stage("NetBSD")
+                        stage("(NB) Test") {
+                            environment {
+                                EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
+                            }
+                            steps {
+                                dir("obj") {
+                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
+                                }
+                            }
+                        }
+					}
+				} // stage("NetBSD")
     		} // parallel
         } // stage("OS Build")
     } // stages
+
+    post {
+        always {
+            mail to: "rafi@guengel.ch",
+                    subject: "${JOB_NAME} (${BRANCH_NAME};${env.BUILD_DISPLAY_NAME}) -- ${currentBuild.currentResult}",
+                    body: "Refer to ${currentBuild.absoluteUrl}"
+        }
+    }
 }

@@ -147,3 +147,10 @@ doc/NEWS.adoc
 doc/NEWS.html
 doc/README.adoc
 doc/yapet.adoc
+config.sub
+compile
+config.guess
+depcomp
+install-sh
+missing
+test-driver

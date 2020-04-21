@@ -198,7 +198,7 @@ int main(int argc, char** argv) {
                 show_help(argv[0]);
                 return 0;
             case 'p':
-                strncpy(passwd, optarg, MAX_PASSWD);
+                strncpy(passwd, optarg, MAX_PASSWD - 1);
                 passwd[MAX_PASSWD - 1] = 0;
                 cmdline_pw = true;
                 break;
@@ -269,7 +269,7 @@ int main(int argc, char** argv) {
                 return ERR_PASSWDMISMATCH;
             }
 
-            strncpy(passwd, pw1.c_str(), MAX_PASSWD);
+            strncpy(passwd, pw1.c_str(), MAX_PASSWD - 1);
             passwd[MAX_PASSWD - 1] = '\0';
         }
 

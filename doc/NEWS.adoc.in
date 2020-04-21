@@ -1,6 +1,10 @@
 // -*- adoc -*-
 = News
 
+== YAPET 2.4
+
+* Fix issue https://github.com/RafaelOstertag/yapet/issues/20[#20]
+
 == YAPET 2.3
 
 * Fix issue https://github.com/RafaelOstertag/yapet/issues/17[#17]
