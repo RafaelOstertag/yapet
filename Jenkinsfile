@@ -77,6 +77,9 @@ pipeline {
                         stage("Build distribution") {
                             when { 
                                 branch 'release/*'
+                                not {
+                                   triggeredBy "TimerTrigger"
+                                }
                             }
 
                             steps {
