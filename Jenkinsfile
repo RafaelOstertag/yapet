@@ -81,7 +81,7 @@ pipeline {
                         stage("Build distribution") {
                             when {
                                 branch 'release/*'
-                                expression { parameters.RELEASE }
+                                expression { params.RELEASE }
                                 not {
                                    triggeredBy "TimerTrigger"
                                 }
