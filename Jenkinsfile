@@ -9,6 +9,10 @@ pipeline {
         disableConcurrentBuilds()
     }
 
+    parameters {
+        booleanParam defaultValue: false, description: 'Build a release and deploy to web server. Only takes effect on release/* branches.', name: 'RELEASE'
+    }
+
     environment {
         PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
         CODE_INSTRUMENTATION_FLAGS = "-fstack-protector-strong -fsanitize=address"
@@ -77,6 +81,7 @@ pipeline {
                         stage("Build distribution") {
                             when { 
                                 branch 'release/*'
+                                expression { parameters.RELEASE }
                                 not {
                                    triggeredBy "TimerTrigger"
                                 }
@@ -213,58 +218,6 @@ EOF
                         }
 					}
 				} // stage("OpenBSD amd64")
-
-			    stage("NetBSD") {
-                    agent {
-						label "netbsd&&amd64"
-					}
-    			    stages {
-						stage("(NB) Bootstrap Build") {
-                             steps {
-                                sh "touch ChangeLog"
-                                dir("libyacurs") {
-                                    sh "touch ChangeLog"
-                                }
-                                sh "touch README NEWS"
-                                sh "autoreconf -I m4 -i"
-                            }
-                        }
-
-                        stage("(NB) Configure") {
-                            steps {
-                                dir("obj") {
-                                    sh "../configure --enable-debug LDFLAGS='-L/usr/pkg/lib -R/usr/pkg/lib' ARGON2_CFLAGS='-I/usr/pkg/include' ARGON2_LIBS='-L/usr/pkg/lib -largon2'"
-                                }
-                            }
-                        }
-
-                        stage("(NB) Stub Docs") {
-                            steps {
-                                dir("doc") {
-                                    sh 'touch csv2yapet.1 yapet.1 yapet2csv.1 yapet_colors.5 yapet_config.5 csv2yapet.html INSTALL.html README.html NEWS.html yapet2csv.html yapet_colors.html yapet_config.html yapet.html'
-                                }
-                            }
-                        }
-						 stage("(NB) Build") {
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE all CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
-                                }
-                             }
-                         }
-
-                        stage("(NB) Test") {
-                            environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/libasan.so:"
-                            }
-                            steps {
-                                dir("obj") {
-                                    sh '$MAKE check CXXFLAGS="${PEDANTIC_FLAGS} ${CODE_INSTRUMENTATION_FLAGS}"'
-                                }
-                            }
-                        }
-					}
-				} // stage("NetBSD")
     		} // parallel
         } // stage("OS Build")
     } // stages
