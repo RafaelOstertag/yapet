@@ -9,6 +9,10 @@ pipeline {
         disableConcurrentBuilds()
     }
 
+    parameters {
+        booleanParam defaultValue: false, description: 'Build a release and deploy to web server. Only takes effect on release/* branches.', name: 'RELEASE'
+    }
+
     environment {
         PEDANTIC_FLAGS = "-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas"
         CODE_INSTRUMENTATION_FLAGS = "-fstack-protector-strong -fsanitize=address"
@@ -77,8 +81,9 @@ pipeline {
                         stage("Build distribution") {
                             when {
                                 branch 'release/*'
+                                expression { parameters.RELEASE }
                                 not {
-                                    triggeredBy "TimerTrigger"
+                                   triggeredBy "TimerTrigger"
                                 }
                             }
 
@@ -218,7 +223,7 @@ EOF
     } // stages
 
     post {
-        always {
+        unsuccessful {
             mail to: "rafi@guengel.ch",
                     subject: "${JOB_NAME} (${BRANCH_NAME};${env.BUILD_DISPLAY_NAME}) -- ${currentBuild.currentResult}",
                     body: "Refer to ${currentBuild.absoluteUrl}"
