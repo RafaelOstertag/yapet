@@ -53,28 +53,6 @@ namespace CONFIG {
 extern std::string trim(const std::string& s);
 extern std::string getHomeDir();
 
-namespace INTERNAL {
-// Wrapper function object which returns bool so that it
-// can be used by *_if algorithms
-class IntIsTrue {
-    std::pointer_to_unary_function<int, int> __f;
-
-   public:
-    IntIsTrue(std::pointer_to_unary_function<int, int> _f) : __f(_f) {}
-    bool operator()(int i) { return std::not_equal_to<int>()(0, __f(i)); }
-};
-
-// Wrapper function object which returns bool so that it
-// can be used by *_if algorithms
-class IntIsFalse {
-    std::pointer_to_unary_function<int, int> __f;
-
-   public:
-    IntIsFalse(std::pointer_to_unary_function<int, int> _f) : __f(_f) {}
-    bool operator()(int i) { return std::equal_to<int>()(0, __f(i)); }
-};
-}  // namespace INTERNAL
-
 class CfgValBase {
    public:
     virtual void set_str(const std::string&) = 0;
@@ -99,10 +77,8 @@ class CfgVal : public CfgValBase {
     std::string remove_space(const std::string& str) {
         std::string space_clean(str);
 
-        INTERNAL::IntIsTrue space(std::ptr_fun<int, int>(std::isspace));
-
         std::string::iterator new_end =
-            std::remove_if(space_clean.begin(), space_clean.end(), space);
+            std::remove_if(space_clean.begin(), space_clean.end(), [](auto &x) { return std::isspace(x); });
 
         if (new_end == space_clean.end()) return space_clean;
 
@@ -113,8 +89,7 @@ class CfgVal : public CfgValBase {
 
     std::string tolower(const std::string& str) {
         std::string lower(str);
-        std::transform(lower.begin(), lower.end(), lower.begin(),
-                       std::ptr_fun<int, int>(std::tolower));
+        std::transform(lower.begin(), lower.end(), lower.begin(), [](auto &x) { return std::tolower(x); });
 
         return lower;
     }
