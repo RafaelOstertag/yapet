@@ -3,6 +3,8 @@
 
 == YAPET 2.5
 
+* Use libyacurs 1.0.2.
+
 == YAPET 2.4
 
 * Fix issue https://github.com/RafaelOstertag/yapet/issues/20[#20]
