@@ -156,7 +156,7 @@ EOF
 
                         stage("(LX) Test") {
                             environment {
-                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/8/libasan.so:"
+                                EXTRA_LD_PRELOAD = "/usr/lib/gcc/x86_64-linux-gnu/10/libasan.so:"
                             }
                             steps {
                                 dir("obj") {
