@@ -154,3 +154,8 @@ depcomp
 install-sh
 missing
 test-driver
+
+# Idea IDE
+.idea
+*.iml
+build/
