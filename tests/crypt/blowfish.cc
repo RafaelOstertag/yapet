@@ -8,6 +8,7 @@
 
 #include "cryptoerror.hh"
 #include "key448.hh"
+#include "openssl.hh"
 
 class BlowfishTest : public CppUnit::TestFixture {
    private:
@@ -84,6 +85,7 @@ class BlowfishTest : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(BlowfishTest::suite());
     return runner.run() ? 0 : 1;

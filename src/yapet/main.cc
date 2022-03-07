@@ -50,18 +50,16 @@
 #include <getopt.h>
 #endif
 
-#include <cerrno>
-#include <cstring>
 #include <iostream>
 #include <string>
 
 #include <yacurs.h>
 
-#include "consts.h"
 #include "globals.h"
 #include "mainwindow.h"
 #include "yapetlockscreen.h"
 #include "yapetunlockdialog.h"
+#include "openssl.hh"
 
 /**
  * @file
@@ -280,6 +278,8 @@ int main(int argc, char** argv) {
     // Unlock all configuration values, so that they can be changed
     // again.
     YAPET::Globals::config.unlock();
+
+    yapet::OpenSSL::init();
 
     YapetUnlockDialog* yunlockdia = nullptr;
     try {

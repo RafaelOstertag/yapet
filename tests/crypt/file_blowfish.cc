@@ -18,6 +18,7 @@
 #include "securearray.hh"
 #include "testpaths.h"
 #include "yapeterror.hh"
+#include "openssl.hh"
 
 constexpr auto TEST_PASSWORD{"Secret"};
 
@@ -453,6 +454,7 @@ class BlowfishFileTest : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(BlowfishFileTest ::suite());
     return runner.run() ? 0 : 1;
