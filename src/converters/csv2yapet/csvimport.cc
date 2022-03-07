@@ -42,7 +42,7 @@
 #include "consts.h"
 #include "csvimport.h"
 #include "csvline.hh"
-#include "file.h"
+#include "file.hh"
 #include "intl.h"
 
 constexpr char NEW_LINE_CHARACTER{'\n'};

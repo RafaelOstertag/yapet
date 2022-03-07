@@ -7,7 +7,7 @@
 
 #include "aes256factory.hh"
 #include "csvimport.h"
-#include "file.h"
+#include "file.hh"
 #include "filehelper.hh"
 #include "testpaths.h"
 

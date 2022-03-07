@@ -27,14 +27,15 @@
  * well as that of the covered work.
  */
 
+#include "opencmdlinefile.h"
+
 #include <cassert>
 #include <typeinfo>
 
 #include "aes256factory.hh"
 #include "cryptofactoryhelper.hh"
-#include "file.h"
+#include "file.hh"
 #include "globals.h"
-#include "opencmdlinefile.h"
 #include "utils.hh"
 
 //

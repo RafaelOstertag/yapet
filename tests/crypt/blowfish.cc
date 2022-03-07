@@ -1,10 +1,11 @@
+#include "blowfish.hh"
+
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/TestCaller.h>
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-#include "blowfish.hh"
 #include "cryptoerror.hh"
 #include "key448.hh"
 

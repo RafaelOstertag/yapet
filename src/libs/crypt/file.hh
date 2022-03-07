@@ -27,8 +27,8 @@
  * well as that of the covered work.
  */
 
-#ifndef _FILE_H
-#define _FILE_H 1
+#ifndef _FILE_HH
+#define _FILE_HH 1
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -94,4 +94,4 @@ class File {
     bool filesecurityEnabled() const { return _yapetFile->isSecure(); }
 };
 }  // namespace YAPET
-#endif  // _FILE_H
+#endif  // _FILE_HH

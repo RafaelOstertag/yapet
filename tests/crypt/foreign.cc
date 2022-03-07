@@ -20,7 +20,7 @@
 #include <list>
 
 #include "blowfishfactory.hh"
-#include "file.h"
+#include "file.hh"
 #include "securearray.hh"
 #include "testpaths.h"
 
