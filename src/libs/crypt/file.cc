@@ -34,7 +34,7 @@
 #include <algorithm>
 
 #include "cryptoerror.hh"
-#include "file.h"
+#include "file.hh"
 #include "fileutils.hh"
 #include "intl.h"
 #include "logger.hh"

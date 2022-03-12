@@ -11,6 +11,7 @@
 #include "blowfishfactory.hh"
 #include "cryptofactoryhelper.hh"
 #include "testpaths.h"
+#include "openssl.hh"
 
 class CryptoFactoryHelperTest : public CppUnit::TestFixture {
    private:
@@ -81,6 +82,7 @@ class CryptoFactoryHelperTest : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(CryptoFactoryHelperTest::suite());
     return runner.run() ? 0 : 1;

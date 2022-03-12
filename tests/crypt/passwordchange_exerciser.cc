@@ -3,7 +3,7 @@
 #include "aes256factory.hh"
 #include "cryptoerror.hh"
 #include "cryptofactoryhelper.hh"
-#include "file.h"
+#include "file.hh"
 #include "filehelper.hh"
 #include "securearray.hh"
 #include "testpaths.h"

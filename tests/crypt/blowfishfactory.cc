@@ -7,6 +7,7 @@
 #include "blowfishfactory.hh"
 #include "key448.hh"
 #include "testpaths.h"
+#include "openssl.hh"
 
 class BlowfishFactoryTest : public CppUnit::TestFixture {
    private:
@@ -88,6 +89,7 @@ class BlowfishFactoryTest : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(BlowfishFactoryTest::suite());
     return runner.run() ? 0 : 1;

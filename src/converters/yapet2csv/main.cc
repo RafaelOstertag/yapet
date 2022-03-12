@@ -53,6 +53,7 @@
 #include "consts.h"
 #include "csvexport.h"
 #include "intl.h"
+#include "openssl.hh"
 
 #if defined(HAVE_TERMIOS_H) && defined(HAVE_TCSETATTR) && \
     defined(HAVE_TCGETATTR)
@@ -244,6 +245,8 @@ int main(int argc, char** argv) {
         std::cerr << dstfile << _(" already exists. Aborting.") << std::endl;
         return ERR_FILEEXISTS;
     }
+
+    yapet::OpenSSL::init();
 
     try {
         // We read the password from stdin only if the user did not provide the

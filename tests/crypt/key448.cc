@@ -1,3 +1,5 @@
+#include "key448.hh"
+
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/TestCaller.h>
 #include <cppunit/TestFixture.h>
@@ -6,7 +8,7 @@
 
 #include <cstring>
 
-#include "key448.hh"
+#include "openssl.hh"
 
 constexpr std::uint8_t expected_key[] = {
     0x3e, 0xc3, 0x34, 0x5d, 0x72, 0x83, 0xbd, 0x09, 0x60, 0xa3, 0x4f, 0x6b,
@@ -70,6 +72,7 @@ class Key448Test : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(Key448Test::suite());
     return runner.run() ? 0 : 1;

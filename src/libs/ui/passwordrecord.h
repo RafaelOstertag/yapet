@@ -35,9 +35,10 @@
 #endif
 
 #include <yacurs.h>
+
 #include <string>
 
-#include "file.h"
+#include "file.hh"
 #include "pwgendialog.h"
 
 /**

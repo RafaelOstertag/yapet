@@ -42,7 +42,7 @@
 #include "cryptofactoryhelper.hh"
 #include "csvexport.h"
 #include "csvline.hh"
-#include "file.h"
+#include "file.hh"
 #include "passwordrecord.hh"
 
 /**
@@ -101,7 +101,8 @@ void CSVExport::doexport(const char* pw) {
         yapet::getCryptoFactoryForFile(srcfile, password)};
 
     auto crypto{cryptoFactory->crypto()};
-    std::unique_ptr<YAPET::File> yapetFile{new YAPET::File{cryptoFactory, srcfile, false, false}};
+    std::unique_ptr<YAPET::File> yapetFile{
+        new YAPET::File{cryptoFactory, srcfile, false, false}};
 
     std::list<yapet::PasswordListItem> list = yapetFile->read();
 

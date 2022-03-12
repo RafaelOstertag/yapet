@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "cryptofactoryhelper.hh"
-#include "file.h"
+#include "file.hh"
 
 struct control_struct {
     std::string name;

@@ -14,7 +14,7 @@
 
 #include "aes256factory.hh"
 #include "cryptoerror.hh"
-#include "file.h"
+#include "file.hh"
 #include "filehelper.hh"
 #include "securearray.hh"
 #include "testpaths.h"

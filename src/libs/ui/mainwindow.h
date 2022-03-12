@@ -49,7 +49,7 @@ class InfoDialog;
 #include <limits>
 #include <string>
 
-#include "file.h"
+#include "file.hh"
 #include "help.h"
 #include "info.h"
 #include "passwordlistitem.hh"

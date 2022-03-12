@@ -20,9 +20,10 @@
 #include <list>
 
 #include "blowfishfactory.hh"
-#include "file.h"
+#include "file.hh"
 #include "securearray.hh"
 #include "testpaths.h"
+#include "openssl.hh"
 
 constexpr auto TEST_PASSWORD{"test1"};
 
@@ -156,6 +157,7 @@ class ForeignTest : public CppUnit::TestFixture {
 };
 
 int main() {
+    yapet::OpenSSL::init();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(ForeignTest ::suite());
     return runner.run() ? 0 : 1;

@@ -27,15 +27,16 @@
  * well as that of the covered work.
  */
 
+#include "promptpassword.h"
+
 #include <cassert>
 #include <cstdio>
 
 #include "cryptofactoryhelper.hh"
-#include "file.h"
+#include "file.hh"
 #include "fileerror.hh"
 #include "globals.h"
 #include "intl.h"
-#include "promptpassword.h"
 #include "utils.hh"
 #include "yapeterror.hh"
 
