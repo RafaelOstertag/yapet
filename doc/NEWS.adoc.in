@@ -3,6 +3,8 @@
 
 == YAPET 2.6
 
+* Support OpenSSL 3.0.
+
 == YAPET 2.5
 
 * Use libyacurs 1.0.2.
