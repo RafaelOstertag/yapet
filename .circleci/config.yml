@@ -1,0 +1,160 @@
+version: 2.1
+
+mainonly: &mainonly
+  branches:
+    only:
+      - master
+
+tagfilter: &tagfilter
+  tags:
+    only: /^v.*/
+  branches:
+    ignore: /.*/
+
+orbs:
+  c: rafaelostertag/common-orb@1.19.0
+
+executors:
+  cpp-builder:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
+  simple:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+
+commands:
+  checkout-with-submodule:
+    steps:
+      - checkout
+      - run:
+          name: Checkout submodule
+          command: |
+            git submodule init
+            git submodule update
+  setup:
+    steps:
+      - run:
+          name: Install prerequisites
+          command: |
+            sudo apt update
+            sudo apt install -y libncurses-dev libargon2-dev libcppunit-dev openssl
+            gem install asciidoctor
+  configure:
+    steps:
+      - run:
+          name: Prepare build
+          command: |
+            git log --stat > ChangeLog
+            cd libyacurs
+            git log --stat > ChangeLog
+            cd ..
+            touch README NEWS
+            autoreconf -I m4 -i
+            mkdir obj
+      - run:
+          name: Configure
+          command: |
+            cd obj
+            ../configure --enable-debug --disable-silent-rules
+  make:
+    parameters:
+      target:
+        type: string
+    steps:
+      - run:
+          name: make <<parameters.target>>
+          command: |
+            cd obj
+            make  CXXFLAGS="-Wall -pedantic -Werror -O3 -Wno-unknown-pragmas -Wno-unused-result" <<parameters.target>> </dev/null
+  build-docs:
+    steps:
+      - run:
+          name: Build docs
+          command: |
+            cd obj/doc
+            make -f Makefile.doc
+  dist-check:
+    steps:
+      - run:
+          name: Distcheck
+          command: |
+            cd obj
+            make distcheck </dev/null
+jobs:
+  build:
+    executor: cpp-builder
+    steps:
+      - setup
+      - checkout-with-submodule
+      - configure
+      - build-docs
+      - make:
+          target: all
+      - make:
+          target: check
+  dist-check:
+    executor: cpp-builder
+    steps:
+      - setup
+      - checkout-with-submodule
+      - configure
+      - build-docs
+      - dist-check
+      - persist_to_workspace:
+          root: .
+          paths:
+            - obj
+  deploy-artifact:
+    executor: simple
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy artifacts
+          command: |
+            cd obj
+            for f in yapet*.tar.*
+            do
+              curl -f -u "${REPO_USERNAME}:${REPO_PASSWORD}" --upload-file "$f" "https://rafaelostertag.jfrog.io/artifactory/local-generic/yapet/$f"
+            done
+  trigger-rundeck:
+    executor: c/internal-infra
+    steps:
+      - run:
+          name: Trigger rundeck
+          command: |
+            VERSION=${CIRCLE_TAG##v}
+            curl -f -H "X-Rundeck-Auth-Token: ${RUNDECK_API_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "{ \"options\" : { \"version\": \"${VERSION}\" }}" \
+              -X POST https://colossus.kruemel.home/rundeck/api/18/job/628c6d0f-71e3-4a8a-8f13-e529b1c090be/executions   
+
+workflows:
+  build:
+    jobs:
+      - build
+      - dist-check:
+          filters: *mainonly
+  build-release:
+    jobs:
+      - build:
+          filters: *tagfilter
+      - dist-check:
+          filters: *tagfilter
+      - deploy-artifact:
+          filters: *tagfilter
+          context:
+            - generic-repository-write
+          requires:
+            - dist-check
+            - build
+      - trigger-rundeck:
+          filters: *tagfilter
+          context:
+            - rundeck
+          requires:
+            - deploy-artifact
+
+
