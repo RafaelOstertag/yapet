@@ -31,6 +31,7 @@
 #include <cstring>
 #include <limits>
 #include <stdexcept>
+#include <algorithm>
 
 #include "consts.h"
 #include "intl.h"
@@ -126,8 +127,8 @@ SecureArray& SecureArray::operator=(SecureArray&& other) {
 
 inline void SecureArray::clearMemory() {
     if (_array == nullptr) return;
-
-    std::memset(_array, 0, _size);
+    std::fill(reinterpret_cast<volatile std::uint8_t*>(_array),
+        reinterpret_cast<volatile std::uint8_t*>(_array + _size), 0);
 }
 
 inline void SecureArray::freeMemory() {
